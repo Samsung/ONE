@@ -133,6 +133,27 @@ private:
 class Tensor
 {
 public:
+  static const float max_value(const circle::Tensor *circle_tensor)
+  {
+    const auto *quant_params = circle_tensor->quantization();
+    if (quant_params == nullptr)
+    {
+      assert(false && "There is no quantization params");
+      return {};
+    }
+    return *quant_params->max()->cbegin();
+  }
+
+  static const float min_value(const circle::Tensor *circle_tensor)
+  {
+    const auto *quant_params = circle_tensor->quantization();
+    if (quant_params == nullptr)
+    {
+      assert(false && "There is no quantization params");
+      return {};
+    }
+    return *quant_params->min()->cbegin();
+  }
 #ifndef DIS_QUANT
   static float scale(const circle::Tensor *circle_tensor)
   {

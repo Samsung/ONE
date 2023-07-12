@@ -26,7 +26,8 @@ namespace
 {
 void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
                const circle::Tensor *bias, const circle::Tensor *output,
-               const circle::FullyConnectedOptions *options, BaseRuntimeGraph *runtime_graph)
+               const circle::FullyConnectedOptions *options, BaseRuntimeGraph *runtime_graph,
+               OperationGraphStatus status)
 {
   float activation_min{};
   float activation_max{};
@@ -40,6 +41,11 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
+  if (status != OperationGraphStatus::USUAL)
+  {
+    params.input_min_max_range = Tensor::max_value(input) - Tensor::min_value(input);
+    params.output_min_max_range = Tensor::max_value(output) - Tensor::min_value(output);
+  }
   auto *weights_data = runtime_graph->getConstDataByTensor(weights);
   auto *bias_data = runtime_graph->getConstDataByTensor(bias);
 
@@ -59,7 +65,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
   luci_interpreter_pal::FullyConnected(
     params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
     kernels::getTensorData<float>(weights_data), kernels::getTensorData<float>(bias_data),
-    output_shape, kernels::getTensorData<float>(output_data));
+    output_shape, kernels::getTensorData<float>(output_data), status);
 }
 
 #ifndef DIS_QUANT
@@ -116,7 +122,7 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
   luci_interpreter_pal::FullyConnected(
     op_params, input_shape, kernels::getTensorData<uint8_t>(input_data), weights_shape,
     kernels::getTensorData<uint8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
-    output_shape, kernels::getTensorData<uint8_t>(output_data));
+    output_shape, kernels::getTensorData<uint8_t>(output_data), OperationGraphStatus::USUAL);
 }
 #endif
 
@@ -220,8 +226,12 @@ void execute_kernel_CircleFullyConnected(const circle::Operator *cur_op,
 #endif // DIS_QUANT
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat(input, weights, bias, output, options, runtime_graph);
+    {
+      OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
+      evalFloat(input, weights, bias, output, options, runtime_graph, status);
       break;
+    }
 #endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");

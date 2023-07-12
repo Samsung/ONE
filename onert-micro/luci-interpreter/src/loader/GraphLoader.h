@@ -29,6 +29,8 @@ class GraphLoader
 {
 public:
   static void checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph);
+
+  static void checkIntermediateQuantization(CircleReader *reader, RuntimeGraph *runtime_graph);
 };
 
 } // namespace luci_interpreter

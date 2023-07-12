@@ -21,9 +21,13 @@
 namespace luci_interpreter
 {
 
-uint8_t *SimpleMemoryManager::allocate_memory(const circle::Tensor *tensor)
+uint8_t *SimpleMemoryManager::allocate_memory(const circle::Tensor *tensor,
+                                              OperationGraphStatus status)
 {
-  const auto element_size = getDataTypeSize(Tensor::element_type(tensor));
+  const auto type = (status == OperationGraphStatus::USUAL or status == OperationGraphStatus::END)
+                      ? Tensor::element_type(tensor)
+                      : DataType::S16;
+  const auto element_size = getDataTypeSize(type);
   const auto num_elements = Tensor::num_elements(tensor);
 
   assert(element_size * num_elements > 0);

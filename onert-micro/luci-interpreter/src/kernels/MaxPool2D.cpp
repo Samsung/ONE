@@ -97,10 +97,20 @@ void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeG
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
+    {
+      OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
+      if (status != OperationGraphStatus::USUAL)
+      {
+        params.input_min_max_range = Tensor::max_value(input) - Tensor::min_value(input);
+        params.output_min_max_range = Tensor::max_value(output) - Tensor::min_value(output);
+      }
+
       luci_interpreter_pal::MaxPool(
         params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
+        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data), status);
       break;
+    }
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:

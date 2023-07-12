@@ -52,6 +52,15 @@ enum class MirrorPadMode
   SYMMETRIC,
 };
 
+enum class OperationGraphStatus
+{
+  USUAL,
+
+  START,
+  MIDDLE,
+  END,
+};
+
 } // namespace luci_interpreter
 
 #endif // __LUCI_MICRO_INTERPRETER_PARAMS_TYPE_H__

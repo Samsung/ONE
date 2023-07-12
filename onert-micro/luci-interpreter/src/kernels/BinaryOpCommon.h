@@ -60,7 +60,7 @@ template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc 
 void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
                     kernels::TISOKernel *kernel, kernels::TISOData *kernel_data,
                     const Options *options, RuntimeShape &&input_shape_1,
-                    RuntimeShape &&input_shape_2)
+                    RuntimeShape &&input_shape_2, OperationGraphStatus status)
 {
   const auto *output = kernel->output();
 
@@ -70,19 +70,56 @@ void evalTISOKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
   const bool need_broadcast =
     luci_interpreter_pal::ProcessBroadcastShapes(input_shape_1, input_shape_2, &params);
 
+  if (status != OperationGraphStatus::USUAL)
+  {
+    const auto output_min_max_range =
+      Tensor::max_value(kernel->output()) - Tensor::min_value(kernel->output());
+    if (params.broadcast_category ==
+        luci_interpreter_pal::BroadcastableOpCategory::kScalarSecondBroadcast)
+    {
+      const auto input1_min_max_range =
+        Tensor::max_value(kernel->input1()) - Tensor::min_value(kernel->input1());
+
+      params.input1_min_max_range = input1_min_max_range;
+      params.input2_min_max_range = input1_min_max_range;
+      params.output_min_max_range = output_min_max_range;
+    }
+    else if (params.broadcast_category ==
+             luci_interpreter_pal::BroadcastableOpCategory::kScalarFirstBroadcast)
+    {
+      const auto input2_min_max_range =
+        Tensor::max_value(kernel->input2()) - Tensor::min_value(kernel->input2());
+
+      params.input1_min_max_range = input2_min_max_range;
+      params.input2_min_max_range = input2_min_max_range;
+      params.output_min_max_range = output_min_max_range;
+    }
+    else
+    {
+      const auto input1_min_max_range =
+        Tensor::max_value(kernel->input1()) - Tensor::min_value(kernel->input1());
+      const auto input2_min_max_range =
+        Tensor::max_value(kernel->input2()) - Tensor::min_value(kernel->input2());
+
+      params.input1_min_max_range = input1_min_max_range;
+      params.input2_min_max_range = input2_min_max_range;
+      params.output_min_max_range = output_min_max_range;
+    }
+  }
+
   if (need_broadcast)
   {
     tiso_broadcast_func(params, input_shape_1, kernels::getTensorData<T>(kernel_data->input1_data),
                         input_shape_2, kernels::getTensorData<T>(kernel_data->input2_data),
                         kernels::getTensorShape(output),
-                        kernels::getTensorData<T>(kernel_data->output_data));
+                        kernels::getTensorData<T>(kernel_data->output_data), status);
   }
   else
   {
     const int flat_size = input_shape_1.flatSize();
     tiso_func(params, flat_size, kernels::getTensorData<T>(kernel_data->input1_data),
               kernels::getTensorData<T>(kernel_data->input2_data),
-              kernels::getTensorData<T>(kernel_data->output_data));
+              kernels::getTensorData<T>(kernel_data->output_data), status);
   }
 }
 
@@ -90,7 +127,8 @@ template <typename T, typename TISOFunc = nullptr_t, typename TISOBroadcastFunc 
           typename Options = nullptr_t>
 void evalTISOInplaceKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_func,
                            kernels::TISOKernel *kernel, const Options *options,
-                           RuntimeShape &&input_shape_1, RuntimeShape &&input_shape_2)
+                           RuntimeShape &&input_shape_1, RuntimeShape &&input_shape_2,
+                           OperationGraphStatus status)
 {
   uint8_t *inplace_data_ptr = nullptr;
   circle::Tensor *input_inplace_tensor = nullptr;
@@ -99,7 +137,7 @@ void evalTISOInplaceKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_
 
   evalTISOKernel<T, TISOFunc, TISOBroadcastFunc, Options>(
     tiso_func, tiso_broadcast_func, kernel, &kernel_data, options, std::move(input_shape_1),
-    std::move(input_shape_2));
+    std::move(input_shape_2), status);
 
   BaseRuntimeGraph *runtime_graph = kernel->runtime_graph();
 
