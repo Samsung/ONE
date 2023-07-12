@@ -16,6 +16,8 @@
 
 #include "exec/Execution.h"
 
+#include "train/TrainableExecutors.h"
+
 #include "util/logging.h"
 
 namespace onert
@@ -150,6 +152,24 @@ void Execution::waitFinish()
 }
 
 bool Execution::isFinished(void) const { return finished; }
+
+#ifdef ONERT_TRAIN
+void Execution::train()
+{
+  auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutors"};
+  }
+
+  VERBOSE(Execution) << "Start training" << std::endl;
+
+  execs->train(_io_desc);
+  finished = true;
+
+  VERBOSE(Execution) << "training finished" << std::endl;
+}
+#endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {

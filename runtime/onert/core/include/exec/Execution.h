@@ -142,6 +142,14 @@ public:
    */
   bool isFinished(void) const;
 
+#ifdef ONERT_TRAIN
+  /**
+   * @brief  Train
+   * @note   It should be called after setting input and output buffer
+   */
+  void train();
+#endif // ONERT_TRAIN
+
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
 
