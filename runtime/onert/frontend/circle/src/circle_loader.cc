@@ -18,6 +18,10 @@
 #include "base_loader.h"
 #include "circle_schema_generated.h"
 
+#if NNFW_LUCI_ENABLED
+#include <luci/ImporterEx.h>
+#endif
+
 namespace onert
 {
 namespace circle_loader
@@ -233,6 +237,12 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename)
   auto model = std::make_unique<ir::Model>();
   CircleLoader loader(model);
   loader.loadFromFile(filename);
+
+#if NNFW_LUCI_ENABLED
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(filename);
+#endif
+
   return model;
 }
 
