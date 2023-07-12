@@ -96,6 +96,12 @@ TIMESTAMP_INSTALL=$(WORKSPACE)/INSTALL
 export NNFW_WORKSPACE=$(WORKSPACE)
 
 ###
+### Common environment variable for compiler module
+###
+NNCC_FOLDER=Product/$(WORKFOLDER)/nncc
+export NNCC_WORKSPACE=$(NNCC_FOLDER)
+
+###
 ### Default target
 ###
 all: install
@@ -103,6 +109,11 @@ all: install
 ###
 ### Command (public)
 ###
+
+prepare-nncc: prepare_nncc_internal
+
+prepare-nncc-test: prepare_nncc_internal_with_test
+
 configure: configure_internal
 
 build: build_internal
@@ -135,7 +146,36 @@ create_acl_tar: acl_tar_internal
 $(WORKSPACE):
 	mkdir -p $@
 
-configure_internal: $(WORKSPACE)
+prepare_nncc_internal: $(WORKSPACE)
+ifneq ($(CROSS_BUILD),1)
+	./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
+		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle05;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
+	./nncc build -j$(NPROCS)
+	cd $(NNCC_FOLDER) && make install
+# install angkor TensorIndex header (TODO: Remove this)
+	mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	cp compiler/loco/include/loco/IR/CanonicalNodes.lst ${OVERLAY_FOLDER}/include/loco/IR
+endif
+	echo "Done prepare_nncc_internal"
+
+prepare_nncc_internal_with_test: $(WORKSPACE)
+ifneq ($(CROSS_BUILD),1)
+	./nncc configure -DBUILD_GTEST=ON -DENABLE_TEST=ON -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
+		-DBUILD_WHITELIST="angkor;arser;bino;circle-verify;circlechef;cwrap;fipe;foder;hermes-std;hermes;loco;locoex-customop;locomotiv;locop;logo-core;logo-ex;logo;luci;luci-compute;mio-circle05;mio-tf;mio-tflite280;moco-log;moco-tf;moco;nnkit-caffe;nnkit-intf;nnkit-misc;nnkit-mocotf;nnkit-onnxrt;nnkit-tf;nnkit-tflite;nnkit;oops;pepper-csv2vec;pepper-str;pepper-strcast;plier-tf;pp;safemain;souschef;tfinfo;tflchef;tflite2circle;vconone"
+	./nncc build -j$(NPROCS)
+	./nncc test
+	cd $(NNCC_FOLDER) && make install
+# install angkor TensorIndex header (TODO: Remove this)
+	mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	cp compiler/loco/include/loco/IR/CanonicalNodes.lst ${OVERLAY_FOLDER}/include/loco/IR
+endif
+	echo "Done prepare_nncc_internal_with_test"
+
+configure_internal: $(WORKSPACE) prepare_nncc_internal
 ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
@@ -167,7 +207,12 @@ install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
 	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
 
-install_all_internal: install_internal install_acl_internal
+install_luci_internal:
+	mkdir -p $(INSTALL_ALIAS)/lib/nnfw
+	cp $(OVERLAY_FOLDER)/lib/libluci*.so $(INSTALL_ALIAS)/lib/nnfw || true
+	cp $(OVERLAY_FOLDER)/lib/libloco*.so $(INSTALL_ALIAS)/lib/nnfw || true
+
+install_all_internal: install_internal install_acl_internal install_luci_internal
 
 test_suite_internal: install_all_internal
 	@echo "packaging test suite"
