@@ -97,10 +97,16 @@ add_custom_target(common_artifacts_python_deps ALL
 )
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  # tensorflow-cpu is not available on aarch64
+    set(TENSORFLOW_PKG_VER "tensorflow==2.10.1")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    set(TENSORFLOW_PKG_VER "tensorflow-cpu==2.10.1")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   add_custom_command(
     OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
     COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.10.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
+    COMMAND ${CMAKE_COMMAND} -E echo ${TENSORFLOW_PKG_VER} >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
     COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.1.21" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
     COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.19.6" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
     COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_10_1}
