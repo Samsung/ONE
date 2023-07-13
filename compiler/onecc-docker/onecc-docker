@@ -34,11 +34,9 @@ class RequestHandler:
         try:
             response = requests.get(url, headers=self.headers)
             response.raise_for_status()
-            print("[onecc-docker] Request succeeded: {}".format(response.status_code))
             return response
         except requests.RequestException as e:
-            print("[onecc-docker] Request failed: ", e)
-            return None
+            raise SystemExit('[onecc-docker] error: {}'.format(e))
 
 
 def _request_recent_version(token=None):
@@ -53,6 +51,8 @@ def _request_recent_version(token=None):
         # which doesn't contain onecc package.
         if bool(re.match(r'^\d+\.\d+\.\d+$', version)):
             return version
+
+    raise SystemExit('[onecc-docker] Failed to get latest onecc version')
 
 
 def _run(cmd, is_shell=False):
@@ -102,9 +102,9 @@ def main():
         build_cmd = [
             "docker", "build", "-t", image_name, "--build-arg", build_arg, dockerfile_path
         ]
-        print('build Docker image ...')
+        print('[onecc-docker] Build docker image ...')
         _run(build_cmd)
-        print('Dockerfile successfully built.')
+        print('[onecc-docker] Docker image is built successfully.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
     user_cmd = ' '.join(onecc_arguments)
