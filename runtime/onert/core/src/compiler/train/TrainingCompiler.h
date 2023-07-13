@@ -49,7 +49,7 @@ public:
    */
   explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                             std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                            const TrainingInfo *training_info);
+                            const TrainingInfo &training_info);
 
   /**
    * @brief Default Construct
@@ -73,7 +73,7 @@ public:
 private:
   std::shared_ptr<ir::Model> _model;
   CompilerOptions *_options;
-  const TrainingInfo *_training_info;
+  const TrainingInfo _training_info;
 };
 
 } // namespace train

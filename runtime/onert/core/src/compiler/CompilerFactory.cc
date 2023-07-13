@@ -42,7 +42,7 @@ CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
 #ifdef ONERT_TRAIN
   // Returing compiler for training
   if (training_info)
-    return std::make_unique<train::TrainingCompiler>(nnpkg, copts, training_info);
+    return std::make_unique<train::TrainingCompiler>(nnpkg, copts, *training_info);
 #else  // ONERT_TRAIN
   (void)training_info;
 #endif // ONERT_TRAIN
