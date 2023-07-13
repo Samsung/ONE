@@ -83,8 +83,22 @@ public:
   OperationIndex replaceOperation(OperationIndex index,
                                   std::unique_ptr<ITrainableOperation> &&operation);
 
+  /**
+   * @brief Add a derivative to the graph with the given index and object
+   *
+   * If the given index is available, it succeeds. And @c derivative is moved which invalidates the
+   * caller's pointer. If the given index is already taken, it fails. And @c derivative will not be
+   * moved so the caller's pointer will be still valid.
+   *
+   * @param[in] index      Index to be added
+   * @param[in] derivative Derivative operand to be added
+   * @return OperandIndex @c index if successful, UNDEFINED otherwise
+   */
+  OperandIndex addDerivative(OperandIndex index, std::unique_ptr<Operand> &&derivative);
+
 public:
   void changeShape(const OperandIndex &ind, const ir::Shape &new_shape) override;
+  void changeDerivativeShape(const OperandIndex &ind, const ir::Shape &new_shape);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void verify() const;
@@ -104,6 +118,7 @@ public:
   const Operands &operands() const override { return _graph.operands(); }
   Operands &operands() { return _graph.operands(); } // TODO Remove this non-const accessor
   const Operations &operations() const override { return _graph.operations(); }
+  const Operands &derivatives() const { return _derivatives; }
   Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
 
@@ -116,6 +131,7 @@ public:
 
 private:
   Graph _graph;
+  Operands _derivatives;
 };
 
 } // namespace train

@@ -54,6 +54,12 @@ OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
   return _graph.replaceOperation(index, std::move(operation));
 }
 
+OperandIndex TrainableGraph::addDerivative(OperandIndex index,
+                                           std::unique_ptr<Operand> &&derivative)
+{
+  return _derivatives.push(std::move(derivative), index);
+}
+
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
 {
   return _graph.getInputIndex(name);
@@ -67,6 +73,12 @@ IOIndex TrainableGraph::getOutputIndex(const std::string &name) const
 void TrainableGraph::changeShape(const OperandIndex &index, const ir::Shape &new_shape)
 {
   _graph.changeShape(index, new_shape);
+}
+
+void TrainableGraph::changeDerivativeShape(const OperandIndex &index, const ir::Shape &new_shape)
+{
+  assert(_derivatives.exist(index));
+  _derivatives.at(index).info().shape(new_shape);
 }
 
 void TrainableGraph::addInput(const OperandIndex &ind, const std::string &name)

@@ -69,6 +69,20 @@ bool StaticDerivativeShapeInferer::checkDynamicInput(const ir::IOperation &op)
   return false;
 }
 
+void StaticDerivativeShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
+{
+  auto &tgraph = _lowered_subg->trainable_graph();
+
+  if (tgraph.derivatives().exist(index))
+    tgraph.changeDerivativeShape(index, shape);
+  else
+  {
+    // NOTE This code assumes the types are always the same, but I'm not sure.
+    const auto &type = tgraph.operands().at(index).typeInfo();
+    tgraph.addDerivative(index, std::make_unique<ir::Operand>(shape, type));
+  }
+}
+
 void StaticDerivativeShapeInferer::visit(const ir::train::operation::Conv2D &)
 {
   // NYI

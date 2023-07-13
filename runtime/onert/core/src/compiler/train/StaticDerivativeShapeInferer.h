@@ -57,6 +57,7 @@ public:
 
 private:
   bool checkDynamicInput(const ir::IOperation &op);
+  void setShape(const ir::OperandIndex &index, const ir::Shape &shape);
 
 private:
   void visit(const ir::train::operation::Conv2D &op) override;
