@@ -86,10 +86,10 @@ public:
  *          [Out]
  *
  */
-class GeluPattern final : public GeluPatternBase
+class GeluPattern1 final : public GeluPatternBase
 {
 public:
-  GeluPattern(luci::CircleMul *candidate) : GeluPatternBase(candidate)
+  GeluPattern1(luci::CircleMul *candidate) : GeluPatternBase(candidate)
   {
     assert(candidate);
     _mul_half = candidate;
@@ -115,7 +115,7 @@ public:
   if (not(condition))             \
     return false;
 
-bool GeluPattern::matched()
+bool GeluPattern1::matched()
 {
   // check pattern
   CHECK_OR_FALSE(luci::fill(&_mul, &_const_half).with_commutative_args_of(_mul_half));
@@ -171,7 +171,7 @@ bool GeluPattern::matched()
 class FuseGelu final
 {
 public:
-  FuseGelu(const GeluPattern &p) : _p(p) {}
+  FuseGelu(const GeluPattern1 &p) : _p(p) {}
 
 public:
   void apply(void);
@@ -180,7 +180,7 @@ private:
   luci::CircleGelu *create_gelu(loco::Graph *graph);
 
 private:
-  const GeluPattern &_p;
+  const GeluPattern1 &_p;
 };
 
 luci::CircleGelu *FuseGelu::create_gelu(loco::Graph *graph)
@@ -220,7 +220,7 @@ bool fuse_gelu(luci::CircleMul *mul)
 {
   assert(mul);
 
-  GeluPattern pattern(mul);
+  GeluPattern1 pattern(mul);
   if (pattern.matched())
   {
     FuseGelu fuse(pattern);
