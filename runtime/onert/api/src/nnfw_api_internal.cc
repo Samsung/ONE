@@ -1266,11 +1266,27 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  (void)update_weights;
+  try
+  {
+    if (update_weights)
+      _execution->train();
+    else
+      _execution->execute();
+  }
+  catch (const onert::InsufficientBufferSizeException &e)
+  {
+    // Currently insufficient buffer always means output buffer.
+    std::cerr << "Error during nnfw_session::train_run : " << e.what() << std::endl;
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_run : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // NYI
-  // _state = State::FINISHED_TRAINING;
-  return NNFW_STATUS_ERROR;
+  _state = State::FINISHED_TRAINING;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 float nnfw_session::train_get_loss(uint32_t index)
