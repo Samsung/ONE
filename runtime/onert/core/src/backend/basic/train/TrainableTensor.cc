@@ -14,22 +14,36 @@
  * limitations under the License.
  */
 
-#include "Tensor.h"
+#include <backend/basic/train/TrainableTensor.h>
 
 namespace onert
 {
 namespace backend
 {
+namespace basic
+{
 namespace train
 {
 
+std::vector<ITensor *> TrainableTensor::optVars()
+{
+  std::vector<ITensor *> ret;
+  for (auto &&e : _opt_vars)
+  {
+    ret.emplace_back(e.get());
+  }
+  return ret;
+}
+
 void TrainableTensor::fillBuffer(const std::shared_ptr<ir::Data> &data)
 {
-  assert(_buffer);
+  auto *buffer = _tensor.buffer();
+  assert(buffer);
   assert(total_size() == data->size());
-  std::memcpy(_buffer, data->base(), data->size());
+  std::memcpy(buffer, data->base(), data->size());
 }
 
 } // namespace train
+} // namespace basic
 } // namespace backend
 } // namespace onert
