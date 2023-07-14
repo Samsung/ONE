@@ -95,8 +95,6 @@ public:
     _mul_half = candidate;
   }
 
-  ~GeluPattern1() override = default;
-
 public:
   bool matched() override;
 };
