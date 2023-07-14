@@ -47,7 +47,7 @@ namespace train
 
 TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                                    std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                                   const TrainingInfo *training_info)
+                                   const TrainingInfo &training_info)
   : _model{nnpkg->primary_model()}, _options{copts[0].get()}, _training_info{training_info}
 {
   if (nnpkg->model_count() > 1)
@@ -113,7 +113,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
 
       // Convert operations to trainable operations
-      auto converter = TrainableOperationConverter{*trainable_subg, _training_info};
+      auto converter = TrainableOperationConverter{*trainable_subg, &_training_info};
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
           auto trainable_op = converter(op);
