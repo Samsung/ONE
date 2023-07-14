@@ -94,6 +94,7 @@ void print_exclusive_options(void)
   std::cout << "    --quantize_with_minmax" << std::endl;
   std::cout << "    --requantize" << std::endl;
   std::cout << "    --force_quantparam" << std::endl;
+  std::cout << "    --quantize_weights" << std::endl;
 }
 
 void print_version(void)
@@ -115,6 +116,7 @@ int entry(int argc, char **argv)
   const std::string fq = "--force_quantparam";
   const std::string cq = "--copy_quantparam";
   const std::string fake_quant = "--fake_quantize";
+  const std::string qw = "--quantize_weights";
   const std::string cfg = "--config";
 
   const std::string tf_maxpool = "--TF-style_maxpool";
@@ -174,6 +176,13 @@ int entry(int argc, char **argv)
           "Two arguments required: source_tensor_name(string), "
           "destination_tensor_name(string)");
 
+  arser.add_argument(qw)
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .help("Quantize weights values only"
+          "Three arguments required: input_model_dtype(float32) "
+          "output_model_dtype(int8, int16) granularity(channel)");
+
   arser.add_argument("--input_type")
     .help("Input type of quantized model (uint8, int16, int32, int64, float32, or bool). For "
           "multiple inputs, "
@@ -204,13 +213,14 @@ int entry(int argc, char **argv)
   }
 
   {
-    // only one of qdqw, qwmm, rq, fq, cq, fake_quant option can be used
+    // only one of qdqw, qwmm, rq, fq, cq, fake_quant, qw option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
     opt_used += arser[fq] ? 1 : 0;
     opt_used += arser[cq] ? 1 : 0;
     opt_used += arser[fake_quant] ? 1 : 0;
+    opt_used += arser[qw] ? 1 : 0;
     if (opt_used != 1)
     {
       print_exclusive_options();
@@ -367,6 +377,21 @@ int entry(int argc, char **argv)
 
   if (arser[fake_quant])
     options->enable(Algorithms::ConvertToFakeQuantizedModel);
+
+  if (arser[qw])
+  {
+    auto values = arser.get<std::vector<std::string>>(qw);
+    if (values.size() != 3)
+    {
+      std::cerr << arser;
+      return 255;
+    }
+    options->enable(Algorithms::QuantizeWeights);
+
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
+  }
 
   std::string input_path = arser.get<std::string>("input");
   std::string output_path = arser.get<std::string>("output");
