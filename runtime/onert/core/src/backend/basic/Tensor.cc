@@ -51,6 +51,7 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
 
   auto allocTensorMem = [&]() {
     auto capacity = total_size();
+    assert(_dynamic_mem_mgr);
     auto alloc = _dynamic_mem_mgr->allocate(this, capacity);
     setBuffer(alloc);
   };
@@ -68,6 +69,7 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
     auto new_size = new_shape.num_elements() * ir::sizeOfDataType(data_type());
     if (previous_size != new_size)
     {
+      assert(_dynamic_mem_mgr);
       _dynamic_mem_mgr->deallocate(this);
 
       setShape(new_shape);
