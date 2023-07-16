@@ -1,0 +1,10 @@
+<map id="onert::backend::basic::train::TrainableTensor" name="onert::backend::basic::train::TrainableTensor">
+<area shape="rect" id="node1" title=" " alt="" coords="704,58,856,98"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html" title="A tensor class that can be trained." alt="" coords="463,27,601,67"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="241,22,405,62"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,154,80"/>
+<area shape="rect" id="node6" href="$structcircle__eval__diff_1_1_tensor.html" title=" " alt="" coords="455,93,609,119"/>
+<area shape="rect" id="node7" href="$structcircle__eval__diff_1_1_tensor_shape.html" title=" " alt="" coords="246,86,401,126"/>
+<area shape="rect" id="node8" href="$structcircle__eval__diff_1_1_tensor_data_type.html" title=" " alt="" coords="246,150,401,190"/>
+</map>

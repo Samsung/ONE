@@ -1,6 +1,7 @@
 <map id="onert::backend::train::TensorRegistry" name="onert::backend::train::TensorRegistry">
-<area shape="rect" id="node1" title=" " alt="" coords="745,13,883,53"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="533,5,696,60"/>
-<area shape="rect" id="node3" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,28,208,53"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_portable_tensor_registry_template.html" title="TensorRegistry template class for the convenience of backend implementations." alt="" coords="257,45,420,100"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1063,13,1200,53"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="796,5,1013,60"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="257,13,395,53"/>
+<area shape="rect" id="node5" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="444,34,683,103"/>
+<area shape="rect" id="node4" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,20,208,45"/>
 </map>

@@ -224,14 +224,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> grad_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> grad_tb = std::make_shared&lt;TensorBuilder&gt;(grad_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> deriv_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> deriv_tb = std::make_shared&lt;TensorBuilder&gt;(deriv_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context =</div>
-<div class="line"><span class="lineno">   58</span>      std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
+<div class="line"><span class="lineno">   58</span>                                                           deriv_tr, deriv_tb);</div>
 <div class="line"><span class="lineno">   59</span> </div>
 <div class="line"><span class="lineno">   60</span>    context-&gt;kernel_gen =</div>
-<div class="line"><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, grad_tr, context-&gt;external_context());</div>
+<div class="line"><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, deriv_tr, context-&gt;external_context());</div>
 <div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
 </div><!-- fragment -->

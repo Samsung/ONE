@@ -145,14 +145,14 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2train_2_backe
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> grad_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">auto</span> grad_tb = std::make_shared&lt;TensorBuilder&gt;(grad_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> deriv_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">auto</span> deriv_tb = std::make_shared&lt;TensorBuilder&gt;(deriv_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span> context =</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                                           deriv_tr, deriv_tb);</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    context-&gt;kernel_gen =</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, grad_tr, context-&gt;external_context());</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, deriv_tr, context-&gt;external_context());</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>

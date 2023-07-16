@@ -907,31 +907,31 @@ template&lt;typename LoaderDomain &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="base__loader_8h_source.html#l01678">1678</a> of file <a class="el" href="base__loader_8h_source.html">base_loader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1679</span>{</div>
-<div class="line"><span class="lineno"> 1680</span>  LoaderDomain::VerifyModelBuffer(*<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a2a8d20da46d4a743bfeb18b6cd014aed">_verifier</a>.get());</div>
-<div class="line"><span class="lineno"> 1681</span>  <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a> = LoaderDomain::GetModel(<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a776cb239b775507aa41ba5fdbdffc5d4">_base</a>);</div>
-<div class="line"><span class="lineno"> 1682</span>  <span class="comment">// Version unused</span></div>
-<div class="line"><span class="lineno"> 1683</span>  <span class="comment">// const auto version = _model-&gt;version();</span></div>
-<div class="line"><span class="lineno"> 1684</span>  <span class="comment">// Description unused</span></div>
-<div class="line"><span class="lineno"> 1685</span>  <span class="comment">// const auto *description = _model-&gt;description();</span></div>
-<div class="line"><span class="lineno"> 1686</span>  <span class="comment">// Metabuffer unsued</span></div>
-<div class="line"><span class="lineno"> 1687</span>  <span class="comment">// const auto *metadata_buffer = _model-&gt;metadata_buffer();</span></div>
-<div class="line"><span class="lineno"> 1688</span>  <span class="comment">// Load subgraphs and map operations on subgraph</span></div>
-<div class="line"><span class="lineno"> 1689</span>  <span class="keyword">const</span> <span class="keyword">auto</span> subgraphs = <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a>-&gt;subgraphs();</div>
-<div class="line"><span class="lineno"> 1690</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno"> 1691</span>  <span class="keywordflow">if</span> (subgraphs-&gt;size() - 1 &gt; <a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>())</div>
-<div class="line"><span class="lineno"> 1692</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The number of subgraphs cannot exceed &quot;</span> +</div>
-<div class="line"><span class="lineno"> 1693</span>                             std::to_string(<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>() + 1)};</div>
-<div class="line"><span class="lineno"> 1694</span>  <span class="keywordflow">for</span> (uint16_t subgraph_index = 0; subgraph_index &lt; subgraphs-&gt;size(); ++subgraph_index)</div>
-<div class="line"><span class="lineno"> 1695</span>  {</div>
-<div class="line"><span class="lineno"> 1696</span>    <span class="keyword">auto</span> subg = loadSubgraph((*<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a>-&gt;subgraphs())[subgraph_index]);</div>
-<div class="line"><span class="lineno"> 1697</span>    <span class="comment">// NOTE: Used () instead of {}, which does not check narrowing.</span></div>
-<div class="line"><span class="lineno"> 1698</span>    <span class="comment">// It is okay since overflow is checked the above if-statement.</span></div>
-<div class="line"><span class="lineno"> 1699</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;push(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>(subgraph_index), std::move(subg));</div>
-<div class="line"><span class="lineno"> 1700</span>  }</div>
-<div class="line"><span class="lineno"> 1701</span>  <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a37ea0cb70177cc22462fe4898fbb8081">_model</a> = std::move(model);</div>
-<div class="line"><span class="lineno"> 1702</span>}</div>
+<p class="definition">Definition at line <a class="el" href="base__loader_8h_source.html#l01706">1706</a> of file <a class="el" href="base__loader_8h_source.html">base_loader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1707</span>{</div>
+<div class="line"><span class="lineno"> 1708</span>  LoaderDomain::VerifyModelBuffer(*<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a2a8d20da46d4a743bfeb18b6cd014aed">_verifier</a>.get());</div>
+<div class="line"><span class="lineno"> 1709</span>  <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a> = LoaderDomain::GetModel(<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a776cb239b775507aa41ba5fdbdffc5d4">_base</a>);</div>
+<div class="line"><span class="lineno"> 1710</span>  <span class="comment">// Version unused</span></div>
+<div class="line"><span class="lineno"> 1711</span>  <span class="comment">// const auto version = _model-&gt;version();</span></div>
+<div class="line"><span class="lineno"> 1712</span>  <span class="comment">// Description unused</span></div>
+<div class="line"><span class="lineno"> 1713</span>  <span class="comment">// const auto *description = _model-&gt;description();</span></div>
+<div class="line"><span class="lineno"> 1714</span>  <span class="comment">// Metabuffer unsued</span></div>
+<div class="line"><span class="lineno"> 1715</span>  <span class="comment">// const auto *metadata_buffer = _model-&gt;metadata_buffer();</span></div>
+<div class="line"><span class="lineno"> 1716</span>  <span class="comment">// Load subgraphs and map operations on subgraph</span></div>
+<div class="line"><span class="lineno"> 1717</span>  <span class="keyword">const</span> <span class="keyword">auto</span> subgraphs = <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a>-&gt;subgraphs();</div>
+<div class="line"><span class="lineno"> 1718</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = std::make_unique&lt;ir::Model&gt;();</div>
+<div class="line"><span class="lineno"> 1719</span>  <span class="keywordflow">if</span> (subgraphs-&gt;size() - 1 &gt; <a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>())</div>
+<div class="line"><span class="lineno"> 1720</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The number of subgraphs cannot exceed &quot;</span> +</div>
+<div class="line"><span class="lineno"> 1721</span>                             std::to_string(<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>() + 1)};</div>
+<div class="line"><span class="lineno"> 1722</span>  <span class="keywordflow">for</span> (uint16_t subgraph_index = 0; subgraph_index &lt; subgraphs-&gt;size(); ++subgraph_index)</div>
+<div class="line"><span class="lineno"> 1723</span>  {</div>
+<div class="line"><span class="lineno"> 1724</span>    <span class="keyword">auto</span> subg = loadSubgraph((*<a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a93683779b95064de0cd739a14c70b1b5">_domain_model</a>-&gt;subgraphs())[subgraph_index]);</div>
+<div class="line"><span class="lineno"> 1725</span>    <span class="comment">// NOTE: Used () instead of {}, which does not check narrowing.</span></div>
+<div class="line"><span class="lineno"> 1726</span>    <span class="comment">// It is okay since overflow is checked the above if-statement.</span></div>
+<div class="line"><span class="lineno"> 1727</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;push(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>(subgraph_index), std::move(subg));</div>
+<div class="line"><span class="lineno"> 1728</span>  }</div>
+<div class="line"><span class="lineno"> 1729</span>  <a class="code hl_variable" href="classonert_1_1base__loader_1_1_base_loader.html#a37ea0cb70177cc22462fe4898fbb8081">_model</a> = std::move(model);</div>
+<div class="line"><span class="lineno"> 1730</span>}</div>
 <div class="ttc" id="aclassonert_1_1base__loader_1_1_base_loader_html_a2a8d20da46d4a743bfeb18b6cd014aed"><div class="ttname"><a href="classonert_1_1base__loader_1_1_base_loader.html#a2a8d20da46d4a743bfeb18b6cd014aed">onert::base_loader::BaseLoader::_verifier</a></div><div class="ttdeci">std::unique_ptr&lt; Verifier &gt; _verifier</div><div class="ttdef"><b>Definition:</b> <a href="base__loader_8h_source.html#l00198">base_loader.h:198</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a76643097f92e5123e424ddea2715383a"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt;::max</a></div><div class="ttdeci">static uint16_t max()</div><div class="ttdoc">Return max index value.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00146">Index.h:146</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
@@ -1120,292 +1120,292 @@ template&lt;typename LoaderDomain &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="base__loader_8h_source.html#l01391">1391</a> of file <a class="el" href="base__loader_8h_source.html">base_loader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1392</span>{</div>
-<div class="line"><span class="lineno"> 1393</span>  <span class="keyword">auto</span> <span class="keyword">const</span> builtin_op = <a class="code hl_function" href="classonert_1_1base__loader_1_1_base_loader.html#acc01fd0f1b366df8a11cd3ce3df4a11c">getBuiltinOperator</a>(op);</div>
-<div class="line"><span class="lineno"> 1394</span> </div>
-<div class="line"><span class="lineno"> 1395</span>  <span class="keywordflow">switch</span> (builtin_op)</div>
-<div class="line"><span class="lineno"> 1396</span>  {</div>
-<div class="line"><span class="lineno"> 1397</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ADD_N:</div>
-<div class="line"><span class="lineno"> 1398</span>      loadOperationTo&lt;ir::operation::AddN&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1399</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1400</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CONV_2D:</div>
-<div class="line"><span class="lineno"> 1401</span>      loadConv2D(op, subg);</div>
-<div class="line"><span class="lineno"> 1402</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1403</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_AVERAGE_POOL_2D:</div>
-<div class="line"><span class="lineno"> 1404</span>      loadPool2D(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">ir::operation::Pool2D::PoolType::AVG</a>);</div>
-<div class="line"><span class="lineno"> 1405</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1406</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTHWISE_CONV_2D:</div>
-<div class="line"><span class="lineno"> 1407</span>      loadDepthwiseConv2D(op, subg);</div>
-<div class="line"><span class="lineno"> 1408</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1409</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TRANSPOSE_CONV:</div>
-<div class="line"><span class="lineno"> 1410</span>      loadTransposeConv(op, subg);</div>
-<div class="line"><span class="lineno"> 1411</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1412</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESHAPE:</div>
-<div class="line"><span class="lineno"> 1413</span>      loadReshape(op, subg);</div>
-<div class="line"><span class="lineno"> 1414</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1415</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SOFTMAX:</div>
-<div class="line"><span class="lineno"> 1416</span>      loadSoftmax(op, subg);</div>
-<div class="line"><span class="lineno"> 1417</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1418</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MAX_POOL_2D:</div>
-<div class="line"><span class="lineno"> 1419</span>      loadPool2D(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">ir::operation::Pool2D::PoolType::MAX</a>);</div>
-<div class="line"><span class="lineno"> 1420</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1421</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CONCATENATION:</div>
-<div class="line"><span class="lineno"> 1422</span>      loadConcatenation(op, subg);</div>
-<div class="line"><span class="lineno"> 1423</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1424</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FLOOR:</div>
-<div class="line"><span class="lineno"> 1425</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a56c1e354d36beb85b0d881c5b2e24cbe">ir::operation::ElementwiseUnary::Type::FLOOR</a>);</div>
-<div class="line"><span class="lineno"> 1426</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1427</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:</div>
-<div class="line"><span class="lineno"> 1428</span>      loadFC(op, subg);</div>
-<div class="line"><span class="lineno"> 1429</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1430</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ADD:</div>
-<div class="line"><span class="lineno"> 1431</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa9eeb52badb613229884838847294b90d">ir::operation::BinaryArithmetic::ArithmeticType::ADD</a>);</div>
-<div class="line"><span class="lineno"> 1432</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1433</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SUB:</div>
-<div class="line"><span class="lineno"> 1434</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa241dd841abade20fcb27b8a9f494e1eb">ir::operation::BinaryArithmetic::ArithmeticType::SUB</a>);</div>
-<div class="line"><span class="lineno"> 1435</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1436</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MUL:</div>
-<div class="line"><span class="lineno"> 1437</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa2cdf52a55876063ec93b7d18bc741f6c">ir::operation::BinaryArithmetic::ArithmeticType::MUL</a>);</div>
-<div class="line"><span class="lineno"> 1438</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1439</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DIV:</div>
-<div class="line"><span class="lineno"> 1440</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646">ir::operation::BinaryArithmetic::ArithmeticType::DIV</a>);</div>
-<div class="line"><span class="lineno"> 1441</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1442</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PACK:</div>
-<div class="line"><span class="lineno"> 1443</span>      loadPack(op, subg);</div>
-<div class="line"><span class="lineno"> 1444</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1445</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ELU:</div>
-<div class="line"><span class="lineno"> 1446</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a5b44c930bf0ddeef48b50ef11e5ddd58">ir::operation::ElementwiseActivation::Type::ELU</a>);</div>
-<div class="line"><span class="lineno"> 1447</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1448</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU:</div>
-<div class="line"><span class="lineno"> 1449</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>,</div>
-<div class="line"><span class="lineno"> 1450</span>                                <a class="code hl_variable" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a10ece62dc314cc44892b213750b26cc0">ir::operation::ElementwiseActivation::infinity</a>, 0.f);</div>
+<p class="definition">Definition at line <a class="el" href="base__loader_8h_source.html#l01419">1419</a> of file <a class="el" href="base__loader_8h_source.html">base_loader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1420</span>{</div>
+<div class="line"><span class="lineno"> 1421</span>  <span class="keyword">auto</span> <span class="keyword">const</span> builtin_op = <a class="code hl_function" href="classonert_1_1base__loader_1_1_base_loader.html#acc01fd0f1b366df8a11cd3ce3df4a11c">getBuiltinOperator</a>(op);</div>
+<div class="line"><span class="lineno"> 1422</span> </div>
+<div class="line"><span class="lineno"> 1423</span>  <span class="keywordflow">switch</span> (builtin_op)</div>
+<div class="line"><span class="lineno"> 1424</span>  {</div>
+<div class="line"><span class="lineno"> 1425</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ADD_N:</div>
+<div class="line"><span class="lineno"> 1426</span>      loadOperationTo&lt;ir::operation::AddN&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1427</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1428</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CONV_2D:</div>
+<div class="line"><span class="lineno"> 1429</span>      loadConv2D(op, subg);</div>
+<div class="line"><span class="lineno"> 1430</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1431</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_AVERAGE_POOL_2D:</div>
+<div class="line"><span class="lineno"> 1432</span>      loadPool2D(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">ir::operation::Pool2D::PoolType::AVG</a>);</div>
+<div class="line"><span class="lineno"> 1433</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1434</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTHWISE_CONV_2D:</div>
+<div class="line"><span class="lineno"> 1435</span>      loadDepthwiseConv2D(op, subg);</div>
+<div class="line"><span class="lineno"> 1436</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1437</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TRANSPOSE_CONV:</div>
+<div class="line"><span class="lineno"> 1438</span>      loadTransposeConv(op, subg);</div>
+<div class="line"><span class="lineno"> 1439</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1440</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESHAPE:</div>
+<div class="line"><span class="lineno"> 1441</span>      loadReshape(op, subg);</div>
+<div class="line"><span class="lineno"> 1442</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1443</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SOFTMAX:</div>
+<div class="line"><span class="lineno"> 1444</span>      loadSoftmax(op, subg);</div>
+<div class="line"><span class="lineno"> 1445</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1446</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MAX_POOL_2D:</div>
+<div class="line"><span class="lineno"> 1447</span>      loadPool2D(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">ir::operation::Pool2D::PoolType::MAX</a>);</div>
+<div class="line"><span class="lineno"> 1448</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1449</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CONCATENATION:</div>
+<div class="line"><span class="lineno"> 1450</span>      loadConcatenation(op, subg);</div>
 <div class="line"><span class="lineno"> 1451</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1452</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU_N1_TO_1:</div>
-<div class="line"><span class="lineno"> 1453</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>, 1.f,</div>
-<div class="line"><span class="lineno"> 1454</span>                                -1.f);</div>
-<div class="line"><span class="lineno"> 1455</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1456</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU6:</div>
-<div class="line"><span class="lineno"> 1457</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>, 6.f,</div>
-<div class="line"><span class="lineno"> 1458</span>                                0.f);</div>
-<div class="line"><span class="lineno"> 1459</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1460</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESIZE_BILINEAR:</div>
-<div class="line"><span class="lineno"> 1461</span>      loadResizeBilinear(op, subg);</div>
-<div class="line"><span class="lineno"> 1462</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1463</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR:</div>
-<div class="line"><span class="lineno"> 1464</span>      loadResizeNearestNeighbor(op, subg);</div>
-<div class="line"><span class="lineno"> 1465</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1466</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RSQRT:</div>
-<div class="line"><span class="lineno"> 1467</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a66bac724670f51e77f3688d33ca0d781">ir::operation::ElementwiseUnary::Type::RSQRT</a>);</div>
-<div class="line"><span class="lineno"> 1468</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1469</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SELECT:</div>
-<div class="line"><span class="lineno"> 1470</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SELECT_V2:</div>
-<div class="line"><span class="lineno"> 1471</span>      loadOperationTo&lt;ir::operation::Select&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1452</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FLOOR:</div>
+<div class="line"><span class="lineno"> 1453</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a56c1e354d36beb85b0d881c5b2e24cbe">ir::operation::ElementwiseUnary::Type::FLOOR</a>);</div>
+<div class="line"><span class="lineno"> 1454</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1455</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:</div>
+<div class="line"><span class="lineno"> 1456</span>      loadFC(op, subg);</div>
+<div class="line"><span class="lineno"> 1457</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1458</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ADD:</div>
+<div class="line"><span class="lineno"> 1459</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa9eeb52badb613229884838847294b90d">ir::operation::BinaryArithmetic::ArithmeticType::ADD</a>);</div>
+<div class="line"><span class="lineno"> 1460</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1461</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SUB:</div>
+<div class="line"><span class="lineno"> 1462</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa241dd841abade20fcb27b8a9f494e1eb">ir::operation::BinaryArithmetic::ArithmeticType::SUB</a>);</div>
+<div class="line"><span class="lineno"> 1463</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1464</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MUL:</div>
+<div class="line"><span class="lineno"> 1465</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa2cdf52a55876063ec93b7d18bc741f6c">ir::operation::BinaryArithmetic::ArithmeticType::MUL</a>);</div>
+<div class="line"><span class="lineno"> 1466</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1467</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DIV:</div>
+<div class="line"><span class="lineno"> 1468</span>      loadBinaryArithmetic(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646">ir::operation::BinaryArithmetic::ArithmeticType::DIV</a>);</div>
+<div class="line"><span class="lineno"> 1469</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1470</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PACK:</div>
+<div class="line"><span class="lineno"> 1471</span>      loadPack(op, subg);</div>
 <div class="line"><span class="lineno"> 1472</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1473</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQRT:</div>
-<div class="line"><span class="lineno"> 1474</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a36875f2500a09ee35d0bb7eb8c0b91b0">ir::operation::ElementwiseUnary::Type::SQRT</a>);</div>
+<div class="line"><span class="lineno"> 1473</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ELU:</div>
+<div class="line"><span class="lineno"> 1474</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a5b44c930bf0ddeef48b50ef11e5ddd58">ir::operation::ElementwiseActivation::Type::ELU</a>);</div>
 <div class="line"><span class="lineno"> 1475</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1476</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUARE:</div>
-<div class="line"><span class="lineno"> 1477</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a12dec4e1f7ec620651b2b95c440ffac0">ir::operation::ElementwiseUnary::Type::SQUARE</a>);</div>
-<div class="line"><span class="lineno"> 1478</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1479</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:</div>
-<div class="line"><span class="lineno"> 1480</span>      loadOperationTo&lt;ir::operation::SquaredDifference&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1481</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1482</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TANH:</div>
-<div class="line"><span class="lineno"> 1483</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a143c8c6f51b9bb893ce71e38702e3cc1">ir::operation::ElementwiseActivation::Type::TANH</a>, 1.f,</div>
-<div class="line"><span class="lineno"> 1484</span>                                1.f);</div>
-<div class="line"><span class="lineno"> 1485</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1486</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TRANSPOSE:</div>
-<div class="line"><span class="lineno"> 1487</span>      loadOperationTo&lt;ir::operation::Transpose&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1488</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1489</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MEAN:</div>
-<div class="line"><span class="lineno"> 1490</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">ir::operation::Reduce::ReduceType::MEAN</a>);</div>
-<div class="line"><span class="lineno"> 1491</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1492</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_ANY:</div>
-<div class="line"><span class="lineno"> 1493</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f">ir::operation::Reduce::ReduceType::ANY</a>);</div>
-<div class="line"><span class="lineno"> 1494</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1495</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_MAX:</div>
-<div class="line"><span class="lineno"> 1496</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a26a4b44a837bf97b972628509912b4a5">ir::operation::Reduce::ReduceType::MAX</a>);</div>
-<div class="line"><span class="lineno"> 1497</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1498</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REVERSE_V2:</div>
-<div class="line"><span class="lineno"> 1499</span>      loadOperationTo&lt;ir::operation::Reverse&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1476</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU:</div>
+<div class="line"><span class="lineno"> 1477</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>,</div>
+<div class="line"><span class="lineno"> 1478</span>                                <a class="code hl_variable" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a10ece62dc314cc44892b213750b26cc0">ir::operation::ElementwiseActivation::infinity</a>, 0.f);</div>
+<div class="line"><span class="lineno"> 1479</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1480</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU_N1_TO_1:</div>
+<div class="line"><span class="lineno"> 1481</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>, 1.f,</div>
+<div class="line"><span class="lineno"> 1482</span>                                -1.f);</div>
+<div class="line"><span class="lineno"> 1483</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1484</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RELU6:</div>
+<div class="line"><span class="lineno"> 1485</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c">ir::operation::ElementwiseActivation::Type::RELU</a>, 6.f,</div>
+<div class="line"><span class="lineno"> 1486</span>                                0.f);</div>
+<div class="line"><span class="lineno"> 1487</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1488</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESIZE_BILINEAR:</div>
+<div class="line"><span class="lineno"> 1489</span>      loadResizeBilinear(op, subg);</div>
+<div class="line"><span class="lineno"> 1490</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1491</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR:</div>
+<div class="line"><span class="lineno"> 1492</span>      loadResizeNearestNeighbor(op, subg);</div>
+<div class="line"><span class="lineno"> 1493</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1494</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RSQRT:</div>
+<div class="line"><span class="lineno"> 1495</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a66bac724670f51e77f3688d33ca0d781">ir::operation::ElementwiseUnary::Type::RSQRT</a>);</div>
+<div class="line"><span class="lineno"> 1496</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1497</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SELECT:</div>
+<div class="line"><span class="lineno"> 1498</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SELECT_V2:</div>
+<div class="line"><span class="lineno"> 1499</span>      loadOperationTo&lt;ir::operation::Select&gt;(op, subg);</div>
 <div class="line"><span class="lineno"> 1500</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1501</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PAD:</div>
-<div class="line"><span class="lineno"> 1502</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PADV2:</div>
-<div class="line"><span class="lineno"> 1503</span>      loadOperationTo&lt;ir::operation::Pad&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1504</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1505</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGISTIC:</div>
-<div class="line"><span class="lineno"> 1506</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a72ee60fba0509af07cbbd91398d8db9d">ir::operation::ElementwiseActivation::Type::LOGISTIC</a>);</div>
-<div class="line"><span class="lineno"> 1507</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1508</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EXP:</div>
-<div class="line"><span class="lineno"> 1509</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7">ir::operation::ElementwiseUnary::Type::EXP</a>);</div>
-<div class="line"><span class="lineno"> 1510</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1511</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EXPAND_DIMS:</div>
-<div class="line"><span class="lineno"> 1512</span>      loadOperationTo&lt;ir::operation::ExpandDims&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1501</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQRT:</div>
+<div class="line"><span class="lineno"> 1502</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a36875f2500a09ee35d0bb7eb8c0b91b0">ir::operation::ElementwiseUnary::Type::SQRT</a>);</div>
+<div class="line"><span class="lineno"> 1503</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1504</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUARE:</div>
+<div class="line"><span class="lineno"> 1505</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a12dec4e1f7ec620651b2b95c440ffac0">ir::operation::ElementwiseUnary::Type::SQUARE</a>);</div>
+<div class="line"><span class="lineno"> 1506</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1507</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUARED_DIFFERENCE:</div>
+<div class="line"><span class="lineno"> 1508</span>      loadOperationTo&lt;ir::operation::SquaredDifference&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1509</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1510</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TANH:</div>
+<div class="line"><span class="lineno"> 1511</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a143c8c6f51b9bb893ce71e38702e3cc1">ir::operation::ElementwiseActivation::Type::TANH</a>, 1.f,</div>
+<div class="line"><span class="lineno"> 1512</span>                                1.f);</div>
 <div class="line"><span class="lineno"> 1513</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1514</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GATHER:</div>
-<div class="line"><span class="lineno"> 1515</span>      loadGather(op, subg);</div>
+<div class="line"><span class="lineno"> 1514</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TRANSPOSE:</div>
+<div class="line"><span class="lineno"> 1515</span>      loadOperationTo&lt;ir::operation::Transpose&gt;(op, subg);</div>
 <div class="line"><span class="lineno"> 1516</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1517</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:</div>
-<div class="line"><span class="lineno"> 1518</span>      loadOperationTo&lt;ir::operation::SpaceToBatchND&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1517</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MEAN:</div>
+<div class="line"><span class="lineno"> 1518</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">ir::operation::Reduce::ReduceType::MEAN</a>);</div>
 <div class="line"><span class="lineno"> 1519</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1520</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BATCH_TO_SPACE_ND:</div>
-<div class="line"><span class="lineno"> 1521</span>      loadOperationTo&lt;ir::operation::BatchToSpaceND&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1520</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_ANY:</div>
+<div class="line"><span class="lineno"> 1521</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f">ir::operation::Reduce::ReduceType::ANY</a>);</div>
 <div class="line"><span class="lineno"> 1522</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1523</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SUM:</div>
-<div class="line"><span class="lineno"> 1524</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a">ir::operation::Reduce::ReduceType::SUM</a>);</div>
+<div class="line"><span class="lineno"> 1523</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_MAX:</div>
+<div class="line"><span class="lineno"> 1524</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a26a4b44a837bf97b972628509912b4a5">ir::operation::Reduce::ReduceType::MAX</a>);</div>
 <div class="line"><span class="lineno"> 1525</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1526</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CUSTOM:</div>
-<div class="line"><span class="lineno"> 1527</span>      loadCustom(op, subg);</div>
+<div class="line"><span class="lineno"> 1526</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REVERSE_V2:</div>
+<div class="line"><span class="lineno"> 1527</span>      loadOperationTo&lt;ir::operation::Reverse&gt;(op, subg);</div>
 <div class="line"><span class="lineno"> 1528</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1529</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUEEZE:</div>
-<div class="line"><span class="lineno"> 1530</span>      loadSqueeze(op, subg);</div>
-<div class="line"><span class="lineno"> 1531</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1532</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PRELU:</div>
-<div class="line"><span class="lineno"> 1533</span>      loadOperationTo&lt;ir::operation::PReLU&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1534</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1535</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPLIT:</div>
-<div class="line"><span class="lineno"> 1536</span>      loadSplit(op, subg);</div>
-<div class="line"><span class="lineno"> 1537</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1538</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPLIT_V:</div>
-<div class="line"><span class="lineno"> 1539</span>      loadSplitV(op, subg);</div>
-<div class="line"><span class="lineno"> 1540</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1541</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SLICE:</div>
-<div class="line"><span class="lineno"> 1542</span>      loadOperationTo&lt;ir::operation::Slice&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1543</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1544</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_STRIDED_SLICE:</div>
-<div class="line"><span class="lineno"> 1545</span>      loadStridedSlice(op, subg);</div>
-<div class="line"><span class="lineno"> 1546</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1547</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNPACK:</div>
-<div class="line"><span class="lineno"> 1548</span>      loadUnpack(op, subg);</div>
-<div class="line"><span class="lineno"> 1549</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1550</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FLOOR_DIV:</div>
-<div class="line"><span class="lineno"> 1551</span>      loadElementwiseBinary(op, subg,</div>
-<div class="line"><span class="lineno"> 1552</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a77811fd0ec3d3ed2711a923332e8e69f">ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV</a>);</div>
+<div class="line"><span class="lineno"> 1529</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PAD:</div>
+<div class="line"><span class="lineno"> 1530</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PADV2:</div>
+<div class="line"><span class="lineno"> 1531</span>      loadOperationTo&lt;ir::operation::Pad&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1532</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1533</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGISTIC:</div>
+<div class="line"><span class="lineno"> 1534</span>      loadElementwiseActivation(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a72ee60fba0509af07cbbd91398d8db9d">ir::operation::ElementwiseActivation::Type::LOGISTIC</a>);</div>
+<div class="line"><span class="lineno"> 1535</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1536</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EXP:</div>
+<div class="line"><span class="lineno"> 1537</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7">ir::operation::ElementwiseUnary::Type::EXP</a>);</div>
+<div class="line"><span class="lineno"> 1538</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1539</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EXPAND_DIMS:</div>
+<div class="line"><span class="lineno"> 1540</span>      loadOperationTo&lt;ir::operation::ExpandDims&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1541</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1542</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GATHER:</div>
+<div class="line"><span class="lineno"> 1543</span>      loadGather(op, subg);</div>
+<div class="line"><span class="lineno"> 1544</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1545</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:</div>
+<div class="line"><span class="lineno"> 1546</span>      loadOperationTo&lt;ir::operation::SpaceToBatchND&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1547</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1548</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BATCH_TO_SPACE_ND:</div>
+<div class="line"><span class="lineno"> 1549</span>      loadOperationTo&lt;ir::operation::BatchToSpaceND&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1550</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1551</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SUM:</div>
+<div class="line"><span class="lineno"> 1552</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a">ir::operation::Reduce::ReduceType::SUM</a>);</div>
 <div class="line"><span class="lineno"> 1553</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1554</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MINIMUM:</div>
-<div class="line"><span class="lineno"> 1555</span>      loadElementwiseBinary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783ace31e2a082d17e038fcc6e3006166653">ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN</a>);</div>
+<div class="line"><span class="lineno"> 1554</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CUSTOM:</div>
+<div class="line"><span class="lineno"> 1555</span>      loadCustom(op, subg);</div>
 <div class="line"><span class="lineno"> 1556</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1557</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MAXIMUM:</div>
-<div class="line"><span class="lineno"> 1558</span>      loadElementwiseBinary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a26a4b44a837bf97b972628509912b4a5">ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX</a>);</div>
+<div class="line"><span class="lineno"> 1557</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SQUEEZE:</div>
+<div class="line"><span class="lineno"> 1558</span>      loadSqueeze(op, subg);</div>
 <div class="line"><span class="lineno"> 1559</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1560</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CAST:</div>
-<div class="line"><span class="lineno"> 1561</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a283929907641c5acaf4c5b67986fc1db">ir::operation::ElementwiseUnary::Type::CAST</a>);</div>
+<div class="line"><span class="lineno"> 1560</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_PRELU:</div>
+<div class="line"><span class="lineno"> 1561</span>      loadOperationTo&lt;ir::operation::PReLU&gt;(op, subg);</div>
 <div class="line"><span class="lineno"> 1562</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1563</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EQUAL:</div>
-<div class="line"><span class="lineno"> 1564</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_NOT_EQUAL:</div>
-<div class="line"><span class="lineno"> 1565</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GREATER_EQUAL:</div>
-<div class="line"><span class="lineno"> 1566</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GREATER:</div>
-<div class="line"><span class="lineno"> 1567</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LESS_EQUAL:</div>
-<div class="line"><span class="lineno"> 1568</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LESS:</div>
-<div class="line"><span class="lineno"> 1569</span>      loadComparison(op, subg);</div>
-<div class="line"><span class="lineno"> 1570</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1571</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ONE_HOT:</div>
-<div class="line"><span class="lineno"> 1572</span>      loadOneHot(op, subg);</div>
-<div class="line"><span class="lineno"> 1573</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1574</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ABS:</div>
-<div class="line"><span class="lineno"> 1575</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a7d8a220d2262f9d6c658d549ee12cf2c">ir::operation::ElementwiseUnary::Type::ABS</a>);</div>
-<div class="line"><span class="lineno"> 1576</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1577</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_COS:</div>
-<div class="line"><span class="lineno"> 1578</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d">ir::operation::ElementwiseUnary::Type::COS</a>);</div>
-<div class="line"><span class="lineno"> 1579</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1580</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SIN:</div>
-<div class="line"><span class="lineno"> 1581</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5b001d63db54e7383587771eeb2018a1">ir::operation::ElementwiseUnary::Type::SIN</a>);</div>
-<div class="line"><span class="lineno"> 1582</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1583</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SHAPE:</div>
-<div class="line"><span class="lineno"> 1584</span>      loadOperationTo&lt;ir::operation::Shape&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1585</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1586</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_PROD:</div>
-<div class="line"><span class="lineno"> 1587</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed">ir::operation::Reduce::ReduceType::PROD</a>);</div>
-<div class="line"><span class="lineno"> 1588</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1589</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_IF:</div>
-<div class="line"><span class="lineno"> 1590</span>      loadIf(op, subg);</div>
-<div class="line"><span class="lineno"> 1591</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1592</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_WHILE:</div>
-<div class="line"><span class="lineno"> 1593</span>      loadWhile(op, subg);</div>
-<div class="line"><span class="lineno"> 1594</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1595</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_NEG:</div>
-<div class="line"><span class="lineno"> 1596</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5dd68b1a7db42a1cce4dce09dbaa179e">ir::operation::ElementwiseUnary::Type::NEG</a>);</div>
-<div class="line"><span class="lineno"> 1597</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1598</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ARG_MAX:</div>
-<div class="line"><span class="lineno"> 1599</span>      loadArgMinMax(op, subg, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno"> 1600</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1601</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ARG_MIN:</div>
-<div class="line"><span class="lineno"> 1602</span>      loadArgMinMax(op, subg, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno"> 1603</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1604</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG:</div>
-<div class="line"><span class="lineno"> 1605</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a4b5ffcdaf38ce4d463171f5c977c5ab3">ir::operation::ElementwiseUnary::Type::LOG</a>);</div>
-<div class="line"><span class="lineno"> 1606</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1607</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ROUND:</div>
-<div class="line"><span class="lineno"> 1608</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a2ea77cf582892014b30e6fa7e558350d">ir::operation::ElementwiseUnary::Type::ROUND</a>);</div>
-<div class="line"><span class="lineno"> 1609</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1610</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_POW:</div>
-<div class="line"><span class="lineno"> 1611</span>      loadOperationTo&lt;ir::operation::Pow&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1612</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1613</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_NOT:</div>
-<div class="line"><span class="lineno"> 1614</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a330c6551c4bc9acbc0a7363dc8f68680">ir::operation::ElementwiseUnary::Type::LOGICAL_NOT</a>);</div>
-<div class="line"><span class="lineno"> 1615</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1616</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_AND:</div>
-<div class="line"><span class="lineno"> 1617</span>      loadElementwiseBinary(op, subg,</div>
-<div class="line"><span class="lineno"> 1618</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783aa770916377f618641eccd6783b13503a">ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND</a>);</div>
+<div class="line"><span class="lineno"> 1563</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPLIT:</div>
+<div class="line"><span class="lineno"> 1564</span>      loadSplit(op, subg);</div>
+<div class="line"><span class="lineno"> 1565</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1566</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPLIT_V:</div>
+<div class="line"><span class="lineno"> 1567</span>      loadSplitV(op, subg);</div>
+<div class="line"><span class="lineno"> 1568</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1569</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SLICE:</div>
+<div class="line"><span class="lineno"> 1570</span>      loadOperationTo&lt;ir::operation::Slice&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1571</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1572</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_STRIDED_SLICE:</div>
+<div class="line"><span class="lineno"> 1573</span>      loadStridedSlice(op, subg);</div>
+<div class="line"><span class="lineno"> 1574</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1575</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNPACK:</div>
+<div class="line"><span class="lineno"> 1576</span>      loadUnpack(op, subg);</div>
+<div class="line"><span class="lineno"> 1577</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1578</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FLOOR_DIV:</div>
+<div class="line"><span class="lineno"> 1579</span>      loadElementwiseBinary(op, subg,</div>
+<div class="line"><span class="lineno"> 1580</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a77811fd0ec3d3ed2711a923332e8e69f">ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV</a>);</div>
+<div class="line"><span class="lineno"> 1581</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1582</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MINIMUM:</div>
+<div class="line"><span class="lineno"> 1583</span>      loadElementwiseBinary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783ace31e2a082d17e038fcc6e3006166653">ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN</a>);</div>
+<div class="line"><span class="lineno"> 1584</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1585</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_MAXIMUM:</div>
+<div class="line"><span class="lineno"> 1586</span>      loadElementwiseBinary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a26a4b44a837bf97b972628509912b4a5">ir::operation::ElementwiseBinary::ElementwiseBinaryType::MAX</a>);</div>
+<div class="line"><span class="lineno"> 1587</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1588</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_CAST:</div>
+<div class="line"><span class="lineno"> 1589</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a283929907641c5acaf4c5b67986fc1db">ir::operation::ElementwiseUnary::Type::CAST</a>);</div>
+<div class="line"><span class="lineno"> 1590</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1591</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EQUAL:</div>
+<div class="line"><span class="lineno"> 1592</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_NOT_EQUAL:</div>
+<div class="line"><span class="lineno"> 1593</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GREATER_EQUAL:</div>
+<div class="line"><span class="lineno"> 1594</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_GREATER:</div>
+<div class="line"><span class="lineno"> 1595</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LESS_EQUAL:</div>
+<div class="line"><span class="lineno"> 1596</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LESS:</div>
+<div class="line"><span class="lineno"> 1597</span>      loadComparison(op, subg);</div>
+<div class="line"><span class="lineno"> 1598</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1599</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ONE_HOT:</div>
+<div class="line"><span class="lineno"> 1600</span>      loadOneHot(op, subg);</div>
+<div class="line"><span class="lineno"> 1601</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1602</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ABS:</div>
+<div class="line"><span class="lineno"> 1603</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a7d8a220d2262f9d6c658d549ee12cf2c">ir::operation::ElementwiseUnary::Type::ABS</a>);</div>
+<div class="line"><span class="lineno"> 1604</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1605</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_COS:</div>
+<div class="line"><span class="lineno"> 1606</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d">ir::operation::ElementwiseUnary::Type::COS</a>);</div>
+<div class="line"><span class="lineno"> 1607</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1608</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SIN:</div>
+<div class="line"><span class="lineno"> 1609</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5b001d63db54e7383587771eeb2018a1">ir::operation::ElementwiseUnary::Type::SIN</a>);</div>
+<div class="line"><span class="lineno"> 1610</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1611</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SHAPE:</div>
+<div class="line"><span class="lineno"> 1612</span>      loadOperationTo&lt;ir::operation::Shape&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1613</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1614</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_REDUCE_PROD:</div>
+<div class="line"><span class="lineno"> 1615</span>      loadReduce(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed">ir::operation::Reduce::ReduceType::PROD</a>);</div>
+<div class="line"><span class="lineno"> 1616</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1617</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_IF:</div>
+<div class="line"><span class="lineno"> 1618</span>      loadIf(op, subg);</div>
 <div class="line"><span class="lineno"> 1619</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1620</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_OR:</div>
-<div class="line"><span class="lineno"> 1621</span>      loadElementwiseBinary(op, subg,</div>
-<div class="line"><span class="lineno"> 1622</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a0d0389dd347e259ac16a47fc9db81c18">ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR</a>);</div>
-<div class="line"><span class="lineno"> 1623</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1624</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FILL:</div>
-<div class="line"><span class="lineno"> 1625</span>      loadOperationTo&lt;ir::operation::Fill&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1626</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1627</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ZEROS_LIKE:</div>
-<div class="line"><span class="lineno"> 1628</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a64043bcc02f67f7445eb1b2feedf4e18">ir::operation::ElementwiseUnary::Type::ZEROS_LIKE</a>);</div>
-<div class="line"><span class="lineno"> 1629</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1630</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TILE:</div>
-<div class="line"><span class="lineno"> 1631</span>      loadOperationTo&lt;ir::operation::Tile&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1632</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1633</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANGE:</div>
-<div class="line"><span class="lineno"> 1634</span>      loadOperationTo&lt;ir::operation::Range&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1635</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1636</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BATCH_MATMUL:</div>
-<div class="line"><span class="lineno"> 1637</span>      loadBatchMatMul(op, subg);</div>
-<div class="line"><span class="lineno"> 1638</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1639</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:</div>
-<div class="line"><span class="lineno"> 1640</span>      loadLogSoftmax(op, subg);</div>
-<div class="line"><span class="lineno"> 1641</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1642</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_QUANTIZE:</div>
-<div class="line"><span class="lineno"> 1643</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2">ir::operation::ElementwiseUnary::Type::QUANTIZE</a>);</div>
-<div class="line"><span class="lineno"> 1644</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1645</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEQUANTIZE:</div>
-<div class="line"><span class="lineno"> 1646</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aa81d3a23bce0d4438ba9be9e9f3c29e8">ir::operation::ElementwiseUnary::Type::DEQUANTIZE</a>);</div>
+<div class="line"><span class="lineno"> 1620</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_WHILE:</div>
+<div class="line"><span class="lineno"> 1621</span>      loadWhile(op, subg);</div>
+<div class="line"><span class="lineno"> 1622</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1623</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_NEG:</div>
+<div class="line"><span class="lineno"> 1624</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5dd68b1a7db42a1cce4dce09dbaa179e">ir::operation::ElementwiseUnary::Type::NEG</a>);</div>
+<div class="line"><span class="lineno"> 1625</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1626</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ARG_MAX:</div>
+<div class="line"><span class="lineno"> 1627</span>      loadArgMinMax(op, subg, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno"> 1628</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1629</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ARG_MIN:</div>
+<div class="line"><span class="lineno"> 1630</span>      loadArgMinMax(op, subg, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno"> 1631</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1632</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG:</div>
+<div class="line"><span class="lineno"> 1633</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a4b5ffcdaf38ce4d463171f5c977c5ab3">ir::operation::ElementwiseUnary::Type::LOG</a>);</div>
+<div class="line"><span class="lineno"> 1634</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1635</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ROUND:</div>
+<div class="line"><span class="lineno"> 1636</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a2ea77cf582892014b30e6fa7e558350d">ir::operation::ElementwiseUnary::Type::ROUND</a>);</div>
+<div class="line"><span class="lineno"> 1637</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1638</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_POW:</div>
+<div class="line"><span class="lineno"> 1639</span>      loadOperationTo&lt;ir::operation::Pow&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1640</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1641</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_NOT:</div>
+<div class="line"><span class="lineno"> 1642</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a330c6551c4bc9acbc0a7363dc8f68680">ir::operation::ElementwiseUnary::Type::LOGICAL_NOT</a>);</div>
+<div class="line"><span class="lineno"> 1643</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1644</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_AND:</div>
+<div class="line"><span class="lineno"> 1645</span>      loadElementwiseBinary(op, subg,</div>
+<div class="line"><span class="lineno"> 1646</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783aa770916377f618641eccd6783b13503a">ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND</a>);</div>
 <div class="line"><span class="lineno"> 1647</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1648</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:</div>
-<div class="line"><span class="lineno"> 1649</span>      loadSpaceToDepth(op, subg);</div>
-<div class="line"><span class="lineno"> 1650</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1651</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:</div>
-<div class="line"><span class="lineno"> 1652</span>      loadOperationTo&lt;ir::operation::L2Normalization&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1653</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1654</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LEAKY_RELU:</div>
-<div class="line"><span class="lineno"> 1655</span>      loadLeakyRelu(op, subg);</div>
-<div class="line"><span class="lineno"> 1656</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1657</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANK:</div>
-<div class="line"><span class="lineno"> 1658</span>      loadOperationTo&lt;ir::operation::Rank&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1659</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1660</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:</div>
-<div class="line"><span class="lineno"> 1661</span>      loadUnidirectionalSequenceLSTM(op, subg);</div>
-<div class="line"><span class="lineno"> 1662</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1663</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:</div>
-<div class="line"><span class="lineno"> 1664</span>      loadDepthToSpace(op, subg);</div>
-<div class="line"><span class="lineno"> 1665</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1666</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EMBEDDING_LOOKUP:</div>
-<div class="line"><span class="lineno"> 1667</span>      loadOperationTo&lt;ir::operation::EmbeddingLookup&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1668</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1669</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:</div>
-<div class="line"><span class="lineno"> 1670</span>      loadOperationTo&lt;ir::operation::HashtableLookup&gt;(op, subg);</div>
-<div class="line"><span class="lineno"> 1671</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1672</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno"> 1673</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno"> 1674</span>        std::string(<span class="stringliteral">&quot;Unsupported operation: &quot;</span>).append(EnumNameBuiltinOperator(builtin_op)));</div>
-<div class="line"><span class="lineno"> 1675</span>  }</div>
-<div class="line"><span class="lineno"> 1676</span>}</div>
+<div class="line"><span class="lineno"> 1648</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOGICAL_OR:</div>
+<div class="line"><span class="lineno"> 1649</span>      loadElementwiseBinary(op, subg,</div>
+<div class="line"><span class="lineno"> 1650</span>                            <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a0d0389dd347e259ac16a47fc9db81c18">ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR</a>);</div>
+<div class="line"><span class="lineno"> 1651</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1652</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_FILL:</div>
+<div class="line"><span class="lineno"> 1653</span>      loadOperationTo&lt;ir::operation::Fill&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1654</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1655</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_ZEROS_LIKE:</div>
+<div class="line"><span class="lineno"> 1656</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a64043bcc02f67f7445eb1b2feedf4e18">ir::operation::ElementwiseUnary::Type::ZEROS_LIKE</a>);</div>
+<div class="line"><span class="lineno"> 1657</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1658</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_TILE:</div>
+<div class="line"><span class="lineno"> 1659</span>      loadOperationTo&lt;ir::operation::Tile&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1660</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1661</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANGE:</div>
+<div class="line"><span class="lineno"> 1662</span>      loadOperationTo&lt;ir::operation::Range&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1663</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1664</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BATCH_MATMUL:</div>
+<div class="line"><span class="lineno"> 1665</span>      loadBatchMatMul(op, subg);</div>
+<div class="line"><span class="lineno"> 1666</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1667</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:</div>
+<div class="line"><span class="lineno"> 1668</span>      loadLogSoftmax(op, subg);</div>
+<div class="line"><span class="lineno"> 1669</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1670</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_QUANTIZE:</div>
+<div class="line"><span class="lineno"> 1671</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2">ir::operation::ElementwiseUnary::Type::QUANTIZE</a>);</div>
+<div class="line"><span class="lineno"> 1672</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1673</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEQUANTIZE:</div>
+<div class="line"><span class="lineno"> 1674</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aa81d3a23bce0d4438ba9be9e9f3c29e8">ir::operation::ElementwiseUnary::Type::DEQUANTIZE</a>);</div>
+<div class="line"><span class="lineno"> 1675</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1676</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:</div>
+<div class="line"><span class="lineno"> 1677</span>      loadSpaceToDepth(op, subg);</div>
+<div class="line"><span class="lineno"> 1678</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1679</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:</div>
+<div class="line"><span class="lineno"> 1680</span>      loadOperationTo&lt;ir::operation::L2Normalization&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1681</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1682</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LEAKY_RELU:</div>
+<div class="line"><span class="lineno"> 1683</span>      loadLeakyRelu(op, subg);</div>
+<div class="line"><span class="lineno"> 1684</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1685</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANK:</div>
+<div class="line"><span class="lineno"> 1686</span>      loadOperationTo&lt;ir::operation::Rank&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1687</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1688</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:</div>
+<div class="line"><span class="lineno"> 1689</span>      loadUnidirectionalSequenceLSTM(op, subg);</div>
+<div class="line"><span class="lineno"> 1690</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1691</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:</div>
+<div class="line"><span class="lineno"> 1692</span>      loadDepthToSpace(op, subg);</div>
+<div class="line"><span class="lineno"> 1693</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1694</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EMBEDDING_LOOKUP:</div>
+<div class="line"><span class="lineno"> 1695</span>      loadOperationTo&lt;ir::operation::EmbeddingLookup&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1696</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1697</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:</div>
+<div class="line"><span class="lineno"> 1698</span>      loadOperationTo&lt;ir::operation::HashtableLookup&gt;(op, subg);</div>
+<div class="line"><span class="lineno"> 1699</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1700</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno"> 1701</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno"> 1702</span>        std::string(<span class="stringliteral">&quot;Unsupported operation: &quot;</span>).append(EnumNameBuiltinOperator(builtin_op)));</div>
+<div class="line"><span class="lineno"> 1703</span>  }</div>
+<div class="line"><span class="lineno"> 1704</span>}</div>
 <div class="ttc" id="aclassonert_1_1base__loader_1_1_base_loader_html_acc01fd0f1b366df8a11cd3ce3df4a11c"><div class="ttname"><a href="classonert_1_1base__loader_1_1_base_loader.html#acc01fd0f1b366df8a11cd3ce3df4a11c">onert::base_loader::BaseLoader::getBuiltinOperator</a></div><div class="ttdeci">BuiltinOperator getBuiltinOperator(const Operator *op)</div><div class="ttdef"><b>Definition:</b> <a href="base__loader_8h_source.html#l00114">base_loader.h:114</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_binary_arithmetic_html_ab7fb82b7e7691abd67255583c240175aa241dd841abade20fcb27b8a9f494e1eb"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa241dd841abade20fcb27b8a9f494e1eb">onert::ir::operation::BinaryArithmetic::ArithmeticType::SUB</a></div><div class="ttdeci">@ SUB</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_binary_arithmetic_html_ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ab7fb82b7e7691abd67255583c240175aa29bbf66f7f8529ec47e394fb5a36c646">onert::ir::operation::BinaryArithmetic::ArithmeticType::DIV</a></div><div class="ttdeci">@ DIV</div></div>

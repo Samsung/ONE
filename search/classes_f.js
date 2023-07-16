@@ -58,7 +58,7 @@ var searchData=
   ['opseqdurationevent_55',['OpSeqDurationEvent',['../struct_op_seq_duration_event.html',1,'']]],
   ['opseqevent_56',['OpSeqEvent',['../struct_event_collector_1_1_op_seq_event.html',1,'EventCollector']]],
   ['optableprinter_57',['OpTablePrinter',['../classcircledump_1_1_op_table_printer.html',1,'circledump']]],
-  ['optimizer_58',['Optimizer',['../classmoco_1_1tf_1_1_optimizer.html',1,'moco::tf::Optimizer'],['../classonert_1_1backend_1_1acl__cl_1_1_optimizer.html',1,'onert::backend::acl_cl::Optimizer'],['../classonert_1_1backend_1_1acl__neon_1_1_optimizer.html',1,'onert::backend::acl_neon::Optimizer']]],
+  ['optimizer_58',['Optimizer',['../classmoco_1_1tf_1_1_optimizer.html',1,'moco::tf::Optimizer'],['../classonert_1_1backend_1_1acl__cl_1_1_optimizer.html',1,'onert::backend::acl_cl::Optimizer'],['../classonert_1_1backend_1_1acl__neon_1_1_optimizer.html',1,'onert::backend::acl_neon::Optimizer'],['../classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html',1,'onert::exec::train::optimizer::Optimizer']]],
   ['option_59',['Option',['../classnnc_1_1cli_1_1_option.html',1,'nnc::cli']]],
   ['optionbuilder_60',['OptionBuilder',['../class_option_builder_1_1_option_builder.html',1,'OptionBuilder']]],
   ['options_61',['Options',['../structluci_1_1_circle_optimizer_1_1_options.html',1,'luci::CircleOptimizer::Options'],['../structluci_1_1_circle_quantizer_1_1_options.html',1,'luci::CircleQuantizer::Options']]],

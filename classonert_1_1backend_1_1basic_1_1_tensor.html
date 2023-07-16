@@ -416,36 +416,38 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="line"><span class="lineno">   51</span> </div>
 <div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> allocTensorMem = [&amp;]() {</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> capacity = <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a6a1b07220d6fd70ad3c8025ea8f7960f">total_size</a>();</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> alloc = <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">allocate</a>(<span class="keyword">this</span>, capacity);</div>
-<div class="line"><span class="lineno">   55</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#ac717be301879df26fd10ac813a522ce4">setBuffer</a>(alloc);</div>
-<div class="line"><span class="lineno">   56</span>  };</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (!previously_dynamic || <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#ab7851984acfa15c64d110c5acb6a95ab">buffer</a>() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="comment">// Always set shape - when buffer with same size was already allocated, shape could differ</span></div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
-<div class="line"><span class="lineno">   62</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">set_dynamic</a>();</div>
-<div class="line"><span class="lineno">   63</span>    allocTensorMem();</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> previous_size = <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a6a1b07220d6fd70ad3c8025ea8f7960f">total_size</a>();</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> new_size = new_shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a97f68874014df35f5a00101d66daacd4">data_type</a>());</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> (previous_size != new_size)</div>
-<div class="line"><span class="lineno">   70</span>    {</div>
-<div class="line"><span class="lineno">   71</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
-<div class="line"><span class="lineno">   74</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">set_dynamic</a>();</div>
-<div class="line"><span class="lineno">   75</span>      allocTensorMem();</div>
-<div class="line"><span class="lineno">   76</span>    }</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   78</span>    { <span class="comment">// when buffer with same size was already allocated, shape could differ</span></div>
-<div class="line"><span class="lineno">   79</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
-<div class="line"><span class="lineno">   80</span>    }</div>
-<div class="line"><span class="lineno">   81</span>  }</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   83</span>}</div>
+<div class="line"><span class="lineno">   54</span>    assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>);</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> alloc = <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">allocate</a>(<span class="keyword">this</span>, capacity);</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#ac717be301879df26fd10ac813a522ce4">setBuffer</a>(alloc);</div>
+<div class="line"><span class="lineno">   57</span>  };</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (!previously_dynamic || <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#ab7851984acfa15c64d110c5acb6a95ab">buffer</a>() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    <span class="comment">// Always set shape - when buffer with same size was already allocated, shape could differ</span></div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">set_dynamic</a>();</div>
+<div class="line"><span class="lineno">   64</span>    allocTensorMem();</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> previous_size = <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a6a1b07220d6fd70ad3c8025ea8f7960f">total_size</a>();</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keyword">auto</span> new_size = new_shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a97f68874014df35f5a00101d66daacd4">data_type</a>());</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (previous_size != new_size)</div>
+<div class="line"><span class="lineno">   71</span>    {</div>
+<div class="line"><span class="lineno">   72</span>      assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>);</div>
+<div class="line"><span class="lineno">   73</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
+<div class="line"><span class="lineno">   76</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">set_dynamic</a>();</div>
+<div class="line"><span class="lineno">   77</span>      allocTensorMem();</div>
+<div class="line"><span class="lineno">   78</span>    }</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   80</span>    { <span class="comment">// when buffer with same size was already allocated, shape could differ</span></div>
+<div class="line"><span class="lineno">   81</span>      <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">setShape</a>(new_shape);</div>
+<div class="line"><span class="lineno">   82</span>    }</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
+<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   85</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_memory_manager_html_a030f2b7f80af9b627596198d56d46a76"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">onert::backend::basic::DynamicMemoryManager::allocate</a></div><div class="ttdeci">std::shared_ptr&lt; Allocator &gt; allocate(const ITensor *tensor, uint32_t capacity)</div><div class="ttdef"><b>Definition:</b> <a href="_memory_manager_8cc_source.html#l00074">MemoryManager.cc:74</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_memory_manager_html_ab12bda3661c8260b18ec535ffa58a80e"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">onert::backend::basic::DynamicMemoryManager::deallocate</a></div><div class="ttdeci">void deallocate(const ITensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="_memory_manager_8cc_source.html#l00085">MemoryManager.cc:85</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_tensor_html_a14dd8ee5d547516d4a698d2a94ce3be6"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">onert::backend::basic::Tensor::set_dynamic</a></div><div class="ttdeci">void set_dynamic() override</div><div class="ttdoc">set this tensor dynamic</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00090">Tensor.h:90</a></div></div>
@@ -493,7 +495,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00147">_buffer</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00056">setBuffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, <a class="el" href="_trainable_tensor_8h_source.html#l00053">onert::backend::basic::train::TrainableTensor::buffer()</a>, <a class="el" href="_trainable_tensor_8cc_source.html#l00038">onert::backend::basic::train::TrainableTensor::fillBuffer()</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00056">setBuffer()</a>.</p>
 
 </div>
 </div>
@@ -538,10 +540,12 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 <div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition:</b> <a href="_detection_post_process_layer_8cc_source.html#l00054">DetectionPostProcessLayer.cc:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_tensor_html_a90fb303cd99bd3415917cfc431624fc7"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_tensor.html#a90fb303cd99bd3415917cfc431624fc7">onert::backend::basic::Tensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition:</b> <a href="_tensor_8cc_source.html#l00085">Tensor.cc:85</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_tensor_html_a90fb303cd99bd3415917cfc431624fc7"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_tensor.html#a90fb303cd99bd3415917cfc431624fc7">onert::backend::basic::Tensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition:</b> <a href="_tensor_8cc_source.html#l00087">Tensor.cc:87</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00054">coords</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00087">data_type()</a>, <a class="el" href="_tensor_8cc_source.html#l00085">getShape()</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
+<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00054">coords</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00087">data_type()</a>, <a class="el" href="_tensor_8cc_source.html#l00087">getShape()</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_trainable_tensor_8h_source.html#l00065">onert::backend::basic::train::TrainableTensor::calcOffset()</a>.</p>
 
 </div>
 </div>
@@ -578,7 +582,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00108">onert::ir::OperandInfo::typeInfo()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="_tensor_8cc_source.html#l00031">calcOffset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, <a class="el" href="_tensor_8cc_source.html#l00031">calcOffset()</a>, and <a class="el" href="_trainable_tensor_8h_source.html#l00070">onert::backend::basic::train::TrainableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -609,18 +613,18 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#abab576907eb93805c01e9f906bf30566">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_tensor_8cc_source.html#l00087">87</a> of file <a class="el" href="_tensor_8cc_source.html">Tensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (_allocator)</div>
-<div class="line"><span class="lineno">   90</span>  {</div>
-<div class="line"><span class="lineno">   91</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a287a6fe72cbbfa77b788565238b88303">_buffer</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   92</span>    _allocator.reset();</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>)</div>
-<div class="line"><span class="lineno">   94</span>    {</div>
-<div class="line"><span class="lineno">   95</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   96</span>    }</div>
-<div class="line"><span class="lineno">   97</span>  }</div>
-<div class="line"><span class="lineno">   98</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_8cc_source.html#l00089">89</a> of file <a class="el" href="_tensor_8cc_source.html">Tensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (_allocator)</div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a287a6fe72cbbfa77b788565238b88303">_buffer</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   94</span>    _allocator.reset();</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>)</div>
+<div class="line"><span class="lineno">   96</span>    {</div>
+<div class="line"><span class="lineno">   97</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d">_dynamic_mem_mgr</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   98</span>    }</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00147">_buffer</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00149">_dynamic_mem_mgr</a>, and <a class="el" href="_memory_manager_8cc_source.html#l00085">onert::backend::basic::DynamicMemoryManager::deallocate()</a>.</p>
 
@@ -701,13 +705,13 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_tensor_8cc_source.html#l00085">85</a> of file <a class="el" href="_tensor_8cc_source.html">Tensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_8cc_source.html#l00087">87</a> of file <a class="el" href="_tensor_8cc_source.html">Tensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00094">OperandInfo.h:94</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00094">onert::ir::OperandInfo::shape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00031">calcOffset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00031">calcOffset()</a>, and <a class="el" href="_trainable_tensor_8h_source.html#l00073">onert::backend::basic::train::TrainableTensor::getShape()</a>.</p>
 
 </div>
 </div>
@@ -784,6 +788,8 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00122">onert::ir::OperandInfo::isConstant()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_trainable_tensor_8h_source.html#l00071">onert::backend::basic::train::TrainableTensor::is_constant()</a>.</p>
+
 </div>
 </div>
 <a id="a74861988210740483b593185392e9486" name="a74861988210740483b593185392e9486"></a>
@@ -821,7 +827,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00136">onert::ir::OperandInfo::isDynamic()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00094">increase_ref()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00094">increase_ref()</a>, and <a class="el" href="_trainable_tensor_8h_source.html#l00072">onert::backend::basic::train::TrainableTensor::is_dynamic()</a>.</p>
 
 </div>
 </div>
@@ -854,6 +860,8 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="fragment"><div class="line"><span class="lineno">   86</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a991e1659d26c205af30808407271ed0e">_layout</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00146">_layout</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_trainable_tensor_8h_source.html#l00069">onert::backend::basic::train::TrainableTensor::layout()</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1050,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00147">_buffer</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00073">buffer()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="_trainable_tensor_8h_source.html#l00050">onert::backend::basic::train::TrainableTensor::setBuffer()</a>.</p>
 
 </div>
 </div>
@@ -1160,7 +1168,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00117">onert::ir::OperandInfo::total_size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="_trainable_tensor_8h_source.html#l00064">onert::backend::basic::train::TrainableTensor::total_size()</a>.</p>
 
 </div>
 </div>
@@ -1187,7 +1195,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00147">147</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html">Tensor.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00073">buffer()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00200">onert::backend::basic::ExternalTensor::buffer()</a>, <a class="el" href="_tensor_8cc_source.html#l00087">deallocBuffer()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00103">decrease_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00216">onert::backend::basic::ExternalTensor::decrease_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00094">increase_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00124">reset_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00231">onert::backend::basic::ExternalTensor::reset_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00056">setBuffer()</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00190">onert::backend::basic::ExternalTensor::setData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00073">buffer()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00200">onert::backend::basic::ExternalTensor::buffer()</a>, <a class="el" href="_tensor_8cc_source.html#l00089">deallocBuffer()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00103">decrease_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00216">onert::backend::basic::ExternalTensor::decrease_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00094">increase_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00124">reset_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00231">onert::backend::basic::ExternalTensor::reset_ref()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00056">setBuffer()</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00190">onert::backend::basic::ExternalTensor::setData()</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1221,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00149">149</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html">Tensor.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="_tensor_8cc_source.html#l00087">deallocBuffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_8cc_source.html#l00048">applyShape()</a>, and <a class="el" href="_tensor_8cc_source.html#l00089">deallocBuffer()</a>.</p>
 
 </div>
 </div>

@@ -106,14 +106,15 @@ var searchData=
   ['ischeduler_103',['IScheduler',['../structonert_1_1compiler_1_1_i_scheduler.html',1,'onert::compiler']]],
   ['iscratchpadhelper_104',['IScratchpadHelper',['../classcircle__planner_1_1_i_scratchpad_helper.html',1,'circle_planner']]],
   ['itensor_105',['ITensor',['../classonert_1_1backend_1_1_i_tensor.html',1,'onert::backend']]],
-  ['itensorregistry_106',['ITensorRegistry',['../structonert_1_1backend_1_1_i_tensor_registry.html',1,'onert::backend']]],
+  ['itensorregistry_106',['ITensorRegistry',['../structonert_1_1backend_1_1_i_tensor_registry.html',1,'onert::backend::ITensorRegistry'],['../classonert_1_1backend_1_1train_1_1_i_tensor_registry.html',1,'onert::backend::train::ITensorRegistry']]],
   ['iterationvisitor_107',['IterationVisitor',['../structflatbuffers_1_1_iteration_visitor.html',1,'flatbuffers']]],
   ['itimer_108',['ITimer',['../classonert_1_1util_1_1_i_timer.html',1,'onert::util']]],
   ['itrainablebackend_109',['ITrainableBackend',['../structonert_1_1backend_1_1train_1_1_i_trainable_backend.html',1,'onert::backend::train']]],
   ['itrainablefunction_110',['ITrainableFunction',['../classonert_1_1exec_1_1train_1_1_i_trainable_function.html',1,'onert::exec::train']]],
   ['itrainableoperation_111',['ITrainableOperation',['../classonert_1_1ir_1_1train_1_1_i_trainable_operation.html',1,'onert::ir::train']]],
-  ['iverifier_112',['IVerifier',['../structonert_1_1ir_1_1verifier_1_1_i_verifier.html',1,'onert::ir::verifier']]],
-  ['ivisitor_113',['IVisitor',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr::IVisitor&lt; T &gt;'],['../structcoco_1_1_op_1_1_i_visitor.html',1,'coco::Op::IVisitor&lt; T &gt;'],['../classmir_1_1_i_visitor.html',1,'mir::IVisitor']]],
-  ['ivisitor_3c_20pp_3a_3alineardocument_20_3e_114',['IVisitor&lt; pp::LinearDocument &gt;',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr']]],
-  ['ivisitor_3c_20void_20_3e_115',['IVisitor&lt; void &gt;',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr']]]
+  ['itrainabletensor_112',['ITrainableTensor',['../classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html',1,'onert::backend::train']]],
+  ['iverifier_113',['IVerifier',['../structonert_1_1ir_1_1verifier_1_1_i_verifier.html',1,'onert::ir::verifier']]],
+  ['ivisitor_114',['IVisitor',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr::IVisitor&lt; T &gt;'],['../structcoco_1_1_op_1_1_i_visitor.html',1,'coco::Op::IVisitor&lt; T &gt;'],['../classmir_1_1_i_visitor.html',1,'mir::IVisitor']]],
+  ['ivisitor_3c_20pp_3a_3alineardocument_20_3e_115',['IVisitor&lt; pp::LinearDocument &gt;',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr']]],
+  ['ivisitor_3c_20void_20_3e_116',['IVisitor&lt; void &gt;',['../structcoco_1_1_instr_1_1_i_visitor.html',1,'coco::Instr']]]
 ];

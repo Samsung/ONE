@@ -144,17 +144,20 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>  std::string argv_1{argv[1]};</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (opt_o != argv_1)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  std::string output_name{argv[2]};</div>
-<div class="line"><span class="lineno">   41</span>  std::ofstream <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a>(output_name);</div>
+<div class="line"><span class="lineno">   38</span>  {</div>
+<div class="line"><span class="lineno">   39</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;dummyV2-compile: Invalid option&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a> &lt;&lt; <span class="stringliteral">&quot;dummyV2-compile dummy output!!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a>.close();</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<div class="line"><span class="lineno">   43</span>  std::string output_name{argv[2]};</div>
+<div class="line"><span class="lineno">   44</span>  std::ofstream <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a>(output_name);</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a> &lt;&lt; <span class="stringliteral">&quot;dummyV2-compile dummy output!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">outfile</a>.close();</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 <div class="ttc" id="anamespaceinfer__testcases_html_afafbdf9f48ff4072de2a8ff6bd84b32e"><div class="ttname"><a href="namespaceinfer__testcases.html#afafbdf9f48ff4072de2a8ff6bd84b32e">infer_testcases.outfile</a></div><div class="ttdeci">string outfile</div><div class="ttdef"><b>Definition:</b> <a href="infer__testcases_8py_source.html#l00137">infer_testcases.py:137</a></div></div>
 </div><!-- fragment -->
 </div>

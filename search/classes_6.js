@@ -271,7 +271,7 @@ var searchData=
   ['freeinstreliminationpass_268',['FreeInstrEliminationPass',['../structenco_1_1_free_instr_elimination_pass.html',1,'enco']]],
   ['freeopeliminationpass_269',['FreeOpEliminationPass',['../structenco_1_1_free_op_elimination_pass.html',1,'enco']]],
   ['frontend_270',['Frontend',['../structenco_1_1_frontend.html',1,'enco::Frontend'],['../class_frontend.html',1,'Frontend'],['../classmoco_1_1onnx_1_1_frontend.html',1,'moco::onnx::Frontend'],['../classmoco_1_1tf_1_1_frontend.html',1,'moco::tf::Frontend']]],
-  ['fullyconnected_271',['FullyConnected',['../classluci__interpreter_1_1kernels_1_1_fully_connected.html',1,'luci_interpreter::kernels::FullyConnected'],['../classonert_1_1ir_1_1operation_1_1_fully_connected.html',1,'onert::ir::operation::FullyConnected']]],
+  ['fullyconnected_271',['FullyConnected',['../classluci__interpreter_1_1kernels_1_1_fully_connected.html',1,'luci_interpreter::kernels::FullyConnected'],['../classonert_1_1ir_1_1operation_1_1_fully_connected.html',1,'onert::ir::operation::FullyConnected'],['../classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html',1,'onert::ir::train::operation::FullyConnected']]],
   ['fullyconnectedchef_272',['FullyConnectedChef',['../class_fully_connected_chef.html',1,'']]],
   ['fullyconnectedcheffactory_273',['FullyConnectedChefFactory',['../struct_fully_connected_chef_factory.html',1,'']]],
   ['fullyconnectedimpl_274',['FullyConnectedImpl',['../structmir__interpreter_1_1_fully_connected_impl.html',1,'mir_interpreter']]],

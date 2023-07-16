@@ -2665,7 +2665,9 @@ var hierarchy =
         [ "onert::ir::operation::EmbeddingLookup", "classonert_1_1ir_1_1operation_1_1_embedding_lookup.html", null ],
         [ "onert::ir::operation::ExpandDims", "classonert_1_1ir_1_1operation_1_1_expand_dims.html", null ],
         [ "onert::ir::operation::Fill", "classonert_1_1ir_1_1operation_1_1_fill.html", null ],
-        [ "onert::ir::operation::FullyConnected", "classonert_1_1ir_1_1operation_1_1_fully_connected.html", null ],
+        [ "onert::ir::operation::FullyConnected", "classonert_1_1ir_1_1operation_1_1_fully_connected.html", [
+          [ "onert::ir::train::operation::FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", null ]
+        ] ],
         [ "onert::ir::operation::FusedBatchNorm", "classonert_1_1ir_1_1operation_1_1_fused_batch_norm.html", null ],
         [ "onert::ir::operation::Gather", "classonert_1_1ir_1_1operation_1_1_gather.html", null ],
         [ "onert::ir::operation::HashtableLookup", "classonert_1_1ir_1_1operation_1_1_hashtable_lookup.html", null ],
@@ -2725,6 +2727,7 @@ var hierarchy =
       [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
         [ "onert::ir::train::operation::Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", null ],
         [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ],
+        [ "onert::ir::train::operation::FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", null ],
         [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
         [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ],
         [ "onert::ir::train::operation::Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", null ],
@@ -2794,7 +2797,10 @@ var hierarchy =
         [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", [
           [ "onert::exec::Executors::EdgeTensor", "classonert_1_1exec_1_1_executors_1_1_edge_tensor.html", null ]
         ] ],
-        [ "onert::backend::builtin::UserTensor", "classonert_1_1backend_1_1builtin_1_1_user_tensor.html", null ]
+        [ "onert::backend::builtin::UserTensor", "classonert_1_1backend_1_1builtin_1_1_user_tensor.html", null ],
+        [ "onert::backend::train::ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", [
+          [ "onert::backend::basic::train::TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html", null ]
+        ] ]
       ] ],
       [ "onert::backend::acl_common::IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html", [
         [ "onert::backend::acl_cl::operand::ICLTensor", "classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html", [
@@ -2811,13 +2817,17 @@ var hierarchy =
       ] ]
     ] ],
     [ "onert::backend::ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", [
-      [ "onert::backend::PortableTensorRegistryTemplate< Tensor >", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", [
-        [ "onert::backend::train::TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", null ]
-      ] ],
       [ "onert::backend::PortableTensorRegistryTemplate< T_Tensor >", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", null ],
       [ "onert::backend::acl_common::AclTensorRegistry< T_AclTensorManager >", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_registry.html", null ],
       [ "onert::backend::builtin::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1_tensor_registry.html", null ],
-      [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ]
+      [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ],
+      [ "onert::backend::train::ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", [
+        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", [
+          [ "onert::backend::train::TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", null ]
+        ] ],
+        [ "onert::backend::builtin::train::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html", null ],
+        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, DerivativeTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", null ]
+      ] ]
     ] ],
     [ "flatbuffers::IterationVisitor", "structflatbuffers_1_1_iteration_visitor.html", [
       [ "flatbuffers::ToStringVisitor", "structflatbuffers_1_1_to_string_visitor.html", null ]
@@ -3954,6 +3964,7 @@ var hierarchy =
     [ "moco::tf::Optimizer", "classmoco_1_1tf_1_1_optimizer.html", null ],
     [ "onert::backend::acl_cl::Optimizer", "classonert_1_1backend_1_1acl__cl_1_1_optimizer.html", null ],
     [ "onert::backend::acl_neon::Optimizer", "classonert_1_1backend_1_1acl__neon_1_1_optimizer.html", null ],
+    [ "onert::exec::train::optimizer::Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", null ],
     [ "OptionBuilder.OptionBuilder", "class_option_builder_1_1_option_builder.html", null ],
     [ "luci::CircleOptimizer::Options", "structluci_1_1_circle_optimizer_1_1_options.html", null ],
     [ "luci::CircleQuantizer::Options", "structluci_1_1_circle_quantizer_1_1_options.html", null ],
@@ -4729,10 +4740,12 @@ var hierarchy =
     ] ],
     [ "onert::backend::gpu_cl::operand::TensorInfo", "structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info.html", null ],
     [ "onert::backend::gpu_cl::TensorManager", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_manager.html", null ],
+    [ "onert::backend::train::TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", null ],
     [ "moco::TensorName", "structmoco_1_1_tensor_name.html", null ],
     [ "moco::TensorNameCompare", "structmoco_1_1_tensor_name_compare.html", null ],
     [ "moco::TensorPackEnumerator", "classmoco_1_1_tensor_pack_enumerator.html", null ],
     [ "onert::compiler::TensorRegistries", "classonert_1_1compiler_1_1_tensor_registries.html", null ],
+    [ "onert::compiler::train::TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", null ],
     [ "nnkit::support::onnx::TensorSet", "classnnkit_1_1support_1_1onnx_1_1_tensor_set.html", null ],
     [ "nnkit::support::tflite::TensorSet", "structnnkit_1_1support_1_1tflite_1_1_tensor_set.html", [
       [ "nnkit::support::tflite::InputTensorSet", "classnnkit_1_1support_1_1tflite_1_1_input_tensor_set.html", null ],
@@ -5090,7 +5103,8 @@ var hierarchy =
       [ "onert::backend::train::KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", [
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],
         [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ]
-      ] ]
+      ] ],
+      [ "onert::compiler::train::StaticDerivativeShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_derivative_shape_inferer.html", null ]
     ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],

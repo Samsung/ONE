@@ -17,7 +17,7 @@ var dir_fa872b9b30eb3b1c726be3bc23a8893c =
     [ "MemoryManager.h", "runtime_2onert_2backend_2gpu__cl_2_memory_manager_8h.html", "runtime_2onert_2backend_2gpu__cl_2_memory_manager_8h" ],
     [ "TensorBuilder.cc", "backend_2gpu__cl_2_tensor_builder_8cc.html", "backend_2gpu__cl_2_tensor_builder_8cc" ],
     [ "TensorBuilder.h", "backend_2gpu__cl_2_tensor_builder_8h.html", "backend_2gpu__cl_2_tensor_builder_8h" ],
-    [ "TensorManager.cc", "_tensor_manager_8cc.html", null ],
+    [ "TensorManager.cc", "gpu__cl_2_tensor_manager_8cc.html", null ],
     [ "TensorManager.h", "gpu__cl_2_tensor_manager_8h.html", "gpu__cl_2_tensor_manager_8h" ],
     [ "TensorRegistry.h", "backend_2gpu__cl_2_tensor_registry_8h.html", "backend_2gpu__cl_2_tensor_registry_8h" ],
     [ "Utils.h", "runtime_2onert_2backend_2gpu__cl_2_utils_8h.html", "runtime_2onert_2backend_2gpu__cl_2_utils_8h" ]

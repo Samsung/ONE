@@ -123,9 +123,6 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_compiler.ht
 <div class="line">python3 \</div>
 <div class="line">python3-pip \</div>
 <div class="line">python3-venv \</div>
-<div class="line">python3.8 \</div>
-<div class="line">python3.8-dev \</div>
-<div class="line">python3.8-venv \</div>
 <div class="line">scons \</div>
 <div class="line">software-properties-common \</div>
 <div class="line">unzip \</div>
@@ -138,7 +135,12 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_compiler.ht
 <div class="line">$ sudo mv *.a /usr/lib</div>
 <div class="line"> </div>
 <div class="line">$ pip install yapf==0.22.0 numpy</div>
-</div><!-- fragment --><h1>Build for Ubuntu</h1>
+</div><!-- fragment --><p >Additional install python3.8 if you are using Ubuntu 18.04. </p><div class="fragment"><div class="line">$ sudo apt-get install \</div>
+<div class="line">python3.8 \</div>
+<div class="line">python3.8-dev \</div>
+<div class="line">python3.8-venv</div>
+</div><!-- fragment --><p >If you get <code>Unable to locate package clang-format-8</code> then just use <code>clang-format</code>.</p>
+<h1>Build for Ubuntu</h1>
 <p >In a typical linux development environment, including Ubuntu, you can build the compiler with a simple command like this:</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>

@@ -1,9 +1,6 @@
 var namespaceonert_1_1backend_1_1basic =
 [
-    [ "train", "namespaceonert_1_1backend_1_1basic_1_1train.html", [
-      [ "genTensors", "namespaceonert_1_1backend_1_1basic_1_1train.html#a8d0639010af3a41d65e2e63dff7ef87b", null ],
-      [ "initConsts", "namespaceonert_1_1backend_1_1basic_1_1train.html#ae412022ce980e8c7851454afb5e8c362", null ]
-    ] ],
+    [ "train", "namespaceonert_1_1backend_1_1basic_1_1train.html", "namespaceonert_1_1backend_1_1basic_1_1train" ],
     [ "Allocator", "classonert_1_1backend_1_1basic_1_1_allocator.html", "classonert_1_1backend_1_1basic_1_1_allocator" ],
     [ "Block", "structonert_1_1backend_1_1basic_1_1_block.html", "structonert_1_1backend_1_1basic_1_1_block" ],
     [ "BumpPlanner", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", "classonert_1_1backend_1_1basic_1_1_bump_planner" ],

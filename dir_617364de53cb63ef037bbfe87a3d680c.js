@@ -25,7 +25,7 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "EmbeddingLookup.cc", "_embedding_lookup_8cc.html", null ],
     [ "ExpandDims.cc", "_expand_dims_8cc.html", null ],
     [ "Fill.cc", "_fill_8cc.html", null ],
-    [ "FullyConnected.cc", "_fully_connected_8cc.html", null ],
+    [ "FullyConnected.cc", "operation_2_fully_connected_8cc.html", null ],
     [ "FusedBatchNorm.cc", "_fused_batch_norm_8cc.html", null ],
     [ "Gather.cc", "_gather_8cc.html", null ],
     [ "HashtableLookup.cc", "_hashtable_lookup_8cc.html", null ],

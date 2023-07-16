@@ -8,6 +8,7 @@ var dir_1e5cac7970953e6021b25bbf03557597 =
     [ "dummyEnv-compile.cpp", "dummy_env-compile_8cpp.html", "dummy_env-compile_8cpp" ],
     [ "dummyV2-compile.cpp", "dummy_v2-compile_8cpp.html", "dummy_v2-compile_8cpp" ],
     [ "dummyV2-profile.cpp", "dummy_v2-profile_8cpp.html", "dummy_v2-profile_8cpp" ],
+    [ "dummyV3-profile.cpp", "dummy_v3-profile_8cpp.html", "dummy_v3-profile_8cpp" ],
     [ "help-compile.cpp", "help-compile_8cpp.html", "help-compile_8cpp" ],
     [ "help-infer.cpp", "help-infer_8cpp.html", "help-infer_8cpp" ],
     [ "help-profile.cpp", "help-profile_8cpp.html", "help-profile_8cpp" ]

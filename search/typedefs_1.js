@@ -6,10 +6,11 @@ var searchData=
   ['backendcontexts_3',['BackendContexts',['../namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62',1,'onert::backend']]],
   ['backendset_4',['BackendSet',['../namespaceonert_1_1exec.html#a54edf28856f9caa5c269b5004cd0ae82',1,'onert::exec']]],
   ['baseruntimegraph_5',['BaseRuntimeGraph',['../namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71',1,'luci_interpreter']]],
-  ['binaryopimplfloatfuncs_6',['BinaryOpImplFloatFuncs',['../namespacennfw_1_1cker_1_1optimized.html#ad3a3cb812bffb092ce5a4791b841b168',1,'nnfw::cker::optimized']]],
-  ['blobname_7',['BlobName',['../namespacecaffeimport.html#a84326098b4683452147f1a81ac3e4fca',1,'caffeimport']]],
-  ['blocklist_8',['BlockList',['../namespacecoco.html#a7164332029ef5afef25adcd1bdad1d83',1,'coco']]],
-  ['buffer_9',['Buffer',['../classonert_1_1base__loader_1_1_base_loader.html#a7688700fb1192b1afc9aa623d6889ae2',1,'onert::base_loader::BaseLoader::Buffer()'],['../classlocomotiv_1_1_node_data_impl.html#ab7ae87f1407241ce0920ec7381cc4a72',1,'locomotiv::NodeDataImpl::Buffer()'],['../structlocomotiv_1_1_node_data.html#a30ca06f4a350f4b0b5b3e958caa1351b',1,'locomotiv::NodeData::Buffer()'],['../namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c',1,'mpqsolver::core::Buffer()'],['../namespaceprunner.html#a64146d12a38648ed11f63f9ae31f997e',1,'prunner::Buffer()'],['../namespacerecord__minmax.html#a436fa9e67582bd0c9c1d18b500d3c1be',1,'record_minmax::Buffer()']]],
-  ['buffers_10',['Buffers',['../namespaceprunner.html#aa5212196f3110e7d24ec4ae5dc7eaeca',1,'prunner']]],
-  ['builtinoperator_11',['BuiltinOperator',['../classonert_1_1base__loader_1_1_base_loader.html#a345fbadc2b5de48741b8e3ac6d21a2e1',1,'onert::base_loader::BaseLoader']]]
+  ['basetensorregistry_6',['BaseTensorRegistry',['../namespaceonert_1_1backend_1_1builtin_1_1train.html#aebc5d388ed27881e60537803ec49e941',1,'onert::backend::builtin::train']]],
+  ['binaryopimplfloatfuncs_7',['BinaryOpImplFloatFuncs',['../namespacennfw_1_1cker_1_1optimized.html#ad3a3cb812bffb092ce5a4791b841b168',1,'nnfw::cker::optimized']]],
+  ['blobname_8',['BlobName',['../namespacecaffeimport.html#a84326098b4683452147f1a81ac3e4fca',1,'caffeimport']]],
+  ['blocklist_9',['BlockList',['../namespacecoco.html#a7164332029ef5afef25adcd1bdad1d83',1,'coco']]],
+  ['buffer_10',['Buffer',['../classonert_1_1base__loader_1_1_base_loader.html#a7688700fb1192b1afc9aa623d6889ae2',1,'onert::base_loader::BaseLoader::Buffer()'],['../classlocomotiv_1_1_node_data_impl.html#ab7ae87f1407241ce0920ec7381cc4a72',1,'locomotiv::NodeDataImpl::Buffer()'],['../structlocomotiv_1_1_node_data.html#a30ca06f4a350f4b0b5b3e958caa1351b',1,'locomotiv::NodeData::Buffer()'],['../namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c',1,'mpqsolver::core::Buffer()'],['../namespaceprunner.html#a64146d12a38648ed11f63f9ae31f997e',1,'prunner::Buffer()'],['../namespacerecord__minmax.html#a436fa9e67582bd0c9c1d18b500d3c1be',1,'record_minmax::Buffer()']]],
+  ['buffers_11',['Buffers',['../namespaceprunner.html#aa5212196f3110e7d24ec4ae5dc7eaeca',1,'prunner']]],
+  ['builtinoperator_12',['BuiltinOperator',['../classonert_1_1base__loader_1_1_base_loader.html#a345fbadc2b5de48741b8e3ac6d21a2e1',1,'onert::base_loader::BaseLoader']]]
 ];

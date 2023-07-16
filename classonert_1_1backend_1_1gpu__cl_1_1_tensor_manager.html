@@ -162,7 +162,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00030">30</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00030">30</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>  : _const_mgr{const_mgr}, _nonconst_mgr{nonconst_mgr}</div>
 <div class="line"><span class="lineno">   32</span>{</div>
 <div class="line"><span class="lineno">   33</span>  <span class="comment">// DO NOTHING</span></div>
@@ -212,7 +212,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00060">60</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00060">60</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keyword">auto</span> ind = _nonconst_mgr-&gt;addTensor(shape);</div>
 <div class="line"><span class="lineno">   63</span>  _ind_to_mgr.insert({ind, *_nonconst_mgr});</div>
@@ -240,7 +240,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00036">36</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00036">36</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{ _const_mgr-&gt;allocate(); }</div>
 </div><!-- fragment -->
 </div>
@@ -261,7 +261,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00038">38</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00038">38</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{ _nonconst_mgr-&gt;allocate(); }</div>
 </div><!-- fragment -->
 </div>
@@ -282,7 +282,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00080">80</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00080">80</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
 <div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (_ind_to_mgr.find(ind) == _ind_to_mgr.end())</div>
 <div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
@@ -332,7 +332,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00044">44</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00044">44</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
 <div class="line"><span class="lineno">   47</span>  assert(_ind_to_mgr.find(ind) == _ind_to_mgr.end());</div>
 <div class="line"><span class="lineno">   48</span> </div>
@@ -369,7 +369,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00094">94</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00094">94</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
 <div class="line"><span class="lineno">   96</span>  <span class="keywordflow">return</span> _const_mgr-&gt;tensors();</div>
 <div class="line"><span class="lineno">   97</span>}</div>
@@ -392,7 +392,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00040">40</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00040">40</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   40</span>{ _const_mgr-&gt;deallocate(); }</div>
 </div><!-- fragment -->
 </div>
@@ -413,7 +413,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00042">42</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00042">42</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>{ _nonconst_mgr-&gt;deallocate(); }</div>
 </div><!-- fragment -->
 </div>
@@ -452,7 +452,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00074">74</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00074">74</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
 <div class="line"><span class="lineno">   76</span>  assert(_ind_to_mgr.find(ind) != _ind_to_mgr.end());</div>
 <div class="line"><span class="lineno">   77</span>  _ind_to_mgr.at(ind).finishLifetime(ind);</div>
@@ -476,7 +476,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00104">104</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00104">104</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
 <div class="line"><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;it : _nonconst_mgr-&gt;tensors())</div>
 <div class="line"><span class="lineno">  107</span>    fn(it.first);</div>
@@ -503,7 +503,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00099">99</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00099">99</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">return</span> _nonconst_mgr-&gt;tensors();</div>
 <div class="line"><span class="lineno">  102</span>}</div>
@@ -526,7 +526,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00068">68</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00068">68</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
 <div class="line"><span class="lineno">   70</span>  assert(_ind_to_mgr.find(ind) != _ind_to_mgr.end());</div>
 <div class="line"><span class="lineno">   71</span>  _ind_to_mgr.at(ind).startLifetime(ind);</div>
@@ -550,7 +550,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00113">113</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html#l00113">113</a> of file <a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  114</span>{</div>
 <div class="line"><span class="lineno">  115</span>  <span class="comment">// NYI</span></div>
 <div class="line"><span class="lineno">  116</span>}</div>
@@ -559,7 +559,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>runtime/onert/backend/gpu_cl/<a class="el" href="gpu__cl_2_tensor_manager_8h_source.html">TensorManager.h</a></li>
-<li>runtime/onert/backend/gpu_cl/<a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a></li>
+<li>runtime/onert/backend/gpu_cl/<a class="el" href="gpu__cl_2_tensor_manager_8cc_source.html">TensorManager.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

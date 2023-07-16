@@ -13,5 +13,6 @@ var classonert_1_1exec_1_1train_1_1_trainable_executors =
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#aef14342fc1876873d52394dbbc3bf169", null ],
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1f55128046859e3f3548d2192c6892ab", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a2c1e93db707599f40373b46df24fabdc", null ],
-    [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a703e18868a43e28688a45dd168861e07", null ]
+    [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a703e18868a43e28688a45dd168861e07", null ],
+    [ "train", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#ac8cd6acb0d6c7cc272fb79099795555e", null ]
 ];

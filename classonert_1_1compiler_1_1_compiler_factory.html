@@ -149,7 +149,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   42</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
 <div class="line"><span class="lineno">   43</span>  <span class="comment">// Returing compiler for training</span></div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (training_info)</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, training_info);</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
 <div class="line"><span class="lineno">   46</span><span class="preprocessor">#else  </span><span class="comment">// ONERT_TRAIN</span></div>
 <div class="line"><span class="lineno">   47</span>  (void)training_info;</div>
 <div class="line"><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>

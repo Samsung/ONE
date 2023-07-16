@@ -91,7 +91,8 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1backend_1_1builtin_1
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Data Structures</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::builtin::train Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -107,7 +108,85 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html">KernelGenerator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html">TensorRegistry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a5933f504044cf33090bc50d88356be67"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a5933f504044cf33090bc50d88356be67">TrainableTensor</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html">basic::train::TrainableTensor</a></td></tr>
+<tr class="separator:a5933f504044cf33090bc50d88356be67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9478ea39cc20446d8516a48c157a5489"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a9478ea39cc20446d8516a48c157a5489">DerivativeTensor</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html">basic::Tensor</a></td></tr>
+<tr class="separator:a9478ea39cc20446d8516a48c157a5489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8583ce27d37ae52555f802e1e8e529a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a8583ce27d37ae52555f802e1e8e529a9">GradientTensor</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html">basic::Tensor</a></td></tr>
+<tr class="separator:a8583ce27d37ae52555f802e1e8e529a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebc5d388ed27881e60537803ec49e941"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#aebc5d388ed27881e60537803ec49e941">BaseTensorRegistry</a> = <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="namespaceonert_1_1backend_1_1builtin.html#a15573abc6a24ce80fffa3bd7b8e3dc6b">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a5933f504044cf33090bc50d88356be67">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a9478ea39cc20446d8516a48c157a5489">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a8583ce27d37ae52555f802e1e8e529a9">GradientTensor</a> &gt;</td></tr>
+<tr class="separator:aebc5d388ed27881e60537803ec49e941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="aebc5d388ed27881e60537803ec49e941" name="aebc5d388ed27881e60537803ec49e941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebc5d388ed27881e60537803ec49e941">&#9670;&#160;</a></span>BaseTensorRegistry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#aebc5d388ed27881e60537803ec49e941">onert::backend::builtin::train::BaseTensorRegistry</a> = typedef <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">backend::train::PortableTensorRegistryTemplate</a>&lt;<a class="el" href="namespaceonert_1_1backend_1_1builtin.html#a15573abc6a24ce80fffa3bd7b8e3dc6b">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a5933f504044cf33090bc50d88356be67">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a9478ea39cc20446d8516a48c157a5489">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a8583ce27d37ae52555f802e1e8e529a9">GradientTensor</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00035">35</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+
+</div>
+</div>
+<a id="a9478ea39cc20446d8516a48c157a5489" name="a9478ea39cc20446d8516a48c157a5489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9478ea39cc20446d8516a48c157a5489">&#9670;&#160;</a></span>DerivativeTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a9478ea39cc20446d8516a48c157a5489">onert::backend::builtin::train::DerivativeTensor</a> = typedef <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html">basic::Tensor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
+
+</div>
+</div>
+<a id="a8583ce27d37ae52555f802e1e8e529a9" name="a8583ce27d37ae52555f802e1e8e529a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8583ce27d37ae52555f802e1e8e529a9">&#9670;&#160;</a></span>GradientTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a8583ce27d37ae52555f802e1e8e529a9">onert::backend::builtin::train::GradientTensor</a> = typedef <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html">basic::Tensor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html#l00033">33</a> of file <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
+
+</div>
+</div>
+<a id="a5933f504044cf33090bc50d88356be67" name="a5933f504044cf33090bc50d88356be67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5933f504044cf33090bc50d88356be67">&#9670;&#160;</a></span>TrainableTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#a5933f504044cf33090bc50d88356be67">onert::backend::builtin::train::TrainableTensor</a> = typedef <a class="el" href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html">basic::train::TrainableTensor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
