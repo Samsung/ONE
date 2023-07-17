@@ -18,6 +18,7 @@
 #define __ONERT_COMPILER_TRAIN_TRAINING_INFO_H__
 
 #include "ir/Index.h"
+#include "exec/train/optimizer/OptimizerCode.h"
 
 namespace onert
 {
@@ -29,6 +30,13 @@ namespace train
 struct LossInfo
 {
   // TODO Add members for loss
+};
+
+struct OptimizerInfo
+{
+  exec::train::optimizer::OptimizerCode optim_code;
+  float learning_rate;
+  // TODO Add properties
 };
 
 class TrainingInfo
@@ -45,9 +53,12 @@ public:
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   const LossInfo &lossInfo() const { return _loss_info; }
   void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
+  const OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
+  void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
 
 private:
   LossInfo _loss_info;
+  OptimizerInfo _optimizer_info;
   uint32_t _batch_size;
 };
 
