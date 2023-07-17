@@ -1156,6 +1156,17 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 
   try
   {
+    for (uint32_t i = 0; i < getInputSize(); ++i)
+    {
+      auto info = _nnpkg->inputInfo(i);
+      onert::ir::Shape new_shape(info.shape());
+      // TODO Consider batch size index
+      if (new_shape.dim(0) != 1)
+        throw std::runtime_error("the first dim is not 1. It is not supported yet.");
+      new_shape.dim(0) = training_info.batchSize();
+      _nnpkg->changeInputShape(i, new_shape);
+    }
+
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
     _nnpkg.reset();
