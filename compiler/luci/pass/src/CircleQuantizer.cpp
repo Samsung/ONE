@@ -439,14 +439,14 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qwmm_supported_granularity));
 
-    for (auto dtype : input_type_vec)
+    for (const auto &dtype : input_type_vec)
     {
       if (!in_array(to_lower_case(dtype), qwmm_supported_input_type))
         throw std::runtime_error("Unsupported input type. List of supported input types: " +
                                  to_string(qwmm_supported_input_type));
     }
 
-    for (auto dtype : output_type_vec)
+    for (const auto &dtype : output_type_vec)
     {
       if (!in_array(to_lower_case(dtype), qwmm_supported_output_type))
         throw std::runtime_error("Unsupported output type. List of supported output types: " +
