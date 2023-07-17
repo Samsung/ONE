@@ -30,10 +30,7 @@ public:
 public:
   tflite::BuiltinOperator code(void) const override { return tflite::BuiltinOperator_HARD_SWISH; }
 
-  tflite::BuiltinOptions type(void) const override
-  {
-    return tflite::BuiltinOptions_HardSwishOptions;
-  }
+  tflite::BuiltinOptions type(void) const override { return tflite::BuiltinOptions_NONE; }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 

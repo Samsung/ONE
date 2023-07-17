@@ -18,9 +18,7 @@
 
 flatbuffers::Offset<void> HardSwishChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
-  tflite::HardSwishOptionsBuilder options_builder{fbb};
-
-  return options_builder.Finish().Union();
+  return flatbuffers::Offset<void>();
 }
 
 std::unique_ptr<OpChef> HardSwishChefFactory::create(const tflchef::Operation *operation) const
