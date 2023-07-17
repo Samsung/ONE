@@ -200,5 +200,11 @@ ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
   return output_desc->info.shape();
 }
 
+size_t Execution::getInputTotalSize(ir::IOIndex ind) const
+{
+  // TODO Support dynamic shape
+  return _executors->inputInfo(ind).total_size();
+}
+
 } // namespace exec
 } // namespace onert
