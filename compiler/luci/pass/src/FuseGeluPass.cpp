@@ -96,19 +96,7 @@ public:
   }
 
 public:
-  bool matched();
-
-public:
-  luci::CircleNode *_ifm = nullptr;
-  luci::CircleMul *_mul_sqrt = nullptr;
-  luci::CircleCustom *_erf = nullptr;
-  luci::CircleCustomOut *_erf_out = nullptr;
-  luci::CircleAdd *_add_one = nullptr;
-  luci::CircleMul *_mul = nullptr;
-  luci::CircleMul *_mul_half = nullptr;
-  luci::CircleConst *_const_sqrt = nullptr;
-  luci::CircleConst *_const_one = nullptr;
-  luci::CircleConst *_const_half = nullptr;
+  bool matched() override;
 };
 
 #define CHECK_OR_FALSE(condition) \
