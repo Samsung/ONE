@@ -49,7 +49,6 @@
 #include "BuildBuiltinOptions/GeluOptions.h"
 #include "BuildBuiltinOptions/GreaterOptions.h"
 #include "BuildBuiltinOptions/GreaterEqualOptions.h"
-#include "BuildBuiltinOptions/HardSwishOptions.h"
 #include "BuildBuiltinOptions/IfOptions.h"
 #include "BuildBuiltinOptions/L2NormalizeOptions.h"
 // L2Pool2D uses Pool2DOptions
