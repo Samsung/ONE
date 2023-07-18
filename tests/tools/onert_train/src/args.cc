@@ -212,7 +212,10 @@ void Args::Initialize(void)
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
     ("learning_rate", po::value<float>()->default_value(1.0e-4)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 1.0e-4)")
-    ("loss", po::value<std::string>()->default_value("mse")->notifier([&] (const auto &v) { _loss_function = v; }), "Loss function name (default: mse)")
+    ("loss", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _loss_type = v; }),
+        "Loss type\n"
+        "0: MEAN_SQUARED_ERROR (default)\n"
+        "1: CATEGORICAL_CROSSENTROPY\n")
     ("optimizer", po::value<std::string>()->default_value("sgd")->notifier([&] (const auto &v) { _optimizer = v; }), "Optimizer name (default: sgd)")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
