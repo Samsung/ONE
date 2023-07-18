@@ -29,10 +29,8 @@ namespace train
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<TensorRegistry> &deriv_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
-  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _deriv_tensor_reg{deriv_tensor_reg},
-    _external_context(external_context)
+  : KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg}, _external_context(external_context)
 {
 }
 
