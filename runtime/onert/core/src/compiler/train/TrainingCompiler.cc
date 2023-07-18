@@ -139,8 +139,12 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   for (auto &&pair : trainable_subgraphs)
   {
     auto trainable_subg = pair.second;
+    auto subg_index = pair.first;
 
-    // TODO Apply LossInsertionPass
+    compiler::pass::PassRunner{}
+      .append(std::make_unique<train::pass::LossInsertionPass>(*trainable_subg, &_training_info,
+                                                               subg_index))
+      .run();
   }
 
   /***************************************************
