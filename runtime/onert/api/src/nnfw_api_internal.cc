@@ -1186,14 +1186,21 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     onert::compiler::train::LossInfo loss_info;
     loss_info.type = convertLossType(tinfo.loss);
 
+    auto convertOptType = [](const int &type) {
+      if (type == NNFW_TRAIN_OPTIMIZER_SGD)
+        return onert::exec::train::optimizer::OptimizerCode::SGD;
+      else if (type == NNFW_TRAIN_OPTIMIZER_ADAM)
+        return onert::exec::train::optimizer::OptimizerCode::Adam;
+      else
+        throw std::runtime_error("not supported optimizer type");
+    };
+    onert::compiler::train::OptimizerInfo opt_info;
+    opt_info.learning_rate = tinfo.learning_rate;
+    opt_info.optim_code = convertOptType(tinfo.opt);
+
     onert::compiler::train::TrainingInfo training_info;
     training_info.setBatchSize(tinfo.batch_size);
     training_info.setLossInfo(loss_info);
-
-    // TODO Set a correct optimizer type and learning_rate
-    onert::compiler::train::OptimizerInfo opt_info;
-    opt_info.optim_code = onert::exec::train::optimizer::OptimizerCode::SGD;
-    opt_info.learning_rate = 0.01;
     training_info.setOptimizerInfo(opt_info);
 
     auto compiler =
