@@ -27,4 +27,11 @@ endif()
 
 add_compile_options(-fno-exceptions)
 add_compile_options(-Os)
+
+# AFAIK, this will enable leak sanitizer, too
+if(ENABLE_SANITIZER)
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
+endif(ENABLE_SANITIZER)
+
 add_subdirectory(src)
