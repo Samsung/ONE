@@ -56,8 +56,8 @@ public:
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
     auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb);
 
-    context->kernel_gen =
-      std::make_shared<train::KernelGenerator>(tgraph, tr, context->external_context());
+    context->kernel_gen = std::make_shared<train::KernelGenerator>(
+      tgraph, tr, context->external_context(), tdata.optimizer);
     return context;
   }
 

@@ -27,6 +27,7 @@
 #include "compiler/LoweredGraph.h"
 #ifdef ONERT_TRAIN
 #include "compiler/train/LoweredTrainableGraph.h"
+#include "exec/train/optimizer/Optimizer.h"
 #endif // ONERT_TRAIN
 #include "exec/IExecutors.h"
 
@@ -61,7 +62,8 @@ public:
   // TODO Unify create()
   exec::IExecutor *create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
-                          const ExecutorFactoryArgs &args);
+                          const ExecutorFactoryArgs &args,
+                          const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer);
 #endif // ONERT_TRAIN
 
 private:
@@ -93,7 +95,8 @@ private:
   static exec::IExecutor *
   createTrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
-                          const ExecutorFactoryArgs &args);
+                          const ExecutorFactoryArgs &args,
+                          const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer);
 #endif // ONERT_TRAIN
 
 private:
