@@ -202,6 +202,14 @@ void OperationDumper::visit(const L2Normalization &node) { dumpOpGeneric(node); 
 
 void OperationDumper::visit(const LocalResponseNormalization &node) { dumpOpGeneric(node); }
 
+void OperationDumper::visit(const Loss &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << " - Inputs : Prediction(" << node.getInputs().at(Loss::Input::Y_PRED) << ") True("
+               << node.getInputs().at(Loss::Input::Y_TRUE) << ")" << std::endl;
+  VERBOSE(LIR) << " - Outputs : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const LSTM &node)
 {
   VERBOSE(LIR) << "* " << node.name() << std::endl;
