@@ -1,3 +1,13 @@
+one (1.24.0) bionic; urgency=medium
+
+  * Introduce _one-import-onnx_ extension interface
+  * _onecc_ supports profiling of multiple backends with a single cfg file
+  * Enable more Quantize operator: FloorMod, Squeeze
+  * _visq_ supports multi-out nodes
+  * _onecc_ introduces `dynamic_batch_to_single_batch option` option.
+
+ -- seongwoo <seongwoo@sw>  Thu, 18 Jul 2023 14:10:22 +0900
+
 one (1.23.0) bionic; urgency=medium
 
   * Support more Op(s): GeLU
