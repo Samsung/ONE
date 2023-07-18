@@ -1,3 +1,29 @@
+# set target platform to run
+if(NOT TARGET_ARCH OR "${TARGET_ARCH}" STREQUAL "")
+  string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} TARGET_ARCH)
+else()
+  string(TOLOWER ${TARGET_ARCH} TARGET_ARCH)
+endif()
+
+# If TARGET_ARCH is arm64 change ARCH name to aarch64
+if("${TARGET_ARCH}" STREQUAL "arm64")
+  set(TARGET_ARCH "aarch64")
+endif()
+
+if("${TARGET_ARCH}" STREQUAL "armv8-m")
+  set(TARGET_ARCH_BASE "arm")
+elseif("${TARGET_ARCH}" STREQUAL "armv7-r")
+  set(TARGET_ARCH_BASE "arm")
+elseif("${TARGET_ARCH}" STREQUAL "armv7em")
+  set(TARGET_ARCH_BASE "arm")
+elseif("${TARGET_ARCH}" STREQUAL "armv7l")
+  set(TARGET_ARCH_BASE "arm")
+elseif("${TARGET_ARCH}" STREQUAL "armv7hl")
+  set(TARGET_ARCH_BASE "arm")
+elseif("${TARGET_ARCH}" STREQUAL "aarch64")
+  set(TARGET_ARCH_BASE "aarch64")
+endif()
+
 macro(initialize_pal)
     nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
     nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.8.0 QUIET)
@@ -44,7 +70,7 @@ macro(add_pal_to_target TGT)
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
 
-    if(BUILD_ARM32_NEON)
+    if(TARGET_ARCH_BASE STREQUAL "arm")
         # NOTE may need to revise this list for version upgrade
         set(PAL_SOURCES ${PAL_SOURCES}
                 ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc
@@ -67,9 +93,9 @@ macro(add_pal_to_target TGT)
                 ${TensorFlowRuySource_DIR}/ruy/wait.cc
                 ${TensorFlowRuySource_DIR}/ruy/kernel_arm32.cc
                 )
-    endif(BUILD_ARM32_NEON)
+    endif(TARGET_ARCH_BASE STREQUAL "arm")
 
-    if(BUILD_ARM64_NEON)
+    if(TARGET_ARCH_BASE STREQUAL "aarch64")
         # NOTE may need to revise this list for version upgrade
         set(PAL_SOURCES ${PAL_SOURCES}
                 ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/optimized/neon_tensor_utils.cc
@@ -92,7 +118,7 @@ macro(add_pal_to_target TGT)
                 ${TensorFlowRuySource_DIR}/ruy/wait.cc
                 ${TensorFlowRuySource_DIR}/ruy/kernel_arm64.cc
                 )
-    endif(BUILD_ARM64_NEON)
+    endif(TARGET_ARCH_BASE STREQUAL "aarch64")
 
     add_library(luci_interpreter_linux_pal STATIC ${PAL_SOURCES})
     set_target_properties(luci_interpreter_linux_pal PROPERTIES POSITION_INDEPENDENT_CODE ON)
