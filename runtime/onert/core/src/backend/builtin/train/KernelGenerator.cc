@@ -59,8 +59,11 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  auto fn =
-    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+  std::vector<ITensor *> output_deriv_tensors{getDerivativeTensor(output_index)};
+  std::vector<ITensor *> input_deriv_tensors{getDerivativeTensor(input_index)};
+
+  auto fn = std::make_unique<kernel::PermuteLayer>(
+    input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);
 
   _return_fn = std::move(fn);
 }
