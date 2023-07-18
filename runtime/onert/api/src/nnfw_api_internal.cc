@@ -1154,6 +1154,12 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
   training_info.setBatchSize(tinfo.batch_size);
   // TODO Set Loss function
 
+  // TODO Set a correct optimizer type and learning_rate
+  onert::compiler::train::OptimizerInfo opt_info;
+  opt_info.optim_code = onert::exec::train::optimizer::OptimizerCode::SGD;
+  opt_info.learning_rate = 0.01;
+  training_info.setOptimizerInfo(opt_info);
+
   try
   {
     for (uint32_t i = 0; i < getInputSize(); ++i)
