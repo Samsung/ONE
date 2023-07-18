@@ -55,7 +55,7 @@ public:
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
-  const std::string &getLossFunction(void) const { return _loss_function; }
+  const int getLossType(void) const { return _loss_type; }
   const std::string &getOptimizer(void) const { return _optimizer; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
@@ -78,7 +78,7 @@ private:
   int _epoch;
   int _batch_size;
   float _learning_rate;
-  std::string _loss_function;
+  int _loss_type;
   std::string _optimizer;
   bool _print_version = false;
   int _verbose_level;
