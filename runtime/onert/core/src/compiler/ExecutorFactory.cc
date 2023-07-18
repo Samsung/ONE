@@ -695,11 +695,19 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         assert(gen_index == op_index);
       });
 
+    // Remove outputs of whole graph from external_operands
+    auto external_operands = data.external_operands;
+    for (const auto &index : lowered_graph->trainable_graph().getOutputs())
+    {
+      if (external_operands.contains(index))
+        external_operands.remove(index);
+    }
+
     // Set trainable context data
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
-    tdata.external_operands = std::move(data.external_operands);
+    tdata.external_operands = std::move(external_operands);
     tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
