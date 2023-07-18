@@ -28,12 +28,12 @@ namespace backend
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors()
+backend::ITensorRegistry *BackendContext::genTensors()
 {
   return basic::train::genTensors(*this, _tensor_builder);
 }
 
-ITensorRegistry *BackendContext::genTrainingTensors()
+backend::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   genDerivativeTensors();
 

@@ -33,6 +33,8 @@ namespace backend
 namespace train
 {
 
+// TODO Unify TensorBuilder
+// TODO Unify TensorRegistry
 class Backend : public ::onert::backend::Backend, public backend::train::ITrainableBackend
 {
 public:
@@ -49,9 +51,9 @@ public:
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
     const auto &tgraph = *tdata.tgraph;
-    auto tr = std::make_shared<basic::TensorRegistry>();
+    auto tr = std::make_shared<TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
-    auto deriv_tr = std::make_shared<basic::TensorRegistry>();
+    auto deriv_tr = std::make_shared<TensorRegistry>();
     auto deriv_tb = std::make_shared<TensorBuilder>(deriv_tr, "Bump");
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
     auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb,

@@ -36,25 +36,27 @@ public:
   TensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id);
   virtual ~TensorManager() = default;
 
-  void allocateNonconsts();
+  void allocateNonConstTensors();
   void allocateTrainableTensors();
-  void deallocateNonconsts();
+  void allocateDerivativeTensors();
+  void allocateGradientTensors();
+  // TODO Add member functions to deallocate tensors
 
-  // NOTE For now, whether or not to build operands to trainable tensor depends on whether
-  //      the corresponding operand is constant.
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout, bool as_const);
-
-  void claimPlan(const ir::OperandIndex &ind, uint32_t size);
-  void releasePlan(const ir::OperandIndex &ind);
-
-  void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
+  void claimNonConstPlan(const ir::OperandIndex &ind);
+  void releaseNonConstPlan(const ir::OperandIndex &ind);
+  void claimTrainablePlan(const ir::OperandIndex &ind);
+  void releaseTrainablePlan(const ir::OperandIndex &ind);
+  void claimDerivativePlan(const ir::OperandIndex &ind);
+  void releaseDerivativePlan(const ir::OperandIndex &ind);
+  void claimGradientPlan(const ir::OperandIndex &ind);
+  void releaseGradientPlan(const ir::OperandIndex &ind);
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   std::unique_ptr<MemoryManager> _trainable_mgr;
+  std::unique_ptr<MemoryManager> _derivative_mgr;
+  std::unique_ptr<MemoryManager> _gradient_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
-  ir::OperandIndexMap<bool> _as_constants;
 };
 
 } // namespace train

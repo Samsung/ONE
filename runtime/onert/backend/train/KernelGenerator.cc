@@ -67,7 +67,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
     {
       assert(portable_tensor->layout() == ir::Layout::NHWC);
     }
-    auto tensor = _tensor_reg->getNativeTensor(ind);
+    auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
     {
       tensor->increase_ref();
@@ -77,8 +77,8 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 }
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<basic::TensorRegistry> &deriv_tensor_reg,
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<TensorRegistry> &deriv_tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg}, _deriv_tensor_reg{deriv_tensor_reg},
