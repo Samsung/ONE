@@ -159,7 +159,7 @@ bool GeluPattern1::matched()
 class FuseGelu final
 {
 public:
-  FuseGelu(const GeluPattern1 &p) : _p(p) {}
+  FuseGelu(const GeluPatternBase *p) : _p(p) {}
 
 public:
   void apply(void);
@@ -168,7 +168,7 @@ private:
   luci::CircleGelu *create_gelu(loco::Graph *graph);
 
 private:
-  const GeluPattern1 &_p;
+  const GeluPatternBase *_p;
 };
 
 luci::CircleGelu *FuseGelu::create_gelu(loco::Graph *graph)
@@ -176,27 +176,27 @@ luci::CircleGelu *FuseGelu::create_gelu(loco::Graph *graph)
   assert(graph);
 
   auto gelu = graph->nodes()->create<luci::CircleGelu>();
-  gelu->features(_p._ifm);
+  gelu->features(_p->_ifm);
   // TODO Support approximate = True pattern
   gelu->approximate(false);
-  gelu->name(_p._mul_half->name() + "_gelu");
+  gelu->name(_p->_mul_half->name() + "_gelu");
   return gelu;
 }
 
 void FuseGelu::apply()
 {
-  auto graph = _p._mul_half->graph();
+  auto graph = _p->_mul_half->graph();
 
   auto gelu = create_gelu(graph);
 
   // set origin
   std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
-    luci::get_origin(_p._mul_sqrt), luci::get_origin(_p._erf), luci::get_origin(_p._add_one),
-    luci::get_origin(_p._mul), luci::get_origin(_p._mul_half)};
+    luci::get_origin(_p->_mul_sqrt), luci::get_origin(_p->_erf), luci::get_origin(_p->_add_one),
+    luci::get_origin(_p->_mul), luci::get_origin(_p->_mul_half)};
 
   luci::add_origin(gelu, luci::composite_origin(origin_vec));
 
-  replace(_p._mul_half).with(gelu);
+  replace(_p->_mul_half).with(gelu);
 }
 
 } // namespace
@@ -208,10 +208,11 @@ bool fuse_gelu(luci::CircleMul *mul)
 {
   assert(mul);
 
+  // check first pattern
   GeluPattern1 pattern(mul);
   if (pattern.matched())
   {
-    FuseGelu fuse(pattern);
+    FuseGelu fuse(&pattern);
     fuse.apply();
     return true;
   }
