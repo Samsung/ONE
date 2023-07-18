@@ -39,6 +39,8 @@ using BaseTensorRegistry =
 class TensorRegistry : public backend::train::ITensorRegistry
 {
 public:
+  TensorRegistry() : _base_reg{new BaseTensorRegistry} {}
+
   ITensor *getITensor(const ir::OperandIndex &index) override
   {
     auto base_tensor = _base_reg->getITensor(index);

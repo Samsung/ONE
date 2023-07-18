@@ -28,25 +28,22 @@ namespace builtin
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors()
+backend::ITensorRegistry *BackendContext::genTensors()
 {
   return basic::train::genTensors(*this, _tensor_builder);
 }
 
-ITensorRegistry *BackendContext::genTrainingTensors()
+backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
-  genDerivativeTensors();
-
-  // TODO Generate training-related tensors except for derivative
-
-  return deriv_tensor_registry().get();
+  // For now, there is no need to generate tensors for backwarding.
+  return tensor_registry().get();
 }
 
 void BackendContext::genDerivativeTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _deriv_tensor_builder;
-  auto tensor_reg = deriv_tensor_registry();
+  auto tensor_builder = _tensor_builder;
+  auto tensor_reg = tensor_registry();
 
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
     if (external_operands().contains(ind))
