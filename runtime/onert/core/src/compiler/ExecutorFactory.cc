@@ -726,7 +726,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
   base_backend_contexts.clear();
 
-  train::TensorRegistries tensor_regs{tbackend_contexts, false};
+  train::TensorRegistries tensor_regs{tbackend_contexts, true};
 
   initializeSubgraphIOTensors(
     *lowered_graph, tbackend_contexts,
