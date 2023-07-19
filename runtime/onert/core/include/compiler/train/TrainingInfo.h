@@ -19,6 +19,7 @@
 
 #include "ir/Index.h"
 #include "exec/train/optimizer/OptimizerCode.h"
+#include "ir/operation/Loss.h"
 
 namespace onert
 {
@@ -29,6 +30,7 @@ namespace train
 
 struct LossInfo
 {
+  ir::operation::Loss::Type type;
   // TODO Add members for loss
 };
 
