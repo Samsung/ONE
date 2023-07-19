@@ -79,7 +79,9 @@ void StaticDerivativeShapeInferer::setShape(const ir::OperandIndex &index, const
   {
     // NOTE This code assumes the types are always the same, but I'm not sure.
     const auto &type = tgraph.operands().at(index).typeInfo();
-    tgraph.addDerivative(index, std::make_unique<ir::Operand>(shape, type));
+    const auto new_index = tgraph.addDerivative(index, std::make_unique<ir::Operand>(shape, type));
+    assert(new_index == index);
+    UNUSED_RELEASE(new_index);
   }
 }
 
@@ -98,9 +100,17 @@ void StaticDerivativeShapeInferer::visit(const ir::train::operation::Loss &)
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Permute &)
+void StaticDerivativeShapeInferer::visit(const ir::train::operation::Permute &op)
 {
-  // NYI
+  const auto &derivatives = _lowered_subg->trainable_graph().derivatives();
+
+  const auto &output_idx = op.getOutputs().at(0);
+  const auto &output = derivatives.at(output_idx);
+
+  // re-sizing input derivative shape
+  const auto &input_idx = op.getInputs().at(0);
+  const auto &new_shape = output.info().shape();
+  setShape(input_idx, new_shape);
 }
 
 void StaticDerivativeShapeInferer::visit(const ir::train::operation::Pool2D &)
