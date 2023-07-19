@@ -174,6 +174,11 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 // Essential APIs for training
 //////////////////////////////////////////////
+typedef enum
+{
+  NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR = 0,
+  NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY = 1,
+} NNFW_TRAIN_LOSS;
 
 /**
  * @brief Training information to prepare training
@@ -186,6 +191,8 @@ typedef struct nnfw_train_info
   float learning_rate = 0.001f;
   /** Batch size */
   uint32_t batch_size = 1;
+  /** loss type */
+  NNFW_TRAIN_LOSS loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
 } nnfw_train_info;
 
 /**
