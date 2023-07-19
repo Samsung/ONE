@@ -71,7 +71,26 @@ FunctionMap BackendContext::genKernels()
     ret.emplace_back(op_ind, std::move(fn_seq));
   }
 
-  basic::train::initConsts(*this);
+  // Initialize TrainableTensors
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (external_operands().contains(ind) || !operand.isConstant())
+        return;
+
+      auto tensor = tensor_registry()->getNativeITensor(ind);
+      assert(tensor != nullptr);
+
+      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
+
+      auto data = operand.shareData();
+      assert(data && data->base());
+      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
+
+      if (trainable_tensor == nullptr)
+        throw std::runtime_error{"This tensor is not trainable tensor"};
+
+      trainable_tensor->fillBuffer(data);
+    });
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)

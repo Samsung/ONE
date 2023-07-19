@@ -60,12 +60,6 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
   return ctx.tensor_registry().get();
 }
 
-inline void initConsts(backend::train::TrainableBackendContext &ctx)
-{
-  basic::initConsts(ctx.trainable_graph()->operands(), ctx.external_operands(),
-                    ctx.tensor_registry().get());
-}
-
 } // namespace train
 } // namespace basic
 } // namespace backend
