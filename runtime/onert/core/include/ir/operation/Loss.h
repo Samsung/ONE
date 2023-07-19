@@ -41,6 +41,7 @@ public:
   //      from the object of this class, we have to consider whether to change this enum class.
   enum class Type
   {
+    MEAN_SQUARED_ERROR,
     CATEGORICAL_CROSSENTROPY
   };
 
@@ -48,7 +49,7 @@ public:
   {
     Type op_type;
     // TODO Add more params if necessary
-    Param() : op_type(Type::CATEGORICAL_CROSSENTROPY) {}
+    Param() : op_type(Type::MEAN_SQUARED_ERROR) {}
   };
 
 public:
