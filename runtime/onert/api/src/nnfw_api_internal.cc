@@ -1237,15 +1237,32 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Check index is valid: [0, getInputSize())
+  if (index >= getInputSize())
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : index is out of range" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // Maybe it cannot use general execute->setInput()
-  // because it needs to set batch input
-  (void)index;
-  (void)input_tensorinfo;
+  if (input_tensorinfo != nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : not supporeted to change tensorinfo"
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+  try
+  {
+    auto ind = onert::ir::IOIndex(index);
+    auto size = _execution->getInputTotalSize(ind);
+    _execution->setInput(ind, input, size);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expected,
