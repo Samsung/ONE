@@ -26,6 +26,7 @@
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/QuantizeWeightsPass.h"
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
@@ -559,8 +560,15 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     if (!in_array(to_lower_case(granularity), qw_supported_granularity))
       throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
                                to_string(qw_supported_granularity));
+    auto ctx = std::make_unique<luci::QuantizeWeightsPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      ctx->granularity = str_to_granularity(granularity);
+    }
+    luci::QuantizeWeightsPass weights_quantizer(std::move(ctx));
 
-    throw std::runtime_error("QuantizeWeights is not supported yet");
+    weights_quantizer.run(g);
   }
 
   // Requantize
