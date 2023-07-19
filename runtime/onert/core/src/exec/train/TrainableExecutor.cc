@@ -136,7 +136,7 @@ void TrainableExecutor::forwardImpl(bool training)
   }
 }
 
-void TrainableExecutor::backward(const IODescription &desc)
+void TrainableExecutor::backward(const IODescription &desc, uint32_t training_step)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -167,12 +167,12 @@ void TrainableExecutor::backward(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
-  backwardImpl();
+  backwardImpl(training_step);
 
   // TODO Update output(s) desc if desc has dynamic input
 }
 
-void TrainableExecutor::backwardImpl()
+void TrainableExecutor::backwardImpl(uint32_t training_step)
 {
   if (_tracing_ctx)
   {
@@ -190,7 +190,7 @@ void TrainableExecutor::backwardImpl()
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
       auto &tn_seq = code.tn_seq;
-      tn_seq->backward();
+      tn_seq->backward(training_step);
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -206,7 +206,7 @@ void TrainableExecutor::backwardImpl()
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
       auto &tn_seq = code.tn_seq;
-      tn_seq->backward();
+      tn_seq->backward(training_step);
     }
   }
 }

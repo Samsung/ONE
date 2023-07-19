@@ -50,7 +50,7 @@ void PermuteLayer::optimize()
 
 void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
 
-void PermuteLayer::backward()
+void PermuteLayer::backward(uint32_t)
 {
   for (uint32_t i = 0; i < _output_deriv_tensors.size(); ++i)
   {

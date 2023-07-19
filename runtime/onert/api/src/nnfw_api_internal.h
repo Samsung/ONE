@@ -200,6 +200,9 @@ private:
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
+#ifdef ONERT_TRAIN
+  uint32_t _training_step{0};
+#endif // ONERT_TRAIN
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

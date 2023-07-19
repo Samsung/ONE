@@ -69,7 +69,14 @@ public:
 
   void execute(const IODescription &desc) override;
 
-  void train(const IODescription &desc);
+  /**
+   * @brief Train
+   *
+   * @param desc          IO information
+   * @param training_step The number of iterations of an training process.
+   *                      In other words, the number of gradient update.
+   */
+  void train(const IODescription &desc, uint32_t training_step);
 
 private:
   // TODO Append model index to ModelIndex

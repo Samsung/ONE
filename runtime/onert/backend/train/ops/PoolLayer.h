@@ -48,7 +48,7 @@ public:
                  const uint32_t kernelHeight, const ir::Activation activation,
                  IPortableTensor *output, const PoolType op_type);
   void forward(bool training) override;
-  void backward() override;
+  void backward(uint32_t training_step) override;
 };
 
 } // namespace ops

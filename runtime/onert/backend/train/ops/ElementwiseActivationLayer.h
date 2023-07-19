@@ -46,7 +46,7 @@ public:
                  IPortableTensor *deriv_input, const IPortableTensor *deriv_output, float alpha,
                  float beta, ElementwiseActivationType op_type);
   void forward(bool training) override;
-  void backward() override;
+  void backward(uint32_t) override;
 
 private:
   IPortableTensor *_deriv_input;

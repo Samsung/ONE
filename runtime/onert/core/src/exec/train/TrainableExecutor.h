@@ -60,7 +60,7 @@ public:
                const std::vector<backend::IPortableTensor *> &outputs) override;
 
   void forward(const IODescription &desc, bool training);
-  void backward(const IODescription &desc);
+  void backward(const IODescription &desc, uint32_t training_step);
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
@@ -84,7 +84,7 @@ public:
 
 private:
   void forwardImpl(bool training);
-  void backwardImpl();
+  void backwardImpl(uint32_t training_step);
 
 private:
   std::vector<compiler::train::TrainableCodeAndInfo> _code;
