@@ -193,15 +193,13 @@ int main(const int argc, char **argv)
         // prepare input
         for (uint32_t i = 0; i < num_inputs; ++i)
         {
-          NNPR_ENSURE_STATUS(
-            nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+          NNPR_ENSURE_STATUS(nnfw_train_set_input(session, i, input_data[i].data(), nullptr));
         }
 
         // prepare output
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
-          NNPR_ENSURE_STATUS(
-            nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+          NNPR_ENSURE_STATUS(nnfw_train_set_expected(session, i, expected_data[i].data(), nullptr));
         }
 
         // train
