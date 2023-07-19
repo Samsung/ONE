@@ -14,14 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_PATH="$(cd ${MY_PATH}/../../ && pwd)"
+CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_PATH="$(cd ${CURRENT_PATH}/../../ && pwd)"
 
 # Install path on CI
-INSTALL_PATH=$ROOT_PATH/Product/out
+INSTALL_PATH=${INSTALL_PATH:-$ROOT_PATH}
+PATH=$INSTALL_PATH/bin:$PATH
 TEST_CACHE_PATH=$INSTALL_PATH/test/cache
 
-function prepare_test_model()
+function PrepareTestModel()
 {
   # Model download server setting
   if [[ -z "${MODELFILE_SERVER}" ]]; then
@@ -29,7 +30,7 @@ function prepare_test_model()
   else
     echo "Model Server: ${MODELFILE_SERVER}"
   fi
-  $INSTALL_PATH/test/onert-test prepare-model --cachedir=$TEST_CACHE_PATH
+  onert-test prepare-model --cachedir=$TEST_CACHE_PATH
 }
 
 function get_result_of_benchmark_test()
@@ -58,4 +59,84 @@ function print_with_dots()
     padlength=$((PRINT_WIDTH- ${#MSG}))
     printf '%s' "$MSG"
     printf '%*.*s ' 0 $padlength "$pad"
+}
+
+# $1: (required) backend
+# $2: (required) framework list file relative path from nnfw root directory
+#                pass empty string if there is no skiplist
+# $3: (required) relative path to report from nnfw root directory
+function TFLiteModelVerification()
+{
+  [[ $# -ne 3 ]] && echo "Invalid function argument setting" && exit 1
+
+  export BACKENDS=$1
+  if [[ "$2" == "" ]]; then
+    onert-test verify-tflite \
+      --reportdir=$3
+  else
+    onert-test verify-tflite \
+      --list=$2 \
+      --reportdir=$3
+  fi
+  unset BACKENDS
+}
+
+# $1: (required) backend
+# $2: (required) nnapi gtest skiplist file relative path from nnfw root directory
+#                pass empty string if there is no test list
+# $3: (required) relative path for report from nnfw root directory
+function NNAPIGTest()
+{
+  [[ $# -ne 3 ]] && echo "Invalid function argument setting" && exit 1
+
+  # Backup original nnapi_gtest.skip
+  # TODO Pass skiplist to test-driver.sh
+  SKIPLIST_FILE="${INSTALL_PATH}/nnapi-gtest/nnapi_gtest.skip"
+  BACKUP_FILE="${SKIPLIST_FILE}.backup"
+  if [[ "$2" != "" ]]; then
+    cp ${SKIPLIST_FILE} ${BACKUP_FILE}
+    cp $2 ${SKIPLIST_FILE}
+  fi
+
+  export BACKENDS=$1
+  onert-test unittest \
+    --reportdir=$3 \
+    --unittestdir=$INSTALL_PATH/nnapi-gtest
+  unset BACKENDS
+
+  # TODO Pass skiplist to test-driver.sh
+  # Restore original nnapi_gtest.skip
+  if [[ "$2" != "" ]]; then
+    cp ${BACKUP_FILE} ${SKIPLIST_FILE}
+    rm ${BACKUP_FILE}
+  fi
+}
+
+# $1: (require) backend
+# $2: (require) list
+function NNPackageTest()
+{
+  [[ $# -ne 2 ]] && echo "Invalid function argument setting" && exit 1
+
+  echo "[Package Test] Run $1 backend nnpackage test"
+
+  EXITCODE=0
+  PKG_LIST=$(cat $2)
+  for f in ${PKG_LIST}
+  do
+    for entry in "nnpkg-tcs"/$f; do
+      if [ -e $entry ]; then
+        BACKENDS="$1" onert-test nnpkg-test -d -i nnpkg-tcs $(basename "$entry")
+      fi
+    done
+    EXITCODE_F=$?
+
+    if [ ${EXITCODE_F} -ne 0 ]; then
+      EXITCODE=${EXITCODE_F}
+    fi
+  done
+
+  if [ ${EXITCODE} -ne 0 ]; then
+    exit ${EXITCODE}
+  fi
 }

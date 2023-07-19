@@ -46,12 +46,12 @@ do
   esac
 done
 
-CheckTestPrepared
+PrepareTestModel
 
 echo "[[ ${TEST_PLATFORM}: ${BACKEND} backend test ]]"
 
-UNITTEST_SKIPLIST="Product/out/nnapi-gtest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
-TFLITE_TESTLIST="Product/out/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
+UNITTEST_SKIPLIST="$INSTALL_PATH/nnapi-gtest/nnapi_gtest.skip.${TEST_PLATFORM}.${BACKEND}"
+TFLITE_TESTLIST="$INSTALL_PATH/test/list/tflite_comparator.${TEST_ARCH}.${BACKEND}.list"
 REPORT_BASE="report/${BACKEND}"
 EXECUTORS=("Linear" "Dataflow" "Parallel")
 

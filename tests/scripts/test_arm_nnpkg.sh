@@ -7,7 +7,7 @@ BACKENDS=("acl_cl" "acl_neon" "cpu")
 
 for BACKEND in "${BACKENDS[@]}";
 do
-  NNPackageTest ${BACKEND} "Product/out/test/list/nnpkg_test_list.armv7l-linux.${BACKEND}"
+  NNPackageTest ${BACKEND} "$INSTALL_PATH/test/list/nnpkg_test_list.armv7l-linux.${BACKEND}"
 done
 
 unset DISABLE_COMPILE

@@ -2,20 +2,31 @@ if(NOT INSTALL_TEST_SCRIPTS)
   return()
 endif(NOT INSTALL_TEST_SCRIPTS)
 
-# Install test driver
-file(GLOB TEST_DRIVER_SCRIPT onert-test)
-install(PROGRAMS ${TEST_DRIVER_SCRIPT} DESTINATION test)
+# Install test scripts
+set(TEST_SCRIPTS
+  "benchmark_nnpkg.sh"
+  "benchmark_ops.sh"
+  "merge_result_of_benchmark_nnpkg.py"
+  "print_to_json.sh"
+  "test_ubuntu_runtime.sh"
+  "test_ubuntu_runtime_mixed.sh"
+)
 
-# Commands don't have execute permission itself
-install(DIRECTORY command DESTINATION test)
+if(ANDROID)
+  list(APPEND TEST_SCRIPTS "common_android.sh" "test_scheduler_with_profiling_android.sh")
+else(ANDROID)
+  list(APPEND TEST_SCRIPTS "common.sh" "test_scheduler_with_profiling.sh")
+endif(ANDROID)
 
-# Install models test script
-file(GLOB MODEL_TEST_SCRIPT "models/run_test.sh")
-install(PROGRAMS ${MODEL_TEST_SCRIPT} DESTINATION test/models)
+if("${TARGET_ARCH_BASE}" STREQUAL "arm")
+  list(APPEND TEST_SCRIPTS "test_arm_nnpkg.sh")
+endif("${TARGET_ARCH_BASE}" STREQUAL "arm")
 
-# Install models test config
-file(GLOB TFLITE_CONFIG_DIR models/tflite)
-install(DIRECTORY ${TFLITE_CONFIG_DIR} DESTINATION test/models)
+if(ENABLE_COVERAGE)
+  list(APPEND TEST_SCRIPTS "test_coverage.sh")
+endif(ENABLE_COVERAGE)
+
+install(PROGRAMS ${TEST_SCRIPTS} DESTINATION test/scripts)
 
 # Install test list
 file(GLOB TEST_LIST_DIR list)

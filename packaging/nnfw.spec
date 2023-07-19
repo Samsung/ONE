@@ -130,16 +130,14 @@ NPU daemon for optimal management of NPU hardware
 %define nnfw_workspace build
 %define build_env NNFW_WORKSPACE=%{nnfw_workspace}
 
-# Path to install test bin and scripts (test script assumes path Product/out)
+# Path to install test bin and scripts
 # TODO Share path with release package
 %define test_install_home /opt/usr/nnfw-test
-%define test_install_dir %{test_install_home}/Product/out
-%define test_install_path %{buildroot}%{test_install_dir}
+%define test_install_path %{buildroot}%{test_install_home}
 
 # Set option for test build (and coverage test build)
 %define option_test -DENABLE_TEST=OFF
 %define option_coverage %{nil}
-%define test_suite_list infra/scripts tests/scripts
 
 %if %{test_build} == 1
 # ENVVAR_ONERT_CONFIG: Use environment variable for runtime core configuration and debug
@@ -198,9 +196,8 @@ tar -xf %{SOURCE3019} -C ./externals
 
 %if %{test_build} == 1
 %if %{coverage_build} == 1
-pwd > tests/scripts/build_path.txt
+pwd > %{nnfw_workspace}/build_path.txt
 %endif # coverage_build
-tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
 %endif # arm armv7l armv7hl aarch64
 
@@ -228,7 +225,7 @@ install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
 install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin.pc
 
 %if %{test_build} == 1
-mkdir -p %{test_install_path}/bin
+mkdir -p %{test_install_path}/bin/command
 mkdir -p %{test_install_path}/nnapi-gtest
 mkdir -p %{test_install_path}/unittest
 mkdir -p %{test_install_path}/test
@@ -239,18 +236,18 @@ install -m 755 build/out/bin/tflite_run %{test_install_path}/bin
 install -m 755 build/out/nnapi-gtest/* %{test_install_path}/nnapi-gtest
 install -m 755 build/out/unittest/*_test %{test_install_path}/unittest
 install -m 755 build/out/unittest/test_* %{test_install_path}/unittest
+cp build/out/bin/command/* %{test_install_path}/bin/command
 cp -r build/out/test/* %{test_install_path}/test
 cp -r build/out/unittest/nnfw_api_gtest_models %{test_install_path}/unittest
 
 # Share test script with ubuntu (ignore error if there is no list for target)
 cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
 cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
-tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1
-mkdir -p %{buildroot}%{test_install_home}/gcov
-find %{nnfw_workspace} -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
-install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
+mkdir -p %{test_install_path}/gcov
+find %{nnfw_workspace} -name "*.gcno" -exec cp {} %{test_install_path}/gcov/. \;
+install -m 0644 %{nnfw_workspace}/build_path.txt %{test_install_path}/test/build_path.txt
 %endif # coverage_build
 %endif # test_build
 
