@@ -1144,24 +1144,24 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  nnfw_train_info tinfo;
-  if (info != nullptr)
-  {
-    tinfo = *info;
-  }
-
-  onert::compiler::train::TrainingInfo training_info;
-  training_info.setBatchSize(tinfo.batch_size);
-  // TODO Set Loss function
-
-  // TODO Set a correct optimizer type and learning_rate
-  onert::compiler::train::OptimizerInfo opt_info;
-  opt_info.optim_code = onert::exec::train::optimizer::OptimizerCode::SGD;
-  opt_info.learning_rate = 0.01;
-  training_info.setOptimizerInfo(opt_info);
-
   try
   {
+    nnfw_train_info tinfo;
+    if (info != nullptr)
+    {
+      tinfo = *info;
+    }
+
+    onert::compiler::train::TrainingInfo training_info;
+    training_info.setBatchSize(tinfo.batch_size);
+    // TODO Set Loss function
+
+    // TODO Set a correct optimizer type and learning_rate
+    onert::compiler::train::OptimizerInfo opt_info;
+    opt_info.optim_code = onert::exec::train::optimizer::OptimizerCode::SGD;
+    opt_info.learning_rate = 0.01;
+    training_info.setOptimizerInfo(opt_info);
+
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
     _nnpkg.reset();
