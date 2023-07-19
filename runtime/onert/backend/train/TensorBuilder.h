@@ -60,6 +60,7 @@ public:
   bool isRegisteredBackward(const ir::OperandIndex &) const;
 
   void allocate(void);
+  void allocateBackward(void);
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

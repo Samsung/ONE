@@ -18,7 +18,7 @@
 #define __ONERT_BACKEND_BACKEND_TRAIN_TRAINABLE_CONTEXT_H__
 
 #include "backend/Backend.h"
-#include "backend/ITensorRegistry.h"
+#include "backend/train/ITensorRegistry.h"
 #include "backend/train/ITrainableBackend.h"
 #include "exec/train/TrainableFnSequence.h"
 #include "ir/OperandIndexMap.h"
@@ -56,10 +56,8 @@ class TrainableBackendContext
 public:
   TrainableBackendContext(const ITrainableBackend *backend,
                           std::unique_ptr<TrainableContextData> &&tdata,
-                          std::shared_ptr<backend::ITensorRegistry> tensor_registry = nullptr,
-                          std::shared_ptr<backend::ITensorRegistry> deriv_tensor_registry = nullptr)
-    : _backend{backend}, _tdata{std::move(tdata)}, _tensor_registry{tensor_registry},
-      _deriv_tensor_registry{deriv_tensor_registry}
+                          std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
+    : _backend{backend}, _tdata{std::move(tdata)}, _tensor_registry{tensor_registry}
   {
     assert(_tdata);
   }
@@ -73,14 +71,10 @@ public:
   const util::Set<ir::OperandIndex> &external_operands() const { return _tdata->external_operands; }
   const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _tdata->operand_layouts; }
 
-  std::shared_ptr<backend::ITensorRegistry> tensor_registry() { return _tensor_registry; }
-  std::shared_ptr<backend::ITensorRegistry> deriv_tensor_registry()
-  {
-    return _deriv_tensor_registry;
-  }
+  std::shared_ptr<ITensorRegistry> tensor_registry() { return _tensor_registry; }
 
   virtual ITensorRegistry *genTrainingTensors() = 0;
-  virtual ITensorRegistry *genTensors() = 0;
+  virtual backend::ITensorRegistry *genTensors() = 0;
   virtual FunctionMap genKernels() = 0;
 
 private:
@@ -90,8 +84,7 @@ protected:
   std::unique_ptr<TrainableContextData> _tdata;
 
 protected:
-  std::shared_ptr<backend::ITensorRegistry> _tensor_registry;
-  std::shared_ptr<backend::ITensorRegistry> _deriv_tensor_registry;
+  std::shared_ptr<ITensorRegistry> _tensor_registry;
 };
 
 using TrainableBackendContexts =

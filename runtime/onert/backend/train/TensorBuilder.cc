@@ -125,6 +125,10 @@ void TensorBuilder::allocate(void)
 {
   _tensor_mgr->allocateNonConstTensors();
   _tensor_mgr->allocateTrainableTensors();
+}
+
+void TensorBuilder::allocateBackward(void)
+{
   _tensor_mgr->allocateDerivativeTensors();
   _tensor_mgr->allocateGradientTensors();
 }

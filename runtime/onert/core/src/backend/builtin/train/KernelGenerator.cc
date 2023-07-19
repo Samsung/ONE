@@ -79,7 +79,7 @@ backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
 backend::ITensor *KernelGenerator::getDerivativeTensor(const ir::OperandIndex &index)
 {
   // Get derivative Tensor from all tensor registries (for Permute op)
-  auto ret = _deriv_tensor_registries.getITensor(index);
+  auto ret = _tensor_registries.getDerivativeITensor(index);
   assert(ret != nullptr);
   return ret;
 }

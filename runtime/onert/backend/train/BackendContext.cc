@@ -33,20 +33,10 @@ backend::ITensorRegistry *BackendContext::genTensors()
   return basic::train::genTensors(*this, _tensor_builder);
 }
 
-backend::ITensorRegistry *BackendContext::genTrainingTensors()
-{
-  genDerivativeTensors();
-
-  // TODO Generate gradient tensors
-
-  return _deriv_tensor_registry.get();
-}
-
-void BackendContext::genDerivativeTensors()
+backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _deriv_tensor_builder;
-  auto tensor_reg = _deriv_tensor_registry;
+  auto tensor_builder = _tensor_builder;
 
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands().contains(ind))
@@ -57,16 +47,18 @@ void BackendContext::genDerivativeTensors()
     // TODO Different shape of deriv tensor
     ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
                                  obj.isConstant()};
-    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (tensor_builder->isRegistered(ind))
-      tensor_builder->notifyFirstUse(ind);
+    if (tensor_builder->isRegisteredBackward(ind))
+      tensor_builder->notifyBackwardFirstUse(ind);
   });
 
-  tensor_builder->allocate();
+  tensor_builder->allocateBackward();
+
+  return _tensor_registry.get();
 }
 
 FunctionMap BackendContext::genKernels()

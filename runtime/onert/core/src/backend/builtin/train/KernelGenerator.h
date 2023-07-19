@@ -19,7 +19,7 @@
 
 #include "../ExternalContext.h"
 #include "../train/TensorRegistry.h"
-#include "../../../compiler/TensorRegistries.h"
+#include "../../../compiler/train/TensorRegistries.h"
 
 #include <backend/train/KernelGeneratorBase.h>
 #include <exec/train/TrainableFnSequence.h>
@@ -43,14 +43,9 @@ public:
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex ind) override;
 
-  void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
+  void setTensorRegistries(const compiler::train::TensorRegistries &tensor_registries)
   {
     _tensor_registries = tensor_registries;
-  }
-
-  void setDerivativeTensorRegistries(const compiler::TensorRegistries &tensor_registries)
-  {
-    _deriv_tensor_registries = tensor_registries;
   }
 
 private:
@@ -62,8 +57,7 @@ private:
 
 private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
-  compiler::TensorRegistries _tensor_registries;
-  compiler::TensorRegistries _deriv_tensor_registries;
+  compiler::train::TensorRegistries _tensor_registries;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

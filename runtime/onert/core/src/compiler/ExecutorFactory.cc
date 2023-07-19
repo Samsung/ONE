@@ -134,15 +134,15 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const backend::train::TrainableBackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
 {
-  std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
+  std::shared_ptr<backend::builtin::train::TensorRegistry> builtin_tensor_reg;
   for (const auto &e : backend_contexts)
   {
     auto backend = e.first;
     auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
-      builtin_tensor_reg =
-        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry());
+      builtin_tensor_reg = std::dynamic_pointer_cast<backend::builtin::train::TensorRegistry>(
+        context->tensor_registry());
     }
   }
   assert(builtin_tensor_reg);
@@ -626,8 +626,7 @@ void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
 {
-  const auto is_derivative = false;
-  TensorRegistries tensor_regs{backend_contexts, is_derivative};
+  train::TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
@@ -727,8 +726,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
   base_backend_contexts.clear();
 
-  TensorRegistries derivative_tensor_regs{tbackend_contexts, true};
-  TensorRegistries tensor_regs{tbackend_contexts, false};
+  train::TensorRegistries tensor_regs{tbackend_contexts, false};
 
   initializeSubgraphIOTensors(
     *lowered_graph, tbackend_contexts,
@@ -760,7 +758,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     if (builtin_context != nullptr)
     {
       auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(derivative_tensor_regs);
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
     }
   }
