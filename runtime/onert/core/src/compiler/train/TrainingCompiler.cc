@@ -250,7 +250,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args, optimizer)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(model_index, subg_index, std::move(executor));
   }
