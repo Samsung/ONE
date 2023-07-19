@@ -49,9 +49,6 @@ public:
   backend::ITensorRegistry *genTensors() override;
   backend::train::ITensorRegistry *genTrainingTensors() override;
 
-private:
-  void genDerivativeTensors();
-
 public:
   backend::train::FunctionMap genKernels() override;
 

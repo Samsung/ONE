@@ -30,41 +30,17 @@ namespace train
 
 backend::ITensorRegistry *BackendContext::genTensors()
 {
-  return basic::train::genTensors(*this, _tensor_builder);
+  // For now, there is no need to generate tensors for forwarding.
+  // builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.
+  // `Permute`: Tensor generation is not required.
+  // `IF`, `WHILE`: Not supported yet
+  return tensor_registry().get();
 }
 
 backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   // For now, there is no need to generate tensors for backwarding.
   return tensor_registry().get();
-}
-
-void BackendContext::genDerivativeTensors()
-{
-  const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _tensor_builder;
-  auto tensor_reg = tensor_registry();
-
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (external_operands().contains(ind))
-      return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
-
-    // TODO Register TensorInfo that has derivative's shape
-    // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-    //                              obj.isConstant()};
-    // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
-  });
-
-  // TODO Plan tensor builds to reduce peak memory usage
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (tensor_builder->isRegistered(ind))
-      tensor_builder->notifyFirstUse(ind);
-  });
-
-  // TODO Allocate tensors
-  // tensor_builder->allocate();
 }
 
 backend::train::FunctionMap BackendContext::genKernels()
@@ -77,7 +53,14 @@ backend::train::FunctionMap BackendContext::genKernels()
     ret.emplace_back(op_ind, std::move(tn_seq));
   }
 
-  basic::train::initConsts(*this);
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (!external_operands().contains(ind) && operand.isConstant())
+      {
+        throw std::runtime_error(
+          "BackendContext: builtin backend does not support updatable weights yet");
+      }
+    });
 
   // TODO Enable prepare()
   // for (auto &&it : ret)
