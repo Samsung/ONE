@@ -55,6 +55,7 @@ public:
   void visit(const operation::InstanceNorm &) override;
   void visit(const operation::L2Normalization &) override;
   void visit(const operation::LocalResponseNormalization &) override;
+  void visit(const operation::Loss &node) override;
   void visit(const operation::LSTM &) override;
   void visit(const operation::Pack &) override;
   void visit(const operation::Pad &) override;
