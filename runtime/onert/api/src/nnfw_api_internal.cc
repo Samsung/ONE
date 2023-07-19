@@ -195,6 +195,29 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
+#ifdef ONERT_TRAIN
+uint64_t getBufSize(const nnfw_tensorinfo *info)
+{
+  static int elmsize[] = {
+    sizeof(float),   /* NNFW_TYPE_TENSOR_FLOAT32 = 0 */
+    sizeof(int),     /* NNFW_TYPE_TENSOR_INT32 = 1 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_QUANT8_ASYMM = 2 */
+    sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
+    sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
+    sizeof(int8_t),  /* NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6 */
+    sizeof(int16_t), /* NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7 */
+  };
+
+  uint64_t n = 1;
+  for (int32_t i = 0; i < info->rank; ++i)
+  {
+    assert(info->dims[i] >= 0);
+    n *= info->dims[i];
+  }
+  return elmsize[info->dtype] * n;
+}
+#endif // ONERT_TRAIN
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -1232,17 +1255,18 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
     return NNFW_STATUS_ERROR;
   }
 
-  if (input_tensorinfo != nullptr)
-  {
-    std::cerr << "Error during nnfw_session::train_set_input : not supporeted to change tensorinfo"
-              << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
   try
   {
     auto ind = onert::ir::IOIndex(index);
     auto size = _execution->getInputTotalSize(ind);
+    if (input_tensorinfo && getBufSize(input_tensorinfo) != size)
+    {
+      std::cerr
+        << "Error during nnfw_session::train_set_input : not supporeted to change tensorinfo"
+        << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     _execution->setInput(ind, input, size);
   }
   catch (const std::exception &e)
