@@ -38,7 +38,7 @@ PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
     _input_deriv_tensors{input_deriv_tensors}, _output_deriv_tensors{output_deriv_tensors}
 {
   assert(input_deriv_tensors.size() == output_deriv_tensors.size());
-  assert(input_deriv_tensors.size() == src_tensors.size());
+  assert(src_tensors.size() == dst_tensors.size());
 }
 
 void PermuteLayer::optimize()
