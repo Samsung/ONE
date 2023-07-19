@@ -216,7 +216,10 @@ void Args::Initialize(void)
         "Loss type\n"
         "0: MEAN_SQUARED_ERROR (default)\n"
         "1: CATEGORICAL_CROSSENTROPY\n")
-    ("optimizer", po::value<std::string>()->default_value("sgd")->notifier([&] (const auto &v) { _optimizer = v; }), "Optimizer name (default: sgd)")
+    ("optimizer", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _optimizer_type = v; }),
+      "Optimizer type\n"
+      "0: SGD (default)\n"
+      "1: Adam\n")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
