@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/ElementwiseActivationLayer.h"
 #include "ops/PoolLayer.h"
 
 #include <backend/Backend.h>
@@ -37,6 +38,18 @@ namespace train
 
 namespace
 {
+ops::ElementwiseActivationType
+convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      return ops::ElementwiseActivationType::kReLU;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+
 ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
@@ -84,6 +97,28 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
     _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer}
 {
   // DO NOTHING
+}
+
+void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
+{
+  using ir::train::operation::ElementwiseActivation;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ElementwiseActivation::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto deriv_input_tensor = _tensor_reg->getDerivativeTensor(input_index);
+  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
+
+  auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
+
+  fn->configure(input_tensor, output_tensor, deriv_input_tensor, deriv_output_tensor,
+                node.param().alpha, node.param().beta,
+                convertElementwiseActivationType(node.param().op_type));
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::train::operation::Loss &)
