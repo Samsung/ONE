@@ -147,6 +147,23 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       .run();
   }
 
+  // Change input shape according to batch_size
+  for (auto &&pair : trainable_subgraphs)
+  {
+    auto trainable_subg = pair.second;
+
+    for (const auto &ind : trainable_subg->getInputs())
+    {
+      auto &input = trainable_subg->operands().at(ind);
+      auto new_shape = input.info().shape();
+      // TODO Consider batch size index
+      if (new_shape.dim(0) != 1)
+        throw std::runtime_error("the first dim is not 1. It is not supported yet.");
+      new_shape.dim(0) = _training_info.batchSize();
+      input.info().shape(new_shape);
+    }
+  }
+
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
