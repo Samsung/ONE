@@ -54,6 +54,7 @@ Add(MaxPoolWithArgmax_001 PASS resolve_customop_max_pool_with_argmax)
 Add(MaxPoolWithArgmax_002 PASS resolve_customop_max_pool_with_argmax)
 Add(FullyConnected_007 PASS replace_non_const_fc_with_batch_matmul)
 Add(FullyConnected_008 PASS replace_non_const_fc_with_batch_matmul)
+Add(Net_Gelu_000 PASS fuse_gelu)
 
 ## CIRCLE RECIPE
 
