@@ -136,6 +136,7 @@
 #include "CustomOp/All.h"
 #include "CustomOp/BatchMatMulV2.h"
 #include "CustomOp/BroadcastTo.h"
+#include "CustomOp/Erf.h"
 #include "CustomOp/MatMul.h"
 #include "CustomOp/MatrixBandPart.h"
 #include "CustomOp/MaxPoolWithArgmax.h"
