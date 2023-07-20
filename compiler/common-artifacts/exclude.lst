@@ -70,6 +70,8 @@ tcgenerate(Net_Dangle_001)
 tcgenerate(Net_Densify_Add_000) # luci-interpreter doesn't support Densify yet
 tcgenerate(Net_Densify_Dequantize_Add_000) # luci-interpreter doesn't support Densify/Dequantize yet
 tcgenerate(Net_Gather_SparseToDense_AddV2_000) # luci-interpreter doesn't support custom operator
+tcgenerate(Net_Gelu_000) # luci-interpreter doesn't support custom operator
+tcgenerate(Net_Gelu_001) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(OneHot_000)
 tcgenerate(OneHot_001)
