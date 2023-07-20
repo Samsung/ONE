@@ -32,17 +32,18 @@ class RequestHandler:
 
     def make_request(self, url):
         try:
-            response = requests.get(url, headers=self.headers)
+            response = requests.get(url, headers=self.headers, timeout=self.timeout)
             response.raise_for_status()
             return response
         except requests.RequestException as e:
             raise SystemExit('[onecc-docker] error: {}'.format(e))
 
 
+# 5 sec timeout is set based on github.com/Samsung/ONE/issues/11134
 def _request_recent_version(token=None):
     response = RequestHandler(
         token,
-        timeout=100).make_request(url="https://api.github.com/repos/Samsung/ONE/releases")
+        timeout=5).make_request(url="https://api.github.com/repos/Samsung/ONE/releases")
     versions = [release_item["tag_name"] for release_item in response.json()]
 
     for version in versions:
@@ -55,11 +56,12 @@ def _request_recent_version(token=None):
     raise SystemExit('[onecc-docker] Failed to get latest onecc version')
 
 
-def _run(cmd, is_shell=False):
+# 10 sec timeout is set based on github.com/Samsung/ONE/issues/11134
+def _run(cmd, is_shell=False, timeout=10):
     result = subprocess.Popen(
         cmd, shell=is_shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    stdout, stderr = result.communicate()
+    stdout, stderr = result.communicate(timeout=timeout)
     stdout = stdout.decode('utf-8')
     stderr = stderr.decode('utf-8')
 
@@ -103,7 +105,7 @@ def main():
             "docker", "build", "-t", image_name, "--build-arg", build_arg, dockerfile_path
         ]
         print('[onecc-docker] Build docker image ...')
-        _run(build_cmd)
+        _run(build_cmd, timeout=30)
         print('[onecc-docker] Docker image is built successfully.')
 
     contianer_name = f"onecc_{recent_version.replace('.','_')}"
