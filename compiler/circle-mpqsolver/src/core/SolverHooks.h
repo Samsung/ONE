@@ -57,8 +57,10 @@ public:
    * @brief called at the end of iterative search
    * @param layers model nodes with specific quantization parameters
    * @param def_dtype default quantization dtype
+   * @param qerror final error of quantization
    */
-  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype) = 0;
+  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype,
+                             float qerror) = 0;
 };
 
 } // namespace core

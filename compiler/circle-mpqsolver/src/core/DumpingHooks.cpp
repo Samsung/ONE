@@ -45,9 +45,11 @@ void DumpingHooks::on_end_iteration(const LayerParams &layers, const std::string
   _dumper.dump_MPQ_error(error, _num_of_iterations);
 }
 
-void DumpingHooks::on_end_solver(const LayerParams &layers, const std::string &def_dtype)
+void DumpingHooks::on_end_solver(const LayerParams &layers, const std::string &def_dtype,
+                                 float qerror)
 {
   _dumper.dump_final_MPQ(layers, def_dtype);
+  _dumper.dump_MPQ_error(qerror);
   _in_iterations = false;
 }
 

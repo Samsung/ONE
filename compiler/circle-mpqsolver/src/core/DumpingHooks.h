@@ -67,7 +67,8 @@ public:
   /**
    * @brief called at the end of iterative search
    */
-  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype) override;
+  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype,
+                             float qerror) override;
 
 protected:
   std::string _model_path;
