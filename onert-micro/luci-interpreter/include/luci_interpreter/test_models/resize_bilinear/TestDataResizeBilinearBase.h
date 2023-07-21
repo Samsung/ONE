@@ -49,8 +49,8 @@ public:
   }
 
 protected:
-  std::vector<T> _input_data;  
-  std::vector<T> _reference_output_data; 
+  std::vector<T> _input_data;
+  std::vector<T> _reference_output_data;
 
   const unsigned char *_test_kernel_model_circle;
 };
