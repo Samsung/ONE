@@ -178,7 +178,7 @@ int entry(int argc, char **argv)
       }
     }
 
-    VERBOSE(l, 0) << "qerror metric: MSE" << std::endl
+    VERBOSE(l, 0) << "qerror metric: MAE" << std::endl
                   << "target qerror ratio: " << qerror_ratio << std::endl;
 
     auto optimized = solver.run(input_model_path);
