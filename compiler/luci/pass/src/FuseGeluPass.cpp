@@ -310,6 +310,9 @@ bool fuse_gelu(luci::CircleMul *mul)
     fuse.apply();
     return true;
   }
+
+  GeluPattern2 pattern2(mul);
+  (void)pattern2;
   return false;
 }
 
