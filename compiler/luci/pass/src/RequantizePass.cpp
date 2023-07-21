@@ -32,40 +32,6 @@ namespace luci
 namespace
 {
 
-// TODO Remove unnecessary code
-#if 0
-// Check if the node is the bias of Conv2D, DepthwiseConv2D, or FullyConnected layer
-bool is_bias(CircleConst *node)
-{
-  if (node == nullptr)
-    return false;
-
-  auto succs = loco::succs(node);
-  if (succs.size() != 1) // assume bias is used by only one node
-    return false;
-
-  for (auto out : succs)
-  {
-    auto conv = dynamic_cast<CircleConv2D *>(out);
-    if (conv != nullptr && conv->bias() == node)
-      return true;
-
-    auto dw_conv = dynamic_cast<CircleDepthwiseConv2D *>(out);
-    if (dw_conv != nullptr && dw_conv->bias() == node)
-      return true;
-
-    auto fc = dynamic_cast<CircleFullyConnected *>(out);
-    if (fc != nullptr && fc->bias() == node)
-      return true;
-
-    auto tconv = dynamic_cast<CircleTransposeConv *>(out);
-    if (tconv != nullptr && tconv->bias() == node)
-      return true;
-  }
-  return false;
-}
-#endif
-
 void requant_nonconst_int8_to_uint8(CircleNode *circle_node)
 {
   assert(circle_node->dtype() == loco::DataType::S8);
@@ -152,102 +118,6 @@ struct RequantizeS8ToU8 final : public luci::CircleNodeMutableVisitor<void>
 
 #undef RETURN_UNLESS
 
-// TODO Remove unnecessary code
-#if 0
-/**
- * @brief RequantizeNonConst requantizes tensors for activations
- */
-struct RequantizeNonConst final : public luci::CircleNodeMutableVisitor<bool>
-{
-  RequantizeNonConst(loco::DataType input, loco::DataType output)
-    : _input_type(input), _output_type(output)
-  {
-  }
-
-  loco::DataType _input_type;
-  loco::DataType _output_type;
-
-  // Requantize input tensors of each node
-  bool visit(luci::CircleNode *node)
-  {
-    LOGGER(l);
-    INFO(l) << "RequantizeNonConst visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
-    {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
-
-      // Check if this was quantized (only quantized tensors are requantized)
-      if (circle_node->quantparam() == nullptr)
-        continue;
-
-      // Check if this is already requantized
-      if (circle_node->dtype() == _output_type)
-        continue;
-
-      // Check if this is not const (only non-const is requantized in this function)
-      auto circle_const = dynamic_cast<CircleConst *>(circle_node);
-      if (circle_const != nullptr)
-        continue;
-
-      if (_input_type == loco::DataType::S8 && _output_type == loco::DataType::U8)
-        requant_nonconst_int8_to_uint8(circle_node);
-    }
-    return false;
-  }
-};
-
-/**
- * @brief RequantizeConst requantizes tensors for weights
- */
-struct RequantizeConst final : public luci::CircleNodeMutableVisitor<bool>
-{
-  RequantizeConst(loco::DataType input, loco::DataType output)
-    : _input_type(input), _output_type(output)
-  {
-  }
-
-  loco::DataType _input_type;
-  loco::DataType _output_type;
-
-  // Requantize input tensors of each node
-  bool visit(luci::CircleNode *node)
-  {
-    LOGGER(l);
-    INFO(l) << "RequantizeConst visit node: " << node->name() << std::endl;
-    auto arity = node->arity();
-    for (uint32_t i = 0; i < arity; i++)
-    {
-      auto input_node = node->arg(i);
-      auto circle_node = loco::must_cast<luci::CircleNode *>(input_node);
-
-      // Check if this was quantized (only quantized tensors are requantized)
-      if (circle_node->quantparam() == nullptr)
-        continue;
-
-      // Check if this is already requantized
-      if (circle_node->dtype() == _output_type)
-        continue;
-
-      // Check if this is const (only const is requantized in this function)
-      auto circle_const = dynamic_cast<CircleConst *>(circle_node);
-      if (circle_const == nullptr)
-        continue;
-
-      // Check if this is not bias
-      // bias is not requantized when int8 -> uint8
-      if (is_bias(circle_const))
-        continue;
-
-      if (_input_type == loco::DataType::S8 && _output_type == loco::DataType::U8)
-        requant_const_int8_to_uint8(circle_const);
-    }
-    return false;
-  }
-};
-#endif
-
 } // namespace
 
 bool RequantizePass::run(loco::Graph *g)
@@ -271,25 +141,6 @@ bool RequantizePass::run(loco::Graph *g)
     // Ignore other cases
     return false;
   }
-
-// TODO Remove unnecessary code
-#if 0
-  // Requantize non-const (activations)
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    RequantizeNonConst rqnc(_input_dtype, _output_dtype);
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&rqnc);
-  }
-
-  // Requantize const (including weights, constants)
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
-  {
-    RequantizeConst rqc(_input_dtype, _output_dtype);
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    circle_node->accept(&rqc);
-  }
-#endif
 
   // Update output dtype
   auto graph_outputs = g->outputs();
