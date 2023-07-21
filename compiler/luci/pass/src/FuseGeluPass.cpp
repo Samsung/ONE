@@ -99,6 +99,48 @@ public:
   bool matched() override;
 };
 
+/**
+ * Below diagram shows Gelu pattern to fuse.
+ * - Gelu(x) = 0.5 * x * (1.0 + erf(x / sqrt(2.0)))
+ * - the below pattern will be replaced with one Gelu
+ *
+ *                  [In]
+ *                   |
+ *                   V
+ *     +----------- ifm
+ *     |             |
+ *     |             V
+ *     |          mul_sqrt (1/sqrt(2) = 0.707106..)
+ *     |             |
+ *     |             V
+ *     |            erf
+ * mul_half (0.5)    |
+ *     |             V
+ *     |         add_one (1.0)
+ *     |             |
+ *     |             V
+ *     +----------> mul
+ *                   |
+ *                   |
+ *                   V
+ *                 [Out]
+ *
+ */
+class GeluPattern2 final : public GeluPatternBase
+{
+public:
+  GeluPattern2(luci::CircleMul *candidate) : GeluPatternBase(candidate)
+  {
+    assert(candidate);
+    _mul = candidate;
+  }
+
+  ~GeluPattern2() override = default;
+
+public:
+  bool matched() override;
+};
+
 #define CHECK_OR_FALSE(condition) \
   if (not(condition))             \
     return false;
@@ -129,6 +171,58 @@ bool GeluPattern1::matched()
 
   CHECK_OR_FALSE(_mul_sqrt->x() == _ifm);
   CHECK_OR_FALSE(_mul->x() == _ifm);
+
+  // Check Activation to be NONE
+  CHECK_OR_FALSE(_mul_sqrt->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_add_one->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_mul->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  CHECK_OR_FALSE(_mul_half->fusedActivationFunction() == luci::FusedActFunc::NONE);
+
+  // check _const_sqrt condition
+  CHECK_OR_FALSE(_const_sqrt->dtype() == loco::DataType::FLOAT32);
+  CHECK_OR_FALSE(_const_sqrt->size<loco::DataType::FLOAT32>() == 1);
+  CHECK_OR_FALSE(::same(_const_sqrt->at<loco::DataType::FLOAT32>(0), sqrtf(0.5f)));
+
+  // check if _const_half is 0.5 (fp32)
+  CHECK_OR_FALSE(_const_half->dtype() == loco::DataType::FLOAT32);
+  CHECK_OR_FALSE(_const_half->size<loco::DataType::FLOAT32>() == 1);
+  CHECK_OR_FALSE(_const_half->at<loco::DataType::FLOAT32>(0) == 0.5);
+
+  // check _const_one condition
+  CHECK_OR_FALSE(_const_one->dtype() == loco::DataType::FLOAT32);
+  CHECK_OR_FALSE(_const_one->size<loco::DataType::FLOAT32>() == 1);
+  CHECK_OR_FALSE(_const_one->at<loco::DataType::FLOAT32>(0) == 1);
+
+  return true;
+}
+
+bool GeluPattern2::matched()
+{
+  // check pattern
+  CHECK_OR_FALSE(luci::fill(&_mul_half, &_add_one).with_commutative_args_of(_mul));
+  CHECK_OR_FALSE(luci::fill(&_ifm, &_const_half).with_commutative_args_of(_mul_half));
+  CHECK_OR_FALSE(luci::fill(&_erf_out, &_const_one).with_commutative_args_of(_add_one));
+
+  CHECK_OR_FALSE(_mul_half->x() == _ifm);
+
+  if (auto erf = dynamic_cast<luci::CircleCustom *>(_erf_out->input()))
+    _erf = erf;
+
+  CHECK_OR_FALSE(_erf != nullptr);
+
+  // Check erf
+  CHECK_OR_FALSE(_erf->custom_code() == "Erf");
+  CHECK_OR_FALSE(_erf->numInputs() == 1);
+  CHECK_OR_FALSE(_erf->numOutputs() == 1);
+
+  if (auto mul_sqrt = dynamic_cast<luci::CircleMul *>(_erf->inputs(0)))
+    _mul_sqrt = mul_sqrt;
+
+  CHECK_OR_FALSE(_mul_sqrt != nullptr);
+
+  CHECK_OR_FALSE(luci::fill(&_ifm, &_const_sqrt).with_commutative_args_of(_mul_sqrt));
+
+  CHECK_OR_FALSE(_mul_sqrt->x() == _ifm);
 
   // Check Activation to be NONE
   CHECK_OR_FALSE(_mul_sqrt->fusedActivationFunction() == luci::FusedActFunc::NONE);
