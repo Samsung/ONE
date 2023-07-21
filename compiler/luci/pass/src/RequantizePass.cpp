@@ -32,6 +32,8 @@ namespace luci
 namespace
 {
 
+// TODO Remove unnecessary code
+#if 0
 // Check if the node is the bias of Conv2D, DepthwiseConv2D, or FullyConnected layer
 bool is_bias(CircleConst *node)
 {
@@ -62,6 +64,7 @@ bool is_bias(CircleConst *node)
   }
   return false;
 }
+#endif
 
 void requant_nonconst_int8_to_uint8(CircleNode *circle_node)
 {
@@ -107,6 +110,50 @@ void requant_const_int8_to_uint8(CircleConst *node)
   }
 }
 
+#define RETURN_UNLESS(cond) \
+  if (not(cond))            \
+    return;
+
+/**
+ * @brief Requantize int8 quantized tensors to uint8 tensors
+ */
+struct RequantizeS8ToU8 final : public luci::CircleNodeMutableVisitor<void>
+{
+  // Requantize non-const tensors
+  void visit(luci::CircleNode *node)
+  {
+    LOGGER(l);
+    INFO(l) << "RequantizeS8ToU8 visit non-const node: " << node->name() << std::endl;
+
+    // Ignore non-quantized tensors
+    RETURN_UNLESS(node->quantparam() != nullptr);
+
+    // Check dtype is int8
+    RETURN_UNLESS(node->dtype() == loco::DataType::S8);
+
+    requant_nonconst_int8_to_uint8(node);
+  }
+
+  // Requantize const tensors
+  void visit(luci::CircleConst *node)
+  {
+    LOGGER(l);
+    INFO(l) << "RequantizeS8ToU8 visit const node: " << node->name() << std::endl;
+
+    // Ignore non-quantized tensors
+    RETURN_UNLESS(node->quantparam() != nullptr);
+
+    // Check dtype is int8
+    RETURN_UNLESS(node->dtype() == loco::DataType::S8);
+
+    requant_const_int8_to_uint8(node);
+  }
+};
+
+#undef RETURN_UNLESS
+
+// TODO Remove unnecessary code
+#if 0
 /**
  * @brief RequantizeNonConst requantizes tensors for activations
  */
@@ -199,6 +246,7 @@ struct RequantizeConst final : public luci::CircleNodeMutableVisitor<bool>
     return false;
   }
 };
+#endif
 
 } // namespace
 
@@ -207,6 +255,25 @@ bool RequantizePass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "RequantizePass Start" << std::endl;
 
+  // Input: int8 model
+  // Output: uint8 model
+  if (_input_dtype == loco::DataType::S8 and _output_dtype == loco::DataType::U8)
+  {
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      RequantizeS8ToU8 rq;
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      circle_node->accept(&rq);
+    }
+  }
+  else
+  {
+    // Ignore other cases
+    return false;
+  }
+
+// TODO Remove unnecessary code
+#if 0
   // Requantize non-const (activations)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
@@ -222,6 +289,7 @@ bool RequantizePass::run(loco::Graph *g)
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     circle_node->accept(&rqc);
   }
+#endif
 
   // Update output dtype
   auto graph_outputs = g->outputs();
