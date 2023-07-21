@@ -16,11 +16,11 @@
 
 #include "luci/Pass/RequantizePass.h"
 
+#include "helpers/CreateCircleConst.h"
+
 #include <luci/test/TestIOGraph.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleQuantParam.h>
-
-#include "helpers/TypeMapper.h"
 
 #include <vector>
 
@@ -31,33 +31,6 @@ using namespace luci::test;
 
 namespace
 {
-
-// Create CircleConst filled with a given value
-// TODO Reduce duplicate codes in ResolveCustomOpMatMulPass.cpp
-template <typename T>
-luci::CircleConst *create_const_node(loco::Graph *g, const std::vector<uint32_t> &shape,
-                                     const T value)
-{
-  auto node = g->nodes()->create<luci::CircleConst>();
-  node->dtype(TypeMapper<T>::get());
-  node->rank(shape.size());
-
-  uint32_t size = 1;
-  for (uint32_t i = 0; i < shape.size(); ++i)
-  {
-    node->dim(i) = shape.at(i);
-    size *= shape.at(i);
-  }
-  node->shape_status(luci::ShapeStatus::VALID);
-
-  node->size<TypeMapper<T>::get()>(size);
-  for (uint32_t i = 0; i < size; i++)
-  {
-    node->at<TypeMapper<T>::get()>(i) = value;
-  }
-
-  return node;
-}
 
 /**
  *  Simple graph for test
@@ -106,7 +79,7 @@ public:
       _x->quantparam(std::move(quantparam));
     }
 
-    _weights = create_const_node<int8_t>(g, w_shape, 1.0);
+    _weights = create_const_node<int8_t>(g, loco::DataType::S8, w_shape, 1.0);
     {
       auto w_qparam = std::make_unique<CircleQuantParam>();
       std::vector<float> w_scale(_weights->dim(0).value(), 1.0);
@@ -118,7 +91,7 @@ public:
     }
     _fc->weights(_weights);
 
-    _bias = create_const_node<int32_t>(g, bias_shape, 1.0);
+    _bias = create_const_node<int32_t>(g, loco::DataType::S32, bias_shape, 1.0);
     {
       auto b_qparam = std::make_unique<CircleQuantParam>();
       const auto bias_size = _bias->size<loco::DataType::S32>();
