@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a63089bb34bd552d054650323d99d7ce8" name="a63089bb34bd552d054650323d99d7ce8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63089bb34bd552d054650323d99d7ce8">&#9670;&#160;</a></span>Backend()</h2>
@@ -157,8 +157,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -188,8 +188,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _config; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _config; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -219,21 +219,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html#ad0f3f8ec4bcc5d8fe2526831596c3b52">onert::backend::train::ITrainableBackend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00049">49</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> deriv_tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> deriv_tb = std::make_shared&lt;TensorBuilder&gt;(deriv_tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00051">51</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
-<div class="line"><span class="lineno">   58</span>                                                           deriv_tr, deriv_tb);</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    context-&gt;kernel_gen =</div>
-<div class="line"><span class="lineno">   61</span>      std::make_shared&lt;train::KernelGenerator&gt;(tgraph, tr, deriv_tr, context-&gt;external_context());</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> context;</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb);</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>    context-&gt;kernel_gen = std::make_shared&lt;train::KernelGenerator&gt;(</div>
+<div class="line"><span class="lineno">   60</span>      tgraph, tr, context-&gt;external_context(), tdata.optimizer);</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -263,10 +260,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#afa956662b060cbf562dfef4ad433b869">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;DummyBackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00045">45</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> std::make_unique&lt;DummyBackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

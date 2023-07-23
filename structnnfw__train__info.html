@@ -106,23 +106,15 @@ Data Fields</h2></td></tr>
 <tr class="separator:a400e532c83a37726736bdee8a9926ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1af15f5a6076c5f8616972ab3d7b9b87"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__train__info.html#a1af15f5a6076c5f8616972ab3d7b9b87">batch_size</a> = 1</td></tr>
 <tr class="separator:a1af15f5a6076c5f8616972ab3d7b9b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114f88e8c6e03deb5f6dfcfe1fcfa6ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__train__info.html#a114f88e8c6e03deb5f6dfcfe1fcfa6ad">loss</a> = <a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a></td></tr>
+<tr class="separator:a114f88e8c6e03deb5f6dfcfe1fcfa6ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e8b2519dec2d47c8eb097efb4dc7fdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__train__info.html#a9e8b2519dec2d47c8eb097efb4dc7fdf">opt</a> = <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></td></tr>
+<tr class="separator:a9e8b2519dec2d47c8eb097efb4dc7fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Training information to prepare training. </p>
-<p >Training C APIs</p>
-<p >Training APIs are designed to be used in the following order for training</p><ol type="1">
-<li>nnfw_train_prepare</li>
-<li>nnfw_train_set_input, nnfw_train_set_expected for inputs &amp; expected outputs</li>
-<li>nnfw_train</li>
-<li>nnfw_train_get_loss</li>
-</ol>
-<p >If you want to inference after training with the same session, you can use the following order</p><ol type="1">
-<li>nnfw_set_input</li>
-<li>nnfw_set_output</li>
-<li>nnfw_run  </li>
-</ol>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00183">183</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00194">194</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a1af15f5a6076c5f8616972ab3d7b9b87" name="a1af15f5a6076c5f8616972ab3d7b9b87"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1af15f5a6076c5f8616972ab3d7b9b87">&#9670;&#160;</a></span>batch_size</h2>
@@ -137,7 +129,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p >Batch size </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00188">188</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00199">199</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
 
 </div>
 </div>
@@ -154,7 +146,43 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p >Learning rate </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00186">186</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00197">197</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+
+</div>
+</div>
+<a id="a114f88e8c6e03deb5f6dfcfe1fcfa6ad" name="a114f88e8c6e03deb5f6dfcfe1fcfa6ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a114f88e8c6e03deb5f6dfcfe1fcfa6ad">&#9670;&#160;</a></span>loss</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a> nnfw_train_info::loss = <a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >loss type </p>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00201">201</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+
+</div>
+</div>
+<a id="a9e8b2519dec2d47c8eb097efb4dc7fdf" name="a9e8b2519dec2d47c8eb097efb4dc7fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e8b2519dec2d47c8eb097efb4dc7fdf">&#9670;&#160;</a></span>opt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a> nnfw_train_info::opt = <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >optimizer type </p>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00203">203</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00099">CfgRunner.CfgRunner::run()</a>.</p>
 
 </div>
 </div>

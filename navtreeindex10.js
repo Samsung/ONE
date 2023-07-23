@@ -1,16 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"_flatten_8cpp.html#a240e9c70bb9803dede3f22927c752816":[35,0,0,62,1,2,0,24,0],
-"_flatten_8cpp.html#a2ebb7704a912d2c5cb3f80b545b919cd":[35,0,0,62,1,2,0,24,1],
-"_flatten_8cpp_source.html":[35,0,0,62,1,2,0,24],
-"_flatten_8h.html":[35,0,0,62,1,2,0,25],
-"_flatten_8h.html#a240e9c70bb9803dede3f22927c752816":[35,0,0,62,1,2,0,25,0],
-"_flatten_8h.html#a2ebb7704a912d2c5cb3f80b545b919cd":[35,0,0,62,1,2,0,25,1],
-"_flatten_8h_source.html":[35,0,0,62,1,2,0,25],
-"_float_abs_kernel_8h.html":[35,0,3,3,0,0,1,0,0],
-"_float_abs_kernel_8h.html#a252fc345ebc6d2b4ba26b241b41c005c":[35,0,3,3,0,0,1,0,0,1],
-"_float_abs_kernel_8h.html#a46c34db4b93c57ff1597c8a5f3d0c853":[35,0,3,3,0,0,1,0,0,3],
-"_float_abs_kernel_8h.html#ae6defc1a587d4fecb00e1354aac169a4":[35,0,3,3,0,0,1,0,0,2],
 "_float_abs_kernel_8h_source.html":[35,0,3,3,0,0,1,0,0],
 "_float_add_kernel_8h.html":[35,0,3,3,0,0,1,1,0],
 "_float_add_kernel_8h.html#a078a885e0b230d35f7ceb39cabd3da78":[35,0,3,3,0,0,1,1,0,2],
@@ -249,5 +238,16 @@ var NAVTREEINDEX10 =
 "_function_command_8h_source.html":[35,0,0,25,0,0,2],
 "_function_sequence_8cc.html":[35,0,4,2,2,1,3,17],
 "_function_sequence_8cc_source.html":[35,0,4,2,2,1,3,17],
-"_function_sequence_8h.html":[35,0,4,2,2,0,2,3]
+"_function_sequence_8h.html":[35,0,4,2,2,0,2,3],
+"_function_sequence_8h_source.html":[35,0,4,2,2,0,2,3],
+"_fuse_activation_function_pass_8cpp.html":[35,0,0,51,7,1,26],
+"_fuse_activation_function_pass_8cpp.html#a8b56761ca571d7a36d0c3fc94cfc1f59":[35,0,0,51,7,1,26,0],
+"_fuse_activation_function_pass_8cpp_source.html":[35,0,0,51,7,1,26],
+"_fuse_activation_function_pass_8h.html":[35,0,0,51,7,0,0,0,18],
+"_fuse_activation_function_pass_8h_source.html":[35,0,0,51,7,0,0,0,18],
+"_fuse_add_with_fully_connected_pass_8cpp.html":[35,0,0,51,7,1,27],
+"_fuse_add_with_fully_connected_pass_8cpp_source.html":[35,0,0,51,7,1,27],
+"_fuse_add_with_fully_connected_pass_8h.html":[35,0,0,51,7,0,0,0,19],
+"_fuse_add_with_fully_connected_pass_8h_source.html":[35,0,0,51,7,0,0,0,19],
+"_fuse_add_with_t_conv_pass_8cpp.html":[35,0,0,51,7,1,28]
 };

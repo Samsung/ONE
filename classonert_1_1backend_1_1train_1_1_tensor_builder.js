@@ -1,0 +1,13 @@
+var classonert_1_1backend_1_1train_1_1_tensor_builder =
+[
+    [ "TensorBuilder", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#a3bb68293c9e3aeaec2720ae77ced873e", null ],
+    [ "allocate", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#ac6195159ca3560f24dc016389c929bcc", null ],
+    [ "allocateBackward", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#a9f4cf16bbf5297eaa53ee9f39b854d41", null ],
+    [ "isRegistered", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#a1fb23c24d24c00ae343c500efbb26792", null ],
+    [ "isRegisteredBackward", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#acdfc99b64e293310bb81ffa7ef60d6e3", null ],
+    [ "notifyBackwardFirstUse", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#a3ac602078e7f6498e385af7d423b4881", null ],
+    [ "notifyFirstUse", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#aca7c9cb599ad73e71b87dcf765621a97", null ],
+    [ "notifyLastUse", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#aa4173c0654b9be693972d6eb06cfb0b9", null ],
+    [ "registerBackwardTensorInfo", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#acd57d7638fee027718c34be5ed0a073a", null ],
+    [ "registerTensorInfo", "classonert_1_1backend_1_1train_1_1_tensor_builder.html#a2dca26251cbc424cad9af635e9e8812f", null ]
+];

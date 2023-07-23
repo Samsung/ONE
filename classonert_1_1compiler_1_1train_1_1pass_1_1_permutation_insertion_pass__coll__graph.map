@@ -1,0 +1,11 @@
+<map id="onert::compiler::train::pass::PermutationInsertionPass" name="onert::compiler::train::pass::PermutationInsertionPass">
+<area shape="rect" id="node1" title=" " alt="" coords="123,553,335,593"/>
+<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html" title=" " alt="" coords="139,464,318,504"/>
+<area shape="rect" id="node3" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html" title=" " alt="" coords="150,375,307,415"/>
+<area shape="rect" id="node4" href="$classonert_1_1compiler_1_1pass_1_1_operand_pass.html" title=" " alt="" coords="27,272,167,312"/>
+<area shape="rect" id="node5" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="27,183,167,223"/>
+<area shape="rect" id="node6" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
+<area shape="rect" id="node7" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="169,87,275,113"/>
+<area shape="rect" id="node8" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="167,5,277,31"/>
+<area shape="rect" id="node9" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="191,272,357,312"/>
+</map>

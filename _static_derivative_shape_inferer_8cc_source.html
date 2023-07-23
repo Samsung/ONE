@@ -173,48 +173,58 @@ $(document).ready(function(){initNavTree('_static_derivative_shape_inferer_8cc_s
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">// NOTE This code assumes the types are always the same, but I&#39;m not sure.</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;type = tgraph.operands().at(index).typeInfo();</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    tgraph.addDerivative(index, std::make_unique&lt;ir::Operand&gt;(shape, type));</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Conv2D &amp;)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::ElementwiseActivation &amp;)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>{</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>}</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Loss &amp;)</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>{</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Permute &amp;)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>{</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Pool2D &amp;)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>{</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Reshape &amp;)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">const</span> <span class="keyword">auto</span> new_index = tgraph.addDerivative(index, std::make_unique&lt;ir::Operand&gt;(shape, type));</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    assert(new_index == index);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(new_index);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Conv2D &amp;)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>{</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::ElementwiseActivation &amp;)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>{</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Loss &amp;)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>{</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Permute &amp;op)</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;derivatives = _lowered_subg-&gt;<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a9a33f880864f3595b7a88afc5bf67625">trainable_graph</a>().<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a20fa0e1d14a1e4ea68c072f592be5cc9">derivatives</a>();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx = op.getOutputs().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(0);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = derivatives.at(output_idx);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// re-sizing input derivative shape</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_idx = op.getInputs().at(0);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;new_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.info().shape();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  setShape(input_idx, new_shape);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Softmax &amp;)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Pool2D &amp;)</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>{</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">// NYI</span></div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>}</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>} <span class="comment">// namespace compiler</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Reshape &amp;)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>{</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keywordtype">void</span> StaticDerivativeShapeInferer::visit(<span class="keyword">const</span> ir::train::operation::Softmax &amp;)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>{</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>} <span class="comment">// namespace compiler</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_static_derivative_shape_inferer_8h_html"><div class="ttname"><a href="_static_derivative_shape_inferer_8h.html">StaticDerivativeShapeInferer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a73cfb7d0caf2754f5b14c9a33d500b60"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph::graph</a></div><div class="ttdeci">ir::Graph &amp; graph() override</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_trainable_graph_8h_source.html#l00045">LoweredTrainableGraph.h:45</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a9a33f880864f3595b7a88afc5bf67625"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a9a33f880864f3595b7a88afc5bf67625">onert::compiler::train::LoweredTrainableGraph::trainable_graph</a></div><div class="ttdeci">ir::train::TrainableGraph &amp; trainable_graph()</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_trainable_graph_8h_source.html#l00047">LoweredTrainableGraph.h:47</a></div></div>
@@ -223,7 +233,11 @@ $(document).ready(function(){initNavTree('_static_derivative_shape_inferer_8cc_s
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a0bb6bcdff8092785afb4f8dca50ecfc5"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a0bb6bcdff8092785afb4f8dca50ecfc5">onert::ir::Graph::topolSortOperations</a></div><div class="ttdeci">std::vector&lt; ir::OperationIndex &gt; topolSortOperations() const</div><div class="ttdef"><b>Definition:</b> <a href="_graph_8cc_source.html#l00184">Graph.cc:184</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aa6d6d361a7ebe1452e55d8789d6f36f7"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">onert::ir::Graph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">Graph.h:113</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a0efe89ac2a129ae975957af5ba0ae525"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">onert::ir::train::TrainableGraph::operation</a></div><div class="ttdeci">const ITrainableOperation &amp; operation(OperationIndex index) const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8cc_source.html#l00114">TrainableGraph.cc:114</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a20fa0e1d14a1e4ea68c072f592be5cc9"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a20fa0e1d14a1e4ea68c072f592be5cc9">onert::ir::train::TrainableGraph::derivatives</a></div><div class="ttdeci">const Operands &amp; derivatives() const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8h_source.html#l00121">TrainableGraph.h:121</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a6b8d3a686121e956514b9dac833edb7b"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a6b8d3a686121e956514b9dac833edb7b">onert::ir::train::TrainableGraph::changeDerivativeShape</a></div><div class="ttdeci">void changeDerivativeShape(const OperandIndex &amp;ind, const ir::Shape &amp;new_shape)</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8cc_source.html#l00078">TrainableGraph.cc:78</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
+<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::Remove::UNDEFINED</a></div><div class="ttdeci">@ UNDEFINED</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::Remove::DUPLICATED</a></div><div class="ttdeci">@ DUPLICATED</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00033">Index.h:33</a></div></div>

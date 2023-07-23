@@ -26,6 +26,7 @@ var classonert_1_1ir_1_1_operation_dumper =
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#af72fe9df041efe8444da4eb5c738ca19", null ],
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#ad4f97f9fd8c0852a380f2f04b5e7ba22", null ],
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#aad024d0afec685b76b3a2ba5714b7200", null ],
+    [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#a6108caf3682b6e58732606e09d784b23", null ],
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#afd5feabb37616b04127cf8a21d5e3345", null ],
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#a47002a607d4861cae201f030e4e154c4", null ],
     [ "visit", "classonert_1_1ir_1_1_operation_dumper.html#a5ca9782af378c8bb83dd4b05bbdc8c0b", null ],

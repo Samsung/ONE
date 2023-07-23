@@ -1,17 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"_random_utils_8h.html#aca615db899bdb9f7b927eb3ff656e812":[35,0,0,30,3,5,0],
-"_random_utils_8h_source.html":[35,0,0,30,3,5],
-"_randomize_8cpp.html":[35,0,0,72,0,0,0],
-"_randomize_8cpp.html#ad0c81753baf1a1c7d2d11316231b0cf9":[35,0,0,72,0,0,0,1],
-"_randomize_8cpp_source.html":[35,0,0,72,0,0,0],
-"_range_8cc.html":[35,0,4,2,2,1,4,0,44],
-"_range_8cc_source.html":[35,0,4,2,2,1,4,0,44],
-"_range_layer_8cc.html":[35,0,4,2,1,4,0,66],
-"_range_layer_8cc_source.html":[35,0,4,2,1,4,0,66],
-"_range_layer_8h.html":[35,0,4,2,1,4,0,67],
-"_range_layer_8h_source.html":[35,0,4,2,1,4,0,67],
-"_range_options_8cpp.html":[35,0,0,113,2,0,110],
 "_range_options_8cpp.html#abfc8d40fa487ec8a04a59087d8412458":[35,0,0,113,2,0,110,0],
 "_range_options_8cpp_source.html":[35,0,0,113,2,0,110],
 "_range_options_8h.html":[35,0,0,113,2,0,111],
@@ -242,6 +230,7 @@ var NAVTREEINDEX22 =
 "_replace_sub_with_add_pass_8h.html":[35,0,0,51,7,0,0,0,52],
 "_replace_sub_with_add_pass_8h_source.html":[35,0,0,51,7,0,0,0,52],
 "_requantize_pass_8cpp.html":[35,0,0,51,7,1,77],
+"_requantize_pass_8cpp.html#a5b49f1f8ba432bdf8f687d3af3eb5a1a":[35,0,0,51,7,1,77,0],
 "_requantize_pass_8cpp_source.html":[35,0,0,51,7,1,77],
 "_requantize_pass_8h.html":[35,0,0,51,7,0,0,0,53],
 "_requantize_pass_8h_source.html":[35,0,0,51,7,0,0,0,53],
@@ -249,5 +238,16 @@ var NAVTREEINDEX22 =
 "_request_8h_source.html":[35,0,0,3,0,30],
 "_reshape_canonicalizer_8cpp.html":[35,0,0,67,1,0,36],
 "_reshape_canonicalizer_8cpp_source.html":[35,0,0,67,1,0,36],
-"_reshape_canonicalizer_8h.html":[35,0,0,67,1,0,37]
+"_reshape_canonicalizer_8h.html":[35,0,0,67,1,0,37],
+"_reshape_canonicalizer_8h_source.html":[35,0,0,67,1,0,37],
+"_reshape_kernel_8h.html":[35,0,3,3,0,0,1,17,0],
+"_reshape_kernel_8h.html#a053127d2f320f5520d80cd11ee4c2584":[35,0,3,3,0,0,1,17,0,1],
+"_reshape_kernel_8h.html#a0b1ac68ace1c12507afbff816c7fa70b":[35,0,3,3,0,0,1,17,0,2],
+"_reshape_kernel_8h.html#a3e2c786367f2e34a9e31d79d5e41a8f2":[35,0,3,3,0,0,1,17,0,3],
+"_reshape_kernel_8h.html#a42e660b54f034474bca7fe0575d7d48c":[35,0,3,3,0,0,1,17,0,6],
+"_reshape_kernel_8h.html#aba8138e16c051573335c52f75175ae6f":[35,0,3,3,0,0,1,17,0,4],
+"_reshape_kernel_8h.html#ac711a08ebd2d495b563b4e72af4afa78":[35,0,3,3,0,0,1,17,0,5],
+"_reshape_kernel_8h_source.html":[35,0,3,3,0,0,1,17,0],
+"_reshape_layer_8cc.html":[35,0,4,2,1,4,0,72],
+"_reshape_layer_8cc_source.html":[35,0,4,2,1,4,0,72]
 };

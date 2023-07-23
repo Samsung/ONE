@@ -12,14 +12,16 @@ var namespaceonert_1_1backend_1_1train =
     [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
     [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template" ],
     [ "Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", "classonert_1_1backend_1_1train_1_1_tensor" ],
+    [ "TensorBuilder", "classonert_1_1backend_1_1train_1_1_tensor_builder.html", "classonert_1_1backend_1_1train_1_1_tensor_builder" ],
     [ "TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", "classonert_1_1backend_1_1train_1_1_tensor_manager" ],
-    [ "TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_tensor_registry" ],
     [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
     [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ],
+    [ "DerivativeTensor", "namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0", null ],
     [ "ExternalContext", "namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66", null ],
     [ "FunctionMap", "namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4", null ],
+    [ "GradientTensor", "namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0", null ],
     [ "MemoryManager", "namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0", null ],
-    [ "TensorBuilder", "namespaceonert_1_1backend_1_1train.html#a7deae2f930c7abeda1e4a0d7c86a9417", null ],
+    [ "TensorRegistry", "namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2", null ],
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ]
 ];

@@ -437,7 +437,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  350</span>    <span class="keyword">auto</span> cnode = loco::must_cast&lt;const luci::CircleNode *&gt;(node);</div>
 <div class="line"><span class="lineno">  351</span>    std::string node_name = cnode-&gt;name();</div>
 <div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> selected_name : tokens)</div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;selected_name : tokens)</div>
 <div class="line"><span class="lineno">  354</span>      <span class="keywordflow">if</span> (selected_name.compare(node_name) == 0) <span class="comment">// find the selected name</span></div>
 <div class="line"><span class="lineno">  355</span>        selected_nodes.emplace_back(cnode);</div>
 <div class="line"><span class="lineno">  356</span>  }</div>

@@ -111,8 +111,10 @@ Collaboration diagram for onert::backend::builtin::train::kernel::PermuteLayer:<
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1b40be069ec495367a80bd77a06b9bf2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#a1b40be069ec495367a80bd77a06b9bf2">PermuteLayer</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;src_tensors, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;dst_tensors, const std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_external_context.html">ExternalContext</a> &gt; &amp;external_context)</td></tr>
-<tr class="separator:a1b40be069ec495367a80bd77a06b9bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a603e2f9ef47c4184c2b69d9681b9cc24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#a603e2f9ef47c4184c2b69d9681b9cc24">PermuteLayer</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;src_tensors, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;dst_tensors, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;input_deriv_tensors, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;output_deriv_tensors, const std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_external_context.html">ExternalContext</a> &gt; &amp;external_context)</td></tr>
+<tr class="separator:a603e2f9ef47c4184c2b69d9681b9cc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa931933167d0aafd66f621c16279c4f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#aa931933167d0aafd66f621c16279c4f0">optimize</a> () override</td></tr>
+<tr class="separator:aa931933167d0aafd66f621c16279c4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e73001f90362a4a5f63533a3b8c7e19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#a7e73001f90362a4a5f63533a3b8c7e19">forward</a> (bool training) override</td></tr>
 <tr class="separator:a7e73001f90362a4a5f63533a3b8c7e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c2fb363ce53b59139695719ddd82e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#a7c2fb363ce53b59139695719ddd82e7a">backward</a> () override</td></tr>
@@ -175,8 +177,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8h_source.html#l00035">35</a> of file <a class="el" href="train_2kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1b40be069ec495367a80bd77a06b9bf2" name="a1b40be069ec495367a80bd77a06b9bf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b40be069ec495367a80bd77a06b9bf2">&#9670;&#160;</a></span>PermuteLayer()</h2>
+<a id="a603e2f9ef47c4184c2b69d9681b9cc24" name="a603e2f9ef47c4184c2b69d9681b9cc24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a603e2f9ef47c4184c2b69d9681b9cc24">&#9670;&#160;</a></span>PermuteLayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,6 +198,18 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>input_deriv_tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>output_deriv_tensors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_external_context.html">ExternalContext</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>external_context</em>&#160;</td>
         </tr>
@@ -208,9 +222,12 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context}</div>
-<div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context},</div>
+<div class="line"><span class="lineno">   38</span>    _input_deriv_tensors{input_deriv_tensors}, _output_deriv_tensors{output_deriv_tensors}</div>
+<div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  assert(input_deriv_tensors.size() == output_deriv_tensors.size());</div>
+<div class="line"><span class="lineno">   41</span>  assert(input_deriv_tensors.size() == src_tensors.size());</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -240,11 +257,25 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// TODO Implement detail</span></div>
-<div class="line"><span class="lineno">   44</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_deriv_tensors.size(); ++i)</div>
+<div class="line"><span class="lineno">   56</span>  {</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> src_deriv = _output_deriv_tensors.at(i);</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> dst_deriv = _input_deriv_tensors.at(i);</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> rank = src_deriv-&gt;getShape().rank();</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> output_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.at(i);</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> input_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.at(i);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a557de95a78d405f21437de41dd8c24d3">exec::IPermuteFunction::permute</a>(src_deriv, dst_deriv, rank, output_offsets, input_offsets);</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
+<div class="line"><span class="lineno">   65</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a067528d61e5b9e112aeb10e63af884a9"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">onert::exec::IPermuteFunction::_dst_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _dst_tensors_offsets</div><div class="ttdef"><b>Definition:</b> <a href="_i_permute_function_8h_source.html#l00262">IPermuteFunction.h:262</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a557de95a78d405f21437de41dd8c24d3"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a557de95a78d405f21437de41dd8c24d3">onert::exec::IPermuteFunction::permute</a></div><div class="ttdeci">void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets)</div><div class="ttdef"><b>Definition:</b> <a href="_i_permute_function_8cc_source.html#l00244">IPermuteFunction.cc:244</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8705a1ceb48f7d535d321e6bab6081c7"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">onert::exec::IPermuteFunction::_src_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _src_tensors_offsets</div><div class="ttdef"><b>Definition:</b> <a href="_i_permute_function_8h_source.html#l00261">IPermuteFunction.h:261</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00262">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00261">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00244">onert::exec::IPermuteFunction::permute()</a>.</p>
+
 </div>
 </div>
 <a id="a7e73001f90362a4a5f63533a3b8c7e19" name="a7e73001f90362a4a5f63533a3b8c7e19"></a>
@@ -273,11 +304,48 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00039">39</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">builtin::kernel::PermuteLayer::run</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00051">51</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">builtin::kernel::PermuteLayer::run</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a7a21f92baa527b4faef4585998f789ad"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">onert::backend::builtin::kernel::PermuteLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2_permute_layer_8cc_source.html#l00196">PermuteLayer.cc:196</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+
+</div>
+</div>
+<a id="aa931933167d0aafd66f621c16279c4f0" name="aa931933167d0aafd66f621c16279c4f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa931933167d0aafd66f621c16279c4f0">&#9670;&#160;</a></span>optimize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::builtin::train::kernel::PermuteLayer::optimize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00044">44</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">builtin::kernel::PermuteLayer::optimize</a>();</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">// TODO Calculate offsets of derivative tensors if necessary</span></div>
+<div class="line"><span class="lineno">   49</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a263ea2e9b334f8b0aa3322905b3cfa04"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer::optimize</a></div><div class="ttdeci">void optimize() override</div><div class="ttdef"><b>Definition:</b> <a href="kernel_2_permute_layer_8cc_source.html#l00044">PermuteLayer.cc:44</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>.</p>
 
 </div>
 </div>

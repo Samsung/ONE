@@ -5,8 +5,6 @@
 <area shape="rect" id="node4" href="$classonert_1_1backend_1_1builtin_1_1_tensor_registry.html" title="Tensor registry class for builtin backend." alt="" coords="278,163,425,203"/>
 <area shape="rect" id="node5" href="$classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html" title="Tensor registry class for gpu&#45;cl backends." alt="" coords="285,227,418,267"/>
 <area shape="rect" id="node6" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="283,291,420,331"/>
-<area shape="rect" id="node7" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="505,212,723,267"/>
-<area shape="rect" id="node9" href="$classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html" title=" " alt="" coords="541,291,687,331"/>
-<area shape="rect" id="node10" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="495,355,733,425"/>
-<area shape="rect" id="node8" href="$classonert_1_1backend_1_1train_1_1_tensor_registry.html" title=" " alt="" coords="781,219,919,259"/>
+<area shape="rect" id="node7" href="$classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html" title=" " alt="" coords="541,251,687,291"/>
+<area shape="rect" id="node8" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="495,315,733,385"/>
 </map>

@@ -1,16 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_reshape_canonicalizer_8h_source.html":[35,0,0,67,1,0,37],
-"_reshape_kernel_8h.html":[35,0,3,3,0,0,1,17,0],
-"_reshape_kernel_8h.html#a053127d2f320f5520d80cd11ee4c2584":[35,0,3,3,0,0,1,17,0,1],
-"_reshape_kernel_8h.html#a0b1ac68ace1c12507afbff816c7fa70b":[35,0,3,3,0,0,1,17,0,2],
-"_reshape_kernel_8h.html#a3e2c786367f2e34a9e31d79d5e41a8f2":[35,0,3,3,0,0,1,17,0,3],
-"_reshape_kernel_8h.html#a42e660b54f034474bca7fe0575d7d48c":[35,0,3,3,0,0,1,17,0,6],
-"_reshape_kernel_8h.html#aba8138e16c051573335c52f75175ae6f":[35,0,3,3,0,0,1,17,0,4],
-"_reshape_kernel_8h.html#ac711a08ebd2d495b563b4e72af4afa78":[35,0,3,3,0,0,1,17,0,5],
-"_reshape_kernel_8h_source.html":[35,0,3,3,0,0,1,17,0],
-"_reshape_layer_8cc.html":[35,0,4,2,1,4,0,72],
-"_reshape_layer_8cc_source.html":[35,0,4,2,1,4,0,72],
 "_reshape_layer_8h.html":[35,0,4,2,1,4,0,73],
 "_reshape_layer_8h_source.html":[35,0,4,2,1,4,0,73],
 "_reshape_op_8h.html":[35,0,0,62,0,0,0,32],
@@ -131,6 +120,10 @@ var NAVTREEINDEX23 =
 "_s_b_serializer_8cpp_source.html":[35,0,0,71,0,2,3],
 "_s_b_serializer_8h.html":[35,0,0,71,0,2,4],
 "_s_b_serializer_8h_source.html":[35,0,0,71,0,2,4],
+"_s_g_d_8cc.html":[35,0,4,2,2,1,3,1,0,2],
+"_s_g_d_8cc_source.html":[35,0,4,2,2,1,3,1,0,2],
+"_s_g_d_8h.html":[35,0,4,2,2,0,2,0,0,2],
+"_s_g_d_8h_source.html":[35,0,4,2,2,0,2,0,0,2],
 "_s_i_s_o_kernel_8h.html":[35,0,3,3,2,1,108],
 "_s_i_s_o_kernel_8h_source.html":[35,0,3,3,2,1,108],
 "_s_n_p_e_event_writer_8cc.html":[35,0,4,2,2,1,5,11],
@@ -249,5 +242,12 @@ var NAVTREEINDEX23 =
 "_shape_description_8cpp_source.html":[35,0,0,51,10,1,14],
 "_shape_description_8h.html":[35,0,0,51,10,0,0,0,7],
 "_shape_description_8h.html#a05a597a8185e09e24e05f35adeea092a":[35,0,0,51,10,0,0,0,7,3],
-"_shape_description_8h.html#a2e0d900ec398f170519c13ea08cf8b05":[35,0,0,51,10,0,0,0,7,1]
+"_shape_description_8h.html#a2e0d900ec398f170519c13ea08cf8b05":[35,0,0,51,10,0,0,0,7,1],
+"_shape_description_8h.html#a2e78d7f098a3fecb8ae72496e3baca0c":[35,0,0,51,10,0,0,0,7,6],
+"_shape_description_8h.html#a5d4c42b5c73a042e9e567c5c7c317164":[35,0,0,51,10,0,0,0,7,5],
+"_shape_description_8h.html#a6437f84da9f31c4339dcb31759f4f723":[35,0,0,51,10,0,0,0,7,4],
+"_shape_description_8h.html#ab49af3af98ca9ce301ff81f4828dfb5e":[35,0,0,51,10,0,0,0,7,2],
+"_shape_description_8h_source.html":[35,0,0,51,10,0,0,0,7],
+"_shape_infer___strided_slice_8cpp.html":[35,0,0,51,10,1,15],
+"_shape_infer___strided_slice_8cpp.html#af40f06e7208711298ccc9c24eac277f7":[35,0,0,51,10,1,15,0]
 };

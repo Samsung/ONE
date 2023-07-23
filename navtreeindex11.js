@@ -1,16 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"_function_sequence_8h_source.html":[35,0,4,2,2,0,2,3],
-"_fuse_activation_function_pass_8cpp.html":[35,0,0,51,7,1,26],
-"_fuse_activation_function_pass_8cpp.html#a8b56761ca571d7a36d0c3fc94cfc1f59":[35,0,0,51,7,1,26,0],
-"_fuse_activation_function_pass_8cpp_source.html":[35,0,0,51,7,1,26],
-"_fuse_activation_function_pass_8h.html":[35,0,0,51,7,0,0,0,18],
-"_fuse_activation_function_pass_8h_source.html":[35,0,0,51,7,0,0,0,18],
-"_fuse_add_with_fully_connected_pass_8cpp.html":[35,0,0,51,7,1,27],
-"_fuse_add_with_fully_connected_pass_8cpp_source.html":[35,0,0,51,7,1,27],
-"_fuse_add_with_fully_connected_pass_8h.html":[35,0,0,51,7,0,0,0,19],
-"_fuse_add_with_fully_connected_pass_8h_source.html":[35,0,0,51,7,0,0,0,19],
-"_fuse_add_with_t_conv_pass_8cpp.html":[35,0,0,51,7,1,28],
 "_fuse_add_with_t_conv_pass_8cpp_source.html":[35,0,0,51,7,1,28],
 "_fuse_add_with_t_conv_pass_8h.html":[35,0,0,51,7,0,0,0,20],
 "_fuse_add_with_t_conv_pass_8h_source.html":[35,0,0,51,7,0,0,0,20],
@@ -249,5 +238,16 @@ var NAVTREEINDEX11 =
 "_graph_block_8h.html#a8940d01a9652a3cd22caea15d894a761":[35,0,0,37,1,16,3],
 "_graph_block_8h.html#a8940d01a9652a3cd22caea15d894a761ad066db54b89b0912e7e7c6da51e2da51":[35,0,0,37,1,16,3,0],
 "_graph_block_8h.html#aa7675f323f9220979774977e80c61c9f":[35,0,0,37,1,16,5],
-"_graph_block_8h.html#aa7675f323f9220979774977e80c61c9fa4bd2241a3a809d3cc2bb28e951cc183a":[35,0,0,37,1,16,5,0]
+"_graph_block_8h.html#aa7675f323f9220979774977e80c61c9fa4bd2241a3a809d3cc2bb28e951cc183a":[35,0,0,37,1,16,5,0],
+"_graph_block_8h.html#aa7675f323f9220979774977e80c61c9faa75db90c17eee73defa78759aa75dfe0":[35,0,0,37,1,16,5,1],
+"_graph_block_8h.html#abfc4e62610fee4acf84ebe6241e34dcf":[35,0,0,37,1,16,9],
+"_graph_block_8h.html#ac06126df54f5274fa3477b70ec075292":[35,0,0,37,1,16,6],
+"_graph_block_8h.html#acba105ae33f26ab64fc46e85f6d1a1fc":[35,0,0,37,1,16,4],
+"_graph_block_8h.html#acba105ae33f26ab64fc46e85f6d1a1fca0228fb00ddb0770f144d5482519d5bf2":[35,0,0,37,1,16,4,1],
+"_graph_block_8h.html#acba105ae33f26ab64fc46e85f6d1a1fca25fad7bae3b2e71a2a00af3630cba541":[35,0,0,37,1,16,4,0],
+"_graph_block_8h.html#ae64023b086fb96a78627a341dfbebe77":[35,0,0,37,1,16,11],
+"_graph_block_8h.html#af84b6dd31fd1ade89ef6fcfd06786a62":[35,0,0,37,1,16,8],
+"_graph_block_8h_source.html":[35,0,0,37,1,16],
+"_graph_builder_base_8h.html":[35,0,0,51,2,0,0,0,3],
+"_graph_builder_base_8h_source.html":[35,0,0,51,2,0,0,0,3]
 };

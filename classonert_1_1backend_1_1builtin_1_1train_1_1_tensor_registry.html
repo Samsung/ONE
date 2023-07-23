@@ -109,6 +109,8 @@ Collaboration diagram for onert::backend::builtin::train::TensorRegistry:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a774eeb6131c99c6c7e3998a57ef17a18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a774eeb6131c99c6c7e3998a57ef17a18">TensorRegistry</a> ()</td></tr>
+<tr class="separator:a774eeb6131c99c6c7e3998a57ef17a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc8b933ed3a1be9074126d9b458bbd6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">getITensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index) override</td></tr>
 <tr class="memdesc:acc8b933ed3a1be9074126d9b458bbd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer of ITensor among native and migrant tensors.  <a href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">More...</a><br /></td></tr>
 <tr class="separator:acc8b933ed3a1be9074126d9b458bbd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +165,37 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00039">39</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a774eeb6131c99c6c7e3998a57ef17a18" name="a774eeb6131c99c6c7e3998a57ef17a18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774eeb6131c99c6c7e3998a57ef17a18">&#9670;&#160;</a></span>TensorRegistry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">onert::backend::builtin::train::TensorRegistry::TensorRegistry </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">42</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>: _base_reg{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1builtin_1_1train.html#aebc5d388ed27881e60537803ec49e941">BaseTensorRegistry</a>} {}</div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1builtin_1_1train_html_aebc5d388ed27881e60537803ec49e941"><div class="ttname"><a href="namespaceonert_1_1backend_1_1builtin_1_1train.html#aebc5d388ed27881e60537803ec49e941">onert::backend::builtin::train::BaseTensorRegistry</a></div><div class="ttdeci">backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt; BaseTensorRegistry</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00035">TensorRegistry.h:37</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a18d1a14e06ac10bc3b70c075fead95a6" name="a18d1a14e06ac10bc3b70c075fead95a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18d1a14e06ac10bc3b70c075fead95a6">&#9670;&#160;</a></span>base_reg()</h2>
 
@@ -187,8 +219,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00118">118</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{ <span class="keywordflow">return</span> _base_reg; }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00120">120</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>{ <span class="keywordflow">return</span> _base_reg; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -221,10 +253,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a0b56569aa67bab20cd01a73b4cd1e150">onert::backend::train::ITensorRegistry</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00074">74</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> _base_reg-&gt;getDerivativeTensor(index);</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00076">76</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>  {</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> _base_reg-&gt;getDerivativeTensor(index);</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -252,10 +284,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00084">84</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>  {</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> _base_reg-&gt;getDerivativeTensor(index);</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00086">86</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>  {</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> _base_reg-&gt;getDerivativeTensor(index);</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -288,10 +320,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#ab3569c493168dd23cea987db8498073d">onert::backend::train::ITensorRegistry</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00079">79</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> _base_reg-&gt;getGradientTensor(index);</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00081">81</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> _base_reg-&gt;getGradientTensor(index);</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -325,18 +357,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_tensor_registry.html#a047ae974521f90c1b981104506e5744d">onert::backend::ITensorRegistry</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">42</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getITensor(index);</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> (base_tensor)</div>
-<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">return</span> base_tensor;</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry_html_a239fc0a4a2dfa0c627cde29f5834c8ee"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">onert::backend::builtin::train::TensorRegistry::getNativeIOTensor</a></div><div class="ttdeci">IOTensor * getNativeIOTensor(const ir::OperandIndex &amp;index)</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00066">TensorRegistry.h:66</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00044">44</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getITensor(index);</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (base_tensor)</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">return</span> base_tensor;</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry_html_a239fc0a4a2dfa0c627cde29f5834c8ee"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">onert::backend::builtin::train::TensorRegistry::getNativeIOTensor</a></div><div class="ttdeci">IOTensor * getNativeIOTensor(const ir::OperandIndex &amp;index)</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00068">TensorRegistry.h:68</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00066">getNativeIOTensor()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00068">getNativeIOTensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00089">setMigrantTensor()</a>, and <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00107">setNativeIOTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00091">setMigrantTensor()</a>, and <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00109">setNativeIOTensor()</a>.</p>
 
 </div>
 </div>
@@ -364,16 +396,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00066">66</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>  {</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _native_io_tensors.find(index);</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> (tensor != _native_io_tensors.end())</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;second.get();</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00068">68</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>  {</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _native_io_tensors.find(index);</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (tensor != _native_io_tensors.end())</div>
+<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;second.get();</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">getITensor()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00050">getNativeITensor()</a>, and <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00058">getPortableTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00044">getITensor()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00052">getNativeITensor()</a>, and <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00060">getPortableTensor()</a>.</p>
 
 </div>
 </div>
@@ -407,15 +439,15 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_tensor_registry.html#acf9ae82175a9e16c2ccee201a1789e35">onert::backend::ITensorRegistry</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00050">50</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getNativeITensor(index);</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (base_tensor)</div>
-<div class="line"><span class="lineno">   54</span>      <span class="keywordflow">return</span> base_tensor;</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00052">52</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getNativeITensor(index);</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (base_tensor)</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">return</span> base_tensor;</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00066">getNativeIOTensor()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00068">getNativeIOTensor()</a>.</p>
 
 </div>
 </div>
@@ -443,15 +475,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00058">58</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getPortableTensor(index);</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> (base_tensor)</div>
-<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> base_tensor;</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00060">60</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> base_tensor = _base_reg-&gt;getPortableTensor(index);</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (base_tensor)</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> base_tensor;</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee">getNativeIOTensor</a>(index);</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00066">getNativeIOTensor()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00068">getNativeIOTensor()</a>.</p>
 
 </div>
 </div>
@@ -478,10 +510,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00114">114</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> _native_io_tensors;</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00116">116</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>  {</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> _native_io_tensors;</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,10 +551,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00097">97</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    _base_reg-&gt;setDerivativeTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">  100</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00099">99</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>  {</div>
+<div class="line"><span class="lineno">  101</span>    _base_reg-&gt;setDerivativeTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -560,10 +592,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00102">102</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>  {</div>
-<div class="line"><span class="lineno">  104</span>    _base_reg-&gt;setGradientTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">  105</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00104">104</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>  {</div>
+<div class="line"><span class="lineno">  106</span>    _base_reg-&gt;setGradientTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">  107</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -608,16 +640,16 @@ false if not supported </dd></dl>
 
 <p>Reimplemented from <a class="el" href="structonert_1_1backend_1_1_i_tensor_registry.html#a07b3bd4e300d5c1d037afacd0e4a555b">onert::backend::ITensorRegistry</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00089">89</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   90</span>  {</div>
-<div class="line"><span class="lineno">   91</span>    assert(tensor);</div>
-<div class="line"><span class="lineno">   92</span>    assert(!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">getITensor</a>(index)); <span class="comment">// For the index, tensor is not registered yet</span></div>
-<div class="line"><span class="lineno">   93</span>    _base_reg-&gt;setMigrantTensor(index, tensor);</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry_html_acc8b933ed3a1be9074126d9b458bbd6a"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">onert::backend::builtin::train::TensorRegistry::getITensor</a></div><div class="ttdeci">ITensor * getITensor(const ir::OperandIndex &amp;index) override</div><div class="ttdoc">Returns pointer of ITensor among native and migrant tensors.</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">TensorRegistry.h:42</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00091">91</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    assert(tensor);</div>
+<div class="line"><span class="lineno">   94</span>    assert(!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">getITensor</a>(index)); <span class="comment">// For the index, tensor is not registered yet</span></div>
+<div class="line"><span class="lineno">   95</span>    _base_reg-&gt;setMigrantTensor(index, tensor);</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry_html_acc8b933ed3a1be9074126d9b458bbd6a"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">onert::backend::builtin::train::TensorRegistry::getITensor</a></div><div class="ttdeci">ITensor * getITensor(const ir::OperandIndex &amp;index) override</div><div class="ttdoc">Returns pointer of ITensor among native and migrant tensors.</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00044">TensorRegistry.h:44</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">getITensor()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00044">getITensor()</a>.</p>
 
 </div>
 </div>
@@ -655,15 +687,15 @@ false if not supported </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00107">107</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>  {</div>
-<div class="line"><span class="lineno">  109</span>    assert(tensor);</div>
-<div class="line"><span class="lineno">  110</span>    assert(!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">getITensor</a>(index)); <span class="comment">// For the index, tensor is not registered yet</span></div>
-<div class="line"><span class="lineno">  111</span>    _native_io_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = std::move(tensor);</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00109">109</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>  {</div>
+<div class="line"><span class="lineno">  111</span>    assert(tensor);</div>
+<div class="line"><span class="lineno">  112</span>    assert(!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#acc8b933ed3a1be9074126d9b458bbd6a">getITensor</a>(index)); <span class="comment">// For the index, tensor is not registered yet</span></div>
+<div class="line"><span class="lineno">  113</span>    _native_io_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = std::move(tensor);</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00042">getITensor()</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2train_2_tensor_registry_8h_source.html#l00044">getITensor()</a>.</p>
 
 </div>
 </div>

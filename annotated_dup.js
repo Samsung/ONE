@@ -2716,6 +2716,7 @@ var annotated_dup =
         [ "train", "namespaceonert_1_1backend_1_1train.html", [
           [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", [
             [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
+            [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ]
           ] ],
           [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
@@ -2729,8 +2730,8 @@ var annotated_dup =
           [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
           [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template" ],
           [ "Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", "classonert_1_1backend_1_1train_1_1_tensor" ],
+          [ "TensorBuilder", "classonert_1_1backend_1_1train_1_1_tensor_builder.html", "classonert_1_1backend_1_1train_1_1_tensor_builder" ],
           [ "TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", "classonert_1_1backend_1_1train_1_1_tensor_manager" ],
-          [ "TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_tensor_registry" ],
           [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
           [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ]
         ] ],
@@ -2791,10 +2792,12 @@ var annotated_dup =
         [ "train", "namespaceonert_1_1compiler_1_1train.html", [
           [ "pass", "namespaceonert_1_1compiler_1_1train_1_1pass.html", [
             [ "LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass" ],
-            [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
+            [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ],
+            [ "PermutationInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_permutation_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_permutation_insertion_pass" ]
           ] ],
-          [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", null ],
+          [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", "structonert_1_1compiler_1_1train_1_1_loss_info" ],
           [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
+          [ "OptimizerInfo", "structonert_1_1compiler_1_1train_1_1_optimizer_info.html", "structonert_1_1compiler_1_1train_1_1_optimizer_info" ],
           [ "StaticDerivativeShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_derivative_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_derivative_shape_inferer" ],
           [ "TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", "classonert_1_1compiler_1_1train_1_1_tensor_registries" ],
           [ "TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info" ],
@@ -2859,7 +2862,8 @@ var annotated_dup =
         ] ],
         [ "train", "namespaceonert_1_1exec_1_1train.html", [
           [ "optimizer", "namespaceonert_1_1exec_1_1train_1_1optimizer.html", [
-            [ "Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer" ]
+            [ "Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer" ],
+            [ "SGD", "classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html", "classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d" ]
           ] ],
           [ "ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", "classonert_1_1exec_1_1train_1_1_i_trainable_function" ],
           [ "TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html", "classonert_1_1exec_1_1train_1_1_trainable_executor" ],
@@ -3506,6 +3510,8 @@ var annotated_dup =
     [ "EncodeCommand", "struct_encode_command.html", "struct_encode_command" ],
     [ "EqualChef", "class_equal_chef.html", "class_equal_chef" ],
     [ "EqualChefFactory", "struct_equal_chef_factory.html", "struct_equal_chef_factory" ],
+    [ "ErfChef", "class_erf_chef.html", "class_erf_chef" ],
+    [ "ErfChefFactory", "struct_erf_chef_factory.html", "struct_erf_chef_factory" ],
     [ "Event", "struct_event.html", "struct_event" ],
     [ "EventCollector", "class_event_collector.html", "class_event_collector" ],
     [ "EventFormatWriter", "class_event_format_writer.html", "class_event_format_writer" ],

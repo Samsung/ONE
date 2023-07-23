@@ -236,6 +236,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">onert::exec::IPermuteFunction</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#aa931933167d0aafd66f621c16279c4f0">onert::backend::builtin::train::kernel::PermuteLayer</a>.</p>
+
 <p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">44</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
 <div class="line"><span class="lineno">   46</span>  <span class="comment">// Remove copying of tensor as nullptr</span></div>
@@ -348,6 +350,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00260">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00262">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00259">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00261">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f">onert::exec::IPermuteFunction::COPY</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a884840a84c0d452fbf9aa5f6997b7ff3">onert::backend::ITensor::has_padding()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65">onert::exec::IPermuteFunction::NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625">onert::exec::IPermuteFunction::NHWC_TO_NCHW</a>, <a class="el" href="_data_type_8cc_source.html#l00029">onert::ir::sizeOfDataType()</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00293">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::train::kernel::PermuteLayer::optimize()</a>.</p>
 
 </div>
 </div>
@@ -498,7 +502,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00263">onert::exec::IPermuteFunction::_buffers_map</a>, <a class="el" href="_i_permute_function_8h_source.html#l00260">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00262">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00259">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00261">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="_i_tensor_8h_source.html#l00067">onert::backend::ITensor::applyShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="_shape_converter_8cc_source.html#l00024">onert::exec::convertShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">onert::backend::ITensor::getShape()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">onert::backend::ITensor::is_dynamic()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout()</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00244">onert::exec::IPermuteFunction::permute()</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00293">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00039">onert::backend::builtin::train::kernel::PermuteLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00051">onert::backend::builtin::train::kernel::PermuteLayer::forward()</a>.</p>
 
 </div>
 </div>

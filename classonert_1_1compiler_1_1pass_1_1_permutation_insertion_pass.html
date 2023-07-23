@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1compiler_1_1pass_1_1_per
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="pass_2_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::compiler::pass::PermutationInsertionPass:</div>
 <div class="dyncontent">
@@ -168,7 +168,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_permutation_insertion_pass_8h_source.html#l00032">32</a> of file <a class="el" href="_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_2_permutation_insertion_pass_8h_source.html#l00032">32</a> of file <a class="el" href="pass_2_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aefe681096a3c687171f9fb9436208773" name="aefe681096a3c687171f9fb9436208773"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefe681096a3c687171f9fb9436208773">&#9670;&#160;</a></span>callback()</h2>
@@ -206,7 +206,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html#ab9d7f0dae763a076ba81ed11c09b7f91">onert::compiler::pass::LoweredOperandPass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permutation_insertion_pass_8cc_source.html#l00038">38</a> of file <a class="el" href="_permutation_insertion_pass_8cc_source.html">PermutationInsertionPass.cc</a>.</p>
+<p>Reimplemented in <a class="el" href="classonert_1_1compiler_1_1train_1_1pass_1_1_permutation_insertion_pass.html#a96785f697c93d363e17efcde438d256d">onert::compiler::train::pass::PermutationInsertionPass</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="pass_2_permutation_insertion_pass_8cc_source.html#l00038">38</a> of file <a class="el" href="pass_2_permutation_insertion_pass_8cc_source.html">PermutationInsertionPass.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keyword">auto</span> &amp;operand_li_map = <a class="code hl_variable" href="classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html#ac36645714328db83618311d33e49284e">_lowered_graph</a>.<a class="code hl_function" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a009fa65e7f106b931537171cdf14352c">lower_info</a>().<a class="code hl_variable" href="structonert_1_1compiler_1_1_graph_lower_info.html#ab8a48d08a56dd191e240e4649829008d">operand</a>;</div>
 <div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> &amp;&amp;operand_li = operand_li_map.getRawPtr(index);</div>
@@ -293,6 +295,8 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00050">onert::compiler::pass::Pass::_graph</a>, <a class="el" href="_lowered_operand_pass_8h_source.html#l00045">onert::compiler::pass::LoweredOperandPass::_lowered_graph</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a009fa65e7f106b931537171cdf14352c">onert::compiler::ILoweredGraph::lower_info()</a>, <a class="el" href="_graph_lower_info_8h_source.html#l00036">onert::compiler::GraphLowerInfo::operand</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>, <a class="el" href="_graph_lower_info_8h_source.html#l00035">onert::compiler::GraphLowerInfo::operation</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">onert::ir::Graph::operations()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="train_2pass_2_permutation_insertion_pass_8cc_source.html#l00028">onert::compiler::train::pass::PermutationInsertionPass::callback()</a>.</p>
+
 </div>
 </div>
 <a id="af695c07ad4e40c87b7b1edc8f86daded" name="af695c07ad4e40c87b7b1edc8f86daded"></a>
@@ -320,7 +324,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html#a281aca3faa0406777704d4631904f285">onert::compiler::pass::LoweredOperandPass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_permutation_insertion_pass_8h_source.html#l00038">38</a> of file <a class="el" href="_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_2_permutation_insertion_pass_8h_source.html#l00038">38</a> of file <a class="el" href="pass_2_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;PermutationInsertionPass&quot;</span>; }</div>
 </div><!-- fragment -->
 </div>
@@ -358,8 +362,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/core/src/compiler/pass/<a class="el" href="_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a></li>
-<li>runtime/onert/core/src/compiler/pass/<a class="el" href="_permutation_insertion_pass_8cc_source.html">PermutationInsertionPass.cc</a></li>
+<li>runtime/onert/core/src/compiler/pass/<a class="el" href="pass_2_permutation_insertion_pass_8h_source.html">PermutationInsertionPass.h</a></li>
+<li>runtime/onert/core/src/compiler/pass/<a class="el" href="pass_2_permutation_insertion_pass_8cc_source.html">PermutationInsertionPass.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

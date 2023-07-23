@@ -6,6 +6,14 @@ var nnfw__experimental_8h =
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
+    [ "NNFW_TRAIN_LOSS", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660", [
+      [ "NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929", null ],
+      [ "NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60", null ]
+    ] ],
+    [ "NNFW_TRAIN_OPTIMIZER", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4", [
+      [ "NNFW_TRAIN_OPTIMIZER_SGD", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e", null ],
+      [ "NNFW_TRAIN_OPTIMIZER_ADAM", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8", null ]
+    ] ],
     [ "nnfw_input_tensorindex", "nnfw__experimental_8h.html#a84b063e69ff8e50612f08a902215c894", null ],
     [ "nnfw_output_tensorindex", "nnfw__experimental_8h.html#a5f67df99da7ea81a11625ca7cbc981de", null ],
     [ "nnfw_pop_pipeline_output", "nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050", null ],

@@ -119,10 +119,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abccb14a728bef0f2bc25fedc9c9bc6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab494748d3134066823487470d5c8d1e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#ab494748d3134066823487470d5c8d1e7">setLossInfo</a> (const <a class="el" href="structonert_1_1compiler_1_1train_1_1_loss_info.html">LossInfo</a> &amp;loss_info)</td></tr>
 <tr class="separator:ab494748d3134066823487470d5c8d1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a3611c063da1985632ebd31ab07f0a6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structonert_1_1compiler_1_1train_1_1_optimizer_info.html">OptimizerInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#a0a3611c063da1985632ebd31ab07f0a6">optimizerInfo</a> () const</td></tr>
+<tr class="separator:a0a3611c063da1985632ebd31ab07f0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a154699172efd8715c054a33e84bf22c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html#a154699172efd8715c054a33e84bf22c0">setOptimizerInfo</a> (const <a class="el" href="structonert_1_1compiler_1_1train_1_1_optimizer_info.html">OptimizerInfo</a> &amp;optimizer_info)</td></tr>
+<tr class="separator:a154699172efd8715c054a33e84bf22c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00034">34</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00044">44</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a33f4472dabe45c4fcb2316154792732e" name="a33f4472dabe45c4fcb2316154792732e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33f4472dabe45c4fcb2316154792732e">&#9670;&#160;</a></span>TrainingInfo() <span class="overload">[1/3]</span></h2>
@@ -147,8 +151,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00037">37</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00047">47</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -253,9 +257,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00044">44</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00054">54</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00061">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+
 </div>
 </div>
 <a id="abccb14a728bef0f2bc25fedc9c9bc6a3" name="abccb14a728bef0f2bc25fedc9c9bc6a3"></a>
@@ -281,9 +287,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00046">46</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00056">56</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
+
 </div>
 </div>
 <a id="a0d8b649053fd82ade09861693b4ff6b5" name="a0d8b649053fd82ade09861693b4ff6b5"></a>
@@ -338,6 +346,36 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0a3611c063da1985632ebd31ab07f0a6" name="a0a3611c063da1985632ebd31ab07f0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a3611c063da1985632ebd31ab07f0a6">&#9670;&#160;</a></span>optimizerInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structonert_1_1compiler_1_1train_1_1_optimizer_info.html">OptimizerInfo</a> &amp; onert::compiler::train::TrainingInfo::optimizerInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00058">58</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> _optimizer_info; }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00061">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+
+</div>
+</div>
 <a id="a0e124a753e800ba7a0a26081ab9370d9" name="a0e124a753e800ba7a0a26081ab9370d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0e124a753e800ba7a0a26081ab9370d9">&#9670;&#160;</a></span>setBatchSize()</h2>
 
@@ -362,8 +400,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00045">45</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ _batch_size = batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00055">55</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ _batch_size = batch_size; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -391,8 +429,37 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00047">47</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ _loss_info = loss_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00057">57</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ _loss_info = loss_info; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a154699172efd8715c054a33e84bf22c0" name="a154699172efd8715c054a33e84bf22c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a154699172efd8715c054a33e84bf22c0">&#9670;&#160;</a></span>setOptimizerInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::compiler::train::TrainingInfo::setOptimizerInfo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structonert_1_1compiler_1_1train_1_1_optimizer_info.html">OptimizerInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>optimizer_info</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00059">59</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ _optimizer_info = optimizer_info; }</div>
 </div><!-- fragment -->
 </div>
 </div>

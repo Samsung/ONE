@@ -1,12 +1,5 @@
 var NAVTREEINDEX29 =
 {
-"_usage_8h_source.html":[35,0,0,34,1,1,23],
-"_use_8forward_8h.html":[35,0,0,26,0,0,0,1,61],
-"_use_8forward_8h_source.html":[35,0,0,26,0,0,0,1,61],
-"_use_set_8h.html":[35,0,0,26,0,0,0,1,63],
-"_use_set_8h.html#a122b489cf4940ffaaf41706a44d14bbc":[35,0,0,26,0,0,0,1,63,0],
-"_use_set_8h_source.html":[35,0,0,26,0,0,0,1,63],
-"_user_data_8cpp.html":[35,0,0,46,1,9],
 "_user_data_8cpp.html#a6197e2adbb3de30fd95ee1c7da42608c":[35,0,0,46,1,9,0],
 "_user_data_8cpp.html#a7557479ea7f5029c5f486f7b05862cb0":[35,0,0,46,1,9,1],
 "_user_data_8cpp.html#afd0e2a3648a672fa52241e52d652aca7":[35,0,0,46,1,9,2],
@@ -249,5 +242,12 @@ var NAVTREEINDEX29 =
 "activation__float__helpers_8h_source.html":[35,0,1,0,1,0,0,0,0],
 "angkor_2include_2angkor_2_tensor_index_8h.html":[35,0,0,1,0,0,0],
 "angkor_2include_2angkor_2_tensor_index_8h.html#a845524c7f888c79282ed1019cbfb3635":[35,0,0,1,0,0,0,0],
-"angkor_2include_2angkor_2_tensor_index_8h_source.html":[35,0,0,1,0,0,0]
+"angkor_2include_2angkor_2_tensor_index_8h_source.html":[35,0,0,1,0,0,0],
+"angkor_2include_2angkor_2_tensor_shape_8h.html":[35,0,0,1,0,0,1],
+"angkor_2include_2angkor_2_tensor_shape_8h.html#a064734f560e3fa5d4be0828c9d7a3859":[35,0,0,1,0,0,1,0],
+"angkor_2include_2angkor_2_tensor_shape_8h_source.html":[35,0,0,1,0,0,1],
+"angkor_2src_2_a_d_t_2feature_2_reader_8cpp.html":[35,0,0,1,1,0,0,4],
+"angkor_2src_2_a_d_t_2feature_2_reader_8cpp_source.html":[35,0,0,1,1,0,0,4],
+"angkor_2src_2_a_d_t_2kernel_2_reader_8cpp.html":[35,0,0,1,1,0,1,4],
+"angkor_2src_2_a_d_t_2kernel_2_reader_8cpp_source.html":[35,0,0,1,1,0,1,4]
 };

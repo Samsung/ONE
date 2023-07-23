@@ -397,6 +397,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_graph_8cc_source.html#l00123">onert::ir::Graph::addInput()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
+
 </div>
 </div>
 <a id="a866ec5080ed500280eb32903158b0d55" name="a866ec5080ed500280eb32903158b0d55"></a>
@@ -432,6 +434,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a151ba4a9f9a1fe97d77c639c7a7ad0b3"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a151ba4a9f9a1fe97d77c639c7a7ad0b3">onert::ir::Graph::addOperand</a></div><div class="ttdeci">OperandIndex addOperand(const Shape &amp;shape, const TypeInfo &amp;type)</div><div class="ttdef"><b>Definition:</b> <a href="_graph_8cc_source.html#l00035">Graph.cc:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_graph_8cc_source.html#l00035">onert::ir::Graph::addOperand()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
 
 </div>
 </div>
@@ -515,6 +519,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_graph_8cc_source.html#l00069">onert::ir::Graph::addOperation()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00114">operation()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
+
 </div>
 </div>
 <a id="a7ed269c873122002160e95826d5b4bd2" name="a7ed269c873122002160e95826d5b4bd2"></a>
@@ -550,6 +556,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a9f8ce493a3e354105b556ef2c5a7b51c"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a9f8ce493a3e354105b556ef2c5a7b51c">onert::ir::Graph::addOutput</a></div><div class="ttdeci">void addOutput(const OperandIndex &amp;ind, const std::string &amp;name=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="_graph_8cc_source.html#l00130">Graph.cc:130</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_graph_8cc_source.html#l00130">onert::ir::Graph::addOutput()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
 
 </div>
 </div>
@@ -803,7 +811,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00109">onert::ir::Graph::getOutputs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executor_8cc_source.html#l00031">onert::exec::train::TrainableExecutor::TrainableExecutor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>, and <a class="el" href="_trainable_executor_8cc_source.html#l00031">onert::exec::train::TrainableExecutor::TrainableExecutor()</a>.</p>
 
 </div>
 </div>
@@ -866,7 +874,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00117">onert::ir::Graph::layout()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00112">setLayout()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00036">onert::backend::train::BackendContext::genTrainingTensors()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00112">setLayout()</a>.</p>
 
 </div>
 </div>
@@ -931,7 +939,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_backend_context_helpers_8h_source.html#l00063">onert::backend::basic::train::initConsts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00046">onert::backend::builtin::train::BackendContext::genKernels()</a>, <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00036">onert::backend::train::BackendContext::genTrainingTensors()</a>, <a class="el" href="_trainable_backend_context_helpers_8h_source.html#l00063">onert::backend::basic::train::initConsts()</a>, and <a class="el" href="_loss_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
 
 </div>
 </div>
@@ -960,7 +968,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">onert::ir::Graph::operations()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00046">addOperation()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00039">onert::backend::builtin::train::KernelGenerator::generate()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00053">onert::backend::train::KernelGenerator::generate()</a>, <a class="el" href="_static_derivative_shape_inferer_8cc_source.html#l00033">onert::compiler::train::StaticDerivativeShapeInferer::infer()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00051">replaceOperation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00046">addOperation()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00037">onert::backend::builtin::train::KernelGenerator::generate()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00066">onert::backend::train::KernelGenerator::generate()</a>, <a class="el" href="_static_derivative_shape_inferer_8cc_source.html#l00033">onert::compiler::train::StaticDerivativeShapeInferer::infer()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00051">replaceOperation()</a>.</p>
 
 </div>
 </div>

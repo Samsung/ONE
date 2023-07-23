@@ -8,6 +8,8 @@ var classonert_1_1compiler_1_1train_1_1_training_info =
     [ "lossInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#abccb14a728bef0f2bc25fedc9c9bc6a3", null ],
     [ "operator=", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0d8b649053fd82ade09861693b4ff6b5", null ],
     [ "operator=", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0fcbc888131710235b40bd7e8aecdd9d", null ],
+    [ "optimizerInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0a3611c063da1985632ebd31ab07f0a6", null ],
     [ "setBatchSize", "classonert_1_1compiler_1_1train_1_1_training_info.html#a0e124a753e800ba7a0a26081ab9370d9", null ],
-    [ "setLossInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#ab494748d3134066823487470d5c8d1e7", null ]
+    [ "setLossInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#ab494748d3134066823487470d5c8d1e7", null ],
+    [ "setOptimizerInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html#a154699172efd8715c054a33e84bf22c0", null ]
 ];

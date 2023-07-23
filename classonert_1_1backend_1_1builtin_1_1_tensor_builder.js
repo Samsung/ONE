@@ -1,7 +1,6 @@
 var classonert_1_1backend_1_1builtin_1_1_tensor_builder =
 [
     [ "TensorBuilder", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#a6ab53972cbd65f9cb0500fe58a5abbad", null ],
-    [ "TensorBuilder", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#a35b95c0d2d9d3b33f2f9192293388730", null ],
     [ "allocate", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#af529387dc1e3184644ccdbe4dda0e28e", null ],
     [ "dynamicTensorManager", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#af0a6bfa2690a8ffb52ec919b90a591be", null ],
     [ "isRegistered", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#afb34657efa9f9895e415e314ac90f105", null ],

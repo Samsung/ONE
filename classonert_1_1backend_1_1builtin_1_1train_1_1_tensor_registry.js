@@ -1,5 +1,6 @@
 var classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry =
 [
+    [ "TensorRegistry", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a774eeb6131c99c6c7e3998a57ef17a18", null ],
     [ "base_reg", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a18d1a14e06ac10bc3b70c075fead95a6", null ],
     [ "getDerivativeITensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a3a8e030ff7da13365ea254300f341cbc", null ],
     [ "getDerivativeTensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a542bbcffa9d9afbb8d2b5cb1456f0c27", null ],

@@ -145,6 +145,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab59baec016c3eca8bd8d6d0c48ee8911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e1db01134e00044abe3b360260f47f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#a8e1db01134e00044abe3b360260f47f9">getOutputShape</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
 <tr class="separator:a8e1db01134e00044abe3b360260f47f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41e5549fee5cbf8d25868c6342a68c2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#aa41e5549fee5cbf8d25868c6342a68c2">getInputTotalSize</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
+<tr class="separator:aa41e5549fee5cbf8d25868c6342a68c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to define execution instance to collect input/output information for inference and prepare executor run (TODO) </p>
@@ -309,6 +311,30 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_o_description_8h_source.html#l00067">onert::exec::IODescription::dynamic_input_shapes</a>.</p>
 
+</div>
+</div>
+<a id="aa41e5549fee5cbf8d25868c6342a68c2" name="aa41e5549fee5cbf8d25868c6342a68c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa41e5549fee5cbf8d25868c6342a68c2">&#9670;&#160;</a></span>getInputTotalSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t onert::exec::Execution::getInputTotalSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2src_2exec_2_execution_8cc_source.html#l00203">203</a> of file <a class="el" href="core_2src_2exec_2_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  204</span>{</div>
+<div class="line"><span class="lineno">  205</span>  <span class="comment">// TODO Support dynamic shape</span></div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> _executors-&gt;inputInfo(ind).total_size();</div>
+<div class="line"><span class="lineno">  207</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a8e1db01134e00044abe3b360260f47f9" name="a8e1db01134e00044abe3b360260f47f9"></a>

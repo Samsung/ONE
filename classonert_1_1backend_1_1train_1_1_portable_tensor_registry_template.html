@@ -110,7 +110,7 @@ Collaboration diagram for onert::backend::train::PortableTensorRegistryTemplate&
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aabebcfa6da9ddea89f576ba2399099f1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#aabebcfa6da9ddea89f576ba2399099f1">TrainingTensors</a> = std::tuple&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> *, GradientTensor * &gt;</td></tr>
+<tr class="memitem:aabebcfa6da9ddea89f576ba2399099f1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#aabebcfa6da9ddea89f576ba2399099f1">TrainingTensors</a> = std::tuple&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> *, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> * &gt;</td></tr>
 <tr class="separator:aabebcfa6da9ddea89f576ba2399099f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae1be2e0e95f521d5af8bb5ad0223bc08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5675dac2a4ea4771c06d9351adf4195d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a5675dac2a4ea4771c06d9351adf4195d">getTrainableTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
 <tr class="separator:a5675dac2a4ea4771c06d9351adf4195d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f8ad85a7c743b794aa9b72901a4faa9"><td class="memItemLeft" align="right" valign="top">DerivativeTensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a0f8ad85a7c743b794aa9b72901a4faa9">getDerivativeTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
+<tr class="memitem:a0f8ad85a7c743b794aa9b72901a4faa9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a0f8ad85a7c743b794aa9b72901a4faa9">getDerivativeTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
 <tr class="separator:a0f8ad85a7c743b794aa9b72901a4faa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac97d8defcda690d71639cf351796f85e"><td class="memItemLeft" align="right" valign="top">GradientTensor *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#ac97d8defcda690d71639cf351796f85e">getGradientTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
+<tr class="memitem:ac97d8defcda690d71639cf351796f85e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#ac97d8defcda690d71639cf351796f85e">getGradientTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
 <tr class="separator:ac97d8defcda690d71639cf351796f85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa09f7b778ee2dc3272aaafe7d61bc14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#aabebcfa6da9ddea89f576ba2399099f1">TrainingTensors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#afa09f7b778ee2dc3272aaafe7d61bc14">getTrainingTensors</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</td></tr>
 <tr class="separator:afa09f7b778ee2dc3272aaafe7d61bc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,9 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af143938dffde9f15fcff7412a08d27c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7df965464978b0c61112d37bb273640c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a7df965464978b0c61112d37bb273640c">setTrainableTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> &gt; tensor)</td></tr>
 <tr class="separator:a7df965464978b0c61112d37bb273640c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c4414fd1a0cc6b4828a3066a4b36aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1c4414fd1a0cc6b4828a3066a4b36aac">setDerivativeTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, std::unique_ptr&lt; DerivativeTensor &gt; tensor)</td></tr>
+<tr class="memitem:a1c4414fd1a0cc6b4828a3066a4b36aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1c4414fd1a0cc6b4828a3066a4b36aac">setDerivativeTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> &gt; tensor)</td></tr>
 <tr class="separator:a1c4414fd1a0cc6b4828a3066a4b36aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1475a319244dabf26b7a0ad495183c4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1475a319244dabf26b7a0ad495183c4d">setGradientTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, std::unique_ptr&lt; GradientTensor &gt; tensor)</td></tr>
+<tr class="memitem:a1475a319244dabf26b7a0ad495183c4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1475a319244dabf26b7a0ad495183c4d">setGradientTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; tensor)</td></tr>
 <tr class="separator:a1475a319244dabf26b7a0ad495183c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04105a5c49ebf5d7a24b5e2155964da4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a04105a5c49ebf5d7a24b5e2155964da4">trainable_tensors</a> ()</td></tr>
 <tr class="separator:a04105a5c49ebf5d7a24b5e2155964da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3a492d6e532705e6a3c6517aa527044f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb0e9755879284dd93655f726d1c6b05"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#abb0e9755879284dd93655f726d1c6b05">derivative_tensors</a> ()</td></tr>
 <tr class="separator:abb0e9755879284dd93655f726d1c6b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ca304ab7c03cf71bebd967a1355b98c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; GradientTensor &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1ca304ab7c03cf71bebd967a1355b98c">gradient_tensors</a> ()</td></tr>
+<tr class="memitem:a1ca304ab7c03cf71bebd967a1355b98c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a1ca304ab7c03cf71bebd967a1355b98c">gradient_tensors</a> ()</td></tr>
 <tr class="separator:a1ca304ab7c03cf71bebd967a1355b98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b56569aa67bab20cd01a73b4cd1e150"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a0b56569aa67bab20cd01a73b4cd1e150">getDerivativeITensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)=0</td></tr>
 <tr class="memdesc:a0b56569aa67bab20cd01a73b4cd1e150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer of ITensor for derivative.  <a href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a0b56569aa67bab20cd01a73b4cd1e150">More...</a><br /></td></tr>
@@ -179,7 +179,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a07b3bd4e300d5c1d037afacd0e4a555b inherit pub_methods_structonert_1_1backend_1_1_i_tensor_registry"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, typename DerivativeTensor, typename GradientTensor&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a>&gt;<br />
 class onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;</div>
 <p class="definition">Definition at line <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00072">72</a> of file <a class="el" href="train_2_i_tensor_registry_8h_source.html">ITensorRegistry.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
@@ -189,10 +189,10 @@ class onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, Trainabl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::TrainingTensors =  std::tuple&lt;<a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> *, GradientTensor *&gt;</td>
+          <td class="memname">using <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::TrainingTensors =  std::tuple&lt;<a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> *, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> *&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -208,13 +208,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::derivative_tensors </td>
+          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::derivative_tensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -238,13 +238,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getDerivativeITensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getDerivativeITensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -279,13 +279,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DerivativeTensor * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getDerivativeTensor </td>
+          <td class="memname"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getDerivativeTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -318,13 +318,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getGradientITensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getGradientITensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -359,13 +359,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">GradientTensor * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getGradientTensor </td>
+          <td class="memname"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getGradientTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -397,13 +397,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getITensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getITensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -434,7 +434,7 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00086">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::getNativeITensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00034">onert::backend::train::TensorRegistry::getITensor()</a>, <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00163">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setMigrantTensor()</a>, <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00174">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setNonConstTensor()</a>, and <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00184">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setTrainableTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00163">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setMigrantTensor()</a>, <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00174">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setNonConstTensor()</a>, and <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00184">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::setTrainableTensor()</a>.</p>
 
 </div>
 </div>
@@ -444,13 +444,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getNativeITensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getNativeITensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -492,13 +492,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getNonConstTensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getNonConstTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -530,13 +530,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getPortableTensor </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getPortableTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -563,8 +563,6 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00115">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::getNonConstTensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00051">onert::backend::train::TensorRegistry::getPortableTensor()</a>.</p>
-
 </div>
 </div>
 <a id="a5675dac2a4ea4771c06d9351adf4195d" name="a5675dac2a4ea4771c06d9351adf4195d"></a>
@@ -573,13 +571,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getTrainableTensor </td>
+          <td class="memname"><a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> * <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getTrainableTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -612,13 +610,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#aabebcfa6da9ddea89f576ba2399099f1">TrainingTensors</a> <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::getTrainingTensors </td>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#aabebcfa6da9ddea89f576ba2399099f1">TrainingTensors</a> <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::getTrainingTensors </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
@@ -658,13 +656,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; GradientTensor &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::gradient_tensors </td>
+          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::gradient_tensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -690,13 +688,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::nonconst_tensors </td>
+          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::nonconst_tensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -720,13 +718,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::setDerivativeTensor </td>
+          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::setDerivativeTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -734,7 +732,7 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unique_ptr&lt; DerivativeTensor &gt;&#160;</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> &gt;&#160;</td>
           <td class="paramname"><em>tensor</em>&#160;</td>
         </tr>
         <tr>
@@ -770,13 +768,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::setGradientTensor </td>
+          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::setGradientTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -784,7 +782,7 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unique_ptr&lt; GradientTensor &gt;&#160;</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;&#160;</td>
           <td class="paramname"><em>tensor</em>&#160;</td>
         </tr>
         <tr>
@@ -819,13 +817,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::setMigrantTensor </td>
+          <td class="memname">bool <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::setMigrantTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname">, </td>
@@ -870,8 +868,6 @@ false if not supported </dd></dl>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00078">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;::getITensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00076">onert::backend::train::TensorRegistry::setMigrantTensor()</a>.</p>
-
 </div>
 </div>
 <a id="af143938dffde9f15fcff7412a08d27c7" name="af143938dffde9f15fcff7412a08d27c7"></a>
@@ -880,13 +876,13 @@ false if not supported </dd></dl>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::setNonConstTensor </td>
+          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::setNonConstTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -930,13 +926,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::setTrainableTensor </td>
+          <td class="memname">void <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::setTrainableTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -980,13 +976,13 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tens
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename DerivativeTensor , typename GradientTensor &gt; </div>
+template&lt;typename <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> , typename <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, DerivativeTensor, GradientTensor &gt;::trainable_tensors </td>
+          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; std::unique_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> &gt; &gt; &amp; <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">onert::backend::train::PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;::trainable_tensors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

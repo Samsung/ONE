@@ -2463,7 +2463,9 @@ var hierarchy =
       [ "onert::backend::cpu::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html", null ],
       [ "onert::backend::cpu::ops::DetectionPostProcessLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html", null ],
       [ "onert::backend::cpu::ops::EinsumLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_einsum_layer.html", null ],
-      [ "onert::backend::cpu::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", null ],
+      [ "onert::backend::cpu::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", [
+        [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ]
+      ] ],
       [ "onert::backend::cpu::ops::ElementwiseBinaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer.html", null ],
       [ "onert::backend::cpu::ops::ElementwiseUnaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer.html", null ],
       [ "onert::backend::cpu::ops::ExpandDimsLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_expand_dims_layer.html", null ],
@@ -2745,7 +2747,9 @@ var hierarchy =
         [ "onert::compiler::pass::OperandPass", "classonert_1_1compiler_1_1pass_1_1_operand_pass.html", [
           [ "onert::compiler::pass::ConstantOutputPass", "classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html", null ],
           [ "onert::compiler::pass::LoweredOperandPass", "classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html", [
-            [ "onert::compiler::pass::PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", null ]
+            [ "onert::compiler::pass::PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", [
+              [ "onert::compiler::train::pass::PermutationInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_permutation_insertion_pass.html", null ]
+            ] ]
           ] ]
         ] ],
         [ "onert::compiler::pass::OperationPass", "classonert_1_1compiler_1_1pass_1_1_operation_pass.html", [
@@ -2822,9 +2826,6 @@ var hierarchy =
       [ "onert::backend::builtin::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1_tensor_registry.html", null ],
       [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ],
       [ "onert::backend::train::ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", [
-        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", [
-          [ "onert::backend::train::TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", null ]
-        ] ],
         [ "onert::backend::builtin::train::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html", null ],
         [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, DerivativeTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", null ]
       ] ]
@@ -2845,6 +2846,7 @@ var hierarchy =
     [ "onert::exec::train::ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", [
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
+      [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
       [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ]
     ] ],
@@ -3538,6 +3540,7 @@ var hierarchy =
       [ "DivChef", "class_div_chef.html", null ],
       [ "ELUChef", "class_e_l_u_chef.html", null ],
       [ "EqualChef", "class_equal_chef.html", null ],
+      [ "ErfChef", "class_erf_chef.html", null ],
       [ "ExpChef", "class_exp_chef.html", null ],
       [ "ExpandDimsChef", "class_expand_dims_chef.html", null ],
       [ "FakeQuantChef", "class_fake_quant_chef.html", null ],
@@ -3665,6 +3668,7 @@ var hierarchy =
       [ "DivChefFactory", "struct_div_chef_factory.html", null ],
       [ "ELUChefFactory", "struct_e_l_u_chef_factory.html", null ],
       [ "EqualChefFactory", "struct_equal_chef_factory.html", null ],
+      [ "ErfChefFactory", "struct_erf_chef_factory.html", null ],
       [ "ExpChefFactory", "struct_exp_chef_factory.html", null ],
       [ "ExpandDimsChefFactory", "struct_expand_dims_chef_factory.html", null ],
       [ "FakeQuantChefFactory", "struct_fake_quant_chef_factory.html", null ],
@@ -3964,7 +3968,10 @@ var hierarchy =
     [ "moco::tf::Optimizer", "classmoco_1_1tf_1_1_optimizer.html", null ],
     [ "onert::backend::acl_cl::Optimizer", "classonert_1_1backend_1_1acl__cl_1_1_optimizer.html", null ],
     [ "onert::backend::acl_neon::Optimizer", "classonert_1_1backend_1_1acl__neon_1_1_optimizer.html", null ],
-    [ "onert::exec::train::optimizer::Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", null ],
+    [ "onert::exec::train::optimizer::Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", [
+      [ "onert::exec::train::optimizer::SGD", "classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html", null ]
+    ] ],
+    [ "onert::compiler::train::OptimizerInfo", "structonert_1_1compiler_1_1train_1_1_optimizer_info.html", null ],
     [ "OptionBuilder.OptionBuilder", "class_option_builder_1_1_option_builder.html", null ],
     [ "luci::CircleOptimizer::Options", "structluci_1_1_circle_optimizer_1_1_options.html", null ],
     [ "luci::CircleQuantizer::Options", "structluci_1_1_circle_quantizer_1_1_options.html", null ],
@@ -4392,6 +4399,7 @@ var hierarchy =
     [ "nnfw::cker::PoolParams", "structnnfw_1_1cker_1_1_pool_params.html", null ],
     [ "tflite::profiling::ProfileEvent", "structtflite_1_1profiling_1_1_profile_event.html", null ],
     [ "tflite::profiling::Profiler", "classtflite_1_1profiling_1_1_profiler.html", null ],
+    [ "onert::exec::train::optimizer::SGD::Property", "structonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d_1_1_property.html", null ],
     [ "coco::PtrList< T >", "classcoco_1_1_ptr_list.html", null ],
     [ "coco::PtrManager< T >", "classcoco_1_1_ptr_manager.html", null ],
     [ "coco::PtrManager< Bag >", "classcoco_1_1_ptr_manager.html", [
@@ -4713,6 +4721,7 @@ var hierarchy =
     [ "onert::backend::basic::TensorBuilder", "classonert_1_1backend_1_1basic_1_1_tensor_builder.html", null ],
     [ "onert::backend::builtin::TensorBuilder", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html", null ],
     [ "onert::backend::gpu_cl::TensorBuilder", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_builder.html", null ],
+    [ "onert::backend::train::TensorBuilder", "classonert_1_1backend_1_1train_1_1_tensor_builder.html", null ],
     [ "nnkit::TensorContext", "structnnkit_1_1_tensor_context.html", [
       [ "nnkit::support::caffe::TensorContext< DType >", "classnnkit_1_1support_1_1caffe_1_1_tensor_context.html", null ],
       [ "nnkit::support::moco::tf::TensorContext", "classnnkit_1_1support_1_1moco_1_1tf_1_1_tensor_context.html", [

@@ -1,16 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"_n_e_binary_logical_operation_kernel_8cpp.html#a2c70f605ab933bd2e61cac978fac4925":[35,0,1,0,1,0,1,0,0,2],
-"_n_e_binary_logical_operation_kernel_8cpp.html#a5854916ef3b19a08b50fc1265f7bf3d0":[35,0,1,0,1,0,1,0,0,1],
-"_n_e_binary_logical_operation_kernel_8cpp.html#a8c9867d98ccdc3e77b15904cf62cf0ce":[35,0,1,0,1,0,1,0,0,8],
-"_n_e_binary_logical_operation_kernel_8cpp.html#aae42968895315eff699fde4aad00d71d":[35,0,1,0,1,0,1,0,0,0],
-"_n_e_binary_logical_operation_kernel_8cpp.html#ae1a4d9334f986f2a8a269850e31e327d":[35,0,1,0,1,0,1,0,0,3],
-"_n_e_binary_logical_operation_kernel_8cpp.html#aee9a058eb42f5f20e97f4832cf2e5d08":[35,0,1,0,1,0,1,0,0,6],
-"_n_e_binary_logical_operation_kernel_8cpp_source.html":[35,0,1,0,1,0,1,0,0],
-"_n_e_binary_logical_operation_kernel_8h.html":[35,0,1,0,0,0,1,0,0],
-"_n_e_binary_logical_operation_kernel_8h_source.html":[35,0,1,0,0,0,1,0,0],
-"_n_e_cast_bool_8cpp.html":[35,0,1,0,1,1,1,0,1],
-"_n_e_cast_bool_8cpp_source.html":[35,0,1,0,1,1,1,0,1],
 "_n_e_cast_bool_8h.html":[35,0,1,0,0,1,1,0,1],
 "_n_e_cast_bool_8h_source.html":[35,0,1,0,0,1,1,0,1],
 "_n_e_cast_bool_kernel_8cpp.html":[35,0,1,0,1,0,1,0,1],
@@ -249,5 +238,16 @@ var NAVTREEINDEX16 =
 "_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238a9ab98a955f21536710678b9f938e5855":[35,0,4,1,0,1,1,23],
 "_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238a9de4f946935a22b0e1b7717b74eaad5a":[35,0,4,1,0,1,1,32],
 "_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aa005a3e832927d0ba1675663bf7b480f":[35,0,4,1,0,1,1,25],
-"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aa4376c89eaa736cf969a1d7e9cbbae79":[35,0,4,1,0,1,1,15]
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aa4376c89eaa736cf969a1d7e9cbbae79":[35,0,4,1,0,1,1,15],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aabc315a79b3e34202e056891369ae31b":[35,0,4,1,0,1,1,13],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aae4bd5544caa980f2a61997a0b64133d":[35,0,4,1,0,1,1,29],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238aaf1582349e11c3f6abea7551ef0f1ffb":[35,0,4,1,0,1,1,37],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238ab8a5627d963952ae78de607a9177532a":[35,0,4,1,0,1,1,38],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238abd1a9d030cc703ea74bff55d177767c5":[35,0,4,1,0,1,1,8],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238acd1a102b91c881fdf6dee71e5e78ec84":[35,0,4,1,0,1,1,20],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238ae0ec2c1e445eccae2cfb647c0b7115ca":[35,0,4,1,0,1,1,39],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238af5394816d2b4f469aa34c958b52e8a3a":[35,0,4,1,0,1,1,0],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238af9c9769d736dbc2de841d20d74d57b32":[35,0,4,1,0,1,1,41],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238afa8e18a092a9ad41fc54c1be3d2f8389":[35,0,4,1,0,1,1,4],
+"_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238afda72c6392955cd8b641465b32cf869a":[35,0,4,1,0,1,1,18]
 };

@@ -127,9 +127,9 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html">TensorManager</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html">TensorBuilder</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_registry.html">TensorRegistry</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html">TensorManager</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,14 +144,34 @@ Typedefs</h2></td></tr>
 <tr class="separator:a75c58052c0a9c6d3340d8240ed9b52c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa21cf6936b7fa20f14110a1890c0fcfc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html">basic::train::TrainableTensor</a></td></tr>
 <tr class="separator:aa21cf6936b7fa20f14110a1890c0fcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7deae2f930c7abeda1e4a0d7c86a9417"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a7deae2f930c7abeda1e4a0d7c86a9417">TensorBuilder</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html">basic::TensorBuilder</a></td></tr>
-<tr class="separator:a7deae2f930c7abeda1e4a0d7c86a9417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2577b18e04d922429e1453c49a0ce7d0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a> = <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a></td></tr>
+<tr class="separator:a2577b18e04d922429e1453c49a0ce7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0ce1cec6fbbec4489109783c51aee0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> = <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a></td></tr>
+<tr class="separator:a3e0ce1cec6fbbec4489109783c51aee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f0a2dd0270b569e8d2d88b497eb1ad2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2">TensorRegistry</a> = <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">PortableTensorRegistryTemplate</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a> &gt;</td></tr>
+<tr class="separator:a2f0a2dd0270b569e8d2d88b497eb1ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77098c4c53ca5551dbc93aca80ed2ae4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4">FunctionMap</a> = std::vector&lt; std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>, std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html">exec::train::TrainableFnSequence</a> &gt; &gt; &gt;</td></tr>
 <tr class="separator:a77098c4c53ca5551dbc93aca80ed2ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21fcc843f3525a88a84dc135310daf3e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e">TrainableBackendContexts</a> = std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html">Backend</a> *, std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a> &gt; &gt;</td></tr>
 <tr class="separator:a21fcc843f3525a88a84dc135310daf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a2577b18e04d922429e1453c49a0ce7d0" name="a2577b18e04d922429e1453c49a0ce7d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2577b18e04d922429e1453c49a0ce7d0">&#9670;&#160;</a></span>DerivativeTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">onert::backend::train::DerivativeTensor</a> = typedef <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
+
+</div>
+</div>
 <a id="a3c1e11c7f580abe1841baa9258e4ac66" name="a3c1e11c7f580abe1841baa9258e4ac66"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c1e11c7f580abe1841baa9258e4ac66">&#9670;&#160;</a></span>ExternalContext</h2>
 
@@ -180,7 +200,23 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00035">35</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00036">36</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+
+</div>
+</div>
+<a id="a3e0ce1cec6fbbec4489109783c51aee0" name="a3e0ce1cec6fbbec4489109783c51aee0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e0ce1cec6fbbec4489109783c51aee0">&#9670;&#160;</a></span>GradientTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">onert::backend::train::GradientTensor</a> = typedef <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html#l00049">49</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
 
 </div>
 </div>
@@ -200,19 +236,19 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a id="a7deae2f930c7abeda1e4a0d7c86a9417" name="a7deae2f930c7abeda1e4a0d7c86a9417"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7deae2f930c7abeda1e4a0d7c86a9417">&#9670;&#160;</a></span>TensorBuilder</h2>
+<a id="a2f0a2dd0270b569e8d2d88b497eb1ad2" name="a2f0a2dd0270b569e8d2d88b497eb1ad2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f0a2dd0270b569e8d2d88b497eb1ad2">&#9670;&#160;</a></span>TensorRegistry</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a7deae2f930c7abeda1e4a0d7c86a9417">onert::backend::train::TensorBuilder</a> = typedef <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html">basic::TensorBuilder</a></td>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2">onert::backend::train::TensorRegistry</a> = typedef <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html">PortableTensorRegistryTemplate</a>&lt;<a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html">Tensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc">TrainableTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2577b18e04d922429e1453c49a0ce7d0">DerivativeTensor</a>, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0">GradientTensor</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00029">29</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00031">31</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
 
 </div>
 </div>
@@ -228,7 +264,7 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00097">97</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00093">93</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
 
 </div>
 </div>

@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('nnfw__experimental_8h.html',''); initR
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">nnfw_experimental.h File Reference</div></div>
 </div><!--header-->
@@ -119,6 +120,17 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a559e509a0e2416d37475a67466c48975"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975">nnfw_train_info</a></td></tr>
 <tr class="memdesc:a559e509a0e2416d37475a67466c48975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training information to prepare training.  <a href="nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975">More...</a><br /></td></tr>
 <tr class="separator:a559e509a0e2416d37475a67466c48975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ade1163c5c3fe306a3abad6b83a4d9660"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a> { <a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a> = 0
+, <a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a> = 1
+ }</td></tr>
+<tr class="separator:ade1163c5c3fe306a3abad6b83a4d9660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ead5bca803075bd7324609b3388bf4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a> { <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 0
+, <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 1
+ }</td></tr>
+<tr class="separator:a66ead5bca803075bd7324609b3388bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -196,6 +208,21 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Training information to prepare training. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ade1163c5c3fe306a3abad6b83a4d9660" name="ade1163c5c3fe306a3abad6b83a4d9660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade1163c5c3fe306a3abad6b83a4d9660">&#9670;&#160;</a></span>NNFW_TRAIN_LOSS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 <p >Training C APIs</p>
 <p >Training APIs are designed to be used in the following order for training</p><ol type="1">
 <li>nnfw_train_prepare</li>
@@ -206,9 +233,49 @@ Functions</h2></td></tr>
 <p >If you want to inference after training with the same session, you can use the following order</p><ol type="1">
 <li>nnfw_set_input</li>
 <li>nnfw_set_output</li>
-<li>nnfw_run  </li>
+<li>nnfw_run </li>
 </ol>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929" name="ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929"></a>NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60" name="ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"></a>NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00177">177</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  178</span>{</div>
+<div class="line"><span class="lineno">  179</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a> = 0,</div>
+<div class="line"><span class="lineno">  180</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a> = 1,</div>
+<div class="line"><span class="lineno">  181</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a></div><div class="ttdeci">NNFW_TRAIN_LOSS</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00177">nnfw_experimental.h:178</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00179">nnfw_experimental.h:179</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00180">nnfw_experimental.h:180</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a66ead5bca803075bd7324609b3388bf4" name="a66ead5bca803075bd7324609b3388bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ead5bca803075bd7324609b3388bf4">&#9670;&#160;</a></span>NNFW_TRAIN_OPTIMIZER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e" name="a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"></a>NNFW_TRAIN_OPTIMIZER_SGD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8" name="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"></a>NNFW_TRAIN_OPTIMIZER_ADAM&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00183">183</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  184</span>{</div>
+<div class="line"><span class="lineno">  185</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 0,</div>
+<div class="line"><span class="lineno">  186</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 1,</div>
+<div class="line"><span class="lineno">  187</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></div><div class="ttdeci">NNFW_TRAIN_OPTIMIZER</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00183">nnfw_experimental.h:184</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_ADAM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00186">nnfw_experimental.h:186</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_SGD</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00185">nnfw_experimental.h:185</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
