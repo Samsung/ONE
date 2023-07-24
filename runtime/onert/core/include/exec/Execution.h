@@ -146,8 +146,10 @@ public:
   /**
    * @brief  Train
    * @note   It should be called after setting input and output buffer
+   * @param training_step The number of iterations of the training process.
+   *                      In other words, the number of gradient update.
    */
-  void train();
+  void train(uint32_t training_step);
 #endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;

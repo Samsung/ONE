@@ -60,7 +60,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
 
 void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivationLayer::run(); }
 
-void ElementwiseActivationLayer::backward()
+void ElementwiseActivationLayer::backward(uint32_t)
 {
   // TODO Implement details
 }

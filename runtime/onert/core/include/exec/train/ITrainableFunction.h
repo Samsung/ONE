@@ -17,6 +17,8 @@
 #ifndef __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 #define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 
+#include <cstdint>
+
 namespace onert
 {
 namespace exec
@@ -29,7 +31,7 @@ class ITrainableFunction
 public:
   virtual ~ITrainableFunction() = default;
   virtual void forward(bool training) = 0;
-  virtual void backward() = 0;
+  virtual void backward(uint32_t training_step) = 0;
 };
 
 } // namespace train

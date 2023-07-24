@@ -154,7 +154,7 @@ void Execution::waitFinish()
 bool Execution::isFinished(void) const { return finished; }
 
 #ifdef ONERT_TRAIN
-void Execution::train()
+void Execution::train(uint32_t training_step)
 {
   auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
   if (!execs)
@@ -164,7 +164,7 @@ void Execution::train()
 
   VERBOSE(Execution) << "Start training" << std::endl;
 
-  execs->train(_io_desc);
+  execs->train(_io_desc, training_step);
   finished = true;
 
   VERBOSE(Execution) << "training finished" << std::endl;

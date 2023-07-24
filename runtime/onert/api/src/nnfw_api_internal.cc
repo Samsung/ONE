@@ -1292,7 +1292,9 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
   try
   {
     if (update_weights)
-      _execution->train();
+    {
+      _execution->train(_training_step++);
+    }
     else
       _execution->execute();
   }

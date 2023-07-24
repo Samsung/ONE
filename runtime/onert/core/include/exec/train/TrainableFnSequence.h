@@ -33,7 +33,7 @@ class TrainableFnSequence : public ITrainableFunction
 {
 public:
   void forward(bool training) override;
-  void backward() override;
+  void backward(uint32_t training_step) override;
 
   void append(std::unique_ptr<ITrainableFunction> &&fn);
   void iterate(const std::function<void(ITrainableFunction &)> &fn);
