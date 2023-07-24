@@ -116,10 +116,24 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
+    auto convertLossType = [](int type) {
+      switch (type)
+      {
+        case 0:
+          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+        case 1:
+          return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
+        default:
+          std::cerr << "E: not supported loss type" << std::endl;
+          exit(-1);
+      }
+    };
+
     // prepare training info
     nnfw_train_info tri;
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();
+    tri.loss = convertLossType(args.getLossType());
 
     // prepare execution
 
