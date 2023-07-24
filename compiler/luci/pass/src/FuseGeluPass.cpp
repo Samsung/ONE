@@ -273,13 +273,13 @@ luci::CircleGelu *FuseGelu::create_gelu(loco::Graph *graph)
   gelu->features(_p->_ifm);
   // TODO Support approximate = True pattern
   gelu->approximate(false);
-  gelu->name(_p->_mul_half->name() + "_gelu");
+  gelu->name(_p->_pattern_last_node->name() + "_gelu");
   return gelu;
 }
 
 void FuseGelu::apply()
 {
-  auto graph = _p->_mul_half->graph();
+  auto graph = _p->_pattern_last_node->graph();
 
   auto gelu = create_gelu(graph);
 
@@ -290,7 +290,7 @@ void FuseGelu::apply()
 
   luci::add_origin(gelu, luci::composite_origin(origin_vec));
 
-  replace(_p->_mul_half).with(gelu);
+  replace(_p->_pattern_last_node).with(gelu);
 }
 
 } // namespace
