@@ -731,10 +731,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 
   train::TensorRegistries tensor_regs{tbackend_contexts, true};
 
-  initializeSubgraphIOTensors(
-    *lowered_graph, tbackend_contexts,
-    (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+  // NOTE Outputs of trainable graph cannot be IOTensor. They will be built by the owned backend.
+  initializeSubgraphIOTensors(*lowered_graph, tbackend_contexts,
+                              lowered_graph->graph().getInputs() | ir::Remove::DUPLICATED |
+                                ir::Remove::UNDEFINED);
 
   // linearize
   auto order = Linear::linearize(*lowered_graph);
