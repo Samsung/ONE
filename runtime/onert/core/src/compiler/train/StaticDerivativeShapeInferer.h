@@ -57,6 +57,7 @@ public:
 
 private:
   bool checkDynamicInput(const ir::IOperation &op);
+  void checkOutput(const ir::IOperation &op);
   void setShape(const ir::OperandIndex &index, const ir::Shape &shape);
 
 private:
