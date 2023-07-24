@@ -32,6 +32,9 @@ namespace luci
 namespace
 {
 
+// Requantize Non-const node from int8 to uint8
+// Original values: -128 ~ 127
+// After requantization: 0 ~ 255
 void requant_nonconst_int8_to_uint8(CircleNode *circle_node)
 {
   assert(circle_node->dtype() == loco::DataType::S8);
@@ -147,7 +150,8 @@ bool RequantizePass::run(loco::Graph *g)
   for (auto node : loco::output_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleOutput *>(node);
-    if (static_cast<luci::CircleNode *>(circle_node->from())->dtype() == _output_dtype)
+    auto from_node = loco::must_cast<luci::CircleNode *>(circle_node->from());
+    if (from_node->dtype() == _output_dtype)
     {
       circle_node->dtype(_output_dtype);
       auto graph_output = graph_outputs->at(circle_node->index());
