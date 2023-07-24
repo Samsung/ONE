@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __LUCI_PASS_HELPERS_TYPE_MAPPER_H__
+#define __LUCI_PASS_HELPERS_TYPE_MAPPER_H__
+
 #include <loco/IR/DataType.h>
 
 #include <cstdint>
@@ -75,3 +78,5 @@ template <> struct TypeMapper<int64_t>
 };
 
 } // namespace luci
+
+#endif // __LUCI_PASS_HELPERS_TYPE_MAPPER_H__
