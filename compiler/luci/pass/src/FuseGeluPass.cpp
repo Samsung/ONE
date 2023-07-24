@@ -311,8 +311,14 @@ bool fuse_gelu(luci::CircleMul *mul)
     return true;
   }
 
+  // check second pattern
   GeluPattern2 pattern2(mul);
-  (void)pattern2;
+  if (pattern2.matched())
+  {
+    FuseGelu fuse(&pattern2);
+    fuse.apply();
+    return true;
+  }
   return false;
 }
 
