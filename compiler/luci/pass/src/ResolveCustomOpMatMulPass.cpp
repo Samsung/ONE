@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 
+#include "helpers/CreateCircleConst.h"
+
 #include <loco/IR/DataTypeTraits.h>
 
 #include <luci/IR/CircleNodes.h>
@@ -28,51 +30,6 @@
 
 namespace
 {
-
-template <typename T>
-luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
-                                     const std::vector<uint32_t> &shape,
-                                     const std::vector<T> &values)
-{
-  auto node = g->nodes()->create<luci::CircleConst>();
-  node->dtype(dtype);
-  node->rank(shape.size());
-
-  uint32_t size = 1;
-  for (uint32_t i = 0; i < shape.size(); ++i)
-  {
-    node->dim(i) = shape.at(i);
-    size *= shape.at(i);
-  }
-  node->shape_status(luci::ShapeStatus::VALID);
-
-#define INIT_VALUES(DT)                          \
-  {                                              \
-    node->size<DT>(size);                        \
-    for (uint32_t i = 0; i < values.size(); ++i) \
-      node->at<DT>(i) = values[i];               \
-  }
-
-  switch (dtype)
-  {
-    case loco::DataType::U8:
-      INIT_VALUES(loco::DataType::U8);
-      break;
-    case loco::DataType::S16:
-      INIT_VALUES(loco::DataType::S16);
-      break;
-    case loco::DataType::S32:
-      INIT_VALUES(loco::DataType::S32);
-      break;
-    case loco::DataType::FLOAT32:
-      INIT_VALUES(loco::DataType::FLOAT32)
-      break;
-    default:
-      INTERNAL_EXN("create_const_node called with unsupported type");
-      break;
-  }
-  return node;
-}
 
 bool resolve_matmul(luci::CircleCustom *cop)
 {
@@ -121,11 +78,12 @@ bool resolve_matmul(luci::CircleCustom *cop)
   if (transpose_a)
   {
     // Create a permutation constant node
-    std::vector<uint32_t> perm;
-    for (uint32_t i = 0; i < circle_lhs->rank(); ++i)
+    std::vector<int32_t> perm;
+    const auto lhs_rank = static_cast<int32_t>(circle_lhs->rank());
+    for (int32_t i = 0; i < lhs_rank; ++i)
       perm.push_back(i);
     std::swap(perm[circle_lhs->rank() - 1], perm[circle_lhs->rank() - 2]);
-    auto perm_node = create_const_node(graph, S32, {circle_lhs->rank()}, perm);
+    auto perm_node = luci::create_const_node(graph, S32, {circle_lhs->rank()}, perm);
     perm_node->name(name + "/lhs/Transpose/perm");
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
@@ -141,8 +99,8 @@ bool resolve_matmul(luci::CircleCustom *cop)
   // in row-major order, thus we need to convert between them.
   if (!transpose_b)
   {
-    const std::vector<uint32_t> perm{1, 0};
-    auto perm_node = create_const_node(graph, S32, {2}, perm);
+    const std::vector<int32_t> perm{1, 0};
+    auto perm_node = luci::create_const_node(graph, S32, {2}, perm);
     perm_node->name(name + "/rhs/Transpose/perm");
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);

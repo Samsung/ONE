@@ -16,6 +16,8 @@
 
 #include "QuantizeBias.h"
 
+#include "helpers/CreateCircleConst.h"
+
 #include <luci/test/TestIOGraph.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleQuantParam.h>
@@ -28,51 +30,6 @@ namespace
 {
 
 using namespace luci::test;
-
-// TODO Reduce duplicate codes in ResolveCustomOpMatMulPass.cpp
-template <typename T>
-luci::CircleConst *create_const_node(loco::Graph *g, const loco::DataType dtype,
-                                     const std::vector<uint32_t> &shape, T value)
-{
-  auto node = g->nodes()->create<luci::CircleConst>();
-  node->dtype(dtype);
-  node->rank(shape.size());
-
-  uint32_t size = 1;
-  for (uint32_t i = 0; i < shape.size(); ++i)
-  {
-    node->dim(i) = shape.at(i);
-    size *= shape.at(i);
-  }
-  node->shape_status(luci::ShapeStatus::VALID);
-
-#define INIT_VALUES(DT)                 \
-  {                                     \
-    node->size<DT>(size);               \
-    for (uint32_t i = 0; i < size; ++i) \
-      node->at<DT>(i) = value;          \
-  }
-
-  switch (dtype)
-  {
-    case loco::DataType::U8:
-      INIT_VALUES(loco::DataType::U8);
-      break;
-    case loco::DataType::S16:
-      INIT_VALUES(loco::DataType::S16);
-      break;
-    case loco::DataType::S32:
-      INIT_VALUES(loco::DataType::S32);
-      break;
-    case loco::DataType::FLOAT32:
-      INIT_VALUES(loco::DataType::FLOAT32)
-      break;
-    default:
-      INTERNAL_EXN("create_const_node called with unsupported type");
-      break;
-  }
-  return node;
-}
 
 /**
  *  Simple graph for test
