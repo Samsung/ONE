@@ -27,7 +27,7 @@ namespace luci
 {
 
 /**
- * @brief Pass to quantize weights
+ * @brief Pass to re-quantize graph (ex: int8 -> uint8)
  */
 class RequantizePass : public logo::Pass
 {
