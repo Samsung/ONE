@@ -35,6 +35,8 @@ circlechef::TensorType as_circlechef_type(const circle::TensorType type)
       return circlechef::BOOL;
     case circle::TensorType_INT16:
       return circlechef::INT16;
+    case circle::TensorType_INT8:
+      return circlechef::INT8;
     // TODO handle other types
     // TensorType_FLOAT16
     // TensorType_STRING

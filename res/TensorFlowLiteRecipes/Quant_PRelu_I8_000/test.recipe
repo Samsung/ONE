@@ -1,0 +1,66 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.600914
+    max: 4.44562244
+    scale: 0.0354766138
+    zero_point: 2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "p_re_lu/add;p_re_lu/Relu;p_re_lu/Neg_1;p_re_lu/Relu_1;p_re_lu/mul"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 1
+    dim: 64
+  }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "0.1"
+  }
+  quant {
+    min: -0.391680807
+    max: 0.391578436
+    scale: 0.00308410078
+    zero_point: 0
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -1.45854628
+    max: 4.44562244
+    scale: 0.0231536031
+    zero_point: -65
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "PRelu"
+  input: "x"
+  input: "p_re_lu/add;p_re_lu/Relu;p_re_lu/Neg_1;p_re_lu/Relu_1;p_re_lu/mul"
+  output: "Identity"
+}
+input: "x"
+output: "Identity"

@@ -152,6 +152,16 @@ tcgenerate(While_002) # Needs luci-interpreter int32_t support for ADD, EQUAL
 tcgenerate(While_003) # Needs luci-interpreter int32_t support for ADD, EQUAL, and dynamic shape for WHILE
 tcgenerate(YUV_TO_RGB_000)
 tcgenerate(ZerosLike_000)
+tcgenerate(Quant_Add_I8_000) # INT8 is not supported
+tcgenerate(Quant_AveragePool2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_Conv_I8_000) # INT8 is not supported
+tcgenerate(Quant_DepthwiseConv2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_MaxPool2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_Mean_I8_000) # INT8 is not supported
+tcgenerate(Quant_Mul_I8_000) # INT8 is not supported
+tcgenerate(Quant_PRelu_I8_000) # INT8 is not supported
+tcgenerate(Quant_ReLU_I8_000) # INT8 is not supported
+tcgenerate(Quant_TransposeConv_I8_000) # INT8 is not supported
 
 ## CircleRecipes
 tcgenerate(BCQFullyConnected_000)

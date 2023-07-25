@@ -1,0 +1,63 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 7
+    dim: 7
+    dim: 128
+  }
+  quant {
+    min: -4.52155876
+    max: 4.65688181
+    scale: 0.0359938815
+    zero_point: -2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Mean/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 128
+  }
+  quant {
+    min: -0.548125625
+    max: 0.485593677
+    scale: 0.0040538013
+    zero_point: 7
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Mean"
+  input: "x"
+  input: "Mean/reduction_indices"
+  output: "Identity"
+  mean_options {
+    keep_dims: true
+  }
+}
+input: "x"
+output: "Identity"

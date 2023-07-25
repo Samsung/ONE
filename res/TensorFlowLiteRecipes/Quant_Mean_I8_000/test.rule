@@ -1,0 +1,7 @@
+# To check requantization.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_U8"              $(tensor_dtype x) '=' UINT8
+RULE    "AXIS_S32"            $(tensor_dtype Mean/reduction_indices) '=' INT32
+RULE    "OFM_U8"              $(tensor_dtype Identity) '=' UINT8

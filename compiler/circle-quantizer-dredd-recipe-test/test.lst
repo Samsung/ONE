@@ -73,6 +73,18 @@ AddFakeQuant(Quant_Add_000)
 AddFakeQuant(Quant_DepthToSpace_000)
 AddFakeQuant(Quant_SpaceToDepth_000)
 
+# Requantize Test (I8 -> U8)
+AddReQuant(Quant_Add_I8_000)
+AddReQuant(Quant_AveragePool2D_I8_000)
+AddReQuant(Quant_Conv_I8_000)
+AddReQuant(Quant_DepthwiseConv2D_I8_000)
+AddReQuant(Quant_MaxPool2D_I8_000)
+AddReQuant(Quant_Mean_I8_000)
+AddReQuant(Quant_Mul_I8_000)
+AddReQuant(Quant_PRelu_I8_000)
+AddReQuant(Quant_ReLU_I8_000)
+AddReQuant(Quant_TransposeConv_I8_000)
+
 ## CIRCLE RECIPE
 
 # MPQ Test (default: u8, target: s16)

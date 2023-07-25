@@ -1,0 +1,66 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.73560715
+    max: 5.34916592
+    scale: 0.0395481288
+    zero_point: -8
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "x_1"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -5.03376198
+    max: 5.14654779
+    scale: 0.0399227813
+    zero_point: -2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -6.4396615
+    max: 6.40962505
+    scale: 0.0503893606
+    zero_point: 0
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Add"
+  input: "x"
+  input: "x_1"
+  output: "Identity"
+  add_options {
+    activation: NONE
+  }
+}
+input: "x"
+input: "x_1"
+output: "Identity"
