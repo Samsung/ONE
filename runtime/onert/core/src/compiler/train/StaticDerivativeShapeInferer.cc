@@ -45,8 +45,10 @@ void StaticDerivativeShapeInferer::infer()
       msg << op.name() << "(op index: " << op_idx << ") has dynamic shape.";
       throw std::runtime_error(msg.str());
     }
-    else
-      op.accept(*this);
+
+    checkOutput(op);
+
+    op.accept(*this);
   }
 }
 
@@ -67,6 +69,21 @@ bool StaticDerivativeShapeInferer::checkDynamicInput(const ir::IOperation &op)
   }
 
   return false;
+}
+
+void StaticDerivativeShapeInferer::checkOutput(const ir::IOperation &op)
+{
+  const auto &derivatives = _lowered_subg->trainable_graph().derivatives();
+  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  {
+    if (!derivatives.exist(output_idx))
+    {
+      std::stringstream msg;
+      msg << "StaticDerivativeShapeInferer : Invalid output, ";
+      msg << op.name() << "'s derivative output(index: " << output_idx << ") does not exist.";
+      throw std::runtime_error(msg.str());
+    }
+  }
 }
 
 void StaticDerivativeShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
