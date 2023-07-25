@@ -50,6 +50,7 @@ usr/bin/visqlib/DumpFP32FM.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/Palette.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/QErrorComputer.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/Util.py usr/share/one/bin/visqlib/
+usr/bin/visqlib/DotBuilder.py usr/share/one/bin/visqlib/
 # lib
 usr/lib/* usr/share/one/lib/
 # doc
