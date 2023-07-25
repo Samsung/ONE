@@ -105,6 +105,22 @@ private:
   float _stddev;
 };
 
+class GaussianInt8DataChef final : public DataChef
+{
+public:
+  GaussianInt8DataChef(float mean, float stddev) : _mean{mean}, _stddev{stddev}
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override;
+
+private:
+  float _mean;
+  float _stddev;
+};
+
 struct GaussianFloat32DataChefFactory : public DataChefFactory
 {
   std::unique_ptr<DataChef> create(const Arguments &args) const;
@@ -126,6 +142,11 @@ struct GaussianUint8DataChefFactory : public DataChefFactory
 };
 
 struct GaussianFloat16DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const;
+};
+
+struct GaussianInt8DataChefFactory : public DataChefFactory
 {
   std::unique_ptr<DataChef> create(const Arguments &args) const;
 };
