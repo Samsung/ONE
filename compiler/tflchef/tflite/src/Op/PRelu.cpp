@@ -24,6 +24,11 @@ namespace tflchef
 void TFliteOpPRelu::filler(const tflite::Operator *op, TFliteImport *import,
                            tflchef::ModelRecipe *model_recipe) const
 {
+  const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
+
+  assert(inputs.size() == 2);
+
+  import->set_tensor_filler(inputs.at(1)); // alpha
 }
 
 tflchef::Operation *TFliteOpPRelu::build(const tflite::Operator *op, TFliteImport *import,
