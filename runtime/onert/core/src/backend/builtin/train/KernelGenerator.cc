@@ -59,8 +59,16 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  std::vector<ITensor *> output_deriv_tensors{getDerivativeTensor(output_index)};
-  std::vector<ITensor *> input_deriv_tensors{getDerivativeTensor(input_index)};
+  std::vector<ITensor *> output_deriv_tensors;
+  std::vector<ITensor *> input_deriv_tensors;
+  // NOTE The derivative tensors corresponding to inputs of model are nullptr
+  if (auto input_deriv_tensor = getDerivativeTensor(input_index))
+  {
+    auto output_deriv_tensor = getDerivativeTensor(output_index);
+    assert(output_deriv_tensor);
+    output_deriv_tensors.emplace_back(output_deriv_tensor);
+    input_deriv_tensors.emplace_back(input_deriv_tensor);
+  }
 
   auto fn = std::make_unique<kernel::PermuteLayer>(
     input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);
@@ -80,7 +88,6 @@ backend::ITensor *KernelGenerator::getDerivativeTensor(const ir::OperandIndex &i
 {
   // Get derivative Tensor from all tensor registries (for Permute op)
   auto ret = _tensor_registries.getDerivativeITensor(index);
-  assert(ret != nullptr);
   return ret;
 }
 

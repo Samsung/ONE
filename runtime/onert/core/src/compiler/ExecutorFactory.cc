@@ -823,6 +823,26 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                   [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
   }
 
+  // Check derivative tensors
+  {
+    // TODO Support multiple subgraphs
+    // Check if the derivative tensors corresponding to inputs of model are nullptr
+    // NOTE The derivative tensors corresponding to inputs of model are for inputs of PermuteLayers
+    //      and they are nullptr and because they are meaningless.
+    assert(std::all_of(lowered_graph->trainable_graph().getInputs().begin(),
+                       lowered_graph->trainable_graph().getInputs().end(),
+                       [&](const auto &input_idx) {
+                         return tensor_regs.getDerivativeITensor(input_idx) == nullptr;
+                       }));
+
+    // Check if the derivative tensors corresponding to outputs of model exist
+    assert(std::all_of(lowered_graph->trainable_graph().getOutputs().begin(),
+                       lowered_graph->trainable_graph().getOutputs().end(),
+                       [&](const auto &output_idx) {
+                         return tensor_regs.getDerivativeITensor(output_idx) != nullptr;
+                       }));
+  }
+
   train::TrainableCodeMap code_map;
   // Generate kernels
   for (auto &&pair : ordered_contexts)
