@@ -1,0 +1,66 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.91511106
+    max: 4.63654947
+    scale: 0.0374574922
+    zero_point: 3
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "x_1"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.70411062
+    max: 4.48266
+    scale: 0.0360265523
+    zero_point: 3
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -10.2211161
+    max: 10.4154072
+    scale: 0.0809275433
+    zero_point: -2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Mul"
+  input: "x"
+  input: "x_1"
+  output: "Identity"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "x"
+input: "x_1"
+output: "Identity"
