@@ -18,6 +18,7 @@
 
 #include "ops/ConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
+#include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 
 #include <backend/Backend.h>
@@ -65,13 +66,15 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
-  // TODO Generate TrainableFnSequence that can go backward as well
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
   op.accept(*this);
   assert(_return_fn);
   ret->append(std::move(_return_fn));
+
+  if (_update_fn)
+    ret->append(std::move(_update_fn));
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
@@ -94,9 +97,27 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer}
+    _tensor_reg{tensor_reg},
+    _external_context(external_context), _optimizer{optimizer}, _update_fn{nullptr}
 {
   // DO NOTHING
+}
+
+void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
+{
+  // TODO Generate kernel
+
+  // Generate GradientApplier
+  const auto ker_index{node.getInputs().at(ir::train::operation::Conv2D::Input::KERNEL)};
+
+  auto grad_tensor = _tensor_reg->getGradientTensor(ker_index);
+  auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
+
+  auto update_fn = std::make_unique<ops::GradientApplier>();
+
+  update_fn->configure(_optimizer, grad_tensor, ker_tensor);
+
+  _update_fn = std::move(update_fn);
 }
 
 void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)

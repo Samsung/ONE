@@ -45,6 +45,7 @@ public:
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
+  void visit(const ir::train::operation::Conv2D &) override;
   void visit(const ir::train::operation::ElementwiseActivation &) override;
   void visit(const ir::train::operation::Loss &) override;
 
@@ -53,6 +54,7 @@ private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
+  std::unique_ptr<exec::train::ITrainableFunction> _update_fn;
 };
 
 } // namespace train
