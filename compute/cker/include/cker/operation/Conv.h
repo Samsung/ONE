@@ -207,6 +207,35 @@ private:
   std::vector<int32_t> _per_channel_output_multiplier;
   std::vector<int> _per_channel_output_shift;
 };
+
+template <typename T>
+inline void ConvBiasDeriv(const Shape &incomming_shape, const T *incomming_data,
+                          const Shape &output_shape, T *output_data)
+{
+  assert(incomming_shape.DimensionsCount() == 4);
+  assert(output_shape.DimensionsCount() == 1);
+  assert(incomming_shape.Dims(3) == output_shape.Dims(0));
+  const auto nums_batches = incomming_shape.Dims(0);
+  const auto nums_heights = incomming_shape.Dims(1);
+  const auto nums_widths = incomming_shape.Dims(2);
+  const auto nums_channels = incomming_shape.Dims(3);
+
+  memset(output_data, 0, incomming_shape.FlatSize() * sizeof(T));
+
+  for (int b = 0; b < nums_batches; ++b)
+  {
+    for (int h = 0; h < nums_heights; ++h)
+    {
+      for (int w = 0; w < nums_widths; ++h)
+      {
+        for (int c = 0; c < nums_channels; ++c)
+        {
+          output_data[c] += incomming_data[Offset(incomming_shape, b, h, w, c)];
+        }
+      }
+    }
+  }
+}
 } // namespace cker
 } // namespace nnfw
 
