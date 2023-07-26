@@ -15,7 +15,7 @@
  */
 
 #ifndef __MOCO_TF_SOFTMAX_CANONICALIZER_H__
-#define __MOCO_TF_SOFTMAx_CANONICALIZER_H__
+#define __MOCO_TF_SOFTMAX_CANONICALIZER_H__
 
 #include "Transform.h"
 #include "SimpleNodeTransform.h"
