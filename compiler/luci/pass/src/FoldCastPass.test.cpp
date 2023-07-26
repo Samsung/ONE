@@ -31,8 +31,8 @@ public:
   FoldCastTest(std::initializer_list<uint32_t> shape)
     : luci::ConstantFoldingAddTestGraph(shape, ToT)
   {
-    _cast = _g.nodes()->create<luci::CircleCast>();
-    _x = _g.nodes()->create<luci::CircleConst>();
+    _cast = _g.nodes()->template create<luci::CircleCast>();
+    _x = _g.nodes()->template create<luci::CircleConst>();
 
     _cast->dtype(ToT);
     _x->dtype(FromT);

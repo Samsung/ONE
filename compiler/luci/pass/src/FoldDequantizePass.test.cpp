@@ -32,8 +32,8 @@ public:
 
   loco::Node *createFoldedPattern() override
   {
-    _dequantize = _g.nodes()->create<luci::CircleDequantize>();
-    _input = _g.nodes()->create<luci::CircleConst>();
+    _dequantize = _g.nodes()->template create<luci::CircleDequantize>();
+    _input = _g.nodes()->template create<luci::CircleConst>();
 
     _dequantize->dtype(loco::DataType::FLOAT32);
     _input->dtype(DT);
