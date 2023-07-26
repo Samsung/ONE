@@ -68,7 +68,7 @@ bool CircleNodeSummaryBuilder::build(const loco::Node *node, const locop::Symbol
     {
       if (i)
         ss << ",";
-      ss << node->dim(i).known() ? node->dim(i).value() : -1;
+      ss << (node->dim(i).known() ? node->dim(i).value() : -1);
     }
     ss << ">";
     return ss.str();
