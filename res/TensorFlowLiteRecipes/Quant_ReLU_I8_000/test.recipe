@@ -1,0 +1,43 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.62792873
+    max: 4.3443079
+    scale: 0.0351852402
+    zero_point: 4
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: 0
+    max: 4.3443079
+    scale: 0.0170365013
+    zero_point: -128
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "ReLU"
+  input: "x"
+  output: "Identity"
+}
+input: "x"
+output: "Identity"

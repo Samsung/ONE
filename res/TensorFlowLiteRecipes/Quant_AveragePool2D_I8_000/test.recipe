@@ -1,0 +1,51 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 64
+  }
+  quant {
+    min: -4.91805935
+    max: 4.73869658
+    scale: 0.0378696285
+    zero_point: 2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 64
+  }
+  quant {
+    min: -4.91805935
+    max: 4.73869658
+    scale: 0.0378696285
+    zero_point: 2
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "AveragePool2D"
+  input: "x"
+  output: "Identity"
+  averagepool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 2
+    filter_height: 2
+    activation: NONE
+  }
+}
+input: "x"
+output: "Identity"

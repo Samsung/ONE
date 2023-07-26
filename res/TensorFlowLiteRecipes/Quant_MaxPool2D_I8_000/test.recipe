@@ -1,0 +1,51 @@
+operand {
+  name: "x"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 28
+    dim: 28
+    dim: 128
+  }
+  quant {
+    min: -4.71396
+    max: 4.72839499
+    scale: 0.0370288454
+    zero_point: -1
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Identity"
+  type: INT8
+  shape {
+    dim: 1
+    dim: 14
+    dim: 14
+    dim: 128
+  }
+  quant {
+    min: -4.71396
+    max: 4.72839499
+    scale: 0.0370288454
+    zero_point: -1
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "MaxPool2D"
+  input: "x"
+  output: "Identity"
+  maxpool2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    filter_width: 2
+    filter_height: 2
+    activation: NONE
+  }
+}
+input: "x"
+output: "Identity"
