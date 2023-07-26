@@ -166,7 +166,7 @@ DirectoryLoader::DirectoryLoader(const std::string &dir_path,
 
   struct dirent *entry = nullptr;
   const auto input_total_bytes = getTotalByteSizeOf(input_nodes);
-  while (entry = readdir(dir))
+  while ((entry = readdir(dir)) != NULL)
   {
     // Skip if the entry is not a regular file
     if (entry->d_type != DT_REG)
