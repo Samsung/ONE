@@ -88,6 +88,7 @@ private:
     REG_TFL_OP(GELU, TFliteOpGelu);
     REG_TFL_OP(GREATER, TFliteOpGreater);
     REG_TFL_OP(GREATER_EQUAL, TFliteOpGreaterEqual);
+    REG_TFL_OP(HARD_SWISH, TFliteOpHardSwish);
     REG_TFL_OP(L2_NORMALIZATION, TFliteOpL2Normalize);
     REG_TFL_OP(L2_POOL_2D, TFliteOpL2Pool2D);
     REG_TFL_OP(LEAKY_RELU, TFliteOpLeakyRelu);
