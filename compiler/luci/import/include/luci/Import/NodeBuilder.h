@@ -42,6 +42,7 @@ class NodeBuilderBase
 public:
   virtual CircleNode *build(TensorIndex tensor_idx, GraphBuilderContext *context) const = 0;
   virtual NodeBuilderType builder_type() const = 0;
+  virtual ~NodeBuilderBase() = default;
 };
 
 /**
