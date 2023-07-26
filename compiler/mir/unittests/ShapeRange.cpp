@@ -56,7 +56,7 @@ TEST_P(ShapeIteratorTest, ElementCount)
 std::vector<ParamType> test_data{ParamType{6, 1, 2, 3}, ParamType{16, 2, 2, 4},
                                  ParamType{1, 1, 1, 1, 1, 1}, ParamType{5, 5, 1, 1, 1, 1, 1}};
 
-INSTANTIATE_TEST_CASE_P(SimpleInput, ShapeIteratorTest, ::testing::ValuesIn(test_data));
+INSTANTIATE_TEST_SUITE_P(SimpleInput, ShapeIteratorTest, ::testing::ValuesIn(test_data));
 
 TEST(ShapeRange, Contains)
 {
