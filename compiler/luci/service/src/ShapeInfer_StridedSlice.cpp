@@ -305,7 +305,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
     if ((1 << i) & effective_ellipsis_mask)
     {
       // If ellipsis_mask, set the begin_mask and end_mask at that index.
-      added_ellipsis = std::max(0u, i - ellipsis_start_idx);
+      added_ellipsis = std::max(0, (int32_t)(i - ellipsis_start_idx));
       assert(i < 16);
       op_params.begin_mask |= (1 << i);
       op_params.end_mask |= (1 << i);
