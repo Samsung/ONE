@@ -25,6 +25,10 @@ if [[ ! -s "inception_v3.pb" ]]; then
     tar zxvf inception_v3_2018_04_27.tgz
 fi
 
+if [[ ! -s "mobilenet_edgetpu_224_1.0_int8.tflite" ]]; then
+    wget -nv https://github.com/mlcommons/mobile_models/raw/main/v0_7/tflite/mobilenet_edgetpu_224_1.0_int8.tflite
+fi
+
 if [[ ! -s "while_3.pbtxt" ]]; then
     rm -rf while_3.zip
     wget -nv https://github.com/Samsung/ONE/files/5095630/while_3.zip
@@ -171,6 +175,16 @@ outputfile="./inception_v3.mat.q8.circle"
 
 if [[ ! -s ${outputfile} ]]; then
   ../bin/one-quantize \
+  --input_path ${inputfile} \
+  --output_path ${outputfile}
+fi
+
+# prepare 'mobilenet_edgetpu_224_1.0_int8.circle' file used for requantization test
+inputfile="./mobilenet_edgetpu_224_1.0_int8.tflite"
+outputfile="./mobilenet_edgetpu_224_1.0_int8.circle"
+
+if [[ ! -s ${outputfile} ]]; then
+  ../bin/one-import-tflite \
   --input_path ${inputfile} \
   --output_path ${outputfile}
 fi
