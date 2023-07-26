@@ -535,6 +535,8 @@ public:
   luci::CircleMaximum *max = nullptr;
 };
 
+static constexpr std::initializer_list<uint32_t> kDefaultShape = {1, 16, 1, 1};
+
 class MeanGraph final : public SimpleGraph
 {
 protected:
@@ -577,7 +579,7 @@ public:
 private:
   bool _keep_dims = true;
   std::vector<int32_t> _axes = {2, 3};
-  std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
+  std::initializer_list<uint32_t> _shape = kDefaultShape;
 };
 
 class MinimumGraph final : public SimpleGraph
@@ -876,7 +878,7 @@ public:
 private:
   bool _keep_dims = true;
   std::vector<int32_t> _axes = {2, 3};
-  std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
+  std::initializer_list<uint32_t> _shape = kDefaultShape;
 };
 
 class ReduceMinGraph final : public SimpleGraph
@@ -921,7 +923,7 @@ public:
 private:
   bool _keep_dims = true;
   std::vector<int32_t> _axes = {2, 3};
-  std::initializer_list<uint32_t> _shape = {1, 16, 1, 1};
+  std::initializer_list<uint32_t> _shape = kDefaultShape;
 };
 
 class ReluGraph final : public SimpleGraph
