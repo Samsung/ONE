@@ -217,6 +217,15 @@ def _get_parser():
         action='store_true',
         help='convert quantized model to fake-quantized fp32 model.')
 
+    # arguments for requantize option
+    requantize_group = parser.add_argument_group('arguments for requantize option')
+
+    requantize_group.add_argument(
+        '--requantize',
+        action='store_true',
+        help='convert quantized model to another-typed quantized model (ex: int8 -> uin8).'
+    )
+
     return parser
 
 
@@ -256,6 +265,21 @@ def _set_default_values(args):
         setattr(args, 'min_percentile', '1.0')
     if not oneutils.is_valid_attr(args, 'max_percentile'):
         setattr(args, 'max_percentile', '99.0')
+
+
+def _verify_arg_pre(parser, args):
+    """verify given arguments before default values are set"""
+    # check if required arguments is given
+    missing = []
+    if oneutils.is_valid_attr(args, 'requantize'):
+        if not oneutils.is_valid_attr(args,
+                                      'input_model_dtype') and not oneutils.is_valid_attr(
+                                          args, 'input_dtype'):
+            missing.append('--input_model_dtype')
+        if not oneutils.is_valid_attr(args, 'quantized_dtype'):
+            missing.append('--quantized_dtype')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
 
 
 def _verify_arg(parser, args):
@@ -318,6 +342,11 @@ def _quantize(args):
     if oneutils.is_valid_attr(args, 'fake_quantize'):
         # fake-quantize model
         _fake_quantize(args)
+        return
+
+    if oneutils.is_valid_attr(args, 'requantize'):
+        # requantize model
+        _requantize(args)
         return
 
     # get file path to log
@@ -551,6 +580,41 @@ def _fake_quantize(args):
             .run()
 
 
+def _requantize(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f:
+        # get driver path
+        circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+
+        ## make a command to quantize and dequantize the weights of the model
+        circle_quantizer_cmd = [circle_quantizer_path]
+        # verbose
+        if oneutils.is_valid_attr(args, 'verbose'):
+            circle_quantizer_cmd.append('--verbose')
+        # requantize
+        circle_quantizer_cmd.append('--requantize')
+        # Use input_model_dtype if it exists. Use input_dtype otherwise.
+        if oneutils.is_valid_attr(args, 'input_model_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+        elif oneutils.is_valid_attr(args, 'input_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
+        if oneutils.is_valid_attr(args, 'quantized_dtype'):
+            circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
+        # input and output path
+        if oneutils.is_valid_attr(args, 'input_path'):
+            circle_quantizer_cmd.append(getattr(args, 'input_path'))
+        if oneutils.is_valid_attr(args, 'output_path'):
+            circle_quantizer_cmd.append(getattr(args, 'output_path'))
+
+        f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+        # run circle-quantizer
+        oneutils.run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+
 def main():
     # parse arguments
     parser = _get_parser()
@@ -558,6 +622,9 @@ def main():
 
     # parse configuration file
     oneutils.parse_cfg(args.config, 'one-quantize', args)
+
+    # verify arguments before default value setting
+    _verify_arg_pre(parser, args)
 
     # set default values
     _set_default_values(args)
