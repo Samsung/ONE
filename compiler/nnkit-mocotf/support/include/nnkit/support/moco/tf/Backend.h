@@ -50,7 +50,7 @@ public:
 
   void run(void) override;
 
-  void teardown(const std::function<void(nnkit::TensorContext &)> &f);
+  void teardown(const std::function<void(nnkit::TensorContext &)> &f) override;
 
 private:
   std::unique_ptr<loco::Graph> _loco_graph;

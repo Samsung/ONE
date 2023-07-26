@@ -45,7 +45,7 @@ class S64FoldGatherSimpleTest : public luci::ConstantFoldingAddTestGraph, public
 public:
   S64FoldGatherSimpleTest() : luci::ConstantFoldingAddTestGraph({1}, loco::DataType::S64) {}
 
-  virtual void SetUp() { init(); }
+  void SetUp() override { init(); }
 
   loco::Node *createFoldedPattern() override
   {
@@ -106,7 +106,7 @@ class S32FoldGatherTwoDimsTest : public luci::ConstantFoldingAddTestGraph, publi
 public:
   S32FoldGatherTwoDimsTest() : luci::ConstantFoldingAddTestGraph({4, 2}, loco::DataType::S32) {}
 
-  virtual void SetUp() { init(); }
+  void SetUp() override { init(); }
 
   loco::Node *createFoldedPattern() override
   {

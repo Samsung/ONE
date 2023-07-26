@@ -28,7 +28,7 @@ class FoldDequantizeTest : public luci::ConstantFoldingAddTestGraph, public ::te
 public:
   FoldDequantizeTest() : luci::ConstantFoldingAddTestGraph({2, 2, 2}, DT) {}
 
-  virtual void SetUp() { init(); }
+  void SetUp() override { init(); }
 
   loco::Node *createFoldedPattern() override
   {
@@ -111,7 +111,7 @@ class F16FoldDequantizeTest : public luci::ConstantFoldingTestGraph, public ::te
 public:
   F16FoldDequantizeTest() : ConstantFoldingTestGraph({2, 2}, loco::DataType::FLOAT16) {}
 
-  virtual void SetUp() { init(); }
+  void SetUp() override { init(); }
 
   loco::Node *createFoldedPattern() override
   {

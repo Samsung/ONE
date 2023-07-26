@@ -47,7 +47,7 @@ class S64SparseToDenseZeroIndicesTest : public luci::ConstantFoldingAddTestGraph
 public:
   S64SparseToDenseZeroIndicesTest() : luci::ConstantFoldingAddTestGraph({3}, loco::DataType::S64) {}
 
-  virtual void SetUp() { init(); }
+  void SetUp() override { init(); }
 
   loco::Node *createFoldedPattern() override
   {

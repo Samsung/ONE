@@ -69,10 +69,10 @@ public:
   // Float (fp32) tensor support
   bool isFloatTensor(uint32_t n) const override { return _tensors.at(n)->isFloatTensor(); }
 
-  virtual void getMutableFloatTensor(uint32_t n,
-                                     const nnkit::TensorContext::TypedAccessor<float> &f) = 0;
-  virtual void getConstFloatTensor(uint32_t n,
-                                   const nnkit::TensorContext::TypedReader<float> &f) const = 0;
+  void getMutableFloatTensor(uint32_t n,
+                             const nnkit::TensorContext::TypedAccessor<float> &f) override;
+  void getConstFloatTensor(uint32_t n,
+                           const nnkit::TensorContext::TypedReader<float> &f) const override;
 
 private:
   const ParsedTensors &_tensors;
