@@ -52,6 +52,7 @@
 #include "Nodes/CircleGelu.h"
 #include "Nodes/CircleGreater.h"
 #include "Nodes/CircleGreaterEqual.h"
+#include "Nodes/CircleHardSwish.h"
 #include "Nodes/CircleIf.h"
 #include "Nodes/CircleL2Normalize.h"
 #include "Nodes/CircleL2Pool2D.h"
