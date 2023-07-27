@@ -129,11 +129,25 @@ int main(const int argc, char **argv)
       }
     };
 
+    auto convertOptType = [](int type) {
+      switch (type)
+      {
+        case 0:
+          return NNFW_TRAIN_OPTIMIZER_SGD;
+        case 1:
+          return NNFW_TRAIN_OPTIMIZER_ADAM;
+        default:
+          std::cerr << "E: not supported optimizer type" << std::endl;
+          exit(-1);
+      }
+    };
+
     // prepare training info
     nnfw_train_info tri;
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();
     tri.loss = convertLossType(args.getLossType());
+    tri.opt = convertOptType(args.getOptimizerType());
 
     // prepare execution
 
