@@ -1175,9 +1175,20 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
       tinfo = *info;
     }
 
+    auto convertLossType = [](const int &type) {
+      if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
+        return onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR;
+      if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
+        return onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY;
+      else
+        throw std::runtime_error("not supported loss type");
+    };
+    onert::compiler::train::LossInfo loss_info;
+    loss_info.type = convertLossType(tinfo.loss);
+
     onert::compiler::train::TrainingInfo training_info;
     training_info.setBatchSize(tinfo.batch_size);
-    // TODO Set Loss function
+    training_info.setLossInfo(loss_info);
 
     // TODO Set a correct optimizer type and learning_rate
     onert::compiler::train::OptimizerInfo opt_info;
