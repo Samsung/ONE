@@ -108,25 +108,35 @@ void execute_kernel_CircleStridedSlice(const circle::Operator *cur_op,
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
+    {
+      OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
+      if (status != OperationGraphStatus::USUAL)
+      {
+        op_params.input_min_max_range = Tensor::max_value(input) - Tensor::min_value(input);
+        op_params.output_min_max_range = Tensor::max_value(output) - Tensor::min_value(output);
+      }
+
       luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input),
                                          kernels::getTensorData<float>(input_data),
-                                         kernels::getTensorData<float>(output_data));
+                                         kernels::getTensorData<float>(output_data), status);
       break;
+    }
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:
       luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
-                                         output_data);
+                                         output_data, OperationGraphStatus::USUAL);
       break;
     case DataType::S8:
       luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input), input_data,
-                                         output_data);
+                                         output_data, OperationGraphStatus::USUAL);
       break;
 #endif
     case DataType::S32:
-      luci_interpreter_pal::StridedSlice(op_params, kernels::getTensorShape(input),
-                                         kernels::getTensorData<int32_t>(input_data),
-                                         kernels::getTensorData<int32_t>(output_data));
+      luci_interpreter_pal::StridedSlice(
+        op_params, kernels::getTensorShape(input), kernels::getTensorData<int32_t>(input_data),
+        kernels::getTensorData<int32_t>(output_data), OperationGraphStatus::USUAL);
       break;
     default:
       assert(false && "Unsupported type");

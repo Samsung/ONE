@@ -127,6 +127,8 @@ struct LSTMStruct
     LUCI_INTERPRETER_CHECK(Tensor::element_type(input()) == Tensor::element_type(output_state()));
     LUCI_INTERPRETER_CHECK(Tensor::element_type(output()) == Tensor::element_type(input()));
 
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input_to_forget_weights()) == DataType::FLOAT32 or
+                           Tensor::element_type(input_to_forget_weights()) == DataType::S8);
     for (int32_t i = 1; i < 9; ++i)
     {
       LUCI_INTERPRETER_CHECK(internal_tensors[i] == nullptr or

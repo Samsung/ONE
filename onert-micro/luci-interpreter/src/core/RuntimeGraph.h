@@ -63,8 +63,6 @@ public:
                         RuntimeModule *runtime_module, uint32_t subgraph_index);
   ~RuntimeGraph();
 
-  Tensor *addTensor(const circle::Tensor *raw_tensor, std::unique_ptr<Tensor> &&tensor);
-
   const circle::Tensor *getCircleTensorByIndex(int32_t index);
 
   void makeInplaceOperation(const circle::Tensor *src_tensor, const circle::Tensor *dst_tensor);
@@ -118,9 +116,13 @@ public:
   void removeDynamicShapeTensor(const circle::Tensor *tensor);
 #endif // DIS_DYN_SHAPES
 
+  void addOperatorStatus(const circle::Operator *op, OperationGraphStatus status);
+
+  OperationGraphStatus getOperatorStatus(const circle::Operator *op);
+
 private:
   void buildAllocDeallocPlan(bool dealloc_input);
-  void allocate(size_t kernel_index);
+  void allocate(size_t kernel_index, OperationGraphStatus status);
   void deallocate(size_t kernel_index);
 
 private:
@@ -132,6 +134,9 @@ private:
   std::unordered_set<const circle::Operator *> _inplace_op_indexes;
 
   bool _is_valid = false;
+
+  // Save operation to its status: USUAL, Start, Middle, End
+  std::unordered_map<const circle::Operator *, OperationGraphStatus> operator_to_status;
 
   // Tensors that are not used anymore after given op
   std::vector<std::vector<const circle::Tensor *>> _alloc_plan;

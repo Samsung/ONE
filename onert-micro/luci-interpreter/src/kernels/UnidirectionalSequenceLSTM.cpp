@@ -234,12 +234,14 @@ void evalInt8(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, b
     std::make_unique<int16_t[]>(Tensor::num_elements(lstm_struct.cell_state()));
   std::fill_n(cell_state_data.get(), Tensor::num_elements(lstm_struct.cell_state()), 0);
 
+  OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
   luci_interpreter_pal::evalLSTM<int8_t, int8_t, int16_t, int32_t>(
     &lstm_struct, &quant_lstm_params, &cell_state_info, output_state_data.get(),
     cell_state_data.get(), kernels::getTensorData<int16_t>(scratch_0_data.get()),
     kernels::getTensorData<int16_t>(scratch_1_data.get()),
     kernels::getTensorData<int16_t>(scratch_2_data.get()),
-    kernels::getTensorData<int16_t>(scratch_3_data.get()), runtime_graph);
+    kernels::getTensorData<int16_t>(scratch_3_data.get()), runtime_graph, status);
 }
 
 #endif // DIS_QUANT
@@ -327,12 +329,14 @@ void evalFloat(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph, 
   auto cell_state_data = std::make_unique<float[]>(Tensor::num_elements(lstm_struct.cell_state()));
   std::fill_n(cell_state_data.get(), Tensor::num_elements(lstm_struct.cell_state()), 0);
 
+  OperationGraphStatus status = runtime_graph->getOperatorStatus(cur_op);
+
   luci_interpreter_pal::evalLSTM<float, float, float, float>(
     &lstm_struct, &lstm_params, &cell_state_info, output_state_data.get(), cell_state_data.get(),
     kernels::getTensorData<float>(scratch_0_data.get()),
     kernels::getTensorData<float>(scratch_1_data.get()),
     kernels::getTensorData<float>(scratch_2_data.get()),
-    kernels::getTensorData<float>(scratch_3_data.get()), runtime_graph);
+    kernels::getTensorData<float>(scratch_3_data.get()), runtime_graph, status);
 }
 #endif // DIS_FLOAT
 

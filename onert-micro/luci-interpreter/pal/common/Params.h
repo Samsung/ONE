@@ -37,6 +37,10 @@ struct FullyConnectedParams
   // Mark the operands as cacheable if they are unchanging, e.g. weights.
   bool lhs_cacheable;
   bool rhs_cacheable;
+  float input_min_max_range;
+  float output_min_max_range;
+  bool is_weight_quant = false;
+  float weight_scale;
 };
 
 enum class PaddingType : uint8_t
@@ -78,6 +82,10 @@ struct ConvParams
   // float activation params.
   float float_activation_min;
   float float_activation_max;
+  float input_min_max_range;
+  float output_min_max_range;
+  const flatbuffers::Vector<float> *scales = nullptr;
+  bool is_weight_quant = false;
 };
 
 enum class BroadcastableOpCategory : uint8_t
@@ -135,6 +143,9 @@ struct StridedSliceParams
   int16_t end_mask;
   int16_t new_axis_mask;
   int16_t shrink_axis_mask;
+
+  float input_min_max_range;
+  float output_min_max_range;
 };
 
 // For Add, Sub, Mul ops.
@@ -163,6 +174,10 @@ struct ArithmeticParams
   // int64_t activation params.
   int64_t int64_activation_min;
   int64_t int64_activation_max;
+
+  float input1_min_max_range;
+  float input2_min_max_range;
+  float output_min_max_range;
 
   // Processed output dimensions.
   // Let input "a" be the one that broadcasts in the faster-changing dimension.
@@ -199,6 +214,9 @@ struct PoolParams
   // float activation params.
   float float_activation_min;
   float float_activation_max;
+
+  float input_min_max_range;
+  float output_min_max_range;
 };
 
 } // namespace luci_interpreter_pal

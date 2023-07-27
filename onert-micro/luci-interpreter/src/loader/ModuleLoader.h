@@ -29,7 +29,8 @@ class ModuleLoader
 {
 public:
   static void load(RuntimeModule *runtime_module, MemoryManager *memory_manager,
-                   const char *model_data_raw, bool dealloc_input);
+                   const char *model_data_raw, bool dealloc_input,
+                   bool quantize_intermediate = false);
 };
 
 } // namespace luci_interpreter

@@ -22,7 +22,7 @@ namespace luci_interpreter
 {
 
 void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memory_manager,
-                        const char *model_data_raw, bool dealloc_input)
+                        const char *model_data_raw, bool dealloc_input, bool quantize_intermediate)
 {
   const circle::Model *model = circle::GetModel(model_data_raw);
 
@@ -40,6 +40,9 @@ void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memo
     auto *runtime_graph = runtime_module->getRuntimeGraphAt(i);
     // For Dynamic memory manager we can use inplace optimization
     GraphLoader::checkInplaceOps(&reader, runtime_graph);
+    // Should go after checkInplaceOps
+    if (quantize_intermediate)
+      GraphLoader::checkIntermediateQuantization(&reader, runtime_graph);
 #endif // USE_STATIC_ALLOC
   }
 

@@ -27,7 +27,6 @@ inline void Conv(const ConvParams &params, const int32_t *input_shape, const flo
                  const int32_t *output_shape, float *output_data,
                  luci_interpreter::OperationGraphStatus status)
 {
-  assert(status == luci_interpreter::OperationGraphStatus::USUAL);
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
   const int dilation_width_factor = params.dilation_width_factor;
@@ -46,6 +45,23 @@ inline void Conv(const ConvParams &params, const int32_t *input_shape, const flo
   const int filter_width = filter_shape[2];
   const int output_height = output_shape[1];
   const int output_width = output_shape[2];
+
+  // Calculate scales
+  const float max_int16_value = 32767.0f;
+  // Input scale
+  const float input_min_max_range = params.input_min_max_range;
+  const float input_scale = input_min_max_range / max_int16_value;
+  // Output scale
+  const float output_min_max_range = params.output_min_max_range;
+  const float output_scale = output_min_max_range / max_int16_value;
+
+  // Create int16 input and output pointers for not USUAL status
+  const int16_t *int16_input_data = reinterpret_cast<const int16_t *>(input_data);
+  int16_t *int16_output_data = reinterpret_cast<int16_t *>(output_data);
+
+  // For Weight Quantize
+  const int8_t *filter_int8_data = reinterpret_cast<const int8_t *>(filter_data);
+
   for (int batch = 0; batch < batches; ++batch)
   {
     for (int out_y = 0; out_y < output_height; ++out_y)
@@ -57,6 +73,9 @@ inline void Conv(const ConvParams &params, const int32_t *input_shape, const flo
         for (int out_channel = 0; out_channel < output_depth; ++out_channel)
         {
           float total = 0.f;
+          float filter_scale = 0.f;
+          if (params.is_weight_quant)
+            filter_scale = *(params.scales->cbegin() + out_channel);
           for (int filter_y = 0; filter_y < filter_height; ++filter_y)
           {
             const int in_y = in_y_origin + dilation_height_factor * filter_y;
@@ -83,13 +102,24 @@ inline void Conv(const ConvParams &params, const int32_t *input_shape, const flo
                     input_depth +
                   in_channel;
 
-                const float input_value = input_data[input_data_offset];
-                const float filter_value = filter_data[filter_data_offset];
+                float input_value = 0.f;
+                if (status == luci_interpreter::OperationGraphStatus::MIDDLE or
+                    status == luci_interpreter::OperationGraphStatus::END)
+                  input_value =
+                    static_cast<float>(int16_input_data[input_data_offset]) * input_scale;
+                else
+                  input_value = input_data[input_data_offset];
+
+                float filter_value = 0.f;
+                if (params.is_weight_quant == false)
+                  filter_value = filter_data[filter_data_offset];
+                else
+                  filter_value =
+                    static_cast<float>(filter_int8_data[filter_data_offset]) * filter_scale;
                 total += (input_value * filter_value);
               }
             }
           }
-          // float bias_value = 0.0f;
           if (bias_data)
           {
             total += bias_data[out_channel];
@@ -98,8 +128,19 @@ inline void Conv(const ConvParams &params, const int32_t *input_shape, const flo
           const int output_data_offset =
             ((batch * output_height + out_y) * output_width + out_x) * output_depth + out_channel;
 
-          output_data[output_data_offset] =
-            std::min(std::max(total, output_activation_min), output_activation_max);
+          total = std::min(std::max(total, output_activation_min), output_activation_max);
+
+          if (status == luci_interpreter::OperationGraphStatus::MIDDLE or
+              status == luci_interpreter::OperationGraphStatus::START)
+          {
+            const int16_t result = static_cast<int16_t>(std::round(total / output_scale));
+
+            int16_output_data[output_data_offset] = result;
+          }
+          else
+          {
+            output_data[output_data_offset] = total;
+          }
         }
       }
     }

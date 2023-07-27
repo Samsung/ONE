@@ -54,7 +54,20 @@ Interpreter::Interpreter(const char *model_data_raw, const InterpreterConfigure 
 // Construct default interpreter with dynamic allocations and with input allocations
 Interpreter::Interpreter(const char *model_data_raw, bool dealloc_input)
 {
-  ModuleLoader::load(&_runtime_module, &_memory_manager, model_data_raw, dealloc_input);
+  ModuleLoader::load(&_runtime_module, &_memory_manager, model_data_raw, dealloc_input, false);
+}
+
+// Construct default interpreter with dynamic allocations and with input allocations
+Interpreter::Interpreter(const char *model_data_raw, bool dealloc_input, bool quantize_intermediate)
+{
+  ModuleLoader::load(&_runtime_module, &_memory_manager, model_data_raw, dealloc_input,
+                     quantize_intermediate);
+}
+
+// Construct default interpreter with dynamic allocations and with input allocations
+Interpreter::Interpreter(const char *model_data_raw)
+{
+  ModuleLoader::load(&_runtime_module, &_memory_manager, model_data_raw, true, false);
 }
 
 #endif // USE_STATIC_ALLOC

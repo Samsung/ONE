@@ -125,7 +125,7 @@ void configure_kernel_CircleConcatenation(const circle::Operator *cur_op,
       LUCI_INTERPRETER_CHECK(Tensor::quantized_dimension(tensor) ==
                              Tensor::quantized_dimension(output));
 
-      LUCI_INTERPRETER_CHECK(Tensor::zero_points(tensor).size() == Tensor::scales(tensor).size());
+      LUCI_INTERPRETER_CHECK(Tensor::zero_points(tensor)->size() == Tensor::scales(tensor)->size());
       LUCI_INTERPRETER_CHECK(Tensor::zero_points(tensor) == Tensor::zero_points(output));
       LUCI_INTERPRETER_CHECK(Tensor::scales(tensor) == Tensor::scales(output));
     }
