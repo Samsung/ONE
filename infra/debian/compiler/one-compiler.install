@@ -51,6 +51,8 @@ usr/bin/visqlib/Palette.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/QErrorComputer.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/Util.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/DotBuilder.py usr/share/one/bin/visqlib/
+usr/bin/circle/* usr/share/one/bin/circle/
+
 # lib
 usr/lib/* usr/share/one/lib/
 # doc
