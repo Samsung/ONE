@@ -18,6 +18,7 @@
 
 #include "ops/ConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
+#include "ops/LossLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 
@@ -46,6 +47,17 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
   {
     case ir::operation::ElementwiseActivation::Type::RELU:
       return ops::ElementwiseActivationType::kReLU;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::LossType convertLossType(ir::operation::Loss::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
+      return ops::LossType::kMSE;
     default:
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
@@ -142,9 +154,29 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::train::operation::Loss &)
+void KernelGenerator::visit(const ir::train::operation::Loss &node)
 {
-  // TODO Generate kernel
+  using ir::train::operation::Loss;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto y_pred_index{node.getInputs().at(Loss::Y_PRED)};
+  const auto y_true_index{node.getInputs().at(Loss::Y_TRUE)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto y_pred_tensor = _tensor_reg->getPortableTensor(y_pred_index);
+  auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
+
+  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto deriv_y_pred_tensor = _tensor_reg->getDerivativeTensor(y_pred_index);
+  auto deriv_y_true_tensor = _tensor_reg->getDerivativeTensor(y_true_index);
+
+  auto fn = std::make_unique<ops::LossLayer>();
+
+  fn->configure(y_pred_tensor, y_true_tensor, output_tensor, deriv_y_pred_tensor,
+                deriv_y_true_tensor, deriv_output_tensor, convertLossType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+
   UNUSED_RELEASE(convertPoolType);
 }
 

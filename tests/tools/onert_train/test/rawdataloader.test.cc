@@ -118,14 +118,14 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   nnfw_tensorinfo in_info = {
     .dtype = NNFW_TYPE_TENSOR_INT32,
     .rank = 4,
-    .dims = {1, 2, 2, 2},
+    .dims = {batch_size, 2, 2, 2},
   };
   std::vector<nnfw_tensorinfo> in_infos{in_info};
 
   nnfw_tensorinfo expected_info = {
     .dtype = NNFW_TYPE_TENSOR_INT32,
     .rank = 4,
-    .dims = {1, 1, 1, 1},
+    .dims = {batch_size, 1, 1, 1},
   };
   std::vector<nnfw_tensorinfo> expected_infos{expected_info};
 
@@ -133,7 +133,7 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   std::vector<std::vector<uint32_t>> in(num_input);
   for (uint32_t i = 0; i < num_input; ++i)
   {
-    in[i].resize(num_elems(&in_infos[i]));
+    in[i].resize(num_elems(&in_infos[i]) / batch_size);
     std::generate(in[i].begin(), in[i].end(), [this] {
       static uint32_t i = 0;
       return i++;
@@ -143,7 +143,7 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   std::vector<std::vector<uint32_t>> expected(num_expected);
   for (uint32_t i = 0; i < num_expected; ++i)
   {
-    expected[i].resize(num_elems(&expected_infos[i]));
+    expected[i].resize(num_elems(&expected_infos[i]) / batch_size);
     std::generate(expected[i].begin(), expected[i].end(), [in, i] {
       auto sum = std::accumulate(in[i].begin(), in[i].end(), 0);
       return sum;
@@ -179,23 +179,15 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
     loader.loadData(input_file, expected_file, in_infos, expected_infos, data_length, batch_size);
 
   // Allocate inputs and expecteds data memory
-  std::vector<Allocation> inputs(num_input * batch_size);
+  std::vector<Allocation> inputs(num_input);
   for (uint32_t i = 0; i < num_input; ++i)
   {
-    auto bufsz = bufsize_for(&in_infos[i]);
-    for (uint32_t j = 0; j < batch_size; ++j)
-    {
-      inputs[i * batch_size + j].alloc(bufsz);
-    }
+    inputs[i].alloc(bufsize_for(&in_infos[i]));
   }
-  std::vector<Allocation> expecteds(num_expected * batch_size);
+  std::vector<Allocation> expecteds(num_expected);
   for (uint32_t i = 0; i < num_expected; ++i)
   {
-    auto bufsz = bufsize_for(&expected_infos[i]);
-    for (uint32_t j = 0; j < batch_size; ++j)
-    {
-      expecteds[i * batch_size + j].alloc(bufsz);
-    }
+    expecteds[i].alloc(bufsize_for(&expected_infos[i]));
   }
 
   uint32_t num_sample = data_length / batch_size;
@@ -207,26 +199,20 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
     for (uint32_t h = 0; h < num_input; ++h)
     {
       auto num_elem = num_elems(&in_infos[h]);
-      for (uint32_t j = 0; j < batch_size; ++j)
+      for (uint32_t k = 0; k < num_elem; ++k)
       {
-        for (uint32_t k = 0; k < num_elem; ++k)
-        {
-          auto inbufs = reinterpret_cast<uint32_t *>(inputs[h * batch_size + j].data()) + k;
-          gen_in[h].emplace_back(*inbufs);
-        }
+        auto inbufs = reinterpret_cast<uint32_t *>(inputs[h].data()) + k;
+        gen_in[h].emplace_back(*inbufs);
       }
     }
     std::vector<std::vector<uint32_t>> gen_ex(num_expected);
     for (uint32_t h = 0; h < num_expected; ++h)
     {
       auto num_elem = num_elems(&expected_infos[h]);
-      for (uint32_t j = 0; j < batch_size; ++j)
+      for (uint32_t k = 0; k < num_elem; ++k)
       {
-        for (uint32_t k = 0; k < num_elem; ++k)
-        {
-          auto exbufs = reinterpret_cast<uint32_t *>(expecteds[h * batch_size + j].data()) + k;
-          gen_ex[h].emplace_back(*exbufs);
-        }
+        auto exbufs = reinterpret_cast<uint32_t *>(expecteds[h].data()) + k;
+        gen_ex[h].emplace_back(*exbufs);
       }
     }
 
