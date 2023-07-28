@@ -161,19 +161,14 @@ int main(const int argc, char **argv)
     std::vector<nnfw_tensorinfo> expected_infos;
 
     // prepare data buffers
-    std::vector<Allocation> input_data(num_inputs * tri.batch_size);
-    std::vector<Allocation> expected_data(num_expecteds * tri.batch_size);
+    std::vector<Allocation> input_data(num_inputs);
+    std::vector<Allocation> expected_data(num_expecteds);
 
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
-
-      auto bufsz = bufsize_for(&ti);
-      for (uint32_t n = 0; n < tri.batch_size; ++n)
-      {
-        input_data[i * tri.batch_size + n].alloc(bufsz);
-      }
+      input_data[i].alloc(bufsize_for(&ti));
       input_infos.emplace_back(std::move(ti));
     }
 
@@ -181,12 +176,7 @@ int main(const int argc, char **argv)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-
-      auto bufsz = bufsize_for(&ti);
-      for (uint32_t n = 0; n < tri.batch_size; ++n)
-      {
-        expected_data[i * tri.batch_size + n].alloc(bufsz);
-      }
+      expected_data[i].alloc(bufsize_for(&ti));
       expected_infos.emplace_back(std::move(ti));
     }
 

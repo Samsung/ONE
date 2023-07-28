@@ -199,6 +199,22 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
+  // Set derivatives as default tensor info
+  for (const auto &pair : lowered_subgs)
+  {
+    auto lowered_subg = pair.second.get();
+    auto &tgraph = lowered_subg->trainable_graph();
+    tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
+      if (!obj.isConstant())
+      {
+        auto deriv = std::make_unique<ir::Operand>(obj);
+        const auto gen_index = tgraph.addDerivative(index, std::move(deriv));
+        assert(gen_index == index);
+        UNUSED_RELEASE(gen_index);
+      }
+    });
+  }
+
   // Shape inference.
   {
     // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called

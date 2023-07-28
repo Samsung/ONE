@@ -15,154 +15,73 @@
  * limitations under the License.
  */
 
-#include "kernels/Relu.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/relu/FloatReLUKernel.h"
+#include "luci_interpreter/test_models/relu/NegReLUKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-class ReluTest : public ::testing::Test
+class ReLUTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(ReluTest, FloatSimple)
+template <typename T> std::vector<T> checkReLUKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::vector<float> input_data{
-    0.0f, 1.0f,  3.0f,  // Row 1
-    1.0f, -1.0f, -2.0f, // Row 2
-  };
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<float> ref_output_data{
-    0.0f, 1.0f, 3.0f, // Row 1
-    1.0f, 0.0f, 0.0f, // Row 2
-  };
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 3}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(ReluTest, Uint8Quantized)
+TEST_F(ReLUTest, Float_P)
 {
-  std::vector<float> input_data{
-    0, -6, 2, 4, //
-    3, -2, 7, 1, //
-  };
-  // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
-  const float f_min = (-128.0 / 128.0) * 8;
-  const float f_max = (127.0 / 128.0) * 8;
-
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(f_min, f_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
-  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray({128, 128, 160, 192, 176, 128, 240, 144}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0, 0, 2, 4, 3, 0, 7, 1}));
+  test_kernel::TestDataFloatReLU test_data_kernel;
+  std::vector<float> output_data_vector = checkReLUKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST_F(ReluTest, Uint8Requantized)
+TEST_F(ReLUTest, Input_output_type_mismatch_NEG)
 {
-  std::vector<float> input_data{
-    0, -6, 2, 4, //
-    3, -2, 7, 1, //
-  };
-
-  // Choose min / max in such a way that there are exactly 256 units to avoid rounding errors.
-  const float in_min = (-128.0 / 128.0) * 8;
-  const float in_max = (127.0 / 128.0) * 8;
-  const float out_min = (0.0 / 256.0) * 8;
-  const float out_max = (255.0 / 256.0) * 8;
-
-  std::pair<float, int32_t> quant_input = quantizationParams<uint8_t>(in_min, in_max);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 4, 1}, quant_input.first, quant_input.second, input_data, _memory_manager.get());
-
-  std::pair<float, int32_t> quant_output = quantizationParams<uint8_t>(out_min, out_max);
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_output.first, quant_output.second);
-
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
-  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray({0, 0, 64, 128, 96, 0, 224, 32}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0, 0, 2, 4, 3, 0, 7, 1}));
-}
-
-TEST_F(ReluTest, SInt16)
-{
-  std::vector<float> input_data{
-    0, -6, 2, 4, //
-    3, -2, 7, 1, //
-  };
-  std::vector<float> ref_output_data{
-    0, 0, 2, 4, //
-    3, 0, 7, 1, //
-  };
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S16>({1, 2, 4, 1}, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.25, 0);
-
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 4, 1}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
-}
-
-TEST_F(ReluTest, Input_Output_Type_NEG)
-{
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  Relu kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(ReluTest, Invalid_Input_Type_NEG)
-{
-  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
-
-  Relu kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  EXPECT_ANY_THROW(kernel.execute());
+  test_kernel::NegTestDataInputOutputTypeMismatchReLUKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

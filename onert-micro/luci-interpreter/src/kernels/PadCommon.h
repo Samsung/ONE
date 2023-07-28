@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_PAD_H
-#define LUCI_INTERPRETER_KERNELS_PAD_H
+#ifndef LUCI_INTERPRETER_KERNELS_PAD_COMMON_H
+#define LUCI_INTERPRETER_KERNELS_PAD_COMMON_H
 
-#include "core/Kernel.h"
+#include "Builders.h"
+#include "kernels/Utils.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
+void configure_kernel_CirclePadCommon(const circle::Operator *cur_op,
+                                      BaseRuntimeGraph *runtime_graph);
 
-class Pad : public Kernel
-{
-public:
-  Pad(const Tensor *input, const Tensor *paddings, Tensor *output);
+void execute_kernel_CirclePadCommon(const circle::Operator *cur_op,
+                                    BaseRuntimeGraph *runtime_graph);
 
-  const Tensor *input() const { return _inputs[0]; }
-  const Tensor *paddings() const { return _inputs[1]; }
-  Tensor *output() const { return _outputs[0]; }
-
-  void configure() override;
-  void execute() const override;
-};
-
-} // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_PAD_H
+#endif // LUCI_INTERPRETER_KERNELS_PAD_COMMON_H

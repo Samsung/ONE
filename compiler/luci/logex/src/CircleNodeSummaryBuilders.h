@@ -294,6 +294,10 @@ class CircleGreaterEqualSummaryBuilder final : public CircleNodeWithXYSummaryBui
 {
 };
 
+class CircleHardSwishSummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
 class CircleIfSummaryBuilder final : public CircleNodeSummaryBuilder
 {
 private:

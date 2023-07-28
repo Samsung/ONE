@@ -14,74 +14,63 @@
  * limitations under the License.
  */
 
-#include "kernels/Relu6.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
-#include "PALRelu6.h"
+#include "PALReluCommon.h"
 
 namespace luci_interpreter
 {
 
-namespace kernels
+void configure_kernel_CircleRelu6(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-Relu6::Relu6(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
-
-void Relu6::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-
-  if (input()->element_type() == DataType::U8)
-  {
-    double multiplier = input()->scale() / output()->scale();
-    quantizeMultiplier(multiplier, &_output_multiplier, &_output_shift);
-  }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
 }
 
-void Relu6::execute() const
+void execute_kernel_CircleRelu6(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+    {
+      const float *input_data_float = kernels::getTensorData<float>(input_data);
+      float *output_data_float = kernels::getTensorData<float>(output_data);
+      if (is_inplace)
+      {
+        output_data_float = const_cast<float *>(input_data_float);
+      }
+
+      assert(output_data_float);
+      const int flat_size =
+        kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+      luci_interpreter_pal::ReLUCommon(flat_size, input_data_float, output_data_float, 0.0f, true);
       break;
-    case DataType::U8:
-      evalQuantized();
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
+
+  if (is_inplace)
+    runtime_graph->makeInplaceOperation(kernel.input(), kernel.output());
 }
 
-void Relu6::evalFloat() const
-{
-  const auto input_data = getTensorData<float>(input());
-  const auto input_shape = getTensorShape(input());
-  auto output_data = getTensorData<float>(output());
-  auto output_shape = getTensorShape(output());
-
-  luci_interpreter_pal::Relu6(input_shape, input_data, output_shape, output_data);
-}
-
-void Relu6::evalQuantized() const
-{
-  tflite::ReluParams params;
-  params.input_offset = input()->zero_point();
-  params.output_offset = output()->zero_point();
-  params.output_multiplier = _output_multiplier;
-  params.output_shift = _output_shift;
-
-  params.quantized_activation_min =
-    std::max(static_cast<int32_t>(std::numeric_limits<uint8_t>::min()), params.output_offset);
-  params.quantized_activation_max =
-    std::min(static_cast<int32_t>(std::numeric_limits<uint8_t>::max()),
-             params.output_offset + static_cast<int32>(roundf(6.f / output()->scale())));
-
-  luci_interpreter_pal::ReluX(params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-                              getTensorShape(output()), getTensorData<uint8_t>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
