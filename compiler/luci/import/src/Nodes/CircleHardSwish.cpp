@@ -25,35 +25,7 @@ namespace luci
 
 bool CircleHardSwishGraphBuilder::validate(const ValidateArgs &args) const
 {
-  if (!GraphBuilder::validate(args, 1))
-    return false;
-
-  const auto &inputs = args.op.inputs;
-  const auto &outputs = args.op.outputs;
-
-  const auto tensors = args.reader.tensors();
-  const auto tensor = tensors.at(inputs.at(0));
-  assert(tensor != nullptr);
-
-  switch (tensor->type())
-  {
-    case circle::TensorType_FLOAT64:
-      break;
-    case circle::TensorType_FLOAT32:
-      break;
-    case circle::TensorType_INT16:
-      break;
-    case circle::TensorType_UINT8:
-      break;
-    default:
-      return false;
-  }
-
-  assert(tensors[outputs[0]] != nullptr);
-  if (tensors[outputs[0]]->type() != tensor->type())
-    return false;
-
-  return true;
+  return GraphBuilder::validate(args, 1);
 }
 
 CircleNode *CircleHardSwishGraphBuilder::build_node(const circle::OperatorT &,
