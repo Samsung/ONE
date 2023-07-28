@@ -105,6 +105,7 @@ public:
   luci::CircleNode *visit(const luci::CircleGelu *) final;
   luci::CircleNode *visit(const luci::CircleGreater *) final;
   luci::CircleNode *visit(const luci::CircleGreaterEqual *) final;
+  luci::CircleNode *visit(const luci::CircleHardSwish *) final;
   luci::CircleNode *visit(const luci::CircleIf *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }
