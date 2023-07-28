@@ -199,6 +199,7 @@ public:
   {
     return circle::CreateGreaterEqualOptions(_builder).Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleHardSwish *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleIf *node)
   {
     return circle::CreateIfOptions(_builder, node->then_branch(), node->else_branch()).Union();
