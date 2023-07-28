@@ -21,6 +21,14 @@
 namespace luci_interpreter_pal
 {
 
+struct PadParams
+{
+  int8_t left_padding_count;
+  int32_t left_padding[5];
+  int8_t right_padding_count;
+  int32_t right_padding[5];
+};
+
 struct FullyConnectedParams
 {
   int32_t input_offset;

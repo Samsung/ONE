@@ -14,109 +14,73 @@
  * limitations under the License.
  */
 
-#include "kernels/ArgMax.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/argmax/FloatArgMaxKernel.h"
+#include "luci_interpreter/test_models/argmax/NegArgMaxKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T1, typename T2>
-void Check(std::initializer_list<int32_t> input_shape,
-           std::initializer_list<int32_t> dimension_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<T1> input_data,
-           std::initializer_list<int32_t> dimension_data, std::initializer_list<T2> output_data)
+class ArgMaxTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T1>();
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor dimension_tensor =
-    makeInputTensor<DataType::S32>(dimension_shape, dimension_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(getElementType<T2>());
-
-  ArgMaxParams params{};
-  params.output_type = getElementType<T2>();
-  ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<T2>(output_tensor), ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
-}
-
-template <typename T> class ArgMaxTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(ArgMaxTest, DataTypes);
-
-TYPED_TEST(ArgMaxTest, Simple)
+template <typename T, typename O>
+std::vector<O> checkKernel(test_kernel::TestDataBase<T, O> *test_data_base)
 {
-  Check<TypeParam, int32_t>(/*input_shape=*/{1, 1, 1, 4}, /*dimension_shape=*/{},
-                            /*output_shape=*/{1, 1, 1},
-                            /*input_data=*/
-                            {
-                              1, 9, 7, 3, //
-                            },
-                            /*dimension_data=*/{3}, /*output_data=*/{1});
-  Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 1, 4}, /*dimension_shape=*/{},
-                            /*output_shape=*/{1, 1, 1},
-                            /*input_data=*/
-                            {
-                              1, 9, 7, 3, //
-                            },
-                            /*dimension_data=*/{3}, /*output_data=*/{1});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  O *output_data = reinterpret_cast<O *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(O));
+  std::vector<O> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TYPED_TEST(ArgMaxTest, MultiDimensions)
+TEST_F(ArgMaxTest, MainTest_P)
 {
-  Check<TypeParam, int32_t>(/*input_shape=*/{1, 1, 2, 4}, /*dimension_shape=*/{},
-                            /*output_shape=*/{1, 1, 2},
-                            /*input_data=*/
-                            {
-                              1, 2, 7, 8, //
-                              1, 9, 7, 3, //
-                            },
-                            /*dimension_data=*/{3}, /*output_data=*/{3, 1});
-  Check<TypeParam, int64_t>(/*input_shape=*/{1, 1, 2, 4}, /*dimension_shape=*/{},
-                            /*output_shape=*/{1, 1, 2},
-                            /*input_data=*/
-                            {
-                              1, 2, 7, 8, //
-                              1, 9, 7, 3, //
-                            },
-                            /*dimension_data=*/{3}, /*output_data=*/{3, 1});
+  test_kernel::TestDataFloatArgMax test_data_kernel;
+  std::vector<int32_t> output_data_vector = checkKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST(ArgMaxTest, UnsupportedType_NEG)
+TEST_F(ArgMaxTest, Input_output_type_mismatch_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 1, 2, 4},
-                                                           {
-                                                             1, 2, 7, 8, //
-                                                             1, 9, 7, 3, //
-                                                           },
-                                                           memory_manager.get());
-  Tensor dimension_tensor = makeInputTensor<DataType::S32>({}, {3}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  ArgMaxParams params{};
-  params.output_type = DataType::U8;
-  ArgMax kernel(&input_tensor, &dimension_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  EXPECT_ANY_THROW(kernel.execute());
+  test_kernel::TestDataOutputWrongOutputArgMax test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
