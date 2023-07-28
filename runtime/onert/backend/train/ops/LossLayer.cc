@@ -18,6 +18,7 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/Loss.h>
+#include <cker/train/operation/Regularizer.h>
 
 namespace onert
 {
@@ -43,6 +44,8 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
   assert(y_true != nullptr);
   assert(output != nullptr);
   assert(deriv_y_pred != nullptr);
+  assert(output->data_type() == OperandType::FLOAT32);
+
   switch (loss_type)
   {
     case LossType::kMSE:
@@ -74,6 +77,8 @@ void LossLayer::forward(bool)
     default:
       throw std::runtime_error("LossLayer: unsupported loss type");
   }
+
+  // nnfw::cker::train::L2(getShape(_output), getBuffer<float>(_output), 0.01f);
 }
 
 void LossLayer::backward()

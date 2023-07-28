@@ -117,7 +117,8 @@ void FullyConnectedLayer::backward()
     case OperandType::FLOAT32:
     {
       assert(data_type == _grad_weights->data_type());
-      assert(data_type == _grad_bias->data_type());
+      if (_bias)
+        assert(data_type == _grad_bias->data_type());
       backwardFloat32();
       break;
     }
