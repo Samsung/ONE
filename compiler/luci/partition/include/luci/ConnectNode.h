@@ -97,6 +97,7 @@ public:
   void visit(const luci::CircleGelu *) final;
   void visit(const luci::CircleGreater *) final;
   void visit(const luci::CircleGreaterEqual *) final;
+  void visit(const luci::CircleHardSwish *) final;
   void visit(const luci::CircleIf *) final;
   void visit(const luci::CircleL2Normalize *) final;
   void visit(const luci::CircleL2Pool2D *) final;
