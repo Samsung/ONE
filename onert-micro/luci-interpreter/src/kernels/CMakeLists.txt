@@ -7,7 +7,8 @@ set(SOURCES
         KernelBuilder.cpp
         SISOKernel.h
         TISOKernel.h
-        MISOKernel.h)
+        MISOKernel.h
+        PadCommon.cpp)
 
 macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.cpp")
