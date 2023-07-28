@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,8 @@
 namespace luci_interpreter
 {
 
-void configure_kernel_CircleArgMax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+// TODO: reduce code duplication with arg max
+void configure_kernel_CircleArgMin(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
   // dim tensor must be a scalar or has one element
@@ -36,7 +37,7 @@ void configure_kernel_CircleArgMax(const circle::Operator *cur_op, BaseRuntimeGr
   LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input2()) == DataType::S32);
 }
 
-void execute_kernel_CircleArgMax(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+void execute_kernel_CircleArgMin(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
 
@@ -57,7 +58,7 @@ void execute_kernel_CircleArgMax(const circle::Operator *cur_op, BaseRuntimeGrap
         kernels::getTensorRuntimeShape(input, runtime_graph),
         kernels::getTensorData<float>(input_data), kernels::getTensorData<int32_t>(axis_data),
         kernels::getTensorRuntimeShape(output, runtime_graph),
-        kernels::getTensorData<int32_t>(output_data), std::greater<float>());
+        kernels::getTensorData<int32_t>(output_data), std::less<float>());
     }
     break;
 #endif // DIS_FLOAT
