@@ -1,0 +1,100 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "mul_sqrt"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "sqrt_2_inv"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "0.7071067690849304"
+  }
+}
+operand {
+  name: "erf"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "add_one"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "one"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "mul"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "mul_half"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 5 dim: 3 }
+}
+operand {
+  name: "half"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "0.5"
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "sqrt_2_inv"
+  output: "mul_sqrt"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Erf"
+  input: "mul_sqrt"
+  output: "erf"
+}
+operation {
+  type: "Add"
+  input: "erf"
+  input: "one"
+  output: "add_one"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "half"
+  output: "mul_half"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "mul_half"
+  input: "add_one"
+  output: "mul"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "mul"

@@ -16,8 +16,10 @@
 
 #include "TrainingCompiler.h"
 
+#include "StaticDerivativeShapeInferer.h"
 #include "TrainableOperationConverter.h"
 #include "pass/LossInsertionPass.h"
+#include "../CompilerHelpers.h"
 #include "../ExecutorFactory.h"
 #include "../pass/ConstantOutputPass.h"
 #include "../pass/OddOutputPass.h"
@@ -32,6 +34,7 @@
 #include <compiler/StaticShapeInferer.h>
 #include <compiler/train/LoweredTrainableGraph.h>
 #include <ir/train/TrainableGraph.h>
+#include <exec/train/optimizer/SGD.h>
 
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
@@ -45,7 +48,7 @@ namespace train
 
 TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                                    std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                                   const TrainingInfo *training_info)
+                                   const TrainingInfo &training_info)
   : _model{nnpkg->primary_model()}, _options{copts[0].get()}, _training_info{training_info}
 {
   if (nnpkg->model_count() > 1)
@@ -111,7 +114,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
 
       // Convert operations to trainable operations
-      auto converter = TrainableOperationConverter{*trainable_subg, _training_info};
+      auto converter = TrainableOperationConverter{*trainable_subg, &_training_info};
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
           auto trainable_op = converter(op);
@@ -136,8 +139,29 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   for (auto &&pair : trainable_subgraphs)
   {
     auto trainable_subg = pair.second;
+    auto subg_index = pair.first;
 
-    // TODO Apply LossInsertionPass
+    compiler::pass::PassRunner{}
+      .append(std::make_unique<train::pass::LossInsertionPass>(*trainable_subg, &_training_info,
+                                                               subg_index))
+      .run();
+  }
+
+  // Change input shape according to batch_size
+  for (auto &&pair : trainable_subgraphs)
+  {
+    auto trainable_subg = pair.second;
+
+    for (const auto &ind : trainable_subg->getInputs())
+    {
+      auto &input = trainable_subg->operands().at(ind);
+      auto new_shape = input.info().shape();
+      // TODO Consider batch size index
+      if (new_shape.dim(0) != 1)
+        throw std::runtime_error("the first dim is not 1. It is not supported yet.");
+      new_shape.dim(0) = _training_info.batchSize();
+      input.info().shape(new_shape);
+    }
   }
 
   /***************************************************
@@ -175,7 +199,48 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
-  // TODO Shape inference for applying batch size.
+  // Set derivatives as default tensor info
+  for (const auto &pair : lowered_subgs)
+  {
+    auto lowered_subg = pair.second.get();
+    auto &tgraph = lowered_subg->trainable_graph();
+    tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
+      if (!obj.isConstant())
+      {
+        auto deriv = std::make_unique<ir::Operand>(obj);
+        const auto gen_index = tgraph.addDerivative(index, std::move(deriv));
+        assert(gen_index == index);
+        UNUSED_RELEASE(gen_index);
+      }
+    });
+  }
+
+  // Shape inference.
+  {
+    // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
+    // recursively
+    std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
+      createStaticShapeInferers(lowered_subgs);
+
+    const auto primary_subg_idx = ir::SubgraphIndex{0};
+    inferers.at(primary_subg_idx)->infer();
+
+    for (const auto &pair_inferer : inferers)
+    {
+      const auto inferer = pair_inferer.second.get();
+      inferer->dump();
+    }
+
+    // NOTE StaticDerivativeShapeInferer is allocated for each subgraph,
+    //      so it does not support models that have controlflow operations yet.
+    for (auto &&pair : lowered_subgs)
+    {
+      auto &lowered_subg = pair.second;
+      auto inferer = std::make_unique<StaticDerivativeShapeInferer>(lowered_subg.get());
+      inferer->infer();
+      inferer->dump();
+    }
+  }
 
   // Shape validation
   for (const auto &pair : lowered_subgs)
@@ -183,6 +248,18 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     auto &lowered_subg = pair.second;
     compiler::ShapeValidator{lowered_subg->graph()}();
   }
+
+  // TODO Validate shapes of derivative tensors
+
+  // Create optimizer
+  // TODO Set properties of optimizer
+  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer;
+  const auto &optim_info = _training_info.optimizerInfo();
+  if (optim_info.optim_code == exec::train::optimizer::OptimizerCode::SGD)
+    optimizer = std::make_shared<exec::train::optimizer::SGD>(optim_info.learning_rate);
+  else
+    throw std::runtime_error("Invalid optimizer type, " +
+                             exec::train::optimizer::toString(optim_info.optim_code));
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
@@ -206,7 +283,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
     auto executor = std::unique_ptr<exec::IExecutor>{
-      ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
+      ExecutorFactory::get().create(std::move(lowered_subg), executors, args, optimizer)};
     executor->setIndexedRanks(indexed_ranks);
     executors->emplace(model_index, subg_index, std::move(executor));
   }

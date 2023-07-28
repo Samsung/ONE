@@ -49,11 +49,14 @@ public:
   const std::string &getPackageFilename(void) const { return _package_filename; }
   const std::string &getModelFilename(void) const { return _model_filename; }
   const bool useSingleModel(void) const { return _use_single_model; }
+  const int getDataLength(void) const { return _data_length; }
+  const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
+  const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
-  const std::string &getLossFunction(void) const { return _loss_function; }
-  const std::string &getOptimizer(void) const { return _optimizer; }
+  const int getLossType(void) const { return _loss_type; }
+  const int getOptimizerType(void) const { return _optimizer_type; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
@@ -69,11 +72,14 @@ private:
   std::string _package_filename;
   std::string _model_filename;
   bool _use_single_model = false;
+  int _data_length;
+  std::string _load_raw_input_filename;
+  std::string _load_raw_expected_filename;
   int _epoch;
   int _batch_size;
   float _learning_rate;
-  std::string _loss_function;
-  std::string _optimizer;
+  int _loss_type;
+  int _optimizer_type;
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

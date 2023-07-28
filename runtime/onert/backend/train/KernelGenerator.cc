@@ -17,6 +17,9 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/ElementwiseActivationLayer.h"
+#include "ops/LossLayer.h"
+#include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 
 #include <backend/Backend.h>
@@ -37,6 +40,29 @@ namespace train
 
 namespace
 {
+ops::ElementwiseActivationType
+convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::ElementwiseActivation::Type::RELU:
+      return ops::ElementwiseActivationType::kReLU;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+
+ops::LossType convertLossType(ir::operation::Loss::Type type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
+      return ops::LossType::kMSE;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
+  }
+}
+
 ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
@@ -52,22 +78,24 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
-  // TODO Generate TrainableFnSequence that can go backward as well
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
   op.accept(*this);
-  // TODO Enable the below code
-  // ret->append(releaseFunction());
+  assert(_return_fn);
+  ret->append(std::move(_return_fn));
 
-  for (auto ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+  if (_update_fn)
+    ret->append(std::move(_update_fn));
+
+  for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
     if (portable_tensor)
     {
       assert(portable_tensor->layout() == ir::Layout::NHWC);
     }
-    auto tensor = _tensor_reg->getNativeTensor(ind);
+    auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
     {
       tensor->increase_ref();
@@ -77,18 +105,78 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 }
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<basic::TensorRegistry> &grad_tensor_reg,
-                                 const std::shared_ptr<ExternalContext> &external_context)
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context,
+                                 std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg}, _grad_tensor_reg{grad_tensor_reg}, _external_context(external_context)
+    _tensor_reg{tensor_reg},
+    _external_context(external_context), _optimizer{optimizer}, _update_fn{nullptr}
 {
   // DO NOTHING
 }
 
-void KernelGenerator::visit(const ir::train::operation::Loss &)
+void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 {
   // TODO Generate kernel
+
+  // Generate GradientApplier
+  const auto ker_index{node.getInputs().at(ir::train::operation::Conv2D::Input::KERNEL)};
+
+  auto grad_tensor = _tensor_reg->getGradientTensor(ker_index);
+  auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
+
+  auto update_fn = std::make_unique<ops::GradientApplier>();
+
+  update_fn->configure(_optimizer, grad_tensor, ker_tensor);
+
+  _update_fn = std::move(update_fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
+{
+  using ir::train::operation::ElementwiseActivation;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ElementwiseActivation::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto deriv_input_tensor = _tensor_reg->getDerivativeTensor(input_index);
+  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
+
+  auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
+
+  fn->configure(input_tensor, output_tensor, deriv_input_tensor, deriv_output_tensor,
+                node.param().alpha, node.param().beta,
+                convertElementwiseActivationType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Loss &node)
+{
+  using ir::train::operation::Loss;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto y_pred_index{node.getInputs().at(Loss::Y_PRED)};
+  const auto y_true_index{node.getInputs().at(Loss::Y_TRUE)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto y_pred_tensor = _tensor_reg->getPortableTensor(y_pred_index);
+  auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
+
+  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto deriv_y_pred_tensor = _tensor_reg->getDerivativeTensor(y_pred_index);
+  auto deriv_y_true_tensor = _tensor_reg->getDerivativeTensor(y_true_index);
+
+  auto fn = std::make_unique<ops::LossLayer>();
+
+  fn->configure(y_pred_tensor, y_true_tensor, output_tensor, deriv_y_pred_tensor,
+                deriv_y_true_tensor, deriv_output_tensor, convertLossType(node.param().op_type));
+
+  _return_fn = std::move(fn);
+
   UNUSED_RELEASE(convertPoolType);
 }
 

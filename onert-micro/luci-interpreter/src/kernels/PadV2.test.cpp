@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,77 +14,73 @@
  * limitations under the License.
  */
 
-#include "kernels/PadV2.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/pad_v2/FloatPadV2Kernel.h"
+#include "luci_interpreter/test_models/pad_v2/NegPadV2Kernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-float GetTolerance(float min, float max) { return (max - min) / 255.0; }
-
-TEST(PadV2, Uint8)
+class PadV2Test : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  float kQuantizedTolerance = GetTolerance(-1.0, 1.0);
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
-  std::vector<float> input_data{-0.8, 0.2, 0.9, 0.7, 0.1, -0.3};
-  std::vector<int32_t> paddings_data{0, 0, 0, 2, 1, 3, 0, 0};
-  std::vector<float> constant_values_data{0.5};
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 3, 1}, quant_param.first, quant_param.second, input_data, memory_manager.get());
-  Tensor paddings_tensor =
-    makeInputTensor<DataType::S32>({4, 2}, paddings_data, memory_manager.get());
-  Tensor constant_values = makeInputTensor<DataType::U8>(
-    {1}, quant_param.first, quant_param.second, constant_values_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
+  // Do nothing
+};
 
-  PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+template <typename T> std::vector<T> checkPadV2Kernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<float> ref_output_data = {
-    0.5, -0.8, 0.2, 0.9, 0.5, 0.5, 0.5, 0.5, 0.7, 0.1, -0.3, 0.5, 0.5, 0.5,  //
-    0.5, 0.5,  0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,  0.5, 0.5, 0.5}; //
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(ref_output_data, kQuantizedTolerance));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4, 7, 1}));
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(PadV2, Float)
+TEST_F(PadV2Test, Float_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6};
-  std::vector<int32_t> paddings_data{1, 0, 0, 2, 0, 3, 0, 0};
-  std::vector<float> constant_values_data{7};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 2, 3, 1}, input_data, memory_manager.get());
-  Tensor paddings_tensor =
-    makeInputTensor<DataType::S32>({4, 2}, paddings_data, memory_manager.get());
-  Tensor constant_values =
-    makeInputTensor<DataType::FLOAT32>({1}, constant_values_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  test_kernel::TestDataFloatPadV2 test_data_kernel;
+  std::vector<float> output_data_vector = checkPadV2Kernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
 
-  PadV2 kernel(&input_tensor, &paddings_tensor, &constant_values, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+TEST_F(PadV2Test, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchPadV2Kernel test_data_kernel;
 
-  std::vector<float> ref_output_data{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                                     7, 7, 7, 7, 7, 7, 7, 7, 1, 2, 3, 7, 7, 7, 4, 5,
-                                     6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
-  std::initializer_list<int32_t> ref_output_shape{2, 4, 6, 1};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

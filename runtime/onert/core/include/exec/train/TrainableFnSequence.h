@@ -17,7 +17,7 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 #define __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 
-#include "exec/ITrainableFunction.h"
+#include "exec/train/ITrainableFunction.h"
 
 #include <memory>
 #include <vector>
@@ -33,7 +33,7 @@ class TrainableFnSequence : public ITrainableFunction
 {
 public:
   void forward(bool training) override;
-  void backward() override;
+  void backward(uint32_t training_step) override;
 
   void append(std::unique_ptr<ITrainableFunction> &&fn);
   void iterate(const std::function<void(ITrainableFunction &)> &fn);

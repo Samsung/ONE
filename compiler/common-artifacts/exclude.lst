@@ -70,6 +70,8 @@ tcgenerate(Net_Dangle_001)
 tcgenerate(Net_Densify_Add_000) # luci-interpreter doesn't support Densify yet
 tcgenerate(Net_Densify_Dequantize_Add_000) # luci-interpreter doesn't support Densify/Dequantize yet
 tcgenerate(Net_Gather_SparseToDense_AddV2_000) # luci-interpreter doesn't support custom operator
+tcgenerate(Net_Gelu_000) # luci-interpreter doesn't support custom operator
+tcgenerate(Net_Gelu_001) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_ZeroDim_001) # luci-interpreter doesn't support zero dim
 tcgenerate(OneHot_000)
 tcgenerate(OneHot_001)
@@ -78,6 +80,16 @@ tcgenerate(OneHot_003)
 tcgenerate(Pack_000)
 tcgenerate(Pack_U8_000)
 tcgenerate(PadV2_000)
+tcgenerate(Quant_Add_I8_000) # INT8 is not supported
+tcgenerate(Quant_AveragePool2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_Conv_I8_000) # INT8 is not supported
+tcgenerate(Quant_DepthwiseConv2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_MaxPool2D_I8_000) # INT8 is not supported
+tcgenerate(Quant_Mean_I8_000) # INT8 is not supported
+tcgenerate(Quant_Mul_I8_000) # INT8 is not supported
+tcgenerate(Quant_PRelu_I8_000) # INT8 is not supported
+tcgenerate(Quant_ReLU_I8_000) # INT8 is not supported
+tcgenerate(Quant_TransposeConv_I8_000) # INT8 is not supported
 tcgenerate(Quantize_000)  # runtime and luci-interpreter doesn't support Quantize op yet
 tcgenerate(Range_000)
 tcgenerate(Rank_000)

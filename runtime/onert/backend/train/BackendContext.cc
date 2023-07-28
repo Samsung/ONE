@@ -28,60 +28,69 @@ namespace backend
 namespace train
 {
 
-ITensorRegistry *BackendContext::genTensors()
+backend::ITensorRegistry *BackendContext::genTensors()
 {
   return basic::train::genTensors(*this, _tensor_builder);
 }
 
-ITensorRegistry *BackendContext::genTrainingTensors()
-{
-  genGradTensors();
-
-  // TODO Generate training-related tensors except for gradient
-
-  return _grad_tensor_registry.get();
-}
-
-void BackendContext::genGradTensors()
+backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
-  auto tensor_builder = _grad_tensor_builder;
-  auto tensor_reg = _grad_tensor_registry;
+  auto tensor_builder = _tensor_builder;
 
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands().contains(ind))
       return;
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // TODO Register TensorInfo that has gradient's shape
-    // ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-    //                              obj.isConstant()};
-    // tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    // TODO Different shape of deriv tensor
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+                                 obj.isConstant()};
+    tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (tensor_builder->isRegistered(ind))
-      tensor_builder->notifyFirstUse(ind);
+    if (tensor_builder->isRegisteredBackward(ind))
+      tensor_builder->notifyBackwardFirstUse(ind);
   });
 
-  // TODO Allocate tensors
-  // tensor_builder->allocate();
+  tensor_builder->allocateBackward();
+
+  return _tensor_registry.get();
 }
 
 FunctionMap BackendContext::genKernels()
 {
   train::FunctionMap ret;
 
-  // TODO Generate TrainableSeqeunce
-  // for (auto op_ind : _tdata->op_order)
-  // {
-  //   auto fn_seq = kernel_gen->generate(op_ind);
-  //   ret.emplace_back(op_ind, std::move(fn_seq));
-  // }
+  for (const auto &op_ind : _tdata->op_order)
+  {
+    auto fn_seq = kernel_gen->generate(op_ind);
+    ret.emplace_back(op_ind, std::move(fn_seq));
+  }
 
-  basic::train::initConsts(*this);
+  // Initialize TrainableTensors
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (external_operands().contains(ind) || !operand.isConstant())
+        return;
+
+      auto tensor = tensor_registry()->getNativeITensor(ind);
+      assert(tensor != nullptr);
+
+      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
+
+      auto data = operand.shareData();
+      assert(data && data->base());
+      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
+
+      if (trainable_tensor == nullptr)
+        throw std::runtime_error{"This tensor is not trainable tensor"};
+
+      trainable_tensor->fillBuffer(data);
+    });
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)

@@ -37,23 +37,17 @@ class BackendContext : public backend::train::TrainableBackendContext
 public:
   BackendContext(const backend::train::ITrainableBackend *backend,
                  std::unique_ptr<backend::train::TrainableContextData> &&data,
-                 std::shared_ptr<ITensorRegistry> tensor_registry = nullptr,
+                 std::shared_ptr<backend::train::ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
-                 std::shared_ptr<ITensorRegistry> grad_tensor_registry = nullptr,
-                 std::shared_ptr<TensorBuilder> grad_tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
-    : backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry,
-                                              grad_tensor_registry),
-      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
-      _tensor_builder{tensor_builder}, _grad_tensor_builder{grad_tensor_builder}
+    : backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry),
+      kernel_gen{kernel_gen},
+      _external_context(new ExternalContext), _tensor_builder{tensor_builder}
   {
   }
 
-  ITensorRegistry *genTensors() override;
-  ITensorRegistry *genTrainingTensors() override;
-
-private:
-  void genGradTensors();
+  backend::ITensorRegistry *genTensors() override;
+  backend::train::ITensorRegistry *genTrainingTensors() override;
 
 public:
   backend::train::FunctionMap genKernels() override;
@@ -72,7 +66,6 @@ private:
 
 private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
-  std::shared_ptr<TensorBuilder> _grad_tensor_builder;
 };
 
 } // namespace train

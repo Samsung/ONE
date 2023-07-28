@@ -59,7 +59,7 @@ void MinMaxDumper::dump(const exec::SMMinMaxMap &mmmap) const
   auto model_grp = ensureGroup(num_grp, "0");
   hsize_t dims[] = {2};
   H5::DataSpace dspace(1, dims); // rank=1, dim(0)=2, {min, max}
-  for (auto &e : mmmap)
+  for (auto &&e : mmmap)
   {
     // key = {subg_idx, op_idx} = e.first
     const auto subg_idx = e.first.first.value();

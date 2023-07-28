@@ -142,8 +142,19 @@ public:
    */
   bool isFinished(void) const;
 
+#ifdef ONERT_TRAIN
+  /**
+   * @brief  Train
+   * @note   It should be called after setting input and output buffer
+   * @param training_step The number of iterations of the training process.
+   *                      In other words, the number of gradient update.
+   */
+  void train(uint32_t training_step);
+#endif // ONERT_TRAIN
+
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
+  size_t getInputTotalSize(ir::IOIndex ind) const;
 
 private:
   const IExecutor *entryExecutor() const { return _executors->entryExecutor(); };

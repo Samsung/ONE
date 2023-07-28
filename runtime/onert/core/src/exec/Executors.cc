@@ -147,7 +147,7 @@ void Executors::checkSupportedMultimodel() const
 
   // Assumption: edges
   // m1 < m2, s1 == 0 and s2 == 0 if edge 'm1:s1:o1 -> m2:s2:o2'
-  for (auto edge : _model_edges->edges)
+  for (auto &&edge : _model_edges->edges)
   {
     auto const model_from = std::get<ir::ModelIndex>(edge.from);
     auto const model_to = std::get<ir::ModelIndex>(edge.to);

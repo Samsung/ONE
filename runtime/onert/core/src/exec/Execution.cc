@@ -16,6 +16,8 @@
 
 #include "exec/Execution.h"
 
+#include "train/TrainableExecutors.h"
+
 #include "util/logging.h"
 
 namespace onert
@@ -151,6 +153,24 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
+#ifdef ONERT_TRAIN
+void Execution::train(uint32_t training_step)
+{
+  auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutors"};
+  }
+
+  VERBOSE(Execution) << "Start training" << std::endl;
+
+  execs->train(_io_desc, training_step);
+  finished = true;
+
+  VERBOSE(Execution) << "training finished" << std::endl;
+}
+#endif // ONERT_TRAIN
+
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {
   auto itr = _io_desc.dynamic_input_shapes.find(ind);
@@ -178,6 +198,12 @@ ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
   const auto &output_desc = _io_desc.outputs.at(ind.value());
 
   return output_desc->info.shape();
+}
+
+size_t Execution::getInputTotalSize(ir::IOIndex ind) const
+{
+  // TODO Support dynamic shape
+  return _executors->inputInfo(ind).total_size();
 }
 
 } // namespace exec

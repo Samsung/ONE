@@ -69,6 +69,15 @@ public:
 
   void execute(const IODescription &desc) override;
 
+  /**
+   * @brief Train
+   *
+   * @param desc          IO information
+   * @param training_step The number of iterations of an training process.
+   *                      In other words, the number of gradient update.
+   */
+  void train(const IODescription &desc, uint32_t training_step);
+
 private:
   // TODO Append model index to ModelIndex
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;

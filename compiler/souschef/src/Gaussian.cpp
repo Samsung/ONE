@@ -115,6 +115,11 @@ std::vector<uint8_t> GaussianUint8DataChef::generate(int32_t count) const
   return generate_gaussian<uint8_t>(count, _mean, _stddev);
 }
 
+std::vector<uint8_t> GaussianInt8DataChef::generate(int32_t count) const
+{
+  return generate_gaussian<int8_t>(count, _mean, _stddev);
+}
+
 std::unique_ptr<DataChef> GaussianFloat32DataChefFactory::create(const Arguments &args) const
 {
   if (args.count() != 2)
@@ -165,6 +170,19 @@ std::unique_ptr<DataChef> GaussianUint8DataChefFactory::create(const Arguments &
   auto const stddev = to_number<float>(args.value(1));
 
   return std::unique_ptr<DataChef>{new GaussianUint8DataChef{mean, stddev}};
+}
+
+std::unique_ptr<DataChef> GaussianInt8DataChefFactory::create(const Arguments &args) const
+{
+  if (args.count() != 2)
+  {
+    throw std::runtime_error{"invalid argument count: two arguments (mean/stddev) are expected"};
+  }
+
+  auto const mean = to_number<float>(args.value(0));
+  auto const stddev = to_number<float>(args.value(1));
+
+  return std::unique_ptr<DataChef>{new GaussianInt8DataChef{mean, stddev}};
 }
 
 std::unique_ptr<DataChef> GaussianFloat16DataChefFactory::create(const Arguments &args) const

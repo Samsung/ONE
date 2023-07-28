@@ -31,16 +31,37 @@ namespace kernel
 
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
+                           const std::vector<ITensor *> &input_deriv_tensors,
+                           const std::vector<ITensor *> &output_deriv_tensors,
                            const std::shared_ptr<ExternalContext> &external_context)
-  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context}
+  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context},
+    _input_deriv_tensors{input_deriv_tensors}, _output_deriv_tensors{output_deriv_tensors}
 {
+  assert(input_deriv_tensors.size() == output_deriv_tensors.size());
+  assert(src_tensors.size() == dst_tensors.size());
+}
+
+void PermuteLayer::optimize()
+{
+  builtin::kernel::PermuteLayer::optimize();
+
+  // TODO Calculate offsets of derivative tensors if necessary
 }
 
 void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
 
-void PermuteLayer::backward()
+void PermuteLayer::backward(uint32_t)
 {
-  // TODO Implement detail
+  for (uint32_t i = 0; i < _output_deriv_tensors.size(); ++i)
+  {
+    auto src_deriv = _output_deriv_tensors.at(i);
+    auto dst_deriv = _input_deriv_tensors.at(i);
+    const auto rank = src_deriv->getShape().rank();
+    auto output_offsets = _dst_tensors_offsets.at(i);
+    auto input_offsets = _src_tensors_offsets.at(i);
+
+    exec::IPermuteFunction::permute(src_deriv, dst_deriv, rank, output_offsets, input_offsets);
+  }
 }
 
 } // namespace kernel

@@ -29,16 +29,12 @@ Generator RawDataLoader::loadData(const std::string &input_file, const std::stri
                                   const std::vector<nnfw_tensorinfo> &expected_infos,
                                   const uint32_t data_length, const uint32_t batch_size)
 {
-  auto size_accumulator = [](const unsigned int &a, const nnfw_tensorinfo &b) {
-    return a + bufsize_for(&b);
-  };
-
   std::vector<uint32_t> input_origins(input_infos.size());
   uint32_t start = 0;
   for (uint32_t i = 0; i < input_infos.size(); ++i)
   {
     input_origins.at(i) = start;
-    start += (bufsize_for(&input_infos[i]) * data_length);
+    start += (bufsize_for(&input_infos[i]) / batch_size * data_length);
   }
 
   std::vector<uint32_t> expected_origins(expected_infos.size());
@@ -46,7 +42,7 @@ Generator RawDataLoader::loadData(const std::string &input_file, const std::stri
   for (uint32_t i = 0; i < expected_infos.size(); ++i)
   {
     expected_origins.at(i) = start;
-    start += (bufsize_for(&expected_infos[i]) * data_length);
+    start += (bufsize_for(&expected_infos[i]) / batch_size * data_length);
   }
 
   try
@@ -60,25 +56,19 @@ Generator RawDataLoader::loadData(const std::string &input_file, const std::stri
     std::exit(-1);
   }
 
-  return [input_origins, expected_origins, &input_infos, &expected_infos, batch_size,
+  return [input_origins, expected_origins, &input_infos, &expected_infos,
           this](uint32_t idx, std::vector<Allocation> &inputs, std::vector<Allocation> &expecteds) {
     for (uint32_t i = 0; i < input_infos.size(); ++i)
     {
       auto bufsz = bufsize_for(&input_infos[i]);
-      _input_file.seekg(input_origins[i] + idx * batch_size * bufsz, std::ios::beg);
-      for (uint32_t j = 0; j < batch_size; ++j)
-      {
-        _input_file.read(reinterpret_cast<char *>(inputs[i * batch_size + j].data()), bufsz);
-      }
+      _input_file.seekg(input_origins[i] + idx * bufsz, std::ios::beg);
+      _input_file.read(reinterpret_cast<char *>(inputs[i].data()), bufsz);
     }
     for (uint32_t i = 0; i < expected_infos.size(); ++i)
     {
       auto bufsz = bufsize_for(&expected_infos[i]);
-      _expected_file.seekg(expected_origins[i] + idx * batch_size * bufsz, std::ios::beg);
-      for (uint32_t j = 0; j < batch_size; ++j)
-      {
-        _expected_file.read(reinterpret_cast<char *>(expecteds[i * batch_size + j].data()), bufsz);
-      }
+      _expected_file.seekg(expected_origins[i] + idx * bufsz, std::ios::beg);
+      _expected_file.read(reinterpret_cast<char *>(expecteds[i].data()), bufsz);
     }
     return true;
   };

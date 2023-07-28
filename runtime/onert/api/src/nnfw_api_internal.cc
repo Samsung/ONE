@@ -195,6 +195,29 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
+#ifdef ONERT_TRAIN
+uint64_t getBufSize(const nnfw_tensorinfo *info)
+{
+  static int elmsize[] = {
+    sizeof(float),   /* NNFW_TYPE_TENSOR_FLOAT32 = 0 */
+    sizeof(int),     /* NNFW_TYPE_TENSOR_INT32 = 1 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_QUANT8_ASYMM = 2 */
+    sizeof(bool),    /* NNFW_TYPE_TENSOR_BOOL = 3 */
+    sizeof(uint8_t), /* NNFW_TYPE_TENSOR_UINT8 = 4 */
+    sizeof(int64_t), /* NNFW_TYPE_TENSOR_INT64 = 5 */
+    sizeof(int8_t),  /* NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED = 6 */
+    sizeof(int16_t), /* NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7 */
+  };
+
+  uint64_t n = 1;
+  for (int32_t i = 0; i < info->rank; ++i)
+  {
+    assert(info->dims[i] >= 0);
+    n *= info->dims[i];
+  }
+  return elmsize[info->dtype] * n;
+}
+#endif // ONERT_TRAIN
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -1144,18 +1167,42 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  nnfw_train_info tinfo;
-  if (info != nullptr)
-  {
-    tinfo = *info;
-  }
-
-  onert::compiler::train::TrainingInfo training_info;
-  training_info.setBatchSize(tinfo.batch_size);
-  // TODO Set Loss function
-
   try
   {
+    nnfw_train_info tinfo;
+    if (info != nullptr)
+    {
+      tinfo = *info;
+    }
+
+    auto convertLossType = [](const int &type) {
+      if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
+        return onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR;
+      if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
+        return onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY;
+      else
+        throw std::runtime_error("not supported loss type");
+    };
+    onert::compiler::train::LossInfo loss_info;
+    loss_info.type = convertLossType(tinfo.loss);
+
+    auto convertOptType = [](const int &type) {
+      if (type == NNFW_TRAIN_OPTIMIZER_SGD)
+        return onert::exec::train::optimizer::OptimizerCode::SGD;
+      else if (type == NNFW_TRAIN_OPTIMIZER_ADAM)
+        return onert::exec::train::optimizer::OptimizerCode::Adam;
+      else
+        throw std::runtime_error("not supported optimizer type");
+    };
+    onert::compiler::train::OptimizerInfo opt_info;
+    opt_info.learning_rate = tinfo.learning_rate;
+    opt_info.optim_code = convertOptType(tinfo.opt);
+
+    onert::compiler::train::TrainingInfo training_info;
+    training_info.setBatchSize(tinfo.batch_size);
+    training_info.setLossInfo(loss_info);
+    training_info.setOptimizerInfo(opt_info);
+
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
     _nnpkg.reset();
@@ -1220,15 +1267,33 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Check index is valid: [0, getInputSize())
+  if (index >= getInputSize())
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : index is out of range" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // Maybe it cannot use general execute->setInput()
-  // because it needs to set batch input
-  (void)index;
-  (void)input_tensorinfo;
+  try
+  {
+    auto ind = onert::ir::IOIndex(index);
+    auto size = _execution->getInputTotalSize(ind);
+    if (input_tensorinfo && getBufSize(input_tensorinfo) != size)
+    {
+      std::cerr
+        << "Error during nnfw_session::train_set_input : not supporeted to change tensorinfo"
+        << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+    _execution->setInput(ind, input, size);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_set_input : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expected,
@@ -1266,11 +1331,29 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  (void)update_weights;
+  try
+  {
+    if (update_weights)
+    {
+      _execution->train(_training_step++);
+    }
+    else
+      _execution->execute();
+  }
+  catch (const onert::InsufficientBufferSizeException &e)
+  {
+    // Currently insufficient buffer always means output buffer.
+    std::cerr << "Error during nnfw_session::train_run : " << e.what() << std::endl;
+    return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_run : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // NYI
-  // _state = State::FINISHED_TRAINING;
-  return NNFW_STATUS_ERROR;
+  _state = State::FINISHED_TRAINING;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 float nnfw_session::train_get_loss(uint32_t index)

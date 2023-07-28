@@ -51,7 +51,7 @@ public:
     FunctionMap ret;
 
     // kernel_gen
-    for (auto op_ind : _data.op_order)
+    for (auto &&op_ind : _data.op_order)
     {
       auto fn_seq = kernel_gen->generate(op_ind);
       ret.emplace_back(op_ind, std::move(fn_seq));
@@ -144,7 +144,7 @@ protected:
     // 1. Scan DEF of outputs. If the DEF, allocate it
     // 2. Scan DEF of inputs. If variable tensor, allocate it
     // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
-    for (const auto op_ind : _data.op_order)
+    for (const auto &op_ind : _data.op_order)
     {
       const auto &op = graph()->operations().at(op_ind);
       auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;

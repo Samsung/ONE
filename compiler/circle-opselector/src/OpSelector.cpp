@@ -350,7 +350,7 @@ OpSelector::select_by<SelectType::NAME>(const std::vector<std::string> &tokens)
     auto cnode = loco::must_cast<const luci::CircleNode *>(node);
     std::string node_name = cnode->name();
 
-    for (auto selected_name : tokens)
+    for (const auto &selected_name : tokens)
       if (selected_name.compare(node_name) == 0) // find the selected name
         selected_nodes.emplace_back(cnode);
   }

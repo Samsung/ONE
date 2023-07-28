@@ -114,7 +114,7 @@ public:
   Set<Element> operator|(const Set<Element> &other) const // Union
   {
     auto ret = *this;
-    for (auto e : other)
+    for (auto &&e : other)
     {
       ret.add(e);
     }
@@ -128,7 +128,7 @@ public:
   Set<Element> operator&(const Set<Element> &other) const // Intersect
   {
     Set<Element> ret;
-    for (auto e : other)
+    for (auto &&e : other)
     {
       if (contains(e))
       {
@@ -145,7 +145,7 @@ public:
   Set<Element> operator-(const Set<Element> &other) const // Minus
   {
     auto ret = *this;
-    for (auto e : other)
+    for (auto &&e : other)
     {
       ret.remove(e);
     }

@@ -50,6 +50,13 @@ public:
   compiler::GraphLowerInfo &lower_info() override { return _lower_info_map; }
   std::shared_ptr<ir::OperationIndexMap<int64_t>> indexed_ranks() { return _indexed_ranks; }
 
+  void setHasDynamicTensor(ir::OperationIndex, bool has_dynamic) override
+  {
+    if (has_dynamic)
+      throw std::runtime_error("LoweredTrainableGraph does not support dynamic tensors yet");
+  }
+  bool getHasDynamicTensor(ir::OperationIndex) const override { return false; }
+
 private:
   void makeLowerInfo(const compiler::BackendResolver &backend_resolver);
   void dumpLowerInfo();

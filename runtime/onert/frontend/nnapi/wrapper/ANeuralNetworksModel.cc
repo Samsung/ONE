@@ -262,7 +262,7 @@ void ANeuralNetworksModel::setOptionalOperand(const onert::ir::OperandIndex idx)
 void ANeuralNetworksModel::fillOptionalOperand(void)
 {
   _graph->operations().iterate([&](const onert::ir::OperationIndex &, onert::ir::IOperation &node) {
-    for (auto input : node.getInputs())
+    for (auto &&input : node.getInputs())
     {
       // TODO fill default value for optional operands
       if (_optional_operands.find(input) != _optional_operands.end())

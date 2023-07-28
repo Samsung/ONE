@@ -651,7 +651,19 @@ void BaseLoader<LoaderDomain>::loadConv2D(const Operator *op, ir::Graph &subg)
   param.dilation.width_factor = options->dilation_w_factor();
   param.dilation.height_factor = options->dilation_h_factor();
 
-  loadOperationTo<ir::operation::Conv2D>(op, subg, param);
+  const auto conv = loadOperationTo<ir::operation::Conv2D>(op, subg, param);
+
+  // TFLite support old hybrid quantization (float input/output, uint8 kernel)
+  // but it interprets weight type as init8 internally
+  const auto &input_operand =
+    subg.operands().at(conv->getInputs().at(ir::operation::Conv2D::INPUT));
+  auto &weights_operand = subg.operands().at(conv->getInputs().at(ir::operation::Conv2D::KERNEL));
+  if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
+      ((weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
+       weights_operand.typeInfo().type() == ir::DataType::QUANT_INT8_ASYMM))
+  {
+    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
+  }
 }
 
 template <typename LoaderDomain>
@@ -666,7 +678,21 @@ void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph
   param.dilation.width_factor = options->dilation_w_factor();
   param.dilation.height_factor = options->dilation_h_factor();
 
-  loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
+  const auto dconv = loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
+
+  // TFLite does not support old hybrid quantization (float input/output, uint8 kernel)
+  // for depthwise convolution.
+  // But for consistency with Conv2D and FC, we interpret weight type as init8 internally
+  const auto &input_operand =
+    subg.operands().at(dconv->getInputs().at(ir::operation::DepthwiseConv2D::INPUT));
+  auto &weights_operand =
+    subg.operands().at(dconv->getInputs().at(ir::operation::DepthwiseConv2D::KERNEL));
+  if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
+      ((weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
+       weights_operand.typeInfo().type() == ir::DataType::QUANT_INT8_ASYMM))
+  {
+    weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
+  }
 }
 
 template <typename LoaderDomain>
@@ -746,6 +772,8 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 
   const auto fc = loadOperationTo<ir::operation::FullyConnected>(op, subg, param);
 
+  // TFLite supports old hybrid quantization (float input/output, uint8 kernel)
+  // but it interprets weight type as init8 internally
   const auto &input_operand =
     subg.operands().at(fc->getInputs().at(ir::operation::FullyConnected::INPUT));
   auto &weights_operand =

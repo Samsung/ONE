@@ -56,11 +56,23 @@ def _get_parser(backends_list):
     return parser
 
 
-def _verify_arg(parser, args, cfg_args):
+def _verify_arg(parser, args, cfg_args, backend_args, unknown_args):
     """verify given arguments"""
     cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
     cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
     cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
+
+    # check if required arguments is given
+    missing = []
+    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
+        missing.append('-b/--backend')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+
+    if not oneutils.is_valid_attr(args, 'config'):
+        if not backend_args and not unknown_args:
+            parser.error('commands for the backend is missing.')
+
     if cfg_backend_exist and cfg_backends_exist:
         parser.error(
             '\'backend\' option and \'backends\' option cannot be used simultaneously.')
@@ -70,12 +82,8 @@ def _verify_arg(parser, args, cfg_args):
         if args.backend != cfg_args.backend:
             parser.error('Not found the command of given backend')
 
-    # check if required arguments is given
-    missing = []
-    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
-        missing.append('-b/--backend')
-    if len(missing):
-        parser.error('the following arguments are required: ' + ' '.join(missing))
+    if cfg_backend_exist and not oneutils.is_valid_attr(cfg_args, 'command'):
+        parser.error('\'command\' key is missing in the configuration file.')
 
     if cfg_backends_exist:
         cfg_backends = getattr(cfg_args, 'backends').split(',')
@@ -134,7 +142,7 @@ def main():
     # oneutils.parse_cfg(args.config, 'one-codegen', args)
 
     # verify arguments
-    _verify_arg(parser, args, cfg_args)
+    _verify_arg(parser, args, cfg_args, backend_args, unknown_args)
     '''
     one-codegen defines its behavior for below cases.
 
@@ -147,26 +155,34 @@ def main():
     [7] one-codegen -b ${backend} -C {cfg} (backend, command key in cfg)
     [8] one-codegen -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
          even though cfg file has multiple backends)
+    [9] one-codegen -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg) 
+    [10] one-codegen -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked, 
+         even though cfg file has multiple backends)
 
     All other cases are not allowed or an undefined behavior.
     '''
+    cmd_overwrite = False
     if oneutils.is_valid_attr(args, 'config'):
-        assert (not backend_args or not unknown_args)
-        # [7], [8]
-        if oneutils.is_valid_attr(args, 'backend'):
+        # [9], [10]
+        if backend_args and not unknown_args:
             given_backends = [args.backend]
-            if oneutils.is_valid_attr(cfg_args, 'backend'):
-                assert (oneutils.is_valid_attr(cfg_args, 'command'))
-                setattr(cfg_args, args.backend, cfg_args.command)
+            cmd_overwrite = True
         else:
-            # [3]
-            if oneutils.is_valid_attr(cfg_args, 'backend'):
-                assert (oneutils.is_valid_attr(cfg_args, 'command'))
-                given_backends = [cfg_args.backend]
-                setattr(cfg_args, cfg_args.backend, cfg_args.command)
-            # [4]
-            if oneutils.is_valid_attr(cfg_args, 'backends'):
-                given_backends = cfg_args.backends.split(',')
+            # [7], [8]
+            if oneutils.is_valid_attr(args, 'backend'):
+                given_backends = [args.backend]
+                if oneutils.is_valid_attr(cfg_args, 'backend'):
+                    assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                    setattr(cfg_args, args.backend, cfg_args.command)
+            else:
+                # [3]
+                if oneutils.is_valid_attr(cfg_args, 'backend'):
+                    assert (oneutils.is_valid_attr(cfg_args, 'command'))
+                    given_backends = [cfg_args.backend]
+                    setattr(cfg_args, cfg_args.backend, cfg_args.command)
+                # [4]
+                if oneutils.is_valid_attr(cfg_args, 'backends'):
+                    given_backends = cfg_args.backends.split(',')
     # [5], [6]
     else:
         assert (backend_args or unknown_args)
@@ -185,9 +201,13 @@ def main():
 
         if not codegen_path:
             raise FileNotFoundError(backend_base + ' not found')
-        codegen_cmd = [codegen_path] + backend_args + unknown_args
-        if oneutils.is_valid_attr(cfg_args, given_backend):
+
+        codegen_cmd = [codegen_path]
+        if not cmd_overwrite and oneutils.is_valid_attr(cfg_args, given_backend):
             codegen_cmd += getattr(cfg_args, given_backend).split()
+        else:
+            codegen_cmd += backend_args
+            codegen_cmd += unknown_args
 
         # run backend driver
         oneutils.run(codegen_cmd, err_prefix=backend_base)

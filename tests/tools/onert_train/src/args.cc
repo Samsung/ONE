@@ -150,6 +150,20 @@ void Args::Initialize(void)
     }
   };
 
+  auto process_load_raw_inputfile = [&](const std::string &input_filename) {
+    _load_raw_input_filename = input_filename;
+
+    std::cerr << "Model Input Filename " << _load_raw_input_filename << std::endl;
+    checkModelfile(_load_raw_input_filename);
+  };
+
+  auto process_load_raw_expectedfile = [&](const std::string &expected_filename) {
+    _load_raw_expected_filename = expected_filename;
+
+    std::cerr << "Model Expected Filename " << _load_raw_expected_filename << std::endl;
+    checkModelfile(_load_raw_expected_filename);
+  };
+
   auto process_output_sizes = [&](const std::string &output_sizes_json_str) {
     Json::Value root;
     Json::Reader reader;
@@ -184,11 +198,28 @@ void Args::Initialize(void)
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
     ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
     ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
+    ("data_length", po::value<int>()->default_value(-1)->notifier([&](const auto &v) { _data_length = v; }), "Data length number")
+    ("load_input:raw", po::value<std::string>()->notifier(process_load_raw_inputfile),
+         "NN Model Raw Input data file\n"
+         "The datafile must have data for each input number.\n"
+         "If there are 3 inputs, the data of input0 must exist as much as data_length, "
+         "and the data for input1 and input2 must be held sequentially as data_length.\n"
+    )
+    ("load_expected:raw", po::value<std::string>()->notifier(process_load_raw_expectedfile),
+         "NN Model Raw Expected data file\n"
+         "(Same data policy with load_input:raw)\n"
+    )
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
     ("learning_rate", po::value<float>()->default_value(1.0e-4)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 1.0e-4)")
-    ("loss", po::value<std::string>()->default_value("mse")->notifier([&] (const auto &v) { _loss_function = v; }), "Loss function name (default: mse)")
-    ("optimizer", po::value<std::string>()->default_value("sgd")->notifier([&] (const auto &v) { _optimizer = v; }), "Optimizer name (default: sgd)")
+    ("loss", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _loss_type = v; }),
+        "Loss type\n"
+        "0: MEAN_SQUARED_ERROR (default)\n"
+        "1: CATEGORICAL_CROSSENTROPY\n")
+    ("optimizer", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _optimizer_type = v; }),
+      "Optimizer type\n"
+      "0: SGD (default)\n"
+      "1: Adam\n")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"

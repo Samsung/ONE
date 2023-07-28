@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_H__
 
 #include <backend/basic/Tensor.h>
+#include <backend/basic/train/TrainableTensor.h>
 
 namespace onert
 {
@@ -26,8 +27,26 @@ namespace backend
 namespace train
 {
 
-using Tensor = basic::Tensor;
-using ExternalTensor = basic::ExternalTensor;
+// NOTE This class can be replaced with basic::Tensor if this backend supports dynamic tensors.
+class Tensor : public basic::Tensor
+{
+public:
+  Tensor() = delete;
+
+public:
+  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
+    : basic::Tensor{info, layout, nullptr}
+  {
+    // DO NOTHING
+  }
+
+public:
+  bool applyShape(const ir::Shape &) override { return false; }
+};
+
+using TrainableTensor = basic::train::TrainableTensor;
+using DerivativeTensor = Tensor;
+using GradientTensor = Tensor;
 
 } // namespace train
 } // namespace backend

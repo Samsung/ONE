@@ -46,10 +46,10 @@ bool Graph::checkOperandsForOperation(const IOperation &operation)
 {
   auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  for (auto input : inputs)
+  for (auto &&input : inputs)
     if (!operands().exist(input))
       return false;
-  for (auto input : outputs)
+  for (auto &&input : outputs)
     if (!operands().exist(input))
       return false;
   return true;
@@ -60,9 +60,9 @@ void Graph::linkOperandToOperation(OperationIndex index, const IOperation &opera
   auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
 
-  for (auto input : inputs)
+  for (auto &&input : inputs)
     operands().at(input).insertUse(index);
-  for (auto output : outputs)
+  for (auto &&output : outputs)
     operands().at(output).setDef(index);
 }
 
@@ -169,12 +169,12 @@ void Graph::initializeUseDef()
 {
   operations().iterate([&](const OperationIndex &index, const IOperation &node) -> void {
     auto outputs = node.getOutputs();
-    for (auto output : outputs | ir::Remove::UNDEFINED)
+    for (auto &&output : outputs | ir::Remove::UNDEFINED)
     {
       operands().at(output).setDef(index);
     }
 
-    for (auto input : node.getInputs() | ir::Remove::UNDEFINED)
+    for (auto &&input : node.getInputs() | ir::Remove::UNDEFINED)
     {
       operands().at(input).insertUse(index);
     }
@@ -194,7 +194,7 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
       return;
     unvisited.remove(index);
 
-    for (const auto output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       const auto &operand = operands().at(output);
       for (const auto &use : operand.getUses())

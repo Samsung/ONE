@@ -776,7 +776,7 @@ Fp32ToFp16Converter::InputToOpSeqs Fp32ToFp16Converter::prepareInputToOpSeqs() c
 
   InputToOpSeqs input_to_op_seqs;
   op_seqs.iterate([&](const ir::OpSequenceIndex &op_seq_idx, const ir::OpSequence &op_seq) {
-    for (auto input : op_seq.getInputs() | ir::Remove::UNDEFINED)
+    for (auto &&input : op_seq.getInputs() | ir::Remove::UNDEFINED)
     {
       auto it = input_to_op_seqs.find(input);
       if (it == input_to_op_seqs.end())
@@ -862,7 +862,7 @@ void Fp32ToFp16Converter::manipulateContiguousOpSequences(
   //    |
   // [OPERATION] // op_seq_ind_next_to_fp16
   //
-  for (auto it : opseq_map_to_delete)
+  for (auto &&it : opseq_map_to_delete)
   {
     // fp16_to_fp32's input/output num is always 1
     auto &op_seq_ind_fp16_to_fp32 = it.first;

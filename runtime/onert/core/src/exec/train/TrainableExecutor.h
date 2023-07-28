@@ -20,7 +20,7 @@
 #include "exec/IExecutor.h"
 
 #include "../ExecutionObservee.h"
-#include "../../compiler/TensorRegistries.h"
+#include "../../compiler/train/TensorRegistries.h"
 
 #include "backend/train/TrainableBackendContext.h"
 #include "compiler/train/TrainableCodeMap.h"
@@ -46,7 +46,7 @@ public:
    */
   TrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                     backend::train::TrainableBackendContexts &&backend_contexts,
-                    const compiler::TensorRegistries &tensor_regs,
+                    const compiler::train::TensorRegistries &tensor_regs,
                     compiler::train::TrainableCodeMap &&code_map,
                     const std::vector<ir::OperationIndex> &order,
                     const util::TracingCtx *tracing_ctx);
@@ -54,10 +54,13 @@ public:
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
 
-  void execute(const IODescription &desc) final;
+  void execute(const IODescription &desc) override { forward(desc, false); };
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs) override;
+
+  void forward(const IODescription &desc, bool training);
+  void backward(const IODescription &desc, uint32_t training_step);
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
@@ -80,7 +83,8 @@ public:
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
-  void executeImpl(void);
+  void forwardImpl(bool training);
+  void backwardImpl(uint32_t training_step);
 
 private:
   std::vector<compiler::train::TrainableCodeAndInfo> _code;

@@ -15,41 +15,73 @@
  * limitations under the License.
  */
 
-#include "kernels/Exp.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/exp/FloatExpKernel.h"
+#include "luci_interpreter/test_models/exp/NegExpKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-TEST(ExpTest, Float)
+class ExpTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Shape input_shape{1, 1, 7};
-  std::vector<float> input_data{0.0f, 1.0f, -1.0f, 100.0f, -100.0f, 0.01f, -0.01f};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  // Do nothing
+};
 
-  Exp kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+template <typename T> std::vector<T> checkExpKernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<int32_t> ref_output_shape{1, 1, 7};
-  std::vector<float> ref_output_data{std::exp(0.0f),   std::exp(1.0f),    std::exp(-1.0f),
-                                     std::exp(100.0f), std::exp(-100.0f), std::exp(0.01f),
-                                     std::exp(-0.01f)};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
+}
+
+TEST_F(ExpTest, Float_P)
+{
+  test_kernel::TestDataFloatExp test_data_kernel;
+  std::vector<float> output_data_vector = checkExpKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(ExpTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchExpKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

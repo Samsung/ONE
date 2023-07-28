@@ -14,180 +14,87 @@
  * limitations under the License.
  */
 
-#include "kernels/AveragePool2D.h"
+#include "Builders.h"
 
 #include "kernels/Utils.h"
-
-#include "PALAveragePool2d.h"
+#include "PALAveragePool2D.h"
 
 namespace luci_interpreter
 {
 
-namespace kernels
+// TODO: reduce code duplication with MaxPool2D
+void configure_kernel_CircleAveragePool2D(const circle::Operator *cur_op,
+                                          BaseRuntimeGraph *runtime_graph)
 {
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
 
-AveragePool2D::AveragePool2D(const Tensor *input, Tensor *output, Tensor *scratchpad,
-                             const Pool2DParams &params)
-  : KernelWithParams<Pool2DParams>({input}, {output, scratchpad}, params)
-{
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+  assert(Tensor::num_dims(input) == 4);
 }
 
-void AveragePool2D::configure()
+void execute_kernel_CircleAveragePool2D(const circle::Operator *cur_op,
+                                        BaseRuntimeGraph *runtime_graph)
 {
-  if (input()->element_type() != output()->element_type())
-  {
-    assert(false && "Input Tensor and Output Tensor Type must be same");
-  }
-  if (input()->shape().num_dims() != 4)
-  {
-    assert(false && "Input Tensor Shape must be 4-D");
-  }
-  const Shape &input_shape = input()->shape();
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
 
-  const int32_t batches = input_shape.dim(0);
-  const int32_t input_height = input_shape.dim(1);
-  const int32_t input_width = input_shape.dim(2);
-  const int32_t depth = input_shape.dim(3);
+  assert(input_index != -1);
+  assert(output_index != -1);
 
-  const int32_t output_height =
-    computeOutputSize(_params.padding, input_height, _params.filter_height, _params.stride_height);
-  const int32_t output_width =
-    computeOutputSize(_params.padding, input_width, _params.filter_width, _params.stride_width);
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  auto output = runtime_graph->getCircleTensorByIndex(output_index);
 
-  _padding_height =
-    computePadding(_params.stride_height, 1, input_height, _params.filter_height, output_height);
-  _padding_width =
-    computePadding(_params.stride_width, 1, input_width, _params.filter_width, output_width);
-  if (input()->element_type() == DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
-  }
-  else if (input()->element_type() == DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0 && output()->zero_point() == 0);
-  }
-  else if (input()->element_type() == DataType::S8)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(output()->scale() - input()->scale()) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == input()->zero_point());
-  }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize({batches, output_height, output_width, depth});
+  const auto *options = cur_op->builtin_options_as_Pool2DOptions();
 
-  auto scratchpad = getOutputTensors()[1];
-  luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(),
-                                              getTensorShape(input()), getTensorShape(output()));
-}
+  const int32_t input_height = Tensor::dim(input, 1);
+  const int32_t input_width = Tensor::dim(input, 2);
 
-void AveragePool2D::execute() const
-{
-  switch (input()->element_type())
+  const int32_t output_height = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
+  const int32_t output_width = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
+
+  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
+                                                      options->filter_height(), output_height);
+  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
+                                                     options->filter_width(), output_width);
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  float activation_min{};
+  float activation_max{};
+  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
+                                    &activation_min, &activation_max);
+  luci_interpreter_pal::PoolParams params{};
+  params.padding_values.height = padding_height;
+  params.padding_values.width = padding_width;
+  params.stride_height = options->stride_h();
+  params.stride_width = options->stride_w();
+  params.filter_height = options->filter_height();
+  params.filter_width = options->filter_width();
+  params.float_activation_min = activation_min;
+  params.float_activation_max = activation_max;
+
+  switch (Tensor::element_type(input))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+      luci_interpreter_pal::AveragePool(
+        params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
       break;
-    case DataType::U8:
-      evalQuantized();
-      break;
-    case DataType::S16:
-      evalSInt16();
-      break;
-    case DataType::S8:
-      evalSInt8();
-      break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void AveragePool2D::evalFloat() const
-{
-  float activation_min{};
-  float activation_max{};
-  calculateActivationRange(_params.activation, &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
-
-  tflite::reference_ops::AveragePool(params, getTensorShape(input()), getTensorData<float>(input()),
-                                     getTensorShape(output()), getTensorData<float>(output()));
-}
-
-void AveragePool2D::evalQuantized() const
-{
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  tflite::reference_ops::AveragePool(params, getTensorShape(input()),
-                                     getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                     getTensorData<uint8_t>(output()));
-}
-
-void AveragePool2D::evalSInt8() const
-{
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  auto scratchpad = getOutputTensors()[1];
-  int8_t *scratchpad_data = nullptr;
-  if (scratchpad->is_allocatable())
-    scratchpad_data = scratchpad->data<int8_t>();
-
-  luci_interpreter_pal::AveragePool<int8_t>(
-    params, getTensorShape(input()), getTensorData<int8_t>(input()), getTensorShape(output()),
-    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
-}
-
-void AveragePool2D::evalSInt16() const
-{
-  int32_t activation_min{};
-  int32_t activation_max{};
-  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
-
-  tflite::PoolParams params{};
-  params.padding_values.height = _padding_height;
-  params.padding_values.width = _padding_width;
-  params.stride_height = _params.stride_height;
-  params.stride_width = _params.stride_width;
-  params.filter_height = _params.filter_height;
-  params.filter_width = _params.filter_width;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
-
-  tflite::reference_integer_ops::AveragePool(
-    params, getTensorShape(input()), getTensorData<int16_t>(input()), //
-    getTensorShape(output()), getTensorData<int16_t>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter

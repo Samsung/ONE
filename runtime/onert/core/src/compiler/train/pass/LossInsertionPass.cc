@@ -16,6 +16,9 @@
 
 #include "LossInsertionPass.h"
 
+#include "ir/train/TrainableGraph.h"
+#include "ir/train/operation/Loss.h"
+
 namespace onert
 {
 namespace compiler
@@ -27,22 +30,40 @@ namespace pass
 
 void LossInsertionPass::run()
 {
-  // TODO Check if it is necessary to add Loss op to this graph
+  const auto &loss_info = _training_info->lossInfo();
 
-  // TODO Find the loss information of this graph
+  ir::operation::Loss::Param param;
+  param.op_type = loss_info.type;
 
-  // TODO Find the correct pred_index and add the y_true operand into this graph if necessary
+  if (_trainable_graph.getOutputs().size() != 1)
+  {
+    throw std::runtime_error("LossInsertionPass: Not supported multiple outputs");
+  }
 
-  // TODO Set inputs of loss op
+  // TODO Consider SparseCategoricalCrossentropy y_true shape
+  //      SparseCategoricalCrossentropy loss has a different y_true shape than y_pred.
 
-  // TODO Find the correct Shape and TypeInfo of the output of loss op
-  // TODO Add the output operand into this graph
+  const auto &y_pred_index = _trainable_graph.getOutputs().at(0);
+  const auto &y_pred = _trainable_graph.operands().at(y_pred_index);
+  const auto &shape = y_pred.shape();
+  const auto &type_info = y_pred.typeInfo();
+  auto y_true_index = _trainable_graph.addOperand(shape, type_info);
+  ir::OperandIndexSequence inputs{y_pred_index, y_true_index};
 
-  // TODO Set outputs
+  // TODO Consider Reduction
+  //      Some types of Reduction have the same shape y_true and output.
 
-  // TODO Add ir::train::operation::Loss with the correct inputs, outputs, and param
+  const ir::TypeInfo float_op(ir::DataType::FLOAT32);
+  auto output_index = _trainable_graph.addOperand(ir::Shape{1}, float_op);
+  ir::OperandIndexSequence outputs{output_index};
 
-  // TODO Change outputs of graph if necessary
+  auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs, param);
+  auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op);
+
+  _trainable_graph.addOperation(std::move(trainable_loss_op));
+
+  _trainable_graph.addInput(y_true_index);
+  _trainable_graph.addOutput(output_index);
 }
 
 } // namespace pass

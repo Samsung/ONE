@@ -1,0 +1,7 @@
+# To check requantization.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_U8"              $(tensor_dtype x) '=' UINT8
+RULE    "ALPHA_U8"            $(tensor_dtype p_re_lu/add\;p_re_lu/Relu\;p_re_lu/Neg_1\;p_re_lu/Relu_1\;p_re_lu/mul) '=' UINT8
+RULE    "OFM_U8"              $(tensor_dtype Identity) '=' UINT8

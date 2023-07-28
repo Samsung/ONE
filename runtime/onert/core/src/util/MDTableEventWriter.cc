@@ -124,7 +124,7 @@ struct Graph : public MDContent
   void setOperations(const std::map<std::string, Operation> &name_to_op)
   {
     uint64_t graph_latency = end_ts - begin_ts;
-    for (auto it : name_to_op)
+    for (auto &&it : name_to_op)
     {
       auto op = it.second;
       op.graph_latency = graph_latency;
@@ -172,7 +172,7 @@ struct Graph : public MDContent
     writeMDTableRow(os, op_headers_line);
 
     // Operation's contents
-    for (auto op : ops)
+    for (auto &&op : ops)
     {
       op.write(os);
     }

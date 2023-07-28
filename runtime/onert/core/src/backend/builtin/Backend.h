@@ -25,6 +25,7 @@
 #ifdef ONERT_TRAIN
 #include "train/BackendContext.h"
 #include "train/KernelGenerator.h"
+#include "train/TensorRegistry.h"
 #endif // ONERT_TRAIN
 
 #include <backend/Backend.h>
@@ -86,16 +87,13 @@ public:
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
     const auto &tgraph = *tdata.tgraph;
-    auto tr = std::make_shared<TensorRegistry>();
-    auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
-    auto grad_tr = std::make_shared<TensorRegistry>();
-    auto grad_tb = std::make_shared<TensorBuilder>(grad_tr, "Bump");
+    auto tr = std::make_shared<train::TensorRegistry>();
+    // TODO Create TensorBuilder if necessary
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
-    auto context =
-      std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb, grad_tr, grad_tb);
+    auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr);
 
     context->kernel_gen =
-      std::make_shared<train::KernelGenerator>(tgraph, tr, grad_tr, context->external_context());
+      std::make_shared<train::KernelGenerator>(tgraph, tr, context->external_context());
     return context;
   }
 #endif // ONERT_TRAIN

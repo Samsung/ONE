@@ -118,7 +118,7 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
 
   npudev_h handle = _dev->handles.at(ctx->defaultCore);
 
-  for (auto rid : ctx->requests)
+  for (auto &&rid : ctx->requests)
   {
     if (removeNPU_request(handle, rid) < 0)
     {
@@ -127,7 +127,7 @@ NpuStatus TrixBackend::destroyContext(NpuContext *ctx)
     _dev->requests.erase(rid);
   }
 
-  for (auto mid : ctx->models)
+  for (auto &&mid : ctx->models)
   {
     auto &minfo = _dev->models.at(mid);
     if (--minfo->refCount == 0)

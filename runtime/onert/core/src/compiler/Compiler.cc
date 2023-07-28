@@ -16,6 +16,7 @@
 
 #include "compiler/Compiler.h"
 
+#include "CompilerHelpers.h"
 #include "ExecutorFactory.h"
 #include "ShapeValidator.h"
 #include "pass/ConstantOutputPass.h"
@@ -137,7 +138,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     // Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called
     // recursively
     std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers =
-      StaticShapeInferer::createStaticShapeInferers(lowered_subgs);
+      createStaticShapeInferers(lowered_subgs);
 
     const auto primary_subg_idx = ir::SubgraphIndex{0};
     inferers.at(primary_subg_idx)->infer();

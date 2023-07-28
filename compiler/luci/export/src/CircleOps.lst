@@ -52,6 +52,7 @@ CIRCLE_NODE(CircleGatherNd, BuiltinOperator_GATHER_ND, BuiltinOptions_GatherNdOp
 CIRCLE_NODE(CircleGelu, BuiltinOperator_GELU, BuiltinOptions_GeluOptions)
 CIRCLE_NODE(CircleGreater, BuiltinOperator_GREATER, BuiltinOptions_GreaterOptions)
 CIRCLE_NODE(CircleGreaterEqual, BuiltinOperator_GREATER_EQUAL, BuiltinOptions_GreaterEqualOptions)
+CIRCLE_NODE(CircleHardSwish, BuiltinOperator_HARD_SWISH, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleIf, BuiltinOperator_IF, BuiltinOptions_IfOptions)
 CIRCLE_NODE(CircleL2Normalize, BuiltinOperator_L2_NORMALIZATION, BuiltinOptions_L2NormOptions)
 CIRCLE_NODE(CircleL2Pool2D, BuiltinOperator_L2_POOL_2D, BuiltinOptions_Pool2DOptions)

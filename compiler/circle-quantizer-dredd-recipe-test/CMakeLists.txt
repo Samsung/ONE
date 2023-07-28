@@ -82,6 +82,25 @@ macro(AddFakeQuant RECIPE)
   list(APPEND TEST_NAMES ${RECIPE})
 endmacro(AddFakeQuant)
 
+# Macro to generate re-quantized models
+macro(AddReQuant RECIPE)
+  set(CIRCLE_PATH "${ARTIFACTS_BIN_PATH}/${RECIPE}.circle")
+  # NOTE We use .q.circle because it is convention for output file (see testall.sh for more details)
+  set(REQUANT_CIRCLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${RECIPE}.q.circle")
+
+  # Generate re-quantized .circle
+  add_custom_command(OUTPUT ${REQUANT_CIRCLE_PATH}
+    COMMAND $<TARGET_FILE:circle-quantizer> --requantize int8 uint8 ${CIRCLE_PATH} ${REQUANT_CIRCLE_PATH}
+    DEPENDS
+      circle-quantizer
+      ${CIRCLE_PATH}
+    COMMENT "Generate ${RECIPE}.q.circle"
+  )
+
+  list(APPEND TEST_DEPS ${REQUANT_CIRCLE_PATH})
+  list(APPEND TEST_NAMES ${RECIPE})
+endmacro(AddReQuant)
+
 # Macro to quantize without quantize_dequantize_weights
 macro(AddSkipQDQW RECIPE)
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})

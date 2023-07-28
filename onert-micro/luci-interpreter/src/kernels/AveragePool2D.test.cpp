@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "kernels/AveragePool2D.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/average_pool_2d/FloatAveragePool2DKernel.h"
+#include "luci_interpreter/test_models/average_pool_2d/NegAveragePool2DKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -29,255 +29,60 @@ using namespace testing;
 
 class AveragePool2DTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(AveragePool2DTest, Float)
+template <typename T>
+std::vector<T> checkAveragePool2DKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape input_shape{1, 3, 5, 1};
-  std::vector<float> input_data{
-    -4, -3, -2, -1, 0,  //
-    1,  2,  3,  4,  5,  //
-    6,  7,  8,  9,  10, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 3;
-  params.stride_height = 1;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(scratchpad);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  std::vector<float> ref_output_data{
-    0, 1.5, //
-    4.5, 6, //
-  };
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(AveragePool2DTest, Uint8_0)
+TEST_F(AveragePool2DTest, Float_P)
 {
-  std::vector<float> input_data{
-    0,  -6, 12, 4, //
-    -3, -2, 10, 7, //
-  };
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(scratchpad);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({0.0, 6.0}));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
+  test_kernel::TestDataFloatAveragePool2D test_data_kernel;
+  std::vector<float> output_data_vector = checkAveragePool2DKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.001f));
 }
 
-TEST_F(AveragePool2DTest, Uint8_1)
+TEST_F(AveragePool2DTest, InputOutputTypeMismatch_NEG)
 {
-  std::vector<float> input_data{
-    0, 6, 12, 4, //
-    3, 2, 10, 7, //
-  };
+  test_kernel::NegTestDataInputOutputTypeMismatchAveragePool2DKernel test_data_kernel;
 
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 4, 1}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  _memory_manager->allocate_memory(scratchpad);
-  kernel.execute();
-
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear({2.75, 6.0}));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 1}));
-}
-
-TEST_F(AveragePool2DTest, SInt16)
-{
-  Shape input_shape{1, 3, 5, 1};
-  std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
-  std::vector<float> input_data{
-    -4, -3, -2, -1, 0,  //
-    1,  2,  3,  4,  5,  //
-    6,  7,  8,  9,  10, //
-  };
-  std::vector<float> ref_output_data{
-    0, 1.5, //
-    4.5, 6, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::S16>(input_shape, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
-  Tensor scratchpad(DataType::S16, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 3;
-  params.stride_height = 1;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(scratchpad);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
-}
-
-TEST_F(AveragePool2DTest, SInt8)
-{
-  Shape input_shape{1, 4, 5, 1};
-  std::vector<int32_t> ref_output_shape{1, 2, 2, 1};
-  std::vector<float> input_data{-7, -3, 0,  2, -5, 12, -15, 3,  10, 5,
-                                7,  -6, -1, 9, -2, 0,  -5,  11, -1, -7};
-  std::vector<float> ref_output_data{
-    0, 2.5, //
-    1, 1.5, //
-  };
-
-  std::pair<float, int32_t> quant_param = quantizationParams<int8_t>(-15.9375f, 15.9375f);
-  Tensor input_tensor = makeInputTensor<DataType::S8>(
-    input_shape, quant_param.first, quant_param.second, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, quant_param.first, quant_param.second);
-  Tensor scratchpad(DataType::S8, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 3;
-  params.stride_height = 2;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(scratchpad);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
-}
-
-TEST_F(AveragePool2DTest, Invalid_Input_Shape_NEG)
-{
-  Shape input_shape{1, 3, 5};
-  std::vector<float> input_data{
-    -4, -3, -2, -1, 0,  //
-    1,  2,  3,  4,  5,  //
-    6,  7,  8,  9,  10, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 3;
-  params.stride_height = 1;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(AveragePool2DTest, In_Out_Type_NEG)
-{
-  Shape input_shape{1, 3, 5, 1};
-  std::vector<float> input_data{
-    -4, -3, -2, -1, 0,  //
-    1,  2,  3,  4,  5,  //
-    6,  7,  8,  9,  10, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-  Tensor scratchpad(DataType::FLOAT32, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 3;
-  params.stride_height = 1;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(AveragePool2DTest, Quant_Param_NEG)
-{
-  std::vector<float> input_data{
-    0,  -6, 12, 4, //
-    -3, -2, 10, 7, //
-  };
-
-  std::pair<float, int32_t> quant_param1 = quantizationParams<uint8_t>(-15.9375f, 15.9375f);
-  std::pair<float, int32_t> quant_param2 = quantizationParams<uint8_t>(-7.875f, 7.875f);
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 2, 4, 1}, quant_param1.first, quant_param1.second, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param2.first, quant_param2.second);
-  Tensor scratchpad(DataType::U8, Shape({}), {}, "");
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-  params.activation = Activation::RELU6;
-
-  AveragePool2D kernel(&input_tensor, &output_tensor, &scratchpad, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

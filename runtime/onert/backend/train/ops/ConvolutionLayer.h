@@ -19,7 +19,7 @@
 
 #include <ops/ConvolutionLayer.h>
 
-#include <exec/ITrainableFunction.h>
+#include <exec/train/ITrainableFunction.h>
 
 namespace onert
 {
@@ -30,7 +30,8 @@ namespace train
 namespace ops
 {
 
-class ConvolutionLayer : public ::onert::exec::ITrainableFunction, public cpu::ops::ConvolutionLayer
+class ConvolutionLayer : public ::onert::exec::train::ITrainableFunction,
+                         public cpu::ops::ConvolutionLayer
 {
 public:
   ConvolutionLayer();
@@ -44,7 +45,7 @@ public:
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
                  IPortableTensor *output);
   void forward(bool training) override;
-  void backward() override;
+  void backward(uint32_t training_step) override;
 };
 
 } // namespace ops

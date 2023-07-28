@@ -82,7 +82,7 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
     }
 
     auto crops = _ctx.at(crops_index).asVector<int32_t>();
-    for (auto crop : crops)
+    for (auto &&crop : crops)
     {
       if (crop != 0)
       {

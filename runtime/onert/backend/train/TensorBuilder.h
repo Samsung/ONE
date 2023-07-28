@@ -17,7 +17,8 @@
 #ifndef __ONERT_BACKEND_TRAIN_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_TRAIN_TENSOR_BUILDER_H__
 
-#include <backend/basic/TensorBuilder.h>
+#include "TensorManager.h"
+#include "TensorRegistry.h"
 
 namespace onert
 {
@@ -26,7 +27,48 @@ namespace backend
 namespace train
 {
 
-using TensorBuilder = basic::TensorBuilder;
+// TODO Support dynamic tensors
+class TensorBuilder
+{
+public:
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id);
+
+  /**
+   * @brief     Register tensor information to allocate on train backend
+   * @param[in] ind    Operand index
+   * @param[in] info   Operand information
+   * @param[in] layout Operand data layout
+   */
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                          ir::Layout backend_layout);
+
+  /**
+   * @brief     Register informations of tensor used only in backward to allocate on train backend
+   * @param[in] ind    Operand index
+   * @param[in] info   Operand information
+   * @param[in] layout Operand data layout
+   */
+  void registerBackwardTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
+                                  ir::Layout backend_layout);
+
+  // TODO Support memory plan of all tensors
+  void notifyFirstUse(const ir::OperandIndex &);
+  void notifyLastUse(const ir::OperandIndex &);
+  void notifyBackwardFirstUse(const ir::OperandIndex &);
+
+  bool isRegistered(const ir::OperandIndex &) const;
+  bool isRegisteredBackward(const ir::OperandIndex &) const;
+
+  void allocate(void);
+  void allocateBackward(void);
+
+private:
+  const std::shared_ptr<TensorRegistry> _tensor_reg;
+  std::unique_ptr<TensorManager> _tensor_mgr;
+  ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
+  ir::OperandIndexMap<ir::OperandInfo> _backward_tensor_info_map;
+  ir::OperandIndexMap<bool> _as_constants;
+};
 
 } // namespace train
 } // namespace backend

@@ -85,7 +85,7 @@ public:
 
   void run() override
   {
-    for (auto tensor : _dealloc_list)
+    for (auto &&tensor : _dealloc_list)
     {
       if (!tensor->is_dynamic())
         continue;
@@ -116,7 +116,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
   assert(builtin_tensor_reg);
 
-  for (auto ind : indices)
+  for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(
@@ -134,20 +134,20 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const backend::train::TrainableBackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
 {
-  std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
+  std::shared_ptr<backend::builtin::train::TensorRegistry> builtin_tensor_reg;
   for (const auto &e : backend_contexts)
   {
     auto backend = e.first;
     auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
-      builtin_tensor_reg =
-        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry());
+      builtin_tensor_reg = std::dynamic_pointer_cast<backend::builtin::train::TensorRegistry>(
+        context->tensor_registry());
     }
   }
   assert(builtin_tensor_reg);
 
-  for (auto ind : indices)
+  for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(
@@ -171,7 +171,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
 
   // Generate partial graphs for each backend
-  for (auto backend : backend_manager.getAll())
+  for (auto &&backend : backend_manager.getAll())
   {
     auto &data = context_data_map[backend];
     auto graph = std::make_unique<ir::Graph>();
@@ -214,7 +214,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
         // Add missing operands (externals)
         auto io_list = (operation.getInputs() + operation.getOutputs()) | ir::Remove::DUPLICATED |
                        ir::Remove::UNDEFINED;
-        for (auto operand_ind : io_list)
+        for (auto &&operand_ind : io_list)
         {
           if (partial_graph.operands().exist(operand_ind))
             continue;
@@ -330,7 +330,7 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
-      for (auto ind :
+      for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
         // If an Operation's input/output tensor does not have an own tensor object,
@@ -447,7 +447,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
       uses_map[ind]++;
     }
 
-    for (const auto op_ind : order)
+    for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
       auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
@@ -612,27 +612,28 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                         const std::shared_ptr<exec::IExecutors> &executors,
-                        const ExecutorFactoryArgs &args)
+                        const ExecutorFactoryArgs &args,
+                        const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
 {
   assert(args.options != nullptr);
 
   if (args.options->executor != "Linear")
     throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
 
-  return createTrainableExecutor(std::move(lowered_graph), executors, args);
+  return createTrainableExecutor(std::move(lowered_graph), executors, args, optimizer);
 }
 
 void ExecutorFactory::prepareMigrantTensors(
   compiler::ILoweredGraph &lowered_graph,
   const backend::train::TrainableBackendContexts &backend_contexts)
 {
-  TensorRegistries tensor_regs{backend_contexts, true};
+  train::TensorRegistries tensor_regs{backend_contexts, true};
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
       auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
       auto &backend_ctx = backend_contexts.at(lower_info->backend());
-      for (auto ind :
+      for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
         // If an Operation's input/output tensor does not have an own tensor object,
@@ -652,7 +653,8 @@ void ExecutorFactory::prepareMigrantTensors(
 
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args)
+  const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
+  const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
 {
   const auto options = args.options;
   const auto tracing_ctx = args.tracing_ctx;
@@ -694,14 +696,23 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         assert(gen_index == op_index);
       });
 
+    // Remove outputs of whole graph from external_operands
+    auto external_operands = data.external_operands;
+    for (const auto &index : lowered_graph->trainable_graph().getOutputs())
+    {
+      if (external_operands.contains(index))
+        external_operands.remove(index);
+    }
+
     // Set trainable context data
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
-    tdata.external_operands = std::move(data.external_operands);
+    tdata.external_operands = std::move(external_operands);
     tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
+    tdata.optimizer = optimizer;
 
     // TODO Remove dynamic_cast
     try
@@ -718,13 +729,12 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   }
   base_backend_contexts.clear();
 
-  TensorRegistries grad_tensor_regs{tbackend_contexts, true};
-  TensorRegistries tensor_regs{tbackend_contexts, false};
+  train::TensorRegistries tensor_regs{tbackend_contexts, true};
 
-  initializeSubgraphIOTensors(
-    *lowered_graph, tbackend_contexts,
-    (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+  // NOTE Outputs of trainable graph cannot be IOTensor. They will be built by the owned backend.
+  initializeSubgraphIOTensors(*lowered_graph, tbackend_contexts,
+                              lowered_graph->graph().getInputs() | ir::Remove::DUPLICATED |
+                                ir::Remove::UNDEFINED);
 
   // linearize
   auto order = Linear::linearize(*lowered_graph);
@@ -751,7 +761,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     if (builtin_context != nullptr)
     {
       auto builtin_kernel_gen = builtin_context->kernel_gen;
-      builtin_kernel_gen->setTensorRegistries(grad_tensor_regs);
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
     }
   }
@@ -812,6 +821,26 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     assert(
       std::all_of(uses_map.begin(), uses_map.end(),
                   [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
+  }
+
+  // Check derivative tensors
+  {
+    // TODO Support multiple subgraphs
+    // Check if the derivative tensors corresponding to inputs of model are nullptr
+    // NOTE The derivative tensors corresponding to inputs of model are for inputs of PermuteLayers
+    //      and they are nullptr and because they are meaningless.
+    assert(std::all_of(lowered_graph->trainable_graph().getInputs().begin(),
+                       lowered_graph->trainable_graph().getInputs().end(),
+                       [&](const auto &input_idx) {
+                         return tensor_regs.getDerivativeITensor(input_idx) == nullptr;
+                       }));
+
+    // Check if the derivative tensors corresponding to outputs of model exist
+    assert(std::all_of(lowered_graph->trainable_graph().getOutputs().begin(),
+                       lowered_graph->trainable_graph().getOutputs().end(),
+                       [&](const auto &output_idx) {
+                         return tensor_regs.getDerivativeITensor(output_idx) != nullptr;
+                       }));
   }
 
   train::TrainableCodeMap code_map;

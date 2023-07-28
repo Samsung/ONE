@@ -174,7 +174,7 @@ void CLSplitVEx::configure(const ICLTensor *input, const ICLTensor *size_splits,
 
   // Extract output tensor info
   std::vector<ITensorInfo *> outputs_info;
-  for (auto &output : _outputs)
+  for (auto &&output : _outputs)
   {
     ARM_COMPUTE_ERROR_ON_NULLPTR(output);
     outputs_info.emplace_back(output->info());

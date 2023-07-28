@@ -15,57 +15,86 @@
  * limitations under the License.
  */
 
-#include "kernels/Neg.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/neg/FloatNegKernel.h"
+#include "luci_interpreter/test_models/neg/NegNegKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<T> input_data, std::initializer_list<T> output_data)
+class NegTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T>();
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(element_type);
+  // Do nothing
+};
 
-  Neg kernel(&input_tensor, &output_tensor);
+template <typename T> std::vector<T> checkNegKernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(NegTest, FloatSimple)
+TEST_F(NegTest, Float_P)
 {
-  Check<float>(/*input_shape=*/{2, 3},
-               /*output_shape=*/{2, 3},
-               /*input_data=*/
-               {
-                 0.0f, 1.0f, 3.0f,   // Row 1
-                 1.0f, -1.0f, -2.0f, // Row 2
-               },
-               /*output_data=*/
-               {
-                 0.0f, -1.0f, -3.0f, // Row 1
-                 -1.0f, 1.0f, 2.0f,  // Row 2
-               });
+  test_kernel::TestDataFloatNeg test_data_kernel;
+  std::vector<float> output_data_vector = checkNegKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
 
-  SUCCEED();
+TEST_F(NegTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchNegKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(NegTest, Invalid_input_shape_NEG)
+{
+  test_kernel::NegTestDataInvalidInputShapeNegKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

@@ -32,6 +32,8 @@ struct ILoweredGraph
   virtual const ir::Graph &graph() const = 0;
   virtual const compiler::GraphLowerInfo &lower_info() const = 0;
   virtual compiler::GraphLowerInfo &lower_info() = 0;
+  virtual void setHasDynamicTensor(ir::OperationIndex ind, bool val) = 0;
+  virtual bool getHasDynamicTensor(ir::OperationIndex ind) const = 0;
 };
 
 } // namespace compiler
