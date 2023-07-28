@@ -52,7 +52,6 @@ usr/bin/visqlib/QErrorComputer.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/Util.py usr/share/one/bin/visqlib/
 usr/bin/visqlib/DotBuilder.py usr/share/one/bin/visqlib/
 usr/bin/circle/*.py usr/share/one/bin/circle/
-
 # lib
 usr/lib/* usr/share/one/lib/
 # doc
