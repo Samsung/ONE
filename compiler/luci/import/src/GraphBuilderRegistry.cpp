@@ -64,6 +64,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(GELU, CircleGeluGraphBuilder);                                               // 150
   CIRCLE_NODE(GREATER, CircleGreaterGraphBuilder);                                         // 61
   CIRCLE_NODE(GREATER_EQUAL, CircleGreaterEqualGraphBuilder);                              // 62
+  CIRCLE_NODE(HARD_SWISH, CircleHardSwishGraphBuilder);                                    // 117
   CIRCLE_NODE(IF, CircleIfGraphBuilder);                                                   // 118
   CIRCLE_NODE(INSTANCE_NORM, CircleInstanceNormGraphBuilder);                              // 254
   CIRCLE_NODE(L2_NORMALIZATION, CircleL2NormalizeGraphBuilder);                            // 11
