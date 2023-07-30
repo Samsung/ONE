@@ -825,10 +825,10 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span> </div>
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>  train::TensorRegistries tensor_regs{tbackend_contexts, <span class="keyword">true</span>};</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span> </div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>  initializeSubgraphIOTensors(</div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>    *lowered_graph, tbackend_contexts,</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>    (lowered_graph-&gt;graph().getInputs() + lowered_graph-&gt;graph().getOutputs()) |</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>  <span class="comment">// NOTE Outputs of trainable graph cannot be IOTensor. They will be built by the owned backend.</span></div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>  initializeSubgraphIOTensors(*lowered_graph, tbackend_contexts,</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>                              lowered_graph-&gt;graph().getInputs() | ir::Remove::DUPLICATED |</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>                                ir::Remove::UNDEFINED);</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span> </div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>  <span class="comment">// linearize</span></div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>  <span class="keyword">auto</span> order = Linear::linearize(*lowered_graph);</div>
@@ -917,50 +917,70 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>                  [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
 <div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>  }</div>
 <div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span> </div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>  train::TrainableCodeMap code_map;</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>  <span class="comment">// Generate kernels</span></div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : ordered_contexts)</div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>  {</div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    <span class="keyword">auto</span> codes = pair.second-&gt;genKernels();</div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : codes)</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    {</div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>      <span class="keyword">auto</span> &amp;op_ind = pair.first;</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>      <span class="keyword">auto</span> &amp;tn_seq = pair.second;</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>      <span class="keyword">auto</span> &amp;op = lowered_graph-&gt;trainable_graph().operation(op_ind);</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>      <span class="keyword">auto</span> lower_info = lowered_graph-&gt;lower_info().operation.getRawPtr(op_ind);</div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>  <span class="comment">// Check derivative tensors</span></div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>  {</div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    <span class="comment">// TODO Support multiple subgraphs</span></div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    <span class="comment">// Check if the derivative tensors corresponding to inputs of model are nullptr</span></div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    <span class="comment">// NOTE The derivative tensors corresponding to inputs of model are for inputs of PermuteLayers</span></div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    <span class="comment">//      and they are nullptr and because they are meaningless.</span></div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    assert(std::all_of(lowered_graph-&gt;trainable_graph().getInputs().begin(),</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>                       lowered_graph-&gt;trainable_graph().getInputs().end(),</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>                       [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_idx) {</div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>                         return tensor_regs.getDerivativeITensor(input_idx) == nullptr;</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>                       }));</div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>      assert(code_map.find(op_ind) == code_map.end());</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>      code_map.insert(</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>        {op_ind, train::TrainableCodeAndInfo{op_ind, &amp;op, lower_info, std::move(tn_seq)}});</div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>    }</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>  }</div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>  <span class="keywordflow">if</span> (order.size() != code_map.size())</div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>  {</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: Some kernels are not generated&quot;</span>);</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>  }</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span> </div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>  <span class="keyword">auto</span> exec = <span class="keyword">new</span> exec::train::TrainableExecutor{std::move(lowered_graph),</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>                                                 std::move(tbackend_contexts),</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>                                                 tensor_regs,</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>                                                 std::move(code_map),</div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>                                                 order,</div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>                                                 tracing_ctx};</div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span> </div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath.empty())</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>  {</div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>    std::unique_ptr&lt;exec::IExecutionObserver&gt; ctp =</div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath, exec-&gt;graph(), tracing_ctx);</div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    exec-&gt;addObserver(std::move(ctp));</div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>  }</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>  <span class="comment">// TODO Support MINMAX_H5DUMPER</span></div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    <span class="comment">// Check if the derivative tensors corresponding to outputs of model exist</span></div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    assert(std::all_of(lowered_graph-&gt;trainable_graph().getOutputs().begin(),</div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>                       lowered_graph-&gt;trainable_graph().getOutputs().end(),</div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>                       [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx) {</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>                         return tensor_regs.getDerivativeITensor(output_idx) != nullptr;</div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>                       }));</div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>  }</div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span> </div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>  train::TrainableCodeMap code_map;</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>  <span class="comment">// Generate kernels</span></div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : ordered_contexts)</div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>  {</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    <span class="keyword">auto</span> codes = pair.second-&gt;genKernels();</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : codes)</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    {</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>      <span class="keyword">auto</span> &amp;op_ind = pair.first;</div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>      <span class="keyword">auto</span> &amp;tn_seq = pair.second;</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>      <span class="keyword">auto</span> &amp;op = lowered_graph-&gt;trainable_graph().operation(op_ind);</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>      <span class="keyword">auto</span> lower_info = lowered_graph-&gt;lower_info().operation.getRawPtr(op_ind);</div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>      assert(code_map.find(op_ind) == code_map.end());</div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>      code_map.insert(</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>        {op_ind, train::TrainableCodeAndInfo{op_ind, &amp;op, lower_info, std::move(tn_seq)}});</div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    }</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>  }</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>  <span class="keywordflow">return</span> exec;</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>}</div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span> </div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>} <span class="comment">// namespace compiler</span></div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>  <span class="keywordflow">if</span> (order.size() != code_map.size())</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>  {</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: Some kernels are not generated&quot;</span>);</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>  }</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span> </div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>  <span class="keyword">auto</span> exec = <span class="keyword">new</span> exec::train::TrainableExecutor{std::move(lowered_graph),</div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>                                                 std::move(tbackend_contexts),</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>                                                 tensor_regs,</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>                                                 std::move(code_map),</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>                                                 order,</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>                                                 tracing_ctx};</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span> </div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath.empty())</div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>  {</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    std::unique_ptr&lt;exec::IExecutionObserver&gt; ctp =</div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath, exec-&gt;graph(), tracing_ctx);</div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>    exec-&gt;addObserver(std::move(ctp));</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>  }</div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>  <span class="comment">// TODO Support MINMAX_H5DUMPER</span></div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
+<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>  <span class="keywordflow">return</span> exec;</div>
+<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>}</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
+<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span> </div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>} <span class="comment">// namespace compiler</span></div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_backend_manager_8h_html"><div class="ttname"><a href="_backend_manager_8h.html">BackendManager.h</a></div></div>
 <div class="ttc" id="a_executor_factory_8h_html"><div class="ttname"><a href="_executor_factory_8h.html">ExecutorFactory.h</a></div></div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition:</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>

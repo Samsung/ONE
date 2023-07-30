@@ -178,10 +178,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_static_derivative_shape_inferer_8cc_source.html#l00053">53</a> of file <a class="el" href="_static_derivative_shape_inferer_8cc_source.html">StaticDerivativeShapeInferer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// TODO dump</span></div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_static_derivative_shape_inferer_8cc_source.html#l00055">55</a> of file <a class="el" href="_static_derivative_shape_inferer_8cc_source.html">StaticDerivativeShapeInferer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <span class="comment">// TODO dump</span></div>
+<div class="line"><span class="lineno">   58</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,10 +218,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>      msg &lt;&lt; op.<a class="code hl_function" href="structonert_1_1ir_1_1_i_operation.html#ae08d5a0280ec4bbc5fcada43e0b2ea93">name</a>() &lt;&lt; <span class="stringliteral">&quot;(op index: &quot;</span> &lt;&lt; op_idx &lt;&lt; <span class="stringliteral">&quot;) has dynamic shape.&quot;</span>;</div>
 <div class="line"><span class="lineno">   46</span>      <span class="keywordflow">throw</span> std::runtime_error(msg.str());</div>
 <div class="line"><span class="lineno">   47</span>    }</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   49</span>      op.accept(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="line"><span class="lineno">   51</span>}</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>    checkOutput(op);</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    op.accept(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   53</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a73cfb7d0caf2754f5b14c9a33d500b60"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph::graph</a></div><div class="ttdeci">ir::Graph &amp; graph() override</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_trainable_graph_8h_source.html#l00045">LoweredTrainableGraph.h:45</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a9a33f880864f3595b7a88afc5bf67625"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a9a33f880864f3595b7a88afc5bf67625">onert::compiler::train::LoweredTrainableGraph::trainable_graph</a></div><div class="ttdeci">ir::train::TrainableGraph &amp; trainable_graph()</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_trainable_graph_8h_source.html#l00047">LoweredTrainableGraph.h:47</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a0bb6bcdff8092785afb4f8dca50ecfc5"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a0bb6bcdff8092785afb4f8dca50ecfc5">onert::ir::Graph::topolSortOperations</a></div><div class="ttdeci">std::vector&lt; ir::OperationIndex &gt; topolSortOperations() const</div><div class="ttdef"><b>Definition:</b> <a href="_graph_8cc_source.html#l00184">Graph.cc:184</a></div></div>

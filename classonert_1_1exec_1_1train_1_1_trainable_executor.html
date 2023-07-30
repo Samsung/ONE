@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a695c9090ddabcfd0ac26d81848b821e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcf8d5e9b6001992e1b3781480c5a11e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#adcf8d5e9b6001992e1b3781480c5a11e">forward</a> (const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;desc, bool training)</td></tr>
 <tr class="separator:adcf8d5e9b6001992e1b3781480c5a11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea2cad57988be845d1521b1a2cbaa869"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#aea2cad57988be845d1521b1a2cbaa869">backward</a> (const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;desc)</td></tr>
-<tr class="separator:aea2cad57988be845d1521b1a2cbaa869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19701be747d3fa9966b4e9674cf26134"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a19701be747d3fa9966b4e9674cf26134">backward</a> (const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;desc, uint32_t training_step)</td></tr>
+<tr class="separator:a19701be747d3fa9966b4e9674cf26134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ff2e116f919422fcb489c9e70a6d52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a93ff2e116f919422fcb489c9e70a6d52">setIndexedRanks</a> (std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f">ir::OperationIndexMap</a>&lt; int64_t &gt; &gt; ranks) final</td></tr>
 <tr class="memdesc:a93ff2e116f919422fcb489c9e70a6d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an ordering on operations.  <a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a93ff2e116f919422fcb489c9e70a6d52">More...</a><br /></td></tr>
 <tr class="separator:a93ff2e116f919422fcb489c9e70a6d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,8 +291,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aea2cad57988be845d1521b1a2cbaa869" name="aea2cad57988be845d1521b1a2cbaa869"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea2cad57988be845d1521b1a2cbaa869">&#9670;&#160;</a></span>backward()</h2>
+<a id="a19701be747d3fa9966b4e9674cf26134" name="a19701be747d3fa9966b4e9674cf26134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19701be747d3fa9966b4e9674cf26134">&#9670;&#160;</a></span>backward()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,8 +301,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void onert::exec::train::TrainableExecutor::backward </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;&#160;</td>
-          <td class="paramname"><em>desc</em></td><td>)</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>training_step</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -338,7 +348,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  167</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setUserTensor(<span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(desc.outputs[i]-&gt;buffer), desc.outputs[i]-&gt;size);</div>
 <div class="line"><span class="lineno">  168</span>  }</div>
 <div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  backwardImpl();</div>
+<div class="line"><span class="lineno">  170</span>  backwardImpl(training_step);</div>
 <div class="line"><span class="lineno">  171</span> </div>
 <div class="line"><span class="lineno">  172</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
 <div class="line"><span class="lineno">  173</span>}</div>

@@ -43,6 +43,7 @@ var _circle_node_summary_builders_8h =
     [ "luci::CircleGeluSummaryBuilder", "classluci_1_1_circle_gelu_summary_builder.html", null ],
     [ "luci::CircleGreaterSummaryBuilder", "classluci_1_1_circle_greater_summary_builder.html", null ],
     [ "luci::CircleGreaterEqualSummaryBuilder", "classluci_1_1_circle_greater_equal_summary_builder.html", null ],
+    [ "luci::CircleHardSwishSummaryBuilder", "classluci_1_1_circle_hard_swish_summary_builder.html", null ],
     [ "luci::CircleIfSummaryBuilder", "classluci_1_1_circle_if_summary_builder.html", null ],
     [ "luci::CircleInstanceNormSummaryBuilder", "classluci_1_1_circle_instance_norm_summary_builder.html", null ],
     [ "luci::CircleL2NormalizeSummaryBuilder", "classluci_1_1_circle_l2_normalize_summary_builder.html", null ],

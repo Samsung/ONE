@@ -39,6 +39,7 @@ var namespacetflchef =
     [ "TFliteOpGelu", "classtflchef_1_1_t_flite_op_gelu.html", "classtflchef_1_1_t_flite_op_gelu" ],
     [ "TFliteOpGreater", "classtflchef_1_1_t_flite_op_greater.html", "classtflchef_1_1_t_flite_op_greater" ],
     [ "TFliteOpGreaterEqual", "classtflchef_1_1_t_flite_op_greater_equal.html", "classtflchef_1_1_t_flite_op_greater_equal" ],
+    [ "TFliteOpHardSwish", "classtflchef_1_1_t_flite_op_hard_swish.html", "classtflchef_1_1_t_flite_op_hard_swish" ],
     [ "TFliteOpL2Normalize", "classtflchef_1_1_t_flite_op_l2_normalize.html", "classtflchef_1_1_t_flite_op_l2_normalize" ],
     [ "TFliteOpL2Pool2D", "classtflchef_1_1_t_flite_op_l2_pool2_d.html", "classtflchef_1_1_t_flite_op_l2_pool2_d" ],
     [ "TFliteOpLeakyRelu", "classtflchef_1_1_t_flite_op_leaky_relu.html", "classtflchef_1_1_t_flite_op_leaky_relu" ],

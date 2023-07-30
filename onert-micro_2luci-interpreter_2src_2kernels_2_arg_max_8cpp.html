@@ -91,13 +91,14 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">ArgMax.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;kernels/ArgMax.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_source.html">Builders.h</a>&quot;</code><br />
 <code>#include &quot;kernels/Utils.h&quot;</code><br />
-<code>#include &quot;PALArgMax.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_t_i_s_o_kernel_8h_source.html">TISOKernel.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_p_a_l_arg_min_max_8h_source.html">PALArgMinMax.h</a>&quot;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2src_2kernels_2_arg_max_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -105,52 +106,14 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci__interpreter"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html">luci_interpreter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceluci__interpreter_1_1kernels"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter_1_1kernels.html">luci_interpreter::kernels</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a33b4f3eba18a392bb49a156c7e19f4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_arg_max_8cpp.html#a33b4f3eba18a392bb49a156c7e19f4df">TF_LITE_ARG_MAX</a>(data_type,  axis_type,  output_type)</td></tr>
-<tr class="separator:a33b4f3eba18a392bb49a156c7e19f4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0e68c911c8d6f1206b896291c4cf8208"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a0e68c911c8d6f1206b896291c4cf8208">luci_interpreter::configure_kernel_CircleArgMax</a> (const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</td></tr>
+<tr class="separator:a0e68c911c8d6f1206b896291c4cf8208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaec2ff77971146107daaf4cf7cf256f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#abaec2ff77971146107daaf4cf7cf256f">luci_interpreter::execute_kernel_CircleArgMax</a> (const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)</td></tr>
+<tr class="separator:abaec2ff77971146107daaf4cf7cf256f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a33b4f3eba18a392bb49a156c7e19f4df" name="a33b4f3eba18a392bb49a156c7e19f4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33b4f3eba18a392bb49a156c7e19f4df">&#9670;&#160;</a></span>TF_LITE_ARG_MAX</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TF_LITE_ARG_MAX</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">data_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">axis_type, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">output_type&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  luci_interpreter_pal::ArgMinMax(getTensorShape(input()), getTensorData&lt;data_type&gt;(input()), \</div>
-<div class="line">                                  getTensorData&lt;axis_type&gt;(axis()), getTensorShape(output()), \</div>
-<div class="line">                                  getTensorData&lt;output_type&gt;(output()), std::greater&lt;data_type&gt;())</div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -361,13 +361,14 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="operation_2_loss_8cc_source.html#l00041">41</a> of file <a class="el" href="operation_2_loss_8cc_source.html">Loss.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keyword">using </span>LossType = <a class="code hl_enumeration" href="classonert_1_1ir_1_1operation_1_1_loss.html#a182c96cd34a78e5e64a5351593f38362">onert::ir::operation::Loss::Type</a>;</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a> = <a class="code hl_enumeration" href="classonert_1_1ir_1_1operation_1_1_loss.html#a182c96cd34a78e5e64a5351593f38362">onert::ir::operation::Loss::Type</a>;</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::unordered_map&lt;Type, std::string&gt; name_map{</div>
 <div class="line"><span class="lineno">   45</span>    {LossType::MEAN_SQUARED_ERROR, <span class="stringliteral">&quot;MeanSquaredError Loss&quot;</span>},</div>
 <div class="line"><span class="lineno">   46</span>    {LossType::CATEGORICAL_CROSSENTROPY, <span class="stringliteral">&quot;CategoricalCrossentropy Loss&quot;</span>}};</div>
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> name_map.at(_param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_loss_1_1_param.html#aa1045fba9b4cbeaab58f344875376a35">op_type</a>);</div>
 <div class="line"><span class="lineno">   48</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_loss_html_a182c96cd34a78e5e64a5351593f38362"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_loss.html#a182c96cd34a78e5e64a5351593f38362">onert::ir::operation::Loss::Type</a></div><div class="ttdeci">Type</div><div class="ttdef"><b>Definition:</b> <a href="operation_2_loss_8h_source.html#l00042">Loss.h:43</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a5c3e46703479fd9e80ecc390791d0720"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">onert::backend::train::ops::LossType</a></div><div class="ttdeci">LossType</div><div class="ttdef"><b>Definition:</b> <a href="_loss_layer_8h_source.html#l00034">LossLayer.h:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="operation_2_loss_8h_source.html#l00050">onert::ir::operation::Loss::Param::op_type</a>.</p>
 
@@ -431,7 +432,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="operation_2_loss_8h_source.html#l00064">64</a> of file <a class="el" href="operation_2_loss_8h_source.html">Loss.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> _param; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="operation_2_loss_8cc_source.html#l00031">Loss()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="operation_2_loss_8cc_source.html#l00031">Loss()</a>, and <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00157">onert::backend::train::KernelGenerator::visit()</a>.</p>
 
 </div>
 </div>

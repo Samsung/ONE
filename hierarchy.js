@@ -519,6 +519,11 @@ var hierarchy =
               [ "luci::CircleGreaterEqual", "classluci_1_1_circle_greater_equal.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::HARD_SWISH >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::HARD_SWISH > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleHardSwish", "classluci_1_1_circle_hard_swish.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::IF >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::VariadicArityNode< CircleNodeImpl< CircleOpcode::IF > >", "classluci_1_1_variadic_arity_node.html", [
               [ "luci::CircleIf", "classluci_1_1_circle_if.html", null ]
@@ -1448,6 +1453,7 @@ var hierarchy =
       [ "luci::CircleNodeWithFEATURESSummaryBuilder", "classluci_1_1_circle_node_with_f_e_a_t_u_r_e_s_summary_builder.html", [
         [ "luci::CircleEluSummaryBuilder", "classluci_1_1_circle_elu_summary_builder.html", null ],
         [ "luci::CircleGeluSummaryBuilder", "classluci_1_1_circle_gelu_summary_builder.html", null ],
+        [ "luci::CircleHardSwishSummaryBuilder", "classluci_1_1_circle_hard_swish_summary_builder.html", null ],
         [ "luci::CircleLeakyReluSummaryBuilder", "classluci_1_1_circle_leaky_relu_summary_builder.html", null ],
         [ "luci::CircleRelu6SummaryBuilder", "classluci_1_1_circle_relu6_summary_builder.html", null ],
         [ "luci::CircleReluN1To1SummaryBuilder", "classluci_1_1_circle_relu_n1_to1_summary_builder.html", null ],
@@ -1747,6 +1753,7 @@ var hierarchy =
       [ "souschef::GaussianFloat32DataChef", "classsouschef_1_1_gaussian_float32_data_chef.html", null ],
       [ "souschef::GaussianInt16DataChef", "classsouschef_1_1_gaussian_int16_data_chef.html", null ],
       [ "souschef::GaussianInt32DataChef", "classsouschef_1_1_gaussian_int32_data_chef.html", null ],
+      [ "souschef::GaussianInt8DataChef", "classsouschef_1_1_gaussian_int8_data_chef.html", null ],
       [ "souschef::GaussianUint8DataChef", "classsouschef_1_1_gaussian_uint8_data_chef.html", null ]
     ] ],
     [ "souschef::DataChefFactory", "structsouschef_1_1_data_chef_factory.html", [
@@ -1757,6 +1764,7 @@ var hierarchy =
       [ "souschef::GaussianFloat32DataChefFactory", "structsouschef_1_1_gaussian_float32_data_chef_factory.html", null ],
       [ "souschef::GaussianInt16DataChefFactory", "structsouschef_1_1_gaussian_int16_data_chef_factory.html", null ],
       [ "souschef::GaussianInt32DataChefFactory", "structsouschef_1_1_gaussian_int32_data_chef_factory.html", null ],
+      [ "souschef::GaussianInt8DataChefFactory", "structsouschef_1_1_gaussian_int8_data_chef_factory.html", null ],
       [ "souschef::GaussianUint8DataChefFactory", "structsouschef_1_1_gaussian_uint8_data_chef_factory.html", null ]
     ] ],
     [ "DataLocation", "struct_data_location.html", null ],
@@ -2847,6 +2855,8 @@ var hierarchy =
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
+      [ "onert::backend::train::ops::GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", null ],
+      [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
       [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ]
     ] ],
@@ -2893,7 +2903,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::Add", "classluci__interpreter_1_1kernels_1_1_add.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< ArgMaxParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::ArgMax", "classluci__interpreter_1_1kernels_1_1_arg_max.html", null ],
         [ "luci_interpreter::kernels::ArgMax", "classluci__interpreter_1_1kernels_1_1_arg_max.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< Pool2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2921,7 +2930,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::DepthwiseConv2D", "classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< DivParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Div", "classluci__interpreter_1_1kernels_1_1_div.html", null ],
         [ "luci_interpreter::kernels::Div", "classluci__interpreter_1_1kernels_1_1_div.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< FullyConnectedParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -2942,7 +2950,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::L2Normalize", "classluci__interpreter_1_1kernels_1_1_l2_normalize.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< LeakyReluParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::LeakyRelu", "classluci__interpreter_1_1kernels_1_1_leaky_relu.html", null ],
         [ "luci_interpreter::kernels::LeakyRelu", "classluci__interpreter_1_1kernels_1_1_leaky_relu.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< LocalResponseNormalizationParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
@@ -3056,22 +3063,17 @@ var hierarchy =
       [ "luci_interpreter::kernels::Minimum", "classluci__interpreter_1_1kernels_1_1_minimum.html", null ],
       [ "luci_interpreter::kernels::Minimum", "classluci__interpreter_1_1kernels_1_1_minimum.html", null ],
       [ "luci_interpreter::kernels::Neg", "classluci__interpreter_1_1kernels_1_1_neg.html", null ],
-      [ "luci_interpreter::kernels::Neg", "classluci__interpreter_1_1kernels_1_1_neg.html", null ],
       [ "luci_interpreter::kernels::NotEqual", "classluci__interpreter_1_1kernels_1_1_not_equal.html", null ],
       [ "luci_interpreter::kernels::NotEqual", "classluci__interpreter_1_1kernels_1_1_not_equal.html", null ],
       [ "luci_interpreter::kernels::PRelu", "classluci__interpreter_1_1kernels_1_1_p_relu.html", null ],
       [ "luci_interpreter::kernels::PRelu", "classluci__interpreter_1_1kernels_1_1_p_relu.html", null ],
       [ "luci_interpreter::kernels::Pad", "classluci__interpreter_1_1kernels_1_1_pad.html", null ],
-      [ "luci_interpreter::kernels::Pad", "classluci__interpreter_1_1kernels_1_1_pad.html", null ],
-      [ "luci_interpreter::kernels::PadV2", "classluci__interpreter_1_1kernels_1_1_pad_v2.html", null ],
       [ "luci_interpreter::kernels::PadV2", "classluci__interpreter_1_1kernels_1_1_pad_v2.html", null ],
       [ "luci_interpreter::kernels::Pow", "classluci__interpreter_1_1kernels_1_1_pow.html", null ],
       [ "luci_interpreter::kernels::Pow", "classluci__interpreter_1_1kernels_1_1_pow.html", null ],
       [ "luci_interpreter::kernels::Quantize", "classluci__interpreter_1_1kernels_1_1_quantize.html", null ],
       [ "luci_interpreter::kernels::Quantize", "classluci__interpreter_1_1kernels_1_1_quantize.html", null ],
       [ "luci_interpreter::kernels::Relu", "classluci__interpreter_1_1kernels_1_1_relu.html", null ],
-      [ "luci_interpreter::kernels::Relu", "classluci__interpreter_1_1kernels_1_1_relu.html", null ],
-      [ "luci_interpreter::kernels::Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", null ],
       [ "luci_interpreter::kernels::Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", null ],
       [ "luci_interpreter::kernels::Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
@@ -3331,7 +3333,9 @@ var hierarchy =
     [ "NdArrayDesc< N >", "struct_nd_array_desc.html", null ],
     [ "nnfw::cker::NdArrayDesc< N >", "structnnfw_1_1cker_1_1_nd_array_desc.html", null ],
     [ "luci_interpreter::test_kernel::NegTestDataBase", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeDiv", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_div.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeMul", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_mul.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInput2WrongTypeDiv", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input2_wrong_type_div.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput2WrongTypeMul", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input2_wrong_type_mul.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchAddKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_add_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchConv2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", null ],
@@ -3341,14 +3345,21 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchEluKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_elu_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchExpKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_exp_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchGatherKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchLeakyReLUKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_leaky_re_l_u_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchLogisticKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchNegKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_neg_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchPadKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_pad_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchPadV2Kernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_pad_v2_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchReLU6Kernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchReLUKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchSubKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchTanhKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputTypeMismatchFillKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_type_mismatch_fill_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputsTypeMismatchSubKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInt16TypeMul", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_int16_type_mul.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInvalidInputShapeMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_max_pool2_d_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInvalidInputShapeNegKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_neg_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInvalidInputTypeConv2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_type_conv2_d_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInvalidInputTypeExpandDimsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_type_expand_dims_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataLessKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_less_kernel.html", null ],
@@ -3367,7 +3378,10 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::NegTestDataWrongPositionTypeGatherKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_wrong_position_type_gather_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataWrongWeightShapeFullyConnectedKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_wrong_weight_shape_fully_connected_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataWrongWeightTypeFullyConnectedKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_wrong_weight_type_fully_connected_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataInputTypeMismatchAddN", "classluci__interpreter_1_1test__kernel_1_1_test_data_input_type_mismatch_add_n.html", null ],
       [ "luci_interpreter::test_kernel::TestDataInputTypeMismatchConcatenation", "classluci__interpreter_1_1test__kernel_1_1_test_data_input_type_mismatch_concatenation.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataOutputWrongOutputArgMax", "classluci__interpreter_1_1test__kernel_1_1_test_data_output_wrong_output_arg_max.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataOutputWrongOutputArgMin", "classluci__interpreter_1_1test__kernel_1_1_test_data_output_wrong_output_arg_min.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReluConcatenation", "classluci__interpreter_1_1test__kernel_1_1_test_data_relu_concatenation.html", null ],
       [ "luci_interpreter::test_kernel::TestDataTypeMismatchSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_type_mismatch_slice.html", null ],
       [ "luci_interpreter::test_kernel::TestDataWrongAxisConcatenation", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_axis_concatenation.html", null ],
@@ -3554,6 +3568,7 @@ var hierarchy =
       [ "GeluChef", "class_gelu_chef.html", null ],
       [ "GreaterChef", "class_greater_chef.html", null ],
       [ "GreaterEqualChef", "class_greater_equal_chef.html", null ],
+      [ "HardSwishChef", "class_hard_swish_chef.html", null ],
       [ "IfChef", "class_if_chef.html", null ],
       [ "InstanceNormChef", "class_instance_norm_chef.html", null ],
       [ "L2Normalize", "class_l2_normalize.html", null ],
@@ -3682,6 +3697,7 @@ var hierarchy =
       [ "GeluChefFactory", "struct_gelu_chef_factory.html", null ],
       [ "GreaterChefFactory", "struct_greater_chef_factory.html", null ],
       [ "GreaterEqualChefFactory", "struct_greater_equal_chef_factory.html", null ],
+      [ "HardSwishChefFactory", "struct_hard_swish_chef_factory.html", null ],
       [ "IfChefFactory", "struct_if_chef_factory.html", null ],
       [ "InstanceNormChefFactory", "struct_instance_norm_chef_factory.html", null ],
       [ "L2NormalizeChefFactory", "struct_l2_normalize_chef_factory.html", null ],
@@ -4006,6 +4022,7 @@ var hierarchy =
     [ "mir_interpreter::PadImpl< T >", "structmir__interpreter_1_1_pad_impl.html", null ],
     [ "nnop::PadInfo", "classnnop_1_1_pad_info.html", null ],
     [ "mir::PadOpAttributes", "structmir_1_1_pad_op_attributes.html", null ],
+    [ "luci_interpreter_pal::PadParams", "structluci__interpreter__pal_1_1_pad_params.html", null ],
     [ "Palette.Palette", "class_palette_1_1_palette.html", [
       [ "Palette.UniformPalette", "class_palette_1_1_uniform_palette.html", [
         [ "Palette.YLORRD9Palette", "class_palette_1_1_y_l_o_r_r_d9_palette.html", null ]
@@ -4782,6 +4799,15 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataAddBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatAdd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataAddNBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_n_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatAddN", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_add_n.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataArgMaxBase< float, int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_arg_max_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatArgMax", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_arg_max.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataArgMinBase< float, int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_arg_min_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatArgMin", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_arg_min.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataAveragePool2DBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatAveragePool2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_average_pool2_d.html", null ]
       ] ],
@@ -4800,6 +4826,9 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataConv2DBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", [
         [ "luci_interpreter::test_kernel::TestDataU8Conv2D", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_conv2_d.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataDivBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_div_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatDiv", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_div.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataEluBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_elu_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatElu", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_elu.html", null ]
       ] ],
@@ -4817,6 +4846,9 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataGatherBase< int >", "classluci__interpreter_1_1test__kernel_1_1_test_data_gather_base.html", [
         [ "luci_interpreter::test_kernel::TestDataIntGather", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_gather.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataLeakyReLUBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_leaky_re_l_u_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatLeakyReLU", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_leaky_re_l_u.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataLessBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatLess", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_less.html", null ]
@@ -4839,6 +4871,9 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataMulBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", [
         [ "luci_interpreter::test_kernel::TestDataIntMul", "classluci__interpreter_1_1test__kernel_1_1_test_data_int_mul.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataNegBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_neg_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatNeg", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_neg.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatPack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pack.html", null ]
       ] ],
@@ -4847,6 +4882,18 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", [
         [ "luci_interpreter::test_kernel::TestDataQuantU8Pack", "classluci__interpreter_1_1test__kernel_1_1_test_data_quant_u8_pack.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataPadBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pad_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatPad", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pad.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataPadV2Base< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pad_v2_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatPadV2", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_pad_v2.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataReLU6Base< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_re_l_u6_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatReLU6", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_re_l_u6.html", null ]
+      ] ],
+      [ "luci_interpreter::test_kernel::TestDataReLUBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_re_l_u_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatReLU", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_re_l_u.html", null ]
       ] ],
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatReduceProd", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_reduce_prod.html", null ]
@@ -4886,19 +4933,27 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::test_kernel::TestDataAbsBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_abs_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataAddBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataAddNBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_add_n_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataAveragePool2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_average_pool2_d_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataConcatenationBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_concatenation_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataConv2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_conv2_d_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataDivBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_div_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataEluBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_elu_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataExpBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_exp_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataExpandDimsKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_expand_dims_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFillKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fill_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataGatherBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_gather_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataLeakyReLUBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_leaky_re_l_u_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataLogisticBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_logistic_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataMaxPool2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_max_pool2_d_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataMulBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_mul_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataNegBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_neg_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataPackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pack_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataPadBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pad_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataPadV2Base< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_pad_v2_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataReLU6Base< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_re_l_u6_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataReLUBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_re_l_u_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReduceCommonBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reduce_common_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataReshapeKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_reshape_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataSliceBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_slice_base.html", null ],
@@ -4913,12 +4968,17 @@ var hierarchy =
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< float, int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int16_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int32_t, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int64_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "luci_interpreter::test_kernel::TestDataBase< T, O >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::TestDataArgMaxBase< T, O >", "classluci__interpreter_1_1test__kernel_1_1_test_data_arg_max_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataArgMinBase< T, O >", "classluci__interpreter_1_1test__kernel_1_1_test_data_arg_min_base.html", null ]
+    ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", [
       [ "luci_interpreter::test_kernel::TestDataLessBase< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataShapeKernel< T, U >", "classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html", null ]
@@ -4976,6 +5036,7 @@ var hierarchy =
       [ "tflchef::TFliteOpGelu", "classtflchef_1_1_t_flite_op_gelu.html", null ],
       [ "tflchef::TFliteOpGreater", "classtflchef_1_1_t_flite_op_greater.html", null ],
       [ "tflchef::TFliteOpGreaterEqual", "classtflchef_1_1_t_flite_op_greater_equal.html", null ],
+      [ "tflchef::TFliteOpHardSwish", "classtflchef_1_1_t_flite_op_hard_swish.html", null ],
       [ "tflchef::TFliteOpL2Normalize", "classtflchef_1_1_t_flite_op_l2_normalize.html", null ],
       [ "tflchef::TFliteOpL2Pool2D", "classtflchef_1_1_t_flite_op_l2_pool2_d.html", null ],
       [ "tflchef::TFliteOpLeakyRelu", "classtflchef_1_1_t_flite_op_leaky_relu.html", null ],

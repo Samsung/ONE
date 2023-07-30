@@ -8,7 +8,7 @@ var searchData=
   ['test_5fdir_5',['TEST_DIR',['../_generator_8cpp.html#aba8cb34a85a8822c9b79de9cfecd4595',1,'Generator.cpp']]],
   ['test_5fname_6',['TEST_NAME',['../_generator_8cpp.html#a57564a6694319222956aabe9936b2942',1,'Generator.cpp']]],
   ['tf_5ffloat_7',['TF_FLOAT',['../_compat_8h.html#a1002f80a13f2473c55e05682186a31ef',1,'Compat.h']]],
-  ['tf_5flite_5farg_5fmax_8',['TF_LITE_ARG_MAX',['../compiler_2luci-interpreter_2src_2kernels_2_arg_max_8cpp.html#a33b4f3eba18a392bb49a156c7e19f4df',1,'TF_LITE_ARG_MAX():&#160;ArgMax.cpp'],['../onert-micro_2luci-interpreter_2src_2kernels_2_arg_max_8cpp.html#a33b4f3eba18a392bb49a156c7e19f4df',1,'TF_LITE_ARG_MAX():&#160;ArgMax.cpp']]],
+  ['tf_5flite_5farg_5fmax_8',['TF_LITE_ARG_MAX',['../compiler_2luci-interpreter_2src_2kernels_2_arg_max_8cpp.html#a33b4f3eba18a392bb49a156c7e19f4df',1,'ArgMax.cpp']]],
   ['tf_5flite_5farg_5fmin_5fmax_9',['TF_LITE_ARG_MIN_MAX',['../_arg_min_max_layer_8cc.html#aac71927b1a91a92f2c184b4878cbe543',1,'ArgMinMaxLayer.cc']]],
   ['tf_5flite_5fsplit_10',['TF_LITE_SPLIT',['../compiler_2luci-interpreter_2src_2kernels_2_split_8cpp.html#ac0127d20c423fde50e27aa3b6d826c5b',1,'TF_LITE_SPLIT():&#160;Split.cpp'],['../compiler_2luci-interpreter_2src_2kernels_2_split_v_8cpp.html#ac0127d20c423fde50e27aa3b6d826c5b',1,'TF_LITE_SPLIT():&#160;SplitV.cpp']]],
   ['tfl_5factivation_5ffunction_11',['TFL_ACTIVATION_FUNCTION',['../_data_lookup_8cpp.html#a4c4c2936f158474653beb225cc4cb472',1,'DataLookup.cpp']]],

@@ -153,35 +153,42 @@ $(document).ready(function(){initNavTree('core_2src_2backend_2builtin_2train_2_k
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  std::vector&lt;ITensor *&gt; output_tensors{getTensor(output_index)};</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  std::vector&lt;ITensor *&gt; input_tensors{getTensor(input_index)};</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  std::vector&lt;ITensor *&gt; output_deriv_tensors{getDerivativeTensor(output_index)};</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::vector&lt;ITensor *&gt; input_deriv_tensors{getDerivativeTensor(input_index)};</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;kernel::PermuteLayer&gt;(</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>backend::ITensor *KernelGenerator::getTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// Get Tensor from all tensor registries (for Permute op)</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(index);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  assert(ret != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  std::vector&lt;ITensor *&gt; output_deriv_tensors;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::vector&lt;ITensor *&gt; input_deriv_tensors;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// NOTE The derivative tensors corresponding to inputs of model are nullptr</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> input_deriv_tensor = getDerivativeTensor(input_index))</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">auto</span> output_deriv_tensor = getDerivativeTensor(output_index);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    assert(output_deriv_tensor);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    output_deriv_tensors.emplace_back(output_deriv_tensor);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    input_deriv_tensors.emplace_back(input_deriv_tensor);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;kernel::PermuteLayer&gt;(</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>backend::ITensor *KernelGenerator::getDerivativeTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>backend::ITensor *KernelGenerator::getTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// Get derivative Tensor from all tensor registries (for Permute op)</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ae3bc1b4ade1dd691561a3ea6e3aa00be">getDerivativeITensor</a>(index);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// Get Tensor from all tensor registries (for Permute op)</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(index);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  assert(ret != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>} <span class="comment">// namespace builtin</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>backend::ITensor *KernelGenerator::getDerivativeTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="comment">// Get derivative Tensor from all tensor registries (for Permute op)</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ae3bc1b4ade1dd691561a3ea6e3aa00be">getDerivativeITensor</a>(index);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>} <span class="comment">// namespace builtin</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator_html_a01f325c8d7c1abb064238435bbbb4a65"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#a01f325c8d7c1abb064238435bbbb4a65">onert::backend::builtin::train::KernelGenerator::KernelGenerator</a></div><div class="ttdeci">KernelGenerator(const ir::train::TrainableGraph &amp;tgraph, const std::shared_ptr&lt; TensorRegistry &gt; &amp;tensor_reg, const std::shared_ptr&lt; ExternalContext &gt; &amp;external_context)</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00030">KernelGenerator.cc:30</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator_html_a956f5ac33484eb6411a39662910231ba"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#a956f5ac33484eb6411a39662910231ba">onert::backend::builtin::train::KernelGenerator::generate</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::TrainableFnSequence &gt; generate(ir::OperationIndex ind) override</div><div class="ttdef"><b>Definition:</b> <a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00037">KernelGenerator.cc:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace46c76d914d0d7915a3749c442694b4"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition:</b> <a href="train_2_kernel_generator_base_8h_source.html#l00053">KernelGeneratorBase.h:53</a></div></div>

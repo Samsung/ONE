@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('_resolve_custom_op_mat_mul_pass_8cpp.h
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_resolve_custom_op_mat_mul_pass_8h_source.html">luci/Pass/ResolveCustomOpMatMulPass.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_create_circle_const_8h_source.html">helpers/CreateCircleConst.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="_data_type_traits_8h_source.html">loco/IR/DataTypeTraits.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_source.html">luci/IR/CircleNodes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_circle_node_origin_8h_source.html">luci/Profile/CircleNodeOrigin.h</a>&gt;</code><br />
@@ -112,8 +113,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8e76e8930d629e8c631f5a0edf346160"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_resolve_custom_op_mat_mul_pass_8cpp.html#a8e76e8930d629e8c631f5a0edf346160">INIT_VALUES</a>(DT)</td></tr>
-<tr class="separator:a8e76e8930d629e8c631f5a0edf346160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb821ee62cded6ec74a36455b3cfcf51"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_resolve_custom_op_mat_mul_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(condition)</td></tr>
 <tr class="separator:afb821ee62cded6ec74a36455b3cfcf51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab873f1dca61b5a943779767bf1d34112"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_resolve_custom_op_mat_mul_pass_8cpp.html#ab873f1dca61b5a943779767bf1d34112">CHECK_OR_THROW</a>(condition,  message)</td></tr>
@@ -167,30 +166,6 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (not(condition))                      \</div>
 <div class="line">    INTERNAL_EXN(message);</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a8e76e8930d629e8c631f5a0edf346160" name="a8e76e8930d629e8c631f5a0edf346160"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e76e8930d629e8c631f5a0edf346160">&#9670;&#160;</a></span>INIT_VALUES</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define INIT_VALUES</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">DT</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  {                                              \</div>
-<div class="line">    node-&gt;size&lt;DT&gt;(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);                        \</div>
-<div class="line">    for (uint32_t i = 0; i &lt; values.size(); ++i) \</div>
-<div class="line">      node-&gt;at&lt;DT&gt;(i) = values[i];               \</div>
-<div class="line">  }</div>
-<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

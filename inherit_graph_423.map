@@ -117,7 +117,7 @@
 <area shape="rect" id="node165" href="$structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="149,6541,376,6581"/>
 <area shape="rect" id="node166" href="$structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="165,6605,361,6645"/>
 <area shape="rect" id="node167" href="$structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="164,6670,361,6695"/>
-<area shape="rect" id="node168" href="$classluci_1_1_requantize_pass.html" title="Pass to quantize weights." alt="" coords="191,6719,334,6745"/>
+<area shape="rect" id="node168" href="$classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="191,6719,334,6745"/>
 <area shape="rect" id="node169" href="$structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="157,6769,368,6794"/>
 <area shape="rect" id="node170" href="$structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="167,6819,358,6859"/>
 <area shape="rect" id="node171" href="$structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="173,6883,352,6923"/>

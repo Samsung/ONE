@@ -1,0 +1,4 @@
+var _neg_re_l_u6_kernel_8h =
+[
+    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchReLU6Kernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ]
+];

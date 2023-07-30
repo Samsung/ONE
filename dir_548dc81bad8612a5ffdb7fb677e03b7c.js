@@ -17,7 +17,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "ConvTranspose.cpp", "_conv_transpose_8cpp.html", "_conv_transpose_8cpp" ],
     [ "ConvTranspose.h", "_conv_transpose_8h.html", "_conv_transpose_8h" ],
     [ "Div.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_div_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_div_8cpp" ],
-    [ "Div.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_div_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_div_8h" ],
+    [ "Div.h", "mir_2src_2mir__onnx__importer_2_op_2_div_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_div_8h" ],
     [ "Dropout.cpp", "_dropout_8cpp.html", "_dropout_8cpp" ],
     [ "Dropout.h", "_dropout_8h.html", "_dropout_8h" ],
     [ "Equal.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_equal_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_equal_8cpp" ],

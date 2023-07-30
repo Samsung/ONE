@@ -118,24 +118,30 @@ $(document).ready(function(){initNavTree('compiler_2tflchef_2tflite_2src_2_op_2_
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classtflchef_1_1_t_flite_op_p_relu.html#a81a983a38291ccd7d3abe80188d6c9c1">   24</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classtflchef_1_1_t_flite_op_p_relu.html#a81a983a38291ccd7d3abe80188d6c9c1">TFliteOpPRelu::filler</a>(<span class="keyword">const</span> tflite::Operator *op, <a class="code hl_class" href="classtflchef_1_1_t_flite_import.html">TFliteImport</a> *<span class="keyword">import</span>,</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                           tflchef::ModelRecipe *model_recipe)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;inputs = <a class="code hl_function" href="namespacetflchef.html#a83c5527aa8f9a5d264f22ce65a4709c4">as_index_vector</a>(op-&gt;inputs());</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">   29</a></span>tflchef::Operation *<a class="code hl_function" href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">TFliteOpPRelu::build</a>(<span class="keyword">const</span> tflite::Operator *op, <a class="code hl_class" href="classtflchef_1_1_t_flite_import.html">TFliteImport</a> *<span class="keyword">import</span>,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                                         tflchef::ModelRecipe *model_recipe)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">auto</span> operation = model_recipe-&gt;add_operation();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  operation-&gt;set_type(<span class="stringliteral">&quot;PRelu&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// PReluOptions are empty</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">return</span> operation;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  assert(inputs.size() == 2);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">import</span>-&gt;set_tensor_filler(inputs.at(1)); <span class="comment">// alpha</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">   34</a></span>tflchef::Operation *<a class="code hl_function" href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">TFliteOpPRelu::build</a>(<span class="keyword">const</span> tflite::Operator *op, <a class="code hl_class" href="classtflchef_1_1_t_flite_import.html">TFliteImport</a> *<span class="keyword">import</span>,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                         tflchef::ModelRecipe *model_recipe)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">auto</span> operation = model_recipe-&gt;add_operation();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  operation-&gt;set_type(<span class="stringliteral">&quot;PRelu&quot;</span>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// namespace tflchef</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// PReluOptions are empty</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> operation;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace tflchef</span></div>
 <div class="ttc" id="aclasstflchef_1_1_t_flite_import_html"><div class="ttname"><a href="classtflchef_1_1_t_flite_import.html">tflchef::TFliteImport</a></div><div class="ttdoc">Loads TF lite file and provides helpers to access attributes.</div><div class="ttdef"><b>Definition:</b> <a href="_t_flite_import_8h_source.html#l00040">TFliteImport.h:41</a></div></div>
-<div class="ttc" id="aclasstflchef_1_1_t_flite_op_p_relu_html_a7b7b91d0045bdc029911f418802e581b"><div class="ttname"><a href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">tflchef::TFliteOpPRelu::build</a></div><div class="ttdeci">tflchef::Operation * build(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *model_recipe) const override</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_op_2_p_relu_8cpp_source.html#l00029">PRelu.cpp:29</a></div></div>
+<div class="ttc" id="aclasstflchef_1_1_t_flite_op_p_relu_html_a7b7b91d0045bdc029911f418802e581b"><div class="ttname"><a href="classtflchef_1_1_t_flite_op_p_relu.html#a7b7b91d0045bdc029911f418802e581b">tflchef::TFliteOpPRelu::build</a></div><div class="ttdeci">tflchef::Operation * build(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *model_recipe) const override</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_op_2_p_relu_8cpp_source.html#l00034">PRelu.cpp:34</a></div></div>
 <div class="ttc" id="aclasstflchef_1_1_t_flite_op_p_relu_html_a81a983a38291ccd7d3abe80188d6c9c1"><div class="ttname"><a href="classtflchef_1_1_t_flite_op_p_relu.html#a81a983a38291ccd7d3abe80188d6c9c1">tflchef::TFliteOpPRelu::filler</a></div><div class="ttdeci">void filler(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *model_recipe) const override</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_op_2_p_relu_8cpp_source.html#l00024">PRelu.cpp:24</a></div></div>
 <div class="ttc" id="anamespacetflchef_html"><div class="ttname"><a href="namespacetflchef.html">tflchef</a></div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2include_2tflchef_2_model_chef_8h_source.html#l00024">ModelChef.h:25</a></div></div>
+<div class="ttc" id="anamespacetflchef_html_a83c5527aa8f9a5d264f22ce65a4709c4"><div class="ttname"><a href="namespacetflchef.html#a83c5527aa8f9a5d264f22ce65a4709c4">tflchef::as_index_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; as_index_vector(const flatbuffers::Vector&lt; T &gt; *flat_array)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_convert_8h_source.html#l00047">Convert.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

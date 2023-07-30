@@ -111,8 +111,8 @@ Collaboration diagram for onert::exec::train::TrainableFnSequence:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa69d3ba021e941abd68939e676a6c433"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#aa69d3ba021e941abd68939e676a6c433">forward</a> (bool training) override</td></tr>
 <tr class="separator:aa69d3ba021e941abd68939e676a6c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a809ad93fb17772bc20136a2d4fce9b2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a809ad93fb17772bc20136a2d4fce9b2b">backward</a> () override</td></tr>
-<tr class="separator:a809ad93fb17772bc20136a2d4fce9b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2fd71521b6e9b994e47b55088749b1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#ac2fd71521b6e9b994e47b55088749b1c">backward</a> (uint32_t training_step) override</td></tr>
+<tr class="separator:ac2fd71521b6e9b994e47b55088749b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74a0ca4877462e9ef28cdacf5d301757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a74a0ca4877462e9ef28cdacf5d301757">append</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a> &gt; &amp;&amp;fn)</td></tr>
 <tr class="separator:a74a0ca4877462e9ef28cdacf5d301757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25588aeb267485421a952719a7a89cf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a25588aeb267485421a952719a7a89cf4">iterate</a> (const std::function&lt; void(<a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a> &amp;)&gt; &amp;fn)</td></tr>
@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a18d3e6fafe8019272fe7b37d0248bc69 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">forward</a> (bool training)=0</td></tr>
 <tr class="separator:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2d337b03208fe6ecc83d6278e74ad24 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">backward</a> ()=0</td></tr>
-<tr class="separator:ac2d337b03208fe6ecc83d6278e74ad24 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0cbc5dff13b732ee4439c7e097a651f inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">backward</a> (uint32_t training_step)=0</td></tr>
+<tr class="separator:ac0cbc5dff13b732ee4439c7e097a651f inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -160,8 +160,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a809ad93fb17772bc20136a2d4fce9b2b" name="a809ad93fb17772bc20136a2d4fce9b2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a809ad93fb17772bc20136a2d4fce9b2b">&#9670;&#160;</a></span>backward()</h2>
+<a id="ac2fd71521b6e9b994e47b55088749b1c" name="ac2fd71521b6e9b994e47b55088749b1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2fd71521b6e9b994e47b55088749b1c">&#9670;&#160;</a></span>backward()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +172,8 @@ Data Fields</h2></td></tr>
         <tr>
           <td class="memname">void onert::exec::train::TrainableFnSequence::backward </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>training_step</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -183,13 +184,13 @@ Data Fields</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
+<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">onert::exec::train::ITrainableFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00034">34</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.rbegin(); it != <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.rend(); ++it)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    (*it)-&gt;backward();</div>
+<div class="line"><span class="lineno">   38</span>    (*it)-&gt;backward(training_step);</div>
 <div class="line"><span class="lineno">   39</span>  }</div>
 <div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
