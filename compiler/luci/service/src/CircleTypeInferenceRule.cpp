@@ -181,6 +181,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleGreaterEqual *) final { return loco::DataType::BOOL; }
 
+  loco::DataType visit(const luci::CircleHardSwish *node) final
+  {
+    return luci::dtype_get(node->features());
+  }
+
   loco::DataType visit(const luci::CircleIf *node) final
   {
     // Type of If is not used. Just use input 0
