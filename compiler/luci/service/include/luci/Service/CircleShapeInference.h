@@ -79,6 +79,7 @@ public:
   // loco::TensorShape visit(const luci::CircleGatherNd *node) final;
   // loco::TensorShape visit(const luci::CircleGreater *node) final;
   // loco::TensorShape visit(const luci::CircleGreaterEqual *node) final;
+  // loco::TensorShape visit(const luci::CircleHardSwish *node) final;
   // loco::TensorShape visit(const luci::CircleIf *node) final;
   // loco::TensorShape visit(const luci::CircleL2Normalize *node) final;
   // loco::TensorShape visit(const luci::CircleL2Pool2D *node) final;
