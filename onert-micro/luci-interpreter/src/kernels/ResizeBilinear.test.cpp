@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2017 The TensorFlow Authors. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-#include "kernels/ResizeBilinear.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "loader/ModuleLoader.h"
+#include "luci_interpreter/test_models/resize_bilinear/FloatResizeBilinearKernel.h"
+#include "luci_interpreter/test_models/resize_bilinear/U8ResizeBilinearKernel.h"
+#include "luci_interpreter/test_models/resize_bilinear/NegResizeBilinearKernel.h"
 
 namespace luci_interpreter
 {
@@ -28,226 +30,159 @@ namespace
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> size_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<float> input_data,
-           std::initializer_list<int32_t> size_data, std::initializer_list<float> output_data,
-           bool align_corners, bool half_pixel_centers)
+class ResizeBilinearTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ResizeBilinearParams params{};
-  params.align_corners = align_corners;
-  params.half_pixel_centers = half_pixel_centers;
-
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(extractTensorData<T>(output_tensor), FloatArrayNear(output_data));
-}
-
-template <>
-void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
-                    std::initializer_list<int32_t> size_shape,
-                    std::initializer_list<int32_t> output_shape,
-                    std::initializer_list<float> input_data,
-                    std::initializer_list<int32_t> size_data,
-                    std::initializer_list<float> output_data, bool align_corners,
-                    bool half_pixel_centers)
-{
-  // On TFlite example use Uint8 value it self, so this means quant param scale 1.0f and zero
-  // point 0.
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, 1.0, 0, input_data, memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>(size_shape, size_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, 1.0, 0);
-
-  ResizeBilinearParams params{};
-  params.align_corners = align_corners;
-  params.half_pixel_centers = half_pixel_centers;
-
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(output_data, output_tensor.scale()));
-}
-
-template <typename T> class ResizeBilinearTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(ResizeBilinearTest, DataTypes);
-
-TYPED_TEST(ResizeBilinearTest, SimpleTest)
+template <typename T>
+std::vector<T> checkResizeBilinearKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
-                   {
-                     3, 6,  //
-                     9, 12, //
-                     4, 10, //
-                     10, 16 //
-                   },
-                   {3, 3},
-                   {
-                     3, 5, 6,    //
-                     7, 9, 10,   //
-                     9, 11, 12,  //
-                     4, 8, 10,   //
-                     8, 12, 14,  //
-                     10, 14, 16, //
-                   },
-                   false, false);
-  SUCCEED();
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(ResizeBilinearTest, HalfPixelCenterFloatTest)
+TEST_F(ResizeBilinearTest, Float_P)
 {
-  Check<float>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
-               {
-                 1, 2, //
-                 3, 4, //
-                 1, 2, //
-                 3, 4  //
-               },
-               {3, 3},
-               {
-                 1, 1.5, 2, //
-                 2, 2.5, 3, //
-                 3, 3.5, 4, //
-                 1, 1.5, 2, //
-                 2, 2.5, 3, //
-                 3, 3.5, 4, //
-               },
-               false, true);
-  SUCCEED();
+  test_kernel::TestDataFloatResizeBilinear test_data_kernel(false);
+  std::vector<float> output_data_vector = checkResizeBilinearKernel(&test_data_kernel);
+
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(ResizeBilinearTest, HalfPixelCenterUint8Test)
+TEST_F(ResizeBilinearTest, HalfPixelCenter_Float_P)
 {
-  Check<uint8_t>({2, 2, 2, 1}, {2}, {2, 3, 3, 1},
-                 {
-                   3, 6,  //
-                   9, 12, //
-                   4, 10, //
-                   12, 16 //
-                 },
-                 {3, 3},
-                 {
-                   2, 4, 6,    //
-                   6, 7, 9,    //
-                   9, 10, 12,  //
-                   4, 7, 10,   //
-                   8, 10, 13,  //
-                   12, 14, 16, //
-                 },
-                 false, true);
-  SUCCEED();
+
+  test_kernel::TestDataFloatResizeBilinear test_data_kernel(true);
+  std::vector<float> output_data_vector = checkResizeBilinearKernel(&test_data_kernel);
+
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(ResizeBilinearTest, InputShapeInvalid_NEG)
+TEST_F(ResizeBilinearTest, Uint8_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  test_kernel::TestDataUint8ResizeBilinear test_data_kernel(false);
+  std::vector<uint8_t> output_data_vector = checkResizeBilinearKernel<uint8_t>(&test_data_kernel);
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2},
-                                                           {
-                                                             3, 6,  //
-                                                             9, 12, //
-                                                             4, 10, //
-                                                             10, 16 //
-                                                           },
-                                                           memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ResizeBilinearParams params{};
-  params.align_corners = false;
-  params.half_pixel_centers = false;
-
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST(ResizeBilinearTest, SizeShapeInvalid_NEG)
+TEST_F(ResizeBilinearTest, HalfPixelCenter_Uint8_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  test_kernel::TestDataUint8ResizeBilinear test_data_kernel(true);
+  std::vector<uint8_t> output_data_vector = checkResizeBilinearKernel<uint8_t>(&test_data_kernel);
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
-                                                           {
-                                                             3, 6,  //
-                                                             9, 12, //
-                                                             4, 10, //
-                                                             10, 16 //
-                                                           },
-                                                           memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2, 1}, {3, 3}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ResizeBilinearParams params{};
-  params.align_corners = false;
-  params.half_pixel_centers = false;
-
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST(ResizeBilinearTest, SizeDimInvalid_NEG)
+TEST_F(ResizeBilinearTest, InvalidInputShape_Float_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
-                                                           {
-                                                             3, 6,  //
-                                                             9, 12, //
-                                                             4, 10, //
-                                                             10, 16 //
-                                                           },
-                                                           memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>({3}, {3, 3, 1}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  test_kernel::NegTestDataInvalidInputShapeFloatResizeBilinearKernel test_data_kernel;
 
-  ResizeBilinearParams params{};
-  params.align_corners = false;
-  params.half_pixel_centers = false;
-
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
-TEST(ResizeBilinearTest, InvalidParams_NEG)
+TEST_F(ResizeBilinearTest, InvalidParams_Float_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({2, 2, 2, 1},
-                                                           {
-                                                             3, 6,  //
-                                                             9, 12, //
-                                                             4, 10, //
-                                                             10, 16 //
-                                                           },
-                                                           memory_manager.get());
-  Tensor size_tensor = makeInputTensor<DataType::S32>({2}, {3, 3}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  test_kernel::NegTestDataInvalidParamFloatResizeBilinearKernel test_data_kernel;
 
-  ResizeBilinearParams params{};
-  params.align_corners = true;
-  params.half_pixel_centers = true;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
 
-  ResizeBilinear kernel(&input_tensor, &size_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+TEST_F(ResizeBilinearTest, InvalidSizeShape_Float_NEG)
+{
+
+  test_kernel::NegTestDataInvalidSizeShapeDimensionsFloatResizeBilinearKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(ResizeBilinearTest, InvalidInputShape_uint8_NEG)
+{
+
+  test_kernel::NegTestDataInvalidInputShapeUint8ResizeBilinearKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(ResizeBilinearTest, InvalidParams_uint8_NEG)
+{
+
+  test_kernel::NegTestDataInvalidParamUint8ResizeBilinearKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(ResizeBilinearTest, InvalidSizeShape_uint8_NEG)
+{
+
+  test_kernel::NegTestDataInvalidSizeShapeDimensionsUint8ResizeBilinearKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace

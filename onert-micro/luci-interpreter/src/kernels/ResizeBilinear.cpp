@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,61 +15,104 @@
  * limitations under the License.
  */
 
-#include "kernels/ResizeBilinear.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+
+#include "kernels/BinaryOpCommon.h"
 
 #include "PALResizeBilinear.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-ResizeBilinear::ResizeBilinear(const Tensor *input, const Tensor *size, Tensor *output,
-                               const ResizeBilinearParams &params)
-  : KernelWithParams<ResizeBilinearParams>({input, size}, {output}, params)
-{
-}
+/*
+ * ResizeBilinear Kernel:
+ * Description: resizing input Tensor by input constants using Bilinear Interpolation
+ * 2 Inputs: Input tensor ( Shape dimensions count = 4); Input constant (Shape dimensions count = 1,
+ * Num elements =2) Parameters: align_corners; half_pixel_centers;
+ *
+ * Example:
+ *                       Input(2, 2, 2, 1)
+ *                               |
+ *                               |   Constant Input(2) [3,3] INT32
+ *                               |  /
+ *                          ResizeBilinear
+ *                                 |
+ *                         Output(2, 3, 3, 1) UINT8
+ */
 
-void ResizeBilinear::configure()
+void configure_kernel_CircleResizeBilinear(const circle::Operator *cur_op,
+                                           BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
-  LUCI_INTERPRETER_CHECK(size()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(size()->element_type() == DataType::S32);
-  if (params().half_pixel_centers && params().align_corners)
+  // Check of the size of input. Should be 2
+  assert(cur_op->inputs()->size() == 2);
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto size_index = cur_op->inputs()->operator[](1);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(size_index != -1);
+  assert(output_index != -1);
+  // Get tensors
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto size = runtime_graph->getCircleTensorByIndex(size_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+  // Check of the Input shape
+  assert(kernels::getTensorShape(input).dimensionsCount() == 4);
+  // Check of the Const input size shape
+  assert(kernels::getTensorShape(size).dimensionsCount() == 1);
+  assert(Tensor::element_type(size) == DataType::S32);
+  assert(kernels::getTensorShape(size).dims(0) == 2);
+
+  const auto *params = cur_op->builtin_options_as_ResizeBilinearOptions();
+  if (params->half_pixel_centers() && params->align_corners())
     assert(false && "If half_pixel_centers is True, align_corners must be False.");
-  LUCI_INTERPRETER_CHECK(size()->shape().dim(0) == 2);
-  Shape output_shape(4);
-  output_shape.dim(0) = input()->shape().dim(0);
-  output_shape.dim(1) = getTensorData<int32_t>(size())[0];
-  output_shape.dim(2) = getTensorData<int32_t>(size())[1];
-  output_shape.dim(3) = input()->shape().dim(3);
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
 }
 
-void ResizeBilinear::execute() const
+void execute_kernel_CircleResizeBilinear(const circle::Operator *cur_op,
+                                         BaseRuntimeGraph *runtime_graph)
 {
-  tflite::ResizeBilinearParams op_params{};
-  op_params.align_corners = params().align_corners;
-  op_params.half_pixel_centers = params().half_pixel_centers;
-  switch (output()->element_type())
+  assert(cur_op->inputs()->size() == 2);
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto size_index = cur_op->inputs()->operator[](1);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(size_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto size = runtime_graph->getCircleTensorByIndex(size_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
+  const uint8_t *size_data = runtime_graph->getConstDataByTensor(size);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  assert(input_data != nullptr);
+  assert(size_data != nullptr);
+  assert(output_data != nullptr);
+
+  // Get parameters
+  const auto *op_params = cur_op->builtin_options_as_ResizeBilinearOptions();
+
+  switch (Tensor::element_type(output))
   {
     case DataType::FLOAT32:
       luci_interpreter_pal::ResizeBilinear(
-        op_params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(size()),
-        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<float>(output()));
+        op_params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+        kernels::getTensorShape(size), kernels::getTensorData<int32_t>(size_data),
+        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
       break;
     case DataType::U8:
       luci_interpreter_pal::ResizeBilinear(
-        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(size()),
-        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
+        op_params, kernels::getTensorShape(input), kernels::getTensorData<uint8_t>(input_data),
+        kernels::getTensorShape(size), kernels::getTensorData<int32_t>(size_data),
+        kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data));
       break;
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-} // namespace kernels
 } // namespace luci_interpreter
