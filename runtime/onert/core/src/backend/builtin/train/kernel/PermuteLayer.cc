@@ -33,9 +33,11 @@ PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
                            const std::vector<ITensor *> &input_deriv_tensors,
                            const std::vector<ITensor *> &output_deriv_tensors,
+                           bool ignore_forward_in_training,
                            const std::shared_ptr<ExternalContext> &external_context)
   : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context},
-    _input_deriv_tensors{input_deriv_tensors}, _output_deriv_tensors{output_deriv_tensors}
+    _input_deriv_tensors{input_deriv_tensors}, _output_deriv_tensors{output_deriv_tensors},
+    _ignore_forward_in_training{ignore_forward_in_training}
 {
   assert(input_deriv_tensors.size() == output_deriv_tensors.size());
   assert(src_tensors.size() == dst_tensors.size());
@@ -48,7 +50,13 @@ void PermuteLayer::optimize()
   // TODO Calculate offsets of derivative tensors if necessary
 }
 
-void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
+void PermuteLayer::forward(bool training)
+{
+  if (training && _ignore_forward_in_training)
+    return;
+
+  builtin::kernel::PermuteLayer::run();
+}
 
 void PermuteLayer::backward(uint32_t)
 {
@@ -56,6 +64,12 @@ void PermuteLayer::backward(uint32_t)
   {
     auto src_deriv = _output_deriv_tensors.at(i);
     auto dst_deriv = _input_deriv_tensors.at(i);
+
+    // NOTE The derivative tensors corresponding to inputs/outputs of model are nullptr
+    //      because permuting those tensors is meaningless
+    if (src_deriv && dst_deriv)
+      return;
+
     const auto rank = src_deriv->getShape().rank();
     auto output_offsets = _dst_tensors_offsets.at(i);
     auto input_offsets = _src_tensors_offsets.at(i);

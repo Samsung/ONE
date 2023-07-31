@@ -61,17 +61,18 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
 
   std::vector<ITensor *> output_deriv_tensors;
   std::vector<ITensor *> input_deriv_tensors;
-  // NOTE The derivative tensors corresponding to inputs of model are nullptr
-  if (auto input_deriv_tensor = getDerivativeTensor(input_index))
-  {
-    auto output_deriv_tensor = getDerivativeTensor(output_index);
-    assert(output_deriv_tensor);
-    output_deriv_tensors.emplace_back(output_deriv_tensor);
-    input_deriv_tensors.emplace_back(input_deriv_tensor);
-  }
 
-  auto fn = std::make_unique<kernel::PermuteLayer>(
-    input_tensors, output_tensors, input_deriv_tensors, output_deriv_tensors, _external_context);
+  auto input_deriv_tensor = getDerivativeTensor(input_index);
+  auto output_deriv_tensor = getDerivativeTensor(output_index);
+  output_deriv_tensors.emplace_back(output_deriv_tensor);
+  input_deriv_tensors.emplace_back(input_deriv_tensor);
+
+  // NOTE It must be ignored in training that IOTensors of graph outputs for passing data to users
+  //      because the buffers of those IOTensors are unnecessary and nullptr
+  bool ignore_forward_in_training = _tgraph.getOutputs().contains(output_index);
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors,
+                                                   input_deriv_tensors, output_deriv_tensors,
+                                                   ignore_forward_in_training, _external_context);
 
   _return_fn = std::move(fn);
 }
