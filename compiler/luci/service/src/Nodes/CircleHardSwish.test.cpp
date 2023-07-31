@@ -16,7 +16,48 @@
 
 #include "luci/Service/CircleNodeClone.h"
 
+#include <luci/IR/CircleNodes.h>
+#include <luci/Service/CircleShapeInference.h>
+#include <luci/Service/CircleTypeInference.h>
+
+#include <loco/IR/TensorShape.h>
+
 #include <gtest/gtest.h>
+
+TEST(ShapeRuleTest, simple_hardswish)
+{
+  luci::CircleInput input;
+  luci::CircleHardSwish hard_swish;
+
+  input.shape({3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  hard_swish.features(&input);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&hard_swish, shape));
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_EQ(3, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+}
+
+TEST(DataTypeRuleTest, simple_hardswish)
+{
+  luci::CircleInput input;
+  luci::CircleHardSwish hard_swish;
+
+  input.dtype(loco::DataType::S32);
+
+  hard_swish.features(&input);
+
+  loco::DataType dtype;
+  luci::tinf::Rule type_inf_rule;
+
+  ASSERT_TRUE(type_inf_rule.infer(&hard_swish, dtype));
+  ASSERT_EQ(loco::DataType::S32, dtype);
+}
 
 TEST(CloneNodeTest, clone_HardSwish)
 {
