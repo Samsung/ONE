@@ -28,7 +28,7 @@ inline int Offset(const luci_interpreter::RuntimeShape &shape, int i0, int i1, i
 {
   assert(shape.dimensionsCount() == 4);
 
-  const int32_t *dims_data = reinterpret_cast<const int *>(shape.dimsData());
+  const int32_t *dims_data = reinterpret_cast<const int32_t *>(shape.dimsData());
   LUCI_INTERPRETER_CHECK(i0 >= 0 && i0 < dims_data[0]);
   LUCI_INTERPRETER_CHECK(i1 >= 0 && i1 < dims_data[1]);
   LUCI_INTERPRETER_CHECK(i2 >= 0 && i2 < dims_data[2]);
