@@ -30,7 +30,7 @@ namespace train
 TrainableGraph::TrainableGraph() : _graph{} {}
 
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
-  : _graph{tgraph._graph}, _derivatives{tgraph._derivatives}
+  : _graph{tgraph._graph}, _derivatives{tgraph._derivatives}, _losses{tgraph._losses}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
@@ -127,6 +127,17 @@ const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const
 {
   return _graph.topolSortOperations();
+}
+
+void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
+{
+  _losses.emplace(pred_ioind, loss_ind);
+}
+
+OperandIndex TrainableGraph::getLossIndex(const IOIndex &pred_ioind) const
+{
+  auto itr = _losses.find(pred_ioind);
+  return (itr == _losses.end()) ? OperandIndex{} : itr->second;
 }
 
 } // namespace train
