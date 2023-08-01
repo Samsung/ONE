@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/LogicalOr.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/logical_or/BoolLogicalOrKernel.h"
+#include "luci_interpreter/test_models/logical_or/NegLogicalOrKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,75 +30,66 @@ using namespace testing;
 
 class LogicalOrTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(LogicalOrTest, Basic)
+template <typename T>
+std::vector<T> checkLogicalOrKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true},
-                                                         _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, true, false},
-                                                         _memory_manager.get());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  LogicalOr kernel(&input1_tensor, &input2_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 2);
 
-  EXPECT_THAT(extractTensorData<bool>(output_tensor),
-              ::testing::ElementsAre(true, false, true, true));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
+  // set left input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  // set right input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(1));
+    std::copy(test_data_base->get_input_data_by_index(1).begin(),
+              test_data_base->get_input_data_by_index(1).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(LogicalOrTest, Broadcast)
+TEST_F(LogicalOrTest, Bool_P)
 {
-  Tensor input1_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true},
-                                                         _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {false}, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
-
-  LogicalOr kernel(&input1_tensor, &input2_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<bool>(output_tensor),
-              ::testing::ElementsAre(true, false, false, true));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
+  test_kernel::TestDataBoolLogicalOr test_data_kernel;
+  std::vector<bool> output_data_vector = checkLogicalOrKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(LogicalOrTest, MismatchInputType_NEG)
+TEST_F(LogicalOrTest, Input_type_mismatch_NEG)
 {
-  Tensor input1_tensor =
-    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
-  Tensor input2_tensor =
-    makeInputTensor<DataType::BOOL>({1, 1, 1, 1}, {false}, _memory_manager.get());
+  test_kernel::NegTestDataInputTypeMismatchLogicalOrKernel test_data_kernel;
 
-  Tensor output_tensor = makeOutputTensor(DataType::S32);
-
-  LogicalOr kernel(&input1_tensor, &input2_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(LogicalOrTest, InputTypeInvalid_NEG)
-{
-  Tensor input1_tensor =
-    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
-  Tensor input2_tensor = makeInputTensor<DataType::S32>({1, 1, 1, 1}, {0}, _memory_manager.get());
-
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
-
-  LogicalOr kernel(&input1_tensor, &input2_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
