@@ -10,6 +10,8 @@ if(NOT TARGET mio_tflite280)
   return()
 endif(NOT TARGET mio_tflite280)
 
+# CI Test
+
 # Recipe Parser
 add_subdirectory(proto)
 # Log
