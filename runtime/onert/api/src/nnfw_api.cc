@@ -433,17 +433,7 @@ NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights)
 NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *loss)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-
-  try
-  {
-    *loss = session->train_get_loss(index);
-  }
-  catch (std::exception &e)
-  {
-    return NNFW_STATUS_ERROR;
-  }
-
-  return NNFW_STATUS_NO_ERROR;
+  return session->train_get_loss(index, loss);
 }
 
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
