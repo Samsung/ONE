@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_LOGICALNOT_H
-#define LUCI_INTERPRETER_KERNELS_LOGICALNOT_H
+#include "Builders.h"
 
-#include "core/Kernel.h"
-#include "core/KernelParams.h"
+#include "kernels/HardSwish.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+
+std::unique_ptr<Kernel> build_kernel_CircleHardSwish(const luci::CircleNode *circle_node,
+                                                     KernelBuilderHelper &helper)
 {
+  const auto *node = loco::must_cast<const luci::CircleHardSwish *>(circle_node);
+  assert(node->arity() == 1);
 
-class LogicalNot : public Kernel
-{
-public:
-  LogicalNot(const Tensor *input, Tensor *output);
+  const Tensor *input = helper.getInputTensor(node->features());
+  Tensor *output = helper.getOutputTensor(node);
 
-  const Tensor *input() const { return _inputs[0]; }
-  Tensor *output() const { return _outputs[0]; }
-
-  void configure() override;
-  void execute() const override;
-
-private:
-  inline void evalLogicalNot() const;
-};
-
-} // namespace kernels
+  return std::make_unique<kernels::HardSwish>(input, output);
+}
 } // namespace luci_interpreter
-
-#endif // LUCI_INTERPRETER_KERNELS_LOGICALNOT_H

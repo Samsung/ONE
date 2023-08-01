@@ -169,6 +169,14 @@ inline bool nextIndex(const int num_dims, const int *dims, int *current)
   return (carry == 0);
 }
 
+// Get common shape dim, assert that they all agree.
+inline int MatchingDim(const luci_interpreter::RuntimeShape &shape1, int index1,
+                       const luci_interpreter::RuntimeShape &shape2, int index2)
+{
+  assert(shape1.dims(index1) == shape2.dims(index2));
+  return shape1.dims(index1);
+}
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_UTILS_H

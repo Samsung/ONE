@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_LOGICALAND_H
-#define LUCI_INTERPRETER_KERNELS_LOGICALAND_H
+#ifndef LUCI_INTERPRETER_KERNELS_HARDSWISH_H
+#define LUCI_INTERPRETER_KERNELS_HARDSWISH_H
 
 #include "core/Kernel.h"
 #include "core/KernelParams.h"
@@ -25,23 +25,19 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class LogicalAnd : public Kernel
+class HardSwish : public Kernel
 {
 public:
-  LogicalAnd(const Tensor *input1, const Tensor *input2, Tensor *output);
+  HardSwish(const Tensor *input, Tensor *output);
 
-  const Tensor *input1() const { return _inputs[0]; }
-  const Tensor *input2() const { return _inputs[1]; }
+  const Tensor *input() const { return _inputs[0]; }
   Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
   void execute() const override;
-
-private:
-  inline void evalLogicalAnd() const;
 };
 
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_LOGICALAND_H
+#endif // LUCI_INTERPRETER_KERNELS_HARDSWISH_H

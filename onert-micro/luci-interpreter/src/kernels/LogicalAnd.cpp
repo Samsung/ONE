@@ -14,50 +14,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "kernels/LogicalAnd.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "TISOKernel.h"
 
-#include "kernels/BinaryOpCommon.h"
+#include "PALLogicalCommon.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+namespace
 {
+bool LogicalAnd(bool x, bool y) { return x && y; }
+} // namespace
 
-LogicalAnd::LogicalAnd(const Tensor *input1, const Tensor *input2, Tensor *output)
-  : Kernel({input1, input2}, {output})
+void configure_kernel_CircleLogicalAnd(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) == DataType::BOOL);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::BOOL);
+
+  // TODO support broadcast
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input1()) ==
+                         Tensor::num_elements(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) == Tensor::num_dims(kernel.input2()));
 }
 
-void LogicalAnd::configure()
+// TODO: add inplace
+// TODO: reduce code duplication with LogicalOr
+void execute_kernel_CircleLogicalAnd(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type());
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type());
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  auto x_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(kernel.input1()));
+  if (x_data == nullptr)
+    x_data = kernels::getTensorData<bool>(runtime_graph->getConstDataByTensor(kernel.input1()));
+
+  assert(x_data != nullptr);
+
+  auto y_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(kernel.input2()));
+  if (y_data == nullptr)
+    y_data = kernels::getTensorData<bool>(runtime_graph->getConstDataByTensor(kernel.input2()));
+
+  assert(y_data != nullptr);
+
+  auto output_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(kernel.output()));
+
+  const int64_t flat_size = kernels::getTensorShape(kernel.input1()).flatSize();
+  luci_interpreter_pal::LogicalCommon(flat_size, x_data, y_data, output_data, LogicalAnd);
 }
 
-void LogicalAnd::execute() const
-{
-  switch (input1()->element_type())
-  {
-    case DataType::BOOL:
-      evalLogicalAnd();
-      break;
-    default:
-      assert(false && "Unsupported type.");
-  }
-}
-
-inline void LogicalAnd::evalLogicalAnd() const
-{
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<bool>(input1()),
-                        getTensorShape(input2()), getTensorData<bool>(input2()),
-                        getTensorShape(output()), getTensorData<bool>(output()),
-                        [](bool x, bool y) { return x && y; });
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
