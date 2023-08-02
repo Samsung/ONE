@@ -18,6 +18,7 @@
 
 #include "ops/ConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
+#include "ops/FullyConnectedLayer.h"
 #include "ops/LossLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
@@ -74,6 +75,15 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
 }
+
+std::unique_ptr<ops::GradientApplier>
+generateGradientApplier(const std::shared_ptr<exec::train::optimizer::Optimizer> optimizer,
+                        const IPortableTensor *grad, ITrainableTensor *trainable)
+{
+  auto update_fn = std::make_unique<ops::GradientApplier>();
+  update_fn->configure(optimizer, grad, trainable);
+  return update_fn;
+}
 } // namespace
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
@@ -85,8 +95,9 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   assert(_return_fn);
   ret->append(std::move(_return_fn));
 
-  if (_update_fn)
-    ret->append(std::move(_update_fn));
+  for (auto &&update_fn : _update_funcs)
+    ret->append(std::move(update_fn));
+  _update_funcs.clear();
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
@@ -110,7 +121,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg},
-    _external_context(external_context), _optimizer{optimizer}, _update_fn{nullptr}
+    _external_context(external_context), _optimizer{optimizer}, _update_funcs{}
 {
   // DO NOTHING
 }
@@ -129,7 +140,7 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 
   update_fn->configure(_optimizer, grad_tensor, ker_tensor);
 
-  _update_fn = std::move(update_fn);
+  _update_funcs.emplace_back(generateGradientApplier(_optimizer, grad_tensor, ker_tensor));
 }
 
 void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
@@ -152,6 +163,44 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
                 convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
+{
+  using ir::train::operation::FullyConnected;
+
+  const auto out_index{node.getOutputs().at(0)};
+  const auto in_index{node.getInputs().at(FullyConnected::Input::INPUT)};
+  const auto weights_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
+  const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
+
+  auto out_tensor = _tensor_reg->getPortableTensor(out_index);
+  auto in_tensor = _tensor_reg->getPortableTensor(in_index);
+  auto weights_tensor = _tensor_reg->getTrainableTensor(weights_index);
+  auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
+
+  auto out_deriv_tensor = _tensor_reg->getDerivativeTensor(out_index);
+  auto in_deriv_tensor = _tensor_reg->getDerivativeTensor(in_index);
+  auto weights_grad_tensor = _tensor_reg->getGradientTensor(weights_index);
+  auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
+
+  // Generate kernel
+  const auto activation = node.param().activation;
+  const auto weights_format = node.param().weights_format;
+
+  auto fn = std::make_unique<ops::FullyConnectedLayer>();
+
+  fn->configure(in_tensor, weights_tensor, bias_tensor, out_tensor, in_deriv_tensor,
+                weights_grad_tensor, bias_grad_tensor, out_deriv_tensor, activation, weights_format,
+                _external_context);
+
+  _return_fn = std::move(fn);
+
+  // Generate GradientAppliers
+  if (bias_tensor)
+    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
+  _update_funcs.emplace_back(
+    generateGradientApplier(_optimizer, weights_grad_tensor, weights_tensor));
 }
 
 void KernelGenerator::visit(const ir::train::operation::Loss &node)

@@ -37,6 +37,20 @@ inline void ReLU(const Shape &input_shape, const float *input_data, const Shape 
   output_map = input_map.cwiseMax(0.0f);
 }
 
+inline void ReLUGrad(const Shape &output_shape, const float *output_data,
+                     const Shape &incoming_shape, const float *incoming_data,
+                     const Shape &grad_shape, float *grad_data)
+{
+  const auto output_map = MapAsVector(output_data, output_shape);
+  const auto incoming_map = MapAsVector(incoming_data, incoming_shape);
+  auto grad_map = MapAsVector(grad_data, grad_shape);
+
+  if (output_shape == incoming_shape && output_shape == grad_shape)
+    grad_map.array() = incoming_map.array() * (output_map.array() > 0.0f).template cast<float>();
+  else
+    throw std::runtime_error("cker::ReLUGrad: Unsupported shape");
+}
+
 } // namespace cker
 } // namespace nnfw
 
