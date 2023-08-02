@@ -1356,8 +1356,14 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
   return NNFW_STATUS_NO_ERROR;
 }
 
-float nnfw_session::train_get_loss(uint32_t index)
+NNFW_STATUS nnfw_session::train_get_loss(uint32_t index, float *loss)
 {
+  if (loss == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_get_loss : loss is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
   if (!isStateFinishedTraining())
   {
     std::cerr << "Error during nnfw_session::train_get_loss : invalid state" << std::endl;
@@ -1369,7 +1375,7 @@ float nnfw_session::train_get_loss(uint32_t index)
   (void)index;
 
   // NYI
-  throw std::runtime_error{"Return loss: Not implemented yet"};
+  return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_export_circle(const char *path)
