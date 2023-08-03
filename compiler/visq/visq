@@ -129,12 +129,14 @@ def _run_dalgona(model, data, analysis, save_dir):
 
 # Generate h5 file that contains a dataset of a single batch
 # This is for batch execution of visq
-def gen_batch_h5(inputs_data, inputs_path):
+def gen_batch_h5(inputs_data, inputs_path, rawData):
     # Create h5 file
     output_path = inputs_path + "/inputs.h5"
     h5_file = h5.File(output_path, 'w')
     group = h5_file.create_group("value")
     group.attrs['desc'] = "Input data"
+    if rawData:
+        group.attrs['rawData'] = '1'
 
     for i in range(len(inputs_data)):
         sample = group.create_group(str(i))
@@ -167,22 +169,23 @@ def _run_batch(fp32_model, fq_model, data, computers, batch_size):
     with tempfile.TemporaryDirectory() as inputs_dir:
         with h5.File(data, 'r') as f:
             dataset = f['value']
-
+            rawData = dataset.attrs.__contains__(
+                'rawData') and dataset.attrs['rawData'] == '1'
             inputs = []
             for data_index in dataset:
                 cur_inputs = []
                 for input_index in dataset[data_index]:
                     d = dataset[data_index][input_index][:]
-                    cur_inputs.append(np.array(d, np.float32))
+                    cur_inputs.append(d)
 
                 inputs.append(cur_inputs)
                 if len(inputs) >= batch_size:
-                    input_path = gen_batch_h5(inputs, inputs_dir)
+                    input_path = gen_batch_h5(inputs, inputs_dir, rawData)
                     advance_on_data(fp32_model, fq_model, input_path, computers)
                     inputs = []
 
             if len(inputs) > 0:
-                input_path = gen_batch_h5(inputs, inputs_dir)
+                input_path = gen_batch_h5(inputs, inputs_dir, rawData)
                 advance_on_data(fp32_model, fq_model, input_path, computers)
 
 
