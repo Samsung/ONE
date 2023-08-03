@@ -134,7 +134,7 @@ def safemain(main, mainpath):
         sys.exit(255)
 
 
-def run(cmd, err_prefix=None, logfile=None):
+def run(cmd, err_prefix=None, logfile=None, env=None):
     """Execute command in subprocess
 
     Args:
@@ -142,7 +142,8 @@ def run(cmd, err_prefix=None, logfile=None):
         err_prefix: prefix to be put before every stderr lines
         logfile: file stream to which both of stdout and stderr lines will be written
     """
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
+    with subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env) as p:
         import select
         inputs = set([p.stdout, p.stderr])
         while inputs:
