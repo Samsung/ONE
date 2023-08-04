@@ -54,7 +54,7 @@ private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
-  std::unique_ptr<exec::train::ITrainableFunction> _update_fn;
+  std::vector<std::unique_ptr<exec::train::ITrainableFunction>> _update_funcs;
 };
 
 } // namespace train
