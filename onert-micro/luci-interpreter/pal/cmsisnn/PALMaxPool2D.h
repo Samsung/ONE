@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +15,14 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_FILL_H
-#define LUCI_INTERPRETER_PAL_FILL_H
+#ifndef LUCI_INTERPRETER_PAL_MAX_POOL_2D_H
+#define LUCI_INTERPRETER_PAL_MAX_POOL_2D_H
 
-#include "PALreference_ops.h"
+#include "PALMaxPool2DCommon.h"
 
-#endif // LUCI_INTERPRETER_PAL_FILL_H
+namespace luci_interpreter_pal
+{
+// TODO: Add INT8, INT16 kernels
+} // namespace luci_interpreter_pal
+
+#endif // LUCI_INTERPRETER_PAL_MAX_POOL_2D_H

@@ -158,18 +158,14 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *filter,
 
 void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *filter,
                              const circle::Tensor *bias, const circle::Tensor *output,
-                             const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph)
+                             const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph,
+                             DataType type)
 {
   auto *raw_input_data = runtime_graph->getDataByTensor(input);
   auto *raw_output_data = runtime_graph->getDataByTensor(output);
 
   auto *raw_filter_data = runtime_graph->getConstDataByTensor(filter);
   auto *raw_bias_data = runtime_graph->getConstDataByTensor(bias);
-
-  const auto *input_data = kernels::getTensorData<uint8_t>(raw_input_data);
-  const auto *filter_data = kernels::getTensorData<uint8_t>(raw_filter_data);
-  const auto *bias_data = kernels::getTensorData<int32_t>(raw_bias_data);
-  auto *output_data = kernels::getTensorData<uint8_t>(raw_output_data);
 
   const int32_t batches = Tensor::dim(input, 0);
   const int32_t input_height = Tensor::dim(input, 1);
@@ -193,6 +189,58 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
 
   const std::vector<double> effective_output_scale = kernels::getQuantizedConvolutionMultiplers(
     Tensor::scale(input), Tensor::scales(filter), Tensor::scale(output));
+
+  if (type == DataType::S8)
+  {
+    luci_interpreter_pal::ConvParams params;
+
+    params.padding_values.height = compute_padding_h(input, filter, options);
+    params.padding_values.width = compute_padding_w(input, filter, options);
+    params.stride_height = stride_height;
+    params.stride_width = stride_width;
+    params.dilation_height_factor = dilation_height_factor;
+    params.dilation_width_factor = dilation_width_factor;
+    // The kernel expects input and filter zero points to be negated.
+    params.input_offset = -Tensor::zero_point(input);    // Note the '-'.
+    params.weights_offset = -Tensor::zero_point(filter); // Note the '-'.
+    params.output_offset = Tensor::zero_point(output);
+    params.quantized_activation_min = activation_min;
+    params.quantized_activation_max = activation_max;
+
+    int32_t input_shape[kMaxSmallSize];
+    kernels::getTensorDims(input, runtime_graph, input_shape);
+
+    int32_t filter_shape[kMaxSmallSize];
+    kernels::getTensorDims(filter, runtime_graph, filter_shape);
+
+    int32_t output_shape[kMaxSmallSize];
+    kernels::getTensorDims(output, runtime_graph, output_shape);
+
+    size_t n = effective_output_scale.size();
+    params.per_channel_output_shift.resize(n);
+    params.per_channel_output_multiplier.resize(n);
+    for (size_t i = 0; i < n; ++i)
+    {
+      kernels::quantizeMultiplier(effective_output_scale[i],
+                                  &params.per_channel_output_multiplier[i],
+                                  &params.per_channel_output_shift[i]);
+    }
+
+    luci_interpreter_pal::QuantizedConvPerChannel(
+      params, input_shape, kernels::getTensorData<int8_t>(raw_input_data), filter_shape,
+      kernels::getTensorData<int8_t>(raw_filter_data),
+      kernels::getTensorData<int32_t>(raw_bias_data), output_shape,
+      kernels::getTensorData<int8_t>(raw_output_data));
+
+    return;
+  }
+
+  // Type U8
+
+  const auto *input_data = kernels::getTensorData<uint8_t>(raw_input_data);
+  const auto *filter_data = kernels::getTensorData<uint8_t>(raw_filter_data);
+  const auto *bias_data = kernels::getTensorData<int32_t>(raw_bias_data);
+  auto *output_data = kernels::getTensorData<uint8_t>(raw_output_data);
 
   const std::vector<kernels::ChannelQuantMultipliers> multipliers_raw =
     kernels::quantizeMultipliers(effective_output_scale);
@@ -354,7 +402,8 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
 
   const auto *options = cur_op->builtin_options_as_Conv2DOptions();
 
-  switch (Tensor::element_type(input))
+  const auto type = Tensor::element_type(input);
+  switch (type)
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
@@ -366,7 +415,8 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
     case DataType::U8:
-      if (Tensor::scales(weights).size() == 1)
+    case DataType::S8:
+      if (Tensor::scales(weights).size() == 1 and type == DataType::U8)
       {
         evalQuantized(input, weights, bias, output, options, runtime_graph);
       }
@@ -375,7 +425,11 @@ void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGrap
         LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights) == 4);
         LUCI_INTERPRETER_CHECK(Tensor::scales(weights).size() ==
                                static_cast<size_t>(Tensor::dim(weights, 0)));
-        evalQuantizedPerChannel(input, weights, bias, output, options, runtime_graph);
+        evalQuantizedPerChannel(input, weights, bias, output, options, runtime_graph, type);
+      }
+      else
+      {
+        assert(false && "Unsupported yet.");
       }
       break;
 #endif // DIS_QUANT

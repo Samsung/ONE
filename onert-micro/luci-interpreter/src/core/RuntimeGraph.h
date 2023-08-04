@@ -81,6 +81,8 @@ public:
   int32_t getNumOfInputTensors();
   int32_t getNumOfOutputTensors();
 
+  const circle::Tensor *findIntermediateTensor();
+
   const circle::Tensor *getInputTensorByIndex(int32_t input_index);
   const circle::Tensor *getOutputTensorByIndex(int32_t input_index);
 

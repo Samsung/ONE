@@ -368,6 +368,23 @@ void RuntimeGraph::makeInplaceOperation(const circle::Tensor *removing_tensor,
   _tensor_to_data[dst_tensor] = data;
 }
 
+const circle::Tensor *RuntimeGraph::findIntermediateTensor()
+{
+  for (uint32_t i = 0; i < _reader->tensors().size(); ++i)
+  {
+    const auto tensor = _reader->tensors().at(i);
+    const auto dims = wrap(tensor->shape()); // in NHWC
+    if (dims.empty())
+      continue;
+
+    const auto size = Tensor::num_elements(tensor);
+    if (size == 0 and tensor->quantization() != nullptr)
+      return tensor;
+  }
+
+  return nullptr;
+}
+
 uint8_t *RuntimeGraph::getConstDataByTensor(const circle::Tensor *raw_tensor)
 {
   assert(_reader->get_current_subgraph_index() == _subgraph_index);

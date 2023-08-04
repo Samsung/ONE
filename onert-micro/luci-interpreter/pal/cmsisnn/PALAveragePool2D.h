@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_FILL_H
-#define LUCI_INTERPRETER_PAL_FILL_H
+#ifndef LUCI_INTERPRETER_PAL_AVERAGE_POOL_2D_H
+#define LUCI_INTERPRETER_PAL_AVERAGE_POOL_2D_H
 
-#include "PALreference_ops.h"
+#include "PALAveragePool2DCommon.h"
 
-#endif // LUCI_INTERPRETER_PAL_FILL_H
+namespace luci_interpreter_pal
+{
+// TODO: add S8 and S16 kernel
+} // namespace luci_interpreter_pal
+
+#endif // LUCI_INTERPRETER_PAL_AVERAGE_POOL_2D_H

@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_SOFTMAX_H
-#define LUCI_INTERPRETER_PAL_SOFTMAX_H
-
-//#include <tensorflow/lite/kernels/internal/reference/softmax.h>
+#ifndef LUCI_INTERPRETER_PAL_SOFTMAX_COMMON_H
+#define LUCI_INTERPRETER_PAL_SOFTMAX_COMMON_H
 
 namespace luci_interpreter_pal
 {
@@ -77,4 +75,4 @@ inline void Softmax(const double beta, const luci_interpreter::RuntimeShape &inp
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_SOFTMAX_H
+#endif // LUCI_INTERPRETER_PAL_SOFTMAX_COMMON_H

@@ -26,20 +26,6 @@ namespace
 {
 
 #ifndef DIS_QUANT
-
-bool checkedLog2(const float x, int *log2_result)
-{
-  // Using TfLiteRound instead of std::round and std::log instead of
-  // std::log2 to work around these functions being missing in a toolchain
-  // used in some TensorFlow tests as of May 2018.
-  const float x_log2 = std::log(x) * (1.0f / std::log(2.0f));
-  const float x_log2_rounded = std::round(x_log2);
-  const float x_log2_fracpart = x_log2 - x_log2_rounded;
-
-  *log2_result = static_cast<int>(x_log2_rounded);
-  return std::abs(x_log2_fracpart) < 1e-3f;
-}
-
 // Create parameters for element wise multiplication that happens in a) cell
 // state update ; b) hidden state update
 // Note that all the output of gates are symmetrically quantized so only scales
@@ -189,7 +175,7 @@ lstm::CellStateInfo createLstmCellStateInfo(const float cell_state_scale, const 
   lstm::CellStateInfo cell_state_info;
   // cell_state_scale_power: 2^-cell_state_scale_power = cell state scale
   int buffer;
-  checkedLog2(cell_state_scale, &buffer);
+  kernels::checkedLog2(cell_state_scale, &buffer);
   cell_state_info.cell_state_scale_power = buffer;
   // Cell state specifics
   cell_state_info.cell_clip = cell_clip;

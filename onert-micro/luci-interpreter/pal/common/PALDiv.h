@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_DIV_H
-#define LUCI_INTERPRETER_PAL_DIV_H
+#ifndef LUCI_INTERPRETER_PAL_DIV_COMMON_H
+#define LUCI_INTERPRETER_PAL_DIV_COMMON_H
 
 #include "Params.h"
 #include "PALUtils.h"
@@ -112,4 +112,4 @@ BroadcastDiv4DSlow(const ArithmeticParams &params,
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_DIV_H
+#endif // LUCI_INTERPRETER_PAL_DIV_COMMON_H
