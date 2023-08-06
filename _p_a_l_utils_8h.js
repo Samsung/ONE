@@ -3,6 +3,7 @@ var _p_a_l_utils_8h =
     [ "getActivationParams", "_p_a_l_utils_8h.html#aca8a4aba675fd48ae37ec34f7e31a49c", null ],
     [ "getActivationParams", "_p_a_l_utils_8h.html#a53161f1e64fad4c5bd9aee2c604e0b49", null ],
     [ "getActivationParams", "_p_a_l_utils_8h.html#aa52b9e0d9ebe22ff803fb7d7b9bb2a23", null ],
+    [ "MatchingDim", "_p_a_l_utils_8h.html#a3dce3fbb008d83114b4d3d522e703351", null ],
     [ "multiplyByQuantizedMultiplier", "_p_a_l_utils_8h.html#ac3ee0c8ca70c8d44a56e11122d5834fa", null ],
     [ "multiplyByQuantizedMultiplierSmallerThanOneExp", "_p_a_l_utils_8h.html#a3c9ea1f3c2ba5b0bf4c532038944d57b", null ],
     [ "nextIndex", "_p_a_l_utils_8h.html#a5e63d69906e6cf5b21554e36ce52adad", null ],

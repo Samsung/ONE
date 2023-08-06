@@ -825,10 +825,10 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span> </div>
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>  train::TensorRegistries tensor_regs{tbackend_contexts, <span class="keyword">true</span>};</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span> </div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>  <span class="comment">// NOTE Outputs of trainable graph cannot be IOTensor. They will be built by the owned backend.</span></div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>  initializeSubgraphIOTensors(*lowered_graph, tbackend_contexts,</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>                              lowered_graph-&gt;graph().getInputs() | ir::Remove::DUPLICATED |</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>                                ir::Remove::UNDEFINED);</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>  initializeSubgraphIOTensors(</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>    *lowered_graph, tbackend_contexts,</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>    (lowered_graph-&gt;graph().getInputs() + lowered_graph-&gt;graph().getOutputs()) |</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span> </div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>  <span class="comment">// linearize</span></div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>  <span class="keyword">auto</span> order = Linear::linearize(*lowered_graph);</div>
@@ -933,7 +933,7 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    assert(std::all_of(lowered_graph-&gt;trainable_graph().getOutputs().begin(),</div>
 <div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>                       lowered_graph-&gt;trainable_graph().getOutputs().end(),</div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>                       [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx) {</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>                         return tensor_regs.getDerivativeITensor(output_idx) != nullptr;</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>                         return tensor_regs.getDerivativeITensor(output_idx) == nullptr;</div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>                       }));</div>
 <div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>  }</div>
 <div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span> </div>

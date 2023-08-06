@@ -47,6 +47,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "Gelu", "classluci__interpreter_1_1kernels_1_1_gelu.html", "classluci__interpreter_1_1kernels_1_1_gelu" ],
     [ "Greater", "classluci__interpreter_1_1kernels_1_1_greater.html", "classluci__interpreter_1_1kernels_1_1_greater" ],
     [ "GreaterEqual", "classluci__interpreter_1_1kernels_1_1_greater_equal.html", "classluci__interpreter_1_1kernels_1_1_greater_equal" ],
+    [ "HardSwish", "classluci__interpreter_1_1kernels_1_1_hard_swish.html", "classluci__interpreter_1_1kernels_1_1_hard_swish" ],
     [ "If", "classluci__interpreter_1_1kernels_1_1_if.html", "classluci__interpreter_1_1kernels_1_1_if" ],
     [ "InstanceNorm", "classluci__interpreter_1_1kernels_1_1_instance_norm.html", "classluci__interpreter_1_1kernels_1_1_instance_norm" ],
     [ "L2Normalize", "classluci__interpreter_1_1kernels_1_1_l2_normalize.html", "classluci__interpreter_1_1kernels_1_1_l2_normalize" ],

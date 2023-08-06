@@ -57,7 +57,7 @@ var searchData=
   ['permutation_3c_20domain_3a_3afilter_20_3e_54',['Permutation&lt; Domain::Filter &gt;',['../classloco_1_1_permutation_3_01_domain_1_1_filter_01_4.html',1,'loco']]],
   ['permutation_3c_20domain_3a_3amatrix_20_3e_55',['Permutation&lt; Domain::Matrix &gt;',['../classloco_1_1_permutation_3_01_domain_1_1_matrix_01_4.html',1,'loco']]],
   ['permutationeliminationpass_56',['PermutationEliminationPass',['../classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html',1,'onert::compiler::pass']]],
-  ['permutationinsertionpass_57',['PermutationInsertionPass',['../classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html',1,'onert::compiler::pass::PermutationInsertionPass'],['../classonert_1_1compiler_1_1train_1_1pass_1_1_permutation_insertion_pass.html',1,'onert::compiler::train::pass::PermutationInsertionPass']]],
+  ['permutationinsertionpass_57',['PermutationInsertionPass',['../classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html',1,'onert::compiler::pass']]],
   ['permutationoperationpass_58',['PermutationOperationPass',['../classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html',1,'onert::compiler::pass']]],
   ['permute_59',['Permute',['../classonert_1_1ir_1_1operation_1_1_permute.html',1,'onert::ir::operation::Permute'],['../classonert_1_1ir_1_1train_1_1operation_1_1_permute.html',1,'onert::ir::train::operation::Permute']]],
   ['permutefactor_60',['PermuteFactor',['../classonert_1_1compiler_1_1_permute_factor.html',1,'onert::compiler']]],

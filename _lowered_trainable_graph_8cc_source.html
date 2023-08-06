@@ -115,11 +115,11 @@ $(document).ready(function(){initNavTree('_lowered_trainable_graph_8cc_source.ht
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;../pass/ConstantLoweringPass.h&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;../pass/PassRunner.h&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;../pass/PermutationEliminationPass.h&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;../pass/PermutationOperationPass.h&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;../../backend/builtin/Config.h&quot;</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;../../dumper/text/GraphDumper.h&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;../../ir/verifier/Verifier.h&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;pass/PermutationInsertionPass.h&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;../pass/PermutationInsertionPass.h&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;../pass/PermutationOperationPass.h&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;../../backend/builtin/Config.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;../../dumper/text/GraphDumper.h&quot;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;../../ir/verifier/Verifier.h&quot;</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;<a class="code" href="_trainable_operation_converter_8h.html">TrainableOperationConverter.h</a>&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2include_2backend_2_backend_8h.html">backend/Backend.h</a>&quot;</span></div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('_lowered_trainable_graph_8cc_source.ht
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    .append(std::make_unique&lt;compiler::pass::ConstantInsertionPass&gt;(*<span class="keyword">this</span>))</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    .append(std::make_unique&lt;compiler::pass::ConstantLoweringPass&gt;(*<span class="keyword">this</span>))</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    .append(std::make_unique&lt;compiler::pass::PermutationOperationPass&gt;(*<span class="keyword">this</span>))</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    .append(std::make_unique&lt;compiler::train::pass::PermutationInsertionPass&gt;(*<span class="keyword">this</span>))</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    .append(std::make_unique&lt;compiler::pass::PermutationInsertionPass&gt;(*<span class="keyword">this</span>))</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    .run();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="comment">// TODO Move converting Permute op into PermutationInsertionPass</span></div>

@@ -317,44 +317,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00139">139</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
-<div class="line"><span class="lineno">  141</span>  <span class="comment">// For thread-safe, use mutex</span></div>
-<div class="line"><span class="lineno">  142</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
-<div class="line"><span class="lineno">  143</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
-<div class="line"><span class="lineno">  144</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>  <span class="comment">// TODO Update IO tensors if desc has dynamic input</span></div>
-<div class="line"><span class="lineno">  147</span>  <span class="comment">// Set input(s)</span></div>
-<div class="line"><span class="lineno">  148</span>  assert(_input_tensors.size() == desc.inputs.size());</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _input_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _input_tensors[i];</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>    <span class="comment">// TODO Check if (desc.inputs[i] == nullptr)</span></div>
-<div class="line"><span class="lineno">  154</span>    <span class="comment">// TODO Better design for ITensor? (we need const_cast as ITensor is writable)</span></div>
-<div class="line"><span class="lineno">  155</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setUserTensor(<span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<span class="keyword">const_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(desc.inputs[i]-&gt;buffer)),</div>
-<div class="line"><span class="lineno">  156</span>                          desc.inputs[i]-&gt;size);</div>
-<div class="line"><span class="lineno">  157</span>  }</div>
-<div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>  <span class="comment">// Set output(s)</span></div>
-<div class="line"><span class="lineno">  160</span>  assert(_output_tensors.size() == desc.outputs.size());</div>
-<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">  162</span>  {</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _output_tensors[i];</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">if</span> (desc.outputs[i] == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  166</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Output &quot;</span> + std::to_string(i) + <span class="stringliteral">&quot;&#39;s buffer is not set.&quot;</span>};</div>
-<div class="line"><span class="lineno">  167</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setUserTensor(<span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(desc.outputs[i]-&gt;buffer), desc.outputs[i]-&gt;size);</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  backwardImpl(training_step);</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
-<div class="line"><span class="lineno">  173</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00142">142</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
+<div class="line"><span class="lineno">  144</span>  <span class="comment">// For thread-safe, use mutex</span></div>
+<div class="line"><span class="lineno">  145</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
+<div class="line"><span class="lineno">  146</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
+<div class="line"><span class="lineno">  147</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>  backwardImpl(training_step);</div>
+<div class="line"><span class="lineno">  150</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_o_description_8h_source.html#l00064">onert::exec::IODescription::inputs</a>, and <a class="el" href="_i_o_description_8h_source.html#l00065">onert::exec::IODescription::outputs</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00070">onert::exec::train::TrainableExecutors::train()</a>.</p>
 
 </div>
@@ -501,21 +473,24 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>                          desc.inputs[i]-&gt;size);</div>
 <div class="line"><span class="lineno">   84</span>  }</div>
 <div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <span class="comment">// Set output(s)</span></div>
-<div class="line"><span class="lineno">   87</span>  assert(_output_tensors.size() == desc.outputs.size());</div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _output_tensors[i];</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (desc.outputs[i] == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Output &quot;</span> + std::to_string(i) + <span class="stringliteral">&quot;&#39;s buffer is not set.&quot;</span>};</div>
-<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setUserTensor(<span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(desc.outputs[i]-&gt;buffer), desc.outputs[i]-&gt;size);</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  forwardImpl(training);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">if</span> (!training)</div>
+<div class="line"><span class="lineno">   87</span>  {</div>
+<div class="line"><span class="lineno">   88</span>    <span class="comment">// Set output(s)</span></div>
+<div class="line"><span class="lineno">   89</span>    assert(_output_tensors.size() == desc.outputs.size());</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_tensors.size(); ++i)</div>
+<div class="line"><span class="lineno">   91</span>    {</div>
+<div class="line"><span class="lineno">   92</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _output_tensors[i];</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>      <span class="keywordflow">if</span> (desc.outputs[i] == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Output &quot;</span> + std::to_string(i) + <span class="stringliteral">&quot;&#39;s buffer is not set.&quot;</span>};</div>
+<div class="line"><span class="lineno">   96</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setUserTensor(<span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(desc.outputs[i]-&gt;buffer), desc.outputs[i]-&gt;size);</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  forwardImpl(training);</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
+<div class="line"><span class="lineno">  103</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_o_description_8h_source.html#l00064">onert::exec::IODescription::inputs</a>, and <a class="el" href="_i_o_description_8h_source.html#l00065">onert::exec::IODescription::outputs</a>.</p>
 

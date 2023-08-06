@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_padding_base.html" title=" " alt="" coords="5,5,213,31"/>
-<area shape="rect" id="node2" href="$struct_spatial_padding.html" title="A SpatialPadding denotes padding values for each &quot;spatial&quot; dimension." alt="" coords="261,5,371,31"/>
+<area shape="rect" id="node1" href="$class_padding_base.html" title=" " alt="" coords="5,5,200,31"/>
+<area shape="rect" id="node2" href="$struct_raw_padding.html" title="A RawPadding denotes padding values stored in Caffe model." alt="" coords="248,5,343,31"/>
 </map>

@@ -1450,73 +1450,79 @@ $(document).ready(function(){initNavTree('nnfw__api__internal_8cc_source.html','
 <div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
 <div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>}</div>
 <div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span> </div>
-<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span><span class="keywordtype">float</span> nnfw_session::train_get_loss(uint32_t index)</div>
+<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span><a class="code hl_enumeration" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::train_get_loss(uint32_t index, <span class="keywordtype">float</span> *loss)</div>
 <div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>{</div>
-<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>  <span class="keywordflow">if</span> (!isStateFinishedTraining())</div>
+<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>  <span class="keywordflow">if</span> (loss == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>  {</div>
-<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_get_loss : invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_get_loss : loss is null&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>  }</div>
 <div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span> </div>
-<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>  <span class="comment">// Check index is valid: [0, getExpectedSize())</span></div>
-<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span> </div>
-<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>  (void)index;</div>
-<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span> </div>
-<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Return loss: Not implemented yet&quot;</span>};</div>
-<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>}</div>
+<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>  <span class="keywordflow">if</span> (!isStateFinishedTraining())</div>
+<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>  {</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_get_loss : invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>  }</div>
+<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span> </div>
+<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>  <span class="comment">// Check index is valid: [0, getExpectedSize())</span></div>
 <div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span> </div>
-<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span><a class="code hl_enumeration" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::train_export_circle(<span class="keyword">const</span> <span class="keywordtype">char</span> *path)</div>
-<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>{</div>
-<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>  <span class="keywordflow">if</span> (path == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>  {</div>
-<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : path is null&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
-<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>  }</div>
-<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span> </div>
-<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>  <span class="comment">// Check training mode is enabled</span></div>
-<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>  <span class="keywordflow">if</span> (!isStateFinishedTraining())</div>
-<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>  {</div>
-<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  }</div>
-<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span> </div>
-<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>  <span class="comment">// NYI</span></div>
-<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>}</div>
-<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span> </div>
-<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span><span class="keywordtype">bool</span> nnfw_session::isStatePreparedTraining()</div>
-<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>{</div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  <span class="keywordflow">if</span> (_state == State::PREPARED_TRAINING)</div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>  {</div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>    assert(_nnpkg == <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span>    assert(!_coptions.empty());</div>
-<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>    assert(_execution != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  }</div>
-<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>}</div>
-<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span> </div>
-<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span><span class="keywordtype">bool</span> nnfw_session::isStateFinishedTraining()</div>
-<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>{</div>
-<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>  <span class="keywordflow">if</span> (_state == State::FINISHED_TRAINING)</div>
-<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>  {</div>
-<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>    assert(_nnpkg == <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>    assert(!_coptions.empty());</div>
-<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>    assert(_execution != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>  }</div>
-<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>}</div>
-<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span> </div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span><span class="keywordtype">bool</span> nnfw_session::isStatePreparedOrFinishedTraining()</div>
-<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>{</div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>  <span class="keywordflow">return</span> isStatePreparedTraining() || isStateFinishedTraining();</div>
-<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>}</div>
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span> </div>
-<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>  (void)index;</div>
+<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span> </div>
+<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>}</div>
+<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span> </div>
+<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span><a class="code hl_enumeration" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::train_export_circle(<span class="keyword">const</span> <span class="keywordtype">char</span> *path)</div>
+<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span>{</div>
+<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>  <span class="keywordflow">if</span> (path == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>  {</div>
+<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : path is null&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>  }</div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span> </div>
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>  <span class="comment">// Check training mode is enabled</span></div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>  <span class="keywordflow">if</span> (!isStateFinishedTraining())</div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>  {</div>
+<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>  }</div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span> </div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  <span class="comment">// NYI</span></div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>}</div>
+<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span> </div>
+<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span><span class="keywordtype">bool</span> nnfw_session::isStatePreparedTraining()</div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>{</div>
+<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  <span class="keywordflow">if</span> (_state == State::PREPARED_TRAINING)</div>
+<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>  {</div>
+<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>    assert(_nnpkg == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>    assert(!_coptions.empty());</div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>    assert(_execution != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>  }</div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>}</div>
+<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span> </div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span><span class="keywordtype">bool</span> nnfw_session::isStateFinishedTraining()</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>{</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>  <span class="keywordflow">if</span> (_state == State::FINISHED_TRAINING)</div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>  {</div>
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>    assert(_nnpkg == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>    assert(!_coptions.empty());</div>
+<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>    assert(_execution != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>  }</div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>}</div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span> </div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span><span class="keywordtype">bool</span> nnfw_session::isStatePreparedOrFinishedTraining()</div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>{</div>
+<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>  <span class="keywordflow">return</span> isStatePreparedTraining() || isStateFinishedTraining();</div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>}</div>
+<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span> </div>
+<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
 <div class="ttc" id="a_compiler_factory_8h_html"><div class="ttname"><a href="_compiler_factory_8h.html">CompilerFactory.h</a></div></div>
 <div class="ttc" id="a_custom_kernel_registry_8h_html"><div class="ttname"><a href="_custom_kernel_registry_8h.html">CustomKernelRegistry.h</a></div></div>
 <div class="ttc" id="a_exceptions_8h_html"><div class="ttname"><a href="_exceptions_8h.html">Exceptions.h</a></div></div>

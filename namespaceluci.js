@@ -130,6 +130,7 @@ var namespaceluci =
     [ "CircleGreaterGraphBuilder", "classluci_1_1_circle_greater_graph_builder.html", "classluci_1_1_circle_greater_graph_builder" ],
     [ "CircleGreaterSummaryBuilder", "classluci_1_1_circle_greater_summary_builder.html", null ],
     [ "CircleHardSwish", "classluci_1_1_circle_hard_swish.html", "classluci_1_1_circle_hard_swish" ],
+    [ "CircleHardSwishGraphBuilder", "classluci_1_1_circle_hard_swish_graph_builder.html", "classluci_1_1_circle_hard_swish_graph_builder" ],
     [ "CircleHardSwishSummaryBuilder", "classluci_1_1_circle_hard_swish_summary_builder.html", null ],
     [ "CircleIf", "classluci_1_1_circle_if.html", "classluci_1_1_circle_if" ],
     [ "CircleIfGraphBuilder", "classluci_1_1_circle_if_graph_builder.html", "classluci_1_1_circle_if_graph_builder" ],

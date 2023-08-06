@@ -17,7 +17,7 @@ var dir_132de01d1c06e6c7d9be57d5e7d50eec =
     [ "PALNeg.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_neg_8h.html", null ],
     [ "PALQuantize.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h.html", null ],
     [ "PALreference_ops.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_lreference__ops_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_lreference__ops_8h" ],
-    [ "PALResizeBilinear.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html", null ],
+    [ "PALResizeBilinear.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h" ],
     [ "PALResizeNearestNeighbor.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h.html", null ],
     [ "PALSoftmax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h" ],
     [ "PALSpaceToBatchND.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_batch_n_d_8h.html", null ],

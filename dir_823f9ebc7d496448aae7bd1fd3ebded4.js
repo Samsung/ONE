@@ -38,6 +38,7 @@ var dir_823f9ebc7d496448aae7bd1fd3ebded4 =
     [ "CircleGelu.cpp", "import_2src_2_nodes_2_circle_gelu_8cpp.html", null ],
     [ "CircleGreater.cpp", "import_2src_2_nodes_2_circle_greater_8cpp.html", null ],
     [ "CircleGreaterEqual.cpp", "import_2src_2_nodes_2_circle_greater_equal_8cpp.html", null ],
+    [ "CircleHardSwish.cpp", "import_2src_2_nodes_2_circle_hard_swish_8cpp.html", null ],
     [ "CircleIf.cpp", "import_2src_2_nodes_2_circle_if_8cpp.html", null ],
     [ "CircleInstanceNorm.cpp", "import_2src_2_nodes_2_circle_instance_norm_8cpp.html", null ],
     [ "CircleL2Normalize.cpp", "import_2src_2_nodes_2_circle_l2_normalize_8cpp.html", null ],
