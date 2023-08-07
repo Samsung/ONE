@@ -68,7 +68,7 @@ private:
    *  @note   It uses copy of graph, not reference.
    *          It allows the original graph can be compiled multiple times.
    */
-  ir::train::TrainableGraph &_trainable_graph;
+  ir::train::TrainableGraph _trainable_graph;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   compiler::GraphLowerInfo _lower_info_map;
 };
