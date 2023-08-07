@@ -29,7 +29,14 @@ namespace train
 
 TrainableGraph::TrainableGraph() : _graph{} {}
 
-TrainableGraph::TrainableGraph(const TrainableGraph &tgraph) : _graph{tgraph.graph()} {}
+TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
+  : _graph{tgraph._graph}, _derivatives{tgraph._derivatives}
+{
+  tgraph.operations().iterate(
+    [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
+      replaceOperation(index, dynamic_cast<const ITrainableOperation &>(op).clone());
+    });
+}
 
 TrainableGraph::TrainableGraph(const Graph &graph) : _graph{graph} {}
 
