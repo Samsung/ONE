@@ -56,6 +56,7 @@ Add(FullyConnected_007 PASS replace_non_const_fc_with_batch_matmul)
 Add(FullyConnected_008 PASS replace_non_const_fc_with_batch_matmul)
 Add(Net_Gelu_000 PASS fuse_gelu)
 Add(Net_Gelu_001 PASS fuse_gelu)
+Add(Net_Decompose_HardSwish_000 PASS decompose_hardswish)
 
 ## CIRCLE RECIPE
 
