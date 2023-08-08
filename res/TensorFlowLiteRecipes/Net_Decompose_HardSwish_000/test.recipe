@@ -1,0 +1,17 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 128 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 128 }
+}
+operation {
+  type: "HardSwish"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
