@@ -144,3 +144,12 @@ TEST_F(DecomposeHardSwishPass, simple_test)
   EXPECT_NE(nullptr, add_const);
   EXPECT_FLOAT_EQ(3., add_const->at<loco::DataType::FLOAT32>(0));
 }
+
+TEST_F(DecomposeHardSwishPass, check_last_node)
+{
+  auto ret = _pass.run(&_hardswish_g._g);
+  EXPECT_TRUE(ret);
+
+  auto hardswish = dynamic_cast<luci::CircleHardSwish *>(_hardswish_g._output->from());
+  EXPECT_EQ(nullptr, hardswish);
+}
