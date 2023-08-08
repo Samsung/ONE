@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/TransformHardSwishToRelu6Pass.h"
+#include "luci/Pass/DecomposeHardSwishPass.h"
 
 #include "helpers/NodeFiller.h"
 #include "helpers/TypeMapper.h"
@@ -55,7 +55,7 @@ namespace
  *             [CircleNode]
  *
  */
-template <loco::DataType DT> bool transform_hardswish(luci::CircleHardSwish *hardswish)
+template <loco::DataType DT> bool decompose_hardswish(luci::CircleHardSwish *hardswish)
 {
   if (not hardswish)
     return false;
@@ -128,7 +128,7 @@ template <loco::DataType DT> bool transform_hardswish(luci::CircleHardSwish *har
 namespace luci
 {
 
-bool TransformHardSwishToRelu6Pass::run(loco::Graph *g)
+bool DecomposeHardSwishPass::run(loco::Graph *g)
 {
   bool changed = false;
 
@@ -136,7 +136,7 @@ bool TransformHardSwishToRelu6Pass::run(loco::Graph *g)
   {
     if (auto hardswish = dynamic_cast<luci::CircleHardSwish *>(node))
     {
-      if (transform_hardswish<loco::DataType::FLOAT32>(hardswish))
+      if (decompose_hardswish<loco::DataType::FLOAT32>(hardswish))
         changed = true;
     }
   }

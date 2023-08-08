@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_TRANSFORM_HARDSWISH_TO_RELU6_PASS_H__
-#define __LUCI_TRANSFORM_HARDSWISH_TO_RELU6_PASS_H__
+#ifndef __LUCI_DECOMPOSE_HARDSWISH_PASS_H__
+#define __LUCI_DECOMPOSE_HARDSWISH_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -23,15 +23,15 @@ namespace luci
 {
 
 /**
- * @brief  Class to transform HardSwish to Add, Mul and Relu6
+ * @brief  Class to decompose HardSwish to Add, Mul and Relu6
  */
-struct TransformHardSwishToRelu6Pass final : public logo::Pass
+struct DecomposeHardSwishPass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::TransformHardSwishToRelu6Pass"; }
+  const char *name(void) const final { return "luci::DecomposeHardSwishPass"; }
 
   bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif // __LUCI_TRANSFORM_HARDSWISH_TO_RELU6_PASS_H__
+#endif // __LUCI_DECOMPOSE_HARDSWISH_PASS_H__

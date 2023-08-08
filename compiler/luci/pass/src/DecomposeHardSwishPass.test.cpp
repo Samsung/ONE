@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/TransformHardSwishToRelu6Pass.h"
+#include "luci/Pass/DecomposeHardSwishPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -42,7 +42,7 @@ struct HardSwishGraph
   luci::CircleOutput *_output = nullptr;
 };
 
-class TransformHardSwishToRelu6PassTest : public ::testing::Test
+class DecomposeHardSwishPass : public ::testing::Test
 {
 protected:
   virtual void SetUp()
@@ -80,13 +80,13 @@ protected:
   }
 
 protected:
-  luci::TransformHardSwishToRelu6Pass _pass;
+  luci::DecomposeHardSwishPass _pass;
   HardSwishGraph _hardswish_g;
 };
 
 } // namespace
 
-TEST_F(TransformHardSwishToRelu6PassTest, name)
+TEST_F(DecomposeHardSwishPass, name)
 {
   auto const name = _pass.name();
   ASSERT_NE(nullptr, name);
@@ -113,7 +113,7 @@ TEST_F(TransformHardSwishToRelu6PassTest, name)
  *             [CircleOutput]
  *
  */
-TEST_F(TransformHardSwishToRelu6PassTest, simple_test)
+TEST_F(DecomposeHardSwishPass, simple_test)
 {
   auto ret = _pass.run(&_hardswish_g._g);
   EXPECT_TRUE(ret);
