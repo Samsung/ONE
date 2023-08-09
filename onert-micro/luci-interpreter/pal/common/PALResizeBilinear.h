@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_RESIZEBILINEAR_H
-#define LUCI_INTERPRETER_PAL_RESIZEBILINEAR_H
+#ifndef LUCI_INTERPRETER_PAL_RESIZEBILINEAR_COMMON_H
+#define LUCI_INTERPRETER_PAL_RESIZEBILINEAR_COMMON_H
 
 #include "PALUtils.h"
 
@@ -132,4 +132,4 @@ ResizeBilinear(const circle::ResizeBilinearOptions *op_params,
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_RESIZEBILINEAR_H
+#endif // LUCI_INTERPRETER_PAL_RESIZEBILINEAR_COMMON_H
