@@ -206,5 +206,10 @@ size_t Execution::getInputTotalSize(ir::IOIndex ind) const
   return _executors->inputInfo(ind).total_size();
 }
 
+size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
+{
+  return _executors->outputInfo(ind).total_size();
+}
+
 } // namespace exec
 } // namespace onert

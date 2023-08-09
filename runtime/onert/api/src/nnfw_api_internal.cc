@@ -1312,15 +1312,39 @@ NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expecte
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Check index is valid: [0, getExpectedSize())
+  if (index >= getOutputSize())
+  {
+    std::cerr << "Error during nnfw_session::train_set_expected : index is out of range"
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // Maybe it cannot use general execute->setOutput()
-  // because it needs to set training output (maybe loss)
-  (void)index;
-  (void)expected_tensorinfo;
+  try
+  {
+    auto output_ind = onert::ir::IOIndex(index);
+    auto size = _execution->getOutputTotalSize(output_ind);
+    if (expected_tensorinfo && getBufSize(expected_tensorinfo) != size)
+    {
+      std::cerr << "Error during nnfw_session::train_set_expected : invalid tensorinfo"
+                << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+    // NOTE Find the loss input index
+    // Input is added as many as the number of outputs.
+    // The loss index is calculated from the value obtained by subtracting the
+    // total output(added loss input) from the total input size.
+    auto input_index = getInputSize() - getOutputSize() + index;
+    auto input_ind = onert::ir::IOIndex(input_index);
+    _execution->setInput(input_ind, expected, size);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_set_expected : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_run(bool update_weights)
