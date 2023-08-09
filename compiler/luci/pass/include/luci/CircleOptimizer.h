@@ -81,6 +81,7 @@ public:
       RemoveUnnecessaryReshape,
       TransformMinMaxToRelu6Pass,
       TransformMinReluToRelu6Pass,
+      DecomposeHardSwishPass,
       SubstituteStridedSliceToReshape,
       SubstituteTransposeToReshape,
       RemoveRedundantQuantize,
