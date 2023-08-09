@@ -48,6 +48,11 @@ public:
     _tensor_registries = tensor_registries;
   }
 
+  void setWholeGraphOutputs(const ir::OperandIndexSequence &outputs)
+  {
+    _whole_graph_outputs = outputs;
+  }
+
 private:
   void visit(const ir::train::operation::Permute &) override;
 
@@ -59,6 +64,7 @@ private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   compiler::train::TensorRegistries _tensor_registries;
   const std::shared_ptr<ExternalContext> _external_context;
+  ir::OperandIndexSequence _whole_graph_outputs;
 };
 
 } // namespace train

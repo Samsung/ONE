@@ -762,6 +762,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     {
       auto builtin_kernel_gen = builtin_context->kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
+      builtin_kernel_gen->setWholeGraphOutputs(lowered_graph->trainable_graph().getOutputs());
     }
   }
 
