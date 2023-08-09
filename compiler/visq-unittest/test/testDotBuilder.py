@@ -15,7 +15,6 @@
 
 import unittest
 import pydot
-from pathlib import Path
 
 from visqlib.DotBuilder import DotBuilder
 from test.Resources import fp32_model_dir
