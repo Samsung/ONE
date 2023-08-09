@@ -66,7 +66,7 @@ public:
 
   void prepare() override;
 
-private:
+protected:
   const IPortableTensor *_input;
   const IPortableTensor *_weights;
   const IPortableTensor *_bias;
