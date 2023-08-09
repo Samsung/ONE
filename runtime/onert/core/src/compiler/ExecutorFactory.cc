@@ -695,6 +695,17 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         UNUSED_RELEASE(gen_index);
         assert(gen_index == op_index);
       });
+    data.graph->operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
+      const auto &orig_tgraph = lowered_graph->trainable_graph();
+      if (orig_tgraph.derivatives().exist(index))
+      {
+        const auto &deriv = orig_tgraph.derivatives().at(index);
+        auto new_deriv = std::make_unique<ir::Operand>(deriv);
+        auto gen_index = tgraph->addDerivative(index, std::move(new_deriv));
+        UNUSED_RELEASE(gen_index);
+        assert(gen_index == index);
+      }
+    });
 
     // Remove outputs of whole graph from external_operands
     auto external_operands = data.external_operands;
