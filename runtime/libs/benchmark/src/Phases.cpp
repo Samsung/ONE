@@ -104,8 +104,14 @@ void Phases::run(const std::string &tag, const PhaseFunc &exec, const PhaseFunc 
     return;
   }
 
-  assert(_phases.find(tag) == _phases.end());
-  _phases.emplace(tag, phase);
+  // TODO Support to store multiple phase data in one tag
+  // onert_train can run training function multiple times.
+  // So, we need to store multiple phase data in one tag.
+  // But, now, it only stores the first phase data.
+  if (_phases.find(tag) == _phases.end())
+  {
+    _phases.emplace(tag, phase);
+  }
 }
 
 } // namespace benchmark
