@@ -155,6 +155,7 @@ public:
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
   size_t getInputTotalSize(ir::IOIndex ind) const;
+  size_t getOutputTotalSize(ir::IOIndex ind) const;
 
 private:
   const IExecutor *entryExecutor() const { return _executors->entryExecutor(); };
