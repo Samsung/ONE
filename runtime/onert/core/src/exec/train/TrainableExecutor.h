@@ -80,6 +80,8 @@ public:
     return _output_tensors;
   }
 
+  float getLoss(const ir::IOIndex &pred_io_ind) const;
+
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
@@ -93,6 +95,7 @@ private:
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;
   backend::train::TrainableBackendContexts _backend_contexts;
   const ir::train::TrainableGraph &_trainable_graph;
+  compiler::train::TensorRegistries _tensor_regs;
   std::vector<backend::builtin::IOTensor *> _input_tensors;
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
