@@ -101,6 +101,7 @@ public:
   void changeDerivativeShape(const OperandIndex &ind, const ir::Shape &new_shape);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
+  void addLoss(const OperandIndex &loss_ind, const IOIndex &pred_io_ind);
   void verify() const;
   void removeOperand(const OperandIndex &ind);
   void setLayout(Layout layout);
@@ -119,6 +120,7 @@ public:
   Operands &operands() { return _graph.operands(); } // TODO Remove this non-const accessor
   const Operations &operations() const override { return _graph.operations(); }
   const Operands &derivatives() const { return _derivatives; }
+  OperandIndex getLossIndex(const IOIndex &pred_io_ind) const;
   Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
 
@@ -132,6 +134,8 @@ public:
 private:
   Graph _graph;
   Operands _derivatives;
+
+  std::unordered_map<IOIndex, OperandIndex> _losses;
 };
 
 } // namespace train
