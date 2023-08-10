@@ -55,12 +55,12 @@ namespace
  *             [CircleNode]
  *
  */
-template <loco::DataType DT> bool decompose_hardswish(luci::CircleHardSwish *hardswish)
+bool decompose_hardswish(luci::CircleHardSwish *hardswish)
 {
   if (not hardswish)
     return false;
 
-  if (hardswish->dtype() != DT)
+  if (hardswish->dtype() != loco::DataType::FLOAT32)
     return false;
 
   auto g = hardswish->graph();
@@ -71,10 +71,10 @@ template <loco::DataType DT> bool decompose_hardswish(luci::CircleHardSwish *har
   // Create a const for CircleAdd operation
   auto add_const = g->nodes()->create<luci::CircleConst>();
   add_const->shape({}); // scalar
-  add_const->dtype(DT);
+  add_const->dtype(loco::DataType::FLOAT32);
   add_const->rank(0);
-  add_const->size<DT>(1);
-  add_const->at<DT>(0) = 3.;
+  add_const->size<loco::DataType::FLOAT32>(1);
+  add_const->at<loco::DataType::FLOAT32>(0) = 3.;
   add_const->name("add_const");
   luci::add_origin(add_const, luci::get_origin(hardswish));
 
@@ -95,10 +95,10 @@ template <loco::DataType DT> bool decompose_hardswish(luci::CircleHardSwish *har
   // Create a const for CircleMul operation
   auto mul_const = g->nodes()->create<luci::CircleConst>();
   mul_const->shape({}); // scalar
-  mul_const->dtype(DT);
+  mul_const->dtype(loco::DataType::FLOAT32);
   mul_const->rank(0);
-  mul_const->size<DT>(1);
-  mul_const->at<DT>(0) = 1. / 6.;
+  mul_const->size<loco::DataType::FLOAT32>(1);
+  mul_const->at<loco::DataType::FLOAT32>(0) = 1. / 6.;
   mul_const->name("mul_const");
   luci::add_origin(mul_const, luci::get_origin(hardswish));
 
@@ -136,7 +136,7 @@ bool DecomposeHardSwishPass::run(loco::Graph *g)
   {
     if (auto hardswish = dynamic_cast<luci::CircleHardSwish *>(node))
     {
-      if (decompose_hardswish<loco::DataType::FLOAT32>(hardswish))
+      if (decompose_hardswish(hardswish))
         changed = true;
     }
   }
