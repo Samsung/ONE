@@ -54,6 +54,22 @@ inline void MSE(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_
   output_data[0] = (T)(squared_sum / size);
 }
 
+template <typename T>
+inline void MSEGrad(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_true_shape,
+                    const T *y_true_data, const Shape &grad_shape, T *grad_data)
+{
+  if (y_pred_shape != y_true_shape)
+    throw std::runtime_error("cker::MSEGrad: y_pred_shape != y_true_shape");
+  if (y_pred_shape != grad_shape)
+    throw std::runtime_error("cker::MSEGrad: y_pred_shape != grad_shape");
+
+  const int size = grad_shape.FlatSize();
+  for (int i = 0; i < size; ++i)
+  {
+    grad_data[i] = static_cast<T>(-2 * (y_true_data[i] - y_pred_data[i]) / size);
+  }
+}
+
 } // namespace train
 } // namespace cker
 } // namespace nnfw

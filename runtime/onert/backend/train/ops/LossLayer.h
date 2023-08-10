@@ -42,9 +42,7 @@ public:
   LossLayer();
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *deriv_y_pred,
-                 IPortableTensor *deriv_y_true, const IPortableTensor *deriv_output,
-                 LossType loss_type);
+                 IPortableTensor *output, IPortableTensor *deriv_y_pred, LossType loss_type);
   void forward(bool training) override;
   void backward(uint32_t) override;
 
@@ -53,9 +51,6 @@ private:
   const IPortableTensor *_y_true;
   IPortableTensor *_output;
   IPortableTensor *_deriv_y_pred;
-  IPortableTensor *_deriv_y_true;
-  const IPortableTensor *_deriv_output;
-
   LossType _loss_type;
 };
 

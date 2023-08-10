@@ -30,23 +30,19 @@ namespace ops
 
 LossLayer::LossLayer()
   : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _deriv_y_pred(nullptr),
-    _deriv_y_true(nullptr), _deriv_output(nullptr), _loss_type(LossType::kMSE)
+    _loss_type(LossType::kMSE)
 {
   // DO NOTHING
 }
 
 void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                           IPortableTensor *output, IPortableTensor *deriv_y_pred,
-                          IPortableTensor *deriv_y_true, const IPortableTensor *deriv_output,
                           LossType loss_type)
 {
   assert(y_pred != nullptr);
   assert(y_true != nullptr);
   assert(output != nullptr);
   assert(deriv_y_pred != nullptr);
-  assert(deriv_y_true != nullptr);
-  assert(deriv_output != nullptr);
-
   switch (loss_type)
   {
     case LossType::kMSE:
@@ -59,8 +55,6 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
   _y_true = y_true;
   _output = output;
   _deriv_y_pred = deriv_y_pred;
-  _deriv_y_true = deriv_y_true;
-  _deriv_output = deriv_output;
   _loss_type = loss_type;
 }
 
@@ -84,7 +78,19 @@ void LossLayer::forward(bool)
 
 void LossLayer::backward(uint32_t)
 {
-  // TODO Implement this
+  switch (_loss_type)
+  {
+    case LossType::kMSE:
+      if (_y_pred->data_type() == OperandType::FLOAT32)
+      {
+        nnfw::cker::train::MSEGrad(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
+                                   getBuffer<float>(_y_true), getShape(_deriv_y_pred),
+                                   getBuffer<float>(_deriv_y_pred));
+      }
+      break;
+    default:
+      throw std::runtime_error("LossLayer: unsupported loss type");
+  }
 }
 
 } // namespace ops
