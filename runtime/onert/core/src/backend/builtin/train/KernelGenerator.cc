@@ -69,7 +69,7 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
 
   // NOTE IOTensors of graph outputs for passing data to users must be ignored in training
   //      because the buffers of those IOTensors are unnecessary and nullptr
-  bool ignore_forward_in_training = _tgraph.getOutputs().contains(output_index);
+  bool ignore_forward_in_training = _whole_graph_outputs.contains(output_index);
   auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors,
                                                    input_deriv_tensors, output_deriv_tensors,
                                                    ignore_forward_in_training, _external_context);
