@@ -1,0 +1,5 @@
+# Please upgrade pip version before installing these requerements.
+# pip 20.2 and earlier doesn’t have true dependency resolution.
+# Refer to https://pip.pypa.io/en/latest/user_guide/#requirements-files
+tensorflow==2.8.2  # This version specifies the upper bound for protobuf
+tensorflow_datasets==4.7.0
