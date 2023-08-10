@@ -45,7 +45,7 @@ struct HardSwishGraph
 class DecomposeHardSwishPass : public ::testing::Test
 {
 protected:
-  virtual void SetUp()
+  void MakeGraph()
   {
     const int N = 1;
     const int H = 4;
@@ -79,9 +79,50 @@ protected:
     _hardswish_g._output->name("output");
   }
 
+  void MakeInt32Graph()
+  {
+    const int N = 1;
+    const int H = 4;
+    const int W = 4;
+    const int C = 3;
+
+    // graph input and output
+    auto graph_input = _hardswish_int32_g._g.inputs()->create();
+    auto graph_output = _hardswish_int32_g._g.outputs()->create();
+
+    // CircleInput
+    _hardswish_int32_g._input = _hardswish_int32_g._g.nodes()->create<luci::CircleInput>();
+    _hardswish_int32_g._input->index(graph_input->index());
+    _hardswish_int32_g._input->shape({N, H, W, C});
+    _hardswish_int32_g._input->dtype(loco::DataType::S32);
+    _hardswish_int32_g._input->name("input");
+
+    // CircleHardSwish
+    _hardswish_int32_g._hardswish = _hardswish_int32_g._g.nodes()->create<luci::CircleHardSwish>();
+    _hardswish_int32_g._hardswish->features(_hardswish_int32_g._input);
+    _hardswish_int32_g._hardswish->shape({N, H, W, C});
+    _hardswish_int32_g._hardswish->dtype(loco::DataType::S32);
+    _hardswish_int32_g._hardswish->name("hardswish");
+
+    // CircleOutput
+    _hardswish_int32_g._output = _hardswish_int32_g._g.nodes()->create<luci::CircleOutput>();
+    _hardswish_int32_g._output->index(graph_output->index());
+    _hardswish_int32_g._output->from(_hardswish_int32_g._hardswish);
+    _hardswish_int32_g._output->shape({N, H, W, C});
+    _hardswish_int32_g._output->dtype(loco::DataType::S32);
+    _hardswish_int32_g._output->name("output");
+  }
+
+  virtual void SetUp()
+  {
+    MakeGraph();
+    MakeInt32Graph();
+  }
+
 protected:
   luci::DecomposeHardSwishPass _pass;
   HardSwishGraph _hardswish_g;
+  HardSwishGraph _hardswish_int32_g;
 };
 
 } // namespace
@@ -152,4 +193,13 @@ TEST_F(DecomposeHardSwishPass, check_last_node)
 
   auto hardswish = dynamic_cast<luci::CircleHardSwish *>(_hardswish_g._output->from());
   EXPECT_EQ(nullptr, hardswish);
+}
+
+TEST_F(DecomposeHardSwishPass, wrong_condition_NEG)
+{
+  auto ret = _pass.run(&_hardswish_int32_g._g);
+  EXPECT_FALSE(ret);
+
+  auto hardswish = dynamic_cast<luci::CircleHardSwish *>(_hardswish_g._output->from());
+  EXPECT_NE(nullptr, hardswish);
 }
