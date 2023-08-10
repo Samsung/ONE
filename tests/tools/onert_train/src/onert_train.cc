@@ -198,45 +198,45 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
-    const int num_sample = data_length / tri.batch_size;
-    const int num_epoch = args.getEpoch();
-    for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
-    {
-      for (uint32_t n = 0; n < num_sample; ++n)
+    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
+      const int num_sample = data_length / tri.batch_size;
+      const int num_epoch = args.getEpoch();
+      for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
-        // get batchsize data
-        if (!generator(n, input_data, expected_data))
-          break;
-
-        // prepare input
-        for (uint32_t i = 0; i < num_inputs; ++i)
+        for (uint32_t n = 0; n < num_sample; ++n)
         {
-          NNPR_ENSURE_STATUS(
-            nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+          // get batchsize data
+          if (!generator(n, input_data, expected_data))
+            break;
+
+          // prepare input
+          for (uint32_t i = 0; i < num_inputs; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+          }
+
+          // prepare output
+          for (uint32_t i = 0; i < num_expecteds; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+          }
+
+          // train
+          NNPR_ENSURE_STATUS(nnfw_train(session, true));
         }
 
-        // prepare output
+        // print loss
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
-          NNPR_ENSURE_STATUS(
-            nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+          float loss;
+          NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &loss));
+          std::cout << "[Epoch " << epoch << "] Output [" << i
+                    << "] Loss: " << loss /* << ", Accuracy: " << accuracy*/ << std::endl;
         }
-
-        // train
-        phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
-          NNPR_ENSURE_STATUS(nnfw_train(session, true));
-        });
       }
-
-      // print loss
-      for (uint32_t i = 0; i < num_expecteds; ++i)
-      {
-        float loss;
-        NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &loss));
-        std::cout << "[Epoch " << epoch << "] Output [" << i
-                  << "] Loss: " << loss /* << ", Accuracy: " << accuracy*/ << std::endl;
-      }
-    }
+    });
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
