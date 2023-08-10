@@ -1,0 +1,8 @@
+# To check if HardSwish is converted to Add, Mul and Relu6 operations
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "ADD_EXIST"               $(op_count ADD) '=' 1
+RULE    "MUL_EXIST"               $(op_count MUL) '=' 2
+RULE    "RELU6_EXIST"             $(op_count RELU6) '=' 1
+RULE    "HARDSWISH_NOT_EXIST"     $(op_count HARDSWISH) '=' 0
