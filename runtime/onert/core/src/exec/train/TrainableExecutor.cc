@@ -35,7 +35,8 @@ TrainableExecutor::TrainableExecutor(
   compiler::train::TrainableCodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
   const util::TracingCtx *tracing_ctx)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
-    _trainable_graph{_lowered_graph->trainable_graph()}, _mutex(), _tracing_ctx(tracing_ctx)
+    _trainable_graph{_lowered_graph->trainable_graph()}, _tensor_regs{std::move(tensor_regs)},
+    _mutex(), _tracing_ctx(tracing_ctx)
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
@@ -186,6 +187,16 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
       tn_seq->backward(training_step);
     }
   }
+}
+
+float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
+{
+  const auto &loss_ind = _trainable_graph.getLossIndex(pred_io_ind);
+  if (loss_ind.undefined())
+    throw std::runtime_error{"Loss " + std::to_string(loss_ind.value()) + " is not defined."};
+  backend::ITensor *tensor = _tensor_regs.getITensor(loss_ind);
+  auto loss_buf = reinterpret_cast<float *>(tensor->buffer());
+  return *loss_buf;
 }
 
 } // namespace train
