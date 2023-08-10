@@ -78,6 +78,8 @@ public:
    */
   void train(const IODescription &desc, uint32_t training_step);
 
+  float getLoss(const ir::IOIndex &index) const;
+
 private:
   // TODO Append model index to ModelIndex
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;
