@@ -80,7 +80,7 @@ bool decompose_hardswish(luci::CircleHardSwish *hardswish)
 
   // Create an Add operation
   auto add = g->nodes()->create<luci::CircleAdd>();
-  add->fusedActivationFunction(luci::FusedActFunc::NONE); // TODO: Seungho
+  add->fusedActivationFunction(luci::FusedActFunc::NONE);
   add->x(hardswish->features());
   add->y(add_const);
   add->name(name + "/Add");
