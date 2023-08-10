@@ -630,6 +630,13 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    // At this point, all activations have to be quantized.
+    // Un-quantized nodes are not the quantization target (ex: int32 tensor),
+    // so we skip them
+    if (circle_node->quantparam() == nullptr)
+      continue;
+
     QuantizeSpecialActivation qsa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qsa);
   }
