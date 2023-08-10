@@ -15,8 +15,9 @@
  */
 
 #include "LossLayer.h"
+#include "OperationUtils.h"
 
-#include <ops/OperationUtils.h>
+#include <cker/train/operation/Loss.h>
 
 namespace onert
 {
@@ -66,6 +67,19 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
 void LossLayer::forward(bool)
 {
   // TODO Implement this
+  switch (_loss_type)
+  {
+    case LossType::kMSE:
+      if (_y_pred->data_type() == OperandType::FLOAT32)
+      {
+        nnfw::cker::train::MSE(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
+                               getBuffer<float>(_y_true), getShape(_output),
+                               getBuffer<float>(_output));
+      }
+      break;
+    default:
+      throw std::runtime_error("LossLayer: unsupported loss type");
+  }
 }
 
 void LossLayer::backward(uint32_t)
