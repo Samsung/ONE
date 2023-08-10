@@ -47,6 +47,7 @@ public:
 
   void visit(const ir::train::operation::Conv2D &) override;
   void visit(const ir::train::operation::ElementwiseActivation &) override;
+  void visit(const ir::train::operation::FullyConnected &) override;
   void visit(const ir::train::operation::Loss &) override;
 
 private:
