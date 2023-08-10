@@ -22,6 +22,7 @@
 #include "ops/LossLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
+#include "ops/ReshapeLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -227,6 +228,34 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   _return_fn = std::move(fn);
 
   UNUSED_RELEASE(convertPoolType);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Reshape &node)
+{
+  using ir::train::operation::Reshape;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto output_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto input_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+
+  // optional 2nd input
+  IPortableTensor *shape_tensor = nullptr;
+
+  if (node.getInputs().size() == 2)
+  {
+    const auto shape_index{node.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
+    shape_tensor = _tensor_reg->getPortableTensor(shape_index);
+  }
+
+  auto fn = std::make_unique<ops::ReshapeLayer>();
+
+  fn->configure(input_tensor, shape_tensor, output_tensor, input_deriv_tensor, output_deriv_tensor);
+  _return_fn = std::move(fn);
 }
 
 } // namespace train
