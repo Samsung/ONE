@@ -75,7 +75,7 @@ bool decompose_hardswish(luci::CircleHardSwish *hardswish)
   add_const->rank(0);
   add_const->size<loco::DataType::FLOAT32>(1);
   add_const->at<loco::DataType::FLOAT32>(0) = 3.;
-  add_const->name("add_const");
+  add_const->name(name + "/Add/const");
   luci::add_origin(add_const, luci::get_origin(hardswish));
 
   // Create an Add operation
@@ -99,7 +99,7 @@ bool decompose_hardswish(luci::CircleHardSwish *hardswish)
   mul_const->rank(0);
   mul_const->size<loco::DataType::FLOAT32>(1);
   mul_const->at<loco::DataType::FLOAT32>(0) = 1. / 6.;
-  mul_const->name("mul_const");
+  mul_const->name(name + "/Mul/const");
   luci::add_origin(mul_const, luci::get_origin(hardswish));
 
   // Create first Mul operation
