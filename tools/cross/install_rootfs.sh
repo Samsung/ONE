@@ -2,9 +2,8 @@
 usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
-    echo "BuildArch can be: arm(default), aarch64 and armel"
-    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic(default), focal, jammy"
-    echo "                          If BuildArch is armel, this can be tizen(default)"
+    echo "BuildArch can be: arm(default), aarch64"
+    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic, focal(default), jammy"
     echo "--setproxy=IP - optional, IP is the proxy server IP address or url with portnumber"
     echo "                           default no proxy. Example: --setproxy=127.1.2.3:8080"
     echo "--skipunmount - optional, will skip the unmount of rootfs folder."
@@ -17,7 +16,7 @@ __UbuntuRepo="http://ports.ubuntu.com/"
 
 __BuildArch=arm
 __QemuArch=armhf
-__LinuxCodeName=bionic
+__LinuxCodeName=focal
 __SkipUnmount=0
 __IsProxySet=0
 __Apt=""
@@ -54,17 +53,6 @@ for i in "$@" ; do
             ;;
         armel)
             __BuildArch=armel
-            __Tizen=tizen
-            __QemuArch=
-            __UbuntuRepo=
-            __LinuxCodeName=
-            ;;
-        tizen)
-            if [ "$__BuildArch" != "armel" ]; then
-                echo "Tizen rootfs is available only for armel."
-                usage;
-                exit 1;
-            fi
             __Tizen=tizen
             __QemuArch=
             __UbuntuRepo=
@@ -129,8 +117,6 @@ if [[ -n $__LinuxCodeName ]]; then
     if [ $__SkipUnmount == 0 ]; then
         umount $__RootfsDir/*
     fi
-elif [ "$__Tizen" == "tizen" ]; then
-    ROOTFS_DIR=$__RootfsDir $__CrossDir/$__BuildArch/tizen-build-rootfs.sh
 else
     echo "Unsupported target platform."
     usage;
