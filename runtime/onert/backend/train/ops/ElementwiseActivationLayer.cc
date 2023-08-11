@@ -16,7 +16,9 @@
 
 #include "ElementwiseActivationLayer.h"
 
-#include <ops/OperationUtils.h>
+#include "OperationUtils.h"
+
+#include <cker/train/operation/ReLU.h>
 
 namespace onert
 {
@@ -62,7 +64,16 @@ void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivation
 
 void ElementwiseActivationLayer::backward(uint32_t)
 {
-  // TODO Implement details
+  switch (_op_type)
+  {
+    case ElementwiseActivationType::kReLU:
+      nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
+                                  getShape(_deriv_output), getBuffer<float>(_deriv_output),
+                                  getShape(_deriv_input), getBuffer<float>(_deriv_input));
+      break;
+    default:
+      throw std::runtime_error("train ElementwiseActivationLayer: Unsupported activation type yet");
+  }
 }
 
 } // namespace ops
