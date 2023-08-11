@@ -1,11 +1,12 @@
 # How to Build Runtime
 
-This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
+This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
 
 ## Build requirements
 
 If you are going to build this project, the following modules must be installed on your system:
 
+- C & C++ compiler
 - CMake
 - Boost C++ libraries
 
@@ -15,9 +16,9 @@ In the Ubuntu, you can easily install it with the following command.
 $ sudo apt-get install cmake libboost-all-dev
 ```
 
-If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/bionic/Dockerfile.
+If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile.
 
-Here is a summary of it
+Here is a summary of it for runtime and related tools
 
 ```
 $ sudo apt install \
@@ -29,30 +30,16 @@ git \
 graphviz \
 hdf5-tools \
 lcov \
-libatlas-base-dev \
 libboost-all-dev \
-libgflags-dev \
-libgoogle-glog-dev \
-libgtest-dev \
 libhdf5-dev \
-libprotobuf-dev \
-protobuf-compiler \
-pylint \
 python3 \
 python3-pip \
-python3-venv \
 scons \
 software-properties-common \
 unzip \
 wget
 
-$ mkdir /tmp/gtest
-$ cd /tmp/gtest
-$ cmake /usr/src/gtest
-$ make
-$ sudo mv *.a /usr/lib
-
-$ pip install yapf==0.22.0 numpy
+$ pip3 install yapf==0.22.0 numpy
 
 ```
 
@@ -63,10 +50,18 @@ In a typical linux development environment, including Ubuntu, you can build the 
 ```
 $ git clone https://github.com/Samsung/ONE.git one
 $ cd one
-$ make -f Makefile.template install
+$ ./nnfw configure
+$ ./nnfw build
+$ ./nnfw install
 ```
 
-Unfortunately, the debug build on the x86_64 architecture currently has an error. To solve the problem, you must use gcc version 9 or higher. Another workaround is to do a release build rather than a debug build. This is not a suitable method for debugging during development, but it is enough to check the function of the runtime. To release build the runtime, add the environment variable `BUILD_TYPE=release` to the build command as follows.
+For easy build process, we provides `Makefile.template` makefile.
+
+```
+$ make -f Makefile.template
+```
+
+To release build the runtime, add the environment variable `BUILD_TYPE=release` to the build command as follows.
 
 ```
 $ export BUILD_TYPE=release
@@ -94,77 +89,74 @@ $ tree -L 2 ./Product
 $ tree -L 3 ./Product/out
 ./Product/out
 ├── bin
-│   ├── onert_run
-│   ├── tflite_comparator
-│   └── tflite_run
+│   ├── onert_run
+│   ├── tflite_comparator
+│   └── tflite_run
 ├── include
-│   ├── nnfw
-│   │   ├── NeuralNetworksEx.h
-│   │   ├── NeuralNetworksExtensions.h
-│   │   ├── NeuralNetworks.h
-│   │   ├── nnfw_experimental.h
-│   │   └── nnfw.h
-│   └── onert
-│       ├── backend
-│       ├── compiler
-│       ├── exec
-│       ├── ir
-│       └── util
+│   ├── nnfw
+│   │   ├── NeuralNetworksEx.h
+│   │   ├── NeuralNetworksExtensions.h
+│   │   ├── NeuralNetworks.h
+│   │   ├── nnfw_experimental.h
+│   │   └── nnfw.h
+│   └── onert
+│       ├── backend
+│       ├── compiler
+│       ├── exec
+│       ├── ir
+│       └── util
 ├── lib
-│   ├── libbackend_cpu.so
-│   ├── libbackend_ruy.so
-│   ├── libneuralnetworks.so
-│   ├── libnnfw-dev.so
-│   └── libonert_core.so
+│   ├── libbackend_cpu.so
+│   ├── libbackend_ruy.so
+│   ├── libneuralnetworks.so
+│   ├── libnnfw-dev.so
+│   └── libonert_core.so
 ├── nnapi-gtest
-│   ├── nnapi_gtest
-│   ├── nnapi_gtest.skip
-│   ├── nnapi_gtest.skip.noarch.interp
-│   └── nnapi_gtest.skip.x86_64-linux.cpu
+│   ├── nnapi_gtest
+│   ├── nnapi_gtest.skip
+│   └── nnapi_gtest.skip.x86_64-linux.cpu
 ├── test
-│   ├── command
-│   │   ├── nnpkg-test
-│   │   ├── prepare-model
-│   │   ├── unittest
-│   │   └── verify-tflite
-│   ├── FillFrom_runner
-│   ├── list
-│   │   ├── benchmark_nnpkg_model_list.txt
-│   │   ├── nnpkg_test_list.armv7l-linux.acl_cl
-│   │   ├── nnpkg_test_list.armv7l-linux.acl_neon
-│   │   ├── nnpkg_test_list.armv7l-linux.cpu
-│   │   ├── nnpkg_test_list.noarch.interp
-│   │   ├── tflite_comparator.aarch64.acl_cl.list
-│   │   ├── tflite_comparator.aarch64.acl_neon.list
-│   │   ├── tflite_comparator.aarch64.cpu.list
-│   │   ├── tflite_comparator.armv7l.acl_cl.list
-│   │   ├── tflite_comparator.armv7l.acl_neon.list
-│   │   ├── tflite_comparator.armv7l.cpu.list
-│   │   ├── tflite_comparator.noarch.interp.list
-│   │   └── tflite_comparator.x86_64.cpu.list
-│   ├── models
-│   │   ├── run_test.sh
-│   │   └── tflite
-│   ├── nnpkgs
-│   │   └── FillFrom
-│   └── onert-test
+│   ├── command
+│   │   ├── nnpkg-test
+│   │   ├── prepare-model
+│   │   ├── unittest
+│   │   └── verify-tflite
+│   ├── FillFrom_runner
+│   ├── list
+│   │   ├── benchmark_nnpkg_model_list.txt
+│   │   ├── nnpkg_test_list.armv7l-linux.acl_cl
+│   │   ├── nnpkg_test_list.armv7l-linux.acl_neon
+│   │   ├── nnpkg_test_list.armv7l-linux.cpu
+│   │   ├── tflite_comparator.aarch64.acl_cl.list
+│   │   ├── tflite_comparator.aarch64.acl_neon.list
+│   │   ├── tflite_comparator.aarch64.cpu.list
+│   │   ├── tflite_comparator.armv7l.acl_cl.list
+│   │   ├── tflite_comparator.armv7l.acl_neon.list
+│   │   ├── tflite_comparator.armv7l.cpu.list
+│   │   └── tflite_comparator.x86_64.cpu.list
+│   ├── models
+│   │   ├── run_test.sh
+│   │   └── tflite
+│   ├── nnpkgs
+│   │   └── FillFrom
+│   └── onert-test
 └── unittest
     ├── ndarray_test
     ├── nnfw_api_gtest
     ├── nnfw_api_gtest_models
-    │   ├── add
-    │   ├── add_invalid_manifest
-    │   ├── add_no_manifest
-    │   ├── if_dynamic
-    │   ├── mobilenet_v1_1.0_224
-    │   └── while_dynamic
+    │   ├── add
+    │   ├── add_invalid_manifest
+    │   ├── add_no_manifest
+    │   ├── if_dynamic
+    │   ├── mobilenet_v1_1.0_224
+    │   └── while_dynamic
     ├── nnfw_lib_misc_test
     ├── test_cker
     ├── test_onert_core
     ├── test_onert_frontend_nnapi
     └── tflite_test
 
-26 directories, 46 files
+26 directories, 42 files
 
 ```
 
@@ -184,7 +176,7 @@ inception_v3.tflite
 The result of running the inception_v3 model using runtime is as follows. Please consider that this is a test that simply checks execution latency without considering the accuracy of the model.
 
 ```
-$ ./Product/out/bin/onert_run --modelfile ./inception_v3.tflite
+$ ./Product/out/bin/onert_run ./inception_v3.tflite
 Model Filename ./inception_v3.tflite
 ===================================
 MODEL_LOAD   takes 1.108 ms
