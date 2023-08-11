@@ -77,6 +77,13 @@ void TrainableExecutors::train(const IODescription &desc, uint32_t training_step
   // TODO Support multple executors
 }
 
+float TrainableExecutors::getLoss(const ir::IOIndex &index) const
+{
+  if (_executors.size() > 1)
+    throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
+  return entryExecutor()->getLoss(index);
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert
