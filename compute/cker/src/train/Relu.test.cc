@@ -15,6 +15,7 @@
  */
 
 #include <cker/operation/ReLU.h>
+#include <cker/train/operation/ReLU.h>
 
 #include <gtest/gtest.h>
 #include <vector>
@@ -47,7 +48,7 @@ public:
 
     if (_backprop_output.size() > 0)
     {
-      nnfw::cker::ReLUGrad(
+      nnfw::cker::train::ReLUGrad(
         nnfw::cker::Shape{static_cast<int>(_output.size())}, _output.data(),
         nnfw::cker::Shape{static_cast<int>(_backprop_output.size())}, _backprop_output.data(),
         nnfw::cker::Shape{static_cast<int>(_backprop_input.size())}, _backprop_input.data());

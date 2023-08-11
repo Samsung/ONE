@@ -19,9 +19,9 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/FullyConnected.h>
-#include <cker/operation/ReLU.h>
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/FullyConnected.h>
+#include <cker/train/operation/ReLU.h>
 
 namespace onert
 {
@@ -117,9 +117,10 @@ void FullyConnectedLayer::backwardFloat32()
       backprop_act = _deriv_output;
       break;
     case ir::Activation::RELU:
-      ReLUGrad(getShape(_output), getBuffer<float>(_output), getShape(_deriv_output),
-               getBuffer<float>(_deriv_output), getShape(_act_deriv_output.get()),
-               getBuffer<float>(_act_deriv_output.get()));
+      nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
+                                  getShape(_deriv_output), getBuffer<float>(_deriv_output),
+                                  getShape(_act_deriv_output.get()),
+                                  getBuffer<float>(_act_deriv_output.get()));
       backprop_act = _act_deriv_output.get();
       break;
     default:
