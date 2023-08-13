@@ -2479,7 +2479,9 @@ var hierarchy =
       [ "onert::backend::cpu::ops::ElementwiseUnaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer.html", null ],
       [ "onert::backend::cpu::ops::ExpandDimsLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_expand_dims_layer.html", null ],
       [ "onert::backend::cpu::ops::FillLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fill_layer.html", null ],
-      [ "onert::backend::cpu::ops::FullyConnectedLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html", null ],
+      [ "onert::backend::cpu::ops::FullyConnectedLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html", [
+        [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ]
+      ] ],
       [ "onert::backend::cpu::ops::FusedBatchNormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fused_batch_norm_layer.html", null ],
       [ "onert::backend::cpu::ops::GatherLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html", null ],
       [ "onert::backend::cpu::ops::L2NormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l2_norm_layer.html", null ],
@@ -2854,9 +2856,11 @@ var hierarchy =
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
+      [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::train::ops::GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", null ],
       [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
+      [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ],
       [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ]
     ] ],
     [ "ITransformWeights", null, [
@@ -4266,6 +4270,7 @@ var hierarchy =
       [ "luci::ConvertNCHWToNHWCPass", "structluci_1_1_convert_n_c_h_w_to_n_h_w_c_pass.html", null ],
       [ "luci::ConvertToFakeQuantizedModelPass", "structluci_1_1_convert_to_fake_quantized_model_pass.html", null ],
       [ "luci::CopyQuantParamPass", "classluci_1_1_copy_quant_param_pass.html", null ],
+      [ "luci::DecomposeHardSwishPass", "structluci_1_1_decompose_hard_swish_pass.html", null ],
       [ "luci::DynamicBatchToSingleBatchPass", "classluci_1_1_dynamic_batch_to_single_batch_pass.html", null ],
       [ "luci::ExpandBroadcastConstPass", "structluci_1_1_expand_broadcast_const_pass.html", null ],
       [ "luci::FoldAddV2Pass", "structluci_1_1_fold_add_v2_pass.html", null ],

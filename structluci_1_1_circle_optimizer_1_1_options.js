@@ -48,6 +48,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "RemoveUnnecessaryReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea0492575ed796495056546d3e5a5f0a17", null ],
       [ "TransformMinMaxToRelu6Pass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab07c62f459ab8588fe6c8cc883cb82ba", null ],
       [ "TransformMinReluToRelu6Pass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea44fd4d363430577ce4e6da2d16f615c8", null ],
+      [ "DecomposeHardSwishPass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaa9f42513e499c4f7efead8b73f06f222", null ],
       [ "SubstituteStridedSliceToReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea5c5c8797f82b072f3308f00126a1ab82", null ],
       [ "SubstituteTransposeToReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea35265fbf034c2b6d962979bf892175a6", null ],
       [ "RemoveRedundantQuantize", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabc1d12e31b952f8b30b78ce01a2474ee", null ],

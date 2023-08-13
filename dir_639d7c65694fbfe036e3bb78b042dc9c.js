@@ -5,6 +5,7 @@ var dir_639d7c65694fbfe036e3bb78b042dc9c =
     [ "neon", "dir_eecb9f41a5268db487cf0036c77284f6.html", "dir_eecb9f41a5268db487cf0036c77284f6" ],
     [ "operation", "dir_4d6511aec63f0104ba12c7c66d891cab.html", "dir_4d6511aec63f0104ba12c7c66d891cab" ],
     [ "ruy", "dir_48ec12752339070c56dae48ff543add9.html", "dir_48ec12752339070c56dae48ff543add9" ],
+    [ "train", "dir_4514956db2cd9f2ccb47906e910ab45f.html", "dir_4514956db2cd9f2ccb47906e910ab45f" ],
     [ "CpuBackendThreadpool.h", "_cpu_backend_threadpool_8h.html", "_cpu_backend_threadpool_8h" ],
     [ "NeonTensorUtils.h", "cker_2include_2cker_2_neon_tensor_utils_8h.html", null ],
     [ "PortableTensorUtils.h", "cker_2include_2cker_2_portable_tensor_utils_8h.html", "cker_2include_2cker_2_portable_tensor_utils_8h" ],

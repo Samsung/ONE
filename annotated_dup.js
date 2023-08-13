@@ -1298,6 +1298,7 @@ var annotated_dup =
       [ "ConvertToFakeQuantizedModelPass", "structluci_1_1_convert_to_fake_quantized_model_pass.html", "structluci_1_1_convert_to_fake_quantized_model_pass" ],
       [ "CopyQuantParamPass", "classluci_1_1_copy_quant_param_pass.html", "classluci_1_1_copy_quant_param_pass" ],
       [ "DeadNodeQueryServiceImpl", "structluci_1_1_dead_node_query_service_impl.html", "structluci_1_1_dead_node_query_service_impl" ],
+      [ "DecomposeHardSwishPass", "structluci_1_1_decompose_hard_swish_pass.html", "structluci_1_1_decompose_hard_swish_pass" ],
       [ "Dilation", "classluci_1_1_dilation.html", "classluci_1_1_dilation" ],
       [ "DimMetaData", "classluci_1_1_dim_meta_data.html", "classluci_1_1_dim_meta_data" ],
       [ "DynamicBatchToSingleBatchPass", "classluci_1_1_dynamic_batch_to_single_batch_pass.html", "classluci_1_1_dynamic_batch_to_single_batch_pass" ],
@@ -2780,9 +2781,11 @@ var annotated_dup =
           [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", [
             [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
             [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
+            [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
             [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
-            [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ]
+            [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
+            [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ]
           ] ],
           [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
           [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],

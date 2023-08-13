@@ -36,6 +36,11 @@ var namespacennfw_1_1cker =
       [ "MakeRuyMulParams", "namespacennfw_1_1cker_1_1ruy__support.html#abf95251ac2116038612ba0d1c82960d7", null ],
       [ "ToRuyCachePolicy", "namespacennfw_1_1cker_1_1ruy__support.html#a608f87d002e314885c6c0adb6bf228e8", null ]
     ] ],
+    [ "train", "namespacennfw_1_1cker_1_1train.html", [
+      [ "FullyConnectedBiasGrad", "namespacennfw_1_1cker_1_1train.html#ae451e8541f4091a1c41c54ba240824f4", null ],
+      [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
+      [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ]
+    ] ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],
     [ "BCast", "classnnfw_1_1cker_1_1_b_cast.html", "classnnfw_1_1cker_1_1_b_cast" ],
@@ -320,7 +325,6 @@ var namespacennfw_1_1cker =
     [ "ReduceSumQuantImpl", "namespacennfw_1_1cker.html#a7d1f8da4e9496f3def13685aeeb733f7", null ],
     [ "ReLU", "namespacennfw_1_1cker.html#aa7dafd5f43f7cf04008da8416f94d0d5", null ],
     [ "ReLU6", "namespacennfw_1_1cker.html#aa3a1779dd7902a4cf5186a5231fcf429", null ],
-    [ "ReLUGrad", "namespacennfw_1_1cker.html#a8cff7f2b29ba438981e953a708245919", null ],
     [ "Requantize", "namespacennfw_1_1cker.html#a370789a061f0885017a913b15b7b3119", null ],
     [ "Requantize< int8_t, uint8_t >", "namespacennfw_1_1cker.html#a3ad71bab48b0fcf4a3e540e7ca0b58c6", null ],
     [ "Requantize< uint8_t, int8_t >", "namespacennfw_1_1cker.html#af9872cd57a5ec52950cf7214ee97b785", null ],

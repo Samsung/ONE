@@ -123,6 +123,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacennfw_1_1cker_1_1ruy__support"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1ruy__support.html">ruy_support</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacennfw_1_1cker_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html">train</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -651,8 +653,6 @@ Functions</h2></td></tr>
 <tr class="separator:ad8d5c70addd0f57d962c59bb5efbb5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7dafd5f43f7cf04008da8416f94d0d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#aa7dafd5f43f7cf04008da8416f94d0d5">ReLU</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
 <tr class="separator:aa7dafd5f43f7cf04008da8416f94d0d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cff7f2b29ba438981e953a708245919"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a8cff7f2b29ba438981e953a708245919">ReLUGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
-<tr class="separator:a8cff7f2b29ba438981e953a708245919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3a1779dd7902a4cf5186a5231fcf429"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#aa3a1779dd7902a4cf5186a5231fcf429">ReLU6</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, float *output_data)</td></tr>
 <tr class="separator:aa3a1779dd7902a4cf5186a5231fcf429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3f79bd3e3b56f861cc4e047a1f40e43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#aa3f79bd3e3b56f861cc4e047a1f40e43">ResizeBilinearKernel2x2</a> (int32_t x0, int32_t x1, int32_t y0, int32_t y1, int32_t x, int32_t y, int32_t depth, int32_t batch, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
@@ -9720,7 +9720,7 @@ template&lt;typename Scalar &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00257">FlatSizeSkipDim()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00044">AveragePool&lt; float &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00042">MaxPool&lt; float &gt;()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_soft_max_8h_source.html#l00116">Softmax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00044">AveragePool&lt; float &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_fully_connected_8h_source.html#l00031">nnfw::cker::train::FullyConnectedBiasGrad()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00042">MaxPool&lt; float &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00031">nnfw::cker::train::MSE()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_soft_max_8h_source.html#l00116">Softmax()</a>.</p>
 
 </div>
 </div>
@@ -9761,7 +9761,7 @@ template&lt;typename Scalar &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00051">Abs()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00057">Logistic()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">ReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00040">ReLUGrad()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">Tanh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00051">Abs()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00057">Logistic()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">ReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">Tanh()</a>.</p>
 
 </div>
 </div>
@@ -15178,80 +15178,6 @@ template&lt;typename In &gt; </div>
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
-
-</div>
-</div>
-<a id="a8cff7f2b29ba438981e953a708245919" name="a8cff7f2b29ba438981e953a708245919"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cff7f2b29ba438981e953a708245919">&#9670;&#160;</a></span>ReLUGrad()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void nnfw::cker::ReLUGrad </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>output_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const float *&#160;</td>
-          <td class="paramname"><em>output_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>incoming_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const float *&#160;</td>
-          <td class="paramname"><em>incoming_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>grad_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>grad_data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00040">40</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html">ReLU.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(output_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(incoming_data, incoming_shape);</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">auto</span> grad_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(grad_data, grad_shape);</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> == incoming_shape &amp;&amp; <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> == grad_shape)</div>
-<div class="line"><span class="lineno">   49</span>    grad_map.array() = incoming_map.array() * (output_map.array() &gt; 0.0f).<span class="keyword">template</span> cast&lt;float&gt;();</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::ReLUGrad: Unsupported shape&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">MapAsVector()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>

@@ -52,7 +52,8 @@ var searchData=
   ['tf_49',['tf',['../namespacennkit_1_1support_1_1moco_1_1tf.html',1,'nnkit::support::moco::tf'],['../namespacennkit_1_1support_1_1tf.html',1,'nnkit::support::tf']]],
   ['tflite_50',['tflite',['../namespacennfw_1_1tflite.html',1,'nnfw::tflite'],['../namespacennkit_1_1support_1_1tflite.html',1,'nnkit::support::tflite']]],
   ['tftestinfo_51',['tftestinfo',['../namespacennkit_1_1support_1_1tftestinfo.html',1,'nnkit::support']]],
-  ['trix_52',['trix',['../namespacenpud_1_1backend_1_1trix.html',1,'npud::backend']]],
-  ['util_53',['util',['../namespacenpud_1_1util.html',1,'npud']]],
-  ['vector_54',['vector',['../namespacennfw_1_1misc_1_1vector.html',1,'nnfw::misc']]]
+  ['train_52',['train',['../namespacennfw_1_1cker_1_1train.html',1,'nnfw::cker']]],
+  ['trix_53',['trix',['../namespacenpud_1_1backend_1_1trix.html',1,'npud::backend']]],
+  ['util_54',['util',['../namespacenpud_1_1util.html',1,'npud']]],
+  ['vector_55',['vector',['../namespacennfw_1_1misc_1_1vector.html',1,'nnfw::misc']]]
 ];

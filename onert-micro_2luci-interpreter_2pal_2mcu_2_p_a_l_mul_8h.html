@@ -95,9 +95,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2mc
   <div class="headertitle"><div class="title">PALMul.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_params_8h_source.html">Params.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_p_a_l_utils_8h_source.html">PALUtils.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_process_broadcast_shapes_8h_source.html">ProcessBroadcastShapes.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_p_a_l_mul_common_8h_source.html">PALMulCommon.h</a>&quot;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -108,15 +106,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8133105cf7292ba23f2074e6e0455458"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a8133105cf7292ba23f2074e6e0455458"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a8133105cf7292ba23f2074e6e0455458">luci_interpreter_pal::Mul</a> (const ArithmeticParams &amp;params, const int flat_size, const T *input1_data, const T *input2_data, T *output_data)</td></tr>
-<tr class="separator:a8133105cf7292ba23f2074e6e0455458"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8738ffaf077556034784c12228921b7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab8738ffaf077556034784c12228921b7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ab8738ffaf077556034784c12228921b7">luci_interpreter_pal::MulScalar</a> (const ArithmeticParams &amp;params, const int flat_size, const T *input_data, const T scalar_value, T *output_data)</td></tr>
-<tr class="separator:ab8738ffaf077556034784c12228921b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae26250b8ab41757c614bb3d2819136a0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae26250b8ab41757c614bb3d2819136a0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ae26250b8ab41757c614bb3d2819136a0">luci_interpreter_pal::BroadcastMul4DSlow</a> (const ArithmeticParams &amp;params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
-<tr class="separator:ae26250b8ab41757c614bb3d2819136a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dcce1dde5f5c0b7b6526f40951c4c1d"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a5dcce1dde5f5c0b7b6526f40951c4c1d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a5dcce1dde5f5c0b7b6526f40951c4c1d">luci_interpreter_pal::Mul&lt; int8_t &gt;</a> (const ArithmeticParams &amp;, const int, const int8_t *, const int8_t *, int8_t *)</td></tr>
+<tr class="separator:a5dcce1dde5f5c0b7b6526f40951c4c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136ae20c9a6e28a5c3d70b0287f3b17e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a136ae20c9a6e28a5c3d70b0287f3b17e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a136ae20c9a6e28a5c3d70b0287f3b17e">luci_interpreter_pal::Mul&lt; int16_t &gt;</a> (const ArithmeticParams &amp;, const int, const int16_t *, const int16_t *, int16_t *)</td></tr>
+<tr class="separator:a136ae20c9a6e28a5c3d70b0287f3b17e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -8,6 +8,7 @@ var classonert_1_1exec_1_1train_1_1_trainable_executor =
     [ "forward", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#adcf8d5e9b6001992e1b3781480c5a11e", null ],
     [ "getBackendContexts", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#aed211e15e9ba61eb0847c2d66ae9478c", null ],
     [ "getInputTensors", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c", null ],
+    [ "getLoss", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a57b4593cbc4db787812a866a45779336", null ],
     [ "getOutputTensors", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e", null ],
     [ "graph", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a4eb1b7b19e14d14db46987d8022df2f6", null ],
     [ "setIndexedRanks", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a93ff2e116f919422fcb489c9e70a6d52", null ]

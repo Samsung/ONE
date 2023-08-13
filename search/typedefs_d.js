@@ -6,7 +6,7 @@ var searchData=
   ['operandindexmap_3',['OperandIndexMap',['../namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3',1,'onert::ir']]],
   ['operandlabelcounts_4',['OperandLabelCounts',['../namespacennfw_1_1cker.html#a2e9a13956edd5a11e2964ba261b365f4',1,'nnfw::cker']]],
   ['operandlabels_5',['OperandLabels',['../namespacennfw_1_1cker.html#a0a03459d0f5a63f17831d9c8bd04b918',1,'nnfw::cker']]],
-  ['operandtype_6',['OperandType',['../cpu_2ops_2_operation_utils_8h.html#a69e192d0519410c78a90c964832374fe',1,'OperandType():&#160;OperationUtils.h'],['../ruy_2ops_2_operation_utils_8h.html#a69e192d0519410c78a90c964832374fe',1,'OperandType():&#160;OperationUtils.h'],['../namespaceonert_1_1backend_1_1xnnpack_1_1ops.html#aa17afb664268c7b0ee10145e41637f5a',1,'onert::backend::xnnpack::ops::OperandType()']]],
+  ['operandtype_6',['OperandType',['../cpu_2ops_2_operation_utils_8h.html#a69e192d0519410c78a90c964832374fe',1,'OperandType():&#160;OperationUtils.h'],['../ruy_2ops_2_operation_utils_8h.html#a69e192d0519410c78a90c964832374fe',1,'OperandType():&#160;OperationUtils.h'],['../namespaceonert_1_1backend_1_1train_1_1ops.html#a36997d521390a4beeccc6475e08fca7e',1,'onert::backend::train::ops::OperandType()'],['../namespaceonert_1_1backend_1_1xnnpack_1_1ops.html#aa17afb664268c7b0ee10145e41637f5a',1,'onert::backend::xnnpack::ops::OperandType()']]],
   ['operation_7',['Operation',['../_dot_builder_8h.html#ad8f032fcac78ce64f52a67913dec4fd8',1,'DotBuilder.h']]],
   ['operationindex_8',['OperationIndex',['../namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347',1,'onert::ir']]],
   ['operationindexmap_9',['OperationIndexMap',['../namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f',1,'onert::ir']]],

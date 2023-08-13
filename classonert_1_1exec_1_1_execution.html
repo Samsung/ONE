@@ -147,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8e1db01134e00044abe3b360260f47f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41e5549fee5cbf8d25868c6342a68c2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#aa41e5549fee5cbf8d25868c6342a68c2">getInputTotalSize</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
 <tr class="separator:aa41e5549fee5cbf8d25868c6342a68c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca14a1b34666395e567c795514ea7823"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#aca14a1b34666395e567c795514ea7823">getOutputTotalSize</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
+<tr class="separator:aca14a1b34666395e567c795514ea7823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to define execution instance to collect input/output information for inference and prepare executor run (TODO) </p>
@@ -366,6 +368,29 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00154">isFinished()</a>, <a class="el" href="_i_o_description_8h_source.html#l00065">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
+</div>
+</div>
+<a id="aca14a1b34666395e567c795514ea7823" name="aca14a1b34666395e567c795514ea7823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca14a1b34666395e567c795514ea7823">&#9670;&#160;</a></span>getOutputTotalSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t onert::exec::Execution::getOutputTotalSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00209">209</a> of file <a class="el" href="core_2src_2exec_2execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  210</span>{</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keywordflow">return</span> _executors-&gt;outputInfo(ind).total_size();</div>
+<div class="line"><span class="lineno">  212</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a310972a702962562bd68fe87d9c27107" name="a310972a702962562bd68fe87d9c27107"></a>

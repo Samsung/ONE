@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: onert-micro/luci-interpreter/pal/mcu/PALDiv.h Source File</title>
+<title>ONE - On-device Neural Engine: onert-micro/luci-interpreter/pal/common/PALDiv.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -109,8 +109,8 @@ $(document).ready(function(){initNavTree('_p_a_l_div_8h_source.html',''); initRe
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifndef LUCI_INTERPRETER_PAL_DIV_H</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define LUCI_INTERPRETER_PAL_DIV_H</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifndef LUCI_INTERPRETER_PAL_DIV_COMMON_H</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#define LUCI_INTERPRETER_PAL_DIV_COMMON_H</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_params_8h.html">Params.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_p_a_l_utils_8h.html">PALUtils.h</a>&quot;</span></div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('_p_a_l_div_8h_source.html',''); initRe
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>} <span class="comment">// namespace luci_interpreter_pal</span></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_PAL_DIV_H</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_PAL_DIV_COMMON_H</span></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a2ed85231fb21100351c9f68895eaba4b"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc1</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00033">PALComparisons.h:33</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_p_a_l_div_8h_source.html',''); initRe
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_abe0909641358a2944262ae5811516eb0"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#abe0909641358a2944262ae5811516eb0">luci_interpreter::RuntimeShape::extendedShape</a></div><div class="ttdeci">static RuntimeShape extendedShape(int new_shape_size, const RuntimeShape &amp;shape)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">Tensor.h:95</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_acbf4dabf4f38e9b25551036973965529"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">luci_interpreter::RuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">Tensor.h:45</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter__pal_html"><div class="ttname"><a href="namespaceluci__interpreter__pal.html">luci_interpreter_pal</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_arg_max_8h_source.html#l00022">PALArgMax.h:23</a></div></div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_html"><div class="ttname"><a href="namespaceluci__interpreter__pal.html">luci_interpreter_pal</a></div><div class="ttdef"><b>Definition:</b> <a href="cmsisnn_2_p_a_l_arg_max_8h_source.html#l00022">PALArgMax.h:23</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a0580e5005fd332b1bcf48f0dcd9baec8"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a0580e5005fd332b1bcf48f0dcd9baec8">luci_interpreter_pal::DivScalar</a></div><div class="ttdeci">void DivScalar(const ArithmeticParams &amp;params, const int flat_size, const T *input_data, const T scalar_value, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_div_8h_source.html#l00040">PALDiv.h:40</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">luci_interpreter_pal::BroadcastableOpCategory::kScalarFirstBroadcast</a></div><div class="ttdeci">@ kScalarFirstBroadcast</div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">luci_interpreter_pal::BroadcastableOpCategory::kScalarSecondBroadcast</a></div><div class="ttdeci">@ kScalarSecondBroadcast</div></div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('_p_a_l_div_8h_source.html',''); initRe
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_2f1d0fa04477eba32645101cc39c87e0.html">onert-micro</a></li><li class="navelem"><a class="el" href="dir_ce4f6825df8839c6a8b44d3d97c3a322.html">luci-interpreter</a></li><li class="navelem"><a class="el" href="dir_b1874143933efc2bfd7e96bdea4da454.html">pal</a></li><li class="navelem"><a class="el" href="dir_132de01d1c06e6c7d9be57d5e7d50eec.html">mcu</a></li><li class="navelem"><a class="el" href="_p_a_l_div_8h.html">PALDiv.h</a></li>
+    <li class="navelem"><a class="el" href="dir_2f1d0fa04477eba32645101cc39c87e0.html">onert-micro</a></li><li class="navelem"><a class="el" href="dir_ce4f6825df8839c6a8b44d3d97c3a322.html">luci-interpreter</a></li><li class="navelem"><a class="el" href="dir_b1874143933efc2bfd7e96bdea4da454.html">pal</a></li><li class="navelem"><a class="el" href="dir_21922cce5cf568cd02691658c598ce24.html">common</a></li><li class="navelem"><a class="el" href="_p_a_l_div_8h.html">PALDiv.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

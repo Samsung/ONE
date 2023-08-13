@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_reshape_layer_8h_source.html">ReshapeLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="cpu_2ops_2_reshape_layer_8h_source.html">ReshapeLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::ReshapeLayer:</div>
 <div class="dyncontent">
@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_reshape_layer_8h_source.html#l00033">33</a> of file <a class="el" href="_reshape_layer_8h_source.html">ReshapeLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_reshape_layer_8h_source.html#l00033">33</a> of file <a class="el" href="cpu_2ops_2_reshape_layer_8h_source.html">ReshapeLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0f9251304bf6f0bcbff47a49b6291963" name="a0f9251304bf6f0bcbff47a49b6291963"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f9251304bf6f0bcbff47a49b6291963">&#9670;&#160;</a></span>ReshapeLayer()</h2>
@@ -143,7 +143,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reshape_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span>                           : _input(<span class="keyword">nullptr</span>), _shape(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="comment">// DO NOTHING</span></div>
@@ -184,7 +184,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reshape_layer_8cc_source.html#l00039">39</a> of file <a class="el" href="_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00039">39</a> of file <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
 <div class="line"><span class="lineno">   42</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
 <div class="line"><span class="lineno">   43</span>  <span class="comment">/* note : shape is optional. If not provided from model, _shape is nullptr. */</span></div>
@@ -211,7 +211,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reshape_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> count = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141">total_size</a>();</div>
 <div class="line"><span class="lineno">   36</span>  memcpy(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>(), count);</div>
@@ -221,7 +221,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, and <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141">onert::backend::ITensor::total_size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_reshape_layer_8cc_source.html#l00048">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00048">run()</a>.</p>
 
 </div>
 </div>
@@ -250,17 +250,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_reshape_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html#ad7c794cbdf672e277bb079f88f13b670">reshapeGeneric</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer_html_ad7c794cbdf672e277bb079f88f13b670"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html#ad7c794cbdf672e277bb079f88f13b670">onert::backend::cpu::ops::ReshapeLayer::reshapeGeneric</a></div><div class="ttdeci">void reshapeGeneric()</div><div class="ttdef"><b>Definition:</b> <a href="_reshape_layer_8cc_source.html#l00033">ReshapeLayer.cc:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer_html_ad7c794cbdf672e277bb079f88f13b670"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html#ad7c794cbdf672e277bb079f88f13b670">onert::backend::cpu::ops::ReshapeLayer::reshapeGeneric</a></div><div class="ttdeci">void reshapeGeneric()</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_reshape_layer_8cc_source.html#l00033">ReshapeLayer.cc:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_reshape_layer_8cc_source.html#l00033">reshapeGeneric()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00033">reshapeGeneric()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_reshape_layer_8h_source.html">ReshapeLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_reshape_layer_8cc_source.html">ReshapeLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_reshape_layer_8h_source.html">ReshapeLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

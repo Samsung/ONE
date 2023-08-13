@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2train_2_backe
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    context-&gt;kernel_gen = std::make_shared&lt;train::KernelGenerator&gt;(</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      tgraph, tr, context-&gt;external_context(), tdata.optimizer);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      tgraph, tr, context-&gt;external_context(), context-&gt;data()-&gt;optimizer);</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>

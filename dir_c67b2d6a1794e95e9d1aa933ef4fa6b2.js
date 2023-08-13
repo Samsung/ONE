@@ -34,7 +34,7 @@ var dir_c67b2d6a1794e95e9d1aa933ef4fa6b2 =
     [ "L2Normalization.h", "_l2_normalization_8h.html", "_l2_normalization_8h" ],
     [ "LocalResponseNormalization.h", "runtime_2onert_2core_2include_2ir_2operation_2_local_response_normalization_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_local_response_normalization_8h" ],
     [ "LogSoftmax.h", "runtime_2onert_2core_2include_2ir_2operation_2_log_soft_max_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_log_soft_max_8h" ],
-    [ "Loss.h", "operation_2_loss_8h.html", "operation_2_loss_8h" ],
+    [ "Loss.h", "runtime_2onert_2core_2include_2ir_2operation_2_loss_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_loss_8h" ],
     [ "LSTM.h", "runtime_2onert_2core_2include_2ir_2operation_2_l_s_t_m_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_l_s_t_m_8h" ],
     [ "MatrixBandPart.h", "runtime_2onert_2core_2include_2ir_2operation_2_matrix_band_part_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_matrix_band_part_8h" ],
     [ "OneHot.h", "runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h" ],

@@ -92,17 +92,18 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_runtime.htm
   <div class="headertitle"><div class="title">How to Build Runtime </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p >This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.</p>
+<div class="textblock"><p >This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.</p>
 <h1>Build requirements</h1>
 <p >If you are going to build this project, the following modules must be installed on your system:</p>
 <ul>
+<li>C &amp; C++ compiler</li>
 <li>CMake</li>
 <li>Boost C++ libraries</li>
 </ul>
 <p >In the Ubuntu, you can easily install it with the following command.</p>
 <div class="fragment"><div class="line">$ sudo apt-get install cmake libboost-all-dev</div>
-</div><!-- fragment --><p >If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in <a href="https://github.com/Samsung/ONE/blob/master/infra/docker/bionic/Dockerfile">https://github.com/Samsung/ONE/blob/master/infra/docker/bionic/Dockerfile</a>.</p>
-<p >Here is a summary of it</p>
+</div><!-- fragment --><p >If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in <a href="https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile">https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile</a>.</p>
+<p >Here is a summary of it for runtime and related tools</p>
 <div class="fragment"><div class="line">$ sudo apt install \</div>
 <div class="line">build-essential \</div>
 <div class="line">clang-format-8 \</div>
@@ -112,36 +113,26 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_runtime.htm
 <div class="line">graphviz \</div>
 <div class="line">hdf5-tools \</div>
 <div class="line">lcov \</div>
-<div class="line">libatlas-base-dev \</div>
 <div class="line">libboost-all-dev \</div>
-<div class="line">libgflags-dev \</div>
-<div class="line">libgoogle-glog-dev \</div>
-<div class="line">libgtest-dev \</div>
 <div class="line">libhdf5-dev \</div>
-<div class="line">libprotobuf-dev \</div>
-<div class="line">protobuf-compiler \</div>
-<div class="line">pylint \</div>
 <div class="line">python3 \</div>
 <div class="line">python3-pip \</div>
-<div class="line">python3-venv \</div>
 <div class="line">scons \</div>
 <div class="line">software-properties-common \</div>
 <div class="line">unzip \</div>
 <div class="line">wget</div>
 <div class="line"> </div>
-<div class="line">$ mkdir /tmp/gtest</div>
-<div class="line">$ cd /tmp/gtest</div>
-<div class="line">$ cmake /usr/src/gtest</div>
-<div class="line">$ make</div>
-<div class="line">$ sudo mv *.a /usr/lib</div>
-<div class="line"> </div>
-<div class="line">$ pip install yapf==0.22.0 numpy</div>
+<div class="line">$ pip3 install yapf==0.22.0 numpy</div>
 </div><!-- fragment --><h1>Build from source code, for Ubuntu</h1>
 <p >In a typical linux development environment, including Ubuntu, you can build the runtime with a simple command like this:</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>
-<div class="line">$ make -f Makefile.template install</div>
-</div><!-- fragment --><p >Unfortunately, the debug build on the x86_64 architecture currently has an error. To solve the problem, you must use gcc version 9 or higher. Another workaround is to do a release build rather than a debug build. This is not a suitable method for debugging during development, but it is enough to check the function of the runtime. To release build the runtime, add the environment variable <code>BUILD_TYPE=release</code> to the build command as follows.</p>
+<div class="line">$ ./nnfw configure</div>
+<div class="line">$ ./nnfw build</div>
+<div class="line">$ ./nnfw install</div>
+</div><!-- fragment --><p >For easy build process, we provides <code>Makefile.template</code> makefile.</p>
+<div class="fragment"><div class="line">$ make -f Makefile.template</div>
+</div><!-- fragment --><p >To release build the runtime, add the environment variable <code>BUILD_TYPE=release</code> to the build command as follows.</p>
 <div class="fragment"><div class="line">$ export BUILD_TYPE=release</div>
 <div class="line">$ make -f Makefile.template</div>
 </div><!-- fragment --><p >Or you can simply do something like this:</p>
@@ -159,77 +150,74 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_runtime.htm
 <div class="line">$ tree -L 3 ./Product/out</div>
 <div class="line">./Product/out</div>
 <div class="line">├── bin</div>
-<div class="line">│   ├── onert_run</div>
-<div class="line">│   ├── tflite_comparator</div>
-<div class="line">│   └── tflite_run</div>
+<div class="line">│   ├── onert_run</div>
+<div class="line">│   ├── tflite_comparator</div>
+<div class="line">│   └── tflite_run</div>
 <div class="line">├── include</div>
-<div class="line">│   ├── nnfw</div>
-<div class="line">│   │   ├── NeuralNetworksEx.h</div>
-<div class="line">│   │   ├── NeuralNetworksExtensions.h</div>
-<div class="line">│   │   ├── NeuralNetworks.h</div>
-<div class="line">│   │   ├── nnfw_experimental.h</div>
-<div class="line">│   │   └── nnfw.h</div>
-<div class="line">│   └── onert</div>
-<div class="line">│       ├── backend</div>
-<div class="line">│       ├── compiler</div>
-<div class="line">│       ├── exec</div>
-<div class="line">│       ├── ir</div>
-<div class="line">│       └── util</div>
+<div class="line">│   ├── nnfw</div>
+<div class="line">│   │   ├── NeuralNetworksEx.h</div>
+<div class="line">│   │   ├── NeuralNetworksExtensions.h</div>
+<div class="line">│   │   ├── NeuralNetworks.h</div>
+<div class="line">│   │   ├── nnfw_experimental.h</div>
+<div class="line">│   │   └── nnfw.h</div>
+<div class="line">│   └── onert</div>
+<div class="line">│       ├── backend</div>
+<div class="line">│       ├── compiler</div>
+<div class="line">│       ├── exec</div>
+<div class="line">│       ├── ir</div>
+<div class="line">│       └── util</div>
 <div class="line">├── lib</div>
-<div class="line">│   ├── libbackend_cpu.so</div>
-<div class="line">│   ├── libbackend_ruy.so</div>
-<div class="line">│   ├── libneuralnetworks.so</div>
-<div class="line">│   ├── libnnfw-dev.so</div>
-<div class="line">│   └── libonert_core.so</div>
+<div class="line">│   ├── libbackend_cpu.so</div>
+<div class="line">│   ├── libbackend_ruy.so</div>
+<div class="line">│   ├── libneuralnetworks.so</div>
+<div class="line">│   ├── libnnfw-dev.so</div>
+<div class="line">│   └── libonert_core.so</div>
 <div class="line">├── nnapi-gtest</div>
-<div class="line">│   ├── nnapi_gtest</div>
-<div class="line">│   ├── nnapi_gtest.skip</div>
-<div class="line">│   ├── nnapi_gtest.skip.noarch.interp</div>
-<div class="line">│   └── nnapi_gtest.skip.x86_64-linux.cpu</div>
+<div class="line">│   ├── nnapi_gtest</div>
+<div class="line">│   ├── nnapi_gtest.skip</div>
+<div class="line">│   └── nnapi_gtest.skip.x86_64-linux.cpu</div>
 <div class="line">├── test</div>
-<div class="line">│   ├── command</div>
-<div class="line">│   │   ├── nnpkg-test</div>
-<div class="line">│   │   ├── prepare-model</div>
-<div class="line">│   │   ├── unittest</div>
-<div class="line">│   │   └── verify-tflite</div>
-<div class="line">│   ├── FillFrom_runner</div>
-<div class="line">│   ├── list</div>
-<div class="line">│   │   ├── benchmark_nnpkg_model_list.txt</div>
-<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.acl_cl</div>
-<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.acl_neon</div>
-<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.cpu</div>
-<div class="line">│   │   ├── nnpkg_test_list.noarch.interp</div>
-<div class="line">│   │   ├── tflite_comparator.aarch64.acl_cl.list</div>
-<div class="line">│   │   ├── tflite_comparator.aarch64.acl_neon.list</div>
-<div class="line">│   │   ├── tflite_comparator.aarch64.cpu.list</div>
-<div class="line">│   │   ├── tflite_comparator.armv7l.acl_cl.list</div>
-<div class="line">│   │   ├── tflite_comparator.armv7l.acl_neon.list</div>
-<div class="line">│   │   ├── tflite_comparator.armv7l.cpu.list</div>
-<div class="line">│   │   ├── tflite_comparator.noarch.interp.list</div>
-<div class="line">│   │   └── tflite_comparator.x86_64.cpu.list</div>
-<div class="line">│   ├── models</div>
-<div class="line">│   │   ├── run_test.sh</div>
-<div class="line">│   │   └── tflite</div>
-<div class="line">│   ├── nnpkgs</div>
-<div class="line">│   │   └── FillFrom</div>
-<div class="line">│   └── onert-test</div>
+<div class="line">│   ├── command</div>
+<div class="line">│   │   ├── nnpkg-test</div>
+<div class="line">│   │   ├── prepare-model</div>
+<div class="line">│   │   ├── unittest</div>
+<div class="line">│   │   └── verify-tflite</div>
+<div class="line">│   ├── FillFrom_runner</div>
+<div class="line">│   ├── list</div>
+<div class="line">│   │   ├── benchmark_nnpkg_model_list.txt</div>
+<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.acl_cl</div>
+<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.acl_neon</div>
+<div class="line">│   │   ├── nnpkg_test_list.armv7l-linux.cpu</div>
+<div class="line">│   │   ├── tflite_comparator.aarch64.acl_cl.list</div>
+<div class="line">│   │   ├── tflite_comparator.aarch64.acl_neon.list</div>
+<div class="line">│   │   ├── tflite_comparator.aarch64.cpu.list</div>
+<div class="line">│   │   ├── tflite_comparator.armv7l.acl_cl.list</div>
+<div class="line">│   │   ├── tflite_comparator.armv7l.acl_neon.list</div>
+<div class="line">│   │   ├── tflite_comparator.armv7l.cpu.list</div>
+<div class="line">│   │   └── tflite_comparator.x86_64.cpu.list</div>
+<div class="line">│   ├── models</div>
+<div class="line">│   │   ├── run_test.sh</div>
+<div class="line">│   │   └── tflite</div>
+<div class="line">│   ├── nnpkgs</div>
+<div class="line">│   │   └── FillFrom</div>
+<div class="line">│   └── onert-test</div>
 <div class="line">└── unittest</div>
 <div class="line">    ├── ndarray_test</div>
 <div class="line">    ├── nnfw_api_gtest</div>
 <div class="line">    ├── nnfw_api_gtest_models</div>
-<div class="line">    │   ├── add</div>
-<div class="line">    │   ├── add_invalid_manifest</div>
-<div class="line">    │   ├── add_no_manifest</div>
-<div class="line">    │   ├── if_dynamic</div>
-<div class="line">    │   ├── mobilenet_v1_1.0_224</div>
-<div class="line">    │   └── while_dynamic</div>
+<div class="line">    │   ├── add</div>
+<div class="line">    │   ├── add_invalid_manifest</div>
+<div class="line">    │   ├── add_no_manifest</div>
+<div class="line">    │   ├── if_dynamic</div>
+<div class="line">    │   ├── mobilenet_v1_1.0_224</div>
+<div class="line">    │   └── while_dynamic</div>
 <div class="line">    ├── nnfw_lib_misc_test</div>
 <div class="line">    ├── test_cker</div>
 <div class="line">    ├── test_onert_core</div>
 <div class="line">    ├── test_onert_frontend_nnapi</div>
 <div class="line">    └── tflite_test</div>
 <div class="line"> </div>
-<div class="line">26 directories, 46 files</div>
+<div class="line">26 directories, 42 files</div>
 </div><!-- fragment --><p >Here, let's recall that the main target of our project is the arm architecture. If you have a development environment running Linux for arm on a device made of an arm CPU, such as Odroid-XU4, you will get a runtime binary that can be run on the arm architecture with the same command above. This is the simplest way to get a binary for an arm device. However, in most cases, native builds on arm devices are too impractical as they require too long. Therefore, we will create an executable binary of an architecture other than x86_64 through a <code>cross build</code>. For cross-build method for each architecture, please refer to the corresponding document in the following section, How to cross-build runtime for different architecture.</p>
 <h2>Run test</h2>
 <p >The simple way to check whether the build was successful is to perform inference of the NN model using the runtime. The model to be used for the test can be obtained as follows.</p>
@@ -238,7 +226,7 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_runtime.htm
 <div class="line">$ ls *.tflite</div>
 <div class="line">inception_v3.tflite</div>
 </div><!-- fragment --><p >The result of running the inception_v3 model using runtime is as follows. Please consider that this is a test that simply checks execution latency without considering the accuracy of the model.</p>
-<div class="fragment"><div class="line">$ ./Product/out/bin/onert_run --modelfile ./inception_v3.tflite</div>
+<div class="fragment"><div class="line">$ ./Product/out/bin/onert_run ./inception_v3.tflite</div>
 <div class="line">Model Filename ./inception_v3.tflite</div>
 <div class="line">===================================</div>
 <div class="line">MODEL_LOAD   takes 1.108 ms</div>

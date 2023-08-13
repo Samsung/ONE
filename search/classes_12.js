@@ -100,7 +100,7 @@ var searchData=
   ['reshapechef_97',['ReshapeChef',['../class_reshape_chef.html',1,'']]],
   ['reshapecheffactory_98',['ReshapeChefFactory',['../struct_reshape_chef_factory.html',1,'']]],
   ['reshapegraphbuilder_99',['ReshapeGraphBuilder',['../classmoco_1_1_reshape_graph_builder.html',1,'moco::ReshapeGraphBuilder'],['../classtflimport_1_1_reshape_graph_builder.html',1,'tflimport::ReshapeGraphBuilder']]],
-  ['reshapelayer_100',['ReshapeLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html',1,'onert::backend::cpu::ops']]],
+  ['reshapelayer_100',['ReshapeLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html',1,'onert::backend::cpu::ops::ReshapeLayer'],['../classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html',1,'onert::backend::train::ops::ReshapeLayer']]],
   ['reshapeop_101',['ReshapeOp',['../classmir_1_1ops_1_1_reshape_op.html',1,'mir::ops']]],
   ['reshapeprinter_102',['ReshapePrinter',['../classcircledump_1_1_reshape_printer.html',1,'circledump::ReshapePrinter'],['../classtfldump_1_1_reshape_printer.html',1,'tfldump::ReshapePrinter']]],
   ['resizebilinear_103',['ResizeBilinear',['../classluci__interpreter_1_1kernels_1_1_resize_bilinear.html',1,'luci_interpreter::kernels::ResizeBilinear'],['../classonert_1_1ir_1_1operation_1_1_resize_bilinear.html',1,'onert::ir::operation::ResizeBilinear']]],

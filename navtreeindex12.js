@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"_fused_batch_norm_layer_8cc_source.html":[35,0,4,2,1,4,0,38],
+"_fused_batch_norm_layer_8h.html":[35,0,4,2,1,4,0,39],
+"_fused_batch_norm_layer_8h_source.html":[35,0,4,2,1,4,0,39],
+"_g_e_m_m_support_8h.html":[35,0,1,1,0,0,1,0],
 "_g_e_m_m_support_8h.html#a98681d37fc1bc7c05d4e2cd7f5735180":[35,0,1,1,0,0,1,0,1],
 "_g_e_m_m_support_8h_source.html":[35,0,1,1,0,0,1,0],
 "_gather_8cc.html":[35,0,4,2,2,1,4,0,27],
@@ -98,10 +102,10 @@ var NAVTREEINDEX12 =
 "_global_data_generation_8h.html#a24990c06c9bf79de7411e1e1d0e4afaa":[35,0,0,34,1,1,4,25,2],
 "_global_data_generation_8h.html#a81b59f2e10a9142e39eaccf332e9b9ef":[35,0,0,34,1,1,4,25,1],
 "_global_data_generation_8h_source.html":[35,0,0,34,1,1,4,25],
-"_gradient_applier_8cc.html":[35,0,4,2,1,7,0,4],
-"_gradient_applier_8cc_source.html":[35,0,4,2,1,7,0,4],
-"_gradient_applier_8h.html":[35,0,4,2,1,7,0,5],
-"_gradient_applier_8h_source.html":[35,0,4,2,1,7,0,5],
+"_gradient_applier_8cc.html":[35,0,4,2,1,7,0,6],
+"_gradient_applier_8cc_source.html":[35,0,4,2,1,7,0,6],
+"_gradient_applier_8h.html":[35,0,4,2,1,7,0,7],
+"_gradient_applier_8h_source.html":[35,0,4,2,1,7,0,7],
 "_graph_8cc.html":[35,0,4,2,2,1,4,5],
 "_graph_8cc_source.html":[35,0,4,2,2,1,4,5],
 "_graph_8forward_8h.html":[35,0,0,44,0,0,1,28],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "_host_8cpp.html":[35,0,0,34,1,1,2,0],
 "_host_8cpp_source.html":[35,0,0,34,1,1,2,0],
 "_host_8h.html":[35,0,0,34,1,1,2,1],
-"_host_8h_source.html":[35,0,0,34,1,1,2,1],
-"_i_a_c_l_tensor_8cc.html":[35,0,4,2,1,1,15],
-"_i_a_c_l_tensor_8cc_source.html":[35,0,4,2,1,1,15],
-"_i_a_c_l_tensor_8h.html":[35,0,4,2,1,1,16],
-"_i_a_c_l_tensor_8h_source.html":[35,0,4,2,1,1,16]
+"_host_8h_source.html":[35,0,0,34,1,1,2,1]
 };
