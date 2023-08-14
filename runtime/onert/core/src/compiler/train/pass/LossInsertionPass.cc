@@ -43,7 +43,10 @@ void LossInsertionPass::run()
   // TODO Consider SparseCategoricalCrossentropy y_true shape
   //      SparseCategoricalCrossentropy loss has a different y_true shape than y_pred.
 
-  const auto &y_pred_index = _trainable_graph.getOutputs().at(0);
+  // TODO Implement Loop [0, getOutputs().size())
+  //      index: a loop index
+  const auto index = 0;
+  const auto &y_pred_index = _trainable_graph.getOutputs().at(index);
   const auto &y_pred = _trainable_graph.operands().at(y_pred_index);
   const auto &shape = y_pred.shape();
   const auto &type_info = y_pred.typeInfo();
@@ -63,7 +66,9 @@ void LossInsertionPass::run()
   _trainable_graph.addOperation(std::move(trainable_loss_op));
 
   _trainable_graph.addInput(y_true_index);
-  _trainable_graph.addOutput(output_index);
+
+  // TODO Add loss as many as output size
+  _trainable_graph.addLoss(output_index, ir::IOIndex{index});
 }
 
 } // namespace pass
