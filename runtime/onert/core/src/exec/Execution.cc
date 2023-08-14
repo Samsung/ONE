@@ -169,6 +169,17 @@ void Execution::train(uint32_t training_step)
 
   VERBOSE(Execution) << "training finished" << std::endl;
 }
+
+float Execution::getLoss(const ir::IOIndex &ind)
+{
+  auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutors"};
+  }
+
+  return execs->getLoss(ind);
+}
 #endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
