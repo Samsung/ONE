@@ -216,14 +216,11 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto y_pred_tensor = _tensor_reg->getPortableTensor(y_pred_index);
   auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
 
-  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
   auto deriv_y_pred_tensor = _tensor_reg->getDerivativeTensor(y_pred_index);
-  auto deriv_y_true_tensor = _tensor_reg->getDerivativeTensor(y_true_index);
-
   auto fn = std::make_unique<ops::LossLayer>();
 
   fn->configure(y_pred_tensor, y_true_tensor, output_tensor, deriv_y_pred_tensor,
-                deriv_y_true_tensor, deriv_output_tensor, convertLossType(node.param().op_type));
+                convertLossType(node.param().op_type));
 
   _return_fn = std::move(fn);
 
