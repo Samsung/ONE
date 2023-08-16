@@ -13,26 +13,26 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 ```
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
-- supports `arm`(default) and `aarch` architecutre for now
-- supports `bionic`(default), and `focal` release
+- supports `arm`(default) and `aarch64` architecutre for now
+- supports `focal`(default), `bionic`, and `jammy` release
 
 To see the options,
 ```
 $ ./tools/cross/install_rootfs.sh -h
 ```
 
-RootFS will be prepared at `tools/cross/rootfs/arm` folder.
+RootFS will be prepared at `tools/cross/rootfs/arm` or `tools/cross/rootfs/aarch64` folder.
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 18.04 LTS, select `bionic`, if you are using Ubuntu 20.04 LTS, select `focal`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
 DISTRIB_ID=Ubuntu
-DISTRIB_RELEASE=18.04
-DISTRIB_CODENAME=bionic
-DISTRIB_DESCRIPTION="Ubuntu 18.04.4 LTS"
+DISTRIB_RELEASE=22.04
+DISTRIB_CODENAME=jammy
+DISTRIB_DESCRIPTION="Ubuntu 22.04.3 LTS"
 ```
 
 If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider [cross-build using the docker image](how-to-build-runtime-using-prebuilt-docker-image.md).
@@ -61,29 +61,32 @@ for `http`, `https` and `ftp` protocol.
 
 ## Install ARM Cross Toolchain
 
-We recommend you have g++ >= 6 installed on your system because NN generated tests require it.
-
-### Ubuntu 18.04 LTS
-
-On Ubuntu 18.04 LTS, you can install using `apt-get`.
-
-Choose g++ version whatever you prefer: 7 (default), 6 or 8.
-
-```
-$ sudo apt-get install g++-{6,7,8}-arm-linux-gnueabihf
-```
-
-If you select specific version, update symbolic link for build toolchain
-
-```
-$ update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-8 80 \
-    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-8 \
-    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-8
-```
+We recommend you have g++ >= 6.1 installed on your system because NN generated tests require it (c++14).
 
 ### Ubuntu 20.04 LTS
 
-Same with Ubuntu 18.04 LTS. (except g++ version)
+On Ubuntu 20.04 LTS, you can install using `apt-get`.
+
+Choose g++ version whatever you prefer: 9 (default) or 10. We are officially testing on default g++ version,
+so we don't confirm build on different version.
+
+```
+$ sudo apt-get install g++-{9,10}-arm-linux-gnueabihf
+```
+
+If you select specific version, update symbolic link for build toolchain.
+
+Otherwise, you should set your custom cmake crossbuild toolchain. You can find cmake toolchain files in `infra/nnfw/cmake/buildtool/cross/`.
+
+```
+$ update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10 80 \
+    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-10 \
+    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-10
+```
+
+### Ubuntu 22.04 LTS
+
+Same with Ubuntu 20.04 LTS. (except g++ version)
 
 ## Build and install ARM Compute Library
 
@@ -95,18 +98,18 @@ To build ACL, you need to install scons
 $ sudo apt-get install scons
 ```
 
-ACL will be automatically installed in `externals/acl` when you build runtime without any changes.
+ACL source will be automatically installed in `externals/ARMCOMPUTE` when you build runtime without any changes.
 
 You can check ACL source information in `infra/cmake/packages/ARMComputeSourceConfig.cmake`
 
-## Cross build for ARM
+## Cross build for ARM by using Makefile.template
 
 Give `TARGET_ARCH` variable to set the target architecture.
 
 If you used `ROOTFS_DIR` to prepare in alternative folder, you should also give this to makefile.
 
 ```
-$ CROSS_BUILD=1 TARGET_ARCH=armv7l make
+$ CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template
 
 # If ROOTFS_DIR is in alternative folder
 $ ROOTFS_DIR=/path/to/your/rootfs/arm \
@@ -121,15 +124,23 @@ normal build and cross build as follows.
 ```
 $ export ROOTFS_DIR=xxx
 ...
-$ make                       # do normal build
-$ TARGET_ARCH=armv7l make    # do cross build
+$ make -f Makefile.template                     # do normal build
+$ TARGET_ARCH=armv7l make -f Makefile.template  # do cross build
 ```
+
+Makefile.template will pass crossbuild toolchain setting to cmake automatically by parsing variables.
 
 ### Run test
 
-To run and test the cross-compiled runtime, you need to copy the compiled output to the target device of the architecture in which it is executable.
+To run and test the cross-compiled runtime, you need to install library packages and copy the compiled output to the target device of the architecture in which it is executable.
 
-1. Copy all artifacts under the `./Product` folder to the target device, Odroid-XU4 for example, as a whole.
+1. Install hdf5 and boost library package
+
+```
+$ sudo apt install libhdf5-dev libboost-system-dev libboost-program-options-dev
+```
+
+2. Copy all artifacts under the `./Product/armv7l-linux.<BUILD_TYPE>` folder to the target device, Odroid-XU4 for example, as a whole.
 
 ```
 $ ssh odroid mkdir -p one/Product
@@ -144,7 +155,7 @@ test-driver.sh
 ...
 ```
 
-2. Log in to the target device, go to the copied path, and reestore the symbolic link settings of the `Product` directory.
+3. Log in to the target device, go to the copied path, and reestore the symbolic link settings of the `Product` directory.
 
 ```
 $ ssh odroid
