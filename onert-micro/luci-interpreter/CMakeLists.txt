@@ -26,7 +26,7 @@ if (DIS_FLOAT)
 endif()
 
 add_compile_options(-fno-exceptions)
-add_compile_options(-Os)
+#add_compile_options(-Os)
 
 # AFAIK, this will enable leak sanitizer, too
 if(ENABLE_SANITIZER)
