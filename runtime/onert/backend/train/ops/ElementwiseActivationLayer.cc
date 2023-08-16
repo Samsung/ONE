@@ -52,11 +52,33 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
   switch (op_type)
   {
     case ElementwiseActivationType::kReLU:
-      cpu::ops::ElementwiseActivationLayer::configure(input, output, alpha, beta,
-                                                      cpu::ops::ElementwiseActivationType::kReLU);
+      if (_input->data_type() == OperandType::FLOAT32)
+      {
+        if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
+        {
+          cpu::ops::ElementwiseActivationLayer::configure(
+            input, output, alpha, beta, cpu::ops::ElementwiseActivationType::kReLU);
+
+          _backward_kernel = [](const IPortableTensor *output, const IPortableTensor *incoming,
+                                IPortableTensor *outgoing) {
+            nnfw::cker::train::ReLUGrad(getShape(output), getBuffer<float>(output),
+                                        getShape(incoming), getBuffer<float>(incoming),
+                                        getShape(outgoing), getBuffer<float>(outgoing));
+          };
+        }
+        else
+        {
+          throw std::runtime_error("train ElementwiseActivationLayer : This layer does not "
+                                   "suppport other ReLU except for ReLU(0-inf)");
+        }
+      }
+      else
+      {
+        throw std::runtime_error("train ElementwiseActivationLayer: Unsupported datatype");
+      }
       break;
     default:
-      throw std::runtime_error("ElementwiseActivationLayer: unsupported op type");
+      throw std::runtime_error("train ElementwiseActivationLayer: Unsupported activation type yet");
   }
 }
 
@@ -64,16 +86,7 @@ void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivation
 
 void ElementwiseActivationLayer::backward(uint32_t)
 {
-  switch (_op_type)
-  {
-    case ElementwiseActivationType::kReLU:
-      nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-                                  getShape(_deriv_output), getBuffer<float>(_deriv_output),
-                                  getShape(_deriv_input), getBuffer<float>(_deriv_input));
-      break;
-    default:
-      throw std::runtime_error("train ElementwiseActivationLayer: Unsupported activation type yet");
-  }
+  _backward_kernel(_output, _deriv_output, _deriv_input);
 }
 
 } // namespace ops
