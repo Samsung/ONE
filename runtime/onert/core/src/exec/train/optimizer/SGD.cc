@@ -53,7 +53,7 @@ void SGD::applyGradient(const UpdateFactors &factors) const
   {
     case ir::DataType::FLOAT32:
       elementwise<float>(shape, grad_tensor, trainable_tensor,
-                         [&](float dst, float src) -> float { return dst + src * lr; });
+                         [&](float src, float dst) -> float { return dst - src * lr; });
       break;
     default:
       throw std::runtime_error("SGD: Not supported data type");
