@@ -25,6 +25,11 @@ trap_err_onexit()
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
+  # TF 2.12.x: error report has changed
+  if grep -q "invalid start byte" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
 
   echo "${filename_ext} FAILED"
   exit 255
