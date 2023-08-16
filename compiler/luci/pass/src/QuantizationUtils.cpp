@@ -73,14 +73,14 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
 }
 
 void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
-                                            float &scaling_factor, int64_t &zp, float &nudged_min,
+                                            float &scaling_factor, float &nudged_min,
                                             float &nudged_max)
 {
   const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
   const int32_t kMinScale = -kMaxScale;
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
-  compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+  compute_sym_scale(min, max, scaling_factor, nudged_min, nudged_max);
   const float scaling_factor_inv = 1.0 / scaling_factor;
   std::vector<int32_t> quantized_values(size);
   for (uint32_t i = 0; i < size; ++i)
@@ -101,8 +101,8 @@ void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float 
   }
 }
 
-void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
-                          float &nudged_min, float &nudged_max)
+void compute_sym_scale(float min, float max, float &scaling_factor, float &nudged_min,
+                       float &nudged_max)
 {
   assert(min <= max);
 
@@ -129,7 +129,6 @@ void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &
   if (scaling_factor < 1e-8)
     scaling_factor = 1e-8;
 
-  zp = 0;
   nudged_min = static_cast<float>(qmin_double * scaling_factor);
   nudged_max = static_cast<float>(qmax_double * scaling_factor);
 }
@@ -424,7 +423,7 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
                                               nudged_max);
       break;
     case loco::DataType::S16:
-      symmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, zp, nudged_min,
+      symmetric_wquant_with_minmax_per_layer(node, min, max, scaling_factor, nudged_min,
                                              nudged_max);
       break;
     default:

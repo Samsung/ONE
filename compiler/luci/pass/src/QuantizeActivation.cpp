@@ -78,7 +78,7 @@ void QuantizeActivation::visit(luci::CircleNode *node)
     }
     else
     {
-      compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+      compute_sym_scale(min, max, scaling_factor, nudged_min, nudged_max);
       node->dtype(loco::DataType::S16);
     }
 

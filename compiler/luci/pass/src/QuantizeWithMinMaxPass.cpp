@@ -101,7 +101,7 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   else
   {
     assert(out_type == loco::DataType::S16);
-    compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+    compute_sym_scale(min, max, scaling_factor, nudged_min, nudged_max);
   }
 
   auto quantparam = std::make_unique<CircleQuantParam>();
@@ -434,7 +434,7 @@ void QuantizeWithMinMaxPass::set_input_type(loco::Graph *g) const
       else
       {
         assert(user_given_dtype == loco::DataType::S16);
-        compute_sym_scale_zp(min, max, scaling_factor, zp, nudged_min, nudged_max);
+        compute_sym_scale(min, max, scaling_factor, nudged_min, nudged_max);
       }
       input->quantparam()->scale[0] = scaling_factor;
       input->quantparam()->zerop[0] = zp;
