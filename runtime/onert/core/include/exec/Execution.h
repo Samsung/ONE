@@ -150,6 +150,14 @@ public:
    *                      In other words, the number of gradient update.
    */
   void train(uint32_t training_step);
+
+  /**
+   * @brief     Get loss
+   * @note      It should be called after training
+   * @param[in] ind   Output index
+   * @return @c float Loss value
+   */
+  float getLoss(const ir::IOIndex &ind);
 #endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;
