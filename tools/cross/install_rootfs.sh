@@ -51,13 +51,6 @@ for i in "$@" ; do
             __BuildArch=aarch64
             __QemuArch=arm64
             ;;
-        armel)
-            __BuildArch=armel
-            __Tizen=tizen
-            __QemuArch=
-            __UbuntuRepo=
-            __LinuxCodeName=
-            ;;
         bionic)
             __LinuxCodeName=bionic
             ;;
@@ -98,7 +91,7 @@ if [ -d "$__RootfsDir" ]; then
     rm -rf $__RootfsDir
 fi
 
-if [ $__IsProxySet == 1 ] && [ "$__Tizen" != "tizen" ]; then
+if [ $__IsProxySet == 1 ]; then
     mkdir -p $__RootfsDir/etc/apt/apt.conf.d
     echo -e "$__Apt" >> $__RootfsDir/etc/apt/apt.conf.d/90proxy
 fi
