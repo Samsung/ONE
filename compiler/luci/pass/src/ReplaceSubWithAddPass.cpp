@@ -17,6 +17,7 @@
 #include "luci/Pass/ReplaceSubWithAddPass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Service/Nodes/CircleConst.h>
 
 namespace
@@ -47,6 +48,7 @@ bool replace_sub_with_const_rhs(luci::CircleSub *sub)
   add->y(neg_const_rhs);
   add->name(sub->name());
   add->fusedActivationFunction(sub->fusedActivationFunction());
+  luci::add_origin(add, luci::get_origin(sub));
   loco::replace(sub).with(add);
   return true;
 }
