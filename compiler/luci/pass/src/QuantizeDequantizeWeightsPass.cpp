@@ -110,8 +110,8 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 }
 
 void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
-                            std::vector<float> &scaling_factor, std::vector<int64_t> &zp,
-                            std::vector<float> &nudged_min, std::vector<float> &nudged_max)
+                            std::vector<float> &scaling_factor, std::vector<float> &nudged_min,
+                            std::vector<float> &nudged_max)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
   const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
@@ -122,7 +122,7 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 
   for (size_t i = 0; i < min.size(); ++i)
   {
-    compute_sym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
+    compute_sym_scale(min[i], max[i], scaling_factor[i], nudged_min[i], nudged_max[i]);
   }
 
   auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
@@ -322,7 +322,7 @@ private:
     }
     else
     {
-      sym_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max);
+      sym_wquant_per_channel(weights, min, max, scaling_factor, nudged_min, nudged_max);
       sym_wdequant_per_channel(weights, scaling_factor);
     }
 

@@ -23,9 +23,9 @@
 namespace luci
 {
 
-// Compute scale/zp using given min/max for symmetric quantization (int16)
-void compute_sym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
-                          float &nudged_min, float &nudged_max);
+// Compute scale using given min/max for symmetric quantization (int16)
+void compute_sym_scale(float min, float max, float &scaling_factor, float &nudged_min,
+                       float &nudged_max);
 
 // Compute scale/zp using given min/max for asymmetric quantization (uint8)
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
@@ -40,7 +40,7 @@ void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float
 // Symmetric per-layer quantization of weights (const tensor) using given min/max values
 // NOTE: in-place update of node data
 void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max,
-                                            float &scaling_factor, int64_t &zp, float &nudged_min,
+                                            float &scaling_factor, float &nudged_min,
                                             float &nudged_max);
 
 // Helper function to get channel dimension
