@@ -43,7 +43,16 @@ FullyConnectedLayer::~FullyConnectedLayer() = default;
 void FullyConnectedLayer::fullyConnectedFloat32()
 {
   nnfw::cker::FullyConnectedParams op_params;
+  float output_activation_min = 0;
+  float output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
   op_params.activation = convertActivationType(_activation);
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+  // TODO Set both cachables as false when training
+  op_params.lhs_cacheable = _weights->is_constant();
+  op_params.rhs_cacheable = _input->is_constant();
 
   nnfw::cker::FullyConnected(op_params, getShape(_input), getBuffer<float>(_input),
                              getShape(_weights), getBuffer<float>(_weights), getShape(_bias),

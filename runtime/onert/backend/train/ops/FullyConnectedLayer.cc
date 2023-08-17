@@ -135,7 +135,14 @@ void FullyConnectedLayer::backwardFloat32()
 
   // Initialize FullyConnectedParams
   nnfw::cker::FullyConnectedParams op_params;
+  float output_activation_min = 0;
+  float output_activation_max = 0;
+  CalculateActivationRange(ir::Activation::NONE, &output_activation_min, &output_activation_max);
   op_params.activation = nnfw::cker::FusedActivationFunctionType::kNone;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+  op_params.lhs_cacheable = false;
+  op_params.rhs_cacheable = false;
 
   // Transpose and compute gradient for input
   // ∂L/∂X = fc(Incoming gradient, transposed W)

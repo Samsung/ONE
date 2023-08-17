@@ -258,9 +258,12 @@ struct FullyConnectedParams
   // uint8, etc, activation params.
   int32_t quantized_activation_min;
   int32_t quantized_activation_max;
-  // float activation params - no one use this params, but ruy might use them later.
-  // float float_activation_min;
-  // float float_activation_max;
+  // float activation params
+  float float_activation_min;
+  float float_activation_max;
+  // Mark the operands as cacheable if they are unchanging, e.g. weights.
+  bool lhs_cacheable;
+  bool rhs_cacheable;
   // FullyConnectedWeightsFormat weights_format;
 };
 

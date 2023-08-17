@@ -21,6 +21,7 @@
 #include <ruy/context.h>
 #include "cker/operation/FullyConnectedDense16x1.h"
 #include "cker/operation/FullyConnectedSparse16x1.h"
+#include "cker/operation/optimized/Gemm.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 #include "cker/Utils.h"
@@ -58,6 +59,53 @@ public:
   std::vector<int32_t> accum_scratch;
 };
 
+#if defined(CKER_X86_PLATFORM)
+
+// From tensorflow/tensorflow/lite/kernels/internal/optimized/optimized_ops.h
+inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
+                           const float *input_data, const Shape &weights_shape,
+                           const float *weights_data, const Shape &,
+                           const float *optional_bias_data, const Shape &output_shape,
+                           float *output_data)
+{
+  const int dims_count = weights_shape.DimensionsCount();
+  const int input_rows = weights_shape.Dims(dims_count - 1);
+  MatrixParams<float> rhs_params;
+  rhs_params.order = Order::kColMajor;
+  rhs_params.rows = input_rows;
+  rhs_params.cols = input_shape.FlatSize() / input_rows;
+  rhs_params.cache_policy = optimized::DefaultCachePolicy(params.rhs_cacheable);
+
+  MatrixParams<float> lhs_params;
+  lhs_params.order = Order::kRowMajor;
+  lhs_params.cols = weights_shape.Dims(dims_count - 1);
+  lhs_params.rows = FlatSizeSkipDim(weights_shape, dims_count - 1);
+  lhs_params.cache_policy = optimized::DefaultCachePolicy(params.lhs_cacheable);
+  MatrixParams<float> dst_params;
+  dst_params.order = Order::kColMajor;
+  dst_params.rows = output_shape.Dims(output_shape.DimensionsCount() - 1);
+  dst_params.cols = FlatSizeSkipDim(output_shape, output_shape.DimensionsCount() - 1);
+  GemmParams<float, float> gemm_params;
+  gemm_params.bias = optional_bias_data;
+  gemm_params.clamp_min = params.float_activation_min;
+  gemm_params.clamp_max = params.float_activation_max;
+  optimized::Gemm(lhs_params, weights_data, rhs_params, input_data, dst_params, output_data,
+                  gemm_params);
+
+  // TODO Remove and Replace with float_activation_min and float_activation_max
+  // if (params.activation != FusedActivationFunctionType::kNone)
+  // {
+  //   // Apply activation function
+  //   int total_input_size = input_shape.FlatSize();
+  //   int input_size = weights_shape.Dims(1);
+  //   const int batch_size = total_input_size / input_size;
+  //   const int num_units = weights_shape.Dims(0);
+  //   ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
+  // }
+}
+
+#else // CKER_X86_PLATFORM
+
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
                            const float *input_data, const Shape &weights_shape,
                            const float *weights_data, const Shape &, const float *bias_data,
@@ -88,6 +136,8 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
     ApplyActivationToVector(output_data, batch_size * num_units, params.activation, output_data);
   }
 }
+
+#endif // CKER_X86_PLATFORM
 
 inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
                            const uint8_t *input_data, const Shape &filter_shape,
