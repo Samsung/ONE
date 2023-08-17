@@ -2,6 +2,11 @@ if(NOT ENABLE_TEST)
     return()
 endif(NOT ENABLE_TEST)
 
+# Disable the test if record-minmax-for-thread-test does not exist
+if (NOT TARGET record-minmax-for-thread-test)
+    return()
+endif(NOT TARGET record-minmax-for-thread-test)
+
 # Build record-minmax-for-thread-test if target arch is 64bit
 # Thread sanitizer is only available on 64bit machine
 # (https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual#supported-platforms)
