@@ -137,7 +137,7 @@ def _apply_verbosity(verbosity):
 
 # The index of input/output is added in front of the name. For example,
 # Original input names: 'a', 'c', 'b'
-# Renamed: '0001_a', '0002_c', '0003_b'
+# Renamed: 'i_0001_a', 'i_0002_c', 'i_0003_b'
 # This will preserve I/O order after import.
 def _remap_io_names(onnx_model):
     # gather existing name of I/O and generate new name of I/O in sort order
@@ -153,11 +153,11 @@ def _remap_io_names(onnx_model):
         name = onnx_model.graph.input[idx].name
         if not name in initializers:
             input_nodes.append(name)
-            remap_inputs.append(format(idx + 1, '04d') + '_' + name)
+            remap_inputs.append('i_' + format(idx + 1, '04d') + '_' + name)
     for idx in range(0, len(onnx_model.graph.output)):
         name = onnx_model.graph.output[idx].name
         output_nodes.append(name)
-        remap_outputs.append(format(idx + 1, '04d') + '_' + name)
+        remap_outputs.append('o_' + format(idx + 1, '04d') + '_' + name)
     # change names for graph input
     for i in range(len(onnx_model.graph.input)):
         if onnx_model.graph.input[i].name in input_nodes:
