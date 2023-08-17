@@ -1394,12 +1394,24 @@ NNFW_STATUS nnfw_session::train_get_loss(uint32_t index, float *loss)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // Check index is valid: [0, getExpectedSize())
+  if (index >= getOutputSize())
+  {
+    std::cerr << "Error during nnfw_session::train_get_loss : index is out of range" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  (void)index;
+  try
+  {
+    auto ind = onert::ir::IOIndex(index);
+    *loss = _execution->getLoss(ind);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_get_loss : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::train_export_circle(const char *path)
