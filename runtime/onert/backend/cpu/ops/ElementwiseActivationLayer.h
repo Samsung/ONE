@@ -54,7 +54,7 @@ public:
 
   void EvalUsingLookupTable(const IPortableTensor *input, IPortableTensor *output);
 
-private:
+protected:
   const IPortableTensor *_input;
   IPortableTensor *_output;
   uint8_t _table[256];

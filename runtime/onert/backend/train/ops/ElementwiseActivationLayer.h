@@ -53,6 +53,9 @@ private:
   const IPortableTensor *_deriv_output;
 
   ElementwiseActivationType _op_type;
+  std::function<void(const IPortableTensor *output, const IPortableTensor *incoming,
+                     IPortableTensor *outgoing)>
+    _backward_kernel;
 };
 
 } // namespace ops
