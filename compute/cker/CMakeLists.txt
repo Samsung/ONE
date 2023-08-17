@@ -12,6 +12,10 @@ if(PROFILE_RUY)
   target_link_libraries(nnfw_lib_cker INTERFACE ruy_profiler)
 endif(PROFILE_RUY)
 
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
+  target_compile_definitions(nnfw_lib_cker INTERFACE CKER_X86_PLATFORM)
+endif(CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
+
 target_include_directories(nnfw_lib_cker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Workaround to avoid warning
