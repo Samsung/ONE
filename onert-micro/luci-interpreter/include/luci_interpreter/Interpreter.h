@@ -32,6 +32,14 @@
 namespace luci_interpreter
 {
 
+#ifdef ENABLE_TRAINING
+namespace training
+{
+class TrainingOnertMicro;
+} // namespace training
+
+#endif // ENABLE_TRAINING
+
 class Interpreter
 {
 public:
@@ -45,7 +53,8 @@ public:
 
   ~Interpreter();
 
-  void allocateAndWriteInputTensor(int32_t input_tensor_index, const void *data, size_t data_size);
+  void allocateAndWriteInputTensor(int32_t input_tensor_index, const uint8_t *data,
+                                   size_t data_size);
   uint8_t *allocateInputTensor(int32_t input_tensor_index);
 
   uint8_t *readOutputTensor(int32_t output_tensor_index);
@@ -54,6 +63,10 @@ public:
   int32_t getOutputDataSizeByIndex(int32_t output_tensor_index);
 
   void interpret();
+
+#ifdef ENABLE_TRAINING
+  friend class training::TrainingOnertMicro;
+#endif // ENABLE_TRAINING
 
 private:
   // _default_memory_manager should be before _runtime_module due to

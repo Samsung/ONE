@@ -77,7 +77,7 @@ int32_t Interpreter::getOutputDataSizeByIndex(int32_t output_tensor_index)
   return runtime_graph->getOutputDataSizeByIndex(output_tensor_index);
 }
 
-void Interpreter::allocateAndWriteInputTensor(int32_t input_tensor_index, const void *data,
+void Interpreter::allocateAndWriteInputTensor(int32_t input_tensor_index, const uint8_t *data,
                                               size_t data_size)
 {
   assert(data_size > 0);

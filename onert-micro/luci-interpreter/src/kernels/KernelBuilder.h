@@ -142,6 +142,56 @@ private:
   KernelExecuteFunc *_operator_execute[size_t(BuilderID::Size)];
 };
 
+namespace training
+{
+class KernelTrainRegistry
+{
+public:
+  using KernelTrainFunc = Status(const circle::Operator *, CircleReader *,
+                                 GradientCalculationStorage *, const TrainingSettings &,
+                                 TrainableWeightStorage *, const uint8_t *);
+
+  constexpr KernelTrainRegistry() : _operator_train()
+  {
+#define REGISTER_TRAIN_KERNEL(builtin_operator, name) \
+  register_kernel_train(BuilderID::BuiltinOperator_##builtin_operator, train_kernel_Circle##name);
+
+#if USE_GENERATED_LIST
+#include "GeneratedKernelsToBuild.lst"
+#else
+#include "KernelsToTrain.lst"
+#endif
+
+#undef REGISTER_TRAIN_KERNEL
+  }
+
+  Status train_kernel(const circle::Operator *cur_op, circle::BuiltinOperator opcode,
+                      CircleReader *reader,
+                      GradientCalculationStorage *gradient_calculation_storage,
+                      const TrainingSettings &settings, TrainableWeightStorage *weight_storage,
+                      const uint8_t *label_train_data) const;
+
+private:
+  constexpr KernelTrainFunc *get_kernel_train_func(circle::BuiltinOperator opcode) const
+  {
+    const auto tmp = size_t(get_builder_id(opcode));
+    assert(tmp < size_t(BuilderID::Size));
+    return _operator_train[tmp];
+  }
+
+  constexpr void register_kernel_train(BuilderID id, KernelTrainFunc *func)
+  {
+    assert(size_t(id) < size_t(BuilderID::Size));
+    _operator_train[size_t(id)] = func;
+  }
+
+private:
+  KernelTrainFunc *_operator_train[size_t(BuilderID::Size)];
+};
+
+constexpr KernelTrainRegistry kernel_train;
+} // namespace training
+
 // Global constexpr kernel configure and kernel executor
 constexpr KernelConfigureRegistry kernel_configure;
 constexpr KernelExecuteRegistry kernel_executor;

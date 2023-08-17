@@ -138,6 +138,8 @@ if (DIS_DYN_SHAPES)
     add_definitions(-DDIS_DYN_SHAPES)
 endif()
 
+add_definitions(-DENABLE_TRAINING)
+
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")
 

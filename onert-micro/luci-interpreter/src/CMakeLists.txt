@@ -31,7 +31,7 @@ target_include_directories(${LUCI_INTERPRETER_CORE} PUBLIC ${LUCI_INTERPRETER_KE
 message(STATUS "LUCI INTERPTER INITALIZED")
 
 set(SOURCES
-        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h" Interpreter.cpp)
+        "${LUCI_INTERPRETER_INCLUDE_DIR}/luci_interpreter/Interpreter.h" Interpreter.cpp TrainingOnertMicro.cpp)
 
 add_library(${LUCI_INTERPRETER_BINARY} STATIC ${SOURCES})
 

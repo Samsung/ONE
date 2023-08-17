@@ -17,9 +17,11 @@
 #ifndef LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 #define LUCI_INTERPRETER_CORE_RUNTIMEMODULE_H
 
-#include "core/RuntimeGraph.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
+#include "luci_interpreter/core/TrainableWeightStorage.h"
+#include "TrainingGraph.h"
+#include "core/RuntimeGraph.h"
 #include <memory>
 #include <vector>
 
@@ -34,10 +36,25 @@ using BaseRuntimeGraph = RuntimeGraph;
 using MemoryManager = SimpleMemoryManager;
 #endif // USE_STATIC_ALLOC
 
+#ifdef ENABLE_TRAINING
+
+namespace training
+{
+
+class TrainingModule;
+
+} // namespace training
+
+#endif // ENABLE_TRAINING
+
 class RuntimeModule
 {
 public:
   RuntimeModule() = default;
+
+#ifdef ENABLE_TRAINING
+  friend class training::TrainingModule;
+#endif // ENABLE_TRAINING
 
   void addGraph(MemoryManager *memory_manager)
   {
@@ -59,6 +76,10 @@ private:
   std::vector<BaseRuntimeGraph> _graphs;
 
   CircleReader _circle_reader;
+
+#ifdef ENABLE_TRAINING
+  std::unique_ptr<training::TrainableWeightStorage> _storage;
+#endif // ENABLE_TRAINING
 };
 
 } // namespace luci_interpreter

@@ -46,6 +46,18 @@ using BaseRuntimeGraph = RuntimeGraph;
 
 #undef REGISTER_KERNEL
 
+namespace training
+{
+#define REGISTER_TRAIN_KERNEL(builtin_operator, name)                                           \
+  Status train_kernel_Circle##name(                                                             \
+    const circle::Operator *op, CircleReader *reader,                                           \
+    GradientCalculationStorage *gradient_calculation_storage, const TrainingSettings &settings, \
+    TrainableWeightStorage *weight_storage, const uint8_t *label_train_data);
+
+#include "KernelsToTrain.lst"
+
+#undef REGISTER_TRAIN_KERNEL
+} // namespace training
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
