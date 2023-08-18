@@ -4,6 +4,9 @@
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
 #   refer https://github.com/Samsung/ONE/issues/9962
+# TODO
+#   remove TF2.8.0
+#   remove jammy TF2.10.1
 find_package(PythonInterp 3.8 QUIET)
 find_package(PythonLibs 3.8 QUIET)
 
