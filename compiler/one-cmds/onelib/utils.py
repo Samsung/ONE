@@ -17,7 +17,8 @@
 import argparse
 import configparser
 import glob
-import importlib
+import importlib.machinery
+import importlib.util
 import ntpath
 import os
 import subprocess

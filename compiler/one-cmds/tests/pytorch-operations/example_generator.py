@@ -17,7 +17,8 @@
 # PyTorch Example manager
 
 import torch
-import importlib
+import importlib.machinery
+import importlib.util
 import argparse
 import os
 
