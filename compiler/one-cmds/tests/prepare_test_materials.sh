@@ -97,9 +97,9 @@ fi
 
 if [[ ! -s "reshape_matmul.onnx" ]]; then
     rm -rf reshape_matmul.zip
-    wget -nv https://github.com/Samsung/ONE/files/9082878/reshape_matmul.zip
+    wget -nv https://github.com/Samsung/ONE/files/12358217/reshape_matmul.zip
     unzip reshape_matmul.zip
-    # https://github.com/Samsung/ONE/issues/9405#issuecomment-1180198137
+    # https://github.com/Samsung/ONE/issues/9405#issuecomment-1680322410
 fi
 
 # prepare 'reshape_matmul.circle' file used for tests
