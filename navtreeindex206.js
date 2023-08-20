@@ -1,5 +1,15 @@
 var NAVTREEINDEX206 =
 {
+"partition_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,6,1,0,53],
+"partition_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,6,1,0,49],
+"partition_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,6,1,0,49],
+"partition_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,6,1,0,50],
+"partition_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[35,0,0,51,6,1,0,50],
+"partition_2src_2_nodes_2_circle_logical_or_8cpp.html":[35,0,0,51,6,1,0,51],
+"partition_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[35,0,0,51,6,1,0,51],
+"partition_2src_2_nodes_2_circle_logistic_8cpp.html":[35,0,0,51,6,1,0,52],
+"partition_2src_2_nodes_2_circle_logistic_8cpp_source.html":[35,0,0,51,6,1,0,52],
+"partition_2src_2_nodes_2_circle_matrix_diag_8cpp.html":[35,0,0,51,6,1,0,54],
 "partition_2src_2_nodes_2_circle_matrix_diag_8cpp_source.html":[35,0,0,51,6,1,0,54],
 "partition_2src_2_nodes_2_circle_matrix_set_diag_8cpp.html":[35,0,0,51,6,1,0,55],
 "partition_2src_2_nodes_2_circle_matrix_set_diag_8cpp_source.html":[35,0,0,51,6,1,0,55],
@@ -239,15 +249,5 @@ var NAVTREEINDEX206 =
 "reflection_8h.html#a1877d8ac4847e6b9ee7ee1c9d0582aa3":[35,0,3,1,0,10,27],
 "reflection_8h.html#a1cc65e63734b49a08a2bd8e1114ac24b":[35,0,3,1,0,10,5],
 "reflection_8h.html#a1db6339cfb67d126328446110560ce6c":[35,0,3,1,0,10,14],
-"reflection_8h.html#a2218ecb7c054bf65734d2c9f2add1fd2":[35,0,3,1,0,10,26],
-"reflection_8h.html#a27d3794e738e0d23b496d2df3bb634ad":[35,0,3,1,0,10,20],
-"reflection_8h.html#a35d15ad002ee533c34c544e4d29efb83":[35,0,3,1,0,10,15],
-"reflection_8h.html#a3f62dcfc891f1a20af26f5ecc69652fa":[35,0,3,1,0,10,48],
-"reflection_8h.html#a40ad8a4a439c0c6283bc961f82fe9012":[35,0,3,1,0,10,19],
-"reflection_8h.html#a40bfeb3c710226725b86e19910339b4e":[35,0,3,1,0,10,56],
-"reflection_8h.html#a4529a13aa9406296d6718b84c86abba2":[35,0,3,1,0,10,7],
-"reflection_8h.html#a4d1cc92cb468e515b6c7e4e6990798b9":[35,0,3,1,0,10,41],
-"reflection_8h.html#a4ed1fd1d6cc52b7687a542f734a63439":[35,0,3,1,0,10,11],
-"reflection_8h.html#a4ef3e887c57753881c4042767bc9c35f":[35,0,3,1,0,10,57],
-"reflection_8h.html#a575ef4ffbaa1574a4d0285d37c76f51a":[35,0,3,1,0,10,29]
+"reflection_8h.html#a2218ecb7c054bf65734d2c9f2add1fd2":[35,0,3,1,0,10,26]
 };

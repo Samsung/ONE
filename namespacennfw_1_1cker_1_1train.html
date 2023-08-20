@@ -103,6 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ac56dcc0882ef61d9d8f9c9132d917ba0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac56dcc0882ef61d9d8f9c9132d917ba0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">MSE</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_pred_shape, const T *y_pred_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_true_shape, const T *y_true_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:ac56dcc0882ef61d9d8f9c9132d917ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">MSEGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_pred_shape, const T *y_pred_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_true_shape, const T *y_true_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, T *grad_data)</td></tr>
+<tr class="separator:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56ba869240e3cb2e543a61e176115d8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">ReLUGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
 <tr class="separator:a56ba869240e3cb2e543a61e176115d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -266,7 +269,87 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_layer_8cc_source.html#l00067">onert::backend::train::ops::LossLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_layer_8cc_source.html#l00061">onert::backend::train::ops::LossLayer::forward()</a>.</p>
+
+</div>
+</div>
+<a id="a23fc8a7fd2e8068b5bb1b07a581e0936" name="a23fc8a7fd2e8068b5bb1b07a581e0936"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23fc8a7fd2e8068b5bb1b07a581e0936">&#9670;&#160;</a></span>MSEGrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::MSEGrad </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>y_pred_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_pred_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>y_true_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_true_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>grad_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00058">58</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (y_pred_shape != y_true_shape)</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != y_true_shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (y_pred_shape != grad_shape)</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != grad_shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
+<div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>    grad_data[i] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(-2 * (y_true_data[i] - y_pred_data[i]) / <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_loss_layer_8cc_source.html#l00079">onert::backend::train::ops::LossLayer::backward()</a>.</p>
 
 </div>
 </div>
@@ -342,6 +425,8 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="a_matrix_8h_html_a4dbf05dabea32cf4bc0693e0cc32d984"><div class="ttname"><a href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a></div><div class="ttdeci">VectorMap&lt; Scalar &gt; MapAsVector(Scalar *data, const Dims&lt; N &gt; &amp;dims)</div><div class="ttdef"><b>Definition:</b> <a href="_matrix_8h_source.html#l00040">Matrix.h:40</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">nnfw::cker::MapAsVector()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>

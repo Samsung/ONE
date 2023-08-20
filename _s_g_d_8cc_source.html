@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('_s_g_d_8cc_source.html',''); initResiz
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      elementwise&lt;float&gt;(shape, grad_tensor, trainable_tensor,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                         [&amp;](<span class="keywordtype">float</span> dst, <span class="keywordtype">float</span> src) -&gt; <span class="keywordtype">float</span> { <span class="keywordflow">return</span> dst + src * lr; });</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                         [&amp;](<span class="keywordtype">float</span> src, <span class="keywordtype">float</span> dst) -&gt; <span class="keywordtype">float</span> { <span class="keywordflow">return</span> dst - src * lr; });</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Not supported data type&quot;</span>);</div>

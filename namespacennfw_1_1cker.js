@@ -39,6 +39,7 @@ var namespacennfw_1_1cker =
     [ "train", "namespacennfw_1_1cker_1_1train.html", [
       [ "FullyConnectedBiasGrad", "namespacennfw_1_1cker_1_1train.html#ae451e8541f4091a1c41c54ba240824f4", null ],
       [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
+      [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
       [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ]
     ] ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],

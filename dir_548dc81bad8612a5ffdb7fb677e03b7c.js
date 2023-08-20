@@ -52,7 +52,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "Reciprocal.h", "_reciprocal_8h.html", "_reciprocal_8h" ],
     [ "ReduceMean.cpp", "mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp" ],
     [ "ReduceMean.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8h" ],
-    [ "Relu.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8cpp" ],
+    [ "Relu.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_relu_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_relu_8cpp" ],
     [ "Relu.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_re_l_u_8h" ],
     [ "Reshape.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8cpp" ],
     [ "Reshape.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_reshape_8h" ],

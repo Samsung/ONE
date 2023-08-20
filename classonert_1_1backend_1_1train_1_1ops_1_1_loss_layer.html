@@ -110,8 +110,8 @@ Collaboration diagram for onert::backend::train::ops::LossLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1588480cc65b7d8aebd7fe05ea88c365"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a1588480cc65b7d8aebd7fe05ea88c365">LossLayer</a> ()</td></tr>
 <tr class="separator:a1588480cc65b7d8aebd7fe05ea88c365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90cfdf8211fa81a994eb4a98d9f94c24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a90cfdf8211fa81a994eb4a98d9f94c24">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_pred, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_true, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_y_pred, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_y_true, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_output, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a> loss_type)</td></tr>
-<tr class="separator:a90cfdf8211fa81a994eb4a98d9f94c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad68670900baf739b5d1c099f58054508"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ad68670900baf739b5d1c099f58054508">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_pred, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_true, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_y_pred, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a> loss_type)</td></tr>
+<tr class="separator:ad68670900baf739b5d1c099f58054508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cfe2fc6d80d3240333982a9cd99c5ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a5cfe2fc6d80d3240333982a9cd99c5ee">forward</a> (bool training) override</td></tr>
 <tr class="separator:a5cfe2fc6d80d3240333982a9cd99c5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bc8d9e755c1c89411e53d387f28b57e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a5bc8d9e755c1c89411e53d387f28b57e">backward</a> (uint32_t) override</td></tr>
@@ -145,7 +145,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>  : _y_pred(<span class="keyword">nullptr</span>), _y_true(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _deriv_y_pred(<span class="keyword">nullptr</span>),</div>
-<div class="line"><span class="lineno">   33</span>    _deriv_y_true(<span class="keyword">nullptr</span>), _deriv_output(<span class="keyword">nullptr</span>), _loss_type(<a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>)</div>
+<div class="line"><span class="lineno">   33</span>    _loss_type(<a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>)</div>
 <div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   36</span>}</div>
@@ -180,15 +180,32 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00085">85</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// TODO Implement this</span></div>
-<div class="line"><span class="lineno">   88</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00079">79</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">switch</span> (_loss_type)</div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
+<div class="line"><span class="lineno">   84</span>      <span class="keywordflow">if</span> (_y_pred-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   85</span>      {</div>
+<div class="line"><span class="lineno">   86</span>        <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">nnfw::cker::train::MSEGrad</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_pred), getBuffer&lt;float&gt;(_y_pred), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_true),</div>
+<div class="line"><span class="lineno">   87</span>                                   getBuffer&lt;float&gt;(_y_true), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_deriv_y_pred),</div>
+<div class="line"><span class="lineno">   88</span>                                   getBuffer&lt;float&gt;(_deriv_y_pred));</div>
+<div class="line"><span class="lineno">   89</span>      }</div>
+<div class="line"><span class="lineno">   90</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   92</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a23fc8a7fd2e8068b5bb1b07a581e0936"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">nnfw::cker::train::MSEGrad</a></div><div class="ttdeci">void MSEGrad(const Shape &amp;y_pred_shape, const T *y_pred_data, const Shape &amp;y_true_shape, const T *y_true_data, const Shape &amp;grad_shape, T *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00058">Loss.h:58</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00094">OperationUtils.h:94</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">onert::backend::train::ops::kMSE</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00058">nnfw::cker::train::MSEGrad()</a>.</p>
+
 </div>
 </div>
-<a id="a90cfdf8211fa81a994eb4a98d9f94c24" name="a90cfdf8211fa81a994eb4a98d9f94c24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90cfdf8211fa81a994eb4a98d9f94c24">&#9670;&#160;</a></span>configure()</h2>
+<a id="ad68670900baf739b5d1c099f58054508" name="ad68670900baf739b5d1c099f58054508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad68670900baf739b5d1c099f58054508">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,18 +237,6 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_y_true</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_output</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a>&#160;</td>
           <td class="paramname"><em>loss_type</em>&#160;</td>
         </tr>
@@ -244,30 +249,25 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00038">38</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   44</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   45</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   46</span>  assert(deriv_y_pred != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   47</span>  assert(deriv_y_true != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   48</span>  assert(deriv_output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">switch</span> (loss_type)</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
-<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  _y_pred = y_pred;</div>
-<div class="line"><span class="lineno">   59</span>  _y_true = y_true;</div>
-<div class="line"><span class="lineno">   60</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
-<div class="line"><span class="lineno">   61</span>  _deriv_y_pred = deriv_y_pred;</div>
-<div class="line"><span class="lineno">   62</span>  _deriv_y_true = deriv_y_true;</div>
-<div class="line"><span class="lineno">   63</span>  _deriv_output = deriv_output;</div>
-<div class="line"><span class="lineno">   64</span>  _loss_type = loss_type;</div>
-<div class="line"><span class="lineno">   65</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   43</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(deriv_y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">switch</span> (loss_type)</div>
+<div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
+<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>  _y_pred = y_pred;</div>
+<div class="line"><span class="lineno">   55</span>  _y_true = y_true;</div>
+<div class="line"><span class="lineno">   56</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">   57</span>  _deriv_y_pred = deriv_y_pred;</div>
+<div class="line"><span class="lineno">   58</span>  _loss_type = loss_type;</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">onert::backend::train::ops::kMSE</a>.</p>
@@ -300,26 +300,24 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00067">67</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
-<div class="line"><span class="lineno">   69</span>  <span class="comment">// TODO Implement this</span></div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">switch</span> (_loss_type)</div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
-<div class="line"><span class="lineno">   73</span>      <span class="keywordflow">if</span> (_y_pred-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   74</span>      {</div>
-<div class="line"><span class="lineno">   75</span>        <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">nnfw::cker::train::MSE</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_pred), getBuffer&lt;float&gt;(_y_pred), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_true),</div>
-<div class="line"><span class="lineno">   76</span>                               getBuffer&lt;float&gt;(_y_true), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
-<div class="line"><span class="lineno">   77</span>                               getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   78</span>      }</div>
-<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   81</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
-<div class="line"><span class="lineno">   83</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
+<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00061">61</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  <span class="comment">// TODO Implement this</span></div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">switch</span> (_loss_type)</div>
+<div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">if</span> (_y_pred-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   68</span>      {</div>
+<div class="line"><span class="lineno">   69</span>        <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">nnfw::cker::train::MSE</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_pred), getBuffer&lt;float&gt;(_y_pred), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_true),</div>
+<div class="line"><span class="lineno">   70</span>                               getBuffer&lt;float&gt;(_y_true), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_output),</div>
+<div class="line"><span class="lineno">   71</span>                               getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   72</span>      }</div>
+<div class="line"><span class="lineno">   73</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
+<div class="line"><span class="lineno">   76</span>  }</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_ac56dcc0882ef61d9d8f9c9132d917ba0"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">nnfw::cker::train::MSE</a></div><div class="ttdeci">void MSE(const Shape &amp;y_pred_shape, const T *y_pred_data, const Shape &amp;y_true_shape, const T *y_true_data, const Shape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00031">Loss.h:31</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00094">OperationUtils.h:94</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">onert::backend::train::ops::kMSE</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00031">nnfw::cker::train::MSE()</a>.</p>
 

@@ -1,5 +1,14 @@
 var NAVTREEINDEX179 =
 {
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_squared_difference_8h_source.html":[35,0,0,51,3,0,0,0,0,112],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_squeeze_8h.html":[35,0,0,51,3,0,0,0,0,113],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_squeeze_8h_source.html":[35,0,0,51,3,0,0,0,0,113],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_strided_slice_8h.html":[35,0,0,51,3,0,0,0,0,114],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_strided_slice_8h_source.html":[35,0,0,51,3,0,0,0,0,114],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_sub_8h.html":[35,0,0,51,3,0,0,0,0,115],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_sub_8h_source.html":[35,0,0,51,3,0,0,0,0,115],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_sum_8h.html":[35,0,0,51,3,0,0,0,0,116],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_sum_8h_source.html":[35,0,0,51,3,0,0,0,0,116],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_tanh_8h.html":[35,0,0,51,3,0,0,0,0,118],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_tanh_8h_source.html":[35,0,0,51,3,0,0,0,0,118],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_tile_8h.html":[35,0,0,51,3,0,0,0,0,119],
@@ -240,14 +249,5 @@ var NAVTREEINDEX179 =
 "luci-interpreter_2src_2kernels_2_mul_8h_source.html":[35,0,0,53,2,2,94],
 "luci-interpreter_2src_2kernels_2_neg_8h.html":[35,0,0,53,2,2,96],
 "luci-interpreter_2src_2kernels_2_neg_8h_source.html":[35,0,0,53,2,2,96],
-"luci-interpreter_2src_2kernels_2_not_equal_8h.html":[35,0,0,53,2,2,98],
-"luci-interpreter_2src_2kernels_2_not_equal_8h_source.html":[35,0,0,53,2,2,98],
-"luci-interpreter_2src_2kernels_2_pad_v2_8h.html":[35,0,0,53,2,2,106],
-"luci-interpreter_2src_2kernels_2_pad_v2_8h_source.html":[35,0,0,53,2,2,106],
-"luci-interpreter_2src_2kernels_2_reduce_max_8cpp.html":[35,0,0,53,2,2,113],
-"luci-interpreter_2src_2kernels_2_reduce_max_8cpp_source.html":[35,0,0,53,2,2,113],
-"luci-interpreter_2src_2kernels_2_reduce_max_8h.html":[35,0,0,53,2,2,114],
-"luci-interpreter_2src_2kernels_2_reduce_max_8h_source.html":[35,0,0,53,2,2,114],
-"luci-interpreter_2src_2kernels_2_reduce_prod_8cpp.html":[35,0,0,53,2,2,115],
-"luci-interpreter_2src_2kernels_2_reduce_prod_8cpp_source.html":[35,0,0,53,2,2,115]
+"luci-interpreter_2src_2kernels_2_not_equal_8h.html":[35,0,0,53,2,2,98]
 };

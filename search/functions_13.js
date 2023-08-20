@@ -454,7 +454,7 @@ var searchData=
   ['swap_5fmul_5fadd_451',['swap_mul_add',['../namespaceluci.html#ab46996da8c5c407bc43ef70e0ae4e955',1,'luci']]],
   ['swapadjacent_452',['swapAdjacent',['../namespacennc_1_1opt__util.html#abee08f0589e931c2428a7fbba9a5f1f0',1,'nnc::opt_util']]],
   ['swapbufallocator_453',['SwapBufAllocator',['../classflatbuffers_1_1_flat_buffer_builder.html#acbb6de9402ccd756acb912f839f5c112',1,'flatbuffers::FlatBufferBuilder']]],
-  ['symmetric_5fwquant_5fwith_5fminmax_5fper_5flayer_454',['symmetric_wquant_with_minmax_per_layer',['../namespaceluci.html#af48f27baf3488be19af9e1e84a2f0938',1,'luci']]],
+  ['symmetric_5fwquant_5fwith_5fminmax_5fper_5flayer_454',['symmetric_wquant_with_minmax_per_layer',['../namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4',1,'luci']]],
   ['symmetricquantizefloats_455',['SymmetricQuantizeFloats',['../namespacennfw_1_1cker.html#a97514158a93f892f0f777864d4c0a7bb',1,'nnfw::cker']]],
   ['sync_456',['sync',['../classprofiling_1_1_context.html#a79f47338e85b1a973b35dab4776ec0ed',1,'profiling::Context::sync()'],['../classonert_1_1backend_1_1acl__cl_1_1_config.html#a950b097ead2fb0221b392b2a50cf5cfe',1,'onert::backend::acl_cl::Config::sync()'],['../structonert_1_1backend_1_1_i_config.html#a9832d23dcabcd4ea15575f80d0ecb24a',1,'onert::backend::IConfig::sync()']]]
 ];

@@ -1,5 +1,13 @@
 var NAVTREEINDEX162 =
 {
+"compute_2cker_2include_2cker_2_types_8h.html#a214af5851ca7b77819a78cf4177eb754a4d3576c37e6f03700bad4345238fffa0":[35,0,1,1,0,0,11,35,2],
+"compute_2cker_2include_2cker_2_types_8h.html#a214af5851ca7b77819a78cf4177eb754ad523906435f67e94367d4fab5b9380da":[35,0,1,1,0,0,11,35,1],
+"compute_2cker_2include_2cker_2_types_8h.html#a3e06152ec55a338d17b4023e6563717e":[35,0,1,1,0,0,11,37],
+"compute_2cker_2include_2cker_2_types_8h.html#a9a5853680a568a8f2952cfe53d02dc63":[35,0,1,1,0,0,11,33],
+"compute_2cker_2include_2cker_2_types_8h.html#a9a5853680a568a8f2952cfe53d02dc63ad0270e82ca4ba19331d082c90ea44b9f":[35,0,1,1,0,0,11,33,0],
+"compute_2cker_2include_2cker_2_types_8h.html#a9a5853680a568a8f2952cfe53d02dc63ae2095548653033b67d7c42a05cf639f8":[35,0,1,1,0,0,11,33,1],
+"compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27":[35,0,1,1,0,0,11,28],
+"compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe":[35,0,1,1,0,0,11,28,4],
 "compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb":[35,0,1,1,0,0,11,28,1],
 "compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646":[35,0,1,1,0,0,11,28,3],
 "compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c":[35,0,1,1,0,0,11,28,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX162 =
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#a8fad551fcd78b2f8c9c53704029f0cc3":[35,0,1,1,0,0,3,47,3],
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#a8fd12fa77a1168fe85d18326ed4b8bdb":[35,0,1,1,0,0,3,47,1],
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#ada35ceafe42eab35a8cdd560f6ad66f3":[35,0,1,1,0,0,3,47,2],
-"compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html":[35,0,1,1,0,0,3,47],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html":[35,0,1,1,0,0,3,48],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#a2dd447b2cc2a2da27db67a00ed89a9d0":[35,0,1,1,0,0,3,48,8],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#a68fdec18907512780dfcdcc349bfe15b":[35,0,1,1,0,0,3,48,4],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#a75f68f58899d4523b376b0ad2d7a7260":[35,0,1,1,0,0,3,48,2],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#a7d1f8da4e9496f3def13685aeeb733f7":[35,0,1,1,0,0,3,48,6],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#a8c8bc57eef14dd4d6e30250d8a9a911a":[35,0,1,1,0,0,3,48,5],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#acfca57448781000651d5798f2aa38a8f":[35,0,1,1,0,0,3,48,7],
-"compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html#ad8d5c70addd0f57d962c59bb5efbb5b7":[35,0,1,1,0,0,3,48,3]
+"compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html":[35,0,1,1,0,0,3,47]
 };

@@ -101,10 +101,13 @@ Collaboration diagram for onert::backend::train::ops::ElementwiseActivationLayer
 <div class="dyncontent">
 <div class="center"><img src="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer__coll__graph.png" border="0" usemap="#aonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer_coll__map" id="aonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer_coll__map">
-<area shape="rect" title=" " alt="" coords="432,34,619,89"/>
-<area shape="rect" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="223,5,358,45"/>
-<area shape="rect" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html" title=" " alt="" coords="197,70,384,125"/>
-<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,85,149,110"/>
+<area shape="rect" title=" " alt="" coords="733,34,920,89"/>
+<area shape="rect" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="523,5,658,45"/>
+<area shape="rect" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html" title=" " alt="" coords="497,70,684,125"/>
+<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="251,55,395,81"/>
+<area shape="rect" href="classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="241,105,405,145"/>
+<area shape="rect" href="classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,87,161,113"/>
+<area shape="rect" href="classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,137,154,162"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -143,6 +146,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aedd6f5e12852d808abb97327b9d229e2 inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a901ae0973ef08a6ca59f6a00bd3bac4c inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">prepare</a> ()</td></tr>
 <tr class="separator:a901ae0973ef08a6ca59f6a00bd3bac4c inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html">onert::backend::cpu::ops::ElementwiseActivationLayer</a></td></tr>
+<tr class="memitem:ac043767eeb4269ca1dd5d9bd36942887 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a></td></tr>
+<tr class="separator:ac043767eeb4269ca1dd5d9bd36942887 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2658e4b0528bc6b7ce4071276bdcde inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a></td></tr>
+<tr class="separator:adc2658e4b0528bc6b7ce4071276bdcde inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a644391d380e50c3d023e6391b0ff2 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a20a644391d380e50c3d023e6391b0ff2">_table</a> [256]</td></tr>
+<tr class="separator:a20a644391d380e50c3d023e6391b0ff2 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a4002d79165e109d3937e0553d75121 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a></td></tr>
+<tr class="separator:a6a4002d79165e109d3937e0553d75121 inherit pro_attribs_classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -163,11 +178,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00030">30</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>                                                       : cpu::ops::ElementwiseActivationLayer()</div>
-<div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   33</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>                                                       : cpu::ops::ElementwiseActivationLayer()</div>
+<div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   35</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -198,11 +213,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00063">63</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>  <span class="comment">// TODO Implement details</span></div>
-<div class="line"><span class="lineno">   66</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
+<div class="line"><span class="lineno">   89</span>  _backward_kernel(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>, _deriv_output, _deriv_input);</div>
+<div class="line"><span class="lineno">   90</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adc2658e4b0528bc6b7ce4071276bdcde"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">ElementwiseActivationLayer.h:59</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a>.</p>
+
 </div>
 </div>
 <a id="ab8f1dda9efaecb3267145d1e0f5bcbbd" name="ab8f1dda9efaecb3267145d1e0f5bcbbd"></a>
@@ -261,33 +279,60 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00035">35</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   41</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   42</span>  assert(deriv_input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   43</span>  assert(deriv_output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  _deriv_input = deriv_input;</div>
-<div class="line"><span class="lineno">   46</span>  _deriv_output = deriv_output;</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  _op_type = op_type;</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   43</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span>  assert(deriv_input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(deriv_output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  _deriv_input = deriv_input;</div>
+<div class="line"><span class="lineno">   48</span>  _deriv_output = deriv_output;</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">ElementwiseActivationType::kReLU</a>:</div>
-<div class="line"><span class="lineno">   53</span>      <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">cpu::ops::ElementwiseActivationLayer::configure</a>(input, output, alpha, beta,</div>
-<div class="line"><span class="lineno">   54</span>                                                      <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">cpu::ops::ElementwiseActivationType::kReLU</a>);</div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ElementwiseActivationLayer: unsupported op type&quot;</span>);</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<div class="line"><span class="lineno">   50</span>  _op_type = op_type;</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">switch</span> (op_type)</div>
+<div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">ElementwiseActivationType::kReLU</a>:</div>
+<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   56</span>      {</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">if</span> (alpha == std::numeric_limits&lt;float&gt;::infinity() &amp;&amp; beta == 0.f)</div>
+<div class="line"><span class="lineno">   58</span>        {</div>
+<div class="line"><span class="lineno">   59</span>          <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">cpu::ops::ElementwiseActivationLayer::configure</a>(</div>
+<div class="line"><span class="lineno">   60</span>            input, output, alpha, beta, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">cpu::ops::ElementwiseActivationType::kReLU</a>);</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>          _backward_kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>, <span class="keyword">const</span> IPortableTensor *incoming,</div>
+<div class="line"><span class="lineno">   63</span>                                IPortableTensor *outgoing) {</div>
+<div class="line"><span class="lineno">   64</span>            <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output), getBuffer&lt;float&gt;(output),</div>
+<div class="line"><span class="lineno">   65</span>                                        <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(incoming), getBuffer&lt;float&gt;(incoming),</div>
+<div class="line"><span class="lineno">   66</span>                                        <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(outgoing), getBuffer&lt;float&gt;(outgoing));</div>
+<div class="line"><span class="lineno">   67</span>          };</div>
+<div class="line"><span class="lineno">   68</span>        }</div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   70</span>        {</div>
+<div class="line"><span class="lineno">   71</span>          <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer : This layer does not &quot;</span></div>
+<div class="line"><span class="lineno">   72</span>                                   <span class="stringliteral">&quot;suppport other ReLU except for ReLU(0-inf)&quot;</span>);</div>
+<div class="line"><span class="lineno">   73</span>        }</div>
+<div class="line"><span class="lineno">   74</span>      }</div>
+<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   76</span>      {</div>
+<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported datatype&quot;</span>);</div>
+<div class="line"><span class="lineno">   78</span>      }</div>
+<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   81</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported activation type yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="line"><span class="lineno">   83</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_a73f8168869f5f1cfea633cffee41dd39"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">onert::backend::cpu::ops::ElementwiseActivationLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta, const ElementwiseActivationType op_type)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">ElementwiseActivationLayer.cc:87</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_ac043767eeb4269ca1dd5d9bd36942887"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">onert::backend::cpu::ops::ElementwiseActivationLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">ElementwiseActivationLayer.h:58</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a56ba869240e3cb2e543a61e176115d8f"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a></div><div class="ttdeci">void ReLUGrad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">ReLU.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00094">OperationUtils.h:94</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::ElementwiseActivationType::kReLU</a></div><div class="ttdeci">@ kReLU</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::ElementwiseActivationType::kReLU</a></div><div class="ttdeci">@ kReLU</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, and <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::kReLU</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">onert::backend::cpu::ops::ElementwiseActivationLayer::_input</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::kReLU</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>.</p>
 
 </div>
 </div>
@@ -317,8 +362,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00061">61</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">cpu::ops::ElementwiseActivationLayer::run</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00085">85</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">cpu::ops::ElementwiseActivationLayer::run</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adadc612d674216bb9613d52abbd0b89e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">onert::backend::cpu::ops::ElementwiseActivationLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">ElementwiseActivationLayer.cc:193</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">onert::backend::cpu::ops::ElementwiseActivationLayer::run()</a>.</p>

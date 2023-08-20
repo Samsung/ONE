@@ -11,7 +11,7 @@ var _quantization_utils_8h =
     [ "asymmetric_wquant_with_minmax_per_layer", "_quantization_utils_8h.html#a2794836a87d2212005d9ef7b7ef3498a", null ],
     [ "cal_offset", "_quantization_utils_8h.html#abbde06f4d0bf6ed2a3c9438df8eed7ed", null ],
     [ "compute_asym_scale_zp", "_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d", null ],
-    [ "compute_sym_scale_zp", "_quantization_utils_8h.html#a5ce2a9503efd2c35e87ba8895016a364", null ],
+    [ "compute_sym_scale", "_quantization_utils_8h.html#ab1cf5a401bd054372bf8f26cdfd681e7", null ],
     [ "get_channel_dim_index", "_quantization_utils_8h.html#a4f572f265dd92ec416a29e155f3e60c6", null ],
     [ "is_fp32", "_quantization_utils_8h.html#af8c3d8539c31e704fa69644422109306", null ],
     [ "is_quantized", "_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8", null ],
@@ -21,6 +21,6 @@ var _quantization_utils_8h =
     [ "propagate_pad_v2_quantparam", "_quantization_utils_8h.html#a0157f75d4d983ccb4e0a520d16d277e7", null ],
     [ "quant_const", "_quantization_utils_8h.html#a45fe577e9e1a457fe33918624cd4a9a5", null ],
     [ "set_int_scale", "_quantization_utils_8h.html#a778ba1acea30cadd3985b4023df5b2f2", null ],
-    [ "symmetric_wquant_with_minmax_per_layer", "_quantization_utils_8h.html#af48f27baf3488be19af9e1e84a2f0938", null ],
+    [ "symmetric_wquant_with_minmax_per_layer", "_quantization_utils_8h.html#aad736abc0d7bd9388d42e5d4a25b80c4", null ],
     [ "warn_accuracy_with_range", "_quantization_utils_8h.html#a1ef77fe953130949713bdae6c170b133", null ]
 ];

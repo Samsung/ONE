@@ -84,7 +84,7 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "Quantize.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8cpp.html", null ],
     [ "Quantize.h", "onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_quantize_8h" ],
     [ "ReduceCommon.cpp", "_reduce_common_8cpp.html", "_reduce_common_8cpp" ],
-    [ "Relu.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp" ],
+    [ "Relu.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp" ],
     [ "Relu6.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp" ],
     [ "Reshape.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_reshape_8cpp" ],
     [ "ResizeBilinear.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp" ],

@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::cpu::ops::ElementwiseActivationLayer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -101,8 +102,11 @@ Collaboration diagram for onert::backend::cpu::ops::ElementwiseActivationLayer:<
 <div class="dyncontent">
 <div class="center"><img src="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer__coll__graph.png" border="0" usemap="#aonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_coll__map" id="aonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,192,133"/>
-<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="27,5,171,31"/>
+<area shape="rect" title=" " alt="" coords="5,211,192,265"/>
+<area shape="rect" href="classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,101,149,126"/>
+<area shape="rect" href="classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="174,93,338,133"/>
+<area shape="rect" href="classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="91,5,247,31"/>
+<area shape="rect" href="classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="272,5,413,31"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,6 +129,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aedd6f5e12852d808abb97327b9d229e2 inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a901ae0973ef08a6ca59f6a00bd3bac4c inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">prepare</a> ()</td></tr>
 <tr class="separator:a901ae0973ef08a6ca59f6a00bd3bac4c inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ac043767eeb4269ca1dd5d9bd36942887"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a></td></tr>
+<tr class="separator:ac043767eeb4269ca1dd5d9bd36942887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2658e4b0528bc6b7ce4071276bdcde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a></td></tr>
+<tr class="separator:adc2658e4b0528bc6b7ce4071276bdcde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a644391d380e50c3d023e6391b0ff2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a20a644391d380e50c3d023e6391b0ff2">_table</a> [256]</td></tr>
+<tr class="separator:a20a644391d380e50c3d023e6391b0ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a4002d79165e109d3937e0553d75121"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a></td></tr>
+<tr class="separator:a6a4002d79165e109d3937e0553d75121"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -146,10 +161,13 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>  : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _kernel()</div>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a>()</div>
 <div class="line"><span class="lineno">   39</span>{</div>
 <div class="line"><span class="lineno">   40</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   41</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_a6a4002d79165e109d3937e0553d75121"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">onert::backend::cpu::ops::ElementwiseActivationLayer::_kernel</a></div><div class="ttdeci">std::function&lt; void(const IPortableTensor *input, IPortableTensor *output)&gt; _kernel</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00061">ElementwiseActivationLayer.h:61</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_ac043767eeb4269ca1dd5d9bd36942887"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">onert::backend::cpu::ops::ElementwiseActivationLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">ElementwiseActivationLayer.h:58</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adc2658e4b0528bc6b7ce4071276bdcde"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">ElementwiseActivationLayer.h:59</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -200,15 +218,15 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
-<div class="line"><span class="lineno">   91</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
-<div class="line"><span class="lineno">   92</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">   91</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
+<div class="line"><span class="lineno">   92</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
 <div class="line"><span class="lineno">   93</span> </div>
 <div class="line"><span class="lineno">   94</span>  <span class="keywordflow">switch</span> (op_type)</div>
 <div class="line"><span class="lineno">   95</span>  {</div>
 <div class="line"><span class="lineno">   96</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a069cf87f2d4b99d9f62876a74404b1d3">ElementwiseActivationType::kElu</a>:</div>
 <div class="line"><span class="lineno">   97</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;data_type() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">   98</span>      {</div>
-<div class="line"><span class="lineno">   99</span>        _kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">   99</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  100</span>          <a class="code hl_function" href="namespacennfw_1_1cker.html#aa6cd8baf6599a56672a509ddecb7a1ac">nnfw::cker::ELU</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;float&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
 <div class="line"><span class="lineno">  101</span>                          getBuffer&lt;float&gt;(output));</div>
 <div class="line"><span class="lineno">  102</span>        };</div>
@@ -219,15 +237,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  107</span>      }</div>
 <div class="line"><span class="lineno">  108</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  109</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710">ElementwiseActivationType::kLogistic</a>:</div>
-<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
 <div class="line"><span class="lineno">  111</span>      {</div>
 <div class="line"><span class="lineno">  112</span>        <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a423ed4c9f790475856662bccb85dbaf4">PopulateLookupTable</a>(op_type);</div>
-<div class="line"><span class="lineno">  113</span>        _kernel = std::bind(&amp;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#abc9183d276c431b64eb64017c7a1a9d8">ElementwiseActivationLayer::EvalUsingLookupTable</a>, <span class="keyword">this</span>,</div>
+<div class="line"><span class="lineno">  113</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = std::bind(&amp;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#abc9183d276c431b64eb64017c7a1a9d8">ElementwiseActivationLayer::EvalUsingLookupTable</a>, <span class="keyword">this</span>,</div>
 <div class="line"><span class="lineno">  114</span>                            std::placeholders::_1, std::placeholders::_2);</div>
 <div class="line"><span class="lineno">  115</span>      }</div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  117</span>      {</div>
-<div class="line"><span class="lineno">  118</span>        _kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">  118</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  119</span>          <a class="code hl_function" href="namespacennfw_1_1cker.html#a46e46c40367179c6002cae197f60245f">nnfw::cker::Logistic</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;float&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
 <div class="line"><span class="lineno">  120</span>                               getBuffer&lt;float&gt;(output));</div>
 <div class="line"><span class="lineno">  121</span>        };</div>
@@ -238,18 +256,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  126</span>      }</div>
 <div class="line"><span class="lineno">  127</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  128</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">ElementwiseActivationType::kReLU</a>:</div>
-<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  130</span>      {</div>
 <div class="line"><span class="lineno">  131</span>        <span class="keywordflow">if</span> (alpha == std::numeric_limits&lt;float&gt;::infinity() &amp;&amp; beta == 0.f)</div>
 <div class="line"><span class="lineno">  132</span>        {</div>
-<div class="line"><span class="lineno">  133</span>          _kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">  133</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  134</span>            <a class="code hl_function" href="namespacennfw_1_1cker.html#aa7dafd5f43f7cf04008da8416f94d0d5">nnfw::cker::ReLU</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;float&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
 <div class="line"><span class="lineno">  135</span>                             getBuffer&lt;float&gt;(output));</div>
 <div class="line"><span class="lineno">  136</span>          };</div>
 <div class="line"><span class="lineno">  137</span>        }</div>
 <div class="line"><span class="lineno">  138</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (alpha == 6.f &amp;&amp; beta == 0.f)</div>
 <div class="line"><span class="lineno">  139</span>        {</div>
-<div class="line"><span class="lineno">  140</span>          _kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">  140</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  141</span>            <a class="code hl_function" href="namespacennfw_1_1cker.html#aa3a1779dd7902a4cf5186a5231fcf429">nnfw::cker::ReLU6</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;float&gt;(input), getBuffer&lt;float&gt;(output));</div>
 <div class="line"><span class="lineno">  142</span>          };</div>
 <div class="line"><span class="lineno">  143</span>        }</div>
@@ -265,15 +283,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  153</span>      }</div>
 <div class="line"><span class="lineno">  154</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  155</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630">ElementwiseActivationType::kTanh</a>:</div>
-<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
 <div class="line"><span class="lineno">  157</span>      {</div>
 <div class="line"><span class="lineno">  158</span>        <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a423ed4c9f790475856662bccb85dbaf4">PopulateLookupTable</a>(op_type);</div>
-<div class="line"><span class="lineno">  159</span>        _kernel = std::bind(&amp;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#abc9183d276c431b64eb64017c7a1a9d8">ElementwiseActivationLayer::EvalUsingLookupTable</a>, <span class="keyword">this</span>,</div>
+<div class="line"><span class="lineno">  159</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = std::bind(&amp;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#abc9183d276c431b64eb64017c7a1a9d8">ElementwiseActivationLayer::EvalUsingLookupTable</a>, <span class="keyword">this</span>,</div>
 <div class="line"><span class="lineno">  160</span>                            std::placeholders::_1, std::placeholders::_2);</div>
 <div class="line"><span class="lineno">  161</span>      }</div>
-<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  163</span>      {</div>
-<div class="line"><span class="lineno">  164</span>        _kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">  164</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  165</span>          <a class="code hl_function" href="namespacennfw_1_1cker.html#a6472bf04d4ebd32eab3e826405415df3">nnfw::cker::Tanh</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input), getBuffer&lt;float&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
 <div class="line"><span class="lineno">  166</span>                           getBuffer&lt;float&gt;(output));</div>
 <div class="line"><span class="lineno">  167</span>        };</div>
@@ -284,9 +302,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  172</span>      }</div>
 <div class="line"><span class="lineno">  173</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  174</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a195843ccfcf373a0c5c2f6a5ae9af89f">ElementwiseActivationType::kLeakyReLU</a>:</div>
-<div class="line"><span class="lineno">  175</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  175</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  176</span>      {</div>
-<div class="line"><span class="lineno">  177</span>        _kernel = [alpha](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
+<div class="line"><span class="lineno">  177</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a> = [alpha](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>) {</div>
 <div class="line"><span class="lineno">  178</span>          <a class="code hl_function" href="namespacennfw_1_1cker.html#a1f416c45aeab22a87622edbd864f92f8">nnfw::cker::LeakyReLU</a>(<a class="code hl_struct" href="structnnfw_1_1cker_1_1_leaky_relu_params.html">nnfw::cker::LeakyReluParams</a>{alpha}, <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(input),</div>
 <div class="line"><span class="lineno">  179</span>                                getBuffer&lt;float&gt;(input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output),</div>
 <div class="line"><span class="lineno">  180</span>                                getBuffer&lt;float&gt;(output));</div>
@@ -320,9 +338,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::ElementwiseActivationType::kReLU</a></div><div class="ttdeci">@ kReLU</div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_leaky_relu_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_leaky_relu_params.html">nnfw::cker::LeakyReluParams</a></div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00392">Types.h:393</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">nnfw::cker::ELU()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00074">EvalUsingLookupTable()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00094">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a069cf87f2d4b99d9f62876a74404b1d3">onert::backend::cpu::ops::kElu</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a195843ccfcf373a0c5c2f6a5ae9af89f">onert::backend::cpu::ops::kLeakyReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710">onert::backend::cpu::ops::kLogistic</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630">onert::backend::cpu::ops::kTanh</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">nnfw::cker::LeakyReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00057">nnfw::cker::Logistic()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">PopulateLookupTable()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::ReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u6_8h_source.html#l00032">nnfw::cker::ReLU6()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">nnfw::cker::Tanh()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">_input</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00061">_kernel</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">_output</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">nnfw::cker::ELU()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00074">EvalUsingLookupTable()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00094">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a069cf87f2d4b99d9f62876a74404b1d3">onert::backend::cpu::ops::kElu</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a195843ccfcf373a0c5c2f6a5ae9af89f">onert::backend::cpu::ops::kLeakyReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710">onert::backend::cpu::ops::kLogistic</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630">onert::backend::cpu::ops::kTanh</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">nnfw::cker::LeakyReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00057">nnfw::cker::Logistic()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">PopulateLookupTable()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::ReLU()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_re_l_u6_8h_source.html#l00032">nnfw::cker::ReLU6()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">nnfw::cker::Tanh()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00035">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -360,15 +378,16 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
 <div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i] = _table[<a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i]];</div>
+<div class="line"><span class="lineno">   83</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i] = <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a20a644391d380e50c3d023e6391b0ff2">_table</a>[<a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i]];</div>
 <div class="line"><span class="lineno">   84</span>  }</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 <div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition:</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">Dims.h:108</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_a20a644391d380e50c3d023e6391b0ff2"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a20a644391d380e50c3d023e6391b0ff2">onert::backend::cpu::ops::ElementwiseActivationLayer::_table</a></div><div class="ttdeci">uint8_t _table[256]</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00060">ElementwiseActivationLayer.h:60</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00094">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00060">_table</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00094">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">configure()</a>.</p>
 
@@ -392,10 +411,10 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">43</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aedf4a030ba4e787ec06eb0c86b261539">data_scale</a>());</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_zero_point = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a0c2877a5e6e7d5ac7416baf7d3315644">data_zero_point</a>());</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aedf4a030ba4e787ec06eb0c86b261539">data_scale</a>());</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_zero_point = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a0c2877a5e6e7d5ac7416baf7d3315644">data_zero_point</a>());</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aedf4a030ba4e787ec06eb0c86b261539">data_scale</a>());</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_zero_point = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a0c2877a5e6e7d5ac7416baf7d3315644">data_zero_point</a>());</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aedf4a030ba4e787ec06eb0c86b261539">data_scale</a>());</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_zero_point = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a0c2877a5e6e7d5ac7416baf7d3315644">data_zero_point</a>());</div>
 <div class="line"><span class="lineno">   49</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> inverse_scale = 1 / output_scale;</div>
 <div class="line"><span class="lineno">   50</span>  int32_t maxval = std::numeric_limits&lt;uint8_t&gt;::max();</div>
 <div class="line"><span class="lineno">   51</span>  int32_t minval = std::numeric_limits&lt;uint8_t&gt;::min();</div>
@@ -417,13 +436,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   67</span>    }</div>
 <div class="line"><span class="lineno">   68</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> rescaled = std::round(transformed * inverse_scale);</div>
 <div class="line"><span class="lineno">   69</span>    <span class="keyword">const</span> int32_t quantized = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(rescaled + output_zero_point);</div>
-<div class="line"><span class="lineno">   70</span>    _table[val] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::max(std::min(maxval, quantized), minval));</div>
+<div class="line"><span class="lineno">   70</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a20a644391d380e50c3d023e6391b0ff2">_table</a>[val] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::max(std::min(maxval, quantized), minval));</div>
 <div class="line"><span class="lineno">   71</span>  }</div>
 <div class="line"><span class="lineno">   72</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a0c2877a5e6e7d5ac7416baf7d3315644"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a0c2877a5e6e7d5ac7416baf7d3315644">onert::backend::IPortableTensor::data_zero_point</a></div><div class="ttdeci">int32_t data_zero_point() const override</div><div class="ttdef"><b>Definition:</b> <a href="_i_portable_tensor_8h_source.html#l00047">IPortableTensor.h:47</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aedf4a030ba4e787ec06eb0c86b261539"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aedf4a030ba4e787ec06eb0c86b261539">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override</div><div class="ttdef"><b>Definition:</b> <a href="_i_portable_tensor_8h_source.html#l00046">IPortableTensor.h:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00046">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00047">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710">onert::backend::cpu::ops::kLogistic</a>, and <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630">onert::backend::cpu::ops::kTanh</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">_input</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">_output</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00060">_table</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00046">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00047">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710">onert::backend::cpu::ops::kLogistic</a>, and <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630">onert::backend::cpu::ops::kTanh</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">configure()</a>.</p>
 
@@ -455,9 +474,116 @@ Public Member Functions</h2></td></tr>
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">193</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  193</span>{ _kernel(_input, _output); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  193</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a6a4002d79165e109d3937e0553d75121">_kernel</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#ac043767eeb4269ca1dd5d9bd36942887">_input</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00061">onert::backend::train::ops::ElementwiseActivationLayer::forward()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">_input</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00061">_kernel</a>, and <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">_output</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00085">onert::backend::train::ops::ElementwiseActivationLayer::forward()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="ac043767eeb4269ca1dd5d9bd36942887" name="ac043767eeb4269ca1dd5d9bd36942887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac043767eeb4269ca1dd5d9bd36942887">&#9670;&#160;</a></span>_input</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a>* onert::backend::cpu::ops::ElementwiseActivationLayer::_input</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00058">58</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html">ElementwiseActivationLayer.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">configure()</a>, <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">PopulateLookupTable()</a>, and <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">run()</a>.</p>
+
+</div>
+</div>
+<a id="a6a4002d79165e109d3937e0553d75121" name="a6a4002d79165e109d3937e0553d75121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a4002d79165e109d3937e0553d75121">&#9670;&#160;</a></span>_kernel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt;void(const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)&gt; onert::backend::cpu::ops::ElementwiseActivationLayer::_kernel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00061">61</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html">ElementwiseActivationLayer.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">configure()</a>, and <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">run()</a>.</p>
+
+</div>
+</div>
+<a id="adc2658e4b0528bc6b7ce4071276bdcde" name="adc2658e4b0528bc6b7ce4071276bdcde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc2658e4b0528bc6b7ce4071276bdcde">&#9670;&#160;</a></span>_output</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a>* onert::backend::cpu::ops::ElementwiseActivationLayer::_output</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">59</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html">ElementwiseActivationLayer.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::train::ops::ElementwiseActivationLayer::backward()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">configure()</a>, <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">PopulateLookupTable()</a>, and <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">run()</a>.</p>
+
+</div>
+</div>
+<a id="a20a644391d380e50c3d023e6391b0ff2" name="a20a644391d380e50c3d023e6391b0ff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20a644391d380e50c3d023e6391b0ff2">&#9670;&#160;</a></span>_table</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t onert::backend::cpu::ops::ElementwiseActivationLayer::_table[256]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00060">60</a> of file <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html">ElementwiseActivationLayer.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00074">EvalUsingLookupTable()</a>, and <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00043">PopulateLookupTable()</a>.</p>
 
 </div>
 </div>
