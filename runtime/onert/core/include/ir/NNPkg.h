@@ -283,6 +283,8 @@ public:
 
   // TODO: Add iterate() or getter for edges
 
+  void replaceModel(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
+
 private:
   std::unordered_map<ModelIndex, std::shared_ptr<Model>> _models;
   ModelEdges _edges;

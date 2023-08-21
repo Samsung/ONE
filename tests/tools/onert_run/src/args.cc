@@ -299,6 +299,7 @@ void Args::Initialize(void)
          "0: prints the only result. Messages btw run don't print\n"
          "1: prints result and message btw run\n"
          "2: prints all of messages to print\n")
+    ("quantize,q", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _quantize = v; }), "Quantize (int8 or int16)")
     ;
   // clang-format on
 

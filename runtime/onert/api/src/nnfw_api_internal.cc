@@ -28,12 +28,15 @@
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
+#include "odc/Quantize.h"
+#include "odc/QuantizeManager.h"
 
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <dirent.h>
+#include <sys/stat.h>
 #include <misc/string_helpers.h>
 
 /*
@@ -291,6 +294,9 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
+  // Store model file name
+  _model_filename = model_file_path;
+
   std::string filename{model_file_path};
   // TODO: Use std::filesystem::path when we can use c++17.
   auto dotidx = filename.find_last_of('.');
@@ -374,6 +380,9 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       std::cerr << "Invalid model size - " << std::to_string(num_models) << std::endl;
       return NNFW_STATUS_ERROR;
     }
+
+    // Store model file name
+    _model_filename = package_path + std::string("/") + models[0].asString();
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
@@ -1465,3 +1474,89 @@ bool nnfw_session::isStatePreparedOrFinishedTraining()
 }
 
 #endif // ONERT_TRAIN
+
+NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  _qtype = qtype;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_quantized_model_path(const char *path)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  _quantize_output = std::string(path);
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::quantize()
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (_qtype == QUANTIZE_TYPE_NOT_SET)
+    return NNFW_STATUS_INVALID_STATE;
+
+  std::string qtype_str;
+  bool is_q16 = false;
+  switch (_qtype)
+  {
+    case QUANTIZE_TYPE_U8_ASYM:
+      break;
+    case QUANTIZE_TYPE_I16_SYM:
+      is_q16 = true;
+      break;
+    default:
+      return NNFW_STATUS_INVALID_STATE;
+  }
+
+  const auto extension_pos = _model_filename.find(".circle");
+  if (extension_pos == std::string::npos)
+  {
+    std::cerr << "Input model isn't .circle." << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (_quantize_output.empty())
+    _quantize_output = _model_filename.substr(0, extension_pos) + "_quantized.circle";
+
+  auto &q_manager = onert::odc::QuantizeManager::instance();
+
+  if (q_manager.loadLibrary() != 0)
+    return NNFW_STATUS_INVALID_STATE;
+
+  auto quantizer = q_manager.get();
+  auto result = quantizer->quantize(_model_filename.c_str(), _quantize_output.c_str(), is_q16);
+  if (result != 0)
+    return NNFW_STATUS_INVALID_STATE;
+
+  // Replace model
+  try
+  {
+    auto model = loadModel(_quantize_output, "circle");
+    if (model == nullptr)
+      return NNFW_STATUS_ERROR;
+    _nnpkg->replaceModel(std::move(model));
+    _state = State::MODEL_LOADED;
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during model loading : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}

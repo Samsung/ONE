@@ -23,6 +23,7 @@
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
+#include "nnfw_experimental.h"
 #include "randomgen.h"
 #include "rawformatter.h"
 #ifdef RUY_PROFILER
@@ -84,6 +85,19 @@ int main(const int argc, char **argv)
       else
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
+
+    // Quantize model
+    auto quantize = args.getQuantize();
+    if (!quantize.empty())
+    {
+      NNFW_QUANTIZE_TYPE quantize_type = QUANTIZE_TYPE_NOT_SET;
+      if (quantize == "int8")
+        quantize_type = QUANTIZE_TYPE_U8_ASYM;
+      if (quantize == "int16")
+        quantize_type = QUANTIZE_TYPE_I16_SYM;
+      NNPR_ENSURE_STATUS(nnfw_set_quantization_type(session, quantize_type));
+      NNPR_ENSURE_STATUS(nnfw_quantize(session));
+    }
 
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)

@@ -175,6 +175,10 @@ public:
   NNFW_STATUS train_export_circle(const char *path);
 #endif // ONERT_TRAIN
 
+  NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
+  NNFW_STATUS set_quantized_model_path(const char *path);
+  NNFW_STATUS quantize();
+
 private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
@@ -203,6 +207,10 @@ private:
 #ifdef ONERT_TRAIN
   uint32_t _training_step{0};
 #endif // ONERT_TRAIN
+  // TODO Move field to internal
+  std::string _model_filename;
+  std::string _quantize_output;
+  NNFW_QUANTIZE_TYPE _qtype = QUANTIZE_TYPE_NOT_SET;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

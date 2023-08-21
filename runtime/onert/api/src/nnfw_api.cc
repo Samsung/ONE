@@ -495,3 +495,23 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *)
 }
 
 #endif // ONERT_TRAIN
+
+// ODC
+
+NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_quantization_type(qtype);
+}
+
+NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_quantized_model_path(path);
+}
+
+NNFW_STATUS nnfw_quantize(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->quantize();
+}
