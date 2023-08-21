@@ -128,6 +128,44 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   }
 }
 
+// TODO Reduce duplicate code with QuantizeDequantizeWeights
+// TODO Templatize to cover s8 and s16
+void sym_wquant_per_channel_s8(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+                               std::vector<float> &scaling_factor, std::vector<float> &nudged_min,
+                               std::vector<float> &nudged_max, int32_t &channel_dim_index)
+{
+  assert(node->dtype() == loco::DataType::FLOAT32);
+  const int32_t kMaxScale = std::numeric_limits<int8_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+
+  uint32_t size = node->size<loco::DataType::FLOAT32>();
+  std::vector<int32_t> quantized_values(size);
+
+  for (size_t i = 0; i < min.size(); ++i)
+  {
+    compute_sym_scale_s8(min[i], max[i], scaling_factor[i], nudged_min[i], nudged_max[i]);
+  }
+
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
+    data = data > nudged_max[channel_idx] ? nudged_max[channel_idx] : data;
+    quantized_values[cal_offset(dimension, indices)] =
+      static_cast<int32_t>(std::round(data * scaling_factor_inv));
+  };
+
+  iterate_per_channel(node, channel_dim_index, quantize);
+
+  node->dtype(loco::DataType::S8);      // change the type of tensor
+  node->size<loco::DataType::S8>(size); // resize tensor
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    node->at<loco::DataType::S8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
+  }
+}
+
 void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
                             int32_t &channel_dim_index)
 {
@@ -379,6 +417,11 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
       {
         asymmetric_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
                                       channel_dim_index);
+      }
+      else if (output_type == loco::DataType::S8)
+      {
+        sym_wquant_per_channel_s8(weights, min, max, scaling_factor, nudged_min, nudged_max,
+                                  channel_dim_index);
       }
       else
       {

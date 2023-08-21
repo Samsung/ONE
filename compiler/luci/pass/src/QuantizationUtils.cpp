@@ -133,6 +133,38 @@ void compute_sym_scale(float min, float max, float &scaling_factor, float &nudge
   nudged_max = static_cast<float>(qmax_double * scaling_factor);
 }
 
+void compute_sym_scale_s8(float min, float max, float &scaling_factor, float &nudged_min,
+                          float &nudged_max)
+{
+  assert(min <= max);
+
+  const int32_t kMaxScale = std::numeric_limits<int8_t>::max();
+  const int32_t kMinScale = -kMaxScale;
+  const double qmin_double = kMinScale;
+  const double qmax_double = kMaxScale;
+  const double rmin = std::fmin(0, min);
+  const double rmax = std::fmax(0, max);
+  double scale_factor_from_min_side{0};
+  double scale_factor_from_max_side{0};
+
+  if ((qmin_double * rmin) > 0)
+    scale_factor_from_min_side = rmin / qmin_double;
+
+  if ((qmax_double * rmax) > 0)
+    scale_factor_from_max_side = rmax / qmax_double;
+
+  scaling_factor = scale_factor_from_min_side > scale_factor_from_max_side
+                     ? scale_factor_from_min_side
+                     : scale_factor_from_max_side;
+
+  // protect scale from being very low to avoid overflow/underflow
+  if (scaling_factor < 1e-8)
+    scaling_factor = 1e-8;
+
+  nudged_min = static_cast<float>(qmin_double * scaling_factor);
+  nudged_max = static_cast<float>(qmax_double * scaling_factor);
+}
+
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max)
 {

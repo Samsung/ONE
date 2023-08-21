@@ -27,6 +27,10 @@ namespace luci
 void compute_sym_scale(float min, float max, float &scaling_factor, float &nudged_min,
                        float &nudged_max);
 
+// Compute scale using given min/max for symmetric quantization (int8)
+void compute_sym_scale_s8(float min, float max, float &scaling_factor, float &nudged_min,
+                          float &nudged_max);
+
 // Compute scale/zp using given min/max for asymmetric quantization (uint8)
 void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
                            float &nudged_min, float &nudged_max);
