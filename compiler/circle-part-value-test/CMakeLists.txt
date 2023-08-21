@@ -111,13 +111,3 @@ add_test(NAME circle_part_value_test
           "$<TARGET_FILE:circle_part_driver>"
           ${PARTITION_LIST}
 )
-
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(NAME circle_part_value_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/part_eval_all.sh"
-            "${CMAKE_CURRENT_BINARY_DIR}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            "$<TARGET_FILE:circle_part_driver>"
-            ${PARTITION_LIST}
-  )
-endif(ONE_UBUNTU_CODENAME_JAMMY)
