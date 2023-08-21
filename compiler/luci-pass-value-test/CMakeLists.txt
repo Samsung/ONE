@@ -49,7 +49,7 @@ add_test(NAME luci_pass_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
+          "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           "$<TARGET_FILE:luci_eval_driver>"
           ${LUCI_PASS_VALUE_TESTS}
 )
