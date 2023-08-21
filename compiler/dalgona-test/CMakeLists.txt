@@ -53,7 +53,7 @@ add_test(
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh"
           "${TEST_CONFIG}"
           "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
+          "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           ${DALGONA_SINGLE_OP_TEST}
 )
 
