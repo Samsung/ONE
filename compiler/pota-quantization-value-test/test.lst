@@ -60,3 +60,6 @@ addQConfTest(Split_000 channel uint8)
 addQConfTest(Split_000 channel int16)
 addQConfTest(TransposeConv_001 channel int16)
 addQConfTest(TransposeConv_001 layer uint8)
+
+addWeightsOnlyTest(Conv2D_004 channel int8)
+addWeightsOnlyTest(Conv2D_004 channel int16)
