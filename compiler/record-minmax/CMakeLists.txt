@@ -23,11 +23,17 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+###
+### record-minmax-for-thread-test is temporarily disabled, because
+### gcc package has a bug.
+### (https://bugs.launchpad.net/ubuntu/+source/gcc-10/+bug/2029910)
+### Let's enable the target after the bug is fixed.
+###
 # Build record-minmax-for-thread-test if target arch is 64bit
 # Thread sanitizer is only available on 64bit machine
 # (https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual#supported-platforms)
-if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
-  # create record-minmax-for-thread-test target
+if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND FALSE)
+# create record-minmax-for-thread-test target
   # Note: record-minmax-for-thread-test is built with -fsanitize=thread so that thread sanitizer can check memory bugs,
   # record-minmax is built without the option for performance.
   add_executable(record-minmax-for-thread-test ${DRIVER} ${SOURCES})
