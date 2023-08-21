@@ -19,6 +19,8 @@ endif()
 
 # Create python virtual environment with tensorflow 2.8.0
 set(VIRTUALENV_OVERLAY_TF_2_8_0 "${NNCC_OVERLAY_DIR}/venv_2_8_0")
+# Create python virtual environment with tensorflow 2.12.1
+set(VIRTUALENV_OVERLAY_TF_2_12_1 "${NNCC_OVERLAY_DIR}/venv_2_12_1")
 # TensorFlow 2.10.1 for Ubuntu22.04
 if(ONE_UBUNTU_CODENAME_JAMMY)
   set(VIRTUALENV_OVERLAY_TF_2_10_1 "${NNCC_OVERLAY_DIR}/venv_2_10_1")
@@ -28,10 +30,15 @@ add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY_TF_2_8_0}
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_8_0}
 )
+add_custom_command(
+  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_12_1}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_12_1}
+)
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_8_0 "${VIRTUALENV_OVERLAY_TF_2_8_0}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH_TF_2_12_1 "${VIRTUALENV_OVERLAY_TF_2_12_1}/${REQUIREMENTS_FILE}")
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
   add_custom_command(
@@ -89,11 +96,26 @@ else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
             ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
     DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
   )
+  add_custom_command(
+    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+            ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
+    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
+    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
+  )
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 add_custom_target(common_artifacts_python_deps ALL
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
+          ${VIRTUALENV_OVERLAY_TF_2_12_1}
+          ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
 )
 
 if(ONE_UBUNTU_CODENAME_JAMMY)
