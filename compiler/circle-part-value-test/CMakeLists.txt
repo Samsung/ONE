@@ -107,7 +107,7 @@ add_dependencies(circle_part_value_test_prepare common_artifacts_deps)
 add_test(NAME circle_part_value_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/part_eval_all.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
-          "${NNCC_OVERLAY_DIR}/venv_2_8_0"
+          "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           "$<TARGET_FILE:circle_part_driver>"
           ${PARTITION_LIST}
 )
