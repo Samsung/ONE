@@ -29,12 +29,7 @@ get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gen_h5_explicit_inputs.py"
                "${CMAKE_CURRENT_BINARY_DIR}/gen_h5_explicit_inputs.py" COPYONLY)
 
-# TODO Run both 2.8.0 and 2.10.1 test for jammy
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_10_1")
-else(ONE_UBUNTU_CODENAME_JAMMY)
-  set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_8_0")
-endif(ONE_UBUNTU_CODENAME_JAMMY)
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_12_1")
 
 ###
 ### Generate test.config
