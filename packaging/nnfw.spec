@@ -212,8 +212,10 @@ cmake --install %{nncc_workspace}
 
 # install angkor TensorIndex header (TODO: Remove this)
 mkdir -p %{overlay_path}/include/nncc/core/ADT/tensor
+mkdir -p %{overlay_path}/include/oops
 cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h %{overlay_path}/include/nncc/core/ADT/tensor
 cp compiler/loco/include/loco/IR/CanonicalNodes.lst %{overlay_path}/include/loco/IR
+cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
 
 # runtime build
 %{build_env} ./nnfw configure %{build_options}

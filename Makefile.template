@@ -155,8 +155,10 @@ ifneq ($(CROSS_BUILD),1)
 	cd $(NNCC_FOLDER) && make install
 # install angkor TensorIndex header (TODO: Remove this)
 	mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	mkdir -p ${OVERLAY_FOLDER}/include/oops
 	cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	cp compiler/loco/include/loco/IR/CanonicalNodes.lst ${OVERLAY_FOLDER}/include/loco/IR
+	cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
 endif
 	echo "Done prepare_nncc_internal"
 
@@ -170,12 +172,14 @@ ifneq ($(CROSS_BUILD),1)
 	cd $(NNCC_FOLDER) && make install
 # install angkor TensorIndex header (TODO: Remove this)
 	mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	mkdir -p ${OVERLAY_FOLDER}/include/oops
 	cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	cp compiler/loco/include/loco/IR/CanonicalNodes.lst ${OVERLAY_FOLDER}/include/loco/IR
+	cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
 endif
 	echo "Done prepare_nncc_internal_with_test"
 
-configure_internal: $(WORKSPACE) prepare_nncc_internal
+configure_internal: $(WORKSPACE)
 ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
