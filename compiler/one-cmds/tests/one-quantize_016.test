@@ -54,8 +54,8 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-circledump ${outputfile} | grep serving_default_l.1:0$ > ${filename}.first.cdump
-circledump ${outputfile} | grep serving_default_r.1:0$ > ${filename}.second.cdump
+circledump ${outputfile} | grep "T(0:0)" > ${filename}.first.cdump
+circledump ${outputfile} | grep "T(0:1)" > ${filename}.second.cdump
 
 # check dtype of the first input (uint8)
 if ! grep -q "UINT8" "${filename}.first.cdump"; then
