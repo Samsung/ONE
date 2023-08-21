@@ -46,8 +46,6 @@ int handleAutoAlgorithm(arser::Arser &arser, mpqsolver::bisection::BisectionSolv
 
 int entry(int argc, char **argv)
 {
-  LOGGER(l);
-
   const std::string bisection_str = "--bisection";
   const std::string save_intermediate_str = "--save_intermediate";
 
@@ -115,6 +113,8 @@ int entry(int argc, char **argv)
     // If REPLACE is zero, it does not overwrite an existing value.
     setenv("LUCI_LOG", "100", 0);
   }
+
+  LOGGER(l);
 
   auto data_path = arser.get<std::string>("--data");
   auto input_model_path = arser.get<std::string>("--input_model");
