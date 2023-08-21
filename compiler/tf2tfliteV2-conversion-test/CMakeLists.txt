@@ -76,12 +76,7 @@ list(APPEND TEST_DEPS "${TEST_RUNNER}")
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-# TODO Run both 2.8.0 and 2.10.1 test for jammy
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_10_1")
-else()
-  set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_8_0")
-endif()
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_12_1")
 
 ###
 ### Generate test.config
