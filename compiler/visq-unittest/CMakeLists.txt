@@ -53,7 +53,7 @@ add_custom_target(visq_unittest ALL DEPENDS ${VISQ_TEST_DEPS})
 # Use Python in venv to run unittest with pydot module
 add_test(
   NAME visq_unittest
-  COMMAND ${NNCC_OVERLAY_DIR}/venv_2_8_0/bin/python -m unittest
+  COMMAND ${NNCC_OVERLAY_DIR}/venv_2_12_1/bin/python -m unittest
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 
