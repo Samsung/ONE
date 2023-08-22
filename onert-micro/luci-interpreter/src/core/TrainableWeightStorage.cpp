@@ -100,10 +100,10 @@ Status TrainableWeightStorage::getTrainWeightDataByTensor(const circle::Tensor *
 
   auto it = _tensor_to_data.find(tensor);
 
-  assert(it != _tensor_to_data.end() && "No data");
   if (it == _tensor_to_data.end())
   {
-    return Error;
+    result_data = nullptr;
+    return Ok;
   }
 
   *result_data = it->second;
