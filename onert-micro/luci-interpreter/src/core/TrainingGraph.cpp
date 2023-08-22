@@ -31,19 +31,45 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
                                        TrainableWeightStorage *storage, CircleReader *reader,
                                        const uint8_t *label_train_data)
 {
-  assert(settings.number_of_last_trainable_layers == 1);
   auto last_op_pos = reader->operators().size() - 1;
-  const auto last_op = reader->operators().at(last_op_pos);
+  uint8_t *gradients_values = nullptr;
+  Status status;
 
-  const auto opcode = reader->builtin_code(last_op);
+  for (auto op_pos = last_op_pos; op_pos >= 0; --op_pos)
+  {
+    const auto op = reader->operators().at(op_pos);
+    const auto opcode = reader->builtin_code(op);
+    assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
 
-  assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
+    TrainingSettings settings_tmp = settings;
 
-  Status status = kernel_train.train_kernel(last_op, opcode, reader, &_gradient_calculation_storage,
-                                            settings, storage, label_train_data);
+    const auto weight_index = op->inputs()->operator[](1);
+    assert(weight_index != -1);
+    const auto weights = reader->tensors()[weight_index];
+    assert(weights != nullptr);
 
-  if (status != Ok)
-    return status;
+    const auto rows = Tensor::dim(weights, 0);
+    const auto cols = Tensor::dim(weights, 1);
+
+    status = _gradient_calculation_storage.getGradients(weights, &gradients_values);
+    float *gradient_values_float = reinterpret_cast<float *>(gradients_values);
+    assert(gradient_values_float != nullptr);
+
+    if (op_pos == last_op_pos)
+    {
+      settings_tmp.is_last_layer = true;
+      status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage,
+                                         settings_tmp, storage, label_train_data);
+    }
+    else
+    {
+      settings_tmp.is_last_layer = false;
+      status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage,
+                                         settings_tmp, storage, gradients_values);
+    }
+    if (status != Ok)
+      return status;
+  }
 
   _gradient_calculation_storage.clearComputedData();
 
@@ -53,24 +79,24 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
 Status TrainingGraph::updateWeights(const TrainingSettings &settings,
                                     TrainableWeightStorage *storage, CircleReader *reader)
 {
-  assert(settings.number_of_last_trainable_layers == 1);
   auto last_op_pos = reader->operators().size() - 1;
-  const auto last_op = reader->operators().at(last_op_pos);
-
-  const auto opcode = reader->builtin_code(last_op);
-
-  assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
-
-  Status status = kernel_train.train_kernel(last_op, opcode, reader, &_gradient_calculation_storage,
-                                            settings, storage, nullptr);
-
-  assert(status == Ok);
-
-  if (status != Ok)
+  Status status;
+  for (auto op_pos = last_op_pos; op_pos >= 0; --op_pos)
   {
-    return status;
-  }
+    const auto op = reader->operators().at(op_pos);
+    const auto opcode = reader->builtin_code(op);
+    assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
 
+    status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage, settings,
+                                       storage, nullptr);
+
+    assert(status == Ok);
+
+    if (status != Ok)
+    {
+      return status;
+    }
+  }
   _gradient_calculation_storage.clearComputedData();
   _gradient_calculation_storage.clearComputedGradients();
 

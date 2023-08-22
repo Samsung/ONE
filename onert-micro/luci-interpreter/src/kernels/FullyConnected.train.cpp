@@ -28,7 +28,8 @@ namespace
 
 Status computeGradients(const circle::Operator *op, CircleReader *reader,
                         GradientCalculationStorage *gradient_calculation_storage,
-                        const circle::Tensor *weight, const float *label_train_data)
+                        const circle::Tensor *weight, const float *label_train_data,
+                        bool is_last_layer)
 {
 
   const auto input_index = op->inputs()->operator[](0);
@@ -79,8 +80,29 @@ Status computeGradients(const circle::Operator *op, CircleReader *reader,
   {
     for (int col = 0; col < cols; ++col)
     {
-      gradient_values_float[col + row * cols] +=
-        (output_data_float[row] - label_train_data[row]) * input_data_float[col];
+      gradient_values_float[col + row * cols] = 0;
+    }
+  }
+  if (is_last_layer)
+  {
+    for (int row = 0; row < rows; ++row)
+    {
+      for (int col = 0; col < cols; ++col)
+      {
+        gradient_values_float[col + row * cols] +=
+          (output_data_float[row] - label_train_data[row]) * input_data_float[col];
+      }
+    }
+  }
+  else
+  {
+    //If not last layer - then there is gradient in label_train_data
+    for (int row = 0; row < rows; ++row)
+    {
+      for (int col = 0; col < cols; ++col)
+      {
+        gradient_values_float[col + row * cols] += label_train_data[row] * input_data_float[col];
+      }
     }
   }
 
@@ -145,7 +167,7 @@ Status train_kernel_CircleFullyConnected(const circle::Operator *op, CircleReade
   // TODO add template and switch via type
   if (label_train_data != nullptr)
     return computeGradients(op, reader, gradient_calculation_storage, weights,
-                            reinterpret_cast<const float *>(label_train_data));
+                            reinterpret_cast<const float *>(label_train_data), settings.is_last_layer);
 
   return updateWeights(op, reader, gradient_calculation_storage, settings, weight_storage, weights);
 }

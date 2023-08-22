@@ -60,6 +60,7 @@ struct TrainingSettings
   uint32_t batch_size = 1;
   float learning_rate = 0.00001;
   uint32_t number_of_last_trainable_layers = 1;
+  bool is_last_layer = true;
 };
 
 } // namespace training
