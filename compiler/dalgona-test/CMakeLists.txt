@@ -56,14 +56,3 @@ add_test(
           "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           ${DALGONA_SINGLE_OP_TEST}
 )
-
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(
-    NAME dalgona_single_op_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/TestSingleOp.sh"
-            "${TEST_CONFIG}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            ${DALGONA_SINGLE_OP_TEST}
-  )
-endif(ONE_UBUNTU_CODENAME_JAMMY)
