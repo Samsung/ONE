@@ -56,11 +56,3 @@ add_test(
   COMMAND ${NNCC_OVERLAY_DIR}/venv_2_12_1/bin/python -m unittest
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
-
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(
-    NAME visq_210_unittest
-    COMMAND ${NNCC_OVERLAY_DIR}/venv_2_10_1/bin/python -m unittest
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  )
-endif(ONE_UBUNTU_CODENAME_JAMMY)
