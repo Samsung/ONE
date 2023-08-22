@@ -53,14 +53,3 @@ add_test(NAME luci_pass_value_test
           "$<TARGET_FILE:luci_eval_driver>"
           ${LUCI_PASS_VALUE_TESTS}
 )
-
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(NAME luci_pass_value_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/eval_driver.sh"
-            "${CMAKE_CURRENT_BINARY_DIR}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            "$<TARGET_FILE:luci_eval_driver>"
-            ${LUCI_PASS_VALUE_TESTS}
-  )
-endif(ONE_UBUNTU_CODENAME_JAMMY)
