@@ -63,4 +63,5 @@ addQConfTest(TransposeConv_001 layer uint8)
 
 addWeightsOnlyTest(Conv2D_004 channel int8)
 addWeightsOnlyTest(Conv2D_004 channel int16)
+addWeightsOnlyTest(DepthwiseConv2D_002 channel int8)
 addWeightsOnlyTest(DepthwiseConv2D_002 channel int16)
