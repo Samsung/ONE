@@ -49,12 +49,15 @@ void LossInsertionPass::run()
   const auto &y_pred_index = _trainable_graph.getOutputs().at(index);
   const auto &y_pred = _trainable_graph.operands().at(y_pred_index);
   const auto &shape = y_pred.shape();
+
+  if (shape.dim(0) != 1)
+  {
+    throw std::runtime_error("LossInsertionPass: Not supported multiple batch_size inputs");
+  }
+
   const auto &type_info = y_pred.typeInfo();
   auto y_true_index = _trainable_graph.addOperand(shape, type_info);
   ir::OperandIndexSequence inputs{y_pred_index, y_true_index};
-
-  // TODO Consider Reduction
-  //      Some types of Reduction have the same shape y_true and output.
 
   const ir::TypeInfo float_op(ir::DataType::FLOAT32);
   auto output_index = _trainable_graph.addOperand(ir::Shape{1}, float_op);

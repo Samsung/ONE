@@ -31,27 +31,23 @@ template <typename T>
 inline void MSE(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_true_shape,
                 const T *y_true_data, const Shape &output_shape, T *output_data)
 {
-  // TODO Consider Reduction
-  if (output_shape != Shape{1})
-    throw std::runtime_error("cker::MSE: output_shape != Shape{1}");
   if (y_pred_shape != y_true_shape)
     throw std::runtime_error("cker::MSE: y_pred_shape != y_true_shape");
+  if (y_pred_shape.Dims(0) != output_shape.Dims(0))
+    throw std::runtime_error("cker::MSE: y_pred_shape.Dims(0) != output_shape.Dims(0)");
 
   const auto y_pred = MapAsMatrixWithLastDimAsRows(y_pred_data, y_pred_shape);
   const auto y_true = MapAsMatrixWithLastDimAsRows(y_true_data, y_true_shape);
 
-  double squared_sum = 0.0f;
   for (size_t c = 0; c < (size_t)y_pred.cols(); ++c)
   {
+    double squared_sum = 0.0f;
     for (size_t r = 0; r < (size_t)y_pred.rows(); ++r)
     {
-      double error = y_pred.coeff(r, c) - y_true.coeff(r, c);
-      squared_sum += (error * error);
+      squared_sum += std::pow(y_true.coeff(r, c) - y_pred.coeff(r, c), 2);
     }
+    output_data[c] = static_cast<T>(squared_sum / y_pred.rows());
   }
-
-  auto size = y_pred.cols() * y_pred.rows();
-  output_data[0] = (T)(squared_sum / size);
 }
 
 template <typename T>

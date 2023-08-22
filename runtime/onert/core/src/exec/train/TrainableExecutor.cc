@@ -196,7 +196,16 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
     throw std::runtime_error{"Loss " + std::to_string(loss_ind.value()) + " is not defined."};
   backend::ITensor *tensor = _tensor_regs.getITensor(loss_ind);
   auto loss_buf = reinterpret_cast<float *>(tensor->buffer());
-  return *loss_buf;
+
+  // NOTE Only support SUM_OVER_BATCH_SIZE
+  // TODO Consider other cases
+  auto batch_size = tensor->getShape().dim(0);
+  double sum = 0.f;
+  for (int i = 0; i < batch_size; ++i)
+  {
+    sum += loss_buf[i];
+  }
+  return sum / batch_size;
 }
 
 } // namespace train
