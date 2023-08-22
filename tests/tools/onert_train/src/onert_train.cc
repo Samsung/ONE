@@ -198,11 +198,13 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
+    std::vector<float> losses(num_expecteds);
     phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
       const int num_sample = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
+        std::fill(losses.begin(), losses.end(), 0);
         for (uint32_t n = 0; n < num_sample; ++n)
         {
           // get batchsize data
@@ -225,15 +227,21 @@ int main(const int argc, char **argv)
 
           // train
           NNPR_ENSURE_STATUS(nnfw_train(session, true));
+
+          // store loss
+          for (int32_t i = 0; i < num_expecteds; ++i)
+          {
+            float temp = 0.f;
+            NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
+            losses[i] += temp;
+          }
         }
 
         // print loss
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
-          float loss;
-          NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &loss));
-          std::cout << "[Epoch " << epoch << "] Output [" << i
-                    << "] Loss: " << loss /* << ", Accuracy: " << accuracy*/ << std::endl;
+          std::cout << "[Epoch " << epoch << "] Output [" << i << "] Loss: "
+                    << losses[i] / num_sample /* << ", Accuracy: " << accuracy*/ << std::endl;
         }
       }
     });
