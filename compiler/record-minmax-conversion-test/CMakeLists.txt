@@ -44,14 +44,3 @@ add_test(
           "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           ${RECORD_MINMAX_CONVERSION_TEST}
 )
-
-if(ONE_UBUNTU_CODENAME_JAMMY)
-  add_test(
-    NAME record_minmax_conversion_210_test
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/testall.sh"
-            "${TEST_CONFIG}"
-            "${ARTIFACTS_BIN_PATH}"
-            "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-            ${RECORD_MINMAX_CONVERSION_TEST}
-  )
-endif(ONE_UBUNTU_CODENAME_JAMMY)
