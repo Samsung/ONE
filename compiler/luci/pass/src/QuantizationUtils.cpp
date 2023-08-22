@@ -102,11 +102,13 @@ void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float 
 }
 
 void compute_sym_scale(float min, float max, float &scaling_factor, float &nudged_min,
-                       float &nudged_max)
+                       float &nudged_max, loco::DataType out_type)
 {
   assert(min <= max);
+  assert(out_type == loco::DataType::S8 || out_type == loco::DataType::S16);
 
-  const int32_t kMaxScale = std::numeric_limits<int16_t>::max();
+  const int32_t kMaxScale = (out_type == loco::DataType::S16) ? std::numeric_limits<int16_t>::max()
+                                                              : std::numeric_limits<int8_t>::max();
   const int32_t kMinScale = -kMaxScale;
   const double qmin_double = kMinScale;
   const double qmax_double = kMaxScale;
@@ -126,8 +128,8 @@ void compute_sym_scale(float min, float max, float &scaling_factor, float &nudge
                      : scale_factor_from_max_side;
 
   // protect scale from being very low to avoid overflow/underflow
-  if (scaling_factor < 1e-8)
-    scaling_factor = 1e-8;
+  const float kMinScalingFactor = (out_type == loco::DataType::S16) ? 1e-8 : 1e-5;
+  scaling_factor = std::max(scaling_factor, kMinScalingFactor);
 
   nudged_min = static_cast<float>(qmin_double * scaling_factor);
   nudged_max = static_cast<float>(qmax_double * scaling_factor);
