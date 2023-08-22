@@ -33,6 +33,8 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
 {
   auto last_op_pos = reader->operators().size() - 1;
   uint8_t *gradients_values = nullptr;
+  uint8_t *gradients_values_prev = nullptr;
+
   Status status;
 
   for (auto op_pos = last_op_pos; op_pos >= 0; --op_pos)
@@ -43,6 +45,7 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
 
     TrainingSettings settings_tmp = settings;
 
+    gradients_values_prev = gradients_values;
     const auto weight_index = op->inputs()->operator[](1);
     assert(weight_index != -1);
     const auto weights = reader->tensors()[weight_index];
@@ -65,7 +68,7 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
     {
       settings_tmp.is_last_layer = false;
       status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage,
-                                         settings_tmp, storage, gradients_values);
+                                         settings_tmp, storage, gradients_values_prev);
     }
     if (status != Ok)
       return status;
