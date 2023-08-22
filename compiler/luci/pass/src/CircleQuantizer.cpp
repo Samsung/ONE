@@ -536,6 +536,33 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     verifier.verify(g);
   }
 
+  if (_options->query(Options::Algorithm::QuantizeWeights))
+  {
+    static const std::vector<std::string> qw_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> qw_supported_output_model_dtype{"int8", "int16"};
+    static const std::vector<std::string> qw_supported_granularity{"channel"};
+
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
+    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+
+    if (!in_array(to_lower_case(input_model_dtype), qw_supported_input_model_dtype))
+      throw std::runtime_error("Unsupported input type. List of supported input type: " +
+                               to_string(qw_supported_input_model_dtype));
+
+    if (!in_array(to_lower_case(output_model_dtype), qw_supported_output_model_dtype))
+      throw std::runtime_error("Unsupported output type. List of supported output type: " +
+                               to_string(qw_supported_output_model_dtype));
+
+    if (!in_array(to_lower_case(granularity), qw_supported_granularity))
+      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
+                               to_string(qw_supported_granularity));
+
+    throw std::runtime_error("QuantizeWeights is not supported yet");
+  }
+
   // Requantize
   if (_options->query(Options::Algorithm::Requantize))
   {
