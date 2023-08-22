@@ -52,7 +52,7 @@ if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND FALSE)
 
   target_compile_options(record-minmax-for-thread-test PUBLIC -fsanitize=thread)
   target_link_libraries(record-minmax-for-thread-test -fsanitize=thread)
-endif("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
+endif("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND FALSE)
 
 file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
