@@ -33,9 +33,9 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.8.0
-VER_ONNX=1.11.0
-VER_ONNXRUNTIME=1.11.0
+VER_TENSORFLOW=2.12.1
+VER_ONNX=1.14.0
+VER_ONNXRUNTIME=1.15.0
 VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
 
@@ -64,10 +64,9 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
 fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow
-# TODO remove version fix, https://github.com/Samsung/ONE/issues/9240
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.16.0
-# TODO remove version fix, https://github.com/Samsung/ONE/issues/10481
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.16.1
+# Fix version to that of TF release date
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.20.1
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.20.0
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_STABLE to override 'torch_stable.html' URL.
@@ -79,7 +78,7 @@ if [[ ! -z "$ONE_PREPVENV_TORCH_STABLE" ]]; then
 fi
 # TODO remove torch message
 echo "Torch from '${ONE_PREPVENV_TORCH_STABLE}' -> '${TORCH_STABLE_URL}'"
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.11.0+cpu -f ${TORCH_STABLE_URL}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.13.1+cpu -f ${TORCH_STABLE_URL}
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
 
@@ -92,9 +91,8 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx-tf==${VER_ONNX_TF}
 fi
 
-# NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
-# TODO remove this when issue is resolved
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==3.20.1
+# Fix version to that of TF release date
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==4.23.3
 
 # Install pydot for visq
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot==${VER_PYDOT}
