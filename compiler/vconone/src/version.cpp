@@ -54,7 +54,7 @@ std::string get_string(void)
 std::string get_copyright(void)
 {
   std::string str;
-  str = "Copyright (c) 2020-2022 Samsung Electronics Co., Ltd. All Rights Reserved\r\n";
+  str = "Copyright (c) 2020-2023 Samsung Electronics Co., Ltd. All Rights Reserved\r\n";
   str += "Licensed under the Apache License, Version 2.0\r\n";
   str += "https://github.com/Samsung/ONE";
   return str;
