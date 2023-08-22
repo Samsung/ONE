@@ -41,13 +41,13 @@ if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   #      and install build/../one-prepare-venv file
   list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804.aarch64)
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  if(ONE_UBUNTU_CODENAME_JAMMY)
-    # NOTE copy one-prepare-venv.u2204 as build/../one-prepare-venv
+  if(ONE_UBUNTU_CODENAME_BIONIC)
+    # NOTE copy one-prepare-venv.u1804 as build/../one-prepare-venv
     #      and install build/../one-prepare-venv file
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2204)
-  else(ONE_UBUNTU_CODENAME_JAMMY)
+    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804)
+  else(ONE_UBUNTU_CODENAME_BIONIC)
     list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-  endif(ONE_UBUNTU_CODENAME_JAMMY)
+  endif(ONE_UBUNTU_CODENAME_BIONIC)
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration
