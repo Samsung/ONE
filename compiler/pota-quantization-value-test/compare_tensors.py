@@ -114,6 +114,7 @@ with h5.File(model, "r") as input:
             elif mode == "quantization":
                 compare_quantization(input[tensor_name], tensor_name, expect_dir)
             elif mode == "weights_only_quantization":
+                # Assume weights have name "ker"
                 if tensor_name == "ker":
                     compare_quantization(input[tensor_name], tensor_name, expect_dir)
             else:
