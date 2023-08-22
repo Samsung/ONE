@@ -45,28 +45,6 @@ if(NOT CMAKE_CROSSCOMPILING)
     )
   endif()
 
-  if(ONE_UBUNTU_CODENAME_JAMMY)
-    add_test(NAME luci_value_210_test
-      COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverify.sh"
-              "${CMAKE_CURRENT_BINARY_DIR}"
-              "${ARTIFACTS_BIN_PATH}"
-              "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-              "$<TARGET_FILE:luci_eval_driver>"
-              ${LUCI_VALUE_TESTS}
-    )
-
-    if(DEFINED LUCI_VALUE_TESTS_TOL)
-      add_test(NAME luci_value_tol_210_test
-        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/evalverifytol.sh"
-                "${CMAKE_CURRENT_BINARY_DIR}"
-                "${ARTIFACTS_BIN_PATH}"
-                "${NNCC_OVERLAY_DIR}/venv_2_10_1"
-                "$<TARGET_FILE:luci_eval_driver>"
-                ${LUCI_VALUE_TESTS_TOL}
-      )
-    endif()
-  endif(ONE_UBUNTU_CODENAME_JAMMY)
-
 else(NOT CMAKE_CROSSCOMPILING)
   # NOTE target test is carried out using reference input/output data from host
   #      test results. this is because it would be difficult to prepare
