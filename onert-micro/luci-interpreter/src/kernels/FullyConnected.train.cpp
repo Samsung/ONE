@@ -28,8 +28,7 @@ namespace
 
 Status computeGradients(const circle::Operator *op, CircleReader *reader,
                         GradientCalculationStorage *gradient_calculation_storage,
-                        const circle::Tensor *weight, const float *label_train_data,
-                        bool is_last_layer)
+                        const circle::Tensor *weight, TrainableWeightStorage *weight_storage)
 {
 
   const auto input_index = op->inputs()->operator[](0);
@@ -54,6 +53,7 @@ Status computeGradients(const circle::Operator *op, CircleReader *reader,
   if (status != Ok)
     return status;
 
+  // output_data - save derivative of the error function by output activation for the current layer
   uint8_t *output_data = nullptr;
   status = gradient_calculation_storage->getDataByTensor(output, &output_data);
 
@@ -76,33 +76,54 @@ Status computeGradients(const circle::Operator *op, CircleReader *reader,
   if (status != Ok or gradient_values_float == nullptr)
     return status;
 
+  // Update output activation gradient with activations:
+  const auto options = op->builtin_options_as_FullyConnectedOptions();
+  const auto activation_type = luci_actfunc(options->fused_activation_function());
+  switch (activation_type)
+  {
+    case FusedActFunc::RELU:
+    {
+      for (int row = 0; row < rows; ++row)
+        output_data_float[row] = std::max(output_data_float[row], 0.f);
+    }
+    break;
+    case FusedActFunc::NONE:
+      break;
+    default:
+      assert(false && "Not supported type now");
+      return Error;
+  }
+
+  // Update weight gradients
   for (int row = 0; row < rows; ++row)
   {
     for (int col = 0; col < cols; ++col)
     {
-      gradient_values_float[col + row * cols] = 0;
+      gradient_values_float[col + row * cols] += output_data_float[row] * input_data_float[col];
     }
   }
-  if (is_last_layer)
+
+  uint8_t *weight_data = nullptr;
+
+  status = weight_storage->getTrainWeightDataByTensor(weight, &weight_data);
+  if (status != Ok)
+    return status;
+
+  assert(weight_data != nullptr);
+
+  float *weight_data_float = reinterpret_cast<float *>(weight_data);
+
+  // calculate derivative of the error function by input activation for the current layer
+  for (int col = 0; col < cols; ++col)
   {
-    for (int row = 0; row < rows; ++row)
-    {
-      for (int col = 0; col < cols; ++col)
-      {
-        gradient_values_float[col + row * cols] +=
-          (output_data_float[row] - label_train_data[row]) * input_data_float[col];
-      }
-    }
+    input_data_float[col] = 0;
   }
-  else
+
+  for (int row = 0; row < rows; ++row)
   {
-    //If not last layer - then there is gradient in label_train_data
-    for (int row = 0; row < rows; ++row)
+    for (int col = 0; col < cols; ++col)
     {
-      for (int col = 0; col < cols; ++col)
-      {
-        gradient_values_float[col + row * cols] += label_train_data[row] * input_data_float[col];
-      }
+      input_data_float[row] += weight_data_float[row + col * rows] * output_data_float[col];
     }
   }
 
@@ -157,7 +178,7 @@ Status train_kernel_CircleFullyConnected(const circle::Operator *op, CircleReade
                                          GradientCalculationStorage *gradient_calculation_storage,
                                          const TrainingSettings &settings,
                                          TrainableWeightStorage *weight_storage,
-                                         const uint8_t *label_train_data)
+                                         bool is_compute_gradient)
 {
   const auto weight_index = op->inputs()->operator[](1);
   assert(weight_index != -1);
@@ -165,9 +186,8 @@ Status train_kernel_CircleFullyConnected(const circle::Operator *op, CircleReade
   assert(weights != nullptr);
 
   // TODO add template and switch via type
-  if (label_train_data != nullptr)
-    return computeGradients(op, reader, gradient_calculation_storage, weights,
-                            reinterpret_cast<const float *>(label_train_data), settings.is_last_layer);
+  if (is_compute_gradient)
+    return computeGradients(op, reader, gradient_calculation_storage, weights, weight_storage);
 
   return updateWeights(op, reader, gradient_calculation_storage, settings, weight_storage, weights);
 }

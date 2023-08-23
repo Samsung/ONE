@@ -52,7 +52,7 @@ namespace training
   Status train_kernel_Circle##name(                                                             \
     const circle::Operator *op, CircleReader *reader,                                           \
     GradientCalculationStorage *gradient_calculation_storage, const TrainingSettings &settings, \
-    TrainableWeightStorage *weight_storage, const uint8_t *label_train_data);
+    TrainableWeightStorage *weight_storage, bool is_compute_gradient);
 
 #include "KernelsToTrain.lst"
 

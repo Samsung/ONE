@@ -51,6 +51,9 @@ public:
   }
 
 private:
+  Status saveLabelDataAsBackDerivative(CircleReader *reader, TrainableWeightStorage *storage,
+                                       const uint8_t *label_train_data);
+
   GradientCalculationStorage _gradient_calculation_storage;
 };
 

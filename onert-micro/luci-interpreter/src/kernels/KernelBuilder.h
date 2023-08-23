@@ -149,7 +149,7 @@ class KernelTrainRegistry
 public:
   using KernelTrainFunc = Status(const circle::Operator *, CircleReader *,
                                  GradientCalculationStorage *, const TrainingSettings &,
-                                 TrainableWeightStorage *, const uint8_t *);
+                                 TrainableWeightStorage *, bool);
 
   constexpr KernelTrainRegistry() : _operator_train()
   {
@@ -169,7 +169,7 @@ public:
                       CircleReader *reader,
                       GradientCalculationStorage *gradient_calculation_storage,
                       const TrainingSettings &settings, TrainableWeightStorage *weight_storage,
-                      const uint8_t *label_train_data) const;
+                      bool is_compute_gradient) const;
 
 private:
   constexpr KernelTrainFunc *get_kernel_train_func(circle::BuiltinOperator opcode) const

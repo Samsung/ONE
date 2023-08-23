@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,8 @@ int entry(int argc, char **argv)
     std::cerr
       << "Usage: " << argv[0]
       << " <path/to/circle/model> <path/to/input/train_data> <path/to/input/label_train_data> "
-         "<path/to/input/test_data> <path/to/input/label_test_data>\n";
+         "<path/to/input/test_data> <path/to/input/label_test_data> num_of_train_smpl "
+         "num_of_test_smpl\n";
     return EXIT_FAILURE;
   }
 
@@ -125,7 +126,6 @@ int entry(int argc, char **argv)
                    output_size * num_test_data_samples);
 
   luci_interpreter::training::TrainingOnertMicro onert_micro_training(&interpreter, settings);
-
   onert_micro_training.enableTrainingMode();
   onert_micro_training.train(num_train_data_samples, reinterpret_cast<uint8_t *>(train_data),
                              reinterpret_cast<uint8_t *>(label_train_data));
@@ -179,14 +179,14 @@ int entry(int argc, char **argv)
   float mse_result = 0.0f;
 
   settings.metric = luci_interpreter::training::MSE;
-  onert_micro_training.test(8, reinterpret_cast<const uint8_t *>(train_data),
+  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
                             reinterpret_cast<const uint8_t *>(label_train_data),
                             reinterpret_cast<void *>(&mse_result));
 
   float mae_result = 0.0f;
 
   settings.metric = luci_interpreter::training::MAE;
-  onert_micro_training.test(8, reinterpret_cast<const uint8_t *>(train_data),
+  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
                             reinterpret_cast<const uint8_t *>(label_train_data),
                             reinterpret_cast<void *>(&mae_result));
 
@@ -197,14 +197,14 @@ int entry(int argc, char **argv)
   mse_result = 0.0f;
 
   settings.metric = luci_interpreter::training::MSE;
-  onert_micro_training.test(8, reinterpret_cast<const uint8_t *>(test_data),
+  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
                             reinterpret_cast<const uint8_t *>(label_test_data),
                             reinterpret_cast<void *>(&mse_result));
 
   mae_result = 0.0f;
 
   settings.metric = luci_interpreter::training::MAE;
-  onert_micro_training.test(8, reinterpret_cast<const uint8_t *>(test_data),
+  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
                             reinterpret_cast<const uint8_t *>(label_test_data),
                             reinterpret_cast<void *>(&mae_result));
 

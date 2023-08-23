@@ -27,49 +27,79 @@ namespace luci_interpreter
 namespace training
 {
 
+Status TrainingGraph::saveLabelDataAsBackDerivative(CircleReader *reader,
+                                                    TrainableWeightStorage *storage,
+                                                    const uint8_t *label_train_data)
+{
+  Status status;
+
+  const auto graph_outputs = reader->outputs();
+  assert(graph_outputs.size() == 1);
+  if (graph_outputs.size() != 1)
+    return Error;
+
+  const circle::Tensor *output_graph_tensor = reader->tensors()[graph_outputs[0]];
+
+  uint8_t *output_data = nullptr;
+  status = _gradient_calculation_storage.getDataByTensor(output_graph_tensor, &output_data);
+  if (status != Ok)
+    return status;
+
+  assert(output_data != nullptr);
+  if (output_data == nullptr)
+    return Error;
+
+  const auto tensor_size = Tensor::num_elements(output_graph_tensor);
+  const auto tensor_type = Tensor::element_type(output_graph_tensor);
+
+  switch (tensor_type)
+  {
+    case DataType::FLOAT32:
+    {
+      float *casted_output_data = reinterpret_cast<float *>(output_data);
+      const float *casted_label_data = reinterpret_cast<const float *>(label_train_data);
+
+      // For MSE
+      for (int i = 0; i < tensor_size; ++i)
+        casted_output_data[i] = casted_output_data[i] - casted_label_data[i];
+
+      break;
+    }
+    default:
+    {
+      assert(false && "Unsupported type");
+      return Error;
+    }
+  }
+
+  return Ok;
+}
+
 Status TrainingGraph::computeGradients(const TrainingSettings &settings,
                                        TrainableWeightStorage *storage, CircleReader *reader,
                                        const uint8_t *label_train_data)
 {
-  auto last_op_pos = reader->operators().size() - 1;
-  uint8_t *gradients_values = nullptr;
-  uint8_t *gradients_values_prev = nullptr;
+  assert(settings.number_of_last_trainable_layers != 0);
 
+  const int last_op_pos = reader->operators().size() - 1;
+  const int last_train_op_pos = settings.number_of_last_trainable_layers > 0
+                                  ? last_op_pos - settings.number_of_last_trainable_layers
+                                  : -1;
   Status status;
 
-  for (auto op_pos = last_op_pos; op_pos >= 0; --op_pos)
+  // Save label_data as gradient to output tensor
+  status = saveLabelDataAsBackDerivative(reader, storage, label_train_data);
+  if (status != Ok)
+    return status;
+
+  for (auto op_pos = last_op_pos; op_pos > last_train_op_pos; --op_pos)
   {
     const auto op = reader->operators().at(op_pos);
     const auto opcode = reader->builtin_code(op);
-    assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
 
-    TrainingSettings settings_tmp = settings;
+    status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage, settings,
+                                       storage, true /* compute gradient mode */);
 
-    gradients_values_prev = gradients_values;
-    const auto weight_index = op->inputs()->operator[](1);
-    assert(weight_index != -1);
-    const auto weights = reader->tensors()[weight_index];
-    assert(weights != nullptr);
-
-    const auto rows = Tensor::dim(weights, 0);
-    const auto cols = Tensor::dim(weights, 1);
-
-    status = _gradient_calculation_storage.getGradients(weights, &gradients_values);
-    float *gradient_values_float = reinterpret_cast<float *>(gradients_values);
-    assert(gradient_values_float != nullptr);
-
-    if (op_pos == last_op_pos)
-    {
-      settings_tmp.is_last_layer = true;
-      status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage,
-                                         settings_tmp, storage, label_train_data);
-    }
-    else
-    {
-      settings_tmp.is_last_layer = false;
-      status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage,
-                                         settings_tmp, storage, gradients_values_prev);
-    }
     if (status != Ok)
       return status;
   }
@@ -82,16 +112,18 @@ Status TrainingGraph::computeGradients(const TrainingSettings &settings,
 Status TrainingGraph::updateWeights(const TrainingSettings &settings,
                                     TrainableWeightStorage *storage, CircleReader *reader)
 {
-  auto last_op_pos = reader->operators().size() - 1;
+  const int last_op_pos = reader->operators().size() - 1;
+  const int last_train_op_pos = settings.number_of_last_trainable_layers > 0
+                                  ? last_op_pos - settings.number_of_last_trainable_layers
+                                  : -1;
   Status status;
-  for (auto op_pos = last_op_pos; op_pos >= 0; --op_pos)
+  for (auto op_pos = last_op_pos; op_pos > last_train_op_pos; --op_pos)
   {
     const auto op = reader->operators().at(op_pos);
     const auto opcode = reader->builtin_code(op);
-    assert(opcode == circle::BuiltinOperator_FULLY_CONNECTED);
 
     status = kernel_train.train_kernel(op, opcode, reader, &_gradient_calculation_storage, settings,
-                                       storage, nullptr);
+                                       storage, false /* update weights mode */);
 
     assert(status == Ok);
 
