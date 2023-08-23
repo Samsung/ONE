@@ -14,82 +14,45 @@
  * limitations under the License.
  */
 
+#include "QuantizerLoader.h"
 #include "odc/QuantizeManager.h"
-#include "odc/Quantize.h"
 
-#include <dlfcn.h>
 #include <iostream>
-#include <memory>
-
-static const char *SHARED_LIB_EXT =
-#if defined(__APPLE__) && defined(__MACH__)
-  ".dylib";
-#else
-  ".so";
-#endif
+#include <mutex>
 
 namespace onert
 {
 namespace odc
 {
 
-QuantizeManager &QuantizeManager::instance()
+bool QuantizeManager::quantize()
 {
-  static QuantizeManager singleton;
-  return singleton;
-}
+  // Compile function is thread-unsafe
+  static std::mutex lock;
+  std::lock_guard<std::mutex> guard(lock);
 
-Quantize *QuantizeManager::get() const { return _default_quantize.get(); }
+  auto &quantize_loader = QuantizerLoader::instance();
+  if (quantize_loader.loadLibrary() != 0)
+    return false;
 
-int32_t QuantizeManager::loadLibrary()
-{
-  if (get() != nullptr)
-    return 0;
-
-  // TODO: Determine the name of plug-in library
-  //
-  // Option 1: Use predefined hardcoded name for on-device compiler implementation plug-in
-  //           e.g) libodc.so
-  // Option 2: Search plug-in in pre-defined paths, then load the shared library name.
-  //           e.g) $ ls /usr/lib/onert/plug-ins
-  //                  libone-quantize.so
-  //                Then, call loadCompiler("one-quantize");
-
-  const auto findPlugin = []() { return "onert_odc"; }; // TODO: rename to generic name.
-  const std::string id = findPlugin();
-  const std::string quantize_so = "lib" + id + SHARED_LIB_EXT;
-  void *handle = dlopen(quantize_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
-
-  if (handle == nullptr)
+  auto const extension_pos = _model_path.find(".circle");
+  if (extension_pos == std::string::npos)
   {
-    std::cerr << "Failed to load " << quantize_so << std::endl;
-    std::cerr << dlerror() << std::endl;
-    return 1;
+    std::cerr << "Input model isn't .circle." << std::endl;
+    return false;
   }
 
-  {
-    const char *quantize_impl_func_name = "quantize";
-    const auto quantize = (Quantize::quantize_t)dlsym(handle, quantize_impl_func_name);
-    if (quantize == nullptr)
-    {
-      std::cerr << "QuantizeManager: unable to find function " << quantize_impl_func_name
-                << dlerror() << std::endl;
-      dlclose(handle);
-      return 1;
-    }
+  auto const qstring = std::string("_quantized_") + (_is_q16 ? "q16" : "q8");
 
-    _default_quantize = std::make_unique<Quantize>(quantize);
-  }
+  if (_export_model_path.empty())
+    _export_model_path = _model_path.substr(0, extension_pos) + qstring + ".circle";
 
-  // Save quantize library handle (avoid warning by handle lost without dlclose())
-  // clang-format off
-  _dlhandle = std::unique_ptr<void, dlhandle_destroy_t>{handle, [filename = quantize_so](void *h) {
-    if (dlclose(h) != 0)
-      std::cerr << "Failed to unload backend " << filename << std::endl;
-  }};
-  // clang-format on
+  auto quantizer = quantize_loader.get();
+  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _is_q16);
 
-  return 0;
+  // TODO Unload quantize library to reduce memory usage
+
+  return (result == 0);
 }
 
 } // namespace odc

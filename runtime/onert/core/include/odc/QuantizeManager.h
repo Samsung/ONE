@@ -17,8 +17,10 @@
 #ifndef __ONERT_ODC_QUANTIZE_MANAGER_H__
 #define __ONERT_ODC_QUANTIZE_MANAGER_H__
 
+#include "IQuantizer.h"
+
 #include <functional>
-#include <memory>
+#include <string>
 
 namespace onert
 {
@@ -30,35 +32,49 @@ class Quantize;
 class QuantizeManager
 {
 public:
-  using dlhandle_destroy_t = std::function<void(void *)>;
-
   static QuantizeManager &instance();
 
   // Non-copyable
-  QuantizeManager() = default;
+  QuantizeManager() = delete;
+  QuantizeManager(const std::string &model_path) : _model_path(model_path) {}
   QuantizeManager(QuantizeManager const &) = delete;
   QuantizeManager &operator=(QuantizeManager const &) = delete;
 
 public:
   /**
-   * @brief load plugin
+   * @brief Set model path to export quantized model
+   *
+   * @param model_path  Model path to export quantized model
    */
-  int32_t loadLibrary();
+  void exportModelPath(const std::string &model_path) { _export_model_path = model_path; }
 
   /**
-   * @brief   Get Quantize
-   * @note    get() should be called after loadLibrary is finished.
-   * @return  Quantize instance which is created by loaded library (plug-in)
+   * @brief   Get model path to export quantized model
+   *
+   * @return  Model path to export quantized model
    */
-  Quantize *get() const;
+  std::string &exportModelPath() { return _export_model_path; }
+
+  /**
+   * @brief Set quantize type
+   *
+   * @param is_q16  true if q16, false if q8
+   *
+   * @todo  Support more general quantize type
+   */
+  void quantizeType(bool is_q16) { _is_q16 = is_q16; }
+
+  /**
+   * @brief  Quantize model
+   *
+   * @return  true if success, otherwise false
+   */
+  bool quantize();
 
 private:
-  // Note: Keep handle to avoid svace warning of "handle lost without dlclose()"
-  std::unique_ptr<void, dlhandle_destroy_t> _dlhandle;
-
-  // Assumption there is only 1 codegen. It is created and owned by QuantizeManager after
-  // loadLibrary().
-  std::unique_ptr<Quantize> _default_quantize;
+  std::string _model_path = "";
+  std::string _export_model_path = "";
+  bool _is_q16 = false;
 };
 
 } // namespace odc

@@ -48,6 +48,10 @@ namespace compiler
 struct CompilerArtifact;
 class CompilerOptions;
 } // namespace compiler
+namespace odc
+{
+class QuantizeManager;
+} // namespace odc
 } // namespace onert
 
 struct nnfw_session
@@ -208,9 +212,7 @@ private:
   uint32_t _training_step{0};
 #endif // ONERT_TRAIN
   // TODO Move field to internal
-  std::string _model_filename;
-  std::string _quantize_output;
-  NNFW_QUANTIZE_TYPE _qtype = QUANTIZE_TYPE_NOT_SET;
+  std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__

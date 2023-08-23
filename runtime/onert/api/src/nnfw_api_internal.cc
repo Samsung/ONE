@@ -28,7 +28,6 @@
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
-#include "odc/Quantize.h"
 #include "odc/QuantizeManager.h"
 
 #include <fstream>
@@ -294,8 +293,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
-  // Store model file name
-  _model_filename = model_file_path;
+  // Create quantize manager
+  _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path));
 
   std::string filename{model_file_path};
   // TODO: Use std::filesystem::path when we can use c++17.
@@ -381,8 +380,10 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
 
-    // Store model file name
-    _model_filename = package_path + std::string("/") + models[0].asString();
+    // Create quantize manager
+    // TODO Support multiple models
+    auto model_filename = package_path + std::string("/") + models[0].asString();
+    _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_filename));
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
@@ -1483,7 +1484,19 @@ NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  _qtype = qtype;
+  bool is_q16 = false;
+  switch (qtype)
+  {
+    case QUANTIZE_TYPE_U8_ASYM:
+      break;
+    case QUANTIZE_TYPE_I16_SYM:
+      is_q16 = true;
+      break;
+    default:
+      return NNFW_STATUS_INVALID_STATE;
+  }
+  _quant_manager->quantizeType(is_q16);
+
   return NNFW_STATUS_NO_ERROR;
 }
 
@@ -1495,7 +1508,7 @@ NNFW_STATUS nnfw_session::set_quantized_model_path(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  _quantize_output = std::string(path);
+  _quant_manager->exportModelPath(std::string(path));
   return NNFW_STATUS_NO_ERROR;
 }
 
@@ -1507,50 +1520,17 @@ NNFW_STATUS nnfw_session::quantize()
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  if (_qtype == QUANTIZE_TYPE_NOT_SET)
-    return NNFW_STATUS_INVALID_STATE;
-
-  std::string qtype_str;
-  bool is_q16 = false;
-  switch (_qtype)
-  {
-    case QUANTIZE_TYPE_U8_ASYM:
-      break;
-    case QUANTIZE_TYPE_I16_SYM:
-      is_q16 = true;
-      break;
-    default:
-      return NNFW_STATUS_INVALID_STATE;
-  }
-
-  const auto extension_pos = _model_filename.find(".circle");
-  if (extension_pos == std::string::npos)
-  {
-    std::cerr << "Input model isn't .circle." << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  if (_quantize_output.empty())
-    _quantize_output = _model_filename.substr(0, extension_pos) + "_quantized.circle";
-
-  auto &q_manager = onert::odc::QuantizeManager::instance();
-
-  if (q_manager.loadLibrary() != 0)
-    return NNFW_STATUS_INVALID_STATE;
-
-  auto quantizer = q_manager.get();
-  auto result = quantizer->quantize(_model_filename.c_str(), _quantize_output.c_str(), is_q16);
-  if (result != 0)
-    return NNFW_STATUS_INVALID_STATE;
-
-  // Replace model
   try
   {
-    auto model = loadModel(_quantize_output, "circle");
+    auto result = _quant_manager->quantize();
+    if (!result)
+      return NNFW_STATUS_INVALID_STATE;
+
+    // Replace model
+    auto model = loadModel(_quant_manager->exportModelPath(), "circle");
     if (model == nullptr)
       return NNFW_STATUS_ERROR;
     _nnpkg->replaceModel(std::move(model));
-    _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
   {

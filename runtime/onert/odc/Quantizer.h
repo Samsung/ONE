@@ -14,7 +14,26 @@
  * limitations under the License.
  */
 
-extern "C" {
+#ifndef __ONERT_ODC_QUANTIZE_H__
+#define __ONERT_ODC_QUANTIZE_H__
 
-int quantize(const char *in, const char *out, bool is_q16);
-}
+#include "odc/IQuantizer.h"
+
+namespace onert
+{
+namespace odc
+{
+
+class Quantizer : public IQuantizer
+{
+public:
+  Quantizer() = default;
+  ~Quantizer() = default;
+
+  int quantize(const char *in, const char *out, bool is_q16);
+};
+
+} // namespace odc
+} // namespace onert
+
+#endif // __ONERT_ODC_QUANTIZE_H__

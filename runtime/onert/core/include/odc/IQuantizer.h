@@ -14,39 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_ODC_QUANTIZE_H__
-#define __ONERT_ODC_QUANTIZE_H__
-
-#include <cstdint>
-#include <mutex>
+#ifndef __ONERT_ODC_IQUANTIZER_H__
+#define __ONERT_ODC_IQUANTIZER_H__
 
 namespace onert
 {
 namespace odc
 {
-class Quantize
-{
+
+class IQuantizer {
 public:
-  // 1st arg: input file path
-  // 2nd arg: output file path
-  // 3rd arg: true if q16, false if q8
-  // Return value: 0 if success, otherwise error code
-  using quantize_t = int (*)(const char *, const char *, bool);
-  Quantize(quantize_t quantize_fn) : _quantize(quantize_fn) {}
+  virtual ~IQuantizer() = default;
 
-  int quantize(const char *in, const char *out, bool is_q16)
-  {
-    // Compile function is thread-unsafe
-    std::lock_guard<std::mutex> guard(_lock);
-    return static_cast<int32_t>(_quantize(in, out, is_q16));
-  }
-
-private:
-  quantize_t _quantize;
-  std::mutex _lock;
+  virtual int quantize(const char *in, const char *out, bool is_q16) = 0;
 };
 
 } // namespace odc
 } // namespace onert
 
-#endif // __ONERT_ODC_QUANTIZE_H__
+#endif // __ONERT_ODC_IQUANTIZER_H__

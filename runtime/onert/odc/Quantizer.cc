@@ -23,7 +23,15 @@
 
 #include <iostream>
 
-int quantize(const char *in, const char *out, bool is_q16)
+extern "C" onert::odc::IQuantizer *create_quantizer() { return new onert::odc::Quantizer(); }
+extern "C" void destroy_quantizer(onert::odc::IQuantizer *quantizer) { delete quantizer; }
+
+namespace onert
+{
+namespace odc
+{
+
+int Quantizer::quantize(const char *in, const char *out, bool is_q16)
 {
   // Load model from the file
   luci::ImporterEx importerex;
@@ -70,3 +78,6 @@ int quantize(const char *in, const char *out, bool is_q16)
   // Return 0 when luci::CircleQuantizer::Options::Algorithm::QuantizeWeights is ready
   return 0;
 }
+
+} // namespace odc
+} // namespace onert
