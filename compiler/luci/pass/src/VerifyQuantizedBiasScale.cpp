@@ -31,7 +31,7 @@ namespace
 bool same(float a, float b)
 {
   constexpr float epsilon = 1e-10;
-  return abs(a - b) < epsilon;
+  return std::abs(a - b) < epsilon;
 }
 
 // Check bias scale = input scale * weight scale
