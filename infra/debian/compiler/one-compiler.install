@@ -3,6 +3,7 @@
 usr/bin/circle2circle usr/share/one/bin/
 usr/bin/circle-eval-diff usr/share/one/bin/
 usr/bin/circle-interpreter usr/share/one/bin/
+usr/bin/circle-mpqsolver usr/share/one/bin/
 usr/bin/circle-operator usr/share/one/bin/
 usr/bin/circle-partitioner usr/share/one/bin/
 usr/bin/circle-quantizer usr/share/one/bin/
