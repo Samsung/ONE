@@ -66,6 +66,8 @@ template <Type T> luci::CircleConst *create_dummy_const(loco::Graph *g, luci::te
           // Fill with index
           node->at<T>(i) = static_cast<int16_t>(i);
           break;
+        default:
+          break;
       }
     }
   }
