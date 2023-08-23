@@ -48,24 +48,19 @@ if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
 endif()
 
 if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  # NOTE installing tensorflow 2.10.1 in OVERLAY_PATH_TF_2_8_0 is strange, but keeping different
-  # versions of tensorflow is temporary and it is a way to support aarch64 native build while
-  # minimizing the impact on the entire build system, so we choose this way.
   # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
-  # TODO renaming OVERLAY_PATH_TF_2_8_0 and OVERLAY_PATH_TF_2_10_1 to version neutral names would
-  # be appropriate.
   add_custom_command(
-    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.10.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.1.21" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==3.19.6" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0}
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
             ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_8_0}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_8_0} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_8_0}
+    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
+    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
   )
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   # NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
