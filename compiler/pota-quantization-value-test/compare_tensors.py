@@ -19,7 +19,9 @@ parser.add_argument('--expect_dir', type=str, required=True)
 parser.add_argument('--mode', type=str, required=True)
 args = parser.parse_args()
 
-supported_modes = ["fake_quantization", "record_minmax", "quantization"]
+supported_modes = [
+    "fake_quantization", "record_minmax", "quantization", "weights_only_quantization"
+]
 
 model = args.input_h5
 expect_dir = args.expect_dir
@@ -111,6 +113,10 @@ with h5.File(model, "r") as input:
                 compare_record_minmax(input[tensor_name], tensor_name, expect_dir)
             elif mode == "quantization":
                 compare_quantization(input[tensor_name], tensor_name, expect_dir)
+            elif mode == "weights_only_quantization":
+                # Assume weights have name "ker"
+                if tensor_name == "ker":
+                    compare_quantization(input[tensor_name], tensor_name, expect_dir)
             else:
                 raise SystemExit("Unsupproted mode.")
 
