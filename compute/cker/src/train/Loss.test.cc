@@ -31,7 +31,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{1, 10}, y_pred.data(), nnfw::cker::Shape{1, 10},
                            y_true.data(), nnfw::cker::Shape{1}, output.data());
 
-    ASSERT_EQ(output[0], expected[0]);
+    EXPECT_EQ(output[0], expected[0]);
   }
 
   {
@@ -44,7 +44,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{1, 10}, y_pred.data(), nnfw::cker::Shape{1, 10},
                            y_true.data(), nnfw::cker::Shape{1}, output.data());
 
-    ASSERT_FLOAT_EQ(output[0], expected[0]);
+    EXPECT_FLOAT_EQ(output[0], expected[0]);
   }
 
   {
@@ -57,7 +57,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3}, y_pred.data(), nnfw::cker::Shape{2, 3},
                            y_true.data(), nnfw::cker::Shape{1}, output.data());
 
-    ASSERT_FLOAT_EQ(output[0], expected[0]);
+    EXPECT_FLOAT_EQ(output[0], expected[0]);
   }
 
   {
@@ -72,7 +72,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(), nnfw::cker::Shape{2, 3, 4},
                            y_true.data(), nnfw::cker::Shape{1}, output.data());
 
-    ASSERT_FLOAT_EQ(output[0], expected[0]);
+    EXPECT_FLOAT_EQ(output[0], expected[0]);
   }
 }
 
@@ -88,7 +88,7 @@ TEST(CKer_Operation, neg_LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(), nnfw::cker::Shape{2, 3, 4},
                            y_true.data(), nnfw::cker::Shape{1}, output.data());
 
-    ASSERT_NE(output[0], expected[0]);
+    EXPECT_NE(output[0], expected[0]);
   }
 
   {
@@ -129,7 +129,7 @@ TEST(CKer_Operation, LossMSEGrad)
                                y_true.data(), nnfw::cker::Shape{1, 10}, deriv_y_pred.data());
 
     for (size_t i = 0; i < deriv_y_pred.size(); ++i)
-      ASSERT_EQ(deriv_y_pred[i], expected[i]);
+      EXPECT_EQ(deriv_y_pred[i], expected[i]);
   }
 
   {
@@ -143,7 +143,7 @@ TEST(CKer_Operation, LossMSEGrad)
                                y_true.data(), nnfw::cker::Shape{1, 10}, deriv_y_pred.data());
 
     for (size_t i = 0; i < deriv_y_pred.size(); ++i)
-      ASSERT_FLOAT_EQ(deriv_y_pred[i], expected[i]);
+      EXPECT_FLOAT_EQ(deriv_y_pred[i], expected[i]);
   }
 
   {
@@ -157,7 +157,7 @@ TEST(CKer_Operation, LossMSEGrad)
                                y_true.data(), nnfw::cker::Shape{2, 3}, deriv_y_pred.data());
 
     for (size_t i = 0; i < deriv_y_pred.size(); ++i)
-      ASSERT_FLOAT_EQ(deriv_y_pred[i], expected[i]);
+      EXPECT_FLOAT_EQ(deriv_y_pred[i], expected[i]);
   }
 }
 
@@ -174,7 +174,7 @@ TEST(CKer_Operation, neg_LossMSEGrad)
                                y_true.data(), nnfw::cker::Shape{2, 3}, deriv_y_pred.data());
 
     for (size_t i = 0; i < deriv_y_pred.size(); ++i)
-      ASSERT_NE(deriv_y_pred[i], expected[i]);
+      EXPECT_NE(deriv_y_pred[i], expected[i]);
   }
 
   {
