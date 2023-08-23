@@ -65,6 +65,24 @@ class TidyIONames:
             self.output_nodes.append(name)
             self.remap_outputs.append('o_' + format(idx + 1, '04d') + '_' + name)
 
+    # exclude special characters in names
+    def sanitize(self):
+        for idx in range(0, len(self.onnx_model.graph.input)):
+            name = self.onnx_model.graph.input[idx].name
+            if not name in self.initializers:
+                if '.' in name or ':' in name:
+                    self.input_nodes.append(name)
+                    name_alt = name.replace('.', '_')
+                    name_alt = name_alt.replace(':', '_')
+                    self.remap_inputs.append(name_alt)
+        for idx in range(0, len(self.onnx_model.graph.output)):
+            name = self.onnx_model.graph.output[idx].name
+            if '.' in name or ':' in name:
+                self.output_nodes.append(name)
+                name_alt = name.replace('.', '_')
+                name_alt = name_alt.replace(':', '_')
+                self.remap_outputs.append(name_alt)
+
     def update(self):
         # change names for graph input
         for i in range(len(self.onnx_model.graph.input)):
@@ -196,6 +214,15 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
+# TF2.12.1 tries to sanitize special characters, '.:' and maybe others and then fails with
+# 'IndexError: tuple index out of range' error from somewhere else.
+# This method is to prevent this IndexError.
+def _sanitize_io_names(onnx_model):
+    sanitizer = TidyIONames(onnx_model)
+    sanitizer.sanitize()
+    sanitizer.update()
+
+
 # The index of input/output is added in front of the name. For example,
 # Original input names: 'a', 'c', 'b'
 # Renamed: 'i_0001_a', 'i_0002_c', 'i_0003_b'
@@ -229,6 +256,7 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
         # convert onnx to tf saved model
         onnx_model = onnx.load(getattr(args, 'input_path'))
+        _sanitize_io_names(onnx_model)
         if _onnx_legalizer_enabled:
             options = onnx_legalizer.LegalizeOptions
             options.unroll_rnn = oneutils.is_valid_attr(args, 'unroll_rnn')
