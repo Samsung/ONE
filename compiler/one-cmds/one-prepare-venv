@@ -26,7 +26,7 @@ VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
-  python3.8 -m venv "${DRIVER_PATH}/venv"
+  python3 -m venv "${DRIVER_PATH}/venv"
 fi
 
 # NOTE version
