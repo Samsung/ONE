@@ -226,6 +226,29 @@ def _get_parser():
         help='convert quantized model to another-typed quantized model (ex: int8 -> uin8).'
     )
 
+    # arguments for ampq option
+    ampq_quant_group = parser.add_argument_group('arguments for ampq option')
+    # ampq
+    ampq_quant_group.add_argument(
+        '--ampq', action='store_true', help='quantize model using ampq solver.')
+
+    # ampq_qerror_ratio
+    ampq_quant_group.add_argument(
+        '--ampq_qerror_ratio', type=str, help='quantization error ratio ([0, 1])')
+
+    # ampq_algorithm
+    ampq_quant_group.add_argument(
+        '--ampq_algorithm', type=str, help='type of algorithm (bisection)')
+
+    ampq_quant_group.add_argument(
+        '--bisection_type', type=str, help="one of 'auto', 'i16_front', 'i16_back'")
+
+    # ampq_bisection_visq
+    ampq_quant_group.add_argument(
+        '--ampq_bisection_visq',
+        type=str,
+        help='.visq.json file with quantization errors')
+
     return parser
 
 
@@ -265,6 +288,10 @@ def _set_default_values(args):
         setattr(args, 'min_percentile', '1.0')
     if not oneutils.is_valid_attr(args, 'max_percentile'):
         setattr(args, 'max_percentile', '99.0')
+    if not oneutils.is_valid_attr(args, 'ampq_algorithm'):
+        setattr(args, 'ampq_algorithm', 'bisection')
+    if not oneutils.is_valid_attr(args, 'bisection_type'):
+        setattr(args, 'bisection_type', 'auto')
 
 
 def _verify_arg_pre(parser, args):
@@ -329,6 +356,10 @@ def _parse_arg(parser):
 
 
 def _quantize(args):
+    if oneutils.is_valid_attr(args, 'ampq'):
+        _ampq_solve(args)
+        return
+
     if oneutils.is_valid_attr(args, 'force_quantparam'):
         # write quantization parameters
         _write_qparam(args)
@@ -578,6 +609,167 @@ def _fake_quantize(args):
         fake_quantize_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
             .add_option_with_values('--fake_quantize', [q_model, fq_model]) \
             .run()
+
+
+def _ampq_solve(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+        if oneutils.is_valid_attr(args, 'save_intermediate'):
+            tmpdir = os.path.dirname(logfile_path)
+
+        # get driver path
+        record_minmax_path = os.path.join(dir_path, 'record-minmax')
+
+        tmp_minmax_recorded_path = os.path.join(
+            tmpdir,
+            os.path.splitext(os.path.basename(
+                args.input_path))[0]) + '.minmax_recorded.circle'
+
+        ## make a command to record min-max value of each tensor while running the representative dataset
+        record_minmax_cmd = Command(record_minmax_path, args, f)
+        record_minmax_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
+            .add_option_with_valid_args('--input_model', ['input_path']) \
+            .add_option_with_values('--output_model', [tmp_minmax_recorded_path]) \
+            .add_option_with_valid_args('--input_data', ['input_data']) \
+            .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
+            .add_option_with_valid_args('--min_percentile', ['min_percentile']) \
+            .add_option_with_valid_args('--max_percentile', ['max_percentile']) \
+            .add_option_with_valid_args('--mode', ['mode']) \
+            .add_noarg_option_if_valid_arg('--generate_profile_data', 'generate_profile_data') \
+            .run()
+
+        # process visq if needed
+        visq_file = None
+        if oneutils.is_valid_attr(args, 'ampq_bisection_visq'):
+            visq_file = getattr(args, 'ampq_bisection_visq')
+
+        if (oneutils.is_valid_attr(args, 'ampq_algorithm')
+                and oneutils.is_valid_attr(args, 'bisection_type')):
+            algorithm = getattr(args, 'ampq_algorithm')
+            bisection_type = getattr(args, 'bisection_type')
+            if algorithm == 'bisection' and bisection_type == 'auto' and visq_file is None:
+                # algorithm needs bisection but no file in input configuration
+
+                # to compute visq file we need q8 quantized model
+                q8_file = os.path.join(
+                    tmpdir,
+                    os.path.splitext(os.path.basename(
+                        args.input_path))[0]) + '.visq.q8.circle'
+
+                # get drievr path
+                circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+                circle_quantizer_cmd = [circle_quantizer_path]
+                # verbose
+                if oneutils.is_valid_attr(args, 'verbose'):
+                    circle_quantizer_cmd.append('--verbose')
+                circle_quantizer_cmd.append('--quantize_with_minmax')
+                circle_quantizer_cmd.append('float32')
+                circle_quantizer_cmd.append('uint8')
+                circle_quantizer_cmd.append('channel')
+
+                if oneutils.is_valid_attr(args, 'TF-style_maxpool'):
+                    circle_quantizer_cmd.append('--TF-style_maxpool')
+
+                circle_quantizer_cmd.extend(['--input_type', 'uint8'])
+                circle_quantizer_cmd.extend(['--output_type', 'uint8'])
+
+                # input and output paths
+                circle_quantizer_cmd.append(tmp_minmax_recorded_path)
+                circle_quantizer_cmd.append(q8_file)
+
+                f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+                # run circle-quantizer
+                oneutils.run(
+                    circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+                # compute visq file
+                visq_path = os.path.join(dir_path, 'visq')
+
+                visq_file = os.path.join(
+                    tmpdir,
+                    os.path.splitext(os.path.basename(
+                        args.input_path))[0]) + '.tae.visq.json'
+
+                visq_cmd = [visq_path]
+                visq_cmd.extend(['--fp32_circle', getattr(args, 'input_path')])
+                visq_cmd.extend(['--data', getattr(args, 'input_data')])
+                visq_cmd.extend(['--q_circle', q8_file])
+                visq_cmd.extend(['--tae_output', visq_file])
+                visq_cmd.extend(['--batch_size', "1"])
+                visq_cmd.append('--dump_dot_graph')
+                f.write((' '.join(visq_cmd) + '\n').encode())
+
+                # run visq
+                oneutils.run(visq_cmd, err_prefix="visq", logfile=f)
+
+        # get driver path
+        circle_mpqsolver_path = os.path.join(dir_path, 'circle-mpqsolver')
+
+        # solve for Mixed Precision Quantization configuration
+        ampq_quantize_cmd = [circle_mpqsolver_path]
+
+        # data
+        if oneutils.is_valid_attr(args, 'input_data'):
+            ampq_quantize_cmd.extend(['--data', getattr(args, 'input_data')])
+
+        # data format
+        if oneutils.is_valid_attr(args, 'input_data_format'):
+            ampq_quantize_cmd.extend(
+                ['--data_format', getattr(args, 'input_data_format')])
+
+        # qerror_ratio
+        if oneutils.is_valid_attr(args, 'ampq_qerror_ratio'):
+            ampq_quantize_cmd.extend(
+                ['--qerror_ratio', getattr(args, 'ampq_qerror_ratio')])
+
+        # algorithm
+        if oneutils.is_valid_attr(args, 'ampq_algorithm'):
+            algorithm = getattr(args, 'ampq_algorithm')
+            if algorithm == 'bisection':
+                if oneutils.is_valid_attr(args, 'bisection_type'):
+                    bisection_type = getattr(args, 'bisection_type')
+                    if bisection_type == 'auto':
+                        ampq_quantize_cmd.extend(['--bisection', 'auto'])
+                    elif bisection_type == 'i16_front':
+                        ampq_quantize_cmd.extend(['--bisection', 'true'])
+                    elif bisection_type == 'i16_back':
+                        ampq_quantize_cmd.extend(['--bisection', 'false'])
+
+        # recorded model as input
+        ampq_quantize_cmd.extend(['--input_model', tmp_minmax_recorded_path])
+
+        # input_dtype
+        if oneutils.is_valid_attr(args, 'input_type'):
+            ampq_quantize_cmd.extend(['--input_dtype', getattr(args, 'input_type')])
+
+        # output dtype
+        if oneutils.is_valid_attr(args, 'output_type'):
+            ampq_quantize_cmd.extend(['--output_dtype', getattr(args, 'output_type')])
+
+        # output model
+        if oneutils.is_valid_attr(args, 'output_path'):
+            ampq_quantize_cmd.extend(['--output_model', getattr(args, 'output_path')])
+
+        # visq_file
+        if not (visq_file is None):
+            ampq_quantize_cmd.extend(['--visq_file', visq_file])
+
+        # save_intermediate
+        if oneutils.is_valid_attr(args, 'save_intermediate'):
+            intermediate_dir = os.path.dirname(logfile_path)
+            ampq_quantize_cmd.extend(['--save_intermediate', intermediate_dir])
+
+        if oneutils.is_valid_attr(args, 'verbose'):
+            ampq_quantize_cmd.append('--verbose')
+
+        f.write((' '.join(ampq_quantize_cmd) + '\n').encode())
+
+        # run ampq
+        oneutils.run(ampq_quantize_cmd, err_prefix="circle_mpqsolver", logfile=f)
 
 
 def _requantize(args):
