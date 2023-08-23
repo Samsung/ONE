@@ -19,9 +19,9 @@
 #include "VISQErrorApproximator.h"
 
 #include <core/ErrorMetric.h>
+#include <core/SolverOutput.h>
 
 #include <luci/ImporterEx.h>
-#include <luci/Log.h>
 
 #include <cmath>
 #include <iostream>
@@ -38,9 +38,7 @@ namespace
 bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string &visq_path,
                             float cut_depth)
 {
-  LOGGER(l);
-
-  VERBOSE(l, 0) << std::endl << ">> Running bisection(auto) algorithm" << std::endl;
+  SolverOutput::get() << "\n>> Running bisection(auto) algorithm\n";
 
   VISQErrorApproximator approximator;
   approximator.init(visq_path);
@@ -60,15 +58,15 @@ bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string 
     }
   }
 
-  VERBOSE(l, 0) << "Qerror of front half: " << error_at_input << std::endl;
-  VERBOSE(l, 0) << "Qerror of rear half: " << error_at_output << std::endl;
+  SolverOutput::get() << "Qerror of front half: " << error_at_input << "\n";
+  SolverOutput::get() << "Qerror of rear half: " << error_at_output << "\n";
   if (error_at_input > error_at_output)
   {
-    VERBOSE(l, 0) << "Front part will be Q16, while the rear will be Q8" << std::endl;
+    SolverOutput::get() << "Front part will be Q16, while the rear will be Q8\n";
   }
   else
   {
-    VERBOSE(l, 0) << "Front part will be Q8, while the rear will be Q16" << std::endl;
+    SolverOutput::get() << "Front part will be Q8, while the rear will be Q16\n";
   }
 
   return error_at_input > error_at_output;
@@ -117,8 +115,6 @@ void BisectionSolver::setVisqPath(const std::string &visq_path) { _visq_data_pat
 
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
-  LOGGER(l);
-
   auto module = read_module(module_path);
 
   float min_depth = 0.f;
@@ -131,7 +127,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
     return nullptr;
   }
 
-  VERBOSE(l, 0) << std::endl << ">> Computing baseline qerrors" << std::endl;
+  SolverOutput::get() << "\n>> Computing baseline qerrors\n";
 
   std::unique_ptr<core::MAEMetric> metric = std::make_unique<core::MAEMetric>();
   core::DatasetEvaluator evaluator(module.get(), _input_data_path, *metric.get());
@@ -139,11 +135,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   core::LayerParams layer_params;
   float int16_qerror =
     evaluate(evaluator, module_path, "int16" /* default quant_dtype */, layer_params);
-  VERBOSE(l, 0) << "Full int16 model qerror: " << int16_qerror << std::endl;
+  SolverOutput::get() << "Full int16 model qerror: " << int16_qerror << "\n";
 
   float uint8_qerror =
     evaluate(evaluator, module_path, "uint8" /* default quant_dtype */, layer_params);
-  VERBOSE(l, 0) << "Full uint8 model qerror: " << uint8_qerror << std::endl;
+  SolverOutput::get() << "Full uint8 model qerror: " << uint8_qerror << "\n";
   _quantizer->set_hook(_hooks.get());
   if (_hooks)
   {
@@ -156,7 +152,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   }
 
   _qerror = int16_qerror + _qerror_ratio * std::fabs(uint8_qerror - int16_qerror);
-  VERBOSE(l, 0) << "Target qerror: " << _qerror << std::endl;
+  SolverOutput::get() << "Target qerror: " << _qerror << "\n";
 
   if (uint8_qerror <= _qerror)
   {
@@ -197,16 +193,16 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
         front_has_higher_error(nodes_depth, _visq_data_path, 0.5f * (max_depth + min_depth));
       break;
     case Algorithm::ForceQ16Front:
-      VERBOSE(l, 0) << "Front part will be Q16, while the rear will be Q8" << std::endl;
+      SolverOutput::get() << "Front part will be Q16, while the rear will be Q8\n";
       int16_front = true;
       break;
     case Algorithm::ForceQ16Back:
-      VERBOSE(l, 0) << "Front part will be Q8, while the rear will be Q16" << std::endl;
+      SolverOutput::get() << "Front part will be Q8, while the rear will be Q16\n";
       int16_front = false;
       break;
   }
 
-  VERBOSE(l, 0) << std::endl;
+  SolverOutput::get() << "\n";
 
   while (true)
   {
@@ -222,8 +218,8 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       break;
     }
 
-    VERBOSE(l, 0) << "Looking for the optimal configuration in [" << min_depth << " , " << max_depth
-                  << "] depth segment" << std::endl;
+    SolverOutput::get() << "Looking for the optimal configuration in [" << min_depth << " , "
+                        << max_depth << "] depth segment\n";
 
     last_depth = cut_depth;
 
@@ -261,17 +257,17 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     if (cur_accuracy < _qerror)
     {
-      VERBOSE(l, 0) << "Qerror at depth " << cut_depth << " is " << cur_accuracy
-                    << " < target qerror (" << _qerror << ")" << std::endl;
+      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_accuracy
+                          << " < target qerror (" << _qerror << ")\n";
       int16_front ? (max_depth = cut_depth) : (min_depth = cut_depth);
       best_params = layer_params;
       best_depth = cut_depth;
     }
     else
     {
-      VERBOSE(l, 0) << "Qerror at depth " << cut_depth << " is " << cur_accuracy
-                    << (cur_accuracy > _qerror ? " > " : " == ") << "target qerror (" << _qerror
-                    << ")" << std::endl;
+      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_accuracy
+                          << (cur_accuracy > _qerror ? " > " : " == ") << "target qerror ("
+                          << _qerror << ")\n";
       int16_front ? (min_depth = cut_depth) : (max_depth = cut_depth);
     }
   }
@@ -281,7 +277,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
     _hooks->on_end_solver(best_params, "uint8");
   }
 
-  VERBOSE(l, 0) << "Found the best configuration at depth " << best_depth << std::endl;
+  SolverOutput::get() << "Found the best configuration at depth " << best_depth << "\n";
   if (!_quantizer->quantize(module.get(), "uint8", best_params))
   {
     std::cerr << "ERROR: Failed to quantize model" << std::endl;
