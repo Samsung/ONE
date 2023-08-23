@@ -18,9 +18,9 @@
 #include <vconone/vconone.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
-#include <luci/Log.h>
 
 #include "bisection/BisectionSolver.h"
+#include <core/SolverOutput.h>
 
 #include <iostream>
 #include <iomanip>
@@ -114,8 +114,6 @@ int entry(int argc, char **argv)
     setenv("LUCI_LOG", "100", 0);
   }
 
-  LOGGER(l);
-
   auto data_path = arser.get<std::string>("--data");
   auto input_model_path = arser.get<std::string>("--input_model");
   auto output_model_path = arser.get<std::string>("--output_model");
@@ -129,11 +127,11 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  VERBOSE(l, 0) << ">> Searching mixed precision configuration " << std::endl
-                << "model:" << input_model_path << std::endl
-                << "dataset: " << data_path << std::endl
-                << "input dtype: " << input_dtype << std::endl
-                << "output dtype: " << output_dtype << std::endl;
+  SolverOutput::get() << ">> Searching mixed precision configuration \n"
+                      << "model:" << input_model_path << "\n"
+                      << "dataset: " << data_path << "\n"
+                      << "input dtype: " << input_dtype << "\n"
+                      << "output dtype: " << output_dtype << "\n";
 
   if (arser[bisection_str])
   {
@@ -145,7 +143,7 @@ int entry(int argc, char **argv)
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
       {
-        VERBOSE(l, 0) << "algorithm: bisection (auto)" << std::endl;
+        SolverOutput::get() << "algorithm: bisection (auto)\n";
         if (!handleAutoAlgorithm(arser, solver))
         {
           return EXIT_FAILURE;
@@ -153,12 +151,12 @@ int entry(int argc, char **argv)
       }
       else if (value == "true")
       {
-        VERBOSE(l, 0) << "algorithm: bisection (Q16AtFront)";
+        SolverOutput::get() << "algorithm: bisection (Q16AtFront)";
         solver.algorithm(BisectionSolver::Algorithm::ForceQ16Front);
       }
       else if (value == "false")
       {
-        VERBOSE(l, 0) << "algorithm: bisection (Q8AtFront)";
+        SolverOutput::get() << "algorithm: bisection (Q8AtFront)";
         solver.algorithm(BisectionSolver::Algorithm::ForceQ16Back);
       }
       else
@@ -178,8 +176,8 @@ int entry(int argc, char **argv)
       }
     }
 
-    VERBOSE(l, 0) << "qerror metric: MAE" << std::endl
-                  << "target qerror ratio: " << qerror_ratio << std::endl;
+    SolverOutput::get() << "qerror metric: MAE\n"
+                        << "target qerror ratio: " << qerror_ratio << "\n";
 
     auto optimized = solver.run(input_model_path);
     if (optimized == nullptr)
@@ -190,7 +188,7 @@ int entry(int argc, char **argv)
 
     // save optimized
     {
-      VERBOSE(l, 0) << "Saving output model to " << output_model_path << std::endl;
+      SolverOutput::get() << "Saving output model to " << output_model_path << "\n";
       luci::CircleExporter exporter;
       luci::CircleFileExpContract contract(optimized.get(), output_model_path);
       if (!exporter.invoke(&contract))
