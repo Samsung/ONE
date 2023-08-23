@@ -15,9 +15,6 @@ endif()
 if(${ONE_UBUNTU_CODENAME} STREQUAL "bionic")
   set(ONE_UBUNTU_CODENAME_BIONIC TRUE)
 endif()
-if(${ONE_UBUNTU_CODENAME} STREQUAL "jammy")
-  set(ONE_UBUNTU_CODENAME_JAMMY TRUE)
-endif()
 
 # TODO Validate the argument of "requires"
 function(get_project_build_order VAR)
