@@ -41,6 +41,67 @@ import onelib.utils as oneutils
 sys.tracebacklimit = 0
 
 
+# Class to rename input/output to prevent issues while import ONNX models
+class TidyIONames:
+    def __init__(self, onnx_model):
+        self.input_nodes = []
+        self.output_nodes = []
+        self.remap_inputs = []
+        self.remap_outputs = []
+        self.initializers = []
+        self.onnx_model = onnx_model
+        # some models may have initializers as inputs. ignore them.
+        for initializer in onnx_model.graph.initializer:
+            self.initializers.append(initializer.name)
+
+    def order(self):
+        for idx in range(0, len(self.onnx_model.graph.input)):
+            name = self.onnx_model.graph.input[idx].name
+            if not name in self.initializers:
+                self.input_nodes.append(name)
+                self.remap_inputs.append('i_' + format(idx + 1, '04d') + '_' + name)
+        for idx in range(0, len(self.onnx_model.graph.output)):
+            name = self.onnx_model.graph.output[idx].name
+            self.output_nodes.append(name)
+            self.remap_outputs.append('o_' + format(idx + 1, '04d') + '_' + name)
+
+    def update(self):
+        # change names for graph input
+        for i in range(len(self.onnx_model.graph.input)):
+            if self.onnx_model.graph.input[i].name in self.input_nodes:
+                to_rename = self.onnx_model.graph.input[i].name
+                idx = self.input_nodes.index(to_rename)
+                self.onnx_model.graph.input[i].name = self.remap_inputs[idx]
+        # change names of all nodes in the graph
+        for i in range(len(self.onnx_model.graph.node)):
+            # check node.input is to change to remap_inputs or remap_outputs
+            for j in range(len(self.onnx_model.graph.node[i].input)):
+                if self.onnx_model.graph.node[i].input[j] in self.input_nodes:
+                    to_rename = self.onnx_model.graph.node[i].input[j]
+                    idx = self.input_nodes.index(to_rename)
+                    self.onnx_model.graph.node[i].input[j] = self.remap_inputs[idx]
+                if self.onnx_model.graph.node[i].input[j] in self.output_nodes:
+                    to_rename = self.onnx_model.graph.node[i].input[j]
+                    idx = self.output_nodes.index(to_rename)
+                    self.onnx_model.graph.node[i].input[j] = self.remap_outputs[idx]
+            # check node.output is to change to remap_inputs or remap_outputs
+            for j in range(len(self.onnx_model.graph.node[i].output)):
+                if self.onnx_model.graph.node[i].output[j] in self.output_nodes:
+                    to_rename = self.onnx_model.graph.node[i].output[j]
+                    idx = self.output_nodes.index(to_rename)
+                    self.onnx_model.graph.node[i].output[j] = self.remap_outputs[idx]
+                if self.onnx_model.graph.node[i].output[j] in self.input_nodes:
+                    to_rename = self.onnx_model.graph.node[i].output[j]
+                    idx = self.input_nodes.index(to_rename)
+                    self.onnx_model.graph.node[i].output[j] = self.remap_inputs[idx]
+        # change names for graph output
+        for i in range(len(self.onnx_model.graph.output)):
+            if self.onnx_model.graph.output[i].name in self.output_nodes:
+                to_rename = self.onnx_model.graph.output[i].name
+                idx = self.output_nodes.index(to_rename)
+                self.onnx_model.graph.output[i].name = self.remap_outputs[idx]
+
+
 def get_driver_cfg_section():
     return "one-import-onnx"
 
@@ -141,57 +202,9 @@ def _apply_verbosity(verbosity):
 # This will preserve I/O order after import.
 def _remap_io_names(onnx_model):
     # gather existing name of I/O and generate new name of I/O in sort order
-    input_nodes = []
-    output_nodes = []
-    remap_inputs = []
-    remap_outputs = []
-    initializers = []
-    # some models may have initializers as inputs. ignore them.
-    for initializer in onnx_model.graph.initializer:
-        initializers.append(initializer.name)
-    for idx in range(0, len(onnx_model.graph.input)):
-        name = onnx_model.graph.input[idx].name
-        if not name in initializers:
-            input_nodes.append(name)
-            remap_inputs.append('i_' + format(idx + 1, '04d') + '_' + name)
-    for idx in range(0, len(onnx_model.graph.output)):
-        name = onnx_model.graph.output[idx].name
-        output_nodes.append(name)
-        remap_outputs.append('o_' + format(idx + 1, '04d') + '_' + name)
-    # change names for graph input
-    for i in range(len(onnx_model.graph.input)):
-        if onnx_model.graph.input[i].name in input_nodes:
-            to_rename = onnx_model.graph.input[i].name
-            idx = input_nodes.index(to_rename)
-            onnx_model.graph.input[i].name = remap_inputs[idx]
-    # change names of all nodes in the graph
-    for i in range(len(onnx_model.graph.node)):
-        # check node.input is to change to remap_inputs or remap_outputs
-        for j in range(len(onnx_model.graph.node[i].input)):
-            if onnx_model.graph.node[i].input[j] in input_nodes:
-                to_rename = onnx_model.graph.node[i].input[j]
-                idx = input_nodes.index(to_rename)
-                onnx_model.graph.node[i].input[j] = remap_inputs[idx]
-            if onnx_model.graph.node[i].input[j] in output_nodes:
-                to_rename = onnx_model.graph.node[i].input[j]
-                idx = output_nodes.index(to_rename)
-                onnx_model.graph.node[i].input[j] = remap_outputs[idx]
-        # check node.output is to change to remap_inputs or remap_outputs
-        for j in range(len(onnx_model.graph.node[i].output)):
-            if onnx_model.graph.node[i].output[j] in output_nodes:
-                to_rename = onnx_model.graph.node[i].output[j]
-                idx = output_nodes.index(to_rename)
-                onnx_model.graph.node[i].output[j] = remap_outputs[idx]
-            if onnx_model.graph.node[i].output[j] in input_nodes:
-                to_rename = onnx_model.graph.node[i].output[j]
-                idx = input_nodes.index(to_rename)
-                onnx_model.graph.node[i].output[j] = remap_inputs[idx]
-    # change names for graph output
-    for i in range(len(onnx_model.graph.output)):
-        if onnx_model.graph.output[i].name in output_nodes:
-            to_rename = onnx_model.graph.output[i].name
-            idx = output_nodes.index(to_rename)
-            onnx_model.graph.output[i].name = remap_outputs[idx]
+    remapper = TidyIONames(onnx_model)
+    remapper.order()
+    remapper.update()
 
 
 def _check_ext():
