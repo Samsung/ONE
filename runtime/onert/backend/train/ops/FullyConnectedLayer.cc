@@ -23,6 +23,26 @@
 #include <cker/train/operation/FullyConnected.h>
 #include <cker/train/operation/ReLU.h>
 
+namespace
+{
+
+using namespace onert;
+
+std::unique_ptr<backend::train::Tensor>
+createTransposedTensor(const backend::IPortableTensor *origin_tensor)
+{
+  const auto &origin_shape = origin_tensor->getShape();
+  assert(origin_shape.rank() == 2);
+
+  auto transposed_info = origin_tensor->get_info();
+  auto transposed_shape = ir::Shape{origin_shape.dim(1), origin_shape.dim(0)};
+  transposed_info.shape(transposed_shape);
+
+  return std::make_unique<backend::train::Tensor>(transposed_info, origin_tensor->layout());
+}
+
+} // namespace
+
 namespace onert
 {
 namespace backend
@@ -68,14 +88,13 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
     throw std::runtime_error{
       "train FullyConnectedLayer: Input other ranks than 2 are not supported."};
 
-  _transposed_weights = std::make_unique<Tensor>(weights->get_info(), weights->layout());
+  _transposed_weights = createTransposedTensor(weights);
   _transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
 
-  _transposed_input = std::make_unique<Tensor>(input->get_info(), input->layout());
+  _transposed_input = createTransposedTensor(input);
   _transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
 
-  _transposed_deriv_output =
-    std::make_unique<Tensor>(deriv_output->get_info(), deriv_output->layout());
+  _transposed_deriv_output = createTransposedTensor(deriv_output);
   _transposed_deriv_output->setBuffer(
     std::make_shared<basic::Allocator>(deriv_output->total_size()));
 
