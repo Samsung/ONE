@@ -38,6 +38,7 @@ Source3019: FLATBUFFERS-2.0.tar.gz
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 %{!?config_support: %define config_support  1}
+%{!?nproc:          %define nproc           4}
 
 %if %{coverage_build} == 1
 # Coverage test requires debug build runtime
@@ -171,7 +172,7 @@ NPU daemon for optimal management of NPU hardware
 %define option_coverage -DENABLE_COVERAGE=ON
 %endif # coverage_build
 
-%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
+%define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch}  -DEXTERNALS_BUILD_THREADS=%{nproc} -DTARGET_OS=tizen -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
 %prep
@@ -203,10 +204,10 @@ tar -xf %{SOURCE3019} -C ./externals
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 # nncc build
 %if %{odc_build} == 1
-%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=4 -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_OS=tizen \
+%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_OS=tizen \
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle05;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
-%{nncc_env} ./nncc build -j4
+%{nncc_env} ./nncc build -j%{nproc}
 cmake --install %{nncc_workspace}
 %endif # odc_build
 
@@ -215,11 +216,11 @@ mkdir -p %{overlay_path}/include/nncc/core/ADT/tensor
 mkdir -p %{overlay_path}/include/oops
 cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h %{overlay_path}/include/nncc/core/ADT/tensor
 cp compiler/loco/include/loco/IR/CanonicalNodes.lst %{overlay_path}/include/loco/IR
-cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
+cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
-%{build_env} ./nnfw build -j4
+%{build_env} ./nnfw build -j%{nproc}
 # install in workspace
 # TODO Set install path
 %{build_env} ./nnfw install
@@ -283,10 +284,10 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 %endif # test_build
 
 %if %{odc_build} == 1
-mkdir -p %{buildroot}%{_libdir}/nnfw
-install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw
-install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw
-# TODO install ODC so file(s)
+mkdir -p %{buildroot}%{_libdir}/nnfw/odc
+install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw/odc
+install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
+install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # odc_build
 
 %if %{npud_build} == 1
@@ -330,16 +331,6 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
-%files odc
-%manifest %{name}.manifest
-%defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
-%dir %{_libdir}/nnfw
-%{_libdir}/nnfw/libloco*.so
-%{_libdir}/nnfw/libluci*.so
-#TODO List ODC so file(s)
-%endif
-
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 %files minimal-app
 %manifest %{name}.manifest
@@ -365,6 +356,16 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %{_bindir}/npud
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86
 %endif # npud_build
+
+%if %{odc_build} == 1
+%files odc
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%dir %{_libdir}/nnfw/odc
+%{_libdir}/nnfw/odc/*
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86
+%endif # odc_build
 
 %changelog
 * Thu Mar 15 2018 Chunseok Lee <chunseok.lee@samsung.com>

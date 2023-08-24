@@ -17,7 +17,9 @@ if(NOT ENABLE_ONERT_TRAIN)
 endif(NOT ENABLE_ONERT_TRAIN)
 
 add_library(onert_core SHARED ${SOURCES})
-set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(onert_core PROPERTIES
+  POSITION_INDEPENDENT_CODE ON
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/nnfw/odc")
 
 # NOTE
 # We publish public headers into developer package.

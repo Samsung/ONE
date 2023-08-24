@@ -212,9 +212,9 @@ install_acl_internal:
 	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
 
 install_luci_internal:
-	mkdir -p $(INSTALL_ALIAS)/lib/nnfw
-	cp $(OVERLAY_FOLDER)/lib/libluci*.so $(INSTALL_ALIAS)/lib/nnfw || true
-	cp $(OVERLAY_FOLDER)/lib/libloco*.so $(INSTALL_ALIAS)/lib/nnfw || true
+	@mkdir -p $(INSTALL_ALIAS)/lib/nnfw/odc
+	@cp $(OVERLAY_FOLDER)/lib/libluci*.so $(INSTALL_ALIAS)/lib/nnfw/odc 2>/dev/null || true
+	@cp $(OVERLAY_FOLDER)/lib/libloco*.so $(INSTALL_ALIAS)/lib/nnfw/odc 2>/dev/null || true
 
 install_all_internal: install_internal install_acl_internal install_luci_internal
 
