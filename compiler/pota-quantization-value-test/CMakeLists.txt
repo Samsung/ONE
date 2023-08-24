@@ -6,6 +6,7 @@ unset(QUANTIZATION_VALUE_TEST)
 unset(QUANTIZATION_VALUE_TEST_WITH_PARAM)
 unset(QUANTIZATION_CONFIG_VALUE_TEST)
 unset(QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM)
+unset(QUANTIZATION_WO_VALUE_TEST_WITH_PARAM)
 
 macro(addTest NAME GRANULARITY DTYPE)
   list(APPEND QUANTIZATION_VALUE_TEST ${NAME})
@@ -16,6 +17,10 @@ macro(addQConfTest NAME GRANULARITY DTYPE)
   list(APPEND QUANTIZATION_CONFIG_VALUE_TEST ${NAME})
   list(APPEND QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM ${NAME} ${GRANULARITY} ${DTYPE})
 endmacro(addQConfTest)
+
+macro(addWeightsOnlyTest NAME GRANULARITY DTYPE)
+    list(APPEND QUANTIZATION_WO_VALUE_TEST_WITH_PARAM ${NAME} ${GRANULARITY} ${DTYPE})
+endmacro(addWeightsOnlyTest)
 
 # Read "test.lst"
 include("test.lst")
@@ -107,6 +112,14 @@ add_test(
           "${TEST_CONFIG}"
           "${ARTIFACTS_BIN_PATH}"
           ${QUANTIZATION_CONFIG_VALUE_TEST_WITH_PARAM}
+)
+
+add_test(
+  NAME pota_wo_quantization_test
+  COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/test_wo_quantization.sh"
+          "${TEST_CONFIG}"
+          "${ARTIFACTS_BIN_PATH}"
+          ${QUANTIZATION_WO_VALUE_TEST_WITH_PARAM}
 )
 
 set_tests_properties(pota_record_minmax_test PROPERTIES DEPENDS pota_fake_wquant_test)
