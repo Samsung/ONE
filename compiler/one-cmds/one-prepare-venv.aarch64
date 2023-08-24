@@ -64,7 +64,50 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow==${VER_TENSORFLOW}
 fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability
+# Fix version to that of TF release date
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.20.1
+#${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.20.0
+
+# NOTE
+#
+# - Since tensorflow_addons 0.20.0 package distribution does not exist, it is
+#   configured to build using the source code at the time of
+#   one-prepare-env. This is not a perfect solution as it requires a build
+#   environment at install time.
+#
+# - Later, it is necessary to change the pre-built package to be uploaded
+#   and downloaded at the time of installation. (Or expect the appropriate
+#   tensorflow_addons official package to be distributed.)
+
+# Make tempolary workspace for build
+BAZEL_BUILD_PATH=$(mktemp -d)
+pushd $BAZEL_BUILD_PATH
+source $VENV_ACTIVATE
+
+# Download tensorflow_addons source
+git clone https://github.com/tensorflow/addons.git
+cd addons
+git checkout -b r0.20 origin/r0.20
+
+# Install bazel
+wget https://github.com/bazelbuild/bazelisk/releases/download/v1.17.0/bazelisk-linux-arm64
+chmod 755 bazelisk-linux-arm64
+ln -s bazelisk-linux-arm64 bazel
+
+# This script links project with TensorFlow dependency
+python3 ./configure.py
+
+# Build
+./bazel build build_pip_pkg
+bazel-bin/build_pip_pkg artifacts
+
+# Install tensroflow_addons
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install artifacts/tensorflow_addons-*.whl
+
+# Remove tempolary workspace
+deactivate
+popd
+rm -rf $BAZEL_BUILD_PATH
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_STABLE to override 'torch_stable.html' URL.
