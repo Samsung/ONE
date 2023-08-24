@@ -33,10 +33,10 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.10.1
-VER_ONNX=1.12.0
-VER_ONNXRUNTIME=1.12.1
-VER_ONNX_TF=1.6.0
+VER_TENSORFLOW=2.12.1
+VER_ONNX=1.14.0
+VER_ONNXRUNTIME=1.15.0
+VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
 
 # Install tensorflow
@@ -89,9 +89,8 @@ else
   ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx-tf==${VER_ONNX_TF}
 fi
 
-# NOTE refer https://github.com/protocolbuffers/protobuf/issues/10051
-# TODO remove this when issue is resolved
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==3.19.6
+# Fix version to that of TF release date
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==4.23.3
 
 # Install pydot for visq
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot==${VER_PYDOT}
