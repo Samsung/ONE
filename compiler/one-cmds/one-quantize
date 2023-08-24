@@ -247,7 +247,7 @@ def _get_parser():
     ampq_quant_group.add_argument(
         '--ampq_bisection_visq',
         type=str,
-        help='.visq.json file with quantization errors')
+        help='.visq.json file path with quantization errors')
 
     return parser
 
