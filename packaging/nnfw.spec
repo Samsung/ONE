@@ -134,7 +134,7 @@ NPU daemon for optimal management of NPU hardware
 # TODO Share path with release package
 %define test_install_home /opt/usr/nnfw-test
 %define test_install_dir %{test_install_home}/Product/out
-%define test_install_path %{buildroot}%{test_install_dir}
+%define test_install_path %{buildroot}/%{test_install_dir}
 
 # Set option for test build (and coverage test build)
 %define option_test -DENABLE_TEST=OFF
