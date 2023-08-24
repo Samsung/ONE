@@ -78,6 +78,9 @@ TEST(CKer_Operation, LossMSE)
 
 TEST(CKer_Operation, neg_LossMSE)
 {
+  // NOTE
+  // This flag helps to run EXPECT_DEATH test in main thread.
+  ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   {
     // Invalid expected value
     std::vector<float> y_pred = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10.};
@@ -98,9 +101,10 @@ TEST(CKer_Operation, neg_LossMSE)
     std::vector<float> output(3);
     std::vector<float> expected = {1.0};
 
-    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
-                                            nnfw::cker::Shape{2, 3, 4}, y_true.data(),
-                                            nnfw::cker::Shape{3}, output.data()));
+    EXPECT_DEATH(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
+                                        nnfw::cker::Shape{2, 3, 4}, y_true.data(),
+                                        nnfw::cker::Shape{3}, output.data()),
+                 "");
   }
 
   {
@@ -110,9 +114,10 @@ TEST(CKer_Operation, neg_LossMSE)
     std::vector<float> output(1);
     std::vector<float> expected = {1.0};
 
-    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
-                                            nnfw::cker::Shape{2, 3}, y_true.data(),
-                                            nnfw::cker::Shape{1}, output.data()));
+    EXPECT_DEATH(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
+                                        nnfw::cker::Shape{2, 3}, y_true.data(),
+                                        nnfw::cker::Shape{1}, output.data()),
+                 "");
   }
 }
 
