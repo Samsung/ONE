@@ -470,15 +470,15 @@ public:
   void init(void) override
   {
     TestIOGraph::init({32}, {32});
-    _begin = g()->nodes()->create<luci::CircleConst>();
+    _begin = g()->nodes()->template create<luci::CircleConst>();
     {
       _begin->dtype(indexT);
     }
-    _size = g()->nodes()->create<luci::CircleConst>();
+    _size = g()->nodes()->template create<luci::CircleConst>();
     {
       _size->dtype(indexT);
     }
-    _slice = g()->nodes()->create<luci::CircleSlice>();
+    _slice = g()->nodes()->template create<luci::CircleSlice>();
     {
       _slice->input(input());
       _slice->begin(_begin);
@@ -694,11 +694,11 @@ public:
     TestIOGraph::init({32}, {1});
     // output dtype is float by default, but ArgMax should have indexType (s32/s64)
     output()->dtype(indexT);
-    _dimension = g()->nodes()->create<luci::CircleConst>();
+    _dimension = g()->nodes()->template create<luci::CircleConst>();
     {
       _dimension->dtype(indexT);
     }
-    _argmax = g()->nodes()->create<luci::CircleArgMax>();
+    _argmax = g()->nodes()->template create<luci::CircleArgMax>();
     {
       _argmax->input(input());
       _argmax->dimension(_dimension);
@@ -1003,7 +1003,7 @@ public:
     TestIOGraph::init({32}, {32});
     output()->dtype(loco::DataType::BOOL);
     _y = create_dummy_const<Type::FLOAT32>(g(), {32});
-    _op = g()->nodes()->create<Op>();
+    _op = g()->nodes()->template create<Op>();
     {
       _op->x(input());
       _op->y(_y);
@@ -1036,7 +1036,7 @@ public:
     input()->dtype(loco::DataType::BOOL);
     output()->dtype(loco::DataType::BOOL);
     _y = create_dummy_const<Type::BOOL>(g(), {32});
-    _op = g()->nodes()->create<Op>();
+    _op = g()->nodes()->template create<Op>();
     {
       _op->x(input());
       _op->y(_y);
@@ -1340,7 +1340,7 @@ public:
     TypedTestGraph::init(T, {32}, {32});
 
     _const = create_dummy_const<T>(g(), {32});
-    _mul = g()->nodes()->create<luci::CircleMul>();
+    _mul = g()->nodes()->template create<luci::CircleMul>();
     {
       _mul->x(input());
       _mul->y(_const);
@@ -1395,7 +1395,7 @@ public:
     TypedTestGraph::init(T, {32}, {32});
 
     _const = create_dummy_const<T>(g(), {32});
-    _add = g()->nodes()->create<luci::CircleAdd>();
+    _add = g()->nodes()->template create<luci::CircleAdd>();
     {
       _add->x(input());
       _add->y(_const);
