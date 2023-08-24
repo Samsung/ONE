@@ -613,14 +613,14 @@ exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                         const std::shared_ptr<exec::IExecutors> &executors,
                         const ExecutorFactoryArgs &args,
-                        const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
+                        const compiler::train::TrainingInfo &training_info)
 {
   assert(args.options != nullptr);
 
   if (args.options->executor != "Linear")
     throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
 
-  return createTrainableExecutor(std::move(lowered_graph), executors, args, optimizer);
+  return createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);
 }
 
 void ExecutorFactory::prepareMigrantTensors(
@@ -654,7 +654,7 @@ void ExecutorFactory::prepareMigrantTensors(
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
   const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
-  const std::shared_ptr<exec::train::optimizer::Optimizer> &optimizer)
+  const compiler::train::TrainingInfo &training_info)
 {
   const auto options = args.options;
   const auto tracing_ctx = args.tracing_ctx;
@@ -723,7 +723,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
-    tdata.optimizer = optimizer;
+    tdata.optim_info = training_info.optimizerInfo();
 
     // TODO Remove dynamic_cast
     try

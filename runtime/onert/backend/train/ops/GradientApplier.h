@@ -36,12 +36,12 @@ public:
   GradientApplier();
   ~GradientApplier() = default;
 
-  void configure(std::shared_ptr<exec::train::optimizer::Optimizer> optimizer,
+  void configure(const exec::train::optimizer::Optimizer *optimizer,
                  const IPortableTensor *gradient, ITrainableTensor *trainable);
   void applyGradient(uint32_t training_step) override;
 
 private:
-  std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
+  const exec::train::optimizer::Optimizer *_optimizer;
   const IPortableTensor *_gradient_tensor;
   ITrainableTensor *_trainable_tensor;
 };

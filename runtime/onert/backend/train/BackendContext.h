@@ -54,13 +54,21 @@ public:
   BackendContext(const ITrainableBackend *backend, std::unique_ptr<TrainableContextData> &&tdata,
                  std::shared_ptr<backend::train::ITensorRegistry> tensor_registry = nullptr,
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
+                 std::unique_ptr<exec::train::optimizer::Optimizer> optimizer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : onert::backend::train::TrainableBackendContext(backend, std::move(tdata), tensor_registry),
       kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _tensor_builder{tensor_builder}
+      _external_context(new ExternalContext), _tensor_builder{tensor_builder}, _optimizer{std::move(
+                                                                                 optimizer)}
   {
   }
+  BackendContext(const BackendContext &) = delete;
+  ~BackendContext() = default;
 
+public:
+  BackendContext &operator=(const BackendContext &) = delete;
+
+public:
   backend::ITensorRegistry *genTensors() override;
   backend::train::ITensorRegistry *genTrainingTensors() override;
 
@@ -68,6 +76,8 @@ public:
   FunctionMap genKernels() override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
+
+  const exec::train::optimizer::Optimizer *optimizer() const { return _optimizer.get(); }
 
 public:
   // TODO Make it private
@@ -81,6 +91,9 @@ private:
 
 private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
+
+private:
+  std::unique_ptr<exec::train::optimizer::Optimizer> _optimizer;
 };
 
 } // namespace train

@@ -42,7 +42,7 @@ public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
                   const std::shared_ptr<TensorRegistry> &tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context,
-                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer);
+                  const exec::train::optimizer::Optimizer *optimizer);
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
@@ -56,7 +56,7 @@ private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
-  std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
+  const exec::train::optimizer::Optimizer *_optimizer;
   std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
 };
 

@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_OPTIMIZER_ADAM_H__
-#define __ONERT_EXEC_TRAIN_OPTIMIZER_ADAM_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__
+#define __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__
 
-#include "exec/train/optimizer/Optimizer.h"
-
-#include "backend/basic/Tensor.h"
-#include "ir/OperandIndexMap.h"
+#include <exec/train/optimizer/Optimizer.h>
 
 namespace onert
 {
-namespace exec
+namespace backend
 {
 namespace train
 {
@@ -32,24 +29,26 @@ namespace optimizer
 {
 
 /**
- * @class   Adam optimizer class
- * @brief   Adam optimizer
+ * @class   SGD optimizer class
+ * @brief   SGD optimizer
  */
-class Adam : public Optimizer
+class SGD : public exec::train::optimizer::Optimizer
 {
+public:
+  using UpdateFactors = exec::train::optimizer::UpdateFactors;
+
 public:
   struct Property
   {
-    double beta1{0.9};
-    double beta2{0.999};
-    double epsilon{1e-07};
+    double momentum{0.0};
+    bool nesterov{false};
   };
 
 public:
-  explicit Adam() : _props{}, _learning_rate{0.001} {}
-  explicit Adam(const Property &props) : _props{props}, _learning_rate{0.001} {}
-  explicit Adam(double lr) : _props{}, _learning_rate{lr} {}
-  explicit Adam(const Property &props, double lr) : _props{props}, _learning_rate{lr} {}
+  explicit SGD() : _props{}, _learning_rate{0.01} {}
+  explicit SGD(const Property &props) : _props{props}, _learning_rate{0.01} {}
+  explicit SGD(double lr) : _props{}, _learning_rate{lr} {}
+  explicit SGD(const Property &props, double lr) : _props{props}, _learning_rate{lr} {}
 
 public:
   /**
@@ -57,7 +56,7 @@ public:
    *
    * @return The name of optimizer
    */
-  std::string name() const override { return std::string{"Adam"}; }
+  std::string name() const override { return std::string{"SGD"}; }
 
   /**
    * @brief Get the Learning Rate
@@ -65,7 +64,14 @@ public:
    * @param iteration The number of training steps
    * @return Learning rate
    */
-  double getLearningRate(uint32_t iteration) const override;
+  double getLearningRate(uint32_t iteration = 0) const override;
+
+  /**
+   * @brief Get the number of optimizer variables
+   *s
+   * @return The number of optimizer variables
+   */
+  virtual uint32_t getVarCount() const override { return 0; };
 
   /**
    * @brief Apply gradient to a trainable tensor
@@ -81,7 +87,7 @@ private:
 
 } // namespace optimizer
 } // namespace train
-} // namespace exec
+} // namespace backend
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAIN_OPTIMIZER_ADAM_H__
+#endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__

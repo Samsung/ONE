@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#include <exec/train/optimizer/SGD.h>
+#include "SGD.h"
 
-#include "OptimizerHelpers.h"
+#include "../ops/OperationUtils.h"
+#include <cker/train/optimizer/SGD.h>
 
 namespace onert
 {
-namespace exec
+namespace backend
 {
 namespace train
 {
@@ -40,11 +41,8 @@ void SGD::applyGradient(const UpdateFactors &factors) const
   auto &trainable_tensor = std::get<backend::train::ITrainableTensor &>(factors);
   assert(trainable_tensor.data_type() == grad_tensor.data_type());
 
-  const auto shape = trainable_tensor.getShape();
-  const auto &grad_shape = grad_tensor.get_info().shape();
-
   // TODO Support for different shapes
-  if (shape != grad_shape)
+  if (trainable_tensor.getShape() != grad_tensor.getShape())
   {
     throw std::runtime_error("SGD: Invalid gradient tensor");
   }
@@ -52,8 +50,9 @@ void SGD::applyGradient(const UpdateFactors &factors) const
   switch (grad_tensor.data_type())
   {
     case ir::DataType::FLOAT32:
-      elementwise<float>(shape, grad_tensor, trainable_tensor,
-                         [&](float src, float dst) -> float { return dst - src * lr; });
+      nnfw::cker::train::GradientDescent(
+        ops::getShape(&trainable_tensor), ops::getBuffer<float>(&trainable_tensor),
+        ops::getShape(&grad_tensor), ops::getBuffer<float>(&grad_tensor), lr);
       break;
     default:
       throw std::runtime_error("SGD: Not supported data type");
@@ -62,5 +61,5 @@ void SGD::applyGradient(const UpdateFactors &factors) const
 
 } // namespace optimizer
 } // namespace train
-} // namespace exec
+} // namespace backend
 } // namespace onert
