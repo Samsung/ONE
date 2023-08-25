@@ -29,6 +29,7 @@ class MetadataPrinter
 {
 public:
   virtual void print(const uint8_t * /* buffer */, std::ostream &) const = 0;
+  virtual ~MetadataPrinter() = default;
 };
 
 class MetadataPrinterRegistry
