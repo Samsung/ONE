@@ -147,7 +147,7 @@ public:
 
     if (!t._managed) {
       if (_managed)
-        delete _data;
+        delete [] _data;
 
       _managed = false;
       _data = t._data;
