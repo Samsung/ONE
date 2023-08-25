@@ -86,6 +86,12 @@ public:
    */
   void dump_MPQ_error(float error, uint32_t step) const;
 
+  /**
+   * @brief dump final error
+   * @param error final error of quantization
+   */
+  void dump_MPQ_error(float error) const;
+
 private:
   void write_data_to_file(const std::string &path, const std::string &data) const;
   void dump_MPQ_configuration(const LayerParams &layers, const std::string &def_dtype,

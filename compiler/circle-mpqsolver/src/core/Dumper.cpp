@@ -152,3 +152,9 @@ void Dumper::dump_MPQ_error(float error, uint32_t step) const
   std::string path = get_error_path();
   dump_error(error, std::to_string(step), path);
 }
+
+void Dumper::dump_MPQ_error(float error) const
+{
+  std::string path = get_error_path();
+  dump_error(error, "FINAL", path);
+}

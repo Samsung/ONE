@@ -166,6 +166,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   int last_depth = -1;
   float best_depth = -1;
+  float best_accuracy = -1;
   core::LayerParams best_params;
   if (module->size() != 1)
   {
@@ -262,6 +263,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       int16_front ? (max_depth = cut_depth) : (min_depth = cut_depth);
       best_params = layer_params;
       best_depth = cut_depth;
+      best_accuracy = cur_accuracy;
     }
     else
     {
@@ -274,7 +276,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   if (_hooks)
   {
-    _hooks->on_end_solver(best_params, "uint8");
+    _hooks->on_end_solver(best_params, "uint8", best_accuracy);
   }
 
   SolverOutput::get() << "Found the best configuration at depth " << best_depth << "\n";
