@@ -7,7 +7,8 @@ var structluci_1_1_circle_quantizer_1_1_options =
       [ "Requantize", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba72e3b695a3e99530d508d67f4c4a7deb", null ],
       [ "CopyQuantParam", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3", null ],
       [ "ForceQuantParam", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baff71c6d4bbbbfa012d5345a023275196", null ],
-      [ "ConvertToFakeQuantizedModel", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baf6605c22fe731a4acc1fad910fa92dd6", null ]
+      [ "ConvertToFakeQuantizedModel", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baf6605c22fe731a4acc1fad910fa92dd6", null ],
+      [ "QuantizeWeights", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c", null ]
     ] ],
     [ "AlgorithmParameters", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164", [
       [ "Quantize_input_model_dtype", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aea7f5c4f1df19f609e3040b91442dabf", null ],

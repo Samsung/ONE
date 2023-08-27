@@ -20,6 +20,7 @@ var searchData=
   ['quantize_5ftf_5fstyle_5fmaxpool_17',['Quantize_TF_style_maxpool',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586',1,'luci::CircleQuantizer::Options']]],
   ['quantize_5fzero_5fpoints_18',['Quantize_zero_points',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a44a373449817aec06c9d3b3dd69c4a7c',1,'luci::CircleQuantizer::Options']]],
   ['quantizedequantizeweights_19',['QuantizeDequantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd',1,'luci::CircleQuantizer::Options']]],
-  ['quantizewithminmax_20',['QuantizeWithMinMax',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8',1,'luci::CircleQuantizer::Options']]],
-  ['queryable_21',['Queryable',['../namespacepepper.html#a599a9a53b75f33dd09854ff30fabd52fa3deee2078d7dd1672b690c7d17ddb89f',1,'pepper']]]
+  ['quantizeweights_20',['QuantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c',1,'luci::CircleQuantizer::Options']]],
+  ['quantizewithminmax_21',['QuantizeWithMinMax',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8',1,'luci::CircleQuantizer::Options']]],
+  ['queryable_22',['Queryable',['../namespacepepper.html#a599a9a53b75f33dd09854ff30fabd52fa3deee2078d7dd1672b690c7d17ddb89f',1,'pepper']]]
 ];

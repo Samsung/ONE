@@ -12,5 +12,7 @@ var dir_b0d959bfb4898f70f2174a404917d975 =
     [ "Quantizer.h", "_quantizer_8h.html", "_quantizer_8h" ],
     [ "SolverHooks.cpp", "_solver_hooks_8cpp.html", null ],
     [ "SolverHooks.h", "_solver_hooks_8h.html", "_solver_hooks_8h" ],
+    [ "SolverOutput.cpp", "_solver_output_8cpp.html", null ],
+    [ "SolverOutput.h", "_solver_output_8h.html", "_solver_output_8h" ],
     [ "TestHelper.h", "circle-mpqsolver_2src_2core_2_test_helper_8h.html", "circle-mpqsolver_2src_2core_2_test_helper_8h" ]
 ];

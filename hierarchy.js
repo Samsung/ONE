@@ -1390,7 +1390,8 @@ var hierarchy =
         [ "luci::QuantizeBias", "structluci_1_1_quantize_bias.html", null ],
         [ "luci::QuantizeConstInputActivation", "structluci_1_1_quantize_const_input_activation.html", null ],
         [ "luci::QuantizeSpecialActivation", "structluci_1_1_quantize_special_activation.html", null ],
-        [ "luci::QuantizeWeights", "structluci_1_1_quantize_weights.html", null ]
+        [ "luci::QuantizeWeights", "structluci_1_1_quantize_weights.html", null ],
+        [ "luci::QuantizeWeightsOnly", "structluci_1_1_quantize_weights_only.html", null ]
       ] ],
       [ "luci::CircleNodeMutableVisitor< bool >", "structluci_1_1_circle_node_mutable_visitor.html", [
         [ "luci::VirtualOutputDetector", "structluci_1_1_virtual_output_detector.html", null ]
@@ -4641,6 +4642,7 @@ var hierarchy =
     [ "mpqsolver::core::SolverHooks", "classmpqsolver_1_1core_1_1_solver_hooks.html", [
       [ "mpqsolver::core::DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", null ]
     ] ],
+    [ "SolverOutput", "class_solver_output.html", null ],
     [ "hermes::Source", "classhermes_1_1_source.html", [
       [ "circlechef::Logger", "classcirclechef_1_1_logger.html", null ],
       [ "exo::Logger", "classexo_1_1_logger.html", null ],

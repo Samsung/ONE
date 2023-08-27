@@ -5,7 +5,7 @@ var _quantization_utils_8cpp =
     [ "asymmetric_wquant_with_minmax_per_layer", "_quantization_utils_8cpp.html#a2794836a87d2212005d9ef7b7ef3498a", null ],
     [ "cal_offset", "_quantization_utils_8cpp.html#abbde06f4d0bf6ed2a3c9438df8eed7ed", null ],
     [ "compute_asym_scale_zp", "_quantization_utils_8cpp.html#a18cc394d8cc1def0bd5426a8e9e8328d", null ],
-    [ "compute_sym_scale", "_quantization_utils_8cpp.html#ab1cf5a401bd054372bf8f26cdfd681e7", null ],
+    [ "compute_sym_scale", "_quantization_utils_8cpp.html#a78b1db0d7d2e1f81aa2b268b465a2962", null ],
     [ "fp32_to_uint8_cast", "_quantization_utils_8cpp.html#a2250a670bdd1f2f8db677a4080758347", null ],
     [ "get_channel_dim_index", "_quantization_utils_8cpp.html#a4f572f265dd92ec416a29e155f3e60c6", null ],
     [ "is_fp32", "_quantization_utils_8cpp.html#af8c3d8539c31e704fa69644422109306", null ],

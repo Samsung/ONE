@@ -62,6 +62,8 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "QuantizePreCheckerPass.cpp", "_quantize_pre_checker_pass_8cpp.html", "_quantize_pre_checker_pass_8cpp" ],
     [ "QuantizeWeights.cpp", "_quantize_weights_8cpp.html", null ],
     [ "QuantizeWeights.h", "_quantize_weights_8h.html", "_quantize_weights_8h" ],
+    [ "QuantizeWeightsOnly.cpp", "_quantize_weights_only_8cpp.html", null ],
+    [ "QuantizeWeightsOnly.h", "_quantize_weights_only_8h.html", "_quantize_weights_only_8h" ],
     [ "QuantizeWithMinMaxPass.cpp", "_quantize_with_min_max_pass_8cpp.html", "_quantize_with_min_max_pass_8cpp" ],
     [ "RemoveDuplicateConstPass.cpp", "_remove_duplicate_const_pass_8cpp.html", null ],
     [ "RemoveFakeQuantPass.cpp", "_remove_fake_quant_pass_8cpp.html", null ],

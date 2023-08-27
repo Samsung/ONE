@@ -11,7 +11,7 @@ var _quantization_utils_8h =
     [ "asymmetric_wquant_with_minmax_per_layer", "_quantization_utils_8h.html#a2794836a87d2212005d9ef7b7ef3498a", null ],
     [ "cal_offset", "_quantization_utils_8h.html#abbde06f4d0bf6ed2a3c9438df8eed7ed", null ],
     [ "compute_asym_scale_zp", "_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d", null ],
-    [ "compute_sym_scale", "_quantization_utils_8h.html#ab1cf5a401bd054372bf8f26cdfd681e7", null ],
+    [ "compute_sym_scale", "_quantization_utils_8h.html#a78b1db0d7d2e1f81aa2b268b465a2962", null ],
     [ "get_channel_dim_index", "_quantization_utils_8h.html#a4f572f265dd92ec416a29e155f3e60c6", null ],
     [ "is_fp32", "_quantization_utils_8h.html#af8c3d8539c31e704fa69644422109306", null ],
     [ "is_quantized", "_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8", null ],

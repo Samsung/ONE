@@ -1347,6 +1347,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_weights.html">QuantizeWeights</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">QuantizeWeights quantizes tensors for weights.  <a href="structluci_1_1_quantize_weights.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantize_weights_only.html">QuantizeWeightsOnly</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">QuantizeWeightsOnly quantizes tensors for weights.  <a href="structluci_1_1_quantize_weights_only.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_quantize_with_min_max_pass.html">QuantizeWithMinMaxPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass to quantize activation, weights, and bias.  <a href="classluci_1_1_quantize_with_min_max_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1906,8 +1909,8 @@ Functions</h2></td></tr>
 <tr class="separator:a2794836a87d2212005d9ef7b7ef3498a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad736abc0d7bd9388d42e5d4a25b80c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">symmetric_wquant_with_minmax_per_layer</a> (<a class="el" href="classluci_1_1_circle_const.html">CircleConst</a> *node, float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max)</td></tr>
 <tr class="separator:aad736abc0d7bd9388d42e5d4a25b80c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1cf5a401bd054372bf8f26cdfd681e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#ab1cf5a401bd054372bf8f26cdfd681e7">compute_sym_scale</a> (float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max)</td></tr>
-<tr class="separator:ab1cf5a401bd054372bf8f26cdfd681e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78b1db0d7d2e1f81aa2b268b465a2962"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a78b1db0d7d2e1f81aa2b268b465a2962">compute_sym_scale</a> (float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max, <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> out_type)</td></tr>
+<tr class="separator:a78b1db0d7d2e1f81aa2b268b465a2962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18cc394d8cc1def0bd5426a8e9e8328d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a18cc394d8cc1def0bd5426a8e9e8328d">compute_asym_scale_zp</a> (float min, float max, float &amp;scaling_factor, int64_t &amp;zp, float &amp;nudged_min, float &amp;nudged_max)</td></tr>
 <tr class="separator:a18cc394d8cc1def0bd5426a8e9e8328d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f572f265dd92ec416a29e155f3e60c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a4f572f265dd92ec416a29e155f3e60c6">get_channel_dim_index</a> (<a class="el" href="classluci_1_1_circle_const.html">CircleConst</a> *node, <a class="el" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> &amp;dimension, int32_t &amp;channel_dim_index)</td></tr>
@@ -2669,62 +2672,62 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00286">286</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  287</span>{</div>
-<div class="line"><span class="lineno">  288</span>  <span class="keyword">auto</span> fused_act_node = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classluci_1_1_circle_node_mixin.html">CircleNodeMixin&lt;CircleNodeTrait::FusedActFunc&gt;</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  289</span>  <span class="keywordflow">if</span> (fused_act_node &amp;&amp; fused_act_node-&gt;fusedActivationFunction() == FusedActFunc::TANH)</div>
-<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">return</span> ActivationQType::PreDefinedTanh;</div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span><span class="preprocessor">#define RETURN_INPUT_ACTIVATION_QTYPE(CLASS, INPUT)         \</span></div>
-<div class="line"><span class="lineno">  293</span><span class="preprocessor">  {                                                         \</span></div>
-<div class="line"><span class="lineno">  294</span><span class="preprocessor">    auto n = loco::must_cast&lt;const CLASS *&gt;(node);          \</span></div>
-<div class="line"><span class="lineno">  295</span><span class="preprocessor">    auto input = loco::must_cast&lt;CircleNode *&gt;(n-&gt;INPUT()); \</span></div>
-<div class="line"><span class="lineno">  296</span><span class="preprocessor">    return activation_qtype(input);                         \</span></div>
-<div class="line"><span class="lineno">  297</span><span class="preprocessor">  }</span></div>
-<div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
-<div class="line"><span class="lineno">  300</span>  {</div>
-<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">case</span> CircleOpcode::LOGISTIC:</div>
-<div class="line"><span class="lineno">  302</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedLogistic;</div>
-<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">case</span> CircleOpcode::TANH:</div>
-<div class="line"><span class="lineno">  304</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedTanh;</div>
-<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">case</span> CircleOpcode::SOFTMAX:</div>
-<div class="line"><span class="lineno">  306</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedSoftmax;</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR:</div>
-<div class="line"><span class="lineno">  308</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR_DIV:</div>
-<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR_MOD:</div>
-<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">case</span> CircleOpcode::CEIL:</div>
-<div class="line"><span class="lineno">  311</span>      <span class="keywordflow">return</span> ActivationQType::IntScale;</div>
-<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">case</span> CircleOpcode::GATHER:</div>
-<div class="line"><span class="lineno">  313</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_gather.html">CircleGather</a>, params);</div>
-<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">case</span> CircleOpcode::RESHAPE:</div>
-<div class="line"><span class="lineno">  315</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_reshape.html">CircleReshape</a>, tensor);</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">case</span> CircleOpcode::TRANSPOSE:</div>
-<div class="line"><span class="lineno">  317</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_transpose.html">CircleTranspose</a>, a);</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">case</span> CircleOpcode::STRIDED_SLICE:</div>
-<div class="line"><span class="lineno">  319</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_strided_slice.html">CircleStridedSlice</a>, input);</div>
-<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">case</span> CircleOpcode::SPLIT:</div>
-<div class="line"><span class="lineno">  321</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split.html">CircleSplit</a>, input);</div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLESPLITOUT:</div>
-<div class="line"><span class="lineno">  323</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_out.html">CircleSplitOut</a>, input);</div>
-<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">case</span> CircleOpcode::SPLIT_V:</div>
-<div class="line"><span class="lineno">  325</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_v.html">CircleSplitV</a>, input);</div>
-<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLESPLITVOUT:</div>
-<div class="line"><span class="lineno">  327</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_v_out.html">CircleSplitVOut</a>, input);</div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">case</span> CircleOpcode::UNPACK:</div>
-<div class="line"><span class="lineno">  329</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_unpack.html">CircleUnpack</a>, value);</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLEUNPACKOUT:</div>
-<div class="line"><span class="lineno">  331</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_unpack_out.html">CircleUnpackOut</a>, input);</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">case</span> CircleOpcode::QUANTIZE:</div>
-<div class="line"><span class="lineno">  333</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_quantize.html">CircleQuantize</a>, input);</div>
-<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  335</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  336</span>  }</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span><span class="preprocessor">#undef RETURN_INPUT_ACTIVATION_QTYPE</span></div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00288">288</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  289</span>{</div>
+<div class="line"><span class="lineno">  290</span>  <span class="keyword">auto</span> fused_act_node = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classluci_1_1_circle_node_mixin.html">CircleNodeMixin&lt;CircleNodeTrait::FusedActFunc&gt;</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  291</span>  <span class="keywordflow">if</span> (fused_act_node &amp;&amp; fused_act_node-&gt;fusedActivationFunction() == FusedActFunc::TANH)</div>
+<div class="line"><span class="lineno">  292</span>    <span class="keywordflow">return</span> ActivationQType::PreDefinedTanh;</div>
+<div class="line"><span class="lineno">  293</span> </div>
+<div class="line"><span class="lineno">  294</span><span class="preprocessor">#define RETURN_INPUT_ACTIVATION_QTYPE(CLASS, INPUT)         \</span></div>
+<div class="line"><span class="lineno">  295</span><span class="preprocessor">  {                                                         \</span></div>
+<div class="line"><span class="lineno">  296</span><span class="preprocessor">    auto n = loco::must_cast&lt;const CLASS *&gt;(node);          \</span></div>
+<div class="line"><span class="lineno">  297</span><span class="preprocessor">    auto input = loco::must_cast&lt;CircleNode *&gt;(n-&gt;INPUT()); \</span></div>
+<div class="line"><span class="lineno">  298</span><span class="preprocessor">    return activation_qtype(input);                         \</span></div>
+<div class="line"><span class="lineno">  299</span><span class="preprocessor">  }</span></div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
+<div class="line"><span class="lineno">  302</span>  {</div>
+<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">case</span> CircleOpcode::LOGISTIC:</div>
+<div class="line"><span class="lineno">  304</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedLogistic;</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">case</span> CircleOpcode::TANH:</div>
+<div class="line"><span class="lineno">  306</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedTanh;</div>
+<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">case</span> CircleOpcode::SOFTMAX:</div>
+<div class="line"><span class="lineno">  308</span>      <span class="keywordflow">return</span> ActivationQType::PreDefinedSoftmax;</div>
+<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR:</div>
+<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR_DIV:</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">case</span> CircleOpcode::FLOOR_MOD:</div>
+<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">case</span> CircleOpcode::CEIL:</div>
+<div class="line"><span class="lineno">  313</span>      <span class="keywordflow">return</span> ActivationQType::IntScale;</div>
+<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">case</span> CircleOpcode::GATHER:</div>
+<div class="line"><span class="lineno">  315</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_gather.html">CircleGather</a>, params);</div>
+<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">case</span> CircleOpcode::RESHAPE:</div>
+<div class="line"><span class="lineno">  317</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_reshape.html">CircleReshape</a>, tensor);</div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">case</span> CircleOpcode::TRANSPOSE:</div>
+<div class="line"><span class="lineno">  319</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_transpose.html">CircleTranspose</a>, a);</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">case</span> CircleOpcode::STRIDED_SLICE:</div>
+<div class="line"><span class="lineno">  321</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_strided_slice.html">CircleStridedSlice</a>, input);</div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">case</span> CircleOpcode::SPLIT:</div>
+<div class="line"><span class="lineno">  323</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split.html">CircleSplit</a>, input);</div>
+<div class="line"><span class="lineno">  324</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLESPLITOUT:</div>
+<div class="line"><span class="lineno">  325</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_out.html">CircleSplitOut</a>, input);</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">case</span> CircleOpcode::SPLIT_V:</div>
+<div class="line"><span class="lineno">  327</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_v.html">CircleSplitV</a>, input);</div>
+<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLESPLITVOUT:</div>
+<div class="line"><span class="lineno">  329</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_split_v_out.html">CircleSplitVOut</a>, input);</div>
+<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">case</span> CircleOpcode::UNPACK:</div>
+<div class="line"><span class="lineno">  331</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_unpack.html">CircleUnpack</a>, value);</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">case</span> CircleOpcode::CIRCLEUNPACKOUT:</div>
+<div class="line"><span class="lineno">  333</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_unpack_out.html">CircleUnpackOut</a>, input);</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">case</span> CircleOpcode::QUANTIZE:</div>
+<div class="line"><span class="lineno">  335</span>      <a class="code hl_define" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>(<a class="code hl_class" href="classluci_1_1_circle_quantize.html">CircleQuantize</a>, input);</div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  338</span>  }</div>
 <div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>  <span class="keywordflow">return</span> ActivationQType::MinMax;</div>
-<div class="line"><span class="lineno">  341</span>}</div>
+<div class="line"><span class="lineno">  340</span><span class="preprocessor">#undef RETURN_INPUT_ACTIVATION_QTYPE</span></div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>  <span class="keywordflow">return</span> ActivationQType::MinMax;</div>
+<div class="line"><span class="lineno">  343</span>}</div>
 <div class="ttc" id="a_quantization_utils_8cpp_html_a8c085354bd57f56d300a969556f07257"><div class="ttname"><a href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a></div><div class="ttdeci">#define RETURN_INPUT_ACTIVATION_QTYPE(CLASS, INPUT)</div></div>
 <div class="ttc" id="aclassluci_1_1_circle_gather_html"><div class="ttname"><a href="classluci_1_1_circle_gather.html">luci::CircleGather</a></div><div class="ttdoc">GATHER in Circle.</div><div class="ttdef"><b>Definition:</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_gather_8h_source.html#l00031">CircleGather.h:32</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_node_mixin_html"><div class="ttname"><a href="classluci_1_1_circle_node_mixin.html">luci::CircleNodeMixin</a></div><div class="ttdef"><b>Definition:</b> <a href="_circle_node_mixins_8h_source.html#l00037">CircleNodeMixins.h:37</a></div></div>
@@ -2983,12 +2986,12 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 <div class="line"><span class="lineno">   73</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html_a1cca76eccd57aa3074a28df5569ead30"><div class="ttname"><a href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">luci::CircleConst::at</a></div><div class="ttdeci">const loco::DataTypeImpl&lt; DT &gt;::Type &amp; at(uint32_t n) const</div><div class="ttdef"><b>Definition:</b> <a href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">CircleConst.cpp:38</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html_a8afe1c3255b77a5d8e2a2a8efefdccba"><div class="ttname"><a href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">luci::CircleConst::size</a></div><div class="ttdeci">uint32_t size(void) const</div><div class="ttdef"><b>Definition:</b> <a href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">CircleConst.cpp:24</a></div></div>
-<div class="ttc" id="anamespaceluci_html_a18cc394d8cc1def0bd5426a8e9e8328d"><div class="ttname"><a href="namespaceluci.html#a18cc394d8cc1def0bd5426a8e9e8328d">luci::compute_asym_scale_zp</a></div><div class="ttdeci">void compute_asym_scale_zp(float min, float max, float &amp;scaling_factor, int64_t &amp;zp, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00136">QuantizationUtils.cpp:136</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a18cc394d8cc1def0bd5426a8e9e8328d"><div class="ttname"><a href="namespaceluci.html#a18cc394d8cc1def0bd5426a8e9e8328d">luci::compute_asym_scale_zp</a></div><div class="ttdeci">void compute_asym_scale_zp(float min, float max, float &amp;scaling_factor, int64_t &amp;zp, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00138">QuantizationUtils.cpp:138</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00136">compute_asym_scale_zp()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00138">compute_asym_scale_zp()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00401">quant_const()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>.</p>
 
 </div>
 </div>
@@ -3018,13 +3021,13 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00273">273</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span>{</div>
-<div class="line"><span class="lineno">  275</span>  <span class="keywordflow">return</span> indices[0] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() *</div>
-<div class="line"><span class="lineno">  276</span>           dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() +</div>
-<div class="line"><span class="lineno">  277</span>         indices[1] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() +</div>
-<div class="line"><span class="lineno">  278</span>         indices[2] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() + indices[3];</div>
-<div class="line"><span class="lineno">  279</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00275">275</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  276</span>{</div>
+<div class="line"><span class="lineno">  277</span>  <span class="keywordflow">return</span> indices[0] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() *</div>
+<div class="line"><span class="lineno">  278</span>           dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() +</div>
+<div class="line"><span class="lineno">  279</span>         indices[1] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() +</div>
+<div class="line"><span class="lineno">  280</span>         indices[2] * dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>() + indices[3];</div>
+<div class="line"><span class="lineno">  281</span>}</div>
 <div class="ttc" id="aclassloco_1_1_dimension_html_a94eb6a5e9deeb18884f9acc05967f0a8"><div class="ttname"><a href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">loco::Dimension::value</a></div><div class="ttdeci">uint32_t value(void) const</div><div class="ttdoc">Return the value.</div><div class="ttdef"><b>Definition:</b> <a href="_dimension_8h_source.html#l00051">Dimension.h:51</a></div></div>
 <div class="ttc" id="aclassloco_1_1_tensor_shape_html_a0d6b59ff61333f8856ce7b3ffa687423"><div class="ttname"><a href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">loco::TensorShape::dim</a></div><div class="ttdeci">const Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition:</b> <a href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00038">TensorShape.h:38</a></div></div>
 </div><!-- fragment -->
@@ -3655,65 +3658,65 @@ Each visit implementation must copy node specific attributes. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00136">136</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span>{</div>
-<div class="line"><span class="lineno">  139</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>  assert(min &lt;= max);</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> int32_t kMinScale = 0;</div>
-<div class="line"><span class="lineno">  143</span>  <span class="keyword">const</span> int32_t kMaxScale = 255;</div>
-<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmin_double = kMinScale;</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmax_double = kMaxScale;</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmin = std::fmin(0, min);</div>
-<div class="line"><span class="lineno">  147</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmax = std::fmax(0, max);</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordtype">double</span> scale = (rmax - rmin) / (qmax_double - qmin_double);</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordtype">double</span> zero_point_double = 0;</div>
-<div class="line"><span class="lineno">  151</span>  uint8_t nudged_zero_point = 0;</div>
-<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">if</span> (scale == 0)</div>
-<div class="line"><span class="lineno">  153</span>  {</div>
-<div class="line"><span class="lineno">  154</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are the same.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (min &gt;= 0 &amp;&amp; max &gt;= 0)</div>
-<div class="line"><span class="lineno">  156</span>      zero_point_double = kMinScale;</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  158</span>      zero_point_double = kMaxScale;</div>
-<div class="line"><span class="lineno">  159</span>  }</div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  161</span>    zero_point_double = qmin_double - rmin / scale;</div>
-<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">if</span> (min &gt;= 0)</div>
-<div class="line"><span class="lineno">  163</span>  {</div>
-<div class="line"><span class="lineno">  164</span>    assert(min &gt;= 0 &amp;&amp; max &gt;= 0);</div>
-<div class="line"><span class="lineno">  165</span>    nudged_zero_point = kMinScale;</div>
-<div class="line"><span class="lineno">  166</span>    scale = max / (qmax_double - qmin_double);</div>
-<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">if</span> (min &gt; 0 &amp;&amp; max &gt; 0)</div>
-<div class="line"><span class="lineno">  168</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are all positive.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  169</span>  }</div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (max &lt; 0)</div>
-<div class="line"><span class="lineno">  171</span>  {</div>
-<div class="line"><span class="lineno">  172</span>    assert(min &lt; 0 &amp;&amp; max &lt; 0);</div>
-<div class="line"><span class="lineno">  173</span>    nudged_zero_point = kMaxScale;</div>
-<div class="line"><span class="lineno">  174</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = -min / (qmax_double - qmin_double);</div>
-<div class="line"><span class="lineno">  175</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are all negative.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  176</span>  }</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  178</span>  {</div>
-<div class="line"><span class="lineno">  179</span>    assert(min &lt; 0 &amp;&amp; max &gt;= 0);</div>
-<div class="line"><span class="lineno">  180</span>    nudged_zero_point = <a class="code hl_function" href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">fp32_to_uint8_cast</a>(std::round(zero_point_double));</div>
-<div class="line"><span class="lineno">  181</span>  }</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>  <span class="comment">// protect scale from being very low due to overflow</span></div>
-<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">if</span> (scale &lt; 1e-5)</div>
-<div class="line"><span class="lineno">  185</span>  {</div>
-<div class="line"><span class="lineno">  186</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = 1e-5;</div>
-<div class="line"><span class="lineno">  187</span>    nudged_zero_point = <a class="code hl_function" href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">fp32_to_uint8_cast</a>(std::round(qmin_double - rmin / scale));</div>
-<div class="line"><span class="lineno">  188</span>  }</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>  nudged_min = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>((qmin_double - nudged_zero_point) * scale);</div>
-<div class="line"><span class="lineno">  191</span>  nudged_max = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>((qmax_double - nudged_zero_point) * scale);</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  scaling_factor = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
-<div class="line"><span class="lineno">  194</span>  zp = nudged_zero_point;</div>
-<div class="line"><span class="lineno">  195</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00138">138</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
+<div class="line"><span class="lineno">  141</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>  assert(min &lt;= max);</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> int32_t kMinScale = 0;</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keyword">const</span> int32_t kMaxScale = 255;</div>
+<div class="line"><span class="lineno">  146</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmin_double = kMinScale;</div>
+<div class="line"><span class="lineno">  147</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmax_double = kMaxScale;</div>
+<div class="line"><span class="lineno">  148</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmin = std::fmin(0, min);</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmax = std::fmax(0, max);</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>  <span class="keywordtype">double</span> scale = (rmax - rmin) / (qmax_double - qmin_double);</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordtype">double</span> zero_point_double = 0;</div>
+<div class="line"><span class="lineno">  153</span>  uint8_t nudged_zero_point = 0;</div>
+<div class="line"><span class="lineno">  154</span>  <span class="keywordflow">if</span> (scale == 0)</div>
+<div class="line"><span class="lineno">  155</span>  {</div>
+<div class="line"><span class="lineno">  156</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are the same.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">if</span> (min &gt;= 0 &amp;&amp; max &gt;= 0)</div>
+<div class="line"><span class="lineno">  158</span>      zero_point_double = kMinScale;</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  160</span>      zero_point_double = kMaxScale;</div>
+<div class="line"><span class="lineno">  161</span>  }</div>
+<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  163</span>    zero_point_double = qmin_double - rmin / scale;</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (min &gt;= 0)</div>
+<div class="line"><span class="lineno">  165</span>  {</div>
+<div class="line"><span class="lineno">  166</span>    assert(min &gt;= 0 &amp;&amp; max &gt;= 0);</div>
+<div class="line"><span class="lineno">  167</span>    nudged_zero_point = kMinScale;</div>
+<div class="line"><span class="lineno">  168</span>    scale = max / (qmax_double - qmin_double);</div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">if</span> (min &gt; 0 &amp;&amp; max &gt; 0)</div>
+<div class="line"><span class="lineno">  170</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are all positive.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  171</span>  }</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (max &lt; 0)</div>
+<div class="line"><span class="lineno">  173</span>  {</div>
+<div class="line"><span class="lineno">  174</span>    assert(min &lt; 0 &amp;&amp; max &lt; 0);</div>
+<div class="line"><span class="lineno">  175</span>    nudged_zero_point = kMaxScale;</div>
+<div class="line"><span class="lineno">  176</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = -min / (qmax_double - qmin_double);</div>
+<div class="line"><span class="lineno">  177</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;The minimum and maximum values are all negative.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  178</span>  }</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  180</span>  {</div>
+<div class="line"><span class="lineno">  181</span>    assert(min &lt; 0 &amp;&amp; max &gt;= 0);</div>
+<div class="line"><span class="lineno">  182</span>    nudged_zero_point = <a class="code hl_function" href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">fp32_to_uint8_cast</a>(std::round(zero_point_double));</div>
+<div class="line"><span class="lineno">  183</span>  }</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  <span class="comment">// protect scale from being very low due to overflow</span></div>
+<div class="line"><span class="lineno">  186</span>  <span class="keywordflow">if</span> (scale &lt; 1e-5)</div>
+<div class="line"><span class="lineno">  187</span>  {</div>
+<div class="line"><span class="lineno">  188</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = 1e-5;</div>
+<div class="line"><span class="lineno">  189</span>    nudged_zero_point = <a class="code hl_function" href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">fp32_to_uint8_cast</a>(std::round(qmin_double - rmin / scale));</div>
+<div class="line"><span class="lineno">  190</span>  }</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>  nudged_min = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>((qmin_double - nudged_zero_point) * scale);</div>
+<div class="line"><span class="lineno">  193</span>  nudged_max = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>((qmax_double - nudged_zero_point) * scale);</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>  scaling_factor = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><span class="lineno">  196</span>  zp = nudged_zero_point;</div>
+<div class="line"><span class="lineno">  197</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a0d4245f79437cdeb338ce9939f891f41"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a></div><div class="ttdeci">#define WARN(name)</div><div class="ttdef"><b>Definition:</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">Log.h:70</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a2250a670bdd1f2f8db677a4080758347"><div class="ttname"><a href="namespaceluci.html#a2250a670bdd1f2f8db677a4080758347">luci::fp32_to_uint8_cast</a></div><div class="ttdeci">uint8_t fp32_to_uint8_cast(float f)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00039">QuantizationUtils.cpp:39</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
@@ -3724,8 +3727,8 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 
 </div>
 </div>
-<a id="ab1cf5a401bd054372bf8f26cdfd681e7" name="ab1cf5a401bd054372bf8f26cdfd681e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1cf5a401bd054372bf8f26cdfd681e7">&#9670;&#160;</a></span>compute_sym_scale()</h2>
+<a id="a78b1db0d7d2e1f81aa2b268b465a2962" name="a78b1db0d7d2e1f81aa2b268b465a2962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78b1db0d7d2e1f81aa2b268b465a2962">&#9670;&#160;</a></span>compute_sym_scale()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3758,7 +3761,13 @@ Each visit implementation must copy node specific attributes. </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>nudged_max</em>&#160;</td>
+          <td class="paramname"><em>nudged_max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td>
+          <td class="paramname"><em>out_type</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -3771,33 +3780,35 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 <p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00104">104</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  106</span>{</div>
 <div class="line"><span class="lineno">  107</span>  assert(min &lt;= max);</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>  <span class="keyword">const</span> int32_t kMaxScale = std::numeric_limits&lt;int16_t&gt;::max();</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> int32_t kMinScale = -kMaxScale;</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmin_double = kMinScale;</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmax_double = kMaxScale;</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmin = std::fmin(0, min);</div>
-<div class="line"><span class="lineno">  114</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmax = std::fmax(0, max);</div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordtype">double</span> scale_factor_from_min_side{0};</div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordtype">double</span> scale_factor_from_max_side{0};</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">if</span> ((qmin_double * rmin) &gt; 0)</div>
-<div class="line"><span class="lineno">  119</span>    scale_factor_from_min_side = rmin / qmin_double;</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">if</span> ((qmax_double * rmax) &gt; 0)</div>
-<div class="line"><span class="lineno">  122</span>    scale_factor_from_max_side = rmax / qmax_double;</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  scaling_factor = scale_factor_from_min_side &gt; scale_factor_from_max_side</div>
-<div class="line"><span class="lineno">  125</span>                     ? scale_factor_from_min_side</div>
-<div class="line"><span class="lineno">  126</span>                     : scale_factor_from_max_side;</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>  <span class="comment">// protect scale from being very low to avoid overflow/underflow</span></div>
-<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">if</span> (scaling_factor &lt; 1e-8)</div>
-<div class="line"><span class="lineno">  130</span>    scaling_factor = 1e-8;</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>  nudged_min = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(qmin_double * scaling_factor);</div>
-<div class="line"><span class="lineno">  133</span>  nudged_max = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(qmax_double * scaling_factor);</div>
-<div class="line"><span class="lineno">  134</span>}</div>
+<div class="line"><span class="lineno">  108</span>  assert(out_type == loco::DataType::S8 || out_type == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> int32_t kMaxScale = (out_type == loco::DataType::S16) ? std::numeric_limits&lt;int16_t&gt;::max()</div>
+<div class="line"><span class="lineno">  111</span>                                                              : std::numeric_limits&lt;int8_t&gt;::max();</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> int32_t kMinScale = -kMaxScale;</div>
+<div class="line"><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmin_double = kMinScale;</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmax_double = kMaxScale;</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmin = std::fmin(0, min);</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmax = std::fmax(0, max);</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordtype">double</span> scale_factor_from_min_side{0};</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keywordtype">double</span> scale_factor_from_max_side{0};</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> ((qmin_double * rmin) &gt; 0)</div>
+<div class="line"><span class="lineno">  121</span>    scale_factor_from_min_side = rmin / qmin_double;</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> ((qmax_double * rmax) &gt; 0)</div>
+<div class="line"><span class="lineno">  124</span>    scale_factor_from_max_side = rmax / qmax_double;</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>  scaling_factor = scale_factor_from_min_side &gt; scale_factor_from_max_side</div>
+<div class="line"><span class="lineno">  127</span>                     ? scale_factor_from_min_side</div>
+<div class="line"><span class="lineno">  128</span>                     : scale_factor_from_max_side;</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>  <span class="comment">// protect scale from being very low to avoid overflow/underflow</span></div>
+<div class="line"><span class="lineno">  131</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> kMinScalingFactor = (out_type == loco::DataType::S16) ? 1e-8 : 1e-5;</div>
+<div class="line"><span class="lineno">  132</span>  scaling_factor = std::max(scaling_factor, kMinScalingFactor);</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>  nudged_min = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(qmin_double * scaling_factor);</div>
+<div class="line"><span class="lineno">  135</span>  nudged_max = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(qmax_double * scaling_factor);</div>
+<div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00075">symmetric_wquant_with_minmax_per_layer()</a>, and <a class="el" href="_quantize_activation_8cpp_source.html#l00042">luci::QuantizeActivation::visit()</a>.</p>
 
@@ -4894,7 +4905,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(f);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00136">compute_asym_scale_zp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00138">compute_asym_scale_zp()</a>.</p>
 
 </div>
 </div>
@@ -5349,80 +5360,80 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00197">197</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>{</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keyword">auto</span> succs = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(node);</div>
-<div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>  <span class="comment">// opcode is initialized to CIRCLEINPUT, because</span></div>
-<div class="line"><span class="lineno">  203</span>  <span class="comment">// CIRCLEINPUT should never be the successor of any node</span></div>
-<div class="line"><span class="lineno">  204</span>  <span class="comment">// (this is checked w/ the assert in the loop body)</span></div>
-<div class="line"><span class="lineno">  205</span>  <a class="code hl_enumeration" href="namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffc">luci::CircleOpcode</a> opcode = luci::CircleOpcode::CIRCLEINPUT;</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> out : succs)</div>
-<div class="line"><span class="lineno">  207</span>  {</div>
-<div class="line"><span class="lineno">  208</span>    <span class="keyword">const</span> <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">CircleNode</a> *<span class="keyword">&gt;</span>(out);</div>
-<div class="line"><span class="lineno">  209</span>    assert(circle_node-&gt;opcode() != luci::CircleOpcode::CIRCLEINPUT);</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">if</span> (opcode == luci::CircleOpcode::CIRCLEINPUT)</div>
-<div class="line"><span class="lineno">  212</span>    {</div>
-<div class="line"><span class="lineno">  213</span>      opcode = circle_node-&gt;opcode();</div>
-<div class="line"><span class="lineno">  214</span>    }</div>
-<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  216</span>    {</div>
-<div class="line"><span class="lineno">  217</span>      <span class="comment">// Node is used by multiple layers with different opcodes</span></div>
-<div class="line"><span class="lineno">  218</span>      <span class="comment">// We do not care such cases</span></div>
-<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">if</span> (opcode != circle_node-&gt;opcode())</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  221</span>    }</div>
-<div class="line"><span class="lineno">  222</span>  }</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> out : succs)</div>
-<div class="line"><span class="lineno">  225</span>  {</div>
-<div class="line"><span class="lineno">  226</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = <span class="keyword">dynamic_cast&lt;</span>CircleConv2D *<span class="keyword">&gt;</span>(out);</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keyword">auto</span> dw_conv = <span class="keyword">dynamic_cast&lt;</span>CircleDepthwiseConv2D *<span class="keyword">&gt;</span>(out);</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keyword">auto</span> tw_conv = <span class="keyword">dynamic_cast&lt;</span>CircleTransposeConv *<span class="keyword">&gt;</span>(out);</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span>CircleFullyConnected *<span class="keyword">&gt;</span>(out);</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    <span class="comment">// Refer to https://github.com/Samsung/ONE/pull/2448.</span></div>
-<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> ((conv != <span class="keyword">nullptr</span> &amp;&amp; <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter() == node) ||</div>
-<div class="line"><span class="lineno">  233</span>        (tw_conv != <span class="keyword">nullptr</span> &amp;&amp; tw_conv-&gt;filter() == node)) <span class="comment">// OHWI</span></div>
-<div class="line"><span class="lineno">  234</span>    {</div>
-<div class="line"><span class="lineno">  235</span>      assert(node-&gt;rank() == 4);</div>
-<div class="line"><span class="lineno">  236</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
-<div class="line"><span class="lineno">  237</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
-<div class="line"><span class="lineno">  238</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(2).value());</div>
-<div class="line"><span class="lineno">  239</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(3).value());</div>
-<div class="line"><span class="lineno">  240</span>      channel_dim_index = 0; <span class="comment">// Set channel_dim_index based on &quot;O&quot;</span></div>
-<div class="line"><span class="lineno">  241</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  242</span>    }</div>
-<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dw_conv != <span class="keyword">nullptr</span> &amp;&amp; dw_conv-&gt;filter() == node) <span class="comment">// IHWC</span></div>
-<div class="line"><span class="lineno">  244</span>    {</div>
-<div class="line"><span class="lineno">  245</span>      assert(node-&gt;rank() == 4);</div>
-<div class="line"><span class="lineno">  246</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
-<div class="line"><span class="lineno">  247</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
-<div class="line"><span class="lineno">  248</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(2).value());</div>
-<div class="line"><span class="lineno">  249</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(3).value());</div>
-<div class="line"><span class="lineno">  250</span>      channel_dim_index = 3; <span class="comment">// Set channel_dim_index based on &quot;C&quot;</span></div>
-<div class="line"><span class="lineno">  251</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  252</span>    }</div>
-<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fc != <span class="keyword">nullptr</span> &amp;&amp; fc-&gt;weights() == node) <span class="comment">// OI</span></div>
-<div class="line"><span class="lineno">  254</span>    {</div>
-<div class="line"><span class="lineno">  255</span>      assert(node-&gt;rank() == 2);</div>
-<div class="line"><span class="lineno">  256</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
-<div class="line"><span class="lineno">  257</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(1); <span class="comment">// Set FC layer like CONV</span></div>
-<div class="line"><span class="lineno">  258</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(1);</div>
-<div class="line"><span class="lineno">  259</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
-<div class="line"><span class="lineno">  260</span>      channel_dim_index = 0; <span class="comment">// Set channel_dim_index based on &quot;O&quot;</span></div>
-<div class="line"><span class="lineno">  261</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  262</span>    }</div>
-<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  264</span>    {</div>
-<div class="line"><span class="lineno">  265</span>      <span class="comment">// node does not support channle-wise quantization</span></div>
-<div class="line"><span class="lineno">  266</span>      assert(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  267</span>    }</div>
-<div class="line"><span class="lineno">  268</span>  }</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  271</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00199">199</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  201</span>{</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keyword">auto</span> succs = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(node);</div>
+<div class="line"><span class="lineno">  203</span> </div>
+<div class="line"><span class="lineno">  204</span>  <span class="comment">// opcode is initialized to CIRCLEINPUT, because</span></div>
+<div class="line"><span class="lineno">  205</span>  <span class="comment">// CIRCLEINPUT should never be the successor of any node</span></div>
+<div class="line"><span class="lineno">  206</span>  <span class="comment">// (this is checked w/ the assert in the loop body)</span></div>
+<div class="line"><span class="lineno">  207</span>  <a class="code hl_enumeration" href="namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffc">luci::CircleOpcode</a> opcode = luci::CircleOpcode::CIRCLEINPUT;</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> out : succs)</div>
+<div class="line"><span class="lineno">  209</span>  {</div>
+<div class="line"><span class="lineno">  210</span>    <span class="keyword">const</span> <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">CircleNode</a> *<span class="keyword">&gt;</span>(out);</div>
+<div class="line"><span class="lineno">  211</span>    assert(circle_node-&gt;opcode() != luci::CircleOpcode::CIRCLEINPUT);</div>
+<div class="line"><span class="lineno">  212</span> </div>
+<div class="line"><span class="lineno">  213</span>    <span class="keywordflow">if</span> (opcode == luci::CircleOpcode::CIRCLEINPUT)</div>
+<div class="line"><span class="lineno">  214</span>    {</div>
+<div class="line"><span class="lineno">  215</span>      opcode = circle_node-&gt;opcode();</div>
+<div class="line"><span class="lineno">  216</span>    }</div>
+<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  218</span>    {</div>
+<div class="line"><span class="lineno">  219</span>      <span class="comment">// Node is used by multiple layers with different opcodes</span></div>
+<div class="line"><span class="lineno">  220</span>      <span class="comment">// We do not care such cases</span></div>
+<div class="line"><span class="lineno">  221</span>      <span class="keywordflow">if</span> (opcode != circle_node-&gt;opcode())</div>
+<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  223</span>    }</div>
+<div class="line"><span class="lineno">  224</span>  }</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> out : succs)</div>
+<div class="line"><span class="lineno">  227</span>  {</div>
+<div class="line"><span class="lineno">  228</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = <span class="keyword">dynamic_cast&lt;</span>CircleConv2D *<span class="keyword">&gt;</span>(out);</div>
+<div class="line"><span class="lineno">  229</span>    <span class="keyword">auto</span> dw_conv = <span class="keyword">dynamic_cast&lt;</span>CircleDepthwiseConv2D *<span class="keyword">&gt;</span>(out);</div>
+<div class="line"><span class="lineno">  230</span>    <span class="keyword">auto</span> tw_conv = <span class="keyword">dynamic_cast&lt;</span>CircleTransposeConv *<span class="keyword">&gt;</span>(out);</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span>CircleFullyConnected *<span class="keyword">&gt;</span>(out);</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment">// Refer to https://github.com/Samsung/ONE/pull/2448.</span></div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">if</span> ((conv != <span class="keyword">nullptr</span> &amp;&amp; <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter() == node) ||</div>
+<div class="line"><span class="lineno">  235</span>        (tw_conv != <span class="keyword">nullptr</span> &amp;&amp; tw_conv-&gt;filter() == node)) <span class="comment">// OHWI</span></div>
+<div class="line"><span class="lineno">  236</span>    {</div>
+<div class="line"><span class="lineno">  237</span>      assert(node-&gt;rank() == 4);</div>
+<div class="line"><span class="lineno">  238</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
+<div class="line"><span class="lineno">  239</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
+<div class="line"><span class="lineno">  240</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(2).value());</div>
+<div class="line"><span class="lineno">  241</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(3).value());</div>
+<div class="line"><span class="lineno">  242</span>      channel_dim_index = 0; <span class="comment">// Set channel_dim_index based on &quot;O&quot;</span></div>
+<div class="line"><span class="lineno">  243</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  244</span>    }</div>
+<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dw_conv != <span class="keyword">nullptr</span> &amp;&amp; dw_conv-&gt;filter() == node) <span class="comment">// IHWC</span></div>
+<div class="line"><span class="lineno">  246</span>    {</div>
+<div class="line"><span class="lineno">  247</span>      assert(node-&gt;rank() == 4);</div>
+<div class="line"><span class="lineno">  248</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
+<div class="line"><span class="lineno">  249</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
+<div class="line"><span class="lineno">  250</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(2).value());</div>
+<div class="line"><span class="lineno">  251</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(3).value());</div>
+<div class="line"><span class="lineno">  252</span>      channel_dim_index = 3; <span class="comment">// Set channel_dim_index based on &quot;C&quot;</span></div>
+<div class="line"><span class="lineno">  253</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  254</span>    }</div>
+<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fc != <span class="keyword">nullptr</span> &amp;&amp; fc-&gt;weights() == node) <span class="comment">// OI</span></div>
+<div class="line"><span class="lineno">  256</span>    {</div>
+<div class="line"><span class="lineno">  257</span>      assert(node-&gt;rank() == 2);</div>
+<div class="line"><span class="lineno">  258</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(0).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(0).value());</div>
+<div class="line"><span class="lineno">  259</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(1).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(1); <span class="comment">// Set FC layer like CONV</span></div>
+<div class="line"><span class="lineno">  260</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(2).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(1);</div>
+<div class="line"><span class="lineno">  261</span>      dimension.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(3).<a class="code hl_function" href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">set</a>(node-&gt;dim(1).value());</div>
+<div class="line"><span class="lineno">  262</span>      channel_dim_index = 0; <span class="comment">// Set channel_dim_index based on &quot;O&quot;</span></div>
+<div class="line"><span class="lineno">  263</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  264</span>    }</div>
+<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  266</span>    {</div>
+<div class="line"><span class="lineno">  267</span>      <span class="comment">// node does not support channle-wise quantization</span></div>
+<div class="line"><span class="lineno">  268</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  269</span>    }</div>
+<div class="line"><span class="lineno">  270</span>  }</div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  273</span>}</div>
 <div class="ttc" id="aclassloco_1_1_dimension_html_aeee6b0707f211ac371987005b721ef1e"><div class="ttname"><a href="classloco_1_1_dimension.html#aeee6b0707f211ac371987005b721ef1e">loco::Dimension::set</a></div><div class="ttdeci">void set(uint32_t value)</div><div class="ttdef"><b>Definition:</b> <a href="_dimension_8h_source.html#l00053">Dimension.h:53</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a311e4e8fc7a65afbda7a68d7a12d3ffc"><div class="ttname"><a href="namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffc">luci::CircleOpcode</a></div><div class="ttdeci">CircleOpcode</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_op_code_8h_source.html#l00023">CircleOpcode.h:24</a></div></div>
 </div><!-- fragment -->
@@ -7181,49 +7192,49 @@ template&lt;typename Permutation &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00343">343</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  345</span>{</div>
-<div class="line"><span class="lineno">  346</span>  <span class="keyword">auto</span> qparam = std::make_unique&lt;CircleQuantParam&gt;();</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>  <span class="keyword">auto</span> set_qparam = [&amp;qparam](<span class="keywordtype">float</span> scale, int64_t zp) {</div>
-<div class="line"><span class="lineno">  349</span>    qparam-&gt;scale.emplace_back(scale);</div>
-<div class="line"><span class="lineno">  350</span>    qparam-&gt;zerop.emplace_back(zp);</div>
-<div class="line"><span class="lineno">  351</span>  };</div>
-<div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>  <span class="keywordflow">switch</span> (qtype)</div>
-<div class="line"><span class="lineno">  354</span>  {</div>
-<div class="line"><span class="lineno">  355</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedLogistic:</div>
-<div class="line"><span class="lineno">  356</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  357</span>        set_qparam(1.0f / 256.0f, 0);</div>
-<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  359</span>      {</div>
-<div class="line"><span class="lineno">  360</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  361</span>        set_qparam(1.0f / 32768.0f, 0);</div>
-<div class="line"><span class="lineno">  362</span>      }</div>
-<div class="line"><span class="lineno">  363</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedTanh:</div>
-<div class="line"><span class="lineno">  365</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  366</span>        set_qparam(2.0f / 256.0f, 128);</div>
-<div class="line"><span class="lineno">  367</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  368</span>      {</div>
-<div class="line"><span class="lineno">  369</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  370</span>        set_qparam(1.0f / 32768.0f, 0);</div>
-<div class="line"><span class="lineno">  371</span>      }</div>
-<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedSoftmax:</div>
-<div class="line"><span class="lineno">  374</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  375</span>        set_qparam(1.0f / 255.0f, 0);</div>
-<div class="line"><span class="lineno">  376</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  377</span>      {</div>
-<div class="line"><span class="lineno">  378</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  379</span>        set_qparam(1.0f / 32767.0f, 0);</div>
-<div class="line"><span class="lineno">  380</span>      }</div>
-<div class="line"><span class="lineno">  381</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  383</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported opcode with pre-defined qparam&quot;</span>);</div>
-<div class="line"><span class="lineno">  384</span>  }</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">return</span> qparam;</div>
-<div class="line"><span class="lineno">  386</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00345">345</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  347</span>{</div>
+<div class="line"><span class="lineno">  348</span>  <span class="keyword">auto</span> qparam = std::make_unique&lt;CircleQuantParam&gt;();</div>
+<div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span>  <span class="keyword">auto</span> set_qparam = [&amp;qparam](<span class="keywordtype">float</span> scale, int64_t zp) {</div>
+<div class="line"><span class="lineno">  351</span>    qparam-&gt;scale.emplace_back(scale);</div>
+<div class="line"><span class="lineno">  352</span>    qparam-&gt;zerop.emplace_back(zp);</div>
+<div class="line"><span class="lineno">  353</span>  };</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>  <span class="keywordflow">switch</span> (qtype)</div>
+<div class="line"><span class="lineno">  356</span>  {</div>
+<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedLogistic:</div>
+<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  359</span>        set_qparam(1.0f / 256.0f, 0);</div>
+<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  361</span>      {</div>
+<div class="line"><span class="lineno">  362</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  363</span>        set_qparam(1.0f / 32768.0f, 0);</div>
+<div class="line"><span class="lineno">  364</span>      }</div>
+<div class="line"><span class="lineno">  365</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedTanh:</div>
+<div class="line"><span class="lineno">  367</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  368</span>        set_qparam(2.0f / 256.0f, 128);</div>
+<div class="line"><span class="lineno">  369</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  370</span>      {</div>
+<div class="line"><span class="lineno">  371</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  372</span>        set_qparam(1.0f / 32768.0f, 0);</div>
+<div class="line"><span class="lineno">  373</span>      }</div>
+<div class="line"><span class="lineno">  374</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedSoftmax:</div>
+<div class="line"><span class="lineno">  376</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  377</span>        set_qparam(1.0f / 255.0f, 0);</div>
+<div class="line"><span class="lineno">  378</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  379</span>      {</div>
+<div class="line"><span class="lineno">  380</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  381</span>        set_qparam(1.0f / 32767.0f, 0);</div>
+<div class="line"><span class="lineno">  382</span>      }</div>
+<div class="line"><span class="lineno">  383</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  384</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  385</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported opcode with pre-defined qparam&quot;</span>);</div>
+<div class="line"><span class="lineno">  386</span>  }</div>
+<div class="line"><span class="lineno">  387</span>  <span class="keywordflow">return</span> qparam;</div>
+<div class="line"><span class="lineno">  388</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantization_utils_8h_source.html#l00069">PreDefinedLogistic</a>, <a class="el" href="_quantization_utils_8h_source.html#l00071">PreDefinedSoftmax</a>, and <a class="el" href="_quantization_utils_8h_source.html#l00070">PreDefinedTanh</a>.</p>
 
@@ -7872,12 +7883,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  347</span>  }</div>
 <div class="line"><span class="lineno">  348</span>}</div>
 <div class="ttc" id="anamespaceenco_html_a04382074922db95f73a7e97c25023937"><div class="ttname"><a href="namespaceenco.html#a04382074922db95f73a7e97c25023937">enco::concat</a></div><div class="ttdeci">void concat(std::ostream &amp;os, const std::string &amp;sep, It beg, It end)</div><div class="ttdef"><b>Definition:</b> <a href="_string_8h_source.html#l00031">String.h:31</a></div></div>
-<div class="ttc" id="anamespaceluci_html_a45fe577e9e1a457fe33918624cd4a9a5"><div class="ttname"><a href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">luci::quant_const</a></div><div class="ttdeci">void quant_const(luci::CircleConst *node, loco::DataType quant_type)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00401">QuantizationUtils.cpp:401</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a45fe577e9e1a457fe33918624cd4a9a5"><div class="ttname"><a href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">luci::quant_const</a></div><div class="ttdeci">void quant_const(luci::CircleConst *node, loco::DataType quant_type)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00403">QuantizationUtils.cpp:403</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a8984ba83d6f0e6d0dc99b25ee3b5d04b"><div class="ttname"><a href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a></div><div class="ttdeci">luci::CircleConst * clone(luci::CircleConst *node)</div><div class="ttdoc">Return cloned object of CircleConst node.</div><div class="ttdef"><b>Definition:</b> <a href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">CircleConst.cpp:99</a></div></div>
 <div class="ttc" id="anamespacemoco_html_aaa67793b4bf04bb01d7862cfddb898e0"><div class="ttname"><a href="namespacemoco.html#aaa67793b4bf04bb01d7862cfddb898e0">moco::new_const</a></div><div class="ttdeci">TFConst * new_const(loco::Graph *graph, loco::TensorShape &amp;tensor_shape, const loco::DataType &amp;dtype)</div><div class="ttdef"><b>Definition:</b> <a href="_constant_fold_helper_8cpp_source.html#l00045">ConstantFoldHelper.cpp:45</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a96c48226d20da59d2df2f69a93c770cb"><div class="ttname"><a href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">part_eval_one.num_inputs</a></div><div class="ttdeci">num_inputs</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00069">part_eval_one.py:69</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">clone()</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00401">quant_const()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
+<p class="reference">References <a class="el" href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">clone()</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
 
 </div>
 </div>
@@ -8019,43 +8030,43 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00401">401</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  402</span>{</div>
-<div class="line"><span class="lineno">  403</span>  assert(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">  404</span> </div>
-<div class="line"><span class="lineno">  405</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
-<div class="line"><span class="lineno">  406</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><span class="lineno">  407</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(); i++)</div>
-<div class="line"><span class="lineno">  408</span>  {</div>
-<div class="line"><span class="lineno">  409</span>    <span class="keyword">auto</span> data = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(i);</div>
-<div class="line"><span class="lineno">  410</span>    min = data &lt; min ? data : min;</div>
-<div class="line"><span class="lineno">  411</span>    max = data &gt; max ? data : max;</div>
-<div class="line"><span class="lineno">  412</span>  }</div>
-<div class="line"><span class="lineno">  413</span> </div>
-<div class="line"><span class="lineno">  414</span>  <span class="keywordtype">float</span> scaling_factor{0.0};</div>
-<div class="line"><span class="lineno">  415</span>  int64_t zp{0};</div>
-<div class="line"><span class="lineno">  416</span>  <span class="keywordtype">float</span> nudged_min{0.0};</div>
-<div class="line"><span class="lineno">  417</span>  <span class="keywordtype">float</span> nudged_max{0.0};</div>
-<div class="line"><span class="lineno">  418</span> </div>
-<div class="line"><span class="lineno">  419</span>  <span class="keywordflow">switch</span> (quant_type)</div>
-<div class="line"><span class="lineno">  420</span>  {</div>
-<div class="line"><span class="lineno">  421</span>    <span class="keywordflow">case</span> loco::DataType::U8:</div>
-<div class="line"><span class="lineno">  422</span>      <a class="code hl_function" href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">asymmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, zp, nudged_min,</div>
-<div class="line"><span class="lineno">  423</span>                                              nudged_max);</div>
-<div class="line"><span class="lineno">  424</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">case</span> loco::DataType::S16:</div>
-<div class="line"><span class="lineno">  426</span>      <a class="code hl_function" href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">symmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, nudged_min,</div>
-<div class="line"><span class="lineno">  427</span>                                             nudged_max);</div>
-<div class="line"><span class="lineno">  428</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  429</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  430</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  431</span>  }</div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>  <span class="keyword">auto</span> quantparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
-<div class="line"><span class="lineno">  434</span>  quantparam-&gt;scale.push_back(scaling_factor);</div>
-<div class="line"><span class="lineno">  435</span>  quantparam-&gt;zerop.push_back(zp);</div>
-<div class="line"><span class="lineno">  436</span>  node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(quantparam));</div>
-<div class="line"><span class="lineno">  437</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00403">403</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  404</span>{</div>
+<div class="line"><span class="lineno">  405</span>  assert(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  406</span> </div>
+<div class="line"><span class="lineno">  407</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">  408</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">  409</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(); i++)</div>
+<div class="line"><span class="lineno">  410</span>  {</div>
+<div class="line"><span class="lineno">  411</span>    <span class="keyword">auto</span> data = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(i);</div>
+<div class="line"><span class="lineno">  412</span>    min = data &lt; min ? data : min;</div>
+<div class="line"><span class="lineno">  413</span>    max = data &gt; max ? data : max;</div>
+<div class="line"><span class="lineno">  414</span>  }</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordtype">float</span> scaling_factor{0.0};</div>
+<div class="line"><span class="lineno">  417</span>  int64_t zp{0};</div>
+<div class="line"><span class="lineno">  418</span>  <span class="keywordtype">float</span> nudged_min{0.0};</div>
+<div class="line"><span class="lineno">  419</span>  <span class="keywordtype">float</span> nudged_max{0.0};</div>
+<div class="line"><span class="lineno">  420</span> </div>
+<div class="line"><span class="lineno">  421</span>  <span class="keywordflow">switch</span> (quant_type)</div>
+<div class="line"><span class="lineno">  422</span>  {</div>
+<div class="line"><span class="lineno">  423</span>    <span class="keywordflow">case</span> loco::DataType::U8:</div>
+<div class="line"><span class="lineno">  424</span>      <a class="code hl_function" href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">asymmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, zp, nudged_min,</div>
+<div class="line"><span class="lineno">  425</span>                                              nudged_max);</div>
+<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">case</span> loco::DataType::S16:</div>
+<div class="line"><span class="lineno">  428</span>      <a class="code hl_function" href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">symmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, nudged_min,</div>
+<div class="line"><span class="lineno">  429</span>                                             nudged_max);</div>
+<div class="line"><span class="lineno">  430</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  431</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  432</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  433</span>  }</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>  <span class="keyword">auto</span> quantparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
+<div class="line"><span class="lineno">  436</span>  quantparam-&gt;scale.push_back(scaling_factor);</div>
+<div class="line"><span class="lineno">  437</span>  quantparam-&gt;zerop.push_back(zp);</div>
+<div class="line"><span class="lineno">  438</span>  node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(quantparam));</div>
+<div class="line"><span class="lineno">  439</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a2794836a87d2212005d9ef7b7ef3498a"><div class="ttname"><a href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">luci::asymmetric_wquant_with_minmax_per_layer</a></div><div class="ttdeci">void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &amp;scaling_factor, int64_t &amp;zp, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00046">QuantizationUtils.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceluci_html_aad736abc0d7bd9388d42e5d4a25b80c4"><div class="ttname"><a href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">luci::symmetric_wquant_with_minmax_per_layer</a></div><div class="ttdeci">void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00075">QuantizationUtils.cpp:75</a></div></div>
 </div><!-- fragment -->
@@ -8329,17 +8340,17 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00389">389</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  390</span>{</div>
-<div class="line"><span class="lineno">  391</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>  <span class="keyword">auto</span> qparam = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
-<div class="line"><span class="lineno">  394</span>  assert(qparam);                    <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  395</span>  assert(qparam-&gt;scale.size() == 1); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  396</span> </div>
-<div class="line"><span class="lineno">  397</span>  <span class="keyword">auto</span> fp_scale = qparam-&gt;scale[0];</div>
-<div class="line"><span class="lineno">  398</span>  qparam-&gt;scale[0] = fp_scale &lt; 1 ? 1.0f : std::round(fp_scale);</div>
-<div class="line"><span class="lineno">  399</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00391">391</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  392</span>{</div>
+<div class="line"><span class="lineno">  393</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>  <span class="keyword">auto</span> qparam = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
+<div class="line"><span class="lineno">  396</span>  assert(qparam);                    <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  397</span>  assert(qparam-&gt;scale.size() == 1); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  398</span> </div>
+<div class="line"><span class="lineno">  399</span>  <span class="keyword">auto</span> fp_scale = qparam-&gt;scale[0];</div>
+<div class="line"><span class="lineno">  400</span>  qparam-&gt;scale[0] = fp_scale &lt; 1 ? 1.0f : std::round(fp_scale);</div>
+<div class="line"><span class="lineno">  401</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>.</p>
 
@@ -8869,7 +8880,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   80</span>  <span class="keyword">const</span> int32_t kMinScale = -kMaxScale;</div>
 <div class="line"><span class="lineno">   81</span> </div>
 <div class="line"><span class="lineno">   82</span>  uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;();</div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_function" href="namespaceluci.html#ab1cf5a401bd054372bf8f26cdfd681e7">compute_sym_scale</a>(min, max, scaling_factor, nudged_min, nudged_max);</div>
+<div class="line"><span class="lineno">   83</span>  <a class="code hl_function" href="namespaceluci.html#a78b1db0d7d2e1f81aa2b268b465a2962">compute_sym_scale</a>(min, max, scaling_factor, nudged_min, nudged_max);</div>
 <div class="line"><span class="lineno">   84</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scaling_factor_inv = 1.0 / scaling_factor;</div>
 <div class="line"><span class="lineno">   85</span>  std::vector&lt;int32_t&gt; quantized_values(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
@@ -8889,11 +8900,11 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  100</span>      std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));</div>
 <div class="line"><span class="lineno">  101</span>  }</div>
 <div class="line"><span class="lineno">  102</span>}</div>
-<div class="ttc" id="anamespaceluci_html_ab1cf5a401bd054372bf8f26cdfd681e7"><div class="ttname"><a href="namespaceluci.html#ab1cf5a401bd054372bf8f26cdfd681e7">luci::compute_sym_scale</a></div><div class="ttdeci">void compute_sym_scale(float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00104">QuantizationUtils.cpp:104</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a78b1db0d7d2e1f81aa2b268b465a2962"><div class="ttname"><a href="namespaceluci.html#a78b1db0d7d2e1f81aa2b268b465a2962">luci::compute_sym_scale</a></div><div class="ttdeci">void compute_sym_scale(float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max, loco::DataType out_type)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00104">QuantizationUtils.cpp:104</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00104">compute_sym_scale()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00401">quant_const()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>.</p>
 
 </div>
 </div>
@@ -10052,19 +10063,19 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00495">495</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  496</span>{</div>
-<div class="line"><span class="lineno">  497</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  498</span>  <span class="keyword">auto</span> qp = n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
-<div class="line"><span class="lineno">  499</span>  <span class="keyword">auto</span> k = qp-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size();</div>
-<div class="line"><span class="lineno">  500</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; k; i++)</div>
-<div class="line"><span class="lineno">  501</span>  {</div>
-<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">if</span> (warn_scale_zp(qp-&gt;scale[i], qp-&gt;zerop[i], n))</div>
-<div class="line"><span class="lineno">  503</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;Quantization of &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;-th channel of &quot;</span> &lt;&lt; n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
-<div class="line"><span class="lineno">  504</span>              &lt;&lt; <span class="stringliteral">&quot;&#39;s quantization may cause accuracy issues&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  505</span>    ;</div>
-<div class="line"><span class="lineno">  506</span>  }</div>
-<div class="line"><span class="lineno">  507</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00497">497</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  498</span>{</div>
+<div class="line"><span class="lineno">  499</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  500</span>  <span class="keyword">auto</span> qp = n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
+<div class="line"><span class="lineno">  501</span>  <span class="keyword">auto</span> k = qp-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size();</div>
+<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; k; i++)</div>
+<div class="line"><span class="lineno">  503</span>  {</div>
+<div class="line"><span class="lineno">  504</span>    <span class="keywordflow">if</span> (warn_scale_zp(qp-&gt;scale[i], qp-&gt;zerop[i], n))</div>
+<div class="line"><span class="lineno">  505</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;Quantization of &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;-th channel of &quot;</span> &lt;&lt; n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
+<div class="line"><span class="lineno">  506</span>              &lt;&lt; <span class="stringliteral">&quot;&#39;s quantization may cause accuracy issues&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  507</span>    ;</div>
+<div class="line"><span class="lineno">  508</span>  }</div>
+<div class="line"><span class="lineno">  509</span>}</div>
 <div class="ttc" id="astructluci_1_1_circle_quant_param_html_adfd73367574e4ad12da0b59a7915ec09"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">luci::CircleQuantParam::zerop</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; zerop</div><div class="ttdef"><b>Definition:</b> <a href="_circle_quant_param_8h_source.html#l00031">CircleQuantParam.h:31</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>, <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>, and <a class="el" href="_circle_quant_param_8h_source.html#l00031">luci::CircleQuantParam::zerop</a>.</p>

@@ -193,68 +193,68 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classcircletensordump_1_1_dump_interface.html#a6f0d55be20993aee78ed3edebc38b447">circletensordump::DumpInterface</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circle-tensordump_2src_2_dump_8cpp_source.html#l00296">296</a> of file <a class="el" href="circle-tensordump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  298</span>{</div>
-<div class="line"><span class="lineno">  299</span>  <span class="comment">// loads a circle model</span></div>
-<div class="line"><span class="lineno">  300</span>  <a class="code hl_class" href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a> reader(model);</div>
-<div class="line"><span class="lineno">  301</span>  uint32_t num_subgraph = reader.num_subgraph();</div>
-<div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>  <span class="comment">// create a hdf5 file</span></div>
-<div class="line"><span class="lineno">  304</span>  H5::H5File <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a>, H5F_ACC_TRUNC};</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">for</span> (uint32_t subgraph_idx = 0; subgraph_idx &lt; num_subgraph; subgraph_idx++)</div>
-<div class="line"><span class="lineno">  307</span>  {</div>
-<div class="line"><span class="lineno">  308</span>    reader.select_subgraph(subgraph_idx);</div>
+<p class="definition">Definition at line <a class="el" href="circle-tensordump_2src_2_dump_8cpp_source.html#l00300">300</a> of file <a class="el" href="circle-tensordump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  302</span>{</div>
+<div class="line"><span class="lineno">  303</span>  <span class="comment">// loads a circle model</span></div>
+<div class="line"><span class="lineno">  304</span>  <a class="code hl_class" href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a> reader(model);</div>
+<div class="line"><span class="lineno">  305</span>  uint32_t num_subgraph = reader.num_subgraph();</div>
+<div class="line"><span class="lineno">  306</span> </div>
+<div class="line"><span class="lineno">  307</span>  <span class="comment">// create a hdf5 file</span></div>
+<div class="line"><span class="lineno">  308</span>  H5::H5File <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a>, H5F_ACC_TRUNC};</div>
 <div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>    <span class="keyword">auto</span> tensors = reader.tensors();</div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor : *tensors)</div>
-<div class="line"><span class="lineno">  312</span>    {</div>
-<div class="line"><span class="lineno">  313</span>      <span class="comment">// If tensor does not have name, do nothing.</span></div>
-<div class="line"><span class="lineno">  314</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;name();</div>
-<div class="line"><span class="lineno">  315</span>      <span class="keywordflow">if</span> (tensor_name == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  316</span>      {</div>
-<div class="line"><span class="lineno">  317</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;There is no tensor name&quot;</span>);</div>
-<div class="line"><span class="lineno">  318</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  319</span>      }</div>
-<div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>      <span class="comment">// create a group for each tensor whose name is its tensor name</span></div>
-<div class="line"><span class="lineno">  322</span>      std::string group_name = <a class="code hl_function" href="nnkit_2actions_2_h_d_f5_2_common_8cpp.html#a15a173be77fbc1f9d2bdb8f87f1a4996">::mangle</a>(<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>-&gt;c_str());</div>
-<div class="line"><span class="lineno">  323</span>      std::unique_ptr&lt;H5::Group&gt; tensor_group =</div>
-<div class="line"><span class="lineno">  324</span>        std::make_unique&lt;H5::Group&gt;(<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createGroup(group_name));</div>
-<div class="line"><span class="lineno">  325</span> </div>
-<div class="line"><span class="lineno">  326</span>      <span class="comment">// write a buffer data</span></div>
-<div class="line"><span class="lineno">  327</span>      uint32_t buff_idx = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer();</div>
-<div class="line"><span class="lineno">  328</span>      <span class="keyword">auto</span> buff_data_ptr = reader.buffers()-&gt;Get(buff_idx)-&gt;data();</div>
-<div class="line"><span class="lineno">  329</span>      <span class="keywordflow">if</span> (buff_data_ptr)</div>
-<div class="line"><span class="lineno">  330</span>      {</div>
-<div class="line"><span class="lineno">  331</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;weights&quot;</span>, ::hdf5_dtype_cast(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;type()),</div>
-<div class="line"><span class="lineno">  332</span>                                    buff_data_ptr,</div>
-<div class="line"><span class="lineno">  333</span>                                    ::hdf5_dims_cast(buff_data_ptr, <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()));</div>
-<div class="line"><span class="lineno">  334</span>      }</div>
-<div class="line"><span class="lineno">  335</span> </div>
-<div class="line"><span class="lineno">  336</span>      <span class="comment">// write quantization parameters</span></div>
-<div class="line"><span class="lineno">  337</span>      <span class="keyword">auto</span> quant_param = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;quantization();</div>
-<div class="line"><span class="lineno">  338</span>      <span class="keywordflow">if</span> (quant_param)</div>
-<div class="line"><span class="lineno">  339</span>      {</div>
-<div class="line"><span class="lineno">  340</span>        <span class="keyword">auto</span> min = quant_param-&gt;min();</div>
-<div class="line"><span class="lineno">  341</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;min&quot;</span>, H5::PredType::NATIVE_FLOAT, min,</div>
-<div class="line"><span class="lineno">  342</span>                                    ::hdf5_dims_cast(min));</div>
-<div class="line"><span class="lineno">  343</span>        <span class="keyword">auto</span> max = quant_param-&gt;max();</div>
-<div class="line"><span class="lineno">  344</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;max&quot;</span>, H5::PredType::NATIVE_FLOAT, max,</div>
-<div class="line"><span class="lineno">  345</span>                                    ::hdf5_dims_cast(max));</div>
-<div class="line"><span class="lineno">  346</span>        <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = quant_param-&gt;scale();</div>
-<div class="line"><span class="lineno">  347</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;scale&quot;</span>, H5::PredType::NATIVE_FLOAT, scale,</div>
-<div class="line"><span class="lineno">  348</span>                                    ::hdf5_dims_cast(scale));</div>
-<div class="line"><span class="lineno">  349</span>        <span class="keyword">auto</span> zero_point = quant_param-&gt;zero_point();</div>
-<div class="line"><span class="lineno">  350</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;zero_point&quot;</span>, H5::PredType::NATIVE_INT64,</div>
-<div class="line"><span class="lineno">  351</span>                                    zero_point, ::hdf5_dims_cast(zero_point));</div>
-<div class="line"><span class="lineno">  352</span>        <span class="keyword">auto</span> quantized_dimension = quant_param-&gt;quantized_dimension();</div>
-<div class="line"><span class="lineno">  353</span>        ::write_scalar_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;quantized_dimension&quot;</span>,</div>
-<div class="line"><span class="lineno">  354</span>                                    H5::PredType::NATIVE_INT32, quantized_dimension);</div>
-<div class="line"><span class="lineno">  355</span>      }</div>
-<div class="line"><span class="lineno">  356</span>    }</div>
-<div class="line"><span class="lineno">  357</span>  }</div>
-<div class="line"><span class="lineno">  358</span>}</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordflow">for</span> (uint32_t subgraph_idx = 0; subgraph_idx &lt; num_subgraph; subgraph_idx++)</div>
+<div class="line"><span class="lineno">  311</span>  {</div>
+<div class="line"><span class="lineno">  312</span>    reader.select_subgraph(subgraph_idx);</div>
+<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  314</span>    <span class="keyword">auto</span> tensors = reader.tensors();</div>
+<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor : *tensors)</div>
+<div class="line"><span class="lineno">  316</span>    {</div>
+<div class="line"><span class="lineno">  317</span>      <span class="comment">// If tensor does not have name, do nothing.</span></div>
+<div class="line"><span class="lineno">  318</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;name();</div>
+<div class="line"><span class="lineno">  319</span>      <span class="keywordflow">if</span> (tensor_name == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  320</span>      {</div>
+<div class="line"><span class="lineno">  321</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;There is no tensor name&quot;</span>);</div>
+<div class="line"><span class="lineno">  322</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  323</span>      }</div>
+<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  325</span>      <span class="comment">// create a group for each tensor whose name is its tensor name</span></div>
+<div class="line"><span class="lineno">  326</span>      std::string group_name = <a class="code hl_function" href="nnkit_2actions_2_h_d_f5_2_common_8cpp.html#a15a173be77fbc1f9d2bdb8f87f1a4996">::mangle</a>(<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>-&gt;c_str());</div>
+<div class="line"><span class="lineno">  327</span>      std::unique_ptr&lt;H5::Group&gt; tensor_group =</div>
+<div class="line"><span class="lineno">  328</span>        std::make_unique&lt;H5::Group&gt;(<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.createGroup(group_name));</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span>      <span class="comment">// write a buffer data</span></div>
+<div class="line"><span class="lineno">  331</span>      uint32_t buff_idx = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer();</div>
+<div class="line"><span class="lineno">  332</span>      <span class="keyword">auto</span> buff_data_ptr = reader.buffers()-&gt;Get(buff_idx)-&gt;data();</div>
+<div class="line"><span class="lineno">  333</span>      <span class="keywordflow">if</span> (buff_data_ptr)</div>
+<div class="line"><span class="lineno">  334</span>      {</div>
+<div class="line"><span class="lineno">  335</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;weights&quot;</span>, ::hdf5_dtype_cast(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;type()),</div>
+<div class="line"><span class="lineno">  336</span>                                    buff_data_ptr,</div>
+<div class="line"><span class="lineno">  337</span>                                    ::hdf5_dims_cast(buff_data_ptr, <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()));</div>
+<div class="line"><span class="lineno">  338</span>      }</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>      <span class="comment">// write quantization parameters</span></div>
+<div class="line"><span class="lineno">  341</span>      <span class="keyword">auto</span> quant_param = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;quantization();</div>
+<div class="line"><span class="lineno">  342</span>      <span class="keywordflow">if</span> (quant_param)</div>
+<div class="line"><span class="lineno">  343</span>      {</div>
+<div class="line"><span class="lineno">  344</span>        <span class="keyword">auto</span> min = quant_param-&gt;min();</div>
+<div class="line"><span class="lineno">  345</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;min&quot;</span>, H5::PredType::NATIVE_FLOAT, min,</div>
+<div class="line"><span class="lineno">  346</span>                                    ::hdf5_dims_cast(min));</div>
+<div class="line"><span class="lineno">  347</span>        <span class="keyword">auto</span> max = quant_param-&gt;max();</div>
+<div class="line"><span class="lineno">  348</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;max&quot;</span>, H5::PredType::NATIVE_FLOAT, max,</div>
+<div class="line"><span class="lineno">  349</span>                                    ::hdf5_dims_cast(max));</div>
+<div class="line"><span class="lineno">  350</span>        <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = quant_param-&gt;scale();</div>
+<div class="line"><span class="lineno">  351</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;scale&quot;</span>, H5::PredType::NATIVE_FLOAT, scale,</div>
+<div class="line"><span class="lineno">  352</span>                                    ::hdf5_dims_cast(scale));</div>
+<div class="line"><span class="lineno">  353</span>        <span class="keyword">auto</span> zero_point = quant_param-&gt;zero_point();</div>
+<div class="line"><span class="lineno">  354</span>        ::write_vector_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;zero_point&quot;</span>, H5::PredType::NATIVE_INT64,</div>
+<div class="line"><span class="lineno">  355</span>                                    zero_point, ::hdf5_dims_cast(zero_point));</div>
+<div class="line"><span class="lineno">  356</span>        <span class="keyword">auto</span> quantized_dimension = quant_param-&gt;quantized_dimension();</div>
+<div class="line"><span class="lineno">  357</span>        ::write_scalar_data_to_hdf5(file, group_name, <span class="stringliteral">&quot;quantized_dimension&quot;</span>,</div>
+<div class="line"><span class="lineno">  358</span>                                    H5::PredType::NATIVE_INT32, quantized_dimension);</div>
+<div class="line"><span class="lineno">  359</span>      }</div>
+<div class="line"><span class="lineno">  360</span>    }</div>
+<div class="line"><span class="lineno">  361</span>  }</div>
+<div class="line"><span class="lineno">  362</span>}</div>
 <div class="ttc" id="aclassmio_1_1circle_1_1_reader_html"><div class="ttname"><a href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a></div><div class="ttdoc">Loads Circle file and provides helpers to access attributes.</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2mio-circle04_2include_2mio__circle_2_reader_8h_source.html#l00038">Reader.h:39</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ad27053a53bf014780d72862b2219b3ef"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">GenH5RandomInputs.output_path</a></div><div class="ttdeci">output_path</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00040">GenH5RandomInputs.py:40</a></div></div>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX36 =
 {
+"class_fully_connected_chef.html":[34,0,222],
+"class_fully_connected_chef.html#a106ae9584012c83b7cf5465ac65f9496":[34,0,222,2],
+"class_fully_connected_chef.html#a1566dc7d7f00279e8ac9348f5213a6d2":[34,0,222,1],
+"class_fully_connected_chef.html#a6b4fa40f7e6d09dcfad30a78e422d1c6":[34,0,222,0],
+"class_fully_connected_chef.html#a6fe79310bce13a75f00b7aaa0e09f88a":[34,0,222,3],
+"class_gather_chef.html":[34,0,224],
+"class_gather_chef.html#a0b0d84fccbefd49efe217d4515647bbd":[34,0,224,0],
+"class_gather_chef.html#a0bf34aeb8c735443d7b4c0f28f8bc9b4":[34,0,224,1],
 "class_gather_chef.html#abf2e24941a8fc14c8e881433565620d5":[34,0,224,2],
 "class_gather_chef.html#aed2f019f87472e2c21511c8cc09ce87a":[34,0,224,3],
 "class_gather_nd_chef.html":[34,0,226],
@@ -151,8 +159,8 @@ var NAVTREEINDEX36 =
 "class_instr_builder.html#a054bdc2467d3b362d7dcdb3426fd6d88":[34,0,259,2],
 "class_instr_builder.html#ab8463ac28d18ac055f893f1387c0cd76":[34,0,259,0],
 "class_instr_builder.html#ab8463ac28d18ac055f893f1387c0cd76":[34,0,259,1],
-"class_instr_builder.html#ad1be6b431d0ff28d6910911e19470eb5":[34,0,259,3],
 "class_instr_builder.html#ad1be6b431d0ff28d6910911e19470eb5":[34,0,259,4],
+"class_instr_builder.html#ad1be6b431d0ff28d6910911e19470eb5":[34,0,259,3],
 "class_l2_normalize.html":[34,0,261],
 "class_l2_normalize.html#a16a4face1c3a8909205dce940284ac84":[34,0,261,0],
 "class_l2_normalize.html#a2cae3da859c871f7a42bf48fe342467a":[34,0,261,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX36 =
 "class_matrix_diag_chef.html#a93033445e6918444e52ed4a2d574921b":[34,0,290,0],
 "class_matrix_diag_chef.html#af65eff71121fa86bad664d9d9b071cde":[34,0,290,2],
 "class_matrix_set_diag_chef.html":[34,0,292],
-"class_matrix_set_diag_chef.html#a063e45e0fa34eeabba6bf92256979a62":[34,0,292,1],
-"class_matrix_set_diag_chef.html#a39e7f707b29df80553cb39c8ecba186d":[34,0,292,0],
-"class_matrix_set_diag_chef.html#aa19b5f20a82b6031f7d702eef1ba2940":[34,0,292,2],
-"class_matrix_set_diag_chef.html#ae2c58caf17eb914a3c5230f6dbff8b8b":[34,0,292,3],
-"class_max_pool2_d_chef.html":[34,0,296],
-"class_max_pool2_d_chef.html#a2f9b6ce4c7ea56a8e7c570bcf589b6e8":[34,0,296,3],
-"class_max_pool2_d_chef.html#a74875df564fbbfd4794f9df96647b6c8":[34,0,296,0],
-"class_max_pool2_d_chef.html#ad034ab89ade04f8bc3f80fc117985732":[34,0,296,1],
-"class_max_pool2_d_chef.html#ade9d2850c0b4f6ad13c4291f275c7836":[34,0,296,2]
+"class_matrix_set_diag_chef.html#a063e45e0fa34eeabba6bf92256979a62":[34,0,292,1]
 };

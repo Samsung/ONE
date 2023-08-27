@@ -4,7 +4,7 @@ var classmpqsolver_1_1core_1_1_dumping_hooks =
     [ "on_begin_iteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a9d99ab294faa7adae1de75e6abee95e3", null ],
     [ "on_begin_solver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#af6874a3a33516d8ae1ba2a308ba14eed", null ],
     [ "on_end_iteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#ac680507000a96fcc40682eab16e56e80", null ],
-    [ "on_end_solver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a911f197a010fac983a2fd787733e1c93", null ],
+    [ "on_end_solver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a285adcf0a002d8e1060febae22784a5e", null ],
     [ "on_quantized", "classmpqsolver_1_1core_1_1_dumping_hooks.html#ab2370b0a79c448f4cdfe7f8767ee5d4b", null ],
     [ "_dumper", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a9be47f81ca94013bc693e6238a491030", null ],
     [ "_in_iterations", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a8a7a54713c121387869ee4c7e2af1055", null ],

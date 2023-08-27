@@ -127,6 +127,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a996ccb87752639fd8a07287f3045d310"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumper.html#a996ccb87752639fd8a07287f3045d310">dump_MPQ_error</a> (float error, uint32_t step) const</td></tr>
 <tr class="memdesc:a996ccb87752639fd8a07287f3045d310"><td class="mdescLeft">&#160;</td><td class="mdescRight">append error of mpq quantization  <a href="classmpqsolver_1_1core_1_1_dumper.html#a996ccb87752639fd8a07287f3045d310">More...</a><br /></td></tr>
 <tr class="separator:a996ccb87752639fd8a07287f3045d310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f33e9418e433c39954b688bf181bcc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumper.html#a3f33e9418e433c39954b688bf181bcc9">dump_MPQ_error</a> (float error) const</td></tr>
+<tr class="memdesc:a3f33e9418e433c39954b688bf181bcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">dump final error  <a href="classmpqsolver_1_1core_1_1_dumper.html#a3f33e9418e433c39954b688bf181bcc9">More...</a><br /></td></tr>
+<tr class="separator:a3f33e9418e433c39954b688bf181bcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -283,8 +286,40 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3f33e9418e433c39954b688bf181bcc9" name="a3f33e9418e433c39954b688bf181bcc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f33e9418e433c39954b688bf181bcc9">&#9670;&#160;</a></span>dump_MPQ_error() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Dumper::dump_MPQ_error </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>error</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>dump final error </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error</td><td>final error of quantization </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_dumper_8cpp_source.html#l00156">156</a> of file <a class="el" href="_dumper_8cpp_source.html">Dumper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
+<div class="line"><span class="lineno">  158</span>  std::string path = get_error_path();</div>
+<div class="line"><span class="lineno">  159</span>  dump_error(error, <span class="stringliteral">&quot;FINAL&quot;</span>, path);</div>
+<div class="line"><span class="lineno">  160</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a996ccb87752639fd8a07287f3045d310" name="a996ccb87752639fd8a07287f3045d310"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a996ccb87752639fd8a07287f3045d310">&#9670;&#160;</a></span>dump_MPQ_error()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a996ccb87752639fd8a07287f3045d310">&#9670;&#160;</a></span>dump_MPQ_error() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +359,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  153</span>  dump_error(error, std::to_string(step), path);</div>
 <div class="line"><span class="lineno">  154</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">mpqsolver::core::DumpingHooks::on_end_iteration()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">mpqsolver::core::DumpingHooks::on_end_iteration()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">mpqsolver::core::DumpingHooks::on_end_solver()</a>.</p>
 
 </div>
 </div>
@@ -425,7 +460,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  118</span>  save_circle(module, path);</div>
 <div class="line"><span class="lineno">  119</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00054">mpqsolver::core::DumpingHooks::on_quantized()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">mpqsolver::core::DumpingHooks::on_quantized()</a>.</p>
 
 </div>
 </div>

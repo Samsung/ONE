@@ -1,5 +1,9 @@
 var NAVTREEINDEX25 =
 {
+"_serialized_data_8h_source.html":[35,0,0,51,1,1,20],
+"_server_8cc.html":[35,0,4,3,0,1,14],
+"_server_8cc_source.html":[35,0,4,3,0,1,14],
+"_server_8h.html":[35,0,4,3,0,1,15],
 "_server_8h_source.html":[35,0,4,3,0,1,15],
 "_service_8h.html":[35,0,4,0,5,1,0,0,0],
 "_service_8h_source.html":[35,0,4,0,5,1,0,0,0],
@@ -144,8 +148,8 @@ var NAVTREEINDEX25 =
 "_show_8cpp_source.html":[35,0,0,72,0,0,1],
 "_shuffle_8cpp.html":[35,0,0,26,0,1,1,36],
 "_shuffle_8cpp_source.html":[35,0,0,26,0,1,1,36],
-"_shuffle_weight_to16x1_float32_pass_8cpp.html":[35,0,0,51,7,1,84],
-"_shuffle_weight_to16x1_float32_pass_8cpp_source.html":[35,0,0,51,7,1,84],
+"_shuffle_weight_to16x1_float32_pass_8cpp.html":[35,0,0,51,7,1,86],
+"_shuffle_weight_to16x1_float32_pass_8cpp_source.html":[35,0,0,51,7,1,86],
 "_shuffle_weight_to16x1_float32_pass_8h.html":[35,0,0,51,7,0,0,0,60],
 "_shuffle_weight_to16x1_float32_pass_8h_source.html":[35,0,0,51,7,0,0,0,60],
 "_sigmoid_op_8h.html":[35,0,0,62,0,0,0,34],
@@ -226,6 +230,10 @@ var NAVTREEINDEX25 =
 "_solver_hooks_8cpp_source.html":[35,0,0,13,0,1,10],
 "_solver_hooks_8h.html":[35,0,0,13,0,1,11],
 "_solver_hooks_8h_source.html":[35,0,0,13,0,1,11],
+"_solver_output_8cpp.html":[35,0,0,13,0,1,12],
+"_solver_output_8cpp_source.html":[35,0,0,13,0,1,12],
+"_solver_output_8h.html":[35,0,0,13,0,1,13],
+"_solver_output_8h_source.html":[35,0,0,13,0,1,13],
 "_source_8cpp.html":[35,0,0,40,1,0,5],
 "_source_8cpp_source.html":[35,0,0,40,1,0,5],
 "_source_8h.html":[35,0,0,40,0,0,0,7],
@@ -241,13 +249,5 @@ var NAVTREEINDEX25 =
 "_space_to_batch_n_d_8cc_source.html":[35,0,4,2,2,1,4,0,56],
 "_space_to_batch_n_d_layer_8cc.html":[35,0,4,2,1,4,0,86],
 "_space_to_batch_n_d_layer_8cc_source.html":[35,0,4,2,1,4,0,86],
-"_space_to_batch_n_d_layer_8h.html":[35,0,4,2,1,4,0,87],
-"_space_to_batch_n_d_layer_8h_source.html":[35,0,4,2,1,4,0,87],
-"_space_to_batch_n_d_options_8cpp.html":[35,0,0,113,2,0,140],
-"_space_to_batch_n_d_options_8cpp.html#a370ca60517ab2f4e3a92f2087d5d8de0":[35,0,0,113,2,0,140,0],
-"_space_to_batch_n_d_options_8cpp_source.html":[35,0,0,113,2,0,140],
-"_space_to_batch_n_d_options_8h.html":[35,0,0,113,2,0,141],
-"_space_to_batch_n_d_options_8h.html#a370ca60517ab2f4e3a92f2087d5d8de0":[35,0,0,113,2,0,141,0],
-"_space_to_batch_n_d_options_8h_source.html":[35,0,0,113,2,0,141],
-"_space_to_depth_8cc.html":[35,0,4,2,2,1,4,0,57]
+"_space_to_batch_n_d_layer_8h.html":[35,0,4,2,1,4,0,87]
 };

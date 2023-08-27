@@ -18,5 +18,6 @@ var searchData=
   ['quantizerhook_15',['QuantizerHook',['../structmpqsolver_1_1core_1_1_quantizer_hook.html',1,'mpqsolver::core']]],
   ['quantizespecialactivation_16',['QuantizeSpecialActivation',['../structluci_1_1_quantize_special_activation.html',1,'luci']]],
   ['quantizeweights_17',['QuantizeWeights',['../structluci_1_1_quantize_weights.html',1,'luci']]],
-  ['quantizewithminmaxpass_18',['QuantizeWithMinMaxPass',['../classluci_1_1_quantize_with_min_max_pass.html',1,'luci']]]
+  ['quantizeweightsonly_18',['QuantizeWeightsOnly',['../structluci_1_1_quantize_weights_only.html',1,'luci']]],
+  ['quantizewithminmaxpass_19',['QuantizeWithMinMaxPass',['../classluci_1_1_quantize_with_min_max_pass.html',1,'luci']]]
 ];
