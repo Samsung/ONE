@@ -52,7 +52,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
   switch (op_type)
   {
     case ElementwiseActivationType::kReLU:
-      if (_input->data_type() == OperandType::FLOAT32)
+      if (input->data_type() == OperandType::FLOAT32)
       {
         if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
         {
