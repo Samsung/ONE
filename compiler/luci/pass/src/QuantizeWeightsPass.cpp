@@ -18,16 +18,7 @@
 #include "QuantizeWeightsOnly.h"
 #include "QuantizationUtils.h"
 
-#include <luci/IR/CircleNodes.h>
-#include <luci/IR/CircleNodeVisitor.h>
-#include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
-#include <loco/IR/TensorShape.h>
-
-#include <iostream>
-#include <cmath>
-#include <functional>
-#include <limits>
 
 namespace luci
 {
