@@ -15,9 +15,73 @@
  */
 
 #include "luci/Pass/QuantizeWeightsPass.h"
+#include <luci/IR/CircleNodes.h>
+#include <oops/UserExn.h>
+
 #include <gtest/gtest.h>
 
-TEST(QuantizeWeightsPassTest, name)
+namespace
+{
+struct QuantizeWeightsPassTest : public ::testing::Test
+{
+  /**
+   *  nconv graph
+   *
+   *        [CircleInput]
+   *              |
+   *              |
+   *        [CircleConv2D]
+   *              |
+   *              |
+   *        [CircleOutput]
+   */
+  void MakeGraph()
+  {
+    const int N = 1;
+    const int H = 4;
+    const int W = 4;
+    const int C = 3;
+
+    // graph input and output
+    auto graph_input = _g.inputs()->create();
+    auto graph_output = _g.outputs()->create();
+
+    // CircleInput
+    auto input = _g.nodes()->create<luci::CircleInput>();
+    input->index(graph_input->index());
+    input->shape({N, H, W, C});
+    input->dtype(loco::DataType::FLOAT32);
+    input->name("input");
+
+    // CircleConv2D
+    auto conv = _g.nodes()->create<luci::CircleConv2D>();
+    conv->input(input);
+    auto bias = _g.nodes()->create<luci::CircleConst>();
+    bias->dtype(loco::DataType::FLOAT32);
+    bias->shape({C});
+    bias->name("conv_bias");
+    conv->bias(bias);
+    conv->filter(_g.nodes()->create<luci::CircleConst>());
+    conv->padding(luci::Padding::SAME);
+    conv->fusedActivationFunction(luci::FusedActFunc::NONE);
+    conv->dtype(loco::DataType::FLOAT32);
+    conv->name("nconv");
+
+    // CircleOutput
+    auto output = _g.nodes()->create<luci::CircleOutput>();
+    output->index(graph_output->index());
+    output->from(conv);
+    output->shape({N, H, W, C});
+    output->dtype(loco::DataType::FLOAT32);
+    output->name("output");
+  }
+  virtual void SetUp() { MakeGraph(); }
+  loco::Graph _g;
+};
+
+} // namespace
+
+TEST_F(QuantizeWeightsPassTest, name)
 {
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::S8,
                                  luci::QuantizationGranularity::ChannelWise);
@@ -25,7 +89,7 @@ TEST(QuantizeWeightsPassTest, name)
   ASSERT_NE(nullptr, name);
 }
 
-TEST(QuantizeWeightsPassTest, name_ctx)
+TEST_F(QuantizeWeightsPassTest, name_ctx)
 {
   auto ctx = std::make_unique<luci::QuantizeWeightsPass::Context>();
   {
@@ -39,26 +103,19 @@ TEST(QuantizeWeightsPassTest, name_ctx)
   ASSERT_NE(nullptr, name);
 }
 
-// TODO: Update negative test
-// Refer to DecomposeHardSwishPass.test.cpp
-// inherit test
-// have graph, input, output as member
-// Use graph in 2 negative tests
-
-TEST(QuantizeWeightsPassTest, run_NEG)
+TEST_F(QuantizeWeightsPassTest, run_u8_NEG)
 {
   loco::Graph g;
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
                                  luci::QuantizationGranularity::ChannelWise);
 
-  // EXPECT_THROW(throw std::runtime_error{"run_NEG"}, std::runtime_error);
-  ASSERT_FALSE(pass.run(&g));
+  EXPECT_THROW(pass.run(&_g), oops::UserExn);
 }
 
-TEST(QuantizeWeightsPassTest, run_u8_NEG)
+TEST_F(QuantizeWeightsPassTest, run_f32_NEG)
 {
   loco::Graph g;
-  luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
+  luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::FLOAT32,
                                  luci::QuantizationGranularity::ChannelWise);
-  ASSERT_FALSE(pass.run(&g));
+  EXPECT_THROW(pass.run(&_g), oops::UserExn);
 }
