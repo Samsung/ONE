@@ -16,7 +16,6 @@
 
 #include "luci/Pass/QuantizeWeightsPass.h"
 #include <luci/IR/CircleNodes.h>
-#include <oops/UserExn.h>
 
 #include <gtest/gtest.h>
 
@@ -40,7 +39,7 @@ struct QuantizeWeightsPassTest : public ::testing::Test
     const int N = 1;
     const int H = 4;
     const int W = 4;
-    const int C = 3;
+    const int C = 3; // IC = OC
 
     // graph input and output
     auto graph_input = _g.inputs()->create();
@@ -61,7 +60,11 @@ struct QuantizeWeightsPassTest : public ::testing::Test
     bias->shape({C});
     bias->name("conv_bias");
     conv->bias(bias);
-    conv->filter(_g.nodes()->create<luci::CircleConst>());
+    auto weight = _g.nodes()->create<luci::CircleConst>();
+    weight->dtype(loco::DataType::FLOAT32);
+    weight->shape({C, H, W, C});
+    weight->size<loco::DataType::FLOAT32>(C * H * W * C);
+    conv->filter(weight);
     conv->padding(luci::Padding::SAME);
     conv->fusedActivationFunction(luci::FusedActFunc::NONE);
     conv->dtype(loco::DataType::FLOAT32);
@@ -103,19 +106,18 @@ TEST_F(QuantizeWeightsPassTest, name_ctx)
   ASSERT_NE(nullptr, name);
 }
 
-TEST_F(QuantizeWeightsPassTest, run_u8_NEG)
+TEST_F(QuantizeWeightsPassTest, run_input_U8_NEG)
 {
   loco::Graph g;
-  luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
+  luci::QuantizeWeightsPass pass(loco::DataType::U8, loco::DataType::S8,
                                  luci::QuantizationGranularity::ChannelWise);
-
-  EXPECT_THROW(pass.run(&_g), oops::UserExn);
+  EXPECT_THROW(pass.run(&_g), std::runtime_error);
 }
 
-TEST_F(QuantizeWeightsPassTest, run_f32_NEG)
+TEST_F(QuantizeWeightsPassTest, run_output_f32_NEG)
 {
   loco::Graph g;
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::FLOAT32,
                                  luci::QuantizationGranularity::ChannelWise);
-  EXPECT_THROW(pass.run(&_g), oops::UserExn);
+  EXPECT_THROW(pass.run(&_g), std::runtime_error);
 }
