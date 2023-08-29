@@ -25,6 +25,7 @@
 #include "randomgen.h"
 #include "rawformatter.h"
 #include "rawdataloader.h"
+#include "measure.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -37,6 +38,13 @@
 #include <vector>
 
 static const char *default_backend_cand = "train";
+
+uint64_t nowMicros()
+{
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return static_cast<uint64_t>(ts.tv_nsec) / 1e3 + static_cast<uint64_t>(ts.tv_sec) * 1e6;
+}
 
 int main(const int argc, char **argv)
 {
@@ -202,13 +210,13 @@ int main(const int argc, char **argv)
     Measure measure;
     std::vector<float> losses(num_expecteds);
     phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
-      const int num_sample = data_length / tri.batch_size;
+      const int num_step = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_sample);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
         std::fill(losses.begin(), losses.end(), 0);
-        for (uint32_t n = 0; n < num_sample; ++n)
+        for (uint32_t n = 0; n < num_step; ++n)
         {
           // get batchsize data
           if (!generator(n, input_data, expected_data))
@@ -248,7 +256,7 @@ int main(const int argc, char **argv)
         std::cout.precision(4);
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
-          std::cout << "[" << i << "] " << losses[i] / num_sample;
+          std::cout << "[" << i << "] " << losses[i] / num_step;
         }
         std::cout /* << "- accuracy: " << accuracy*/ << std::endl;
       }
