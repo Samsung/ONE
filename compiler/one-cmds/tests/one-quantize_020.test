@@ -27,7 +27,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 inputfile="./inception_v3.circle"
-outputfile="./inception_v3.q_opt.circle"
+outputfile="./inception_v3.q_opt.one-quantize_020.circle"
 datafile="./inception_v3_test_data.h5"
 bisection_type="auto"
 
