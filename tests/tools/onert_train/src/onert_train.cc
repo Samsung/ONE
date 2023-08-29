@@ -17,6 +17,7 @@
 #include "allocation.h"
 #include "args.h"
 #include "benchmark.h"
+#include "measure.h"
 #include "nnfw.h"
 #include "nnfw_util.h"
 #include "nnfw_internal.h"
@@ -198,10 +199,12 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
+    Measure measure;
     std::vector<float> losses(num_expecteds);
     phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
       const int num_sample = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
+      measure.set(num_epoch, num_sample);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
         std::fill(losses.begin(), losses.end(), 0);
@@ -226,7 +229,7 @@ int main(const int argc, char **argv)
           }
 
           // train
-          NNPR_ENSURE_STATUS(nnfw_train(session, true));
+          measure.run(epoch, n, [&]() { NNPR_ENSURE_STATUS(nnfw_train(session, true)); });
 
           // store loss
           for (int32_t i = 0; i < num_expecteds; ++i)
@@ -238,11 +241,16 @@ int main(const int argc, char **argv)
         }
 
         // print loss
+        std::cout << std::fixed;
+        std::cout.precision(3);
+        std::cout << "Epoch " << epoch + 1 << "/" << num_epoch << " - " << measure.timeMs(epoch)
+                  << "ms/step - loss: ";
+        std::cout.precision(4);
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
-          std::cout << "[Epoch " << epoch << "] Output [" << i << "] Loss: "
-                    << losses[i] / num_sample /* << ", Accuracy: " << accuracy*/ << std::endl;
+          std::cout << "[" << i << "] " << losses[i] / num_sample;
         }
+        std::cout /* << "- accuracy: " << accuracy*/ << std::endl;
       }
     });
 
