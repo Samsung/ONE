@@ -96,6 +96,12 @@ TIMESTAMP_INSTALL=$(WORKSPACE)/INSTALL
 export NNFW_WORKSPACE=$(WORKSPACE)
 
 ###
+### Common environment variable for compiler module
+###
+NNCC_FOLDER=Product/$(WORKFOLDER)/nncc
+export NNCC_WORKSPACE=$(NNCC_FOLDER)
+
+###
 ### Default target
 ###
 all: install
@@ -103,6 +109,8 @@ all: install
 ###
 ### Command (public)
 ###
+prepare-nncc: prepare_nncc_internal
+
 configure: configure_internal
 
 build: build_internal
@@ -134,6 +142,21 @@ create_acl_tar: acl_tar_internal
 ###
 $(WORKSPACE):
 	mkdir -p $@
+
+prepare_nncc_internal: $(WORKSPACE)
+ifneq ($(CROSS_BUILD),1)
+	./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
+		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle05;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
+	./nncc build -j$(NPROCS)
+	cmake --install $(NNCC_FOLDER)
+# install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
+	@mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	@mkdir -p ${OVERLAY_FOLDER}/include/oops
+	@cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
+	@cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
+endif
+	@echo "Done prepare-nncc"
 
 configure_internal: $(WORKSPACE)
 ifneq ($(DEBIAN_BUILD),)
@@ -167,7 +190,12 @@ install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
 	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
 
-install_all_internal: install_internal install_acl_internal
+install_luci_internal:
+	@mkdir -p $(INSTALL_ALIAS)/lib/nnfw/odc
+	@cp $(OVERLAY_FOLDER)/lib/libluci*.so $(INSTALL_ALIAS)/lib/nnfw/odc 2>/dev/null || true
+	@cp $(OVERLAY_FOLDER)/lib/libloco*.so $(INSTALL_ALIAS)/lib/nnfw/odc 2>/dev/null || true
+
+install_all_internal: install_internal install_acl_internal install_luci_internal
 
 test_suite_internal: install_all_internal
 	@echo "packaging test suite"
