@@ -42,6 +42,7 @@ private:
   void quantize_weights(luci::CircleConst *weights);
 
   void visit(luci::CircleConv2D *node);
+  void visit(luci::CircleDepthwiseConv2D *node);
   void visit(luci::CircleNode *);
 };
 
