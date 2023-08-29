@@ -43,24 +43,20 @@ const int kMaxDim = 5;
 
 const loco::DataType S32 = loco::DataType::S32;
 
-using int8 = int8_t;
-using int16 = int16_t;
-using int32 = int32_t;
-
 struct StridedSliceParams
 {
-  int8 start_indices_count = 0;
-  int32 start_indices[kMaxDim];
-  int8 stop_indices_count = 0;
-  int32 stop_indices[kMaxDim];
-  int8 strides_count = 0;
-  int32 strides[kMaxDim];
+  int8_t start_indices_count = 0;
+  int32_t start_indices[kMaxDim];
+  int8_t stop_indices_count = 0;
+  int32_t stop_indices[kMaxDim];
+  int8_t strides_count = 0;
+  int32_t strides[kMaxDim];
 
-  int16 begin_mask = 0;
-  int16 ellipsis_mask = 0;
-  int16 end_mask = 0;
-  int16 new_axis_mask = 0;
-  int16 shrink_axis_mask = 0;
+  int16_t begin_mask = 0;
+  int16_t ellipsis_mask = 0;
+  int16_t end_mask = 0;
+  int16_t new_axis_mask = 0;
+  int16_t shrink_axis_mask = 0;
 };
 
 struct StridedSliceContext
@@ -68,11 +64,11 @@ struct StridedSliceContext
   StridedSliceContext(const luci::CircleStridedSlice *node)
   {
     // check overflow issues
-    assert(static_cast<int16>(node->begin_mask()) == node->begin_mask());
-    assert(static_cast<int16>(node->ellipsis_mask()) == node->ellipsis_mask());
-    assert(static_cast<int16>(node->end_mask()) == node->end_mask());
-    assert(static_cast<int16>(node->new_axis_mask()) == node->new_axis_mask());
-    assert(static_cast<int16>(node->shrink_axis_mask()) == node->shrink_axis_mask());
+    assert(static_cast<int16_t>(node->begin_mask()) == node->begin_mask());
+    assert(static_cast<int16_t>(node->ellipsis_mask()) == node->ellipsis_mask());
+    assert(static_cast<int16_t>(node->end_mask()) == node->end_mask());
+    assert(static_cast<int16_t>(node->new_axis_mask()) == node->new_axis_mask());
+    assert(static_cast<int16_t>(node->shrink_axis_mask()) == node->shrink_axis_mask());
 
     params.begin_mask = node->begin_mask();
     params.ellipsis_mask = node->ellipsis_mask();
@@ -96,7 +92,7 @@ struct StridedSliceContext
 
   // Equivalent input shape after adding axis according to new_axis_mask.
   loco::TensorShape effective_input_shape;
-  uint32_t input_dims = 0;
+  int64_t input_dims = 0;
 };
 
 // Use until std::clamp() is available from C++17.
@@ -113,19 +109,19 @@ inline int Clamp(const int32_t v, const int32_t lo, const int32_t hi)
 // Return the index for the first element along that axis. This index will be a
 // positive integer between [0, axis_size - 1] that can be used to index
 // directly into the data.
-inline int32_t StartForAxis(const StridedSliceParams &params, const loco::TensorShape &input_shape,
-                            uint32_t axis)
+inline int64_t StartForAxis(const StridedSliceParams &params, const loco::TensorShape &input_shape,
+                            int64_t axis)
 {
   const auto begin_mask = params.begin_mask;
   const auto *start_indices = params.start_indices;
   const auto *strides = params.strides;
-  const int32_t axis_size = static_cast<int>(input_shape.dim(axis).value());
+  const int64_t axis_size = static_cast<int>(input_shape.dim(axis).value());
   if (axis_size == 0)
   {
     return 0;
   }
   // Begin with the specified index.
-  int32_t start = start_indices[axis];
+  int64_t start = start_indices[axis];
 
   // begin_mask override
   if (begin_mask & (1 << axis))
@@ -170,14 +166,14 @@ inline int32_t StartForAxis(const StridedSliceParams &params, const loco::Tensor
 // element. ie. So if you were iterating through all elements of a 1D array of
 // size 4, this function would return 4 as the stop, because it is one past the
 // "real" indices of 0, 1, 2 & 3.
-inline int32_t StopForAxis(const StridedSliceParams &params, const loco::TensorShape &input_shape,
-                           int32_t axis, int32_t start_for_axis)
+inline int64_t StopForAxis(const StridedSliceParams &params, const loco::TensorShape &input_shape,
+                           int64_t axis, int64_t start_for_axis)
 {
   const auto end_mask = params.end_mask;
   const auto shrink_axis_mask = params.shrink_axis_mask;
   const auto *stop_indices = params.stop_indices;
   const auto *strides = params.strides;
-  const int32_t axis_size = static_cast<int32_t>(input_shape.dim(axis).value());
+  const int64_t axis_size = static_cast<int64_t>(input_shape.dim(axis).value());
   if (axis_size == 0)
   {
     return 0;
@@ -185,7 +181,7 @@ inline int32_t StopForAxis(const StridedSliceParams &params, const loco::TensorS
 
   // Begin with the specified index
   const bool shrink_axis = shrink_axis_mask & (1 << axis);
-  int32_t stop = stop_indices[axis];
+  int64_t stop = stop_indices[axis];
 
   // When shrinking an axis, the end position does not matter (and can be
   // incorrect when negative indexing is used, see Issue #19260). Always use
@@ -249,9 +245,9 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
 
   // Count indexes where the new_axis_mask is set but the ellipsis_mask is not.
   loco::TensorShape begin_shape = luci::shape_get(op_context->begin).as<loco::TensorShape>();
-  const uint32_t begin_count = begin_shape.dim(0).value();
-  uint32_t num_add_axis = 0;
-  for (uint32_t i = 0; i < begin_count; ++i)
+  const int64_t begin_count = static_cast<int64_t>(begin_shape.dim(0).value());
+  int64_t num_add_axis = 0;
+  for (int64_t i = 0; i < begin_count; ++i)
   {
     if (!((1 << i) & op_context->params.ellipsis_mask) &&
         ((1 << i) & op_context->params.new_axis_mask))
@@ -261,21 +257,21 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   }
 
   // Calculate the dims of input after adding new axises.
-  const uint32_t effective_dims = op_context->input_dims + num_add_axis;
+  const int64_t effective_dims = op_context->input_dims + num_add_axis;
 
   // If begin, end and strides are not fully provided, it means Ellipsis should
   // be expanded to multiple dimensions (Ex: for spec [Ellipsis, 2] on a 3D
   // input, the Ellipsis should be applied for the first 2 dimensions). Besides,
   // If the new_axis_mask and the ellipsis_mask are set at the same index, the
   // new_axis_mask will have no effect.
-  int32_t effective_ellipsis_mask = 0, effective_new_axis_mask = 0;
-  uint32_t ellipsis_start_idx = effective_dims, expanded_ellipsis = 0;
-  for (uint32_t i = 0; i < effective_dims;)
+  int64_t effective_ellipsis_mask = 0, effective_new_axis_mask = 0;
+  int64_t ellipsis_start_idx = effective_dims, expanded_ellipsis = 0;
+  for (int64_t i = 0; i < effective_dims;)
   {
     if ((1 << i) & op_context->params.ellipsis_mask)
     {
       ellipsis_start_idx = i;
-      uint32_t ellipsis_end_idx =
+      int64_t ellipsis_end_idx =
         std::max(i + 1, std::min(i + 1 + num_add_axis + op_context->input_dims - begin_count,
                                  effective_dims));
       expanded_ellipsis = ellipsis_end_idx - ellipsis_start_idx - 1;
@@ -297,15 +293,15 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
 
   // Calculate effective_input_shape and its corresponding begin, end, strides.
   loco::TensorShape input_shape = luci::shape_get(op_context->input).as<loco::TensorShape>();
-  uint32_t added_ellipsis = 0, added_axises = 0;
+  int64_t added_ellipsis = 0, added_axises = 0;
   op_context->effective_input_shape.rank(effective_dims);
 
-  for (uint32_t i = 0; i < effective_dims; ++i)
+  for (int64_t i = 0; i < effective_dims; ++i)
   {
     if ((1 << i) & effective_ellipsis_mask)
     {
       // If ellipsis_mask, set the begin_mask and end_mask at that index.
-      added_ellipsis = std::max(0u, i - ellipsis_start_idx);
+      added_ellipsis = std::max(0l, i - ellipsis_start_idx);
       assert(i < 16);
       op_params.begin_mask |= (1 << i);
       op_params.end_mask |= (1 << i);
@@ -334,7 +330,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
     }
     else
     {
-      const uint32_t orig_idx = i - added_ellipsis;
+      const int64_t orig_idx = i - added_ellipsis;
       op_params.start_indices[i] = op_context->begin->at<S32>(orig_idx);
       op_params.stop_indices[i] = op_context->end->at<S32>(orig_idx);
       op_params.strides[i] = op_context->strides->at<S32>(orig_idx);
@@ -358,7 +354,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   }
 
   // make sure no overflow
-  assert(static_cast<int8>(effective_dims) == static_cast<int32_t>(effective_dims));
+  assert(static_cast<int8_t>(effective_dims) == static_cast<int32_t>(effective_dims));
 
   op_params.start_indices_count = effective_dims;
   op_params.stop_indices_count = effective_dims;
@@ -403,15 +399,15 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   StridedSliceContext op_context(node);
   auto op_params = BuildStridedSliceParams(&op_context);
   auto effective_input_shape = op_context.effective_input_shape;
-  std::vector<int32_t> output_shape_vector;
+  std::vector<int64_t> output_shape_vector;
 
   for (int32_t idx = effective_input_shape.rank() - 1; idx >= 0; --idx)
   {
     int32_t stride = op_params.strides[idx];
     LUCI_ASSERT(stride != 0, "stride value has to be non-zero");
 
-    int32_t begin = StartForAxis(op_params, effective_input_shape, idx);
-    int32_t end = StopForAxis(op_params, effective_input_shape, idx, begin);
+    int64_t begin = StartForAxis(op_params, effective_input_shape, idx);
+    int64_t end = StopForAxis(op_params, effective_input_shape, idx, begin);
 
     // When shrinking an axis, the end position does not matter (and can be
     // incorrect when negative indexing is used, see Issue #19260). Always use
@@ -424,7 +420,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
     }
 
     // This is valid for both positive and negative strides
-    int32_t dim_shape = std::ceil((end - begin) / static_cast<float>(stride));
+    int64_t dim_shape = std::ceil((end - begin) / static_cast<float>(stride));
     dim_shape = dim_shape < 0 ? 0 : dim_shape;
     if (!shrink_axis)
     {
