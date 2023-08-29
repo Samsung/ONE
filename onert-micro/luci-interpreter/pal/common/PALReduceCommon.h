@@ -26,9 +26,10 @@ namespace
 {
 // This method parses the input 'axis' to remove duplicates and handle negative
 // values, and returns a valid 'out_axis'
-inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis,
+inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis,
                         int *out_num_axis)
 {
+  int out_axis[2];
   *out_num_axis = 0; // Just in case.
   // Short-circuit axis resolution for scalars; the axis will go unused.
   if (num_dims == 0)
@@ -71,7 +72,7 @@ inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_a
 template <typename T>
 inline void ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
                           T *output_data, const int *axis, const int64_t num_axis_dimensions,
-                          int *temp_index, int *resolved_axis, T init_value,
+                          T init_value,
                           const int output_flat_size, T reducer(const T, const T))
 {
   // Return early when input shape has zero dim.
@@ -88,11 +89,12 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
 
   // Resolve axis.
   int num_resolved_axis = 0;
-  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
+  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, &num_resolved_axis))
   {
     return;
   }
 
+  int temp_index[5];
   // Reset input iterator.
   for (int idx = 0; idx < input_num_dims; ++idx)
   {
