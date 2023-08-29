@@ -43,24 +43,20 @@ const int kMaxDim = 5;
 
 const loco::DataType S32 = loco::DataType::S32;
 
-using int8 = int8_t;
-using int16 = int16_t;
-using int32 = int32_t;
-
 struct StridedSliceParams
 {
-  int8 start_indices_count = 0;
-  int32 start_indices[kMaxDim];
-  int8 stop_indices_count = 0;
-  int32 stop_indices[kMaxDim];
-  int8 strides_count = 0;
-  int32 strides[kMaxDim];
+  int8_t start_indices_count = 0;
+  int32_t start_indices[kMaxDim];
+  int8_t stop_indices_count = 0;
+  int32_t stop_indices[kMaxDim];
+  int8_t strides_count = 0;
+  int32_t strides[kMaxDim];
 
-  int16 begin_mask = 0;
-  int16 ellipsis_mask = 0;
-  int16 end_mask = 0;
-  int16 new_axis_mask = 0;
-  int16 shrink_axis_mask = 0;
+  int16_t begin_mask = 0;
+  int16_t ellipsis_mask = 0;
+  int16_t end_mask = 0;
+  int16_t new_axis_mask = 0;
+  int16_t shrink_axis_mask = 0;
 };
 
 struct StridedSliceContext
@@ -68,11 +64,11 @@ struct StridedSliceContext
   StridedSliceContext(const luci::CircleStridedSlice *node)
   {
     // check overflow issues
-    assert(static_cast<int16>(node->begin_mask()) == node->begin_mask());
-    assert(static_cast<int16>(node->ellipsis_mask()) == node->ellipsis_mask());
-    assert(static_cast<int16>(node->end_mask()) == node->end_mask());
-    assert(static_cast<int16>(node->new_axis_mask()) == node->new_axis_mask());
-    assert(static_cast<int16>(node->shrink_axis_mask()) == node->shrink_axis_mask());
+    assert(static_cast<int16_t>(node->begin_mask()) == node->begin_mask());
+    assert(static_cast<int16_t>(node->ellipsis_mask()) == node->ellipsis_mask());
+    assert(static_cast<int16_t>(node->end_mask()) == node->end_mask());
+    assert(static_cast<int16_t>(node->new_axis_mask()) == node->new_axis_mask());
+    assert(static_cast<int16_t>(node->shrink_axis_mask()) == node->shrink_axis_mask());
 
     params.begin_mask = node->begin_mask();
     params.ellipsis_mask = node->ellipsis_mask();
@@ -358,7 +354,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   }
 
   // make sure no overflow
-  assert(static_cast<int8>(effective_dims) == static_cast<int32_t>(effective_dims));
+  assert(static_cast<int8_t>(effective_dims) == static_cast<int32_t>(effective_dims));
 
   op_params.start_indices_count = effective_dims;
   op_params.stop_indices_count = effective_dims;
