@@ -28,6 +28,9 @@ bool QuantizeWeightsPass::run(loco::Graph *g)
   LOGGER(l);
   INFO(l) << "QuantizeWeightsPass Start" << std::endl;
 
+  if (_ctx->input_model_dtype != loco::DataType::FLOAT32)
+    throw std::runtime_error("Weights-only quantization supports float32 input only");
+
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
