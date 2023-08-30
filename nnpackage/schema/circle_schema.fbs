@@ -30,7 +30,7 @@
 // Version 0.3: SHUFFLED16x1FLOAT32 is added.
 // Version 0.4: Base up to TensorFlow Lite v2.7.0 schema.
 // Version 0.5: Base up to TensorFlow Lite v2.10.1 schema.
-// Version 0.5: Base up to TensorFlow Lite v2.13.0 schema.
+// Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 
 namespace circle;
 
