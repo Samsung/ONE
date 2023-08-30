@@ -659,12 +659,12 @@ class TransposeConvPrinter : public OpPrinter
 public:
   void options(const circle::Operator *op, std::ostream &os) const override
   {
-    if (auto conv_params = op->builtin_options_as_TransposeConvOptions())
+    if (auto params = op->builtin_options_as_TransposeConvOptions())
     {
       os << "    ";
-      os << "Padding(" << conv_params->padding() << ") ";
-      os << "Stride.W(" << conv_params->stride_w() << ") ";
-      os << "Stride.H(" << conv_params->stride_h() << ") ";
+      os << "Padding(" << params->padding() << ") ";
+      os << "Stride.W(" << params->stride_w() << ") ";
+      os << "Stride.H(" << params->stride_h() << ") ";
       os << std::endl;
     }
   }
