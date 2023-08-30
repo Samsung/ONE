@@ -72,8 +72,7 @@ inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_a
 template <typename T>
 inline void ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
                           T *output_data, const int *axis, const int64_t num_axis_dimensions,
-                          T init_value,
-                          const int output_flat_size, T reducer(const T, const T))
+                          T init_value, const int output_flat_size, T reducer(const T, const T))
 {
   // Return early when input shape has zero dim.
   for (int i = 0; i < input_num_dims; ++i)
