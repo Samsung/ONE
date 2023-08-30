@@ -43,7 +43,7 @@ public:
   void optimize() override;
 
   void forward(bool training) override;
-  void backward(uint32_t training_step) override;
+  void backward() override;
 
 private:
   std::vector<ITensor *> _input_deriv_tensors;

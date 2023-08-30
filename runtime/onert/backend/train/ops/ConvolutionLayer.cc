@@ -46,7 +46,7 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
-void ConvolutionLayer::backward(uint32_t)
+void ConvolutionLayer::backward()
 {
   // TODO Implement detail
 }

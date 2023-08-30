@@ -40,7 +40,7 @@ void GradientApplier::configure(std::shared_ptr<exec::train::optimizer::Optimize
   _trainable_tensor = trainable;
 }
 
-void GradientApplier::backward(uint32_t training_step)
+void GradientApplier::applyGradient(uint32_t training_step)
 {
   _optimizer->applyGradient(
     std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));

@@ -48,7 +48,7 @@ public:
                  const std::shared_ptr<train::ExternalContext> &external_context);
 
   void forward(bool training) override;
-  void backward(uint32_t training_step) override;
+  void backward() override;
 
 private:
   void backwardFloat32();

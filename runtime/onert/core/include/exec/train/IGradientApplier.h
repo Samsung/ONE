@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
-#define __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
+#ifndef __ONERT_EXEC_TRAIN_IGRADIENT_APPLIER_H__
+#define __ONERT_EXEC_TRAIN_IGRADIENT_APPLIER_H__
 
-#include "exec/train/IGradientApplier.h"
-#include "exec/train/ITrainableFunction.h"
-
-#include <memory>
-#include <vector>
-#include <functional>
+#include <cstdint>
 
 namespace onert
 {
@@ -30,23 +25,22 @@ namespace exec
 {
 namespace train
 {
-class TrainableFnSequence
+
+class IGradientApplier
 {
 public:
-  void forward(bool training);
-  void backward(uint32_t training_step);
+  virtual ~IGradientApplier() = default;
 
-  void append(std::unique_ptr<ITrainableFunction> &&fn);
-  void append(std::unique_ptr<IGradientApplier> &&applier);
-  void iterate(const std::function<void(ITrainableFunction &)> &fn);
-
-public:
-  // TODO Change members
-  std::vector<std::unique_ptr<ITrainableFunction>> _functions;
-  std::vector<std::unique_ptr<IGradientApplier>> _appliers;
+  /**
+   * @brief Apply gradients to a trainable tensor
+   *
+   * @param training_step The number of iterations of the training process.
+   */
+  virtual void applyGradient(uint32_t training_step) = 0;
 };
+
 } // namespace train
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
+#endif // __ONERT_EXEC_TRAIN_IGRADIENT_APPLIER_H__

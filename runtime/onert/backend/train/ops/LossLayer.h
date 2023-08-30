@@ -44,7 +44,7 @@ public:
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                  IPortableTensor *output, IPortableTensor *deriv_y_pred, LossType loss_type);
   void forward(bool training) override;
-  void backward(uint32_t) override;
+  void backward() override;
 
 private:
   const IPortableTensor *_y_pred;
