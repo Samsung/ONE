@@ -17,8 +17,14 @@
 #ifndef __ONERT_TRAIN_MEASURE_H__
 #define __ONERT_TRAIN_MEASURE_H__
 
+#include "benchmark/MemoryInfo.h"
+#include "benchmark/MemoryPoller.h"
+
 #include <algorithm>
 #include <ctime>
+#include <iostream>
+#include <iomanip>
+#include <numeric>
 #include <vector>
 
 namespace
@@ -34,55 +40,226 @@ uint64_t nowMicros()
 namespace onert_train
 {
 
+enum PhaseType
+{
+  MODEL_LOAD,
+  PREPARE,
+  EXECUTE,
+  END_OF_PHASE
+};
+
+const std::string getPhaseTypeStr(PhaseType type)
+{
+  switch (type)
+  {
+    case MODEL_LOAD:
+      return "MODEL_LOAD";
+    case PREPARE:
+      return "PREPARE";
+    case EXECUTE:
+      return "EXECUTE";
+    default:
+      throw std::runtime_error("Invalid phase type");
+  }
+}
+
+benchmark::PhaseEnum convertToPhaseEnum(PhaseType type)
+{
+  switch (type)
+  {
+    case MODEL_LOAD:
+      return benchmark::PhaseEnum::MODEL_LOAD;
+    case PREPARE:
+      return benchmark::PhaseEnum::PREPARE;
+    case EXECUTE:
+      return benchmark::PhaseEnum::EXECUTE;
+    default:
+      throw std::runtime_error("Invalid phase type");
+  }
+}
+
+enum AggregateType
+{
+  AVERAGE,
+  SUM,
+  END_OF_AGGREGATE_TYPE
+};
+
+enum MemoryType
+{
+  RSS,
+  HWM,
+  PSS,
+  END_OF_MEM_TYPE
+};
+
+const std::string getMemoryTypeStr(MemoryType type)
+{
+  switch (type)
+  {
+    case RSS:
+      return "RSS";
+    case HWM:
+      return "HWM";
+    case PSS:
+      return "PSS";
+    default:
+      throw std::runtime_error("Invalid memory type");
+  }
+}
+
 struct Step
 {
   uint64_t time; // us
-  // TODO Support memory usage
+};
+
+struct Phase
+{
+  uint64_t time;                                // us
+  uint32_t memory[MemoryType::END_OF_MEM_TYPE]; // kB
 };
 
 class Measure
 {
 public:
-  Measure() = default;
+  Measure(bool check_mem_poll) : _check_mem_poll(check_mem_poll)
+  {
+    if (_check_mem_poll)
+    {
+      assert(benchmark::prepareVmRSS());
+      _mem_poll = std::make_unique<benchmark::MemoryPoller>(std::chrono::milliseconds(100), false);
+    }
+  }
 
   void set(const int epoch, const int step)
   {
-    _results.clear();
-    _results.resize(epoch);
-    std::for_each(_results.begin(), _results.end(), [step](auto &v) { v.resize(step); });
+    _step_results.clear();
+    _step_results.resize(epoch);
+    std::for_each(_step_results.begin(), _step_results.end(), [step](auto &v) { v.resize(step); });
+  }
+
+  void run(const PhaseType phaseType, const std::function<void()> &func)
+  {
+    auto phaseEnum = convertToPhaseEnum(phaseType);
+
+    if (_check_mem_poll)
+    {
+      _mem_poll->start(phaseEnum);
+    }
+    _phase_results[phaseType].time = nowMicros();
+
+    func();
+
+    _phase_results[phaseType].time = nowMicros() - _phase_results[phaseType].time;
+    if (_check_mem_poll)
+    {
+      _mem_poll->end(phaseEnum);
+
+      _phase_results[phaseType].memory[MemoryType::RSS] = _mem_poll->getRssMap().at(phaseEnum);
+      _phase_results[phaseType].memory[MemoryType::HWM] = _mem_poll->getHwmMap().at(phaseEnum);
+      _phase_results[phaseType].memory[MemoryType::PSS] = _mem_poll->getPssMap().at(phaseEnum);
+    }
   }
 
   void run(const int epoch, const int step, const std::function<void()> &func)
   {
-    if (_results.empty() || _results.size() <= epoch || _results[epoch].size() <= step)
+    if (_step_results.empty() || _step_results.size() <= epoch ||
+        _step_results[epoch].size() <= step)
     {
       throw std::runtime_error("Please set the number of epochs and steps first");
     }
 
-    _results[epoch][step].time = nowMicros();
+    _step_results[epoch][step].time = nowMicros();
 
     func();
 
-    _results[epoch][step].time = nowMicros() - _results[epoch][step].time;
+    _step_results[epoch][step].time = nowMicros() - _step_results[epoch][step].time;
   }
 
-  double timeMicros(const int epoch)
+  double sumTimeMicro(const int epoch)
   {
-    if (_results.empty() || _results.size() <= epoch)
+    double sum = 0u;
+    std::for_each(_step_results[epoch].begin(), _step_results[epoch].end(),
+                  [&sum](auto &v) { sum += v.time; });
+    return sum;
+  }
+
+  double timeMicros(const int epoch, const AggregateType aggType)
+  {
+    if (_step_results.empty() || _step_results.size() <= epoch)
     {
       throw std::runtime_error("Invalid epoch");
     }
 
-    double sum = 0u;
-    std::for_each(_results[epoch].begin(), _results[epoch].end(),
-                  [&sum](auto &v) { sum += v.time; });
-    return sum / _results[epoch].size();
+    switch (aggType)
+    {
+      case AVERAGE:
+        return sumTimeMicro(epoch) / _step_results[epoch].size();
+      case SUM:
+        return sumTimeMicro(epoch);
+      default:
+        throw std::runtime_error("Invalid aggregate type");
+    }
   }
 
-  double timeMs(const int epoch) { return timeMicros(epoch) / 1e3; }
+  void printTimeMs(const int epoch, const AggregateType aggType)
+  {
+    std::cout.precision(3);
+    std::cout << " - time: " << timeMicros(epoch, aggType) / 1e3 << "ms/step";
+  }
+
+  void printResultTime()
+  {
+    std::cout << "===================================" << std::endl;
+    for (int i = 0; i < PhaseType::END_OF_PHASE; ++i)
+    {
+      auto type = static_cast<PhaseType>(i);
+      std::cout << std::setw(12) << std::left << getPhaseTypeStr(type) << " takes "
+                << _phase_results[type].time / 1e3 << " ms" << std::endl;
+      if (i == PhaseType::EXECUTE)
+      {
+        for (int j = 0; j < _step_results.size(); ++j)
+        {
+          std::cout << "- "
+                    << "Epoch " << j + 1 << std::setw(12) << std::right << " takes "
+                    << timeMicros(j, AggregateType::SUM) / 1e3 << " ms" << std::endl;
+        }
+      }
+    }
+    std::cout << "===================================" << std::endl;
+  }
+
+  void printResultMemory()
+  {
+    for (int i = 0; i < MemoryType::END_OF_MEM_TYPE; ++i)
+    {
+      auto type = static_cast<MemoryType>(i);
+      std::cout << getMemoryTypeStr(type) << std::endl;
+      for (int j = 0; j < PhaseType::END_OF_PHASE; ++j)
+      {
+        auto phaseType = static_cast<PhaseType>(j);
+        std::cout << "- " << std::setw(12) << std::left << getPhaseTypeStr(phaseType) << " takes "
+                  << _phase_results[phaseType].memory[i] << " kb" << std::endl;
+      }
+      std::cout << "===================================" << std::endl;
+    }
+  }
+
+  void printResult()
+  {
+    printResultTime();
+    if (_check_mem_poll)
+    {
+      printResultMemory();
+    }
+  }
 
 private:
-  std::vector<std::vector<Step>> _results;
+  std::unordered_map<PhaseType, Phase> _phase_results;
+  std::vector<std::vector<Step>> _step_results;
+
+  bool _check_mem_poll;
+  std::unique_ptr<benchmark::MemoryPoller> _mem_poll;
 };
 
 } // namespace onert_train
