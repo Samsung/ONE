@@ -45,6 +45,9 @@ struct DimensionMetadataBuilder;
 struct SparsityParameters;
 struct SparsityParametersBuilder;
 
+struct VariantSubType;
+struct VariantSubTypeBuilder;
+
 struct Tensor;
 struct TensorBuilder;
 
@@ -411,6 +414,21 @@ struct UnsortedSegmentSumOptionsBuilder;
 struct ATan2Options;
 struct ATan2OptionsBuilder;
 
+struct UnsortedSegmentMinOptions;
+struct UnsortedSegmentMinOptionsBuilder;
+
+struct SignOptions;
+struct SignOptionsBuilder;
+
+struct BitcastOptions;
+struct BitcastOptionsBuilder;
+
+struct BitwiseXorOptions;
+struct BitwiseXorOptionsBuilder;
+
+struct RightShiftOptions;
+struct RightShiftOptionsBuilder;
+
 struct BCQGatherOptions;
 struct BCQGatherOptionsBuilder;
 
@@ -463,33 +481,34 @@ enum TensorType : int8_t
   TensorType_VARIANT = 14,
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
+  TensorType_INT4 = 17,
   TensorType_MIN = TensorType_FLOAT32,
-  TensorType_MAX = TensorType_UINT16
+  TensorType_MAX = TensorType_INT4
 };
 
-inline const TensorType (&EnumValuesTensorType())[17]
+inline const TensorType (&EnumValuesTensorType())[18]
 {
   static const TensorType values[] = {
     TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,   TensorType_UINT8,
     TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,    TensorType_INT16,
     TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64, TensorType_COMPLEX128,
     TensorType_UINT64,    TensorType_RESOURCE, TensorType_VARIANT, TensorType_UINT32,
-    TensorType_UINT16};
+    TensorType_UINT16,    TensorType_INT4};
   return values;
 }
 
 inline const char *const *EnumNamesTensorType()
 {
-  static const char *const names[18] = {"FLOAT32", "FLOAT16",    "INT32",  "UINT8",     "INT64",
+  static const char *const names[19] = {"FLOAT32", "FLOAT16",    "INT32",  "UINT8",     "INT64",
                                         "STRING",  "BOOL",       "INT16",  "COMPLEX64", "INT8",
                                         "FLOAT64", "COMPLEX128", "UINT64", "RESOURCE",  "VARIANT",
-                                        "UINT32",  "UINT16",     nullptr};
+                                        "UINT32",  "UINT16",     "INT4",   nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (flatbuffers::IsOutRange(e, TensorType_FLOAT32, TensorType_UINT16))
+  if (flatbuffers::IsOutRange(e, TensorType_FLOAT32, TensorType_INT4))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesTensorType()[index];
@@ -789,11 +808,16 @@ enum BuiltinOperator : int32_t
   BuiltinOperator_UNSORTED_SEGMENT_MAX = 154,
   BuiltinOperator_UNSORTED_SEGMENT_SUM = 155,
   BuiltinOperator_ATAN2 = 156,
+  BuiltinOperator_UNSORTED_SEGMENT_MIN = 157,
+  BuiltinOperator_SIGN = 158,
+  BuiltinOperator_BITCAST = 159,
+  BuiltinOperator_BITWISE_XOR = 160,
+  BuiltinOperator_RIGHT_SHIFT = 161,
   BuiltinOperator_MIN = BuiltinOperator_BCQ_GATHER,
-  BuiltinOperator_MAX = BuiltinOperator_ATAN2
+  BuiltinOperator_MAX = BuiltinOperator_RIGHT_SHIFT
 };
 
-inline const BuiltinOperator (&EnumValuesBuiltinOperator())[160]
+inline const BuiltinOperator (&EnumValuesBuiltinOperator())[165]
 {
   static const BuiltinOperator values[] = {BuiltinOperator_BCQ_GATHER,
                                            BuiltinOperator_BCQ_FULLY_CONNECTED,
@@ -954,13 +978,18 @@ inline const BuiltinOperator (&EnumValuesBuiltinOperator())[160]
                                            BuiltinOperator_UNSORTED_SEGMENT_PROD,
                                            BuiltinOperator_UNSORTED_SEGMENT_MAX,
                                            BuiltinOperator_UNSORTED_SEGMENT_SUM,
-                                           BuiltinOperator_ATAN2};
+                                           BuiltinOperator_ATAN2,
+                                           BuiltinOperator_UNSORTED_SEGMENT_MIN,
+                                           BuiltinOperator_SIGN,
+                                           BuiltinOperator_BITCAST,
+                                           BuiltinOperator_BITWISE_XOR,
+                                           BuiltinOperator_RIGHT_SHIFT};
   return values;
 }
 
 inline const char *const *EnumNamesBuiltinOperator()
 {
-  static const char *const names[162] = {"BCQ_GATHER",
+  static const char *const names[167] = {"BCQ_GATHER",
                                          "BCQ_FULLY_CONNECTED",
                                          "INSTANCE_NORM",
                                          "",
@@ -1121,13 +1150,18 @@ inline const char *const *EnumNamesBuiltinOperator()
                                          "UNSORTED_SEGMENT_MAX",
                                          "UNSORTED_SEGMENT_SUM",
                                          "ATAN2",
+                                         "UNSORTED_SEGMENT_MIN",
+                                         "SIGN",
+                                         "BITCAST",
+                                         "BITWISE_XOR",
+                                         "RIGHT_SHIFT",
                                          nullptr};
   return names;
 }
 
 inline const char *EnumNameBuiltinOperator(BuiltinOperator e)
 {
-  if (flatbuffers::IsOutRange(e, BuiltinOperator_BCQ_GATHER, BuiltinOperator_ATAN2))
+  if (flatbuffers::IsOutRange(e, BuiltinOperator_BCQ_GATHER, BuiltinOperator_RIGHT_SHIFT))
     return "";
   const size_t index = static_cast<size_t>(e) - static_cast<size_t>(BuiltinOperator_BCQ_GATHER);
   return EnumNamesBuiltinOperator()[index];
@@ -1255,8 +1289,13 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_DynamicUpdateSliceOptions = 117,
   BuiltinOptions_UnsortedSegmentProdOptions = 118,
   BuiltinOptions_UnsortedSegmentMaxOptions = 119,
-  BuiltinOptions_UnsortedSegmentSumOptions = 120,
-  BuiltinOptions_ATan2Options = 121,
+  BuiltinOptions_UnsortedSegmentMinOptions = 120,
+  BuiltinOptions_UnsortedSegmentSumOptions = 121,
+  BuiltinOptions_ATan2Options = 122,
+  BuiltinOptions_SignOptions = 123,
+  BuiltinOptions_BitcastOptions = 124,
+  BuiltinOptions_BitwiseXorOptions = 125,
+  BuiltinOptions_RightShiftOptions = 126,
   BuiltinOptions_BCQGatherOptions = 252,
   BuiltinOptions_BCQFullyConnectedOptions = 253,
   BuiltinOptions_InstanceNormOptions = 254,
@@ -1264,7 +1303,7 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_MAX = BuiltinOptions_InstanceNormOptions
 };
 
-inline const BuiltinOptions (&EnumValuesBuiltinOptions())[125]
+inline const BuiltinOptions (&EnumValuesBuiltinOptions())[130]
 {
   static const BuiltinOptions values[] = {BuiltinOptions_NONE,
                                           BuiltinOptions_Conv2DOptions,
@@ -1386,8 +1425,13 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[125]
                                           BuiltinOptions_DynamicUpdateSliceOptions,
                                           BuiltinOptions_UnsortedSegmentProdOptions,
                                           BuiltinOptions_UnsortedSegmentMaxOptions,
+                                          BuiltinOptions_UnsortedSegmentMinOptions,
                                           BuiltinOptions_UnsortedSegmentSumOptions,
                                           BuiltinOptions_ATan2Options,
+                                          BuiltinOptions_SignOptions,
+                                          BuiltinOptions_BitcastOptions,
+                                          BuiltinOptions_BitwiseXorOptions,
+                                          BuiltinOptions_RightShiftOptions,
                                           BuiltinOptions_BCQGatherOptions,
                                           BuiltinOptions_BCQFullyConnectedOptions,
                                           BuiltinOptions_InstanceNormOptions};
@@ -1516,13 +1560,13 @@ inline const char *const *EnumNamesBuiltinOptions()
                                          "DynamicUpdateSliceOptions",
                                          "UnsortedSegmentProdOptions",
                                          "UnsortedSegmentMaxOptions",
+                                         "UnsortedSegmentMinOptions",
                                          "UnsortedSegmentSumOptions",
                                          "ATan2Options",
-                                         "",
-                                         "",
-                                         "",
-                                         "",
-                                         "",
+                                         "SignOptions",
+                                         "BitcastOptions",
+                                         "BitwiseXorOptions",
+                                         "RightShiftOptions",
                                          "",
                                          "",
                                          "",
@@ -2263,6 +2307,11 @@ template <> struct BuiltinOptionsTraits<circle::UnsortedSegmentMaxOptions>
   static const BuiltinOptions enum_value = BuiltinOptions_UnsortedSegmentMaxOptions;
 };
 
+template <> struct BuiltinOptionsTraits<circle::UnsortedSegmentMinOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_UnsortedSegmentMinOptions;
+};
+
 template <> struct BuiltinOptionsTraits<circle::UnsortedSegmentSumOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_UnsortedSegmentSumOptions;
@@ -2271,6 +2320,26 @@ template <> struct BuiltinOptionsTraits<circle::UnsortedSegmentSumOptions>
 template <> struct BuiltinOptionsTraits<circle::ATan2Options>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_ATan2Options;
+};
+
+template <> struct BuiltinOptionsTraits<circle::SignOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_SignOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::BitcastOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_BitcastOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::BitwiseXorOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_BitwiseXorOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::RightShiftOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_RightShiftOptions;
 };
 
 template <> struct BuiltinOptionsTraits<circle::BCQGatherOptions>
@@ -3204,6 +3273,81 @@ inline flatbuffers::Offset<SparsityParameters> CreateSparsityParametersDirect(
   return circle::CreateSparsityParameters(_fbb, traversal_order__, block_map__, dim_metadata__);
 }
 
+struct VariantSubType FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef VariantSubTypeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_SHAPE = 4,
+    VT_TYPE = 6,
+    VT_HAS_RANK = 8
+  };
+  const flatbuffers::Vector<int32_t> *shape() const
+  {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SHAPE);
+  }
+  circle::TensorType type() const
+  {
+    return static_cast<circle::TensorType>(GetField<int8_t>(VT_TYPE, 0));
+  }
+  bool has_rank() const { return GetField<uint8_t>(VT_HAS_RANK, 0) != 0; }
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SHAPE) &&
+           verifier.VerifyVector(shape()) && VerifyField<int8_t>(verifier, VT_TYPE) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_RANK) && verifier.EndTable();
+  }
+};
+
+struct VariantSubTypeBuilder
+{
+  typedef VariantSubType Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape)
+  {
+    fbb_.AddOffset(VariantSubType::VT_SHAPE, shape);
+  }
+  void add_type(circle::TensorType type)
+  {
+    fbb_.AddElement<int8_t>(VariantSubType::VT_TYPE, static_cast<int8_t>(type), 0);
+  }
+  void add_has_rank(bool has_rank)
+  {
+    fbb_.AddElement<uint8_t>(VariantSubType::VT_HAS_RANK, static_cast<uint8_t>(has_rank), 0);
+  }
+  explicit VariantSubTypeBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<VariantSubType> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<VariantSubType>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<VariantSubType>
+CreateVariantSubType(flatbuffers::FlatBufferBuilder &_fbb,
+                     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape = 0,
+                     circle::TensorType type = circle::TensorType_FLOAT32, bool has_rank = false)
+{
+  VariantSubTypeBuilder builder_(_fbb);
+  builder_.add_shape(shape);
+  builder_.add_has_rank(has_rank);
+  builder_.add_type(type);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<VariantSubType> CreateVariantSubTypeDirect(
+  flatbuffers::FlatBufferBuilder &_fbb, const std::vector<int32_t> *shape = nullptr,
+  circle::TensorType type = circle::TensorType_FLOAT32, bool has_rank = false)
+{
+  auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
+  return circle::CreateVariantSubType(_fbb, shape__, type, has_rank);
+}
+
 struct Tensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
 {
   typedef TensorBuilder Builder;
@@ -3217,7 +3361,8 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_IS_VARIABLE = 14,
     VT_SPARSITY = 16,
     VT_SHAPE_SIGNATURE = 18,
-    VT_HAS_RANK = 20
+    VT_HAS_RANK = 20,
+    VT_VARIANT_TENSORS = 22
   };
   const flatbuffers::Vector<int32_t> *shape() const
   {
@@ -3246,6 +3391,11 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SHAPE_SIGNATURE);
   }
   bool has_rank() const { return GetField<uint8_t>(VT_HAS_RANK, 0) != 0; }
+  const flatbuffers::Vector<flatbuffers::Offset<circle::VariantSubType>> *variant_tensors() const
+  {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<circle::VariantSubType>> *>(
+      VT_VARIANT_TENSORS);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SHAPE) &&
@@ -3255,7 +3405,9 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            verifier.VerifyTable(quantization()) && VerifyField<uint8_t>(verifier, VT_IS_VARIABLE) &&
            VerifyOffset(verifier, VT_SPARSITY) && verifier.VerifyTable(sparsity()) &&
            VerifyOffset(verifier, VT_SHAPE_SIGNATURE) && verifier.VerifyVector(shape_signature()) &&
-           VerifyField<uint8_t>(verifier, VT_HAS_RANK) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_HAS_RANK) &&
+           VerifyOffset(verifier, VT_VARIANT_TENSORS) && verifier.VerifyVector(variant_tensors()) &&
+           verifier.VerifyVectorOfTables(variant_tensors()) && verifier.EndTable();
   }
 };
 
@@ -3297,6 +3449,12 @@ struct TensorBuilder
   {
     fbb_.AddElement<uint8_t>(Tensor::VT_HAS_RANK, static_cast<uint8_t>(has_rank), 0);
   }
+  void add_variant_tensors(
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::VariantSubType>>>
+      variant_tensors)
+  {
+    fbb_.AddOffset(Tensor::VT_VARIANT_TENSORS, variant_tensors);
+  }
   explicit TensorBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -3315,9 +3473,12 @@ inline flatbuffers::Offset<Tensor> CreateTensor(
   flatbuffers::Offset<flatbuffers::String> name = 0,
   flatbuffers::Offset<circle::QuantizationParameters> quantization = 0, bool is_variable = false,
   flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
-  flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature = 0, bool has_rank = false)
+  flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature = 0, bool has_rank = false,
+  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::VariantSubType>>>
+    variant_tensors = 0)
 {
   TensorBuilder builder_(_fbb);
+  builder_.add_variant_tensors(variant_tensors);
   builder_.add_shape_signature(shape_signature);
   builder_.add_sparsity(sparsity);
   builder_.add_quantization(quantization);
@@ -3335,13 +3496,18 @@ inline flatbuffers::Offset<Tensor> CreateTensorDirect(
   circle::TensorType type = circle::TensorType_FLOAT32, uint32_t buffer = 0,
   const char *name = nullptr, flatbuffers::Offset<circle::QuantizationParameters> quantization = 0,
   bool is_variable = false, flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
-  const std::vector<int32_t> *shape_signature = nullptr, bool has_rank = false)
+  const std::vector<int32_t> *shape_signature = nullptr, bool has_rank = false,
+  const std::vector<flatbuffers::Offset<circle::VariantSubType>> *variant_tensors = nullptr)
 {
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto shape_signature__ = shape_signature ? _fbb.CreateVector<int32_t>(*shape_signature) : 0;
+  auto variant_tensors__ =
+    variant_tensors
+      ? _fbb.CreateVector<flatbuffers::Offset<circle::VariantSubType>>(*variant_tensors)
+      : 0;
   return circle::CreateTensor(_fbb, shape__, type, buffer, name__, quantization, is_variable,
-                              sparsity, shape_signature__, has_rank);
+                              sparsity, shape_signature__, has_rank, variant_tensors__);
 }
 
 struct Conv2DOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
@@ -4668,7 +4834,8 @@ struct UnidirectionalSequenceLSTMOptions FLATBUFFERS_FINAL_CLASS : private flatb
     VT_CELL_CLIP = 6,
     VT_PROJ_CLIP = 8,
     VT_TIME_MAJOR = 10,
-    VT_ASYMMETRIC_QUANTIZE_INPUTS = 12
+    VT_ASYMMETRIC_QUANTIZE_INPUTS = 12,
+    VT_DIAGONAL_RECURRENT_TENSORS = 14
   };
   circle::ActivationFunctionType fused_activation_function() const
   {
@@ -4682,6 +4849,10 @@ struct UnidirectionalSequenceLSTMOptions FLATBUFFERS_FINAL_CLASS : private flatb
   {
     return GetField<uint8_t>(VT_ASYMMETRIC_QUANTIZE_INPUTS, 0) != 0;
   }
+  bool diagonal_recurrent_tensors() const
+  {
+    return GetField<uint8_t>(VT_DIAGONAL_RECURRENT_TENSORS, 0) != 0;
+  }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) &&
@@ -4689,7 +4860,8 @@ struct UnidirectionalSequenceLSTMOptions FLATBUFFERS_FINAL_CLASS : private flatb
            VerifyField<float>(verifier, VT_CELL_CLIP) &&
            VerifyField<float>(verifier, VT_PROJ_CLIP) &&
            VerifyField<uint8_t>(verifier, VT_TIME_MAJOR) &&
-           VerifyField<uint8_t>(verifier, VT_ASYMMETRIC_QUANTIZE_INPUTS) && verifier.EndTable();
+           VerifyField<uint8_t>(verifier, VT_ASYMMETRIC_QUANTIZE_INPUTS) &&
+           VerifyField<uint8_t>(verifier, VT_DIAGONAL_RECURRENT_TENSORS) && verifier.EndTable();
   }
 };
 
@@ -4721,6 +4893,11 @@ struct UnidirectionalSequenceLSTMOptionsBuilder
     fbb_.AddElement<uint8_t>(UnidirectionalSequenceLSTMOptions::VT_ASYMMETRIC_QUANTIZE_INPUTS,
                              static_cast<uint8_t>(asymmetric_quantize_inputs), 0);
   }
+  void add_diagonal_recurrent_tensors(bool diagonal_recurrent_tensors)
+  {
+    fbb_.AddElement<uint8_t>(UnidirectionalSequenceLSTMOptions::VT_DIAGONAL_RECURRENT_TENSORS,
+                             static_cast<uint8_t>(diagonal_recurrent_tensors), 0);
+  }
   explicit UnidirectionalSequenceLSTMOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
     : fbb_(_fbb)
   {
@@ -4739,11 +4916,12 @@ CreateUnidirectionalSequenceLSTMOptions(
   flatbuffers::FlatBufferBuilder &_fbb,
   circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
   float cell_clip = 0.0f, float proj_clip = 0.0f, bool time_major = false,
-  bool asymmetric_quantize_inputs = false)
+  bool asymmetric_quantize_inputs = false, bool diagonal_recurrent_tensors = false)
 {
   UnidirectionalSequenceLSTMOptionsBuilder builder_(_fbb);
   builder_.add_proj_clip(proj_clip);
   builder_.add_cell_clip(cell_clip);
+  builder_.add_diagonal_recurrent_tensors(diagonal_recurrent_tensors);
   builder_.add_asymmetric_quantize_inputs(asymmetric_quantize_inputs);
   builder_.add_time_major(time_major);
   builder_.add_fused_activation_function(fused_activation_function);
@@ -6457,7 +6635,8 @@ struct TransposeConvOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   {
     VT_PADDING = 4,
     VT_STRIDE_W = 6,
-    VT_STRIDE_H = 8
+    VT_STRIDE_H = 8,
+    VT_FUSED_ACTIVATION_FUNCTION = 10
   };
   circle::Padding padding() const
   {
@@ -6465,11 +6644,17 @@ struct TransposeConvOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   int32_t stride_w() const { return GetField<int32_t>(VT_STRIDE_W, 0); }
   int32_t stride_h() const { return GetField<int32_t>(VT_STRIDE_H, 0); }
+  circle::ActivationFunctionType fused_activation_function() const
+  {
+    return static_cast<circle::ActivationFunctionType>(
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) && VerifyField<int8_t>(verifier, VT_PADDING) &&
            VerifyField<int32_t>(verifier, VT_STRIDE_W) &&
-           VerifyField<int32_t>(verifier, VT_STRIDE_H) && verifier.EndTable();
+           VerifyField<int32_t>(verifier, VT_STRIDE_H) &&
+           VerifyField<int8_t>(verifier, VT_FUSED_ACTIVATION_FUNCTION) && verifier.EndTable();
   }
 };
 
@@ -6490,6 +6675,11 @@ struct TransposeConvOptionsBuilder
   {
     fbb_.AddElement<int32_t>(TransposeConvOptions::VT_STRIDE_H, stride_h, 0);
   }
+  void add_fused_activation_function(circle::ActivationFunctionType fused_activation_function)
+  {
+    fbb_.AddElement<int8_t>(TransposeConvOptions::VT_FUSED_ACTIVATION_FUNCTION,
+                            static_cast<int8_t>(fused_activation_function), 0);
+  }
   explicit TransposeConvOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -6502,14 +6692,15 @@ struct TransposeConvOptionsBuilder
   }
 };
 
-inline flatbuffers::Offset<TransposeConvOptions>
-CreateTransposeConvOptions(flatbuffers::FlatBufferBuilder &_fbb,
-                           circle::Padding padding = circle::Padding_SAME, int32_t stride_w = 0,
-                           int32_t stride_h = 0)
+inline flatbuffers::Offset<TransposeConvOptions> CreateTransposeConvOptions(
+  flatbuffers::FlatBufferBuilder &_fbb, circle::Padding padding = circle::Padding_SAME,
+  int32_t stride_w = 0, int32_t stride_h = 0,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
 {
   TransposeConvOptionsBuilder builder_(_fbb);
   builder_.add_stride_h(stride_h);
   builder_.add_stride_w(stride_w);
+  builder_.add_fused_activation_function(fused_activation_function);
   builder_.add_padding(padding);
   return builder_.Finish();
 }
@@ -8914,6 +9105,170 @@ inline flatbuffers::Offset<ATan2Options> CreateATan2Options(flatbuffers::FlatBuf
   return builder_.Finish();
 }
 
+struct UnsortedSegmentMinOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef UnsortedSegmentMinOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct UnsortedSegmentMinOptionsBuilder
+{
+  typedef UnsortedSegmentMinOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit UnsortedSegmentMinOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<UnsortedSegmentMinOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<UnsortedSegmentMinOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<UnsortedSegmentMinOptions>
+CreateUnsortedSegmentMinOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  UnsortedSegmentMinOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SignOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef SignOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct SignOptionsBuilder
+{
+  typedef SignOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit SignOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SignOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SignOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SignOptions> CreateSignOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  SignOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BitcastOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef BitcastOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct BitcastOptionsBuilder
+{
+  typedef BitcastOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit BitcastOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BitcastOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BitcastOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BitcastOptions>
+CreateBitcastOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  BitcastOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BitwiseXorOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef BitwiseXorOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct BitwiseXorOptionsBuilder
+{
+  typedef BitwiseXorOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit BitwiseXorOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<BitwiseXorOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<BitwiseXorOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<BitwiseXorOptions>
+CreateBitwiseXorOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  BitwiseXorOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct RightShiftOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef RightShiftOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct RightShiftOptionsBuilder
+{
+  typedef RightShiftOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit RightShiftOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<RightShiftOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<RightShiftOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<RightShiftOptions>
+CreateRightShiftOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  RightShiftOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct BCQGatherOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
 {
   typedef BCQGatherOptionsBuilder Builder;
@@ -9914,6 +10269,12 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
              ? static_cast<const circle::UnsortedSegmentMaxOptions *>(builtin_options())
              : nullptr;
   }
+  const circle::UnsortedSegmentMinOptions *builtin_options_as_UnsortedSegmentMinOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_UnsortedSegmentMinOptions
+             ? static_cast<const circle::UnsortedSegmentMinOptions *>(builtin_options())
+             : nullptr;
+  }
   const circle::UnsortedSegmentSumOptions *builtin_options_as_UnsortedSegmentSumOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_UnsortedSegmentSumOptions
@@ -9924,6 +10285,30 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   {
     return builtin_options_type() == circle::BuiltinOptions_ATan2Options
              ? static_cast<const circle::ATan2Options *>(builtin_options())
+             : nullptr;
+  }
+  const circle::SignOptions *builtin_options_as_SignOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_SignOptions
+             ? static_cast<const circle::SignOptions *>(builtin_options())
+             : nullptr;
+  }
+  const circle::BitcastOptions *builtin_options_as_BitcastOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_BitcastOptions
+             ? static_cast<const circle::BitcastOptions *>(builtin_options())
+             : nullptr;
+  }
+  const circle::BitwiseXorOptions *builtin_options_as_BitwiseXorOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_BitwiseXorOptions
+             ? static_cast<const circle::BitwiseXorOptions *>(builtin_options())
+             : nullptr;
+  }
+  const circle::RightShiftOptions *builtin_options_as_RightShiftOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_RightShiftOptions
+             ? static_cast<const circle::RightShiftOptions *>(builtin_options())
              : nullptr;
   }
   const circle::BCQGatherOptions *builtin_options_as_BCQGatherOptions() const
@@ -10748,6 +11133,13 @@ Operator::builtin_options_as<circle::UnsortedSegmentMaxOptions>() const
 }
 
 template <>
+inline const circle::UnsortedSegmentMinOptions *
+Operator::builtin_options_as<circle::UnsortedSegmentMinOptions>() const
+{
+  return builtin_options_as_UnsortedSegmentMinOptions();
+}
+
+template <>
 inline const circle::UnsortedSegmentSumOptions *
 Operator::builtin_options_as<circle::UnsortedSegmentSumOptions>() const
 {
@@ -10758,6 +11150,32 @@ template <>
 inline const circle::ATan2Options *Operator::builtin_options_as<circle::ATan2Options>() const
 {
   return builtin_options_as_ATan2Options();
+}
+
+template <>
+inline const circle::SignOptions *Operator::builtin_options_as<circle::SignOptions>() const
+{
+  return builtin_options_as_SignOptions();
+}
+
+template <>
+inline const circle::BitcastOptions *Operator::builtin_options_as<circle::BitcastOptions>() const
+{
+  return builtin_options_as_BitcastOptions();
+}
+
+template <>
+inline const circle::BitwiseXorOptions *
+Operator::builtin_options_as<circle::BitwiseXorOptions>() const
+{
+  return builtin_options_as_BitwiseXorOptions();
+}
+
+template <>
+inline const circle::RightShiftOptions *
+Operator::builtin_options_as<circle::RightShiftOptions>() const
+{
+  return builtin_options_as_RightShiftOptions();
 }
 
 template <>
@@ -12152,6 +12570,11 @@ inline bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *ob
       auto ptr = reinterpret_cast<const circle::UnsortedSegmentMaxOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case BuiltinOptions_UnsortedSegmentMinOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::UnsortedSegmentMinOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case BuiltinOptions_UnsortedSegmentSumOptions:
     {
       auto ptr = reinterpret_cast<const circle::UnsortedSegmentSumOptions *>(obj);
@@ -12160,6 +12583,26 @@ inline bool VerifyBuiltinOptions(flatbuffers::Verifier &verifier, const void *ob
     case BuiltinOptions_ATan2Options:
     {
       auto ptr = reinterpret_cast<const circle::ATan2Options *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_SignOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::SignOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_BitcastOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::BitcastOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_BitwiseXorOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::BitwiseXorOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_RightShiftOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RightShiftOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case BuiltinOptions_BCQGatherOptions:
