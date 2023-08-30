@@ -352,15 +352,13 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     if (de_code >= 0 and de_code < 127)
     {
       // Use deprecated builtin opcode.
-      // clang-format off
-    auto cir_de_code = get_circle_builtin_code(de_code);
-    auto cir_bt_code = get_circle_builtin_code(bt_code);
-    // correct bt_code where bt_code == 0 for old tflite format
-    if (cir_bt_code == 0)
-      cir_bt_code = static_cast<circle::BuiltinOperator>(cir_de_code);
-    operator_code_builder.add_deprecated_builtin_code(cir_de_code);
-    operator_code_builder.add_builtin_code(cir_bt_code);
-      // clang-format on
+      auto cir_de_code = get_circle_builtin_code(de_code);
+      auto cir_bt_code = get_circle_builtin_code(bt_code);
+      // correct bt_code where bt_code == 0 for old tflite format
+      if (cir_bt_code == 0)
+        cir_bt_code = static_cast<circle::BuiltinOperator>(cir_de_code);
+      operator_code_builder.add_deprecated_builtin_code(cir_de_code);
+      operator_code_builder.add_builtin_code(cir_bt_code);
     }
     else
     {
