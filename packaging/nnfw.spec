@@ -38,6 +38,9 @@ Source3019: FLATBUFFERS-2.0.tar.gz
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 %{!?config_support: %define config_support  1}
+# Define nproc on gbs build option if you want to set number of build threads manually (ex. CI/CD infra)
+%define build_jobs   %{?!nproc:%{?_smp_mflags}%{?!_smp_mflags:-j4}}%{?nproc:-j%nproc}
+%{!?nproc:          %define nproc           %{?!jobs:4}%{?jobs}}
 
 %if %{coverage_build} == 1
 # Coverage test requires debug build runtime
@@ -172,7 +175,7 @@ NPU daemon for optimal management of NPU hardware
 %endif # coverage_build
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
-        -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
+        -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
 %prep
@@ -204,10 +207,10 @@ tar -xf %{SOURCE3019} -C ./externals
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 # nncc build
 %if %{odc_build} == 1
-%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=4 -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_OS=tizen \
+%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_OS=tizen \
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle05;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
-%{nncc_env} ./nncc build -j4
+%{nncc_env} ./nncc build %{build_jobs}
 cmake --install %{nncc_workspace}
 %endif # odc_build
 
@@ -219,7 +222,7 @@ cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
-%{build_env} ./nnfw build -j4
+%{build_env} ./nnfw build %{build_jobs}
 # install in workspace
 # TODO Set install path
 %{build_env} ./nnfw install
