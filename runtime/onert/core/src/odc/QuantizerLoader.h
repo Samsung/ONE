@@ -53,16 +53,25 @@ public:
    */
   static QuantizerLoader &instance();
 
+private:
+  // Cannot create instance of QuantizerLoader outside of this class
   // Non-copyable
   QuantizerLoader() = default;
   QuantizerLoader(QuantizerLoader const &) = delete;
   QuantizerLoader &operator=(QuantizerLoader const &) = delete;
+  ~QuantizerLoader() = default;
 
+public:
   /**
    * @brief   Load dynamic library containing implementation of IQuantizer
    * @return  0 if success, otherwise errno value
    */
   int32_t loadLibrary();
+  /**
+   * @brief  Unload dynamic library containing implementation of IQuantizer
+   * @return 0 if success, otherwise errno value
+   */
+  int32_t unloadLibrary();
   /**
    * @brief   Get instance of IQuantizer created through factory method
    * @return  Pointer to instance of IQuantizer

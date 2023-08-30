@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_ODC_IQUANTIZER_H__
-#define __ONERT_ODC_IQUANTIZER_H__
+#include "odc/QuantizeManager.h"
 
-namespace onert
+#include <gtest/gtest.h>
+
+using namespace onert::odc;
+
+// Test export model path is not set
+TEST(odc_QuantizeManager, neg_export_model_path)
 {
-namespace odc
+  QuantizeManager manager("model_path");
+  ASSERT_THROW(manager.quantize(), std::runtime_error);
+}
+
+// Test invalid model path
+TEST(odc_QuantizeManager, neg_invalid_model_path)
 {
-
-class IQuantizer
-{
-public:
-  virtual ~IQuantizer() = default;
-
-  virtual int quantize(const char *in, const char *out, bool is_q16) = 0;
-};
-
-} // namespace odc
-} // namespace onert
-
-#endif // __ONERT_ODC_IQUANTIZER_H__
+  QuantizeManager manager("invalid_model_path.circle");
+  manager.exportModelPath("export_model_path.circle");
+  ASSERT_EQ(manager.quantize(), false);
+}

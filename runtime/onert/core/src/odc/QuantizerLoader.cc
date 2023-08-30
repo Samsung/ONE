@@ -88,5 +88,16 @@ int32_t QuantizerLoader::loadLibrary()
   return 0;
 }
 
+int32_t QuantizerLoader::unloadLibrary()
+{
+  if (get() == nullptr)
+    return 0;
+
+  _quantizer.reset(nullptr);
+  _dlhandle.reset(nullptr);
+
+  return 0;
+}
+
 } // namespace odc
 } // namespace onert

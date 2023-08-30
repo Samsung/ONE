@@ -32,8 +32,6 @@ class Quantize;
 class QuantizeManager
 {
 public:
-  static QuantizeManager &instance();
-
   // Non-copyable
   QuantizeManager() = delete;
   QuantizeManager(const std::string &model_path) : _model_path(model_path) {}

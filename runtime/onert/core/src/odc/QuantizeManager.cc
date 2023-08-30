@@ -35,17 +35,8 @@ bool QuantizeManager::quantize()
   if (quantize_loader.loadLibrary() != 0)
     return false;
 
-  auto const extension_pos = _model_path.find(".circle");
-  if (extension_pos == std::string::npos)
-  {
-    std::cerr << "Input model isn't .circle." << std::endl;
-    return false;
-  }
-
-  auto const qstring = std::string("_quantized_") + (_is_q16 ? "q16" : "q8");
-
   if (_export_model_path.empty())
-    _export_model_path = _model_path.substr(0, extension_pos) + qstring + ".circle";
+    throw std::runtime_error("Export model path is not set");
 
   auto quantizer = quantize_loader.get();
   auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _is_q16);

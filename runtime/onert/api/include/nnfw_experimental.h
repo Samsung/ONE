@@ -376,8 +376,7 @@ NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE
  *
  * This function should be called before {@link odc_quantize} is invoked.
  *
- * If this function is not called,
- * ODC will try to export model file on loaded path with "_quantized" file name suffix.
+ * TODO: If this function is not called, ODC will not export quantized model
  *
  * @param[in] session nnfw_session to set quantized model path
  * @param[in] path    Quantized model path
@@ -388,7 +387,7 @@ NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *pat
 /**
  * @brief Quantize circle model
  *
- * @param[in] session odc_session which will wait for the async compilation completion
+ * @param[in] session odc_session to quantize
  * @return    @c ODC_STATUS_NO_ERROR if successful, otherwise return @c ODC_STATUS_ERROR
  */
 NNFW_STATUS nnfw_quantize(nnfw_session *session);

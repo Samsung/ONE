@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_ODC_IQUANTIZER_H__
-#define __ONERT_ODC_IQUANTIZER_H__
+#include "Quantizer.h"
 
-namespace onert
+#include <gtest/gtest.h>
+
+using namespace onert::odc;
+
+// Test model input path is not set
+TEST(odc_Quantizer, neg_model_input_path)
 {
-namespace odc
+  Quantizer quantizer;
+  ASSERT_THROW(quantizer.quantize(nullptr, "out", false), std::runtime_error);
+}
+
+// Test model output path is not set
+TEST(odc_Quantizer, neg_model_output_path)
 {
+  Quantizer quantizer;
+  ASSERT_THROW(quantizer.quantize("in", nullptr, false), std::runtime_error);
+}
 
-class IQuantizer
+// Test invalid model input path
+TEST(odc_Quantizer, neg_invalid_model_input_path)
 {
-public:
-  virtual ~IQuantizer() = default;
-
-  virtual int quantize(const char *in, const char *out, bool is_q16) = 0;
-};
-
-} // namespace odc
-} // namespace onert
-
-#endif // __ONERT_ODC_IQUANTIZER_H__
+  Quantizer quantizer;
+  ASSERT_EQ(quantizer.quantize("invalid_model_input_path.circle", "out", false), -1);
+}
