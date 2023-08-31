@@ -21,6 +21,7 @@
 #include <luci_interpreter/Interpreter.h>
 
 #include "MinMaxObserver.h"
+#include "MinMaxComputer.h"
 
 #include <memory>
 #include <thread>
@@ -35,9 +36,11 @@ using WholeOutput = std::vector<Output>;
 class RecordMinMax
 {
 public:
-  explicit RecordMinMax(uint32_t num_threads) : _threads_size(num_threads)
+  explicit RecordMinMax(uint32_t num_threads, std::unique_ptr<MinMaxComputer> &&minmax_computer)
+    : _threads_size(num_threads), _minmax_computer(std::move(minmax_computer))
   {
     assert(_threads_size > 0);
+    assert(_minmax_computer != nullptr);
   }
 
   ~RecordMinMax() = default;
@@ -74,6 +77,7 @@ private:
   std::vector<std::unique_ptr<MinMaxObserver>> _observers;
 
   uint32_t _threads_size = 0;
+  std::unique_ptr<MinMaxComputer> _minmax_computer;
 };
 
 } // namespace record_minmax

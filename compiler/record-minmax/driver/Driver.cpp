@@ -100,6 +100,8 @@ int entry(const int argc, char **argv)
   std::string mode("percentile");
   float min_percentile = 1.0;
   float max_percentile = 99.0;
+  uint32_t moving_avg_batch = 16;
+  float moving_avg_const = 0.1;
   std::string input_data_format("h5");
   uint32_t num_threads = 1;
 
@@ -127,7 +129,23 @@ int entry(const int argc, char **argv)
   if (arser["--input_data_format"])
     input_data_format = arser.get<std::string>("--input_data_format");
 
-  RecordMinMax rmm(num_threads);
+  std::unique_ptr<MinMaxComputer> computer;
+  {
+    if (mode == "percentile")
+    {
+      computer = make_percentile_computer(min_percentile, max_percentile);
+    }
+    else if (mode == "moving_average")
+    {
+      computer = make_moving_avg_computer(moving_avg_batch, moving_avg_const);
+    }
+    else
+    {
+      assert(false);
+    }
+  }
+
+  RecordMinMax rmm(num_threads, std::move(computer));
 
   // TODO: support parallel record for profile with random data
   if (num_threads > 1 and not arser["--input_data"])

@@ -15,7 +15,6 @@
  */
 
 #include "RecordMinMax.h"
-#include "RecordFunction.h"
 #include "MinMaxObserver.h"
 
 #include <luci/Importer.h>
@@ -144,6 +143,8 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
   }
 }
 
+// TODO Remove unused code
+#if 0
 void update_quantparam(record_minmax::MinMaxObserver *observer, const std::string &mode,
                        float min_percentile, float max_percentile)
 {
@@ -175,6 +176,7 @@ void update_quantparam(record_minmax::MinMaxObserver *observer, const std::strin
     mutable_node->quantparam(std::move(quantparam));
   }
 }
+#endif
 
 } // namespace
 
@@ -297,7 +299,11 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
+  _minmax_computer->update_qparam(getObserver());
+  // TODO Remove redundant arguments
+  (void)mode;
+  (void)min_percentile;
+  (void)max_percentile;
 }
 
 // input_data_path is a text file which specifies the representative data
@@ -357,7 +363,11 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
+  _minmax_computer->update_qparam(getObserver());
+  // TODO Remove redundant arguments
+  (void)mode;
+  (void)min_percentile;
+  (void)max_percentile;
 }
 
 WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
@@ -481,7 +491,11 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
     throw std::runtime_error("HDF5 error occurred.");
   }
 
-  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
+  _minmax_computer->update_qparam(getObserver());
+  // TODO Remove redundant arguments
+  (void)mode;
+  (void)min_percentile;
+  (void)max_percentile;
 }
 
 void RecordMinMax::profileDataInParallel(const std::string &mode,
@@ -570,7 +584,11 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(observer.get(), mode, min_percentile, max_percentile);
+  _minmax_computer->update_qparam(observer.get());
+  // TODO Remove redundant arguments
+  (void)mode;
+  (void)min_percentile;
+  (void)max_percentile;
 }
 
 void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
@@ -642,7 +660,11 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  update_quantparam(getObserver(), mode, min_percentile, max_percentile);
+  _minmax_computer->update_qparam(getObserver());
+  // TODO Remove redundant arguments
+  (void)mode;
+  (void)min_percentile;
+  (void)max_percentile;
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
