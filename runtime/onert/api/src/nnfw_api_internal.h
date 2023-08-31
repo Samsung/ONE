@@ -175,6 +175,10 @@ public:
   NNFW_STATUS train_export_circle(const char *path);
 #endif // ONERT_TRAIN
 
+  NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
+  NNFW_STATUS set_quantized_model_path(const char *path);
+  NNFW_STATUS quantize();
+
 private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
