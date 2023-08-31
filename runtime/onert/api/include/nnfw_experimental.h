@@ -333,6 +333,65 @@ NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index
  */
 // NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info info);
 
+/**
+ *  On-Device Quantization APIs
+ *
+ * On-Device Quantization APIs are designed to be used in the following order
+ * 1. nnfw_set_quantization_type
+ * 2. nnfw_set_quantized_model_path
+ * 3. nnfw_quantize
+ *
+ * You should use Quantization APIs after {@link nnfw_load_model_from_file},
+ * before {@link nnfw_prepare} and {@link nnfw_set_input_tensorinfo}.
+ */
+
+/**
+ * @brief quantization type
+ */
+typedef enum
+{
+  /** default value: type not set */
+  NNFW_QUANTIZE_TYPE_NOT_SET,
+  /** asymmetric quantization with a scale and zero point */
+  NNFW_QUANTIZE_TYPE_U8_ASYM,
+  /** symmetric quantization with a scale only */
+  NNFW_QUANTIZE_TYPE_I16_SYM,
+} NNFW_QUANTIZE_TYPE;
+
+/**
+ * @brief Set quantization type
+ *
+ * This function should be called before {@link nnfw_quantize} is invoked.
+ *
+ * @param[in] session nnfw_session to set quantization type
+ * @param[in] pref @c NNFW_QUANTIZE_TYPE
+ * @return    @c NNFW_STATUS_NO_ERROR if successful,
+ *            @c NNFW_STATUS_UNEXPECTED_NULL if session is null,
+ *            otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype);
+
+/**
+ * @brief Set exported quantized model path
+ *
+ * This function should be called before {@link nnfw_quantize} is invoked.
+ *
+ * TODO: If this function is not called, quantized model will not be exported
+ *
+ * @param[in] session nnfw_session to set quantized model path
+ * @param[in] path    Quantized model path
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *path);
+
+/**
+ * @brief Quantize circle model
+ *
+ * @param[in] session nnfw_session to quantize
+ * @return    @c ODC_STATUS_NO_ERROR if successful, otherwise return @c ODC_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_quantize(nnfw_session *session);
+
 #ifdef __cplusplus
 }
 #endif

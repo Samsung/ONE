@@ -1465,3 +1465,21 @@ bool nnfw_session::isStatePreparedOrFinishedTraining()
 }
 
 #endif // ONERT_TRAIN
+
+NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE)
+{
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_quantized_model_path(const char *)
+{
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::quantize()
+{
+  // NYI
+  return NNFW_STATUS_ERROR;
+}
