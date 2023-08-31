@@ -52,6 +52,7 @@ public:
   const int getDataLength(void) const { return _data_length; }
   const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
+  const bool getMemoryPoll(void) const { return _mem_poll; }
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
@@ -75,6 +76,7 @@ private:
   int _data_length;
   std::string _load_raw_input_filename;
   std::string _load_raw_expected_filename;
+  bool _mem_poll;
   int _epoch;
   int _batch_size;
   float _learning_rate;
