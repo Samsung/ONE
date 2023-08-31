@@ -289,7 +289,7 @@ install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/t
 mkdir -p %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
-#install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
+install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # odc_build
 
 %if %{npud_build} == 1
