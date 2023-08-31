@@ -188,7 +188,7 @@ acl_tar_internal: configure_internal
 
 install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
-	cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib || true
+	@cp $(OVERLAY_FOLDER)/lib/libarm_compute*.so $(INSTALL_ALIAS)/lib 2>/dev/null || true
 
 install_luci_internal:
 	@mkdir -p $(INSTALL_ALIAS)/lib/nnfw/odc
