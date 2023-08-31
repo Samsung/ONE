@@ -63,6 +63,15 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::FLOAT)
     .help("Record n'th percentile of max");
 
+  arser.add_argument("--moving_avg_batch")
+    .type(arser::DataType::INT32)
+    .help("Batch size of moving average algorithm (default: 16)");
+
+  arser.add_argument("--moving_avg_const")
+    .type(arser::DataType::FLOAT)
+    .help("Hyperparameter (C) to compute moving average (default: 0.1). Update equation: avg <- "
+          "avg + C * (curr_batch_avg - avg)");
+
   arser.add_argument("--mode").help("Record mode. percentile (default) or moving_average");
 
   arser.add_argument("--input_data_format")
@@ -119,6 +128,12 @@ int entry(const int argc, char **argv)
 
   if (arser["--mode"])
     mode = arser.get<std::string>("--mode");
+
+  if (arser["--moving_avg_batch"])
+    moving_avg_batch = arser.get<int>("--moving_avg_batch");
+
+  if (arser["--moving_avg_const"])
+    moving_avg_const = arser.get<float>("--moving_avg_const");
 
   if (mode != "percentile" && mode != "moving_average")
     throw std::runtime_error("Unsupported mode");
