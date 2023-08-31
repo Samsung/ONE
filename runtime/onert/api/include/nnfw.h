@@ -243,11 +243,11 @@ NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
 /**
  * @brief    Set input model's tensor info for resizing
  *
- * This function can be called at any time after calling {@link nnfw_model_load_from_file}. Changing
+ * This function can be called at any time after calling {@link nnfw_load_model_from_file}. Changing
  * input tensor's shape will cause shape inference for the model. There are two different types of
  * shape inference - static and dynamic. Which one to use is depend on the current state of the
  * session.
- * When it is called after calling {@link nnfw_model_load_from_file} and before calling {@link
+ * When it is called after calling {@link nnfw_load_model_from_file} and before calling {@link
  * nnfw_prepare}, this info will be used when {@link nnfw_prepare}. And it will perform static shape
  * inference for all tensors.
  * When it is called after calling {@link nnfw_prepare} or even after {@link nnfw_run}, this info
@@ -266,7 +266,7 @@ NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
  * @brief     Prepare session to be ready for inference
  *
  * This phase may finalize model compilation, scheduling, and additional settings.
- * If {@link nnfw_apply_tensor} is called to apply input tensor info different with model
+ * If {@link nnfw_apply_tensorinfo} is called to apply input tensor info different with model
  * before this function, tries to resize all tensors.
  *
  * @param[in] session the session to be prepared
@@ -309,7 +309,7 @@ NNFW_STATUS nnfw_run_async(nnfw_session *session);
 /**
  * @brief     Wait for asynchronous run to finish
  *
- * <p>This function must be called after calling {@link nnfw_run_asnyc}, and can be called only once
+ * <p>This function must be called after calling {@link nnfw_run_async}, and can be called only once
  * for a {@link nnfw_run_async} call.
  *
  * <p>When this function returns, it means that this session has finished the asynchronous run. Then
@@ -496,7 +496,7 @@ NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const cha
  * @note: The input session could be null for global information (e.g. runtime version).*
  *
  * @param[in] session session to be queried on.
- * @param[in] information ID to be queried
+ * @param[in] id ID to be queried
  * @param[out] val uint32 value to be returned.
  *
  * @return @c NNFW_STATUS_NO_ERROR if successful
