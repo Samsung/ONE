@@ -166,6 +166,31 @@ TEST_F(GenModelTest, OneOp_Conv2D_U8_PerChannel)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Conv2D_I8_Hybrid_PerChannel)
+{
+  CircleGen cgen;
+  std::vector<int8_t> weight_data{1, 2, 3, 1, 2, 3, 7, 8, 9};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0, 0, 0};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<float> weight_scales = {0.5, 1, 0.5};
+  std::vector<int64_t> weight_zeropoints = {0, 0, 0};
+  int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
+                              weight_scales, weight_zeropoints);
+  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
+                         circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{5, 5, 5}}, {{15, 30, 60}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_Conv2D_Type)
 {
   CircleGen cgen;
