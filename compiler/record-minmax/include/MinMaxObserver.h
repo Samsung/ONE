@@ -20,17 +20,13 @@
 #include <luci_interpreter/Interpreter.h>
 #include <luci_interpreter/core/Tensor.h>
 
+#include "MinMaxVectors.h"
+
 #include <vector>
 #include <unordered_map>
 
 namespace record_minmax
 {
-
-struct MinMaxVectors
-{
-  std::vector<float> min_vector;
-  std::vector<float> max_vector;
-};
 
 class MinMaxMap
 {
