@@ -120,8 +120,8 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
-  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg},
+  : backend::train::KernelGeneratorBase{tgraph}, _ctx{tgraph.operands()},
+    _current_layout{tgraph.layout()}, _tensor_reg{tensor_reg},
     _external_context(external_context), _optimizer{optimizer}, _update_funcs{}
 {
   // DO NOTHING
@@ -225,6 +225,45 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   _return_fn = std::move(fn);
 
   UNUSED_RELEASE(convertPoolType);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
+{
+  using ir::train::operation::Pool2D;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto out_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto in_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto out_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto in_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+
+  if (_ctx.at(input_index).shape().rank() != 4)
+  {
+    std::runtime_error("MaxPool only support 4D input tensor");
+  }
+
+  // calcualate padding
+  const auto ifm_shape = _ctx.at(input_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = _ctx.at(output_index).shape().asFeature(_current_layout);
+  const auto stride = node.param().stride;
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto padding =
+    ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
+
+  auto fn = std::make_unique<ops::PoolLayer>();
+
+  const auto activation = node.param().activation;
+  const auto pool_type = convertPoolType(node.param().op_type);
+
+  fn->configure(in_tensor, padding.left, padding.right, padding.top, padding.bottom,
+                stride.horizontal, stride.vertical, kw, kh, activation, out_tensor, pool_type,
+                in_deriv_tensor, out_deriv_tensor);
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::train::operation::Reshape &node)

@@ -50,9 +50,11 @@ public:
   void visit(const ir::train::operation::ElementwiseActivation &) override;
   void visit(const ir::train::operation::FullyConnected &) override;
   void visit(const ir::train::operation::Loss &) override;
+  void visit(const ir::train::operation::Pool2D &) override;
   void visit(const ir::train::operation::Reshape &node) override;
 
 private:
+  const ir::Operands &_ctx;
   ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;

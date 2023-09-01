@@ -143,6 +143,7 @@ private:
   void visit(const ir::operation::Pack &op) override;
   void visit(const ir::operation::Pad &op) override;
   void visit(const ir::operation::Permute &op) override;
+  void visit(const ir::operation::Pool2D &op) override;
   void visit(const ir::operation::Pow &op) override;
   void visit(const ir::operation::Range &op) override;
   void visit(const ir::operation::Reduce &op) override;
