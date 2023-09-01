@@ -1,8 +1,8 @@
 nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
-list(APPEND REQUIRED_TARGETS mio_tflite280)
-list(APPEND REQUIRED_TARGETS mio_circle05)
+list(APPEND REQUIRED_TARGETS mio_tflite2121)
+list(APPEND REQUIRED_TARGETS mio_circle06)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
 set(DRIVER "driver/Driver.cpp")
@@ -13,9 +13,9 @@ target_include_directories(tflite2circle PRIVATE src)
 target_link_libraries(tflite2circle arser)
 target_link_libraries(tflite2circle foder)
 target_link_libraries(tflite2circle safemain)
-target_link_libraries(tflite2circle mio_tflite280)
-target_link_libraries(tflite2circle mio_tflite280_helper)
-target_link_libraries(tflite2circle mio_circle05)
+target_link_libraries(tflite2circle mio_tflite2121)
+target_link_libraries(tflite2circle mio_tflite2121_helper)
+target_link_libraries(tflite2circle mio_circle06)
 target_link_libraries(tflite2circle vconone)
 target_link_libraries(tflite2circle nncc_coverage)
 
