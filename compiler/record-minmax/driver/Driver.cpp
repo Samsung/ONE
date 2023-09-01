@@ -185,11 +185,11 @@ int entry(const int argc, char **argv)
     {
       // Profile min/max while executing the H5 data
       if (num_threads == 1)
-        rmm.profileData(mode, input_data_path, min_percentile, max_percentile);
+        rmm.profileData(input_data_path);
       else
       {
         INFO(l) << "Using parallel recording" << std::endl;
-        rmm.profileDataInParallel(mode, input_data_path, min_percentile, max_percentile);
+        rmm.profileDataInParallel(input_data_path);
       }
     }
     // input_data is a text file having a file path in each line.
@@ -203,13 +203,13 @@ int entry(const int argc, char **argv)
     else if (input_data_format == "list" || input_data_format == "filelist")
     {
       // Profile min/max while executing the list of Raw data
-      rmm.profileRawData(mode, input_data_path, min_percentile, max_percentile);
+      rmm.profileRawData(input_data_path);
     }
     else if (input_data_format == "directory" || input_data_format == "dir")
     {
       // Profile min/max while executing all files under the given directory
       // The contents of each file is same as the raw data in the 'list' type
-      rmm.profileRawDataDirectory(mode, input_data_path, min_percentile, max_percentile);
+      rmm.profileRawDataDirectory(input_data_path);
     }
     else
     {
@@ -220,7 +220,7 @@ int entry(const int argc, char **argv)
   else
   {
     // Profile min/max while executing random input data
-    rmm.profileDataWithRandomInputs(mode, min_percentile, max_percentile);
+    rmm.profileDataWithRandomInputs();
   }
 
   // Save profiled values to the model

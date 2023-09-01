@@ -47,20 +47,16 @@ public:
 
   void initialize(const std::string &input_model_path);
 
-  void profileData(const std::string &mode, const std::string &input_data_path,
-                   float min_percentile, float max_percentile);
+  // TODO Refactor profile functions
+  void profileData(const std::string &input_data_path);
 
-  void profileDataInParallel(const std::string &mode, const std::string &input_data_path,
-                             float min_percentile, float max_percentile);
+  void profileDataInParallel(const std::string &input_data_path);
 
-  void profileRawData(const std::string &mode, const std::string &input_data_path,
-                      float min_percentile, float max_percentile);
+  void profileRawData(const std::string &input_data_path);
 
-  void profileRawDataDirectory(const std::string &mode, const std::string &input_data_path,
-                               float min_percentile, float max_percentile);
+  void profileRawDataDirectory(const std::string &input_data_path);
 
-  void profileDataWithRandomInputs(const std::string &mode, float min_percentile,
-                                   float max_percentile);
+  void profileDataWithRandomInputs(void);
 
   void saveModel(const std::string &output_model_path);
 

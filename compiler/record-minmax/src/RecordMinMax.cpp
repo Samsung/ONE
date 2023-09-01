@@ -143,41 +143,6 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
   }
 }
 
-// TODO Remove unused code
-#if 0
-void update_quantparam(record_minmax::MinMaxObserver *observer, const std::string &mode,
-                       float min_percentile, float max_percentile)
-{
-  auto minmax_map = observer->minMaxData()->getMap();
-  for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
-  {
-    auto node = iter->first;
-    auto minmax = iter->second;
-
-    float min{0.0f}, max{0.0f};
-    if (mode == "percentile")
-    {
-      min = record_minmax::getNthPercentile(minmax.min_vector, min_percentile);
-      max = record_minmax::getNthPercentile(minmax.max_vector, max_percentile);
-    }
-    else if (mode == "moving_average")
-    {
-      min = record_minmax::getMovingAverage(minmax.min_vector, 0.9, 16, true);
-      max = record_minmax::getMovingAverage(minmax.max_vector, 0.9, 16, false);
-    }
-    assert(mode == "percentile" || mode == "moving_average");
-    auto quantparam = std::make_unique<luci::CircleQuantParam>();
-    quantparam->min.push_back(min);
-    quantparam->max.push_back(max);
-
-    assert(node->quantparam() == nullptr);
-
-    auto mutable_node = const_cast<luci::CircleNode *>(node);
-    mutable_node->quantparam(std::move(quantparam));
-  }
-}
-#endif
-
 } // namespace
 
 namespace record_minmax
@@ -237,9 +202,7 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 // The directory should contain binary files each of which is a raw data,
 // ready to be consumed by the input circle model without any modification
 // TODO reduce duplicate codes with profileRawData
-void RecordMinMax::profileRawDataDirectory(const std::string &mode,
-                                           const std::string &input_data_path, float min_percentile,
-                                           float max_percentile)
+void RecordMinMax::profileRawDataDirectory(const std::string &input_data_path)
 {
   struct dirent *entry = nullptr;
   DIR *dp = nullptr;
@@ -300,10 +263,6 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   _minmax_computer->update_qparam(getObserver());
-  // TODO Remove redundant arguments
-  (void)mode;
-  (void)min_percentile;
-  (void)max_percentile;
 }
 
 // input_data_path is a text file which specifies the representative data
@@ -312,8 +271,7 @@ void RecordMinMax::profileRawDataDirectory(const std::string &mode,
 // ready to be consumed by the input circle model without any modification
 // NOTE If a model has multiple inputs, the binary file should have inputs concatenated in the same
 // order with the input index of the circle model.
-void RecordMinMax::profileRawData(const std::string &mode, const std::string &input_data_path,
-                                  float min_percentile, float max_percentile)
+void RecordMinMax::profileRawData(const std::string &input_data_path)
 {
   std::ifstream input_file(input_data_path);
   if (input_file.fail())
@@ -364,10 +322,6 @@ void RecordMinMax::profileRawData(const std::string &mode, const std::string &in
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   _minmax_computer->update_qparam(getObserver());
-  // TODO Remove redundant arguments
-  (void)mode;
-  (void)min_percentile;
-  (void)max_percentile;
 }
 
 WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
@@ -428,8 +382,7 @@ WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
   }
 }
 
-void RecordMinMax::profileData(const std::string &mode, const std::string &input_data_path,
-                               float min_percentile, float max_percentile)
+void RecordMinMax::profileData(const std::string &input_data_path)
 {
   try
   {
@@ -492,15 +445,9 @@ void RecordMinMax::profileData(const std::string &mode, const std::string &input
   }
 
   _minmax_computer->update_qparam(getObserver());
-  // TODO Remove redundant arguments
-  (void)mode;
-  (void)min_percentile;
-  (void)max_percentile;
 }
 
-void RecordMinMax::profileDataInParallel(const std::string &mode,
-                                         const std::string &input_data_path, float min_percentile,
-                                         float max_percentile)
+void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
 {
   LOGGER(l);
 
@@ -585,14 +532,9 @@ void RecordMinMax::profileDataInParallel(const std::string &mode,
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   _minmax_computer->update_qparam(observer.get());
-  // TODO Remove redundant arguments
-  (void)mode;
-  (void)min_percentile;
-  (void)max_percentile;
 }
 
-void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float min_percentile,
-                                               float max_percentile)
+void RecordMinMax::profileDataWithRandomInputs(void)
 {
   // We use three randomly-generated records
   const uint32_t num_records = 3;
@@ -661,10 +603,6 @@ void RecordMinMax::profileDataWithRandomInputs(const std::string &mode, float mi
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
   _minmax_computer->update_qparam(getObserver());
-  // TODO Remove redundant arguments
-  (void)mode;
-  (void)min_percentile;
-  (void)max_percentile;
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
