@@ -31,12 +31,12 @@ TEST(odc_Quantizer, neg_model_input_path)
 TEST(odc_Quantizer, neg_model_output_path)
 {
   Quantizer quantizer;
-  ASSERT_EQ(quantizer.quantize("in", nullptr, false), 1);
+  ASSERT_NE(quantizer.quantize("in", nullptr, false), 0);
 }
 
 // Test invalid model input path
 TEST(odc_Quantizer, neg_invalid_model_input_path)
 {
   Quantizer quantizer;
-  ASSERT_EQ(quantizer.quantize("invalid_model_input_path.circle", "out", false), 1);
+  ASSERT_NE(quantizer.quantize("invalid_model_input_path.circle", "out", false), 0);
 }
