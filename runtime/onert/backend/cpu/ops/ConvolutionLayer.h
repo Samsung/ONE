@@ -87,8 +87,6 @@ private:
   ir::Activation _activation;
 
   std::unique_ptr<nnfw::cker::Conv> _conv_kernel;
-
-  bool _prepare;
 };
 
 } // namespace ops

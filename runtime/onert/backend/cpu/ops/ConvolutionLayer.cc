@@ -34,7 +34,7 @@ ConvolutionLayer::ConvolutionLayer()
     _paddingType(ir::PaddingType::EXPLICIT), _paddingLeft(0), _paddingTop(0), _paddingRight(0),
     _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),
     _dilationHeightFactor(1), _activation(ir::Activation::NONE),
-    _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
+    _conv_kernel(new nnfw::cker::Conv())
 {
   // DO NOTHING
 }
@@ -178,8 +178,6 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
 
 void ConvolutionLayer::run()
 {
-  prepare();
-
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
     const auto ifm_shape = _input->getShape().asFeature(_input->layout());
@@ -233,9 +231,6 @@ void ConvolutionLayer::run()
 
 void ConvolutionLayer::prepare()
 {
-  if (_prepare)
-    return;
-
   nnfw::cker::Conv &kernel = *_conv_kernel;
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
   {
@@ -284,7 +279,6 @@ void ConvolutionLayer::prepare()
       throw std::runtime_error{"Conv2D: Int8 dynamic weight is not supported"};
     }
   }
-  _prepare = true;
 }
 
 } // namespace ops
