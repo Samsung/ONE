@@ -62,7 +62,14 @@ public:
 
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
-  MinMaxObserver *getObserver() const { return _observers[0].get(); }
+
+  // Never return nullptr
+  MinMaxObserver *getObserver() const
+  {
+    assert(_observers.size() > 0); // FIX CALLER UNLESS
+    assert(_observers[0].get());   // FIX CALLER UNLESS
+    return _observers[0].get();
+  }
 
   WholeOutput importH5Data(const std::string &input_data_path);
 

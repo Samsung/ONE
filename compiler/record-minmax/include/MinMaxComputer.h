@@ -17,7 +17,12 @@
 #ifndef __RECORD_MINMAX_MINMAXCOMPUTER_H__
 #define __RECORD_MINMAX_MINMAXCOMPUTER_H__
 
-#include "MinMaxObserver.h"
+#include "MinMaxVectors.h"
+
+#include <luci/IR/CircleNode.h>
+
+#include <unordered_map>
+#include <memory>
 
 namespace record_minmax
 {
@@ -33,8 +38,8 @@ public:
   virtual ~MinMaxComputer() = default;
 
   // Child class must implement this
-  // TODO Use proper input signature
-  virtual void update_qparam(MinMaxObserver *observer) = 0;
+  virtual void
+  update_qparam(const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *minmax_map) = 0;
 };
 
 class PercentileComputer : public MinMaxComputer
@@ -45,7 +50,8 @@ public:
   {
   }
 
-  virtual void update_qparam(MinMaxObserver *observer);
+  virtual void
+  update_qparam(const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *minmax_map);
 
 private:
   float _min_percentile = 0.0;
@@ -60,7 +66,8 @@ public:
   {
   }
 
-  virtual void update_qparam(MinMaxObserver *observer);
+  virtual void
+  update_qparam(const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *minmax_map);
 
 private:
   uint32_t _batch_size = 0;
