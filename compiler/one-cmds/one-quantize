@@ -121,6 +121,18 @@ def _get_parser():
         'maximum percentile (0.0~100.0, default=99.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
     )
     quantization_group.add_argument(
+        '--moving_avg_batch',
+        type=str,
+        help=
+        'batch size of moving average (default=16). This is valid when calibration algorithm is moving_average.'
+    )
+    quantization_group.add_argument(
+        '--moving_avg_const',
+        type=str,
+        help=
+        'hyperparameter (C) to compute moving average (default=0.1). Update equation: avg <- avg + C * (curr_batch_avg - avg). This is valid when calibration algorithm is moving_average.'
+    )
+    quantization_group.add_argument(
         '--mode',
         type=str,
         help=
@@ -288,6 +300,10 @@ def _set_default_values(args):
         setattr(args, 'min_percentile', '1.0')
     if not oneutils.is_valid_attr(args, 'max_percentile'):
         setattr(args, 'max_percentile', '99.0')
+    if not oneutils.is_valid_attr(args, 'moving_avg_batch'):
+        setattr(args, 'moving_avg_batch', '16')
+    if not oneutils.is_valid_attr(args, 'moving_avg_const'):
+        setattr(args, 'moving_avg_const', '0.1')
     if not oneutils.is_valid_attr(args, 'ampq_algorithm'):
         setattr(args, 'ampq_algorithm', 'bisection')
     if not oneutils.is_valid_attr(args, 'bisection_type'):
@@ -344,6 +360,31 @@ def _verify_arg(parser, args):
         if len(src_tensors) != len(dst_tensors):
             parser.error(
                 'The same number of src_tensor_name and dst_tensor_name should be given.')
+
+    # Check calibration parameters
+    if oneutils.is_valid_attr(args, 'mode'):
+        if getattr(args, 'mode') == 'percentile':
+            # Check dtype
+            try:
+                min_percentile = float(getattr(args, 'min_percentile'))
+            except ValueError:
+                parser.error('min_percentile must be float')
+            try:
+                max_percentile = float(getattr(args, 'max_percentile'))
+            except ValueError:
+                parser.error('max_percentile must be float')
+        elif getattr(args, 'mode') == 'moving_average':
+            # Check dtype
+            try:
+                moving_avg_batch = int(getattr(args, 'moving_avg_batch'))
+            except ValueError:
+                parser.error('moving_avg_batch must be integer')
+            try:
+                moving_avg_const = float(getattr(args, 'moving_avg_const'))
+            except ValueError:
+                parser.error('moving_avg_const must be float')
+        else:
+            parser.error('Unsupported mode')
 
 
 def _parse_arg(parser):
@@ -443,6 +484,8 @@ def _quantize(args):
             .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
             .add_option_with_valid_args('--min_percentile', ['min_percentile']) \
             .add_option_with_valid_args('--max_percentile', ['max_percentile']) \
+            .add_option_with_valid_args('--moving_avg_batch', ['moving_avg_batch']) \
+            .add_option_with_valid_args('--moving_avg_const', ['moving_avg_const']) \
             .add_option_with_valid_args('--mode', ['mode']) \
             .add_noarg_option_if_valid_arg('--generate_profile_data', 'generate_profile_data') \
             .run()
@@ -637,6 +680,8 @@ def _ampq_solve(args):
             .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
             .add_option_with_valid_args('--min_percentile', ['min_percentile']) \
             .add_option_with_valid_args('--max_percentile', ['max_percentile']) \
+            .add_option_with_valid_args('--moving_avg_batch', ['moving_avg_batch']) \
+            .add_option_with_valid_args('--moving_avg_const', ['moving_avg_const']) \
             .add_option_with_valid_args('--mode', ['mode']) \
             .add_noarg_option_if_valid_arg('--generate_profile_data', 'generate_profile_data') \
             .run()
