@@ -195,6 +195,13 @@ void OperationValidator::visit(const operation::Conv2D &node)
     for (const auto zeropoint : _operands.at(kernel_index).typeInfo().zero_points())
       OP_REQUIRES(zeropoint == 0);
   }
+  if (isConstant(kernel_index) && operandType(kernel_index) == DataType::QUANT_INT8_SYMM)
+  {
+    int32_t kernel_input_channel = _operands.at(kernel_index).shape().dim(3);
+    // zero_points comes from flatbuffer vector. Its size is guaranteed within uint32_t.
+    size_t kernel_zerop_cnt = _operands.at(kernel_index).typeInfo().zero_points().size();
+    OP_REQUIRES((int64_t)kernel_input_channel == (int64_t)kernel_zerop_cnt);
+  }
 }
 
 void OperationValidator::visit(const operation::DepthToSpace &node)
