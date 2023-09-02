@@ -1,6 +1,6 @@
-if(NOT TARGET mio_tflite280)
+if(NOT TARGET mio_tflite2121)
   return()
-endif(NOT TARGET mio_tflite280)
+endif(NOT TARGET mio_tflite2121)
 
 set(DRIVER "driver/Driver.cpp")
 
@@ -10,6 +10,6 @@ add_executable(tfl-inspect ${DRIVER} ${SOURCES})
 target_include_directories(tfl-inspect PRIVATE src)
 target_link_libraries(tfl-inspect arser)
 target_link_libraries(tfl-inspect foder)
-target_link_libraries(tfl-inspect mio_tflite280)
-target_link_libraries(tfl-inspect mio_tflite280_helper)
+target_link_libraries(tfl-inspect mio_tflite2121)
+target_link_libraries(tfl-inspect mio_tflite2121_helper)
 target_link_libraries(tfl-inspect safemain)
