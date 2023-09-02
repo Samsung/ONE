@@ -124,9 +124,9 @@ add_custom_target(tflchef_testfiles ALL DEPENDS ${TESTFILES})
 
 # Using mio_tflite_validate for temporary as it only calls flatbuffer validate
 # TODO do testing with running the model with runtime/interpreter
-# NOTE for ARM32 cross build, $<TARGET_FILE:mio_tflite280_validate> is used as-is
+# NOTE for ARM32 cross build, $<TARGET_FILE:mio_tflite2121_validate> is used as-is
 #      as test should run in ARM32 device
 add_test(NAME tflchef_test
          COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/runvalidate.sh"
-                 $<TARGET_FILE:mio_tflite280_validate>
+                 $<TARGET_FILE:mio_tflite2121_validate>
                  ${TESTS})
