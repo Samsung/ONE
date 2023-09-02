@@ -624,7 +624,7 @@ uint32_t CircleGen::addCustomOperatorCode(std::string custom_code)
 
 flatbuffers::Offset<circle::Buffer> CircleGen::buildBuffer(const uint8_t *buf, size_t size)
 {
-  if (buf == nullptr && size == 0)
+  if (buf == nullptr || size == 0)
     return circle::CreateBuffer(_fbb);
   auto buffer = _fbb.CreateVector(buf, size);
   return circle::CreateBuffer(_fbb, buffer);
