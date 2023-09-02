@@ -144,6 +144,60 @@ inline void PortableSymmetricQuantizeFloats(const float *values, const int size,
   }
 }
 
+inline void PortableAsymmetricQuantizeFloats(const float *values, const int size,
+                                             int8_t *quantized_values, float *scaling_factor,
+                                             int32_t *offset)
+{
+  /* Copied from TensorFlow PortableAsymmetricQuantizeFloats */
+  const int32_t kMinScale = -128;
+  const int32_t kMaxScale = 127;
+  const double qmin_double = kMinScale;
+  const double qmax_double = kMaxScale;
+  const auto minmax = std::minmax_element(values, values + size);
+  const double rmin = static_cast<double>(std::min(0.0f, *minmax.first));
+  const double rmax = static_cast<double>(std::max(0.0f, *minmax.second));
+  if (rmin == rmax)
+  {
+    memset(quantized_values, 0, size * sizeof(int8_t));
+    *scaling_factor = 1;
+    *offset = 0;
+    return;
+  }
+  else
+  {
+    double scale = (rmax - rmin) / (qmax_double - qmin_double);
+    const double zero_point_from_min = qmin_double - rmin / scale;
+    const double zero_point_from_max = qmax_double - rmax / scale;
+    const double zero_point_from_min_error = std::abs(qmin_double) + std::abs(rmin / scale);
+    const double zero_point_from_max_error = std::abs(qmax_double) + std::abs(rmax / scale);
+    const double zero_point_double = zero_point_from_min_error < zero_point_from_max_error
+                                       ? zero_point_from_min
+                                       : zero_point_from_max;
+    int8_t nudged_zero_point = 0;
+    if (zero_point_double <= qmin_double)
+    {
+      nudged_zero_point = kMinScale;
+    }
+    else if (zero_point_double >= qmax_double)
+    {
+      nudged_zero_point = kMaxScale;
+    }
+    else
+    {
+      nudged_zero_point = static_cast<int8_t>(round(zero_point_double));
+    }
+    *scaling_factor = scale;
+    *offset = nudged_zero_point;
+  }
+  const float scaling_factor_inv = 1.0f / *scaling_factor;
+  for (int i = 0; i < size; ++i)
+  {
+    const int32_t quantized_value =
+      static_cast<int32_t>(std::round(*offset + values[i] * scaling_factor_inv));
+    quantized_values[i] = std::min(kMaxScale, std::max(kMinScale, quantized_value));
+  }
+}
+
 inline void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix,
                                                         const int m_rows, const int m_cols,
                                                         const int8_t *__restrict__ vectors,
