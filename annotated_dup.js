@@ -1375,6 +1375,7 @@ var annotated_dup =
       [ "QuantizeSpecialActivation", "structluci_1_1_quantize_special_activation.html", "structluci_1_1_quantize_special_activation" ],
       [ "QuantizeWeights", "structluci_1_1_quantize_weights.html", "structluci_1_1_quantize_weights" ],
       [ "QuantizeWeightsOnly", "structluci_1_1_quantize_weights_only.html", "structluci_1_1_quantize_weights_only" ],
+      [ "QuantizeWeightsPass", "classluci_1_1_quantize_weights_pass.html", "classluci_1_1_quantize_weights_pass" ],
       [ "QuantizeWithMinMaxPass", "classluci_1_1_quantize_with_min_max_pass.html", "classluci_1_1_quantize_with_min_max_pass" ],
       [ "RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", "structluci_1_1_remove_duplicate_const_pass" ],
       [ "RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", "structluci_1_1_remove_fake_quant_pass" ],
@@ -2304,6 +2305,9 @@ var annotated_dup =
     ] ],
     [ "nnfw", "namespacennfw.html", [
       [ "cker", "namespacennfw_1_1cker.html", [
+        [ "detail", "namespacennfw_1_1cker_1_1detail.html", [
+          [ "GemmImplUsingEigen", "structnnfw_1_1cker_1_1detail_1_1_gemm_impl_using_eigen.html", null ]
+        ] ],
         [ "eigen_support", "namespacennfw_1_1cker_1_1eigen__support.html", [
           [ "EigenContext", "structnnfw_1_1cker_1_1eigen__support_1_1_eigen_context.html", "structnnfw_1_1cker_1_1eigen__support_1_1_eigen_context" ],
           [ "EigenThreadPoolWrapper", "classnnfw_1_1cker_1_1eigen__support_1_1_eigen_thread_pool_wrapper.html", "classnnfw_1_1cker_1_1eigen__support_1_1_eigen_thread_pool_wrapper" ],
@@ -2933,6 +2937,7 @@ var annotated_dup =
             [ "Optimizer", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html", "classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer" ],
             [ "SGD", "classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html", "classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d" ]
           ] ],
+          [ "IGradientApplier", "classonert_1_1exec_1_1train_1_1_i_gradient_applier.html", "classonert_1_1exec_1_1train_1_1_i_gradient_applier" ],
           [ "ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", "classonert_1_1exec_1_1train_1_1_i_trainable_function" ],
           [ "TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html", "classonert_1_1exec_1_1train_1_1_trainable_executor" ],
           [ "TrainableExecutors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html", "classonert_1_1exec_1_1train_1_1_trainable_executors" ],
@@ -3100,6 +3105,11 @@ var annotated_dup =
         [ "Stride", "structonert_1_1ir_1_1_stride.html", "structonert_1_1ir_1_1_stride" ],
         [ "TypeInfo", "classonert_1_1ir_1_1_type_info.html", "classonert_1_1ir_1_1_type_info" ]
       ] ],
+      [ "odc", "namespaceonert_1_1odc.html", [
+        [ "IQuantizer", "classonert_1_1odc_1_1_i_quantizer.html", "classonert_1_1odc_1_1_i_quantizer" ],
+        [ "Quantizer", "classonert_1_1odc_1_1_quantizer.html", "classonert_1_1odc_1_1_quantizer" ],
+        [ "QuantizerLoader", "classonert_1_1odc_1_1_quantizer_loader.html", "classonert_1_1odc_1_1_quantizer_loader" ]
+      ] ],
       [ "shape_inference", "namespaceonert_1_1shape__inference.html", [
         [ "StridedSliceParams", "structonert_1_1shape__inference_1_1_strided_slice_params.html", "structonert_1_1shape__inference_1_1_strided_slice_params" ]
       ] ],
@@ -3178,9 +3188,12 @@ var annotated_dup =
       [ "RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", "class_random_data_generator_1_1_random_data_generator" ]
     ] ],
     [ "record_minmax", "namespacerecord__minmax.html", [
+      [ "MinMaxComputer", "classrecord__minmax_1_1_min_max_computer.html", "classrecord__minmax_1_1_min_max_computer" ],
       [ "MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", "classrecord__minmax_1_1_min_max_map" ],
       [ "MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", "classrecord__minmax_1_1_min_max_observer" ],
       [ "MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", "structrecord__minmax_1_1_min_max_vectors" ],
+      [ "MovingAvgComputer", "classrecord__minmax_1_1_moving_avg_computer.html", "classrecord__minmax_1_1_moving_avg_computer" ],
+      [ "PercentileComputer", "classrecord__minmax_1_1_percentile_computer.html", "classrecord__minmax_1_1_percentile_computer" ],
       [ "RecordMinMax", "classrecord__minmax_1_1_record_min_max.html", "classrecord__minmax_1_1_record_min_max" ]
     ] ],
     [ "rua", "namespacerua.html", [

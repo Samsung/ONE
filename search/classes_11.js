@@ -14,10 +14,12 @@ var searchData=
   ['quantizelayer_11',['QuantizeLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_quantize_layer.html',1,'onert::backend::cpu::ops']]],
   ['quantizeop_12',['QuantizeOp',['../classmir_1_1ops_1_1_quantize_op.html',1,'mir::ops']]],
   ['quantizeprecheckerpass_13',['QuantizePreCheckerPass',['../classluci_1_1_quantize_pre_checker_pass.html',1,'luci']]],
-  ['quantizer_14',['Quantizer',['../classmpqsolver_1_1core_1_1_quantizer.html',1,'mpqsolver::core']]],
+  ['quantizer_14',['Quantizer',['../classmpqsolver_1_1core_1_1_quantizer.html',1,'mpqsolver::core::Quantizer'],['../classonert_1_1odc_1_1_quantizer.html',1,'onert::odc::Quantizer']]],
   ['quantizerhook_15',['QuantizerHook',['../structmpqsolver_1_1core_1_1_quantizer_hook.html',1,'mpqsolver::core']]],
-  ['quantizespecialactivation_16',['QuantizeSpecialActivation',['../structluci_1_1_quantize_special_activation.html',1,'luci']]],
-  ['quantizeweights_17',['QuantizeWeights',['../structluci_1_1_quantize_weights.html',1,'luci']]],
-  ['quantizeweightsonly_18',['QuantizeWeightsOnly',['../structluci_1_1_quantize_weights_only.html',1,'luci']]],
-  ['quantizewithminmaxpass_19',['QuantizeWithMinMaxPass',['../classluci_1_1_quantize_with_min_max_pass.html',1,'luci']]]
+  ['quantizerloader_16',['QuantizerLoader',['../classonert_1_1odc_1_1_quantizer_loader.html',1,'onert::odc']]],
+  ['quantizespecialactivation_17',['QuantizeSpecialActivation',['../structluci_1_1_quantize_special_activation.html',1,'luci']]],
+  ['quantizeweights_18',['QuantizeWeights',['../structluci_1_1_quantize_weights.html',1,'luci']]],
+  ['quantizeweightsonly_19',['QuantizeWeightsOnly',['../structluci_1_1_quantize_weights_only.html',1,'luci']]],
+  ['quantizeweightspass_20',['QuantizeWeightsPass',['../classluci_1_1_quantize_weights_pass.html',1,'luci']]],
+  ['quantizewithminmaxpass_21',['QuantizeWithMinMaxPass',['../classluci_1_1_quantize_with_min_max_pass.html',1,'luci']]]
 ];

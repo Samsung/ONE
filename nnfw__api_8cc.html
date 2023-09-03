@@ -254,6 +254,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a7a90f1c3e534bb088a9b039050a0dc25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api_8cc.html#a7a90f1c3e534bb088a9b039050a0dc25">nnfw_train_export_circle</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *)</td></tr>
 <tr class="memdesc:a7a90f1c3e534bb088a9b039050a0dc25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export circle model.  <a href="nnfw__api_8cc.html#a7a90f1c3e534bb088a9b039050a0dc25">More...</a><br /></td></tr>
 <tr class="separator:a7a90f1c3e534bb088a9b039050a0dc25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c18c5f0f8b1746fb5016bb696d215b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api_8cc.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, <a class="el" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a> qtype)</td></tr>
+<tr class="memdesc:a7c18c5f0f8b1746fb5016bb696d215b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set quantization type.  <a href="nnfw__api_8cc.html#a7c18c5f0f8b1746fb5016bb696d215b6">More...</a><br /></td></tr>
+<tr class="separator:a7c18c5f0f8b1746fb5016bb696d215b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1bb47075976b3334e5df27e4110a9c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api_8cc.html#ae1bb47075976b3334e5df27e4110a9c0">nnfw_set_quantized_model_path</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
+<tr class="memdesc:ae1bb47075976b3334e5df27e4110a9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set exported quantized model path.  <a href="nnfw__api_8cc.html#ae1bb47075976b3334e5df27e4110a9c0">More...</a><br /></td></tr>
+<tr class="separator:ae1bb47075976b3334e5df27e4110a9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4046ec782673ee90f6ab2dca1a317d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api_8cc.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session)</td></tr>
+<tr class="memdesc:aa4046ec782673ee90f6ab2dca1a317d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantize circle model.  <a href="nnfw__api_8cc.html#aa4046ec782673ee90f6ab2dca1a317d9">More...</a><br /></td></tr>
+<tr class="separator:aa4046ec782673ee90f6ab2dca1a317d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a2254c17b16ddb9f9475d7488d6489a1c" name="a2254c17b16ddb9f9475d7488d6489a1c"></a>
@@ -386,7 +395,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Wait for asynchronous run to finish. </p>
-<p >This function must be called after calling <code><a class="el" href="">nnfw_run_asnyc</a></code>, and can be called only once for a <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code> call.</p>
+<p >This function must be called after calling <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code>, and can be called only once for a <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code> call.</p>
 <p >When this function returns, it means that this session has finished the asynchronous run. Then the user can safely use the output data.</p>
 <p >This function returns after the asynchronous inference is finished.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1016,7 +1025,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Prepare session to be ready for inference. </p>
-<p >This phase may finalize model compilation, scheduling, and additional settings. If <code><a class="el" href="">nnfw_apply_tensor</a></code> is called to apply input tensor info different with model before this function, tries to resize all tensors.</p>
+<p >This phase may finalize model compilation, scheduling, and additional settings. If <code><a class="el" href="nnfw_8h.html#a1803eaf2caed5342bed98c5920e834da">nnfw_apply_tensorinfo</a></code> is called to apply input tensor info different with model before this function, tries to resize all tensors.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>the session to be prepared </td></tr>
@@ -1128,6 +1137,41 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aa4046ec782673ee90f6ab2dca1a317d9" name="aa4046ec782673ee90f6ab2dca1a317d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4046ec782673ee90f6ab2dca1a317d9">&#9670;&#160;</a></span>nnfw_quantize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_quantize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Quantize circle model. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to quantize </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>ODC_STATUS_NO_ERROR</code> if successful, otherwise return <code>ODC_STATUS_ERROR</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00511">511</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  512</span>{</div>
+<div class="line"><span class="lineno">  513</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  514</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;quantize();</div>
+<div class="line"><span class="lineno">  515</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
 <a id="a1d7b44b831013d2854380d72fc0d4a38" name="a1d7b44b831013d2854380d72fc0d4a38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1d7b44b831013d2854380d72fc0d4a38">&#9670;&#160;</a></span>nnfw_query_info_u32()</h2>
 
@@ -1166,7 +1210,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>session to be queried on. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">information</td><td>ID to be queried </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>ID to be queried </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>uint32 value to be returned.</td></tr>
   </table>
   </dd>
@@ -1572,7 +1616,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set input model's tensor info for resizing. </p>
-<p >This function can be called at any time after calling <code><a class="el" href="">nnfw_model_load_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="">nnfw_model_load_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten.</p>
+<p >This function can be called at any time after calling <code><a class="el" href="nnfw_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="nnfw_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session to the input tensor info is to be set </td></tr>
@@ -1769,6 +1813,101 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  221</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
 <div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_output_layout(index, layout);</div>
 <div class="line"><span class="lineno">  223</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="a7c18c5f0f8b1746fb5016bb696d215b6" name="a7c18c5f0f8b1746fb5016bb696d215b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c18c5f0f8b1746fb5016bb696d215b6">&#9670;&#160;</a></span>nnfw_set_quantization_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_set_quantization_type </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>&#160;</td>
+          <td class="paramname"><em>qtype</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set quantization type. </p>
+<p >This function should be called before <code><a class="el" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a></code> is invoked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to set quantization type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pref</td><td><code>NNFW_QUANTIZE_TYPE</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, <code>NNFW_STATUS_UNEXPECTED_NULL</code> if session is null, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00499">499</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  500</span>{</div>
+<div class="line"><span class="lineno">  501</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantization_type(qtype);</div>
+<div class="line"><span class="lineno">  503</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="ae1bb47075976b3334e5df27e4110a9c0" name="ae1bb47075976b3334e5df27e4110a9c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bb47075976b3334e5df27e4110a9c0">&#9670;&#160;</a></span>nnfw_set_quantized_model_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_set_quantized_model_path </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set exported quantized model path. </p>
+<p >This function should be called before <code><a class="el" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a></code> is invoked.</p>
+<p >TODO: If this function is not called, quantized model will not be exported</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to set quantized model path </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Quantized model path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00505">505</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  506</span>{</div>
+<div class="line"><span class="lineno">  507</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantized_model_path(path);</div>
+<div class="line"><span class="lineno">  509</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 

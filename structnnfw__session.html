@@ -159,6 +159,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64d5dc56c9d9977bc576cccc35446ab0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__session.html#a64d5dc56c9d9977bc576cccc35446ab0">set_backends_per_operation</a> (const char *backend_settings)</td></tr>
 <tr class="memdesc:a64d5dc56c9d9977bc576cccc35446ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set backends with string-encoded mapping from operation index to backend type (cpu, acl_cl)  <a href="structnnfw__session.html#a64d5dc56c9d9977bc576cccc35446ab0">More...</a><br /></td></tr>
 <tr class="separator:a64d5dc56c9d9977bc576cccc35446ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a653464551f483ade508f1eb783e6af38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__session.html#a653464551f483ade508f1eb783e6af38">set_quantization_type</a> (<a class="el" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a> qtype)</td></tr>
+<tr class="separator:a653464551f483ade508f1eb783e6af38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab66351764e0f6efda0f707dd78c1794a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__session.html#ab66351764e0f6efda0f707dd78c1794a">set_quantized_model_path</a> (const char *path)</td></tr>
+<tr class="separator:ab66351764e0f6efda0f707dd78c1794a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52af2638dbbcfe85ef22e1d06d4f399"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__session.html#af52af2638dbbcfe85ef22e1d06d4f399">quantize</a> ()</td></tr>
+<tr class="separator:af52af2638dbbcfe85ef22e1d06d4f399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -1160,6 +1166,31 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af52af2638dbbcfe85ef22e1d06d4f399" name="af52af2638dbbcfe85ef22e1d06d4f399"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af52af2638dbbcfe85ef22e1d06d4f399">&#9670;&#160;</a></span>quantize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::quantize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01481">1481</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1482</span>{</div>
+<div class="line"><span class="lineno"> 1483</span>  <span class="comment">// NYI</span></div>
+<div class="line"><span class="lineno"> 1484</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1485</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>.</p>
+
+</div>
+</div>
 <a id="aa19a1820673a0c093a10d7f3db6f56a2" name="aa19a1820673a0c093a10d7f3db6f56a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa19a1820673a0c093a10d7f3db6f56a2">&#9670;&#160;</a></span>register_custom_operation()</h2>
 
@@ -1802,6 +1833,58 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  686</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00144">NNFW_LAYOUT_CHANNELS_FIRST</a>, <a class="el" href="nnfw_8h_source.html#l00139">NNFW_LAYOUT_CHANNELS_LAST</a>, <a class="el" href="nnfw_8h_source.html#l00134">NNFW_LAYOUT_NONE</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
+
+</div>
+</div>
+<a id="a653464551f483ade508f1eb783e6af38" name="a653464551f483ade508f1eb783e6af38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653464551f483ade508f1eb783e6af38">&#9670;&#160;</a></span>set_quantization_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::set_quantization_type </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>&#160;</td>
+          <td class="paramname"><em>qtype</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01469">1469</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1470</span>{</div>
+<div class="line"><span class="lineno"> 1471</span>  <span class="comment">// NYI</span></div>
+<div class="line"><span class="lineno"> 1472</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1473</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>.</p>
+
+</div>
+</div>
+<a id="ab66351764e0f6efda0f707dd78c1794a" name="ab66351764e0f6efda0f707dd78c1794a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab66351764e0f6efda0f707dd78c1794a">&#9670;&#160;</a></span>set_quantized_model_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_session::set_quantized_model_path </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01475">1475</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1476</span>{</div>
+<div class="line"><span class="lineno"> 1477</span>  <span class="comment">// NYI</span></div>
+<div class="line"><span class="lineno"> 1478</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1479</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>.</p>
 
 </div>
 </div>

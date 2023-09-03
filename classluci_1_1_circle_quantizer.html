@@ -130,17 +130,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00309">309</a> of file <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html">CircleQuantizer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  310</span>{</div>
-<div class="line"><span class="lineno">  311</span>  <span class="keywordflow">if</span> (_options == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  312</span>  {</div>
-<div class="line"><span class="lineno">  313</span>    _options = std::make_unique&lt;QuantizeOptionsImpl&gt;();</div>
-<div class="line"><span class="lineno">  314</span>  }</div>
-<div class="line"><span class="lineno">  315</span> </div>
-<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">return</span> _options.get();</div>
-<div class="line"><span class="lineno">  317</span>}</div>
+<p class="definition">Definition at line <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00310">310</a> of file <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html">CircleQuantizer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  311</span>{</div>
+<div class="line"><span class="lineno">  312</span>  <span class="keywordflow">if</span> (_options == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  313</span>  {</div>
+<div class="line"><span class="lineno">  314</span>    _options = std::make_unique&lt;QuantizeOptionsImpl&gt;();</div>
+<div class="line"><span class="lineno">  315</span>  }</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>  <span class="keywordflow">return</span> _options.get();</div>
+<div class="line"><span class="lineno">  318</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00106">entry()</a>, and <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00106">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00034">onert::odc::Quantizer::quantize()</a>, and <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>.</p>
 
 </div>
 </div>
@@ -160,341 +160,348 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00319">319</a> of file <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html">CircleQuantizer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  320</span>{</div>
-<div class="line"><span class="lineno">  321</span>  <span class="comment">// Fake quantization of weights</span></div>
-<div class="line"><span class="lineno">  322</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd">Options::Algorithm::QuantizeDequantizeWeights</a>))</div>
-<div class="line"><span class="lineno">  323</span>  {</div>
-<div class="line"><span class="lineno">  324</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
-<div class="line"><span class="lineno">  326</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_granularity{<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;channel&quot;</span>};</div>
-<div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>    <span class="keyword">auto</span> input_model_dtype =</div>
-<div class="line"><span class="lineno">  329</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keyword">auto</span> output_model_dtype =</div>
-<div class="line"><span class="lineno">  331</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
-<div class="line"><span class="lineno">  333</span>    <span class="keyword">auto</span> layer_params = _options-&gt;layer_params(Options::AlgorithmParameters::Quantize_layer_params);</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), fakeq_supported_input_model_dtype))</div>
-<div class="line"><span class="lineno">  336</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input type: &quot;</span> +</div>
-<div class="line"><span class="lineno">  337</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_input_model_dtype));</div>
-<div class="line"><span class="lineno">  338</span> </div>
-<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), fakeq_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  340</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output type: &quot;</span> +</div>
-<div class="line"><span class="lineno">  341</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_output_model_dtype));</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), fakeq_supported_granularity))</div>
-<div class="line"><span class="lineno">  344</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
-<div class="line"><span class="lineno">  345</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_granularity));</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity) == <a class="code hl_enumvalue" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a">QuantizationGranularity::LayerWise</a> &amp;&amp;</div>
-<div class="line"><span class="lineno">  348</span>        <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype) != loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  349</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Layer-wise quantization only supports uint8 dtype.&quot;</span>);</div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
-<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
-<div class="line"><span class="lineno">  353</span>    {</div>
-<div class="line"><span class="lineno">  354</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
-<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), fakeq_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  356</span>      {</div>
-<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>
-<div class="line"><span class="lineno">  358</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_output_model_dtype));</div>
-<div class="line"><span class="lineno">  359</span>      }</div>
-<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;granularity), fakeq_supported_granularity))</div>
-<div class="line"><span class="lineno">  361</span>      {</div>
-<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">  363</span>          <span class="stringliteral">&quot;Unsupported granularity in &quot;</span> + name +</div>
-<div class="line"><span class="lineno">  364</span>          <span class="stringliteral">&quot;. List of supported granularity: &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_granularity));</div>
-<div class="line"><span class="lineno">  365</span>      }</div>
-<div class="line"><span class="lineno">  366</span>    }</div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span>    <span class="comment">// Clear existing quantparams before doing fake quantization</span></div>
-<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  370</span>    {</div>
-<div class="line"><span class="lineno">  371</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">if</span> (circle_node-&gt;quantparam() != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  373</span>        circle_node-&gt;quantparam(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  374</span>    }</div>
-<div class="line"><span class="lineno">  375</span> </div>
-<div class="line"><span class="lineno">  376</span>    <span class="keyword">auto</span> ctx = std::make_unique&lt;luci::QuantizeDequantizeWeightsPass::Context&gt;();</div>
-<div class="line"><span class="lineno">  377</span>    {</div>
-<div class="line"><span class="lineno">  378</span>      ctx-&gt;input_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype);</div>
-<div class="line"><span class="lineno">  379</span>      ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
-<div class="line"><span class="lineno">  380</span>      ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
-<div class="line"><span class="lineno">  383</span>      {</div>
-<div class="line"><span class="lineno">  384</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
-<div class="line"><span class="lineno">  385</span>        {</div>
-<div class="line"><span class="lineno">  386</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
-<div class="line"><span class="lineno">  387</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
-<div class="line"><span class="lineno">  388</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
-<div class="line"><span class="lineno">  389</span>        }</div>
-<div class="line"><span class="lineno">  390</span>        ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  391</span>      }</div>
-<div class="line"><span class="lineno">  392</span>    }</div>
-<div class="line"><span class="lineno">  393</span> </div>
-<div class="line"><span class="lineno">  394</span>    <a class="code hl_class" href="classluci_1_1_quantize_dequantize_weights_pass.html">luci::QuantizeDequantizeWeightsPass</a> fake_quantizer(std::move(ctx));</div>
-<div class="line"><span class="lineno">  395</span> </div>
-<div class="line"><span class="lineno">  396</span>    fake_quantizer.run(g);</div>
-<div class="line"><span class="lineno">  397</span>  }</div>
-<div class="line"><span class="lineno">  398</span> </div>
-<div class="line"><span class="lineno">  399</span>  <span class="comment">// Actual quantization of weights, bias, and activation</span></div>
-<div class="line"><span class="lineno">  400</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8">Options::Algorithm::QuantizeWithMinMax</a>))</div>
-<div class="line"><span class="lineno">  401</span>  {</div>
-<div class="line"><span class="lineno">  402</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
-<div class="line"><span class="lineno">  403</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
-<div class="line"><span class="lineno">  404</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_granularity{<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;channel&quot;</span>};</div>
-<div class="line"><span class="lineno">  405</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_input_type{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>,   <span class="stringliteral">&quot;int32&quot;</span>,</div>
-<div class="line"><span class="lineno">  406</span>                                                                    <span class="stringliteral">&quot;int64&quot;</span>, <span class="stringliteral">&quot;float32&quot;</span>, <span class="stringliteral">&quot;bool&quot;</span>};</div>
-<div class="line"><span class="lineno">  407</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_output_type{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>,   <span class="stringliteral">&quot;int32&quot;</span>,</div>
-<div class="line"><span class="lineno">  408</span>                                                                     <span class="stringliteral">&quot;int64&quot;</span>, <span class="stringliteral">&quot;float32&quot;</span>, <span class="stringliteral">&quot;bool&quot;</span>};</div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span>    <span class="keyword">auto</span> input_model_dtype =</div>
-<div class="line"><span class="lineno">  411</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
-<div class="line"><span class="lineno">  412</span>    <span class="keyword">auto</span> output_model_dtype =</div>
-<div class="line"><span class="lineno">  413</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
-<div class="line"><span class="lineno">  414</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
-<div class="line"><span class="lineno">  415</span>    <span class="keyword">auto</span> input_type = _options-&gt;param(Options::AlgorithmParameters::Quantize_input_type);</div>
-<div class="line"><span class="lineno">  416</span>    <span class="keywordflow">if</span> (input_type.empty())</div>
-<div class="line"><span class="lineno">  417</span>      input_type = output_model_dtype;</div>
-<div class="line"><span class="lineno">  418</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = _options-&gt;param(Options::AlgorithmParameters::Quantize_output_type);</div>
-<div class="line"><span class="lineno">  419</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.empty())</div>
-<div class="line"><span class="lineno">  420</span>      <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = output_model_dtype;</div>
-<div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>    <span class="keyword">auto</span> input_type_vec = pepper::csv_to_vector&lt;std::string&gt;(input_type);</div>
-<div class="line"><span class="lineno">  423</span>    <span class="keyword">auto</span> output_type_vec = pepper::csv_to_vector&lt;std::string&gt;(output_type);</div>
-<div class="line"><span class="lineno">  424</span> </div>
-<div class="line"><span class="lineno">  425</span>    <span class="keywordtype">bool</span> TF_style_maxpool =</div>
-<div class="line"><span class="lineno">  426</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == <span class="stringliteral">&quot;True&quot;</span>;</div>
-<div class="line"><span class="lineno">  427</span> </div>
-<div class="line"><span class="lineno">  428</span>    <span class="keyword">auto</span> layer_params = _options-&gt;layer_params(Options::AlgorithmParameters::Quantize_layer_params);</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), qwmm_supported_input_model_dtype))</div>
-<div class="line"><span class="lineno">  431</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  432</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_input_model_dtype));</div>
-<div class="line"><span class="lineno">  433</span> </div>
-<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), qwmm_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  435</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  436</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_model_dtype));</div>
-<div class="line"><span class="lineno">  437</span> </div>
-<div class="line"><span class="lineno">  438</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), qwmm_supported_granularity))</div>
-<div class="line"><span class="lineno">  439</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
-<div class="line"><span class="lineno">  440</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_granularity));</div>
-<div class="line"><span class="lineno">  441</span> </div>
-<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dtype : input_type_vec)</div>
-<div class="line"><span class="lineno">  443</span>    {</div>
-<div class="line"><span class="lineno">  444</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(dtype), qwmm_supported_input_type))</div>
-<div class="line"><span class="lineno">  445</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  446</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_input_type));</div>
-<div class="line"><span class="lineno">  447</span>    }</div>
-<div class="line"><span class="lineno">  448</span> </div>
-<div class="line"><span class="lineno">  449</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dtype : output_type_vec)</div>
-<div class="line"><span class="lineno">  450</span>    {</div>
-<div class="line"><span class="lineno">  451</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(dtype), qwmm_supported_output_type))</div>
-<div class="line"><span class="lineno">  452</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  453</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_type));</div>
-<div class="line"><span class="lineno">  454</span>    }</div>
-<div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity) == <a class="code hl_enumvalue" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a">QuantizationGranularity::LayerWise</a> &amp;&amp;</div>
-<div class="line"><span class="lineno">  457</span>        <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype) != loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  458</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Layer-wise quantization only supports uint8 dtype.&quot;</span>);</div>
-<div class="line"><span class="lineno">  459</span> </div>
-<div class="line"><span class="lineno">  460</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
-<div class="line"><span class="lineno">  461</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
-<div class="line"><span class="lineno">  462</span>    {</div>
-<div class="line"><span class="lineno">  463</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
-<div class="line"><span class="lineno">  464</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), qwmm_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  465</span>      {</div>
-<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>
-<div class="line"><span class="lineno">  467</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_model_dtype));</div>
-<div class="line"><span class="lineno">  468</span>      }</div>
-<div class="line"><span class="lineno">  469</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;granularity), qwmm_supported_granularity))</div>
-<div class="line"><span class="lineno">  470</span>      {</div>
-<div class="line"><span class="lineno">  471</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">  472</span>          <span class="stringliteral">&quot;Unsupported granularity in &quot;</span> + name +</div>
-<div class="line"><span class="lineno">  473</span>          <span class="stringliteral">&quot;. List of supported granularity: &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_granularity));</div>
-<div class="line"><span class="lineno">  474</span>      }</div>
-<div class="line"><span class="lineno">  475</span>    }</div>
-<div class="line"><span class="lineno">  476</span> </div>
-<div class="line"><span class="lineno">  477</span>    <span class="keyword">auto</span> input_types = <a class="code hl_function" href="namespaceluci.html#a5aa6aed869be37a785205e2451ee0206">str_vec_to_dtype_vec</a>(input_type_vec);</div>
-<div class="line"><span class="lineno">  478</span>    <span class="keyword">auto</span> output_types = <a class="code hl_function" href="namespaceluci.html#a5aa6aed869be37a785205e2451ee0206">str_vec_to_dtype_vec</a>(output_type_vec);</div>
-<div class="line"><span class="lineno">  479</span> </div>
-<div class="line"><span class="lineno">  480</span>    <span class="comment">// Canonicalize user-given input/output_type (match with # of inputs/outputs)</span></div>
-<div class="line"><span class="lineno">  481</span>    canonicalize_input_type(g, input_types);</div>
-<div class="line"><span class="lineno">  482</span>    canonicalize_output_type(g, output_types);</div>
-<div class="line"><span class="lineno">  483</span> </div>
-<div class="line"><span class="lineno">  484</span>    <span class="comment">// Input model checker for quantization</span></div>
-<div class="line"><span class="lineno">  485</span>    <a class="code hl_class" href="classluci_1_1_quantize_pre_checker_pass.html">luci::QuantizePreCheckerPass</a> input_model_checker{};</div>
-<div class="line"><span class="lineno">  486</span>    input_model_checker.<a class="code hl_function" href="classluci_1_1_quantize_pre_checker_pass.html#a125a35be07eafb96109dd56a890770d0">run</a>(g);</div>
-<div class="line"><span class="lineno">  487</span> </div>
-<div class="line"><span class="lineno">  488</span>    <span class="keyword">auto</span> ctx = std::make_unique&lt;luci::QuantizeWithMinMaxPass::Context&gt;();</div>
-<div class="line"><span class="lineno">  489</span>    {</div>
-<div class="line"><span class="lineno">  490</span>      ctx-&gt;input_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype);</div>
-<div class="line"><span class="lineno">  491</span>      ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
-<div class="line"><span class="lineno">  492</span>      ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
-<div class="line"><span class="lineno">  493</span>      ctx-&gt;input_types = input_types;</div>
-<div class="line"><span class="lineno">  494</span>      ctx-&gt;output_types = output_types;</div>
-<div class="line"><span class="lineno">  495</span>      ctx-&gt;TF_style_maxpool = TF_style_maxpool;</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
-<div class="line"><span class="lineno">  498</span>      {</div>
-<div class="line"><span class="lineno">  499</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
-<div class="line"><span class="lineno">  500</span>        {</div>
-<div class="line"><span class="lineno">  501</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
-<div class="line"><span class="lineno">  502</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
-<div class="line"><span class="lineno">  503</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
-<div class="line"><span class="lineno">  504</span>        }</div>
-<div class="line"><span class="lineno">  505</span>        ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  506</span>      }</div>
-<div class="line"><span class="lineno">  507</span>    }</div>
-<div class="line"><span class="lineno">  508</span> </div>
-<div class="line"><span class="lineno">  509</span>    <a class="code hl_class" href="classluci_1_1_quantize_with_min_max_pass.html">luci::QuantizeWithMinMaxPass</a> quantizer(std::move(ctx));</div>
-<div class="line"><span class="lineno">  510</span> </div>
-<div class="line"><span class="lineno">  511</span>    quantizer.run(g);</div>
-<div class="line"><span class="lineno">  512</span> </div>
-<div class="line"><span class="lineno">  513</span>    <span class="keyword">auto</span> verify_ctx = std::make_unique&lt;luci::QuantizedModelVerifier::Context&gt;();</div>
-<div class="line"><span class="lineno">  514</span>    {</div>
-<div class="line"><span class="lineno">  515</span>      verify_ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
-<div class="line"><span class="lineno">  516</span>      verify_ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
-<div class="line"><span class="lineno">  517</span>      verify_ctx-&gt;input_types = input_types;</div>
-<div class="line"><span class="lineno">  518</span>      verify_ctx-&gt;output_types = output_types;</div>
-<div class="line"><span class="lineno">  519</span>      verify_ctx-&gt;TF_style_maxpool = TF_style_maxpool;</div>
-<div class="line"><span class="lineno">  520</span> </div>
-<div class="line"><span class="lineno">  521</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
-<div class="line"><span class="lineno">  522</span>      {</div>
-<div class="line"><span class="lineno">  523</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
-<div class="line"><span class="lineno">  524</span>        {</div>
-<div class="line"><span class="lineno">  525</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
-<div class="line"><span class="lineno">  526</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
-<div class="line"><span class="lineno">  527</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
-<div class="line"><span class="lineno">  528</span>        }</div>
-<div class="line"><span class="lineno">  529</span>        verify_ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  530</span>      }</div>
-<div class="line"><span class="lineno">  531</span>    }</div>
-<div class="line"><span class="lineno">  532</span> </div>
-<div class="line"><span class="lineno">  533</span>    <span class="comment">// Verify the type/granularity of the quantized model</span></div>
-<div class="line"><span class="lineno">  534</span>    <a class="code hl_struct" href="structluci_1_1_quantized_model_verifier.html">luci::QuantizedModelVerifier</a> verifier(std::move(verify_ctx));</div>
-<div class="line"><span class="lineno">  535</span> </div>
-<div class="line"><span class="lineno">  536</span>    verifier.verify(g);</div>
-<div class="line"><span class="lineno">  537</span>  }</div>
-<div class="line"><span class="lineno">  538</span> </div>
-<div class="line"><span class="lineno">  539</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c">Options::Algorithm::QuantizeWeights</a>))</div>
-<div class="line"><span class="lineno">  540</span>  {</div>
-<div class="line"><span class="lineno">  541</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_output_model_dtype{<span class="stringliteral">&quot;int8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
-<div class="line"><span class="lineno">  543</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_granularity{<span class="stringliteral">&quot;channel&quot;</span>};</div>
-<div class="line"><span class="lineno">  544</span> </div>
-<div class="line"><span class="lineno">  545</span>    <span class="keyword">auto</span> input_model_dtype =</div>
-<div class="line"><span class="lineno">  546</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
-<div class="line"><span class="lineno">  547</span>    <span class="keyword">auto</span> output_model_dtype =</div>
-<div class="line"><span class="lineno">  548</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
-<div class="line"><span class="lineno">  549</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
-<div class="line"><span class="lineno">  550</span> </div>
-<div class="line"><span class="lineno">  551</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), qw_supported_input_model_dtype))</div>
-<div class="line"><span class="lineno">  552</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input type: &quot;</span> +</div>
-<div class="line"><span class="lineno">  553</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_input_model_dtype));</div>
-<div class="line"><span class="lineno">  554</span> </div>
-<div class="line"><span class="lineno">  555</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), qw_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  556</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output type: &quot;</span> +</div>
-<div class="line"><span class="lineno">  557</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_output_model_dtype));</div>
-<div class="line"><span class="lineno">  558</span> </div>
-<div class="line"><span class="lineno">  559</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), qw_supported_granularity))</div>
-<div class="line"><span class="lineno">  560</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
-<div class="line"><span class="lineno">  561</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_granularity));</div>
-<div class="line"><span class="lineno">  562</span> </div>
-<div class="line"><span class="lineno">  563</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;QuantizeWeights is not supported yet&quot;</span>);</div>
-<div class="line"><span class="lineno">  564</span>  }</div>
-<div class="line"><span class="lineno">  565</span> </div>
-<div class="line"><span class="lineno">  566</span>  <span class="comment">// Requantize</span></div>
-<div class="line"><span class="lineno">  567</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba72e3b695a3e99530d508d67f4c4a7deb">Options::Algorithm::Requantize</a>))</div>
-<div class="line"><span class="lineno">  568</span>  {</div>
-<div class="line"><span class="lineno">  569</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; rq_supported_input_model_dtype{<span class="stringliteral">&quot;int8&quot;</span>};</div>
-<div class="line"><span class="lineno">  570</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; rq_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>};</div>
-<div class="line"><span class="lineno">  571</span> </div>
-<div class="line"><span class="lineno">  572</span>    <span class="keyword">auto</span> input_model_dtype =</div>
-<div class="line"><span class="lineno">  573</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
-<div class="line"><span class="lineno">  574</span>    <span class="keyword">auto</span> output_model_dtype =</div>
-<div class="line"><span class="lineno">  575</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
-<div class="line"><span class="lineno">  576</span> </div>
-<div class="line"><span class="lineno">  577</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), rq_supported_input_model_dtype))</div>
-<div class="line"><span class="lineno">  578</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  579</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(rq_supported_input_model_dtype));</div>
-<div class="line"><span class="lineno">  580</span> </div>
-<div class="line"><span class="lineno">  581</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), rq_supported_output_model_dtype))</div>
-<div class="line"><span class="lineno">  582</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
-<div class="line"><span class="lineno">  583</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(rq_supported_output_model_dtype));</div>
+<p class="definition">Definition at line <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00320">320</a> of file <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html">CircleQuantizer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  321</span>{</div>
+<div class="line"><span class="lineno">  322</span>  <span class="comment">// Fake quantization of weights</span></div>
+<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd">Options::Algorithm::QuantizeDequantizeWeights</a>))</div>
+<div class="line"><span class="lineno">  324</span>  {</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
+<div class="line"><span class="lineno">  327</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; fakeq_supported_granularity{<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;channel&quot;</span>};</div>
+<div class="line"><span class="lineno">  328</span> </div>
+<div class="line"><span class="lineno">  329</span>    <span class="keyword">auto</span> input_model_dtype =</div>
+<div class="line"><span class="lineno">  330</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keyword">auto</span> output_model_dtype =</div>
+<div class="line"><span class="lineno">  332</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keyword">auto</span> layer_params = _options-&gt;layer_params(Options::AlgorithmParameters::Quantize_layer_params);</div>
+<div class="line"><span class="lineno">  335</span> </div>
+<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), fakeq_supported_input_model_dtype))</div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input type: &quot;</span> +</div>
+<div class="line"><span class="lineno">  338</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_input_model_dtype));</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), fakeq_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  341</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output type: &quot;</span> +</div>
+<div class="line"><span class="lineno">  342</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), fakeq_supported_granularity))</div>
+<div class="line"><span class="lineno">  345</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
+<div class="line"><span class="lineno">  346</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_granularity));</div>
+<div class="line"><span class="lineno">  347</span> </div>
+<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity) == <a class="code hl_enumvalue" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a">QuantizationGranularity::LayerWise</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  349</span>        <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype) != loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  350</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Layer-wise quantization only supports uint8 dtype.&quot;</span>);</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
+<div class="line"><span class="lineno">  354</span>    {</div>
+<div class="line"><span class="lineno">  355</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
+<div class="line"><span class="lineno">  356</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), fakeq_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  357</span>      {</div>
+<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>
+<div class="line"><span class="lineno">  359</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  360</span>      }</div>
+<div class="line"><span class="lineno">  361</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;granularity), fakeq_supported_granularity))</div>
+<div class="line"><span class="lineno">  362</span>      {</div>
+<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  364</span>          <span class="stringliteral">&quot;Unsupported granularity in &quot;</span> + name +</div>
+<div class="line"><span class="lineno">  365</span>          <span class="stringliteral">&quot;. List of supported granularity: &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(fakeq_supported_granularity));</div>
+<div class="line"><span class="lineno">  366</span>      }</div>
+<div class="line"><span class="lineno">  367</span>    }</div>
+<div class="line"><span class="lineno">  368</span> </div>
+<div class="line"><span class="lineno">  369</span>    <span class="comment">// Clear existing quantparams before doing fake quantization</span></div>
+<div class="line"><span class="lineno">  370</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><span class="lineno">  371</span>    {</div>
+<div class="line"><span class="lineno">  372</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  373</span>      <span class="keywordflow">if</span> (circle_node-&gt;quantparam() != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  374</span>        circle_node-&gt;quantparam(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  375</span>    }</div>
+<div class="line"><span class="lineno">  376</span> </div>
+<div class="line"><span class="lineno">  377</span>    <span class="keyword">auto</span> ctx = std::make_unique&lt;luci::QuantizeDequantizeWeightsPass::Context&gt;();</div>
+<div class="line"><span class="lineno">  378</span>    {</div>
+<div class="line"><span class="lineno">  379</span>      ctx-&gt;input_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype);</div>
+<div class="line"><span class="lineno">  380</span>      ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
+<div class="line"><span class="lineno">  381</span>      ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
+<div class="line"><span class="lineno">  382</span> </div>
+<div class="line"><span class="lineno">  383</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
+<div class="line"><span class="lineno">  384</span>      {</div>
+<div class="line"><span class="lineno">  385</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
+<div class="line"><span class="lineno">  386</span>        {</div>
+<div class="line"><span class="lineno">  387</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
+<div class="line"><span class="lineno">  388</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
+<div class="line"><span class="lineno">  389</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
+<div class="line"><span class="lineno">  390</span>        }</div>
+<div class="line"><span class="lineno">  391</span>        ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  392</span>      }</div>
+<div class="line"><span class="lineno">  393</span>    }</div>
+<div class="line"><span class="lineno">  394</span> </div>
+<div class="line"><span class="lineno">  395</span>    <a class="code hl_class" href="classluci_1_1_quantize_dequantize_weights_pass.html">luci::QuantizeDequantizeWeightsPass</a> fake_quantizer(std::move(ctx));</div>
+<div class="line"><span class="lineno">  396</span> </div>
+<div class="line"><span class="lineno">  397</span>    fake_quantizer.run(g);</div>
+<div class="line"><span class="lineno">  398</span>  }</div>
+<div class="line"><span class="lineno">  399</span> </div>
+<div class="line"><span class="lineno">  400</span>  <span class="comment">// Actual quantization of weights, bias, and activation</span></div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8">Options::Algorithm::QuantizeWithMinMax</a>))</div>
+<div class="line"><span class="lineno">  402</span>  {</div>
+<div class="line"><span class="lineno">  403</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
+<div class="line"><span class="lineno">  404</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
+<div class="line"><span class="lineno">  405</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_granularity{<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;channel&quot;</span>};</div>
+<div class="line"><span class="lineno">  406</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_input_type{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>,   <span class="stringliteral">&quot;int32&quot;</span>,</div>
+<div class="line"><span class="lineno">  407</span>                                                                    <span class="stringliteral">&quot;int64&quot;</span>, <span class="stringliteral">&quot;float32&quot;</span>, <span class="stringliteral">&quot;bool&quot;</span>};</div>
+<div class="line"><span class="lineno">  408</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qwmm_supported_output_type{<span class="stringliteral">&quot;uint8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>,   <span class="stringliteral">&quot;int32&quot;</span>,</div>
+<div class="line"><span class="lineno">  409</span>                                                                     <span class="stringliteral">&quot;int64&quot;</span>, <span class="stringliteral">&quot;float32&quot;</span>, <span class="stringliteral">&quot;bool&quot;</span>};</div>
+<div class="line"><span class="lineno">  410</span> </div>
+<div class="line"><span class="lineno">  411</span>    <span class="keyword">auto</span> input_model_dtype =</div>
+<div class="line"><span class="lineno">  412</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
+<div class="line"><span class="lineno">  413</span>    <span class="keyword">auto</span> output_model_dtype =</div>
+<div class="line"><span class="lineno">  414</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
+<div class="line"><span class="lineno">  415</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
+<div class="line"><span class="lineno">  416</span>    <span class="keyword">auto</span> input_type = _options-&gt;param(Options::AlgorithmParameters::Quantize_input_type);</div>
+<div class="line"><span class="lineno">  417</span>    <span class="keywordflow">if</span> (input_type.empty())</div>
+<div class="line"><span class="lineno">  418</span>      input_type = output_model_dtype;</div>
+<div class="line"><span class="lineno">  419</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = _options-&gt;param(Options::AlgorithmParameters::Quantize_output_type);</div>
+<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a>.empty())</div>
+<div class="line"><span class="lineno">  421</span>      <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = output_model_dtype;</div>
+<div class="line"><span class="lineno">  422</span> </div>
+<div class="line"><span class="lineno">  423</span>    <span class="keyword">auto</span> input_type_vec = pepper::csv_to_vector&lt;std::string&gt;(input_type);</div>
+<div class="line"><span class="lineno">  424</span>    <span class="keyword">auto</span> output_type_vec = pepper::csv_to_vector&lt;std::string&gt;(output_type);</div>
+<div class="line"><span class="lineno">  425</span> </div>
+<div class="line"><span class="lineno">  426</span>    <span class="keywordtype">bool</span> TF_style_maxpool =</div>
+<div class="line"><span class="lineno">  427</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == <span class="stringliteral">&quot;True&quot;</span>;</div>
+<div class="line"><span class="lineno">  428</span> </div>
+<div class="line"><span class="lineno">  429</span>    <span class="keyword">auto</span> layer_params = _options-&gt;layer_params(Options::AlgorithmParameters::Quantize_layer_params);</div>
+<div class="line"><span class="lineno">  430</span> </div>
+<div class="line"><span class="lineno">  431</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), qwmm_supported_input_model_dtype))</div>
+<div class="line"><span class="lineno">  432</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  433</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_input_model_dtype));</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), qwmm_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  436</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  437</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), qwmm_supported_granularity))</div>
+<div class="line"><span class="lineno">  440</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
+<div class="line"><span class="lineno">  441</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_granularity));</div>
+<div class="line"><span class="lineno">  442</span> </div>
+<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dtype : input_type_vec)</div>
+<div class="line"><span class="lineno">  444</span>    {</div>
+<div class="line"><span class="lineno">  445</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(dtype), qwmm_supported_input_type))</div>
+<div class="line"><span class="lineno">  446</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  447</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_input_type));</div>
+<div class="line"><span class="lineno">  448</span>    }</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dtype : output_type_vec)</div>
+<div class="line"><span class="lineno">  451</span>    {</div>
+<div class="line"><span class="lineno">  452</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(dtype), qwmm_supported_output_type))</div>
+<div class="line"><span class="lineno">  453</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  454</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_type));</div>
+<div class="line"><span class="lineno">  455</span>    }</div>
+<div class="line"><span class="lineno">  456</span> </div>
+<div class="line"><span class="lineno">  457</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity) == <a class="code hl_enumvalue" href="namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a">QuantizationGranularity::LayerWise</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  458</span>        <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype) != loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  459</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Layer-wise quantization only supports uint8 dtype.&quot;</span>);</div>
+<div class="line"><span class="lineno">  460</span> </div>
+<div class="line"><span class="lineno">  461</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
+<div class="line"><span class="lineno">  463</span>    {</div>
+<div class="line"><span class="lineno">  464</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
+<div class="line"><span class="lineno">  465</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), qwmm_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  466</span>      {</div>
+<div class="line"><span class="lineno">  467</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>
+<div class="line"><span class="lineno">  468</span>                                 <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  469</span>      }</div>
+<div class="line"><span class="lineno">  470</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;granularity), qwmm_supported_granularity))</div>
+<div class="line"><span class="lineno">  471</span>      {</div>
+<div class="line"><span class="lineno">  472</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  473</span>          <span class="stringliteral">&quot;Unsupported granularity in &quot;</span> + name +</div>
+<div class="line"><span class="lineno">  474</span>          <span class="stringliteral">&quot;. List of supported granularity: &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qwmm_supported_granularity));</div>
+<div class="line"><span class="lineno">  475</span>      }</div>
+<div class="line"><span class="lineno">  476</span>    }</div>
+<div class="line"><span class="lineno">  477</span> </div>
+<div class="line"><span class="lineno">  478</span>    <span class="keyword">auto</span> input_types = <a class="code hl_function" href="namespaceluci.html#a5aa6aed869be37a785205e2451ee0206">str_vec_to_dtype_vec</a>(input_type_vec);</div>
+<div class="line"><span class="lineno">  479</span>    <span class="keyword">auto</span> output_types = <a class="code hl_function" href="namespaceluci.html#a5aa6aed869be37a785205e2451ee0206">str_vec_to_dtype_vec</a>(output_type_vec);</div>
+<div class="line"><span class="lineno">  480</span> </div>
+<div class="line"><span class="lineno">  481</span>    <span class="comment">// Canonicalize user-given input/output_type (match with # of inputs/outputs)</span></div>
+<div class="line"><span class="lineno">  482</span>    canonicalize_input_type(g, input_types);</div>
+<div class="line"><span class="lineno">  483</span>    canonicalize_output_type(g, output_types);</div>
+<div class="line"><span class="lineno">  484</span> </div>
+<div class="line"><span class="lineno">  485</span>    <span class="comment">// Input model checker for quantization</span></div>
+<div class="line"><span class="lineno">  486</span>    <a class="code hl_class" href="classluci_1_1_quantize_pre_checker_pass.html">luci::QuantizePreCheckerPass</a> input_model_checker{};</div>
+<div class="line"><span class="lineno">  487</span>    input_model_checker.<a class="code hl_function" href="classluci_1_1_quantize_pre_checker_pass.html#a125a35be07eafb96109dd56a890770d0">run</a>(g);</div>
+<div class="line"><span class="lineno">  488</span> </div>
+<div class="line"><span class="lineno">  489</span>    <span class="keyword">auto</span> ctx = std::make_unique&lt;luci::QuantizeWithMinMaxPass::Context&gt;();</div>
+<div class="line"><span class="lineno">  490</span>    {</div>
+<div class="line"><span class="lineno">  491</span>      ctx-&gt;input_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype);</div>
+<div class="line"><span class="lineno">  492</span>      ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
+<div class="line"><span class="lineno">  493</span>      ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
+<div class="line"><span class="lineno">  494</span>      ctx-&gt;input_types = input_types;</div>
+<div class="line"><span class="lineno">  495</span>      ctx-&gt;output_types = output_types;</div>
+<div class="line"><span class="lineno">  496</span>      ctx-&gt;TF_style_maxpool = TF_style_maxpool;</div>
+<div class="line"><span class="lineno">  497</span> </div>
+<div class="line"><span class="lineno">  498</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
+<div class="line"><span class="lineno">  499</span>      {</div>
+<div class="line"><span class="lineno">  500</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
+<div class="line"><span class="lineno">  501</span>        {</div>
+<div class="line"><span class="lineno">  502</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
+<div class="line"><span class="lineno">  503</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
+<div class="line"><span class="lineno">  504</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
+<div class="line"><span class="lineno">  505</span>        }</div>
+<div class="line"><span class="lineno">  506</span>        ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  507</span>      }</div>
+<div class="line"><span class="lineno">  508</span>    }</div>
+<div class="line"><span class="lineno">  509</span> </div>
+<div class="line"><span class="lineno">  510</span>    <a class="code hl_class" href="classluci_1_1_quantize_with_min_max_pass.html">luci::QuantizeWithMinMaxPass</a> quantizer(std::move(ctx));</div>
+<div class="line"><span class="lineno">  511</span> </div>
+<div class="line"><span class="lineno">  512</span>    quantizer.run(g);</div>
+<div class="line"><span class="lineno">  513</span> </div>
+<div class="line"><span class="lineno">  514</span>    <span class="keyword">auto</span> verify_ctx = std::make_unique&lt;luci::QuantizedModelVerifier::Context&gt;();</div>
+<div class="line"><span class="lineno">  515</span>    {</div>
+<div class="line"><span class="lineno">  516</span>      verify_ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
+<div class="line"><span class="lineno">  517</span>      verify_ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
+<div class="line"><span class="lineno">  518</span>      verify_ctx-&gt;input_types = input_types;</div>
+<div class="line"><span class="lineno">  519</span>      verify_ctx-&gt;output_types = output_types;</div>
+<div class="line"><span class="lineno">  520</span>      verify_ctx-&gt;TF_style_maxpool = TF_style_maxpool;</div>
+<div class="line"><span class="lineno">  521</span> </div>
+<div class="line"><span class="lineno">  522</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
+<div class="line"><span class="lineno">  523</span>      {</div>
+<div class="line"><span class="lineno">  524</span>        <a class="code hl_struct" href="structluci_1_1_layer_info.html">LayerInfo</a> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
+<div class="line"><span class="lineno">  525</span>        {</div>
+<div class="line"><span class="lineno">  526</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name = layer_param-&gt;name;</div>
+<div class="line"><span class="lineno">  527</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(layer_param-&gt;dtype);</div>
+<div class="line"><span class="lineno">  528</span>          <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(layer_param-&gt;granularity);</div>
+<div class="line"><span class="lineno">  529</span>        }</div>
+<div class="line"><span class="lineno">  530</span>        verify_ctx-&gt;layers_info.emplace_back(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  531</span>      }</div>
+<div class="line"><span class="lineno">  532</span>    }</div>
+<div class="line"><span class="lineno">  533</span> </div>
+<div class="line"><span class="lineno">  534</span>    <span class="comment">// Verify the type/granularity of the quantized model</span></div>
+<div class="line"><span class="lineno">  535</span>    <a class="code hl_struct" href="structluci_1_1_quantized_model_verifier.html">luci::QuantizedModelVerifier</a> verifier(std::move(verify_ctx));</div>
+<div class="line"><span class="lineno">  536</span> </div>
+<div class="line"><span class="lineno">  537</span>    verifier.verify(g);</div>
+<div class="line"><span class="lineno">  538</span>  }</div>
+<div class="line"><span class="lineno">  539</span> </div>
+<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c">Options::Algorithm::QuantizeWeights</a>))</div>
+<div class="line"><span class="lineno">  541</span>  {</div>
+<div class="line"><span class="lineno">  542</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_input_model_dtype{<span class="stringliteral">&quot;float32&quot;</span>};</div>
+<div class="line"><span class="lineno">  543</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_output_model_dtype{<span class="stringliteral">&quot;int8&quot;</span>, <span class="stringliteral">&quot;int16&quot;</span>};</div>
+<div class="line"><span class="lineno">  544</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; qw_supported_granularity{<span class="stringliteral">&quot;channel&quot;</span>};</div>
+<div class="line"><span class="lineno">  545</span> </div>
+<div class="line"><span class="lineno">  546</span>    <span class="keyword">auto</span> input_model_dtype =</div>
+<div class="line"><span class="lineno">  547</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
+<div class="line"><span class="lineno">  548</span>    <span class="keyword">auto</span> output_model_dtype =</div>
+<div class="line"><span class="lineno">  549</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
+<div class="line"><span class="lineno">  550</span>    <span class="keyword">auto</span> granularity = _options-&gt;param(Options::AlgorithmParameters::Quantize_granularity);</div>
+<div class="line"><span class="lineno">  551</span> </div>
+<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), qw_supported_input_model_dtype))</div>
+<div class="line"><span class="lineno">  553</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input type: &quot;</span> +</div>
+<div class="line"><span class="lineno">  554</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_input_model_dtype));</div>
+<div class="line"><span class="lineno">  555</span> </div>
+<div class="line"><span class="lineno">  556</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), qw_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  557</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output type: &quot;</span> +</div>
+<div class="line"><span class="lineno">  558</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  559</span> </div>
+<div class="line"><span class="lineno">  560</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(granularity), qw_supported_granularity))</div>
+<div class="line"><span class="lineno">  561</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity. List of supported granularity: &quot;</span> +</div>
+<div class="line"><span class="lineno">  562</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(qw_supported_granularity));</div>
+<div class="line"><span class="lineno">  563</span>    <span class="keyword">auto</span> ctx = std::make_unique&lt;luci::QuantizeWeightsPass::Context&gt;();</div>
+<div class="line"><span class="lineno">  564</span>    {</div>
+<div class="line"><span class="lineno">  565</span>      ctx-&gt;input_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype);</div>
+<div class="line"><span class="lineno">  566</span>      ctx-&gt;output_model_dtype = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype);</div>
+<div class="line"><span class="lineno">  567</span>      ctx-&gt;granularity = <a class="code hl_function" href="namespaceluci.html#ab646874b5dcdcdd8e5fd41af5cb91842">str_to_granularity</a>(granularity);</div>
+<div class="line"><span class="lineno">  568</span>    }</div>
+<div class="line"><span class="lineno">  569</span>    <a class="code hl_class" href="classluci_1_1_quantize_weights_pass.html">luci::QuantizeWeightsPass</a> weights_quantizer(std::move(ctx));</div>
+<div class="line"><span class="lineno">  570</span> </div>
+<div class="line"><span class="lineno">  571</span>    weights_quantizer.run(g);</div>
+<div class="line"><span class="lineno">  572</span>  }</div>
+<div class="line"><span class="lineno">  573</span> </div>
+<div class="line"><span class="lineno">  574</span>  <span class="comment">// Requantize</span></div>
+<div class="line"><span class="lineno">  575</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba72e3b695a3e99530d508d67f4c4a7deb">Options::Algorithm::Requantize</a>))</div>
+<div class="line"><span class="lineno">  576</span>  {</div>
+<div class="line"><span class="lineno">  577</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; rq_supported_input_model_dtype{<span class="stringliteral">&quot;int8&quot;</span>};</div>
+<div class="line"><span class="lineno">  578</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::vector&lt;std::string&gt; rq_supported_output_model_dtype{<span class="stringliteral">&quot;uint8&quot;</span>};</div>
+<div class="line"><span class="lineno">  579</span> </div>
+<div class="line"><span class="lineno">  580</span>    <span class="keyword">auto</span> input_model_dtype =</div>
+<div class="line"><span class="lineno">  581</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_input_model_dtype);</div>
+<div class="line"><span class="lineno">  582</span>    <span class="keyword">auto</span> output_model_dtype =</div>
+<div class="line"><span class="lineno">  583</span>      _options-&gt;param(Options::AlgorithmParameters::Quantize_output_model_dtype);</div>
 <div class="line"><span class="lineno">  584</span> </div>
-<div class="line"><span class="lineno">  585</span>    <a class="code hl_class" href="classluci_1_1_requantize_pass.html">luci::RequantizePass</a> requantizer(<a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype),</div>
-<div class="line"><span class="lineno">  586</span>                                     <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype));</div>
-<div class="line"><span class="lineno">  587</span>    requantizer.run(g);</div>
-<div class="line"><span class="lineno">  588</span>  }</div>
-<div class="line"><span class="lineno">  589</span> </div>
-<div class="line"><span class="lineno">  590</span>  <span class="comment">// Force to write quantparam to specified tensors</span></div>
-<div class="line"><span class="lineno">  591</span>  <span class="comment">// NOTE Only per-tensor (not per-channel) qparam can be written</span></div>
-<div class="line"><span class="lineno">  592</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baff71c6d4bbbbfa012d5345a023275196">Options::Algorithm::ForceQuantParam</a>))</div>
-<div class="line"><span class="lineno">  593</span>  {</div>
-<div class="line"><span class="lineno">  594</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#a57adfe6ebc04e73e901d2bc2ccc705fe">ForceQuantParamPass::TensorVector</a> tensors =</div>
-<div class="line"><span class="lineno">  595</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_tensor_names);</div>
-<div class="line"><span class="lineno">  596</span>    <span class="keyword">auto</span> str_scales = _options-&gt;params(Options::AlgorithmParameters::Quantize_scales);</div>
-<div class="line"><span class="lineno">  597</span>    <span class="keyword">auto</span> str_zero_points = _options-&gt;params(Options::AlgorithmParameters::Quantize_zero_points);</div>
-<div class="line"><span class="lineno">  598</span> </div>
-<div class="line"><span class="lineno">  599</span>    <span class="comment">// Cast scales/zero_points to proper types</span></div>
-<div class="line"><span class="lineno">  600</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#a257b06c4369d50b07d625e44301672a7">ForceQuantParamPass::ScaleVector</a> scales = lexical_cast&lt;float&gt;(str_scales);</div>
-<div class="line"><span class="lineno">  601</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#aa9a5e7c2e008e20292bc6b6727cc9e91">ForceQuantParamPass::ZPVector</a> zero_points = lexical_cast&lt;int64_t&gt;(str_zero_points);</div>
-<div class="line"><span class="lineno">  602</span> </div>
-<div class="line"><span class="lineno">  603</span>    <a class="code hl_class" href="classluci_1_1_force_quant_param_pass.html">ForceQuantParamPass</a> fq(tensors, scales, zero_points);</div>
-<div class="line"><span class="lineno">  604</span>    fq.run(g);</div>
-<div class="line"><span class="lineno">  605</span>  }</div>
+<div class="line"><span class="lineno">  585</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(input_model_dtype), rq_supported_input_model_dtype))</div>
+<div class="line"><span class="lineno">  586</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported input type. List of supported input types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  587</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(rq_supported_input_model_dtype));</div>
+<div class="line"><span class="lineno">  588</span> </div>
+<div class="line"><span class="lineno">  589</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(output_model_dtype), rq_supported_output_model_dtype))</div>
+<div class="line"><span class="lineno">  590</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported output type. List of supported output types: &quot;</span> +</div>
+<div class="line"><span class="lineno">  591</span>                               <a class="code hl_function" href="namespaceluci.html#a023411c0e36ec2e9b614fadbea78ca41">to_string</a>(rq_supported_output_model_dtype));</div>
+<div class="line"><span class="lineno">  592</span> </div>
+<div class="line"><span class="lineno">  593</span>    <a class="code hl_class" href="classluci_1_1_requantize_pass.html">luci::RequantizePass</a> requantizer(<a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(input_model_dtype),</div>
+<div class="line"><span class="lineno">  594</span>                                     <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(output_model_dtype));</div>
+<div class="line"><span class="lineno">  595</span>    requantizer.run(g);</div>
+<div class="line"><span class="lineno">  596</span>  }</div>
+<div class="line"><span class="lineno">  597</span> </div>
+<div class="line"><span class="lineno">  598</span>  <span class="comment">// Force to write quantparam to specified tensors</span></div>
+<div class="line"><span class="lineno">  599</span>  <span class="comment">// NOTE Only per-tensor (not per-channel) qparam can be written</span></div>
+<div class="line"><span class="lineno">  600</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baff71c6d4bbbbfa012d5345a023275196">Options::Algorithm::ForceQuantParam</a>))</div>
+<div class="line"><span class="lineno">  601</span>  {</div>
+<div class="line"><span class="lineno">  602</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#a57adfe6ebc04e73e901d2bc2ccc705fe">ForceQuantParamPass::TensorVector</a> tensors =</div>
+<div class="line"><span class="lineno">  603</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_tensor_names);</div>
+<div class="line"><span class="lineno">  604</span>    <span class="keyword">auto</span> str_scales = _options-&gt;params(Options::AlgorithmParameters::Quantize_scales);</div>
+<div class="line"><span class="lineno">  605</span>    <span class="keyword">auto</span> str_zero_points = _options-&gt;params(Options::AlgorithmParameters::Quantize_zero_points);</div>
 <div class="line"><span class="lineno">  606</span> </div>
-<div class="line"><span class="lineno">  607</span>  <span class="comment">// Copy quantparam of a tensor to another tensor</span></div>
-<div class="line"><span class="lineno">  608</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3">Options::Algorithm::CopyQuantParam</a>))</div>
-<div class="line"><span class="lineno">  609</span>  {</div>
-<div class="line"><span class="lineno">  610</span>    <a class="code hl_typedef" href="classluci_1_1_copy_quant_param_pass.html#a5d76ab9b19162eae72d2502d73ee7123">CopyQuantParamPass::TensorVector</a> src_tensors =</div>
-<div class="line"><span class="lineno">  611</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_src_tensor_names);</div>
-<div class="line"><span class="lineno">  612</span>    <a class="code hl_typedef" href="classluci_1_1_copy_quant_param_pass.html#a5d76ab9b19162eae72d2502d73ee7123">CopyQuantParamPass::TensorVector</a> dst_tensors =</div>
-<div class="line"><span class="lineno">  613</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_dst_tensor_names);</div>
+<div class="line"><span class="lineno">  607</span>    <span class="comment">// Cast scales/zero_points to proper types</span></div>
+<div class="line"><span class="lineno">  608</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#a257b06c4369d50b07d625e44301672a7">ForceQuantParamPass::ScaleVector</a> scales = lexical_cast&lt;float&gt;(str_scales);</div>
+<div class="line"><span class="lineno">  609</span>    <a class="code hl_typedef" href="classluci_1_1_force_quant_param_pass.html#aa9a5e7c2e008e20292bc6b6727cc9e91">ForceQuantParamPass::ZPVector</a> zero_points = lexical_cast&lt;int64_t&gt;(str_zero_points);</div>
+<div class="line"><span class="lineno">  610</span> </div>
+<div class="line"><span class="lineno">  611</span>    <a class="code hl_class" href="classluci_1_1_force_quant_param_pass.html">ForceQuantParamPass</a> fq(tensors, scales, zero_points);</div>
+<div class="line"><span class="lineno">  612</span>    fq.run(g);</div>
+<div class="line"><span class="lineno">  613</span>  }</div>
 <div class="line"><span class="lineno">  614</span> </div>
-<div class="line"><span class="lineno">  615</span>    <a class="code hl_class" href="classluci_1_1_copy_quant_param_pass.html">CopyQuantParamPass</a> cq(src_tensors, dst_tensors);</div>
-<div class="line"><span class="lineno">  616</span>    cq.run(g);</div>
-<div class="line"><span class="lineno">  617</span>  }</div>
-<div class="line"><span class="lineno">  618</span> </div>
-<div class="line"><span class="lineno">  619</span>  <span class="comment">// Convert quantized model to fake-quantized model</span></div>
-<div class="line"><span class="lineno">  620</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baf6605c22fe731a4acc1fad910fa92dd6">Options::Algorithm::ConvertToFakeQuantizedModel</a>))</div>
-<div class="line"><span class="lineno">  621</span>  {</div>
-<div class="line"><span class="lineno">  622</span>    <a class="code hl_struct" href="structluci_1_1_convert_to_fake_quantized_model_pass.html">luci::ConvertToFakeQuantizedModelPass</a> fake_quantizer;</div>
-<div class="line"><span class="lineno">  623</span>    fake_quantizer.<a class="code hl_function" href="structluci_1_1_convert_to_fake_quantized_model_pass.html#a21e324ac6902c3051e17acf37d60332c">run</a>(g);</div>
-<div class="line"><span class="lineno">  624</span> </div>
-<div class="line"><span class="lineno">  625</span>    <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">  615</span>  <span class="comment">// Copy quantparam of a tensor to another tensor</span></div>
+<div class="line"><span class="lineno">  616</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3">Options::Algorithm::CopyQuantParam</a>))</div>
+<div class="line"><span class="lineno">  617</span>  {</div>
+<div class="line"><span class="lineno">  618</span>    <a class="code hl_typedef" href="classluci_1_1_copy_quant_param_pass.html#a5d76ab9b19162eae72d2502d73ee7123">CopyQuantParamPass::TensorVector</a> src_tensors =</div>
+<div class="line"><span class="lineno">  619</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_src_tensor_names);</div>
+<div class="line"><span class="lineno">  620</span>    <a class="code hl_typedef" href="classluci_1_1_copy_quant_param_pass.html#a5d76ab9b19162eae72d2502d73ee7123">CopyQuantParamPass::TensorVector</a> dst_tensors =</div>
+<div class="line"><span class="lineno">  621</span>      _options-&gt;params(Options::AlgorithmParameters::Quantize_dst_tensor_names);</div>
+<div class="line"><span class="lineno">  622</span> </div>
+<div class="line"><span class="lineno">  623</span>    <a class="code hl_class" href="classluci_1_1_copy_quant_param_pass.html">CopyQuantParamPass</a> cq(src_tensors, dst_tensors);</div>
+<div class="line"><span class="lineno">  624</span>    cq.run(g);</div>
+<div class="line"><span class="lineno">  625</span>  }</div>
 <div class="line"><span class="lineno">  626</span> </div>
-<div class="line"><span class="lineno">  627</span>    <span class="comment">// Default passes</span></div>
-<div class="line"><span class="lineno">  628</span>    phase.emplace_back(std::make_unique&lt;logo::RemoveDeadNodeWithQueryPass&gt;());</div>
-<div class="line"><span class="lineno">  629</span>    phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">  630</span>    phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">  631</span> </div>
-<div class="line"><span class="lineno">  632</span>    <span class="comment">// Remove redundant Dequantize Ops generated during fake quantization</span></div>
-<div class="line"><span class="lineno">  633</span>    phase.emplace_back(std::make_unique&lt;luci::RemoveRedundantDequantizePass&gt;());</div>
-<div class="line"><span class="lineno">  634</span>    <span class="comment">// Fold Dequantize Ops generated during fake quantization</span></div>
-<div class="line"><span class="lineno">  635</span>    phase.emplace_back(std::make_unique&lt;luci::FoldDequantizePass&gt;());</div>
-<div class="line"><span class="lineno">  636</span> </div>
-<div class="line"><span class="lineno">  637</span>    <a class="code hl_class" href="classluci_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a>);</div>
-<div class="line"><span class="lineno">  638</span>    <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
-<div class="line"><span class="lineno">  639</span>    phase_runner.attach(&amp;prog);</div>
-<div class="line"><span class="lineno">  640</span>    phase_runner.run(phase);</div>
-<div class="line"><span class="lineno">  641</span>  }</div>
-<div class="line"><span class="lineno">  642</span> </div>
-<div class="line"><span class="lineno">  643</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">  627</span>  <span class="comment">// Convert quantized model to fake-quantized model</span></div>
+<div class="line"><span class="lineno">  628</span>  <span class="keywordflow">if</span> (_options-&gt;query(<a class="code hl_enumvalue" href="structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baf6605c22fe731a4acc1fad910fa92dd6">Options::Algorithm::ConvertToFakeQuantizedModel</a>))</div>
+<div class="line"><span class="lineno">  629</span>  {</div>
+<div class="line"><span class="lineno">  630</span>    <a class="code hl_struct" href="structluci_1_1_convert_to_fake_quantized_model_pass.html">luci::ConvertToFakeQuantizedModelPass</a> fake_quantizer;</div>
+<div class="line"><span class="lineno">  631</span>    fake_quantizer.<a class="code hl_function" href="structluci_1_1_convert_to_fake_quantized_model_pass.html#a21e324ac6902c3051e17acf37d60332c">run</a>(g);</div>
+<div class="line"><span class="lineno">  632</span> </div>
+<div class="line"><span class="lineno">  633</span>    <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">  634</span> </div>
+<div class="line"><span class="lineno">  635</span>    <span class="comment">// Default passes</span></div>
+<div class="line"><span class="lineno">  636</span>    phase.emplace_back(std::make_unique&lt;logo::RemoveDeadNodeWithQueryPass&gt;());</div>
+<div class="line"><span class="lineno">  637</span>    phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">  638</span>    phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">  639</span> </div>
+<div class="line"><span class="lineno">  640</span>    <span class="comment">// Remove redundant Dequantize Ops generated during fake quantization</span></div>
+<div class="line"><span class="lineno">  641</span>    phase.emplace_back(std::make_unique&lt;luci::RemoveRedundantDequantizePass&gt;());</div>
+<div class="line"><span class="lineno">  642</span>    <span class="comment">// Fold Dequantize Ops generated during fake quantization</span></div>
+<div class="line"><span class="lineno">  643</span>    phase.emplace_back(std::make_unique&lt;luci::FoldDequantizePass&gt;());</div>
 <div class="line"><span class="lineno">  644</span> </div>
-<div class="line"><span class="lineno">  645</span>  <span class="comment">// Do Shape/Type inference</span></div>
-<div class="line"><span class="lineno">  646</span>  phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">  647</span>  phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">  648</span> </div>
-<div class="line"><span class="lineno">  649</span>  <a class="code hl_class" href="classluci_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a>);</div>
-<div class="line"><span class="lineno">  650</span>  <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
-<div class="line"><span class="lineno">  651</span>  phase_runner.attach(&amp;prog);</div>
-<div class="line"><span class="lineno">  652</span>  phase_runner.run(phase);</div>
-<div class="line"><span class="lineno">  653</span>}</div>
+<div class="line"><span class="lineno">  645</span>    <a class="code hl_class" href="classluci_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a>);</div>
+<div class="line"><span class="lineno">  646</span>    <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
+<div class="line"><span class="lineno">  647</span>    phase_runner.attach(&amp;prog);</div>
+<div class="line"><span class="lineno">  648</span>    phase_runner.run(phase);</div>
+<div class="line"><span class="lineno">  649</span>  }</div>
+<div class="line"><span class="lineno">  650</span> </div>
+<div class="line"><span class="lineno">  651</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">  652</span> </div>
+<div class="line"><span class="lineno">  653</span>  <span class="comment">// Do Shape/Type inference</span></div>
+<div class="line"><span class="lineno">  654</span>  phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">  655</span>  phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">  656</span> </div>
+<div class="line"><span class="lineno">  657</span>  <a class="code hl_class" href="classluci_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a>);</div>
+<div class="line"><span class="lineno">  658</span>  <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
+<div class="line"><span class="lineno">  659</span>  phase_runner.attach(&amp;prog);</div>
+<div class="line"><span class="lineno">  660</span>  phase_runner.run(phase);</div>
+<div class="line"><span class="lineno">  661</span>}</div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
 <div class="ttc" id="aclassluci_1_1_copy_quant_param_pass_html"><div class="ttname"><a href="classluci_1_1_copy_quant_param_pass.html">luci::CopyQuantParamPass</a></div><div class="ttdoc">Pass to copy quantparam (scale, zerop) of a tensor to another tensor.</div><div class="ttdef"><b>Definition:</b> <a href="_copy_quant_param_pass_8h_source.html#l00030">CopyQuantParamPass.h:31</a></div></div>
 <div class="ttc" id="aclassluci_1_1_copy_quant_param_pass_html_a5d76ab9b19162eae72d2502d73ee7123"><div class="ttname"><a href="classluci_1_1_copy_quant_param_pass.html#a5d76ab9b19162eae72d2502d73ee7123">luci::CopyQuantParamPass::TensorVector</a></div><div class="ttdeci">std::vector&lt; std::string &gt; TensorVector</div><div class="ttdef"><b>Definition:</b> <a href="_copy_quant_param_pass_8h_source.html#l00033">CopyQuantParamPass.h:33</a></div></div>
@@ -506,6 +513,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_quantize_dequantize_weights_pass_html"><div class="ttname"><a href="classluci_1_1_quantize_dequantize_weights_pass.html">luci::QuantizeDequantizeWeightsPass</a></div><div class="ttdoc">Pass to quantize weights.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_dequantize_weights_pass_8h_source.html#l00032">QuantizeDequantizeWeightsPass.h:33</a></div></div>
 <div class="ttc" id="aclassluci_1_1_quantize_pre_checker_pass_html"><div class="ttname"><a href="classluci_1_1_quantize_pre_checker_pass.html">luci::QuantizePreCheckerPass</a></div><div class="ttdoc">Pass to verify the input model has the form acceptable by quantizer.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_pre_checker_pass_8h_source.html#l00028">QuantizePreCheckerPass.h:29</a></div></div>
 <div class="ttc" id="aclassluci_1_1_quantize_pre_checker_pass_html_a125a35be07eafb96109dd56a890770d0"><div class="ttname"><a href="classluci_1_1_quantize_pre_checker_pass.html#a125a35be07eafb96109dd56a890770d0">luci::QuantizePreCheckerPass::run</a></div><div class="ttdeci">bool run(loco::Graph *graph) final</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_pre_checker_pass_8cpp_source.html#l00101">QuantizePreCheckerPass.cpp:101</a></div></div>
+<div class="ttc" id="aclassluci_1_1_quantize_weights_pass_html"><div class="ttname"><a href="classluci_1_1_quantize_weights_pass.html">luci::QuantizeWeightsPass</a></div><div class="ttdoc">Pass to quantize weights.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_weights_pass_8h_source.html#l00032">QuantizeWeightsPass.h:33</a></div></div>
 <div class="ttc" id="aclassluci_1_1_quantize_with_min_max_pass_html"><div class="ttname"><a href="classluci_1_1_quantize_with_min_max_pass.html">luci::QuantizeWithMinMaxPass</a></div><div class="ttdoc">Pass to quantize activation, weights, and bias.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_with_min_max_pass_8h_source.html#l00034">QuantizeWithMinMaxPass.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_requantize_pass_html"><div class="ttname"><a href="classluci_1_1_requantize_pass.html">luci::RequantizePass</a></div><div class="ttdoc">Pass to re-quantize graph (ex: int8 -&gt; uint8)</div><div class="ttdef"><b>Definition:</b> <a href="_requantize_pass_8h_source.html#l00032">RequantizePass.h:33</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition:</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
@@ -535,9 +543,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="astructluci_1_1_layer_info_html"><div class="ttname"><a href="structluci_1_1_layer_info.html">luci::LayerInfo</a></div><div class="ttdef"><b>Definition:</b> <a href="_quantization_parameters_8h_source.html#l00033">QuantizationParameters.h:34</a></div></div>
 <div class="ttc" id="astructluci_1_1_quantized_model_verifier_html"><div class="ttname"><a href="structluci_1_1_quantized_model_verifier.html">luci::QuantizedModelVerifier</a></div><div class="ttdoc">Class to verify quantized model.</div><div class="ttdef"><b>Definition:</b> <a href="_quantized_model_verifier_8h_source.html#l00034">QuantizedModelVerifier.h:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00047">luci::CircleQuantizer::Options::ConvertToFakeQuantizedModel</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00045">luci::CircleQuantizer::Options::CopyQuantParam</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00046">luci::CircleQuantizer::Options::ForceQuantParam</a>, <a class="el" href="_strings_8cpp_source.html#l00024">luci::in_array()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="_quantization_parameters_8h_source.html#l00029">luci::LayerWise</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00042">luci::CircleQuantizer::Options::QuantizeDequantizeWeights</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00048">luci::CircleQuantizer::Options::QuantizeWeights</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00043">luci::CircleQuantizer::Options::QuantizeWithMinMax</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00044">luci::CircleQuantizer::Options::Requantize</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::Restart</a>, <a class="el" href="_convert_to_fake_quantized_model_pass_8cpp_source.html#l00270">luci::ConvertToFakeQuantizedModelPass::run()</a>, <a class="el" href="_copy_quant_param_pass_8cpp_source.html#l00035">luci::CopyQuantParamPass::run()</a>, <a class="el" href="_force_quant_param_pass_8cpp_source.html#l00041">luci::ForceQuantParamPass::run()</a>, <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00551">luci::QuantizeWithMinMaxPass::run()</a>, <a class="el" href="_requantize_pass_8cpp_source.html#l00126">luci::RequantizePass::run()</a>, <a class="el" href="_quantize_pre_checker_pass_8cpp_source.html#l00101">luci::QuantizePreCheckerPass::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, <a class="el" href="_strings_8cpp_source.html#l00047">luci::str_to_dtype()</a>, <a class="el" href="_strings_8cpp_source.html#l00089">luci::str_to_granularity()</a>, <a class="el" href="_strings_8cpp_source.html#l00081">luci::str_vec_to_dtype_vec()</a>, <a class="el" href="_strings_8cpp_source.html#l00041">luci::to_lower_case()</a>, <a class="el" href="_strings_8cpp_source.html#l00029">luci::to_string()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00047">luci::CircleQuantizer::Options::ConvertToFakeQuantizedModel</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00045">luci::CircleQuantizer::Options::CopyQuantParam</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00046">luci::CircleQuantizer::Options::ForceQuantParam</a>, <a class="el" href="_strings_8cpp_source.html#l00024">luci::in_array()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="_quantization_parameters_8h_source.html#l00029">luci::LayerWise</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00042">luci::CircleQuantizer::Options::QuantizeDequantizeWeights</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00048">luci::CircleQuantizer::Options::QuantizeWeights</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00043">luci::CircleQuantizer::Options::QuantizeWithMinMax</a>, <a class="el" href="_circle_quantizer_8h_source.html#l00044">luci::CircleQuantizer::Options::Requantize</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::Restart</a>, <a class="el" href="_convert_to_fake_quantized_model_pass_8cpp_source.html#l00270">luci::ConvertToFakeQuantizedModelPass::run()</a>, <a class="el" href="_copy_quant_param_pass_8cpp_source.html#l00035">luci::CopyQuantParamPass::run()</a>, <a class="el" href="_force_quant_param_pass_8cpp_source.html#l00041">luci::ForceQuantParamPass::run()</a>, <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_weights_pass_8cpp_source.html#l00026">luci::QuantizeWeightsPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00551">luci::QuantizeWithMinMaxPass::run()</a>, <a class="el" href="_requantize_pass_8cpp_source.html#l00126">luci::RequantizePass::run()</a>, <a class="el" href="_quantize_pre_checker_pass_8cpp_source.html#l00101">luci::QuantizePreCheckerPass::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, <a class="el" href="_strings_8cpp_source.html#l00047">luci::str_to_dtype()</a>, <a class="el" href="_strings_8cpp_source.html#l00089">luci::str_to_granularity()</a>, <a class="el" href="_strings_8cpp_source.html#l00081">luci::str_vec_to_dtype_vec()</a>, <a class="el" href="_strings_8cpp_source.html#l00041">luci::to_lower_case()</a>, <a class="el" href="_strings_8cpp_source.html#l00029">luci::to_string()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00106">entry()</a>, and <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00106">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00034">onert::odc::Quantizer::quantize()</a>, and <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>.</p>
 
 </div>
 </div>

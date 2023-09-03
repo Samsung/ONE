@@ -11,6 +11,7 @@ var namespaceonert =
     [ "dumper", "namespaceonert_1_1dumper.html", "namespaceonert_1_1dumper" ],
     [ "exec", "namespaceonert_1_1exec.html", "namespaceonert_1_1exec" ],
     [ "ir", "namespaceonert_1_1ir.html", "namespaceonert_1_1ir" ],
+    [ "odc", "namespaceonert_1_1odc.html", "namespaceonert_1_1odc" ],
     [ "shape_inference", "namespaceonert_1_1shape__inference.html", "namespaceonert_1_1shape__inference" ],
     [ "tflite_loader", "namespaceonert_1_1tflite__loader.html", [
       [ "loadModel", "namespaceonert_1_1tflite__loader.html#aaeb6354a5eb1670b7fa1142d6b89ff13", null ]

@@ -420,7 +420,14 @@ var menudata={children:[
 {text:"t",url:"globals_type.html#index_t"},
 {text:"u",url:"globals_type.html#index_u"},
 {text:"v",url:"globals_type.html#index_v"}]},
-{text:"Enumerations",url:"globals_enum.html"},
+{text:"Enumerations",url:"globals_enum.html",children:[
+{text:"d",url:"globals_enum.html#index_d"},
+{text:"f",url:"globals_enum.html#index_f"},
+{text:"g",url:"globals_enum.html#index_g"},
+{text:"n",url:"globals_enum.html#index_n"},
+{text:"o",url:"globals_enum.html#index_o"},
+{text:"p",url:"globals_enum.html#index_p"},
+{text:"r",url:"globals_enum.html#index_r"}]},
 {text:"Enumerator",url:"globals_eval.html",children:[
 {text:"a",url:"globals_eval.html#index_a"},
 {text:"k",url:"globals_eval_k.html#index_k"},

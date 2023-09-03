@@ -523,6 +523,7 @@ var namespaceluci =
     [ "QuantizeSpecialActivation", "structluci_1_1_quantize_special_activation.html", "structluci_1_1_quantize_special_activation" ],
     [ "QuantizeWeights", "structluci_1_1_quantize_weights.html", "structluci_1_1_quantize_weights" ],
     [ "QuantizeWeightsOnly", "structluci_1_1_quantize_weights_only.html", "structluci_1_1_quantize_weights_only" ],
+    [ "QuantizeWeightsPass", "classluci_1_1_quantize_weights_pass.html", "classluci_1_1_quantize_weights_pass" ],
     [ "QuantizeWithMinMaxPass", "classluci_1_1_quantize_with_min_max_pass.html", "classluci_1_1_quantize_with_min_max_pass" ],
     [ "RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", "structluci_1_1_remove_duplicate_const_pass" ],
     [ "RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", "structluci_1_1_remove_fake_quant_pass" ],

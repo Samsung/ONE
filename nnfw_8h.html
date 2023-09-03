@@ -554,7 +554,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Wait for asynchronous run to finish. </p>
-<p >This function must be called after calling <code><a class="el" href="">nnfw_run_asnyc</a></code>, and can be called only once for a <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code> call.</p>
+<p >This function must be called after calling <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code>, and can be called only once for a <code><a class="el" href="nnfw_8h.html#a3d4adaa30f44cb701025a622bb3a9511">nnfw_run_async</a></code> call.</p>
 <p >When this function returns, it means that this session has finished the asynchronous run. Then the user can safely use the output data.</p>
 <p >This function returns after the asynchronous inference is finished.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -925,7 +925,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Prepare session to be ready for inference. </p>
-<p >This phase may finalize model compilation, scheduling, and additional settings. If <code><a class="el" href="">nnfw_apply_tensor</a></code> is called to apply input tensor info different with model before this function, tries to resize all tensors.</p>
+<p >This phase may finalize model compilation, scheduling, and additional settings. If <code><a class="el" href="nnfw_8h.html#a1803eaf2caed5342bed98c5920e834da">nnfw_apply_tensorinfo</a></code> is called to apply input tensor info different with model before this function, tries to resize all tensors.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>the session to be prepared </td></tr>
@@ -984,7 +984,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>session to be queried on. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">information</td><td>ID to be queried </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>ID to be queried </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>uint32 value to be returned.</td></tr>
   </table>
   </dd>
@@ -1297,7 +1297,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set input model's tensor info for resizing. </p>
-<p >This function can be called at any time after calling <code><a class="el" href="">nnfw_model_load_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="">nnfw_model_load_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten.</p>
+<p >This function can be called at any time after calling <code><a class="el" href="nnfw_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="nnfw_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session to the input tensor info is to be set </td></tr>

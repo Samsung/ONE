@@ -99,11 +99,17 @@ $(document).ready(function(){initNavTree('namespacerecord__minmax.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_map.html">MinMaxMap</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_observer.html">MinMaxObserver</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrecord__minmax_1_1_min_max_vectors.html">MinMaxVectors</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_moving_avg_computer.html">MovingAvgComputer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_percentile_computer.html">PercentileComputer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html">RecordMinMax</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,6 +125,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a169a07dd0cb7d6294389f53a1586937f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#a169a07dd0cb7d6294389f53a1586937f">make_percentile_computer</a> (float min_percentile, float max_percentile)</td></tr>
+<tr class="separator:a169a07dd0cb7d6294389f53a1586937f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaf28fc57dcc835c5d3955e9817ef0e9"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#adaf28fc57dcc835c5d3955e9817ef0e9">make_moving_avg_computer</a> (uint32_t batch_size, float moving_avg_const)</td></tr>
+<tr class="separator:adaf28fc57dcc835c5d3955e9817ef0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac07dfb7a634d5e87bcc30608530637f2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#ac07dfb7a634d5e87bcc30608530637f2">getNthPercentile</a> (std::vector&lt; float &gt; &amp;vector, float percentile)</td></tr>
 <tr class="memdesc:ac07dfb7a634d5e87bcc30608530637f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">getNthPercentile calculates the n-th percentile of input vector (0.0 &lt;= n &lt;= 100.0) linear interpolation is used when the desired percentile lies between two data points  <a href="namespacerecord__minmax.html#ac07dfb7a634d5e87bcc30608530637f2">More...</a><br /></td></tr>
 <tr class="separator:ac07dfb7a634d5e87bcc30608530637f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,7 +149,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00031">31</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00032">32</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
@@ -155,7 +165,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00032">32</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00033">33</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
@@ -171,7 +181,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00033">33</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00034">34</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
@@ -256,6 +266,8 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_min_max_computer_8cpp_source.html#l00047">record_minmax::MovingAvgComputer::update_qparam()</a>.</p>
+
 </div>
 </div>
 <a id="ac07dfb7a634d5e87bcc30608530637f2" name="ac07dfb7a634d5e87bcc30608530637f2"></a>
@@ -315,6 +327,74 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>  <span class="keywordtype">float</span> res = copy[index] + fraction * (copy[index + 1] - copy[index]);</div>
 <div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> res;</div>
 <div class="line"><span class="lineno">   59</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_min_max_computer_8cpp_source.html#l00025">record_minmax::PercentileComputer::update_qparam()</a>.</p>
+
+</div>
+</div>
+<a id="adaf28fc57dcc835c5d3955e9817ef0e9" name="adaf28fc57dcc835c5d3955e9817ef0e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaf28fc57dcc835c5d3955e9817ef0e9">&#9670;&#160;</a></span>make_moving_avg_computer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a> &gt; record_minmax::make_moving_avg_computer </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>moving_avg_const</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00074">74</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> std::make_unique&lt;MovingAvgComputer&gt;(batch_size, moving_avg_const);</div>
+<div class="line"><span class="lineno">   78</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a169a07dd0cb7d6294389f53a1586937f" name="a169a07dd0cb7d6294389f53a1586937f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169a07dd0cb7d6294389f53a1586937f">&#9670;&#160;</a></span>make_percentile_computer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a> &gt; record_minmax::make_percentile_computer </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min_percentile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max_percentile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00069">69</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">return</span> std::make_unique&lt;PercentileComputer&gt;(min_percentile, max_percentile);</div>
+<div class="line"><span class="lineno">   72</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

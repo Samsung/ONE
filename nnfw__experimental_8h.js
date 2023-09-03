@@ -6,6 +6,11 @@ var nnfw__experimental_8h =
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
+    [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
+      [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],
+      [ "NNFW_QUANTIZE_TYPE_U8_ASYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72", null ],
+      [ "NNFW_QUANTIZE_TYPE_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64", null ]
+    ] ],
     [ "NNFW_TRAIN_LOSS", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660", [
       [ "NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929", null ],
       [ "NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60", null ]
@@ -19,8 +24,11 @@ var nnfw__experimental_8h =
     [ "nnfw_pop_pipeline_output", "nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050", null ],
     [ "nnfw_prepare_pipeline", "nnfw__experimental_8h.html#a0358e9d67030e0af594395bf0983003c", null ],
     [ "nnfw_push_pipeline_input", "nnfw__experimental_8h.html#ac631a7695a0fd98716e984f3af3154bd", null ],
+    [ "nnfw_quantize", "nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9", null ],
     [ "nnfw_register_custom_op_info", "nnfw__experimental_8h.html#a1cc20d75d44428477e0020e4c8c581a6", null ],
     [ "nnfw_set_backends_per_operation", "nnfw__experimental_8h.html#ac7b4df41162c0e5b6977110c2976072f", null ],
+    [ "nnfw_set_quantization_type", "nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
+    [ "nnfw_set_quantized_model_path", "nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
     [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],
     [ "nnfw_train_expected_tensorinfo", "nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486", null ],
     [ "nnfw_train_export_circle", "nnfw__experimental_8h.html#af34150291cf5ff5d0d441ef73e623400", null ],

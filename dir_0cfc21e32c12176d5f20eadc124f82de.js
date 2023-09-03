@@ -38,6 +38,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "QuantizationParameters.h", "_quantization_parameters_8h.html", "_quantization_parameters_8h" ],
     [ "QuantizeDequantizeWeightsPass.h", "_quantize_dequantize_weights_pass_8h.html", "_quantize_dequantize_weights_pass_8h" ],
     [ "QuantizePreCheckerPass.h", "_quantize_pre_checker_pass_8h.html", "_quantize_pre_checker_pass_8h" ],
+    [ "QuantizeWeightsPass.h", "_quantize_weights_pass_8h.html", "_quantize_weights_pass_8h" ],
     [ "QuantizeWithMinMaxPass.h", "_quantize_with_min_max_pass_8h.html", "_quantize_with_min_max_pass_8h" ],
     [ "RemoveDuplicateConstPass.h", "_remove_duplicate_const_pass_8h.html", "_remove_duplicate_const_pass_8h" ],
     [ "RemoveFakeQuantPass.h", "_remove_fake_quant_pass_8h.html", "_remove_fake_quant_pass_8h" ],

@@ -1697,6 +1697,7 @@ var hierarchy =
     [ "loco::ShapeInferenceRule::Context", "structloco_1_1_shape_inference_rule_1_1_context.html", null ],
     [ "luci::QuantizeDequantizeWeightsPass::Context", "structluci_1_1_quantize_dequantize_weights_pass_1_1_context.html", null ],
     [ "luci::QuantizedModelVerifier::Context", "structluci_1_1_quantized_model_verifier_1_1_context.html", null ],
+    [ "luci::QuantizeWeightsPass::Context", "structluci_1_1_quantize_weights_pass_1_1_context.html", null ],
     [ "luci::QuantizeWithMinMaxPass::Context", "structluci_1_1_quantize_with_min_max_pass_1_1_context.html", null ],
     [ "npud::core::Context", "structnpud_1_1core_1_1_context.html", null ],
     [ "npud::util::logging::Context", "classnpud_1_1util_1_1logging_1_1_context.html", null ],
@@ -2104,6 +2105,7 @@ var hierarchy =
     [ "Eigen::internal::gemm_pack_rhs< Scalar, Index, TensorContractionSubMapper< Scalar, Index, Rhs, TensorEvaluator< const TensorReshapingOp< NewDimension, const TensorImagePatchOp< Rows, Cols, ArgType > >, Device >, nocontract_t, contract_t, 2, inner_dim_contiguous, inner_dim_reordered, Alignment >, nr, ColMajor, false, false >", "struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_sub5ea63ee4c723e6af21544d00587ce3c0.html", null ],
     [ "Eigen::internal::gemm_pack_rhs< Scalar, Index, TensorContractionSubMapper< Scalar, Index, Rhs, TensorEvaluator< const TensorReshapingOp< NewDimension, const TensorImagePatchOp< Rows, Cols, ArgType > >, Device >, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment >, nr, ColMajor, false, false >", "struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52.html", null ],
     [ "nnfw::cker::gemm_support::GemmContext", "structnnfw_1_1cker_1_1gemm__support_1_1_gemm_context.html", null ],
+    [ "nnfw::cker::detail::GemmImplUsingEigen", "structnnfw_1_1cker_1_1detail_1_1_gemm_impl_using_eigen.html", null ],
     [ "nnfw::cker::optimized::GemmlowpOutputPipeline", "structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html", null ],
     [ "nnfw::cker::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1cker_1_1_gemm_params.html", null ],
     [ "nnfw::ruy::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1ruy_1_1_gemm_params.html", null ],
@@ -2536,6 +2538,7 @@ var hierarchy =
       ] ],
       [ "onert::exec::NopFunction", "classonert_1_1exec_1_1_nop_function.html", null ]
     ] ],
+    [ "onert::exec::train::IGradientApplier", "classonert_1_1exec_1_1train_1_1_i_gradient_applier.html", null ],
     [ "onert::ir::IGraph", "structonert_1_1ir_1_1_i_graph.html", [
       [ "onert::ir::Graph", "classonert_1_1ir_1_1_graph.html", null ],
       [ "onert::ir::train::TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", null ]
@@ -2775,6 +2778,9 @@ var hierarchy =
       [ "onert::compiler::train::pass::Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", [
         [ "onert::compiler::train::pass::LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", null ]
       ] ]
+    ] ],
+    [ "onert::odc::IQuantizer", "classonert_1_1odc_1_1_i_quantizer.html", [
+      [ "onert::odc::Quantizer", "classonert_1_1odc_1_1_quantizer.html", null ]
     ] ],
     [ "std::is_enum", null, [
       [ "flatbuffers::is_enum< T >", "structflatbuffers_1_1is__enum.html", null ]
@@ -3227,6 +3233,10 @@ var hierarchy =
       [ "circle_eval_diff::TopKMatchPrinter", "classcircle__eval__diff_1_1_top_k_match_printer.html", null ]
     ] ],
     [ "nnfw::cker::MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
+    [ "record_minmax::MinMaxComputer", "classrecord__minmax_1_1_min_max_computer.html", [
+      [ "record_minmax::MovingAvgComputer", "classrecord__minmax_1_1_moving_avg_computer.html", null ],
+      [ "record_minmax::PercentileComputer", "classrecord__minmax_1_1_percentile_computer.html", null ]
+    ] ],
     [ "onert::util::MinMaxMap< N, Hash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "record_minmax::MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", null ],
     [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::OperationIndex >, SMHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
@@ -4307,6 +4317,7 @@ var hierarchy =
       [ "luci::PropagateQParamForwardPass", "structluci_1_1_propagate_q_param_forward_pass.html", null ],
       [ "luci::QuantizeDequantizeWeightsPass", "classluci_1_1_quantize_dequantize_weights_pass.html", null ],
       [ "luci::QuantizePreCheckerPass", "classluci_1_1_quantize_pre_checker_pass.html", null ],
+      [ "luci::QuantizeWeightsPass", "classluci_1_1_quantize_weights_pass.html", null ],
       [ "luci::QuantizeWithMinMaxPass", "classluci_1_1_quantize_with_min_max_pass.html", null ],
       [ "luci::RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", null ],
       [ "luci::RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", null ],
@@ -4460,6 +4471,7 @@ var hierarchy =
     [ "mpqsolver::core::QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", [
       [ "mpqsolver::core::DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", null ]
     ] ],
+    [ "onert::odc::QuantizerLoader", "classonert_1_1odc_1_1_quantizer_loader.html", null ],
     [ "RandomDataGenerator.RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", null ],
     [ "nnfw::misc::RandomGenerator", "classnnfw_1_1misc_1_1_random_generator.html", null ],
     [ "nnfw::tflite::RandomInputInitializer", "classnnfw_1_1tflite_1_1_random_input_initializer.html", null ],

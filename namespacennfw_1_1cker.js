@@ -4,6 +4,7 @@ var namespacennfw_1_1cker =
       [ "Task", "namespacennfw_1_1cker_1_1cpu__backend__threadpool.html#a82ab73142995cc4b8a98d710793a68d8", null ],
       [ "Execute", "namespacennfw_1_1cker_1_1cpu__backend__threadpool.html#af233bb5dc5c76145da32260accb0d2e2", null ]
     ] ],
+    [ "detail", "namespacennfw_1_1cker_1_1detail.html", "namespacennfw_1_1cker_1_1detail" ],
     [ "eigen_support", "namespacennfw_1_1cker_1_1eigen__support.html", "namespacennfw_1_1cker_1_1eigen__support" ],
     [ "functor", "namespacennfw_1_1cker_1_1functor.html", "namespacennfw_1_1cker_1_1functor" ],
     [ "gemm_support", "namespacennfw_1_1cker_1_1gemm__support.html", "namespacennfw_1_1cker_1_1gemm__support" ],

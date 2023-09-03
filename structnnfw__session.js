@@ -17,6 +17,7 @@ var structnnfw__session =
     [ "prepare", "structnnfw__session.html#a63c3ea11bd814e734c035ecfef2cb755", null ],
     [ "prepare_pipeline", "structnnfw__session.html#acbefefc4dc1559d2cb319b430b879eb5", null ],
     [ "push_pipeline_input", "structnnfw__session.html#af4c679c64150cb355f0528c03fd5a1a7", null ],
+    [ "quantize", "structnnfw__session.html#af52af2638dbbcfe85ef22e1d06d4f399", null ],
     [ "register_custom_operation", "structnnfw__session.html#aa19a1820673a0c093a10d7f3db6f56a2", null ],
     [ "run", "structnnfw__session.html#a05556687afa0a813ddb55a479f99f0fc", null ],
     [ "run_async", "structnnfw__session.html#a77348e68a5e133a66cb5c4a820bc8215", null ],
@@ -28,5 +29,7 @@ var structnnfw__session =
     [ "set_input_tensorinfo", "structnnfw__session.html#a2a44f94befcedd20668f1a7e2e6bc395", null ],
     [ "set_op_backend", "structnnfw__session.html#ac349fe7c09f57caa02427cdb68f886c7", null ],
     [ "set_output", "structnnfw__session.html#a34eedf881be31f5c87ecb49af6cbeb04", null ],
-    [ "set_output_layout", "structnnfw__session.html#a994e85d77cc20605dbb9e836c6735bcb", null ]
+    [ "set_output_layout", "structnnfw__session.html#a994e85d77cc20605dbb9e836c6735bcb", null ],
+    [ "set_quantization_type", "structnnfw__session.html#a653464551f483ade508f1eb783e6af38", null ],
+    [ "set_quantized_model_path", "structnnfw__session.html#ab66351764e0f6efda0f707dd78c1794a", null ]
 ];

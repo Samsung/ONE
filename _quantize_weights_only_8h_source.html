@@ -132,15 +132,17 @@ $(document).ready(function(){initNavTree('_quantize_weights_only_8h_source.html'
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">void</span> quantize_weights(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *weights);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">void</span> visit(<a class="code hl_class" href="classluci_1_1_circle_conv2_d.html">luci::CircleConv2D</a> *node);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">void</span> visit(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace luci</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// __LUCI_QUANTIZE_WEIGHTS_ONLY_H__</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">void</span> visit(<a class="code hl_class" href="classluci_1_1_circle_depthwise_conv2_d.html">luci::CircleDepthwiseConv2D</a> *node);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> visit(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif </span><span class="comment">// __LUCI_QUANTIZE_WEIGHTS_ONLY_H__</span></div>
 <div class="ttc" id="a_quantization_parameters_8h_html"><div class="ttname"><a href="_quantization_parameters_8h.html">QuantizationParameters.h</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html"><div class="ttname"><a href="classluci_1_1_circle_const.html">luci::CircleConst</a></div><div class="ttdoc">Class to build tensor data.</div><div class="ttdef"><b>Definition:</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">CircleConst.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_conv2_d_html"><div class="ttname"><a href="classluci_1_1_circle_conv2_d.html">luci::CircleConv2D</a></div><div class="ttdoc">CONV_2D in Circle.</div><div class="ttdef"><b>Definition:</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_conv2_d_8h_source.html#l00035">CircleConv2D.h:38</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_depthwise_conv2_d_html"><div class="ttname"><a href="classluci_1_1_circle_depthwise_conv2_d.html">luci::CircleDepthwiseConv2D</a></div><div class="ttdoc">DEPTHWISE_CONV_2D in Circle.</div><div class="ttdef"><b>Definition:</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_depthwise_conv2_d_8h_source.html#l00036">CircleDepthwiseConv2D.h:40</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h.html">CircleNodeVisitor.h</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ad30d86ce5bd365deae8ef4398fb16d3c"><div class="ttname"><a href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html#l00026">DataType.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition:</b> <a href="_user_settings_8h_source.html#l00022">UserSettings.h:23</a></div></div>

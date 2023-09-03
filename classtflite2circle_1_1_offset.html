@@ -616,32 +616,30 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  352</span>    <span class="keywordflow">if</span> (de_code &gt;= 0 and de_code &lt; 127)</div>
 <div class="line"><span class="lineno">  353</span>    {</div>
 <div class="line"><span class="lineno">  354</span>      <span class="comment">// Use deprecated builtin opcode.</span></div>
-<div class="line"><span class="lineno">  355</span>      <span class="comment">// clang-format off</span></div>
-<div class="line"><span class="lineno">  356</span>    <span class="keyword">auto</span> cir_de_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(de_code);</div>
-<div class="line"><span class="lineno">  357</span>    <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
-<div class="line"><span class="lineno">  358</span>    <span class="comment">// correct bt_code where bt_code == 0 for old tflite format</span></div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">if</span> (cir_bt_code == 0)</div>
-<div class="line"><span class="lineno">  360</span>      cir_bt_code = <span class="keyword">static_cast&lt;</span>circle::BuiltinOperator<span class="keyword">&gt;</span>(cir_de_code);</div>
-<div class="line"><span class="lineno">  361</span>    operator_code_builder.add_deprecated_builtin_code(cir_de_code);</div>
-<div class="line"><span class="lineno">  362</span>    operator_code_builder.add_builtin_code(cir_bt_code);</div>
-<div class="line"><span class="lineno">  363</span>      <span class="comment">// clang-format on</span></div>
-<div class="line"><span class="lineno">  364</span>    }</div>
-<div class="line"><span class="lineno">  365</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  366</span>    {</div>
-<div class="line"><span class="lineno">  367</span>      <span class="comment">// Use extended builtin opcode</span></div>
-<div class="line"><span class="lineno">  368</span>      <span class="comment">// Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code</span></div>
-<div class="line"><span class="lineno">  369</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
-<div class="line"><span class="lineno">  370</span>      operator_code_builder.add_deprecated_builtin_code(</div>
-<div class="line"><span class="lineno">  371</span>        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);</div>
-<div class="line"><span class="lineno">  372</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
-<div class="line"><span class="lineno">  373</span>    }</div>
-<div class="line"><span class="lineno">  374</span>    operator_code_builder.add_custom_code(custom_code);</div>
-<div class="line"><span class="lineno">  375</span>    operator_code_builder.add_version(it-&gt;version());</div>
-<div class="line"><span class="lineno">  376</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = operator_code_builder.Finish();</div>
-<div class="line"><span class="lineno">  377</span>    operator_code_vec.emplace_back(code);</div>
-<div class="line"><span class="lineno">  378</span>  }</div>
-<div class="line"><span class="lineno">  379</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(operator_code_vec);</div>
-<div class="line"><span class="lineno">  380</span>}</div>
+<div class="line"><span class="lineno">  355</span>      <span class="keyword">auto</span> cir_de_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(de_code);</div>
+<div class="line"><span class="lineno">  356</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
+<div class="line"><span class="lineno">  357</span>      <span class="comment">// correct bt_code where bt_code == 0 for old tflite format</span></div>
+<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">if</span> (cir_bt_code == 0)</div>
+<div class="line"><span class="lineno">  359</span>        cir_bt_code = <span class="keyword">static_cast&lt;</span>circle::BuiltinOperator<span class="keyword">&gt;</span>(cir_de_code);</div>
+<div class="line"><span class="lineno">  360</span>      operator_code_builder.add_deprecated_builtin_code(cir_de_code);</div>
+<div class="line"><span class="lineno">  361</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
+<div class="line"><span class="lineno">  362</span>    }</div>
+<div class="line"><span class="lineno">  363</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  364</span>    {</div>
+<div class="line"><span class="lineno">  365</span>      <span class="comment">// Use extended builtin opcode</span></div>
+<div class="line"><span class="lineno">  366</span>      <span class="comment">// Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code</span></div>
+<div class="line"><span class="lineno">  367</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
+<div class="line"><span class="lineno">  368</span>      operator_code_builder.add_deprecated_builtin_code(</div>
+<div class="line"><span class="lineno">  369</span>        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);</div>
+<div class="line"><span class="lineno">  370</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
+<div class="line"><span class="lineno">  371</span>    }</div>
+<div class="line"><span class="lineno">  372</span>    operator_code_builder.add_custom_code(custom_code);</div>
+<div class="line"><span class="lineno">  373</span>    operator_code_builder.add_version(it-&gt;version());</div>
+<div class="line"><span class="lineno">  374</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = operator_code_builder.Finish();</div>
+<div class="line"><span class="lineno">  375</span>    operator_code_vec.emplace_back(code);</div>
+<div class="line"><span class="lineno">  376</span>  }</div>
+<div class="line"><span class="lineno">  377</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(operator_code_vec);</div>
+<div class="line"><span class="lineno">  378</span>}</div>
 <div class="ttc" id="anamespaceenco_html_a3d4e56ec31be86ad47be84f20622bc0e"><div class="ttname"><a href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">enco::code</a></div><div class="ttdeci">Code * code(const SessionID &amp;sess)</div><div class="ttdef"><b>Definition:</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00054">Session.cpp:54</a></div></div>
 <div class="ttc" id="anamespacetflite2circle_html_aed430112f65a79d9698f4a7d1544b9ce"><div class="ttname"><a href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">tflite2circle::get_circle_builtin_code</a></div><div class="ttdeci">circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)</div><div class="ttdoc">Returns circle builtin_code according to tflite.</div><div class="ttdef"><b>Definition:</b> <a href="_data_lookup_8cpp_source.html#l00023">DataLookup.cpp:23</a></div></div>
 </div><!-- fragment -->

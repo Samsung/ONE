@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00035">35</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00031">31</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aaa76f958ae671304b484a3c48fd5b4ad" name="aaa76f958ae671304b484a3c48fd5b4ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaa76f958ae671304b484a3c48fd5b4ad">&#9670;&#160;</a></span>appendMinMaxVector()</h2>
@@ -144,16 +144,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00046">46</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    MinMaxVectors &amp;vectors = _minmax_map[node];</div>
-<div class="line"><span class="lineno">   49</span>    vectors.min_vector.insert(vectors.min_vector.end(), minmax_vector.min_vector.begin(),</div>
-<div class="line"><span class="lineno">   50</span>                              minmax_vector.min_vector.end());</div>
-<div class="line"><span class="lineno">   51</span>    vectors.max_vector.insert(vectors.max_vector.end(), minmax_vector.max_vector.begin(),</div>
-<div class="line"><span class="lineno">   52</span>                              minmax_vector.max_vector.end());</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00042">42</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>  {</div>
+<div class="line"><span class="lineno">   44</span>    MinMaxVectors &amp;vectors = _minmax_map[node];</div>
+<div class="line"><span class="lineno">   45</span>    vectors.min_vector.insert(vectors.min_vector.end(), minmax_vector.min_vector.begin(),</div>
+<div class="line"><span class="lineno">   46</span>                              minmax_vector.min_vector.end());</div>
+<div class="line"><span class="lineno">   47</span>    vectors.max_vector.insert(vectors.max_vector.end(), minmax_vector.max_vector.begin(),</div>
+<div class="line"><span class="lineno">   48</span>                              minmax_vector.max_vector.end());</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_min_max_observer_8h_source.html#l00032">record_minmax::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_observer_8h_source.html#l00031">record_minmax::MinMaxVectors::min_vector</a>.</p>
+<p class="reference">References <a class="el" href="_min_max_vectors_8h_source.html#l00028">record_minmax::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_vectors_8h_source.html#l00027">record_minmax::MinMaxVectors::min_vector</a>.</p>
 
 </div>
 </div>
@@ -180,12 +180,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00055">55</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> &amp;_minmax_map;</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00051">51</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> &amp;_minmax_map;</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00487">record_minmax::RecordMinMax::profileDataInParallel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00450">record_minmax::RecordMinMax::profileDataInParallel()</a>, <a class="el" href="_min_max_computer_8cpp_source.html#l00025">record_minmax::PercentileComputer::update_qparam()</a>, and <a class="el" href="_min_max_computer_8cpp_source.html#l00047">record_minmax::MovingAvgComputer::update_qparam()</a>.</p>
 
 </div>
 </div>
@@ -229,14 +229,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00039">39</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    MinMaxVectors &amp;vectors = _minmax_map[node];</div>
-<div class="line"><span class="lineno">   42</span>    vectors.min_vector.push_back(min);</div>
-<div class="line"><span class="lineno">   43</span>    vectors.max_vector.push_back(max);</div>
-<div class="line"><span class="lineno">   44</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_observer_8h_source.html#l00035">35</a> of file <a class="el" href="_min_max_observer_8h_source.html">MinMaxObserver.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    MinMaxVectors &amp;vectors = _minmax_map[node];</div>
+<div class="line"><span class="lineno">   38</span>    vectors.min_vector.push_back(min);</div>
+<div class="line"><span class="lineno">   39</span>    vectors.max_vector.push_back(max);</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_min_max_observer_8h_source.html#l00032">record_minmax::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_observer_8h_source.html#l00031">record_minmax::MinMaxVectors::min_vector</a>.</p>
+<p class="reference">References <a class="el" href="_min_max_vectors_8h_source.html#l00028">record_minmax::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_vectors_8h_source.html#l00027">record_minmax::MinMaxVectors::min_vector</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_min_max_observer_8cpp_source.html#l00030">record_minmax::MinMaxObserver::postTensorWrite()</a>.</p>
 

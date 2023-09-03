@@ -153,12 +153,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00660">660</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  661</span>  {</div>
-<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> conv_params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
+<div class="line"><span class="lineno">  662</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
 <div class="line"><span class="lineno">  663</span>    {</div>
 <div class="line"><span class="lineno">  664</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  665</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; conv_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  666</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; conv_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  667</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; conv_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  665</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  666</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  667</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  668</span>      os &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  669</span>    }</div>
 <div class="line"><span class="lineno">  670</span>  }</div>
