@@ -665,6 +665,8 @@ public:
       os << "Padding(" << params->padding() << ") ";
       os << "Stride.W(" << params->stride_w() << ") ";
       os << "Stride.H(" << params->stride_h() << ") ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
       os << std::endl;
     }
   }
