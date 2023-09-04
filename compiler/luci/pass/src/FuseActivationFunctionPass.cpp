@@ -42,6 +42,11 @@ bool fuse_activation_function(luci::CircleNode *node)
   // This will skip fuse for concat as luci-interpreter doesn't support this yet
   if (dynamic_cast<luci::CircleConcatenation *>(pred_node) != nullptr)
     return false;
+  // TODO remove this work-around
+  // This will skip fuse for TransposeConv as backends does not support this yet
+  // NOTE remove this when XpSepActFromTransposeConvOpPass is removed
+  if (dynamic_cast<luci::CircleTransposeConv *>(pred_node) != nullptr)
+    return false;
 
   auto fused_act = node_with_fused_act->fusedActivationFunction();
 
