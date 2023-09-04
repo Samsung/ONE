@@ -99,6 +99,7 @@ operation {
     padding: VALID
     stride_w: 1
     stride_h: 1
+    activation: NONE
   }
 }
 operation {

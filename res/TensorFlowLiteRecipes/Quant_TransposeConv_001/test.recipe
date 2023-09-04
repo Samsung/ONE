@@ -43,6 +43,7 @@ operation {
     padding: SAME
     stride_w: 1
     stride_h: 1
+    activation: NONE
   }
   input: "out_shape"
   input: "ker"
