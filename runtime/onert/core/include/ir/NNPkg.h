@@ -281,6 +281,15 @@ public:
     graph->changeShape(operand_index, new_shape);
   }
 
+  /**
+   * @brief Replace model
+   *
+   * @param[in] model Model to be replaced
+   *
+   * TODO:  Support multiple models
+   */
+  void replaceModel(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
+
   // TODO: Add iterate() or getter for edges
 
 private:
