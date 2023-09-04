@@ -203,6 +203,45 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D_U8_PerChannel)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_I8_Hybrid_PerChannel)
+{
+  CircleGen cgen;
+  // weight
+  // clang-format off
+  std::vector<int8_t> weight_data{1, 2, 1, 2,      -9,  10, -9,  10,
+                                  5, 6, 5, 6,      13, -14, 13, -14};
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> weight_scales = {1, 1, 1, 1};
+  std::vector<int64_t> weight_zeropoints = {0, 0, 0, 0};
+  int weight = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_INT8, weight_buf},
+                              weight_scales, weight_zeropoints);
+  // bias
+  std::vector<float> bias_data{0, 1, 2, 3};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int bias = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+
+  // in and out
+  int in = cgen.addTensor({{1, 3, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1, 2,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  // clang-format off
+  _context->addTestCase(uniformTCD<float>({{0, 1,     2, 3,
+                                            0, 1,     2, 3,
+                                            0, 1,     2, 3}},
+                                          {{8, -7, 20, -1,
+                                            8, -7, 20, -1}}));
+  // clang-format on
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_Stride)
 {
   CircleGen cgen;
@@ -498,5 +537,31 @@ TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_I8_NonZero_ZeroPoints)
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_DepthwiseConv2D_I8_Hybrid_PerTensor)
+{
+  // PerTensor Quantized Weight is not supported
+  CircleGen cgen;
+  std::vector<int8_t> weight_data{1, 2, 3};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0, 2, 4};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  // Hybrid does not support per-tensor.
+  std::vector<float> weight_scales = {0.5};
+  std::vector<int64_t> weight_zeropoints = {0};
+  int weight = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
+                              weight_scales, weight_zeropoints);
+  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
+                                  /* depth_multiplier */ 1, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->expectFailCompile();
+  _context->setBackends({"cpu"});
   SUCCEED();
 }

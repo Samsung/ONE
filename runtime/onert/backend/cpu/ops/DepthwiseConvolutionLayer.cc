@@ -16,6 +16,7 @@
 
 #include "DepthwiseConvolutionLayer.h"
 
+#include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
 
 namespace onert
@@ -147,6 +148,50 @@ void DepthwiseConvolutionLayer::convQ8i()
     _external_context->ruy_context());
 }
 
+void DepthwiseConvolutionLayer::convQ8iHybridPerChannel()
+{
+  if (!_prepared)
+  {
+    prepareQ8iHybridPerChannel();
+    _prepared = true;
+  }
+
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
+  auto input_shape = getShape(_input);
+  const int batch_size = input_shape.Dims(0);
+  const int input_size = input_shape.FlatSize() / batch_size;
+
+  auto scaling_factors_ptr = _input_scaling_factors.data();
+  auto input_offsets_ptr = _input_offsets.data();
+
+  for (int b = 0; b < batch_size; ++b)
+  {
+    const int offset = b * input_size;
+    nnfw::cker::PortableAsymmetricQuantizeFloats(getBuffer<float>(_input) + offset, input_size,
+                                                 _input_quantized.data() + offset,
+                                                 &scaling_factors_ptr[b], &input_offsets_ptr[b]);
+  }
+
+  nnfw::cker::DepthwiseConvParams op_params;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.depth_multiplier = _multiplier;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+
+  nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel(
+    op_params, _input_scaling_factors.data(), getShape(_input), _input_quantized.data(),
+    getShape(_kernel), getBuffer<int8_t>(_kernel), getShape(_bias), getBuffer<float>(_bias),
+    getShape(_output), getBuffer<float>(_output), _kernel->data_scales().data(),
+    _input_offsets.data());
+}
+
 void DepthwiseConvolutionLayer::prepareQ8i()
 {
   GetQuantizedConvolutionMultipliersAndShifts(
@@ -161,6 +206,31 @@ void DepthwiseConvolutionLayer::prepareQ8uPerChannel()
     _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),
     _kernel->data_scales().size(), getShape(_kernel).Dims(3), _per_channel_output_multiplier,
     _per_channel_output_shift);
+}
+
+void DepthwiseConvolutionLayer::prepareQ8iHybridPerChannel()
+{
+  // allocate memory for activation quantization.
+  // - quantized values (int8_t type and same shape of original input)
+  // - quantization params (= scale/zeropoint for each input)
+  auto input_shape = getShape(_input);
+  const int batch_size = input_shape.Dims(0);
+  const int input_size = input_shape.FlatSize() / batch_size;
+  _input_quantized.resize(input_size);
+  // TODO: Optimize the case of batch_size = 1
+  _input_scaling_factors.resize(batch_size);
+  _input_offsets.resize(batch_size);
+}
+
+void DepthwiseConvolutionLayer::ensureQ8iHybridPerChannel()
+{
+  // ensure weight is per-channel quantized.
+  int32_t kernel_input_channel = getShape(_kernel).Dims(3);
+  // zero_points comes from flatbuffer vector. Its size is within uint32_t range.
+  size_t kernel_zerop_cnt = _kernel->data_scales().size();
+  // promote to int64_t to compare int32_t and uint32_t
+  if ((int64_t)kernel_input_channel != (int64_t)kernel_zerop_cnt)
+    throw std::runtime_error{"DConv2D hybrid supports only per-channel quantized weight."};
 }
 
 void DepthwiseConvolutionLayer::configure(
@@ -186,8 +256,16 @@ void DepthwiseConvolutionLayer::configure(
   _activation = activation;
   _output = output;
   _external_context = external_context;
+  _is_hybrid = _input->data_type() == OperandType::FLOAT32 &&
+               _kernel->data_type() == OperandType::QUANT_INT8_SYMM;
 
-  if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
+  if (_is_hybrid)
+  {
+    ensureQ8iHybridPerChannel();
+    prepareQ8iHybridPerChannel();
+    _prepared = true;
+  }
+  else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
     if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
     {
@@ -209,7 +287,11 @@ void DepthwiseConvolutionLayer::configure(
 
 void DepthwiseConvolutionLayer::run()
 {
-  if (_input->data_type() == OperandType::FLOAT32)
+  if (_is_hybrid)
+  {
+    convQ8iHybridPerChannel();
+  }
+  else if (_input->data_type() == OperandType::FLOAT32)
   {
     convFloat32();
   }
