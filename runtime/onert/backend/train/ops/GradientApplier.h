@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPLIER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPLIER_H__
 
-#include <exec/train/ITrainableFunction.h>
+#include <exec/train/IGradientApplier.h>
 
 #include <exec/train/optimizer/Optimizer.h>
 
@@ -30,7 +30,7 @@ namespace train
 namespace ops
 {
 
-class GradientApplier : public ::onert::exec::train::ITrainableFunction
+class GradientApplier : public ::onert::exec::train::IGradientApplier
 {
 public:
   GradientApplier();
@@ -38,8 +38,7 @@ public:
 
   void configure(std::shared_ptr<exec::train::optimizer::Optimizer> optimizer,
                  const IPortableTensor *gradient, ITrainableTensor *trainable);
-  void forward(bool) override {}
-  void backward(uint32_t training_step) override;
+  void applyGradient(uint32_t training_step) override;
 
 private:
   std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;

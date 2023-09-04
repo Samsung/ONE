@@ -37,11 +37,21 @@ void TrainableFnSequence::backward(uint32_t training_step)
   {
     (*it)->backward(training_step);
   }
+
+  for (const auto &applier : _appliers)
+  {
+    applier->applyGradient(training_step);
+  }
 }
 
 void TrainableFnSequence::append(std::unique_ptr<ITrainableFunction> &&function)
 {
   _functions.push_back(std::move(function));
+}
+
+void TrainableFnSequence::append(std::unique_ptr<IGradientApplier> &&applier)
+{
+  _appliers.push_back(std::move(applier));
 }
 
 void TrainableFnSequence::iterate(const std::function<void(ITrainableFunction &)> &fn)

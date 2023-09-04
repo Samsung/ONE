@@ -23,6 +23,7 @@
 #include "Tensor.h"
 
 #include <backend/train/KernelGeneratorBase.h>
+#include <exec/train/IGradientApplier.h>
 #include <exec/train/optimizer/Optimizer.h>
 #include <ir/Operands.h>
 #include <ir/Operations.h>
@@ -56,7 +57,7 @@ private:
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   std::shared_ptr<exec::train::optimizer::Optimizer> _optimizer;
-  std::vector<std::unique_ptr<exec::train::ITrainableFunction>> _update_funcs;
+  std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
 };
 
 } // namespace train
