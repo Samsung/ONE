@@ -311,11 +311,14 @@ inline void Conv(const ConvParams &params, const int32_t *output_multiplier,
   }
 }
 
-// Copied from tflite 2.13.0
-inline void Conv(const ConvParams &params, float *scaling_factors_ptr, const Shape &input_shape,
-                 const int8_t *input_data, const Shape &filter_shape, const int8_t *filter_data,
-                 const Shape &bias_shape, const float *bias_data, const Shape &output_shape,
-                 float *output_data, const float *per_channel_scale, const int32_t *input_offset)
+// Slightly modified from tflite 2.13.0 HybridConvPerChannel
+// im2col and im2col_shape are removed since it is not used in reference kernel.
+inline void HybridConvPerChannel(const ConvParams &params, float *scaling_factors_ptr,
+                                 const Shape &input_shape, const int8_t *input_data,
+                                 const Shape &filter_shape, const int8_t *filter_data,
+                                 const Shape &bias_shape, const float *bias_data,
+                                 const Shape &output_shape, float *output_data,
+                                 const float *per_channel_scale, const int32_t *input_offset)
 
 {
   const int stride_width = params.stride_width;
@@ -335,6 +338,7 @@ inline void Conv(const ConvParams &params, float *scaling_factors_ptr, const Sha
   if (bias_data)
   {
     assert(bias_shape.FlatSize() == output_depth);
+    UNUSED_RELEASE(bias_shape);
   }
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
