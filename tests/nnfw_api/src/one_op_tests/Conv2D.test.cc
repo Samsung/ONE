@@ -277,7 +277,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_NonZero_ZeroPoints)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_Hybrid_PerLayer)
+TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_Hybrid_PerTensor)
 {
   CircleGen cgen;
   std::vector<int8_t> weight_data{1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -285,7 +285,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_Hybrid_PerLayer)
   std::vector<float> bias_data{0, 2, 4};
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
-  // Hybrid does not support per-layer.
+  // Hybrid does not support per-tensor.
   std::vector<float> weight_scales = {0.5};
   std::vector<int64_t> weight_zeropoints = {0};
   int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
