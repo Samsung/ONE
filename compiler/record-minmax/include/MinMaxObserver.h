@@ -68,6 +68,7 @@ public:
   void postTensorWrite(const luci::CircleNode *node,
                        const luci_interpreter::Tensor *tensor) override;
 
+  // Never return nullptr
   const MinMaxMap *minMaxData() { return &_minmax_data; }
 
 private:

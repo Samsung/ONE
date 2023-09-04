@@ -262,7 +262,7 @@ void RecordMinMax::profileRawDataDirectory(const std::string &input_data_path)
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _minmax_computer->update_qparam(getObserver());
+  _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
 
 // input_data_path is a text file which specifies the representative data
@@ -321,7 +321,7 @@ void RecordMinMax::profileRawData(const std::string &input_data_path)
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _minmax_computer->update_qparam(getObserver());
+  _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
 
 WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
@@ -444,7 +444,7 @@ void RecordMinMax::profileData(const std::string &input_data_path)
     throw std::runtime_error("HDF5 error occurred.");
   }
 
-  _minmax_computer->update_qparam(getObserver());
+  _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
 
 void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
@@ -513,9 +513,8 @@ void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
 
   // End parallel part
 
-  // Copy all min, max values to one observer
-  auto observer = std::make_unique<MinMaxObserver>();
-  auto main_min_max_map = const_cast<MinMaxMap *>(observer->minMaxData());
+  // Copy all min, max values to one min/max map
+  MinMaxMap main_min_max_map;
 
   for (const auto &obs : _observers)
   {
@@ -525,13 +524,13 @@ void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
       const auto node = iter.first;
       const auto &minmax = iter.second;
 
-      main_min_max_map->appendMinMaxVector(node, minmax);
+      main_min_max_map.appendMinMaxVector(node, minmax);
     }
   }
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _minmax_computer->update_qparam(observer.get());
+  _minmax_computer->update_qparam(main_min_max_map.getMap());
 }
 
 void RecordMinMax::profileDataWithRandomInputs(void)
@@ -602,7 +601,7 @@ void RecordMinMax::profileDataWithRandomInputs(void)
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _minmax_computer->update_qparam(getObserver());
+  _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
 
 void RecordMinMax::saveModel(const std::string &output_model_path)

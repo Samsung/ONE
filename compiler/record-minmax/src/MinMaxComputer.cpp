@@ -22,9 +22,12 @@
 namespace record_minmax
 {
 
-void PercentileComputer::update_qparam(MinMaxObserver *observer)
+void PercentileComputer::update_qparam(
+  const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *minmax_map)
 {
-  auto minmax_map = observer->minMaxData()->getMap();
+  if (minmax_map == nullptr)
+    throw std::invalid_argument("minmax_map is nullptr");
+
   for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
   {
     auto node = iter->first;
@@ -44,9 +47,12 @@ void PercentileComputer::update_qparam(MinMaxObserver *observer)
   }
 }
 
-void MovingAvgComputer::update_qparam(MinMaxObserver *observer)
+void MovingAvgComputer::update_qparam(
+  const std::unordered_map<const luci::CircleNode *, MinMaxVectors> *minmax_map)
 {
-  auto minmax_map = observer->minMaxData()->getMap();
+  if (minmax_map == nullptr)
+    throw std::invalid_argument("minmax_map is nullptr");
+
   for (auto iter = minmax_map->begin(); iter != minmax_map->end(); ++iter)
   {
     auto node = iter->first;
