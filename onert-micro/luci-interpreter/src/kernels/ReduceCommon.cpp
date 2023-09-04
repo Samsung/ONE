@@ -27,16 +27,10 @@ namespace luci_interpreter
 namespace
 {
 
-const int maxNumberOfDims = 5;
-const int maxNumberOfReducedDims = 2;
-
 template <typename T>
 void reduceProdGeneric(kernels::TISOData *tiso_data, const circle::Tensor *input,
                        const circle::Tensor *axis, const circle::Tensor *output, bool keep_dims)
 {
-  int temp_index[maxNumberOfDims];
-  int resolved_axis[maxNumberOfReducedDims];
-
   const int input_rank = Tensor::num_dims(input);
   const int num_axis = Tensor::num_elements(axis);
 
@@ -47,7 +41,7 @@ void reduceProdGeneric(kernels::TISOData *tiso_data, const circle::Tensor *input
     kernels::getTensorData<T>(tiso_data->input1_data),
     reinterpret_cast<const int *>(input_dims.data()), input_rank,
     kernels::getTensorData<T>(tiso_data->output_data),
-    kernels::getTensorData<int>(tiso_data->input2_data), num_axis, temp_index, resolved_axis,
+    kernels::getTensorData<int>(tiso_data->input2_data), num_axis,
     /*init_value=*/T(1), output_shape.flatSize(),
     [](const T current, const T in) -> T { return in * current; });
 }
