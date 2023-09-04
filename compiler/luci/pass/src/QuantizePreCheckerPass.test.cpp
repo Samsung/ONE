@@ -206,6 +206,7 @@ public:
     transpose_conv->outBackprop(input_1);
     transpose_conv->filter(filter);
     transpose_conv->inputSizes(input_sizes);
+    transpose_conv->fusedActivationFunction(luci::FusedActFunc::NONE);
 
     if (make_valid)
     {

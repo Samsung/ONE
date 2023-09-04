@@ -1018,6 +1018,8 @@ bool CircleTransposeConvSummaryBuilder::validate(const luci::CircleNode *node)
   auto transpose_conv = loco::must_cast<const luci::CircleTransposeConv *>(node);
   if (transpose_conv->padding() == luci::Padding::UNDEFINED)
     return false;
+  if (transpose_conv->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
+    return false;
 
   return true;
 }
@@ -1034,6 +1036,7 @@ void CircleTransposeConvSummaryBuilder::build_attributes(const luci::CircleNode 
   auto transpose_conv = loco::must_cast<const luci::CircleTransposeConv *>(node);
   s.args().append("stride(h,w)", to_str(transpose_conv->stride()));
   s.args().append("padding", to_str(transpose_conv->padding()));
+  s.args().append("fused_activation_function", to_str(transpose_conv->fusedActivationFunction()));
 }
 
 std::vector<std::string>
