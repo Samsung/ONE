@@ -44,6 +44,7 @@ public:
   void convQ8uPerChannel();
 
   void convQ8i();
+  void convQ8iHybridPerChannel();
 
   void configure(const IPortableTensor *input, const IPortableTensor *kernel,
                  const IPortableTensor *bias, const uint32_t paddingLeft,
@@ -58,6 +59,8 @@ public:
 private:
   void prepareQ8i();
   void prepareQ8uPerChannel();
+  void prepareQ8iHybridPerChannel();
+  void ensureQ8iHybridPerChannel();
 
 private:
   const IPortableTensor *_input{nullptr};
@@ -87,6 +90,12 @@ private:
   // Per channel output multiplier and shift.
   std::vector<int32_t> _per_channel_output_multiplier;
   std::vector<int> _per_channel_output_shift;
+
+  // For hybrid
+  bool _is_hybrid;
+  std::vector<int8_t> _input_quantized;
+  std::vector<float> _input_scaling_factors;
+  std::vector<int32_t> _input_offsets;
 };
 
 } // namespace ops
