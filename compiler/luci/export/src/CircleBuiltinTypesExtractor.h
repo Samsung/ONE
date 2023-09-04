@@ -485,7 +485,8 @@ public:
   flatbuffers::Offset<void> visit(luci::CircleTransposeConv *node)
   {
     return circle::CreateTransposeConvOptions(_builder, getOpPadding(node->padding()),
-                                              node->stride()->w(), node->stride()->h())
+                                              node->stride()->w(), node->stride()->h(),
+                                              to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleUnidirectionalSequenceLSTM *node)

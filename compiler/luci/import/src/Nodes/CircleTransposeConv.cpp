@@ -74,6 +74,7 @@ CircleNode *CircleTransposeConvGraphBuilder::build_node(const circle::OperatorT 
   node->padding(luci_padding(options->padding));
   node->stride()->w(options->stride_w);
   node->stride()->h(options->stride_h);
+  node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
 
   return node;
 }

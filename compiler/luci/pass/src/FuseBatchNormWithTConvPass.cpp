@@ -87,6 +87,9 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
     return false;
   if (not luci::fill(&scale, &tconv).with_commutative_args_of(mul))
     return false;
+  // skip if tconv has fused activation
+  if (tconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return false;
 
   // check scale and shift constant attributes
   // TODO maybe rank check is not needed
@@ -215,6 +218,9 @@ bool fused_batch_norm_with_tconv(luci::CircleAdd *add)
   fused_tconv->stride()->h(tconv->stride()->h());
   fused_tconv->stride()->w(tconv->stride()->w());
   fused_tconv->name(name + "/TransposeConv");
+  // TODO set activation from Add and remove adding following Relu/Relu6 Op
+  //      when all of our backends supports fused activation of TransposeConv
+  fused_tconv->fusedActivationFunction(luci::FusedActFunc::NONE);
   luci::add_origin(fused_tconv,
                    luci::composite_origin(
                      {luci::get_origin(add), luci::get_origin(mul), luci::get_origin(tconv)}));

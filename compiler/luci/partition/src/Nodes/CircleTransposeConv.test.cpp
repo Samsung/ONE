@@ -38,6 +38,7 @@ public:
     NodeGraphletT<luci::CircleTransposeConv>::init(g);
 
     _node->padding(luci::Padding::VALID);
+    _node->fusedActivationFunction(luci::FusedActFunc::RELU);
   }
 };
 

@@ -30,6 +30,7 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleTransposeConv 
     cloned->padding(node->padding());
     cloned->stride()->h(node->stride()->h());
     cloned->stride()->w(node->stride()->w());
+    cloned->fusedActivationFunction(node->fusedActivationFunction());
   }
   return cloned;
 }

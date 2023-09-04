@@ -32,6 +32,7 @@ TEST(CloneNodeTest, clone_TransposeConv)
   auto cloned_trconv = dynamic_cast<luci::CircleTransposeConv *>(cloned);
   ASSERT_NE(nullptr, cloned_trconv);
   ASSERT_EQ(node_trconv->padding(), cloned_trconv->padding());
+  ASSERT_EQ(node_trconv->fusedActivationFunction(), cloned_trconv->fusedActivationFunction());
 }
 
 TEST(CloneNodeTest, clone_TransposeConv_padding_NEG)
@@ -39,6 +40,17 @@ TEST(CloneNodeTest, clone_TransposeConv_padding_NEG)
   auto g = loco::make_graph();
   auto node_trconv = g->nodes()->create<luci::CircleTransposeConv>();
   node_trconv->padding(luci::Padding::UNDEFINED);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_trconv, gc.get());
+  ASSERT_EQ(nullptr, cloned);
+}
+
+TEST(CloneNodeTest, clone_TransposeConv_fAF_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_trconv = g->nodes()->create<luci::CircleTransposeConv>();
+  node_trconv->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_trconv, gc.get());

@@ -35,6 +35,7 @@ namespace luci
  */
 class CircleTransposeConv final
   : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::TRANSPOSE_CONV>>,
+    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>,
     public CircleNodeMixin<CircleNodeTrait::Bias>
 {
 public:

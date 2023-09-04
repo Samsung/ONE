@@ -44,6 +44,9 @@ namespace
  */
 bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
 {
+  // skip if tconv has fused activation
+  if (tconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return false;
   // check whether it has bias or not. This optimization works only if it doesn't.
   auto bias = dynamic_cast<luci::CircleOutputExclude *>(tconv->bias());
   if (not bias)

@@ -298,6 +298,7 @@ TEST_F(CircleNodeSummaryBuilderTest, TransposeConv_validate)
 {
   luci::CircleTransposeConv node;
   node.padding(luci::Padding::SAME);
+  node.fusedActivationFunction(luci::FusedActFunc::RELU);
   EXPECT_TRUE(mock_build(&node));
 }
 
@@ -305,5 +306,12 @@ TEST_F(CircleNodeSummaryBuilderTest, TransposeConv_validate_padding_NEG)
 {
   luci::CircleTransposeConv node;
   node.padding(luci::Padding::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, TransposeConv_validate_fused_NEG)
+{
+  luci::CircleTransposeConv node;
+  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
   EXPECT_FALSE(mock_build(&node));
 }
