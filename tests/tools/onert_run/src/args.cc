@@ -299,6 +299,10 @@ void Args::Initialize(void)
          "0: prints the only result. Messages btw run don't print\n"
          "1: prints result and message btw run\n"
          "2: prints all of messages to print\n")
+    ("quantize,q", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _quantize = v; }), "Request quantization with type (int8 or int16)")
+    ("qpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _quantized_model_path = v; }),
+         "Path to export quantized model.\n"
+         "If it is not set, the quantized model will be exported to the same directory of the original model/package with q8/q16 suffix.")
     ;
   // clang-format on
 

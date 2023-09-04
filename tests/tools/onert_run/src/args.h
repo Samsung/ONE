@@ -69,6 +69,8 @@ public:
   /// @brief Return true if "--shape_run" or "--shape_prepare" is provided
   bool shapeParamProvided();
   const int getVerboseLevel(void) const { return _verbose_level; }
+  const std::string &getQuantize(void) const { return _quantize; }
+  const std::string &getQuantizedModelPath(void) const { return _quantized_model_path; }
 
 private:
   void Initialize();
@@ -99,6 +101,8 @@ private:
   bool _print_version = false;
   int _verbose_level;
   bool _use_single_model = false;
+  std::string _quantize;
+  std::string _quantized_model_path;
 };
 
 } // end of namespace onert_run

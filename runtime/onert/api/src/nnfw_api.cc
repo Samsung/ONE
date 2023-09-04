@@ -494,6 +494,8 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *)
   return NNFW_STATUS_ERROR;
 }
 
+#endif // ONERT_TRAIN
+
 // Quantization
 
 NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype)
@@ -513,5 +515,3 @@ NNFW_STATUS nnfw_quantize(nnfw_session *session)
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->quantize();
 }
-
-#endif // ONERT_TRAIN
