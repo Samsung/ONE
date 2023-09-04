@@ -53,10 +53,12 @@ tflchef::Operation *TFliteOpTransposeConv::build(const tflite::Operator *op, TFl
   operation->set_type("TransposeConv");
 
   auto op_options = operation->mutable_transpose_conv_options();
+  auto tflchef_activation = as_tflchef_activation(op_params->fused_activation_function());
 
   op_options->set_stride_h(op_params->stride_h());
   op_options->set_stride_w(op_params->stride_w());
   op_options->set_padding(as_tflchef_padding(op_params->padding()));
+  op_options->set_activation(tflchef_activation);
 
   return operation;
 }
