@@ -34,6 +34,13 @@ flatbuffers::Offset<void> TransposeConvChef::value(flatbuffers::FlatBufferBuilde
   options_builder.add_stride_h(operation.transpose_conv_options().stride_h());
   options_builder.add_stride_w(operation.transpose_conv_options().stride_w());
 
+  // TODO remove calling has_activation
+  auto chef_activation = operation.transpose_conv_options().has_activation()
+                           ? operation.transpose_conv_options().activation()
+                           : tflchef::NONE;
+  auto tflite_activation = as_tflite_activation(chef_activation);
+  options_builder.add_fused_activation_function(tflite_activation);
+
   return options_builder.Finish().Union();
 }
 

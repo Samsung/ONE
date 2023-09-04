@@ -478,6 +478,7 @@ message TransposeConvOptions {
   optional Padding padding = 1 [default = VALID];
   optional int32 stride_w = 2 [default = 1];
   optional int32 stride_h = 3 [default = 1];
+  optional Activation activation = 4 [default = NONE];
 }
 
 message ReverseSequenceOptions {
