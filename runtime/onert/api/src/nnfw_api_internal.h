@@ -48,6 +48,10 @@ namespace compiler
 struct CompilerArtifact;
 class CompilerOptions;
 } // namespace compiler
+namespace odc
+{
+class QuantizeManager;
+} // namespace odc
 } // namespace onert
 
 struct nnfw_session
@@ -207,6 +211,7 @@ private:
 #ifdef ONERT_TRAIN
   uint32_t _training_step{0};
 #endif // ONERT_TRAIN
+  std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
