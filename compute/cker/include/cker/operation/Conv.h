@@ -207,6 +207,21 @@ private:
   std::vector<int32_t> _per_channel_output_multiplier;
   std::vector<int> _per_channel_output_shift;
 };
+
+struct ConvHybridTempArena
+{
+  ConvHybridTempArena(int input_size, int batch_size)
+  {
+    input_quantized.resize(input_size);
+    // TODO: Optimize the case of batch_size = 1
+    input_scaling_factors.resize(batch_size);
+    input_offsets.resize(batch_size);
+  }
+  std::vector<int8_t> input_quantized;
+  std::vector<float> input_scaling_factors;
+  std::vector<int32_t> input_offsets;
+};
+
 } // namespace cker
 } // namespace nnfw
 

@@ -16,6 +16,7 @@
 
 #include "ConvolutionLayer.h"
 #include "OperationUtils.h"
+#include "cker/PortableTensorUtils.h"
 
 #include "../Tensor.h"
 #include "ir/Padding.h"
@@ -151,6 +152,47 @@ void ConvolutionLayer::convQ8i()
          reinterpret_cast<int8_t *>(_output->buffer()));
 }
 
+void ConvolutionLayer::convQ8iHybridPerChannel()
+{
+  float output_activation_min = 0;
+  float output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
+  const int batch_size = getShape(_input).Dims(0);
+  if (batch_size == 0)
+    throw std::runtime_error{"Convolution input batch_size = 0"};
+  auto input_shape = getShape(_input);
+  const int input_size = input_shape.FlatSize() / batch_size;
+
+  auto input_quantized_ptr = _hybrid_arena->input_quantized.data();
+  auto input_scaling_factors_ptr = _hybrid_arena->input_scaling_factors.data();
+  auto input_offsets_ptr = _hybrid_arena->input_offsets.data();
+  for (int b = 0; b < batch_size; ++b)
+  {
+    const int offset = b * input_size;
+    nnfw::cker::PortableAsymmetricQuantizeFloats(
+      reinterpret_cast<const float *>(_input->buffer()) + offset, input_size,
+      input_quantized_ptr + offset, &input_scaling_factors_ptr[b], &input_offsets_ptr[b]);
+  }
+  nnfw::cker::ConvParams op_params;
+  op_params.padding_type = getPaddingType(_paddingType);
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidthFactor;
+  op_params.dilation_height_factor = _dilationHeightFactor;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+
+  const auto *filter_per_channel_scales = _kernel->data_scales().data();
+  nnfw::cker::reference::HybridConvPerChannel(
+    op_params, input_scaling_factors_ptr, getShape(_input), input_quantized_ptr, getShape(_kernel),
+    reinterpret_cast<const int8_t *>(_kernel->buffer()), getShape(_bias),
+    reinterpret_cast<const float *>(_bias->buffer()), getShape(_output),
+    reinterpret_cast<float *>(_output->buffer()), filter_per_channel_scales, input_offsets_ptr);
+}
+
 void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTensor *kernel,
                                  const IPortableTensor *bias, const ir::PaddingType paddingType,
                                  const uint32_t paddingLeft, const uint32_t paddingRight,
@@ -174,12 +216,13 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _dilationHeightFactor = dilationHeightFactor;
   _activation = activation;
   _output = output;
+  _is_hybrid = _input->data_type() == OperandType::FLOAT32 &&
+               _kernel->data_type() == OperandType::QUANT_INT8_SYMM;
 }
 
 void ConvolutionLayer::run()
 {
   prepare();
-
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
     const auto ifm_shape = _input->getShape().asFeature(_input->layout());
@@ -209,7 +252,11 @@ void ConvolutionLayer::run()
     _paddingTop = padding.top;
     _paddingBottom = padding.bottom;
   }
-  if (_input->data_type() == OperandType::FLOAT32)
+  if (_is_hybrid)
+  {
+    convQ8iHybridPerChannel();
+  }
+  else if (_input->data_type() == OperandType::FLOAT32)
   {
     convFloat32();
   }
@@ -235,6 +282,27 @@ void ConvolutionLayer::prepare()
 {
   if (_prepare)
     return;
+
+  if (_is_hybrid)
+  {
+    // ensure weight is per-channel quantized.
+    int32_t kernel_input_channel = getShape(_kernel).Dims(3);
+    // zero_points comes from flatbuffer vector. Its size is within uint32_t range.
+    size_t kernel_zerop_cnt = _kernel->data_scales().size();
+    // promote to int64_t to compare int32_t and uint32_t
+    if ((int64_t)kernel_input_channel != (int64_t)kernel_zerop_cnt)
+      throw std::runtime_error{"DConv2D hybrid supports only per-channel quantized weight."};
+
+    // allocate memory for activation quantization.
+    // - quantized values (int8_t type and same shape of original input)
+    // - quantization params (= scale/zeropoint for each input)
+    auto input_shape = getShape(_input);
+    const int batch_size = input_shape.Dims(0);
+    const int input_size = input_shape.FlatSize() / batch_size;
+    _hybrid_arena = std::make_unique<nnfw::cker::ConvHybridTempArena>(batch_size, input_size);
+    _prepare = true;
+    return;
+  }
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
   if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
