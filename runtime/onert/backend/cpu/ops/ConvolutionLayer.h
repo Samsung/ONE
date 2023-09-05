@@ -29,7 +29,9 @@ namespace nnfw
 namespace cker
 {
 class Conv;
-}
+struct ConvHybridTempArena;
+class Shape;
+} // namespace cker
 } // namespace nnfw
 
 namespace onert
@@ -63,6 +65,7 @@ private:
   void convQ8uPerTensor();
   void convQ8uPerChannel();
   void convQ8i();
+  void convQ8iHybridPerChannel();
 
 private:
   const IPortableTensor *_input;
@@ -84,8 +87,10 @@ private:
   ir::Activation _activation;
 
   std::unique_ptr<nnfw::cker::Conv> _conv_kernel;
+  std::unique_ptr<nnfw::cker::ConvHybridTempArena> _hybrid_arena;
 
   bool _prepare;
+  bool _is_hybrid;
 };
 
 } // namespace ops
