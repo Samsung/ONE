@@ -286,12 +286,12 @@ void ConvolutionLayer::prepare()
   if (_is_hybrid)
   {
     // ensure weight is per-channel quantized.
-    int32_t kernel_input_channel = getShape(_kernel).Dims(3);
+    int32_t kernel_output_channel = getShape(_kernel).Dims(0);
     // zero_points comes from flatbuffer vector. Its size is within uint32_t range.
     size_t kernel_zerop_cnt = _kernel->data_scales().size();
     // promote to int64_t to compare int32_t and uint32_t
-    if ((int64_t)kernel_input_channel != (int64_t)kernel_zerop_cnt)
-      throw std::runtime_error{"DConv2D hybrid supports only per-channel quantized weight."};
+    if ((int64_t)kernel_output_channel != (int64_t)kernel_zerop_cnt)
+      throw std::runtime_error{"Conv2D hybrid supports only per-channel quantized weight."};
 
     // allocate memory for activation quantization.
     // - quantized values (int8_t type and same shape of original input)
