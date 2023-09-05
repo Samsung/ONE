@@ -35,7 +35,7 @@ ConvolutionLayer::ConvolutionLayer()
     _paddingType(ir::PaddingType::EXPLICIT), _paddingLeft(0), _paddingTop(0), _paddingRight(0),
     _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),
     _dilationHeightFactor(1), _activation(ir::Activation::NONE),
-    _conv_kernel(new nnfw::cker::Conv()), _prepare(false)
+    _conv_kernel(new nnfw::cker::Conv()), _prepare(false), _is_hybrid(false)
 {
   // DO NOTHING
 }
