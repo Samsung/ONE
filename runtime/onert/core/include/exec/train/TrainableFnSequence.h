@@ -30,11 +30,11 @@ namespace exec
 {
 namespace train
 {
-class TrainableFnSequence : public ITrainableFunction
+class TrainableFnSequence
 {
 public:
-  void forward(bool training) override;
-  void backward(uint32_t training_step) override;
+  void forward(bool training);
+  void backward(uint32_t training_step);
 
   void append(std::unique_ptr<ITrainableFunction> &&fn);
   void append(std::unique_ptr<IGradientApplier> &&applier);

@@ -58,7 +58,7 @@ void PermuteLayer::forward(bool training)
   builtin::kernel::PermuteLayer::run();
 }
 
-void PermuteLayer::backward(uint32_t)
+void PermuteLayer::backward()
 {
   for (uint32_t i = 0; i < _output_deriv_tensors.size(); ++i)
   {

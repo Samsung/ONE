@@ -53,7 +53,7 @@ void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor
 
 void ReshapeLayer::forward(bool) { reshapeGeneric(_input, _output); }
 
-void ReshapeLayer::backward(uint32_t) { reshapeGeneric(_deriv_output, _deriv_input); }
+void ReshapeLayer::backward() { reshapeGeneric(_deriv_output, _deriv_input); }
 
 } // namespace ops
 } // namespace train
