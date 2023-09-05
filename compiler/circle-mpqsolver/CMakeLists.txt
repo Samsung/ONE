@@ -36,6 +36,7 @@ set(TEST_SOURCES
     "src/bisection/DepthParameterizer.cpp"
     "src/core/Quantizer.cpp"
     "src/bisection/VISQErrorApproximator.cpp"
+    "src/core/ErrorMetric.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
