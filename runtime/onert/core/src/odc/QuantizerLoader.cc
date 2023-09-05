@@ -73,6 +73,7 @@ int32_t QuantizerLoader::loadLibrary()
     if (_quantizer == nullptr)
     {
       std::cerr << "QuantizerLoader: unable to create quantizer" << std::endl;
+      dlclose(handle);
       return 1;
     }
   }
