@@ -31,8 +31,7 @@ class ITrainableFunction
 public:
   virtual ~ITrainableFunction() = default;
   virtual void forward(bool training) = 0;
-  // TODO Remove training_step
-  virtual void backward(uint32_t training_step) = 0;
+  virtual void backward() = 0;
 };
 
 } // namespace train

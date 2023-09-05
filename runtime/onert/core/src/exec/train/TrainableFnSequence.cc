@@ -35,7 +35,7 @@ void TrainableFnSequence::backward(uint32_t training_step)
 {
   for (auto it = _functions.rbegin(); it != _functions.rend(); ++it)
   {
-    (*it)->backward(training_step);
+    (*it)->backward();
   }
 
   for (const auto &applier : _appliers)

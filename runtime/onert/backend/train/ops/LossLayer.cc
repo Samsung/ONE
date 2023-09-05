@@ -76,7 +76,7 @@ void LossLayer::forward(bool)
   }
 }
 
-void LossLayer::backward(uint32_t)
+void LossLayer::backward()
 {
   switch (_loss_type)
   {

@@ -40,7 +40,7 @@ public:
                  IPortableTensor *output, IPortableTensor *deriv_input,
                  const IPortableTensor *deriv_output);
   void forward(bool training) override;
-  void backward(uint32_t training_step) override;
+  void backward() override;
 
 private:
   void reshapeGeneric(const IPortableTensor *input, IPortableTensor *output);

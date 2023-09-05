@@ -61,7 +61,7 @@ void PoolLayer::forward(bool training)
   }
 }
 
-void PoolLayer::backward(uint32_t)
+void PoolLayer::backward()
 {
   // TODO Implement detail
 }
