@@ -29,7 +29,7 @@ namespace nnfw
 namespace cker
 {
 class Conv;
-class ConvHybridTempArena;
+struct ConvHybridTempArena;
 class Shape;
 } // namespace cker
 } // namespace nnfw
