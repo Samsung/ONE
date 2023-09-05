@@ -56,5 +56,10 @@ float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) co
     }
   }
 
+  if (output_size == 0)
+  {
+    throw std::runtime_error("nothing to compare");
+  }
+
   return error / output_size;
 }
