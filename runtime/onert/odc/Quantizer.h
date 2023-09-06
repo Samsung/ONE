@@ -18,6 +18,7 @@
 #define __ONERT_ODC_QUANTIZE_H__
 
 #include "odc/IQuantizer.h"
+#include "odc/QuantizeType.h"
 
 namespace onert
 {
@@ -30,7 +31,7 @@ public:
   Quantizer() = default;
   ~Quantizer() = default;
 
-  int quantize(const char *in, const char *out, bool is_q16);
+  int quantize(const char *in, const char *out, QuantizeType qtype);
 };
 
 } // namespace odc

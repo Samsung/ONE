@@ -39,7 +39,7 @@ bool QuantizeManager::quantize()
     return false;
 
   auto quantizer = quantize_loader.get();
-  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _is_q16);
+  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _qtype);
 
   // TODO Unload quantize library to reduce memory usage
 
