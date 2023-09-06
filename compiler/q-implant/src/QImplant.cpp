@@ -50,6 +50,8 @@ loco::DataType str_to_dtype(const std::string &str)
   std::transform(lower_case_str.begin(), lower_case_str.end(), lower_case_str.begin(),
                  [](unsigned char c) { return std::tolower(c); });
 
+  if (lower_case_str.compare("int8") == 0)
+    return loco::DataType::S8;
   if (lower_case_str.compare("uint8") == 0)
     return loco::DataType::U8;
   if (lower_case_str.compare("int16") == 0)
@@ -176,6 +178,9 @@ void set_value(luci::CircleConst *const_node, const std::string &value_path, loc
 
   switch (dtype)
   {
+    case loco::DataType::S8:
+      set_value<loco::DataType::S8>(const_node, value_path);
+      break;
     case loco::DataType::U8:
       set_value<loco::DataType::U8>(const_node, value_path);
       break;
