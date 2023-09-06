@@ -1765,6 +1765,7 @@ bool nnfw_session::isStatePreparedOrFinishedTraining()
 
 NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
 {
+  using onert::odc::QuantizeType;
   try
   {
     if (!isStateModelLoaded())
@@ -1773,18 +1774,25 @@ NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
       return NNFW_STATUS_INVALID_STATE;
     }
 
-    bool is_q16 = false;
+    QuantizeType odc_qtype = onert::odc::ODC_QTYPE_NOT_SET;
     switch (qtype)
     {
       case NNFW_QUANTIZE_TYPE_U8_ASYM:
+        odc_qtype = onert::odc::ODC_QTYPE_WO_I8_SYM;
         break;
       case NNFW_QUANTIZE_TYPE_I16_SYM:
-        is_q16 = true;
+        odc_qtype = onert::odc::ODC_QTYPE_I16_SYM;
+        break;
+      case NNFW_QUANTIZE_TYPE_WO_I8_SYM:
+        odc_qtype = onert::odc::ODC_QTYPE_WO_I8_SYM;
+        break;
+      case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
+        odc_qtype = onert::odc::ODC_QTYPE_WO_I16_SYM;
         break;
       default:
         return NNFW_STATUS_INVALID_STATE;
     }
-    _quant_manager->quantizeType(is_q16);
+    _quant_manager->quantizeType(odc_qtype);
   }
   catch (const std::exception &e)
   {

@@ -31,8 +31,11 @@ namespace onert
 namespace odc
 {
 
-int Quantizer::quantize(const char *in, const char *out, bool is_q16)
+int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
 {
+  if (qtype != QuantizeType::ODC_QTYPE_WO_I8_SYM || qtype != QuantizeType::ODC_QTYPE_WO_I16_SYM)
+    throw std::runtime_error{"quantize API supports weight quantization only"};
+
   // Load model from the file
   luci::ImporterEx importerex;
   auto module = importerex.importVerifyModule(std::string(in));
@@ -46,7 +49,8 @@ int Quantizer::quantize(const char *in, const char *out, bool is_q16)
 
     using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
     options->param(AlgorithmParameters::Quantize_input_model_dtype, "float32");
-    options->param(AlgorithmParameters::Quantize_output_model_dtype, is_q16 ? "int16" : "int8");
+    options->param(AlgorithmParameters::Quantize_output_model_dtype,
+                   qtype == QuantizeType::ODC_QTYPE_WO_I16_SYM ? "wo_int16" : "wo_int8");
     options->param(AlgorithmParameters::Quantize_granularity, "channel");
   }
 
