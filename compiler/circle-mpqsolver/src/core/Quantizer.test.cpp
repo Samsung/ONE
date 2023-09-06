@@ -50,11 +50,10 @@ protected:
     _add->dtype(loco::DataType::FLOAT32);
     _beta->dtype(loco::DataType::FLOAT32);
 
-    uint32_t channel_size = 16;
     _add->shape({1, _channel_size, _width, _height});
     _beta->shape({1, _channel_size, _width, _height});
 
-    _beta->size<loco::DataType::FLOAT32>(channel_size);
+    _beta->size<loco::DataType::FLOAT32>(_channel_size * _width * _height);
     _add->x(input);
     _add->y(_beta);
     _add->fusedActivationFunction(luci::FusedActFunc::NONE);
