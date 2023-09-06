@@ -17,6 +17,8 @@
 #ifndef __ONERT_ODC_IQUANTIZER_H__
 #define __ONERT_ODC_IQUANTIZER_H__
 
+#include "odc/QuantizeType.h"
+
 namespace onert
 {
 namespace odc
@@ -27,7 +29,7 @@ class IQuantizer
 public:
   virtual ~IQuantizer() = default;
 
-  virtual int quantize(const char *in, const char *out, bool is_q16) = 0;
+  virtual int quantize(const char *in, const char *out, QuantizeType qtype) = 0;
 };
 
 } // namespace odc
