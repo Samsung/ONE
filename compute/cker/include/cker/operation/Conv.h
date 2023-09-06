@@ -210,7 +210,7 @@ private:
 
 struct ConvHybridTempArena
 {
-  ConvHybridTempArena(int input_size, int batch_size)
+  ConvHybridTempArena(int batch_size, int input_size)
   {
     input_quantized.resize(input_size);
     // TODO: Optimize the case of batch_size = 1
