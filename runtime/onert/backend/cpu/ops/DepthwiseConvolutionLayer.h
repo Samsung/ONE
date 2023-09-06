@@ -92,7 +92,7 @@ private:
   std::vector<int> _per_channel_output_shift;
 
   // For hybrid
-  bool _is_hybrid;
+  bool _is_hybrid{false};
   std::vector<int8_t> _input_quantized;
   std::vector<float> _input_scaling_factors;
   std::vector<int32_t> _input_offsets;
