@@ -412,6 +412,11 @@ typedef enum
   NNFW_QUANTIZE_TYPE_U8_ASYM,
   /** symmetric quantization with a scale only */
   NNFW_QUANTIZE_TYPE_I16_SYM,
+  /** weight-only int8 symmetric quantization */
+  NNFW_QUANTIZE_TYPE_WO_I8_SYM,
+  /** weight-only int16 symmetric quantization */
+  NNFW_QUANTIZE_TYPE_WO_I16_SYM,
+
 } NNFW_QUANTIZE_TYPE;
 
 /**
