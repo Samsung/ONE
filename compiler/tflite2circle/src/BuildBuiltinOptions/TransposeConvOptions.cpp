@@ -31,6 +31,8 @@ build_circle_TransposeConvOptions(flatbuffers::FlatBufferBuilder &fb, const tfli
   builtin_options_builder.add_padding(get_circle_padding(tflite_builtin_options->padding()));
   builtin_options_builder.add_stride_w(tflite_builtin_options->stride_w());
   builtin_options_builder.add_stride_h(tflite_builtin_options->stride_h());
+  builtin_options_builder.add_fused_activation_function(
+    get_circle_activation_function_type(tflite_builtin_options->fused_activation_function()));
   return builtin_options_builder.Finish();
 }
 
