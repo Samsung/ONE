@@ -47,6 +47,13 @@ std::unique_ptr<Kernel> build_kernel_CircleTransposeConv(const luci::CircleNode 
   params.padding = node->padding();
   params.stride_height = node->stride()->h();
   params.stride_width = node->stride()->w();
+  params.activation = node->fusedActivationFunction();
+
+  // TODO support activation
+  if (params.activation != luci::FusedActFunc::NONE)
+  {
+    throw std::runtime_error("Unsupported activation of TransposeConv");
+  }
 
   return std::make_unique<kernels::TransposeConv>(input_sizes, filter, out_backprop, bias, output,
                                                   tmp, params);

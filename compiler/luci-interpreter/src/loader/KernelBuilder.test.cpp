@@ -1319,6 +1319,7 @@ TEST_F(KernelBuilderTest, TransposeConv)
   op->padding(luci::Padding::SAME);
   op->stride()->h(11);
   op->stride()->w(13);
+  op->fusedActivationFunction(luci::FusedActFunc::NONE);
 
   auto kernel = buildKernel<kernels::TransposeConv>(op);
   ASSERT_THAT(kernel, NotNull());
@@ -1331,6 +1332,7 @@ TEST_F(KernelBuilderTest, TransposeConv)
   EXPECT_THAT(kernel->params().padding, Eq(op->padding()));
   EXPECT_THAT(kernel->params().stride_height, Eq(op->stride()->h()));
   EXPECT_THAT(kernel->params().stride_width, Eq(op->stride()->w()));
+  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, Unpack)

@@ -54,6 +54,7 @@ void Check(std::initializer_list<int32_t> output_shape_shape,
   params.padding = padding;
   params.stride_height = stride_height;
   params.stride_width = stride_width;
+  params.activation = luci::FusedActFunc::NONE;
 
   if (bias_data.size() != 0)
   {
@@ -164,6 +165,7 @@ TEST(TransposeConvTest, UInt8)
   params.padding = Padding::VALID;
   params.stride_height = 2;
   params.stride_width = 2;
+  params.activation = luci::FusedActFunc::NONE;
 
   TransposeConv kernel(&output_shape_tensor, &filter_tensor, &input_tensor, &bias_tensor,
                        &output_tensor, &scratch_tensor, params);
@@ -232,6 +234,7 @@ TEST(TransposeConvTest, UInt8_CWQ)
   params.padding = Padding::VALID;
   params.stride_height = 2;
   params.stride_width = 2;
+  params.activation = luci::FusedActFunc::NONE;
 
   TransposeConv kernel(&output_shape_tensor, &filter_tensor, &input_tensor, &bias_tensor,
                        &output_tensor, &scratch_tensor, params);
@@ -278,6 +281,7 @@ TEST(TransposeConvTest, SInt16)
   params.padding = Padding::VALID;
   params.stride_height = 2;
   params.stride_width = 2;
+  params.activation = luci::FusedActFunc::NONE;
 
   TransposeConv kernel(&output_shape_tensor, &filter_tensor, &input_tensor, &bias_tensor,
                        &output_tensor, &scratch_tensor, params);
@@ -336,6 +340,7 @@ TEST(TransposeConvTest, SInt16_CWQ_weights)
   params.padding = Padding::VALID;
   params.stride_height = 2;
   params.stride_width = 2;
+  params.activation = luci::FusedActFunc::NONE;
 
   TransposeConv kernel(&output_shape_tensor, &filter_tensor, &input_tensor, &bias_tensor,
                        &output_tensor, &scratch_tensor, params);
