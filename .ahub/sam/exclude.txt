@@ -47,3 +47,6 @@
 
 # Downloaded externals
 /ONE/externals
+
+# Intermediate code for runtime build (refer nnfw.spec file's nncc_workspace)
+/ONE/build/nncc/
