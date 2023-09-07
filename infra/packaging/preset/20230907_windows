@@ -1,0 +1,80 @@
+#!/bin/bash
+
+PRESET="20230907"
+
+function preset_configure()
+{
+  REQUIRED_UNITS=()
+  # Common Libraries
+  REQUIRED_UNITS+=("angkor" "cwrap" "pepper-str" "pepper-strcast" "pp")
+  REQUIRED_UNITS+=("oops" "pepper-assert" "pepper-csv2vec" "foder" "crew")
+  REQUIRED_UNITS+=("souschef")
+  REQUIRED_UNITS+=("safemain")
+  REQUIRED_UNITS+=("arser")
+  REQUIRED_UNITS+=("vconone")
+  # Hermes Logging Framework
+  REQUIRED_UNITS+=("hermes" "hermes-std")
+  # loco IR and related utilities
+  REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
+  # Flatbuffer I/O
+  REQUIRED_UNITS+=("mio-tflite2121" "mio-circle06")
+  # Data I/O
+  REQUIRED_UNITS+=("dio-hdf5")
+  # Compute
+  REQUIRED_UNITS+=("luci-compute")
+  # Circle compiler library (.circle -> .circle)
+  REQUIRED_UNITS+=("luci")
+  # Python interface for circle schema
+  REQUIRED_UNITS+=("pics")
+  # Tools
+  REQUIRED_UNITS+=("tflite2circle" "circle2circle" "tflchef")
+  REQUIRED_UNITS+=("circle-tensordump" "circledump")
+  REQUIRED_UNITS+=("tf2tfliteV2" "luci-interpreter")
+  REQUIRED_UNITS+=("luci-eval-driver")
+  REQUIRED_UNITS+=("record-minmax" "circle-quantizer" "rawdata2hdf5" "circle-mpqsolver")
+  REQUIRED_UNITS+=("circle-eval-diff" "circle-interpreter")
+  REQUIRED_UNITS+=("circle-partitioner" "circle-operator")
+  REQUIRED_UNITS+=("one-cmds")
+  REQUIRED_UNITS+=("bcq-tools")
+  REQUIRED_UNITS+=("dalgona")
+  REQUIRED_UNITS+=("visq")
+
+  # Dependent modules needed for build
+  REQUIRED_UNITS+=("circlechef")
+  REQUIRED_UNITS+=("circle-verify")
+
+  NPROC=$(cat /proc/cpuinfo | grep -c processor)
+
+  # TODO Use "nncc configure" and "nncc build"
+  cmake \
+    -G "MSYS Makefiles" \
+    -DUSE_PROTOBUF_LEGACY_IMPORT=ON \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition" \
+    -DCMAKE_SHARED_LINKER_FLAGS="-Wl,--allow-multiple-definition" \
+    -DENABLE_TEST=OFF \
+    -DDOWNLOAD_GTEST=OFF \
+    -DBUILD_GTEST=OFF \
+    -DCMAKE_C_COMPILER=gcc \
+    -DCMAKE_CXX_COMPILER=g++ \
+    -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}" \
+    -DCMAKE_BUILD_TYPE=release \
+    -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
+    -DEXTERNALS_BUILD_THREADS=$((NPROC/2)) \
+    ${EXTRA_OPTIONS[@]} \
+    "${NNAS_PROJECT_PATH}/infra/nncc"
+}
+
+function preset_install()
+{
+  # Install libraries to bin/ for Windows release
+  mv ${NNCC_INSTALL_PREFIX}/lib/*.dll ${NNCC_INSTALL_PREFIX}/bin
+  rm -rf ${NNCC_INSTALL_PREFIX}/lib
+
+  # Install tf2nnpkg
+  install -T -m 755 -D "${SCRIPT_PATH}/res/tf2nnpkg.${PRESET}" "${NNAS_INSTALL_PREFIX}/bin/tf2nnpkg"
+
+  # Though you have to install tensorflow to run 'tf2tfliteV2',
+  # tensorflow can't be installed in mingw. First, You can install tensorflow 
+  # from Window native CMD(run as administrator) with python virtual environment.
+  # And, you must copy it to "${NNAS_INSTALL_PREFIX}/bin/venv"
+}
