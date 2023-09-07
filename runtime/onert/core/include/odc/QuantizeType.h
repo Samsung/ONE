@@ -22,8 +22,6 @@ namespace onert
 namespace odc
 {
 
-class Quantize;
-
 enum QuantizeType
 {
   /** default value: type not set */
