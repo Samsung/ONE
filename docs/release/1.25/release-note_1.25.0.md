@@ -9,7 +9,7 @@
 
 ### On-device Quantization
 - _onert_ supports new experimental API for on-device quantization.
-- As a 1st step, _onert_ supports per-channel hybrid quantization of int8/int16 type weight and float activation.
+- As the 1st step, _onert_ supports per-channel hybrid quantization of int8/int16 type weight and float activation.
 - API requires file path to export quantized model.
 
 ### Minmax Recorder
