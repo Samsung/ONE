@@ -221,6 +221,7 @@ struct TransposeConvParams
   Padding padding;
   int32_t stride_height;
   int32_t stride_width;
+  Activation activation;
 };
 
 struct UnidirectionalSequenceLSTMParams
