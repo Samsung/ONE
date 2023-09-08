@@ -8,7 +8,7 @@ find_path(LUCI_HEADERS
 
 macro(_load_library LUCI_NAME)
     add_library(luci::${LUCI_NAME} SHARED IMPORTED)
-    find_library(LUCI_LIB_PATH_${LUCI_NAME} NAMES luci_${LUCI_NAME} PATHS ${EXT_OVERLAY_DIR}/lib)
+    find_library(LUCI_LIB_PATH_${LUCI_NAME} NAMES luci_${LUCI_NAME} PATHS ${EXT_OVERLAY_DIR}/lib NO_DEFAULT_PATH)
     if (NOT LUCI_LIB_PATH_${LUCI_NAME})
         return()
     endif()
