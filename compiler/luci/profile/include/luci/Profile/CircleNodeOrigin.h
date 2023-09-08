@@ -32,7 +32,7 @@ protected:
   struct Source
   {
   public:
-    std::string name(void) const { return _name; }
+    const std::string& name(void) const { return _name; }
     void name(const std::string &name) { _name = name; }
 
     uint32_t id(void) const { return _id; }

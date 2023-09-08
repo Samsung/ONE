@@ -80,16 +80,13 @@ class CompositeOrigin final : public luci::CircleNodeOrigin
 public:
   CompositeOrigin() = delete;
 
-  template <typename T> CompositeOrigin(T origins)
+  template <typename T> CompositeOrigin(const T& origins)
   {
     if (origins.size() == 0)
       throw std::invalid_argument("No origins provided");
 
-    for (auto &origin : origins)
-    {
-      if (origin != nullptr)
-        _origins.emplace_back(origin);
-    }
+    std::copy_if(std::begin(origins), std::end(origins), std::back_inserter(_origins),
+                 [](const auto &origin) { return origin != nullptr; });
   }
 
 public:
@@ -99,10 +96,8 @@ public:
 
     for (auto &origin : _origins)
     {
-      for (auto source : origin->sources())
-      {
-        res.emplace(source);
-      }
+      const auto sources = origin->sources();
+      res.insert(std::begin(sources), std::end(sources));
     }
 
     return res;
