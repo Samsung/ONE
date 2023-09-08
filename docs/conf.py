@@ -21,7 +21,7 @@ copyright = '2020, Samsung Research & contributors'
 author = 'Samsung Research & contributors'
 
 # The full version, including alpha/beta/rc tags
-release = '1.25.0'
+release = '1.26.0'
 
 # -- General configuration ---------------------------------------------------
 
