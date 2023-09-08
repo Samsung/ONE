@@ -1197,13 +1197,13 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 
     auto convertOptType = [](const int &type) {
       if (type == NNFW_TRAIN_OPTIMIZER_SGD)
-        return onert::exec::train::optimizer::OptimizerCode::SGD;
+        return onert::ir::train::OptimizerCode::SGD;
       else if (type == NNFW_TRAIN_OPTIMIZER_ADAM)
-        return onert::exec::train::optimizer::OptimizerCode::Adam;
+        return onert::ir::train::OptimizerCode::Adam;
       else
         throw std::runtime_error("not supported optimizer type");
     };
-    onert::compiler::train::OptimizerInfo opt_info;
+    onert::ir::train::OptimizerInfo opt_info;
     opt_info.learning_rate = tinfo.learning_rate;
     opt_info.optim_code = convertOptType(tinfo.opt);
 
