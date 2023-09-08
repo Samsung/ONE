@@ -21,6 +21,6 @@
  * ONERT_MICRO_VERSION is a uint32 value representing onert-micro version
  * in 0xMMmmmmPP, where MM = major, mmmm = minor, PP = patch
  */
-#define ONERT_MICRO_VERSION 0x00000100
+#define ONERT_MICRO_VERSION 0x01000000
 
 #endif // __ONERT_MICRO_VERSION_H__
