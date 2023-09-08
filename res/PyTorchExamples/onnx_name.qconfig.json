@@ -1,0 +1,21 @@
+{
+  "default_quantization_dtype" : "uint8",
+  "default_granularity" : "layer",
+  "layers" : [
+    {
+      "names" : [
+        "onnx_tf_prefix_Relu_1;Add;convolution;Const_1"
+      ],
+      "alternate": {
+        "tf2121": [
+          "onnx_tf_prefix_/relu1/Relu;Add;convolution;Const_2"
+        ],
+        "o2c": [
+          "Conv_0;Relu_1"
+        ]
+      },
+      "dtype" : "int16",
+      "granularity" : "channel"
+    }
+  ]
+}

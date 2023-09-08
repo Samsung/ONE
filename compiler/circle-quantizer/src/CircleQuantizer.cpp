@@ -310,6 +310,7 @@ int entry(int argc, char **argv)
       auto filename = arser.get<std::string>(cfg);
       try
       {
+        // DRAFT maybe remove layer_params
         auto layer_params = read_layer_params(filename);
 
         options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
@@ -356,6 +357,7 @@ int entry(int argc, char **argv)
       auto filename = arser.get<std::string>(cfg);
       try
       {
+        // DRAFT maybe remove layer_params
         auto layer_params = read_layer_params(filename);
 
         options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
