@@ -32,6 +32,39 @@ MinMaxRecorder::MinMaxRecorder(const std::string &minmax_filepath, const ir::Gra
 {
 }
 
+std::pair<float, float> minmaxFrom(const backend::ITensor *tensor)
+{
+  const auto data = reinterpret_cast<float *>(tensor->buffer());
+  const auto num_elements = tensor->total_size() / sizeof(float);
+
+  float max = std::numeric_limits<float>::lowest();
+  float min = std::numeric_limits<float>::max();
+
+  bool all_nan = true;
+  for (size_t i = 0; i < num_elements; ++i)
+  {
+    const float number = data[i];
+    if (std::isnan(number))
+      continue;
+
+    if (number == std::numeric_limits<float>::lowest())
+      continue;
+
+    all_nan = false;
+
+    if (number > max)
+      max = number;
+
+    if (number < min)
+      min = number;
+  }
+
+  if (all_nan)
+    throw std::runtime_error("All values are NaN(Not a Number)");
+
+  return {min, max};
+}
+
 void MinMaxRecorder::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_idx,
                                   ir::OperationIndex op_idx, const backend::Backend *backend)
 {
@@ -70,42 +103,47 @@ void MinMaxRecorder::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_idx,
 
   // Otherwise, dump!
   assert(tensor->data_type() == ir::DataType::FLOAT32);
-  const auto data = reinterpret_cast<float *>(tensor->buffer());
-  const auto num_elements = tensor->total_size() / sizeof(float);
+  auto minmax = minmaxFrom(tensor);
+  _op_minmax.append({subg_idx, op_idx}, minmax.first, minmax.second);
+}
 
-  float max = std::numeric_limits<float>::lowest();
-  float min = std::numeric_limits<float>::max();
-
-  bool all_nan = true;
-  for (size_t i = 0; i < num_elements; ++i)
+void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
+{
+  // Make sure there is only cpu backend except for builtin backend
+  std::set<std::string> backend_names;
+  backend::ITensorRegistry *tensor_reg = nullptr;
+  for (const auto &pair : _backend_contexts)
   {
-    const float number = data[i];
-    if (std::isnan(number))
-      continue;
-
-    if (number == std::numeric_limits<float>::lowest())
-      continue;
-
-    all_nan = false;
-
-    if (number > max)
-      max = number;
-
-    if (number < min)
-      min = number;
+    backend_names.insert(pair.first->config()->id());
+    if (pair.first->config()->id() == "cpu")
+    {
+      tensor_reg = pair.second->tensor_registry.get();
+    }
   }
+  if (backend_names != std::set<std::string>{"builtin", "cpu"})
+    throw std::runtime_error("MinMaxRecorder must have cpu backend only.");
 
-  if (all_nan)
-    throw std::runtime_error("All values are NaN(Not a Number)");
+  const auto &inputs = _graph.getInputs(); //.at(op_idx);
+  for (uint32_t i = 0; i < inputs.size(); ++i)
+  {
+    auto input_idx = inputs.at(i);
+    auto tensor = tensor_reg->getITensor(input_idx);
 
-  _minmax_map.append({subg_idx, op_idx}, min, max);
+    if (tensor->is_constant())
+      return;
+    if (tensor->data_type() != ir::DataType::FLOAT32)
+      return;
+
+    auto minmax = minmaxFrom(tensor);
+    _input_minmax.append({subg_idx, ir::IOIndex{i}}, minmax.first, minmax.second);
+  }
 }
 
 void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
 {
   // It would be better to dump at the end of model execution, not subgraph
   // But it requires more changes than subgraph.
-  _h5dumper.dump(_minmax_map);
+  _h5dumper.dump(_input_minmax, _op_minmax);
 }
 
 } // namespace exec

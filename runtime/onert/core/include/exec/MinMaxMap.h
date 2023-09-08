@@ -24,15 +24,36 @@ namespace onert
 {
 namespace exec
 {
-struct SMHash
+
+/*
+ * NOTE: To record MinMax, the key would be better to use Tensor ID in circle.
+ * But in general, onert does not keep track of circle tensor ID to onert tensor ID.
+ * The ordering in tensors in onert may be different from ordering in circle
+ * because onert could try optimization (reusing allocation, removing redundant tensors,
+ * code optimization, ...)
+ * For Linear Executor and CPU backcend, onert keep track of op index in generated Code.
+ * MinMaxMap uses operation index instead.
+ *
+ * TODO: Stop recording in case of onert internal optimization (e.g. code fusion) occcurs.
+ *       It rarely happens since most fusioning is done by compiler frontend, not by onert.
+ */
+struct OpMinMaxHash
 {
   size_t operator()(const std::pair<ir::SubgraphIndex, ir::OperationIndex> &k) const noexcept
   {
     return std::hash<ir::SubgraphIndex>()(k.first) ^ std::hash<ir::OperationIndex>()(k.second);
   }
 };
-// SM means single model
-using SMMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::OperationIndex>, SMHash>;
+using OpMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::OperationIndex>, OpMinMaxHash>;
+
+struct IOMinMaxHash
+{
+  size_t operator()(const std::pair<ir::SubgraphIndex, ir::IOIndex> &k) const noexcept
+  {
+    return std::hash<ir::SubgraphIndex>()(k.first) ^ std::hash<ir::IOIndex>()(k.second);
+  }
+};
+using IOMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::IOIndex>, IOMinMaxHash>;
 } // namespace exec
 } // namespace onert
 

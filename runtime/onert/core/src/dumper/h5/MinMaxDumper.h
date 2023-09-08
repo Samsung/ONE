@@ -34,30 +34,38 @@ namespace h5
 //
 // GROUP /
 //   GROUP value
-//     └── GROUP run_idx
-//           └── GROUP model_idx
-//                 └── GROUP subg_idx
-//                       └── DATASET op_idx
+//     └── GROUP run_{idx}
+//           └── GROUP model_{idx}
+//                 └── GROUP subg_{idx}
+//                       ├── DATASET op_{idx}
+//                       │      DATATYPE Float32
+//                       │      DATASPACE (2)
+//                       │      DATA { min, max }
+//                       └── DATASET input_{idx}
 //                              DATATYPE Float32
 //                              DATASPACE (2)
 //                              DATA { min, max }
 //   GROUP name   (optional, for debug)
-//     └── GROUP model_idx
-//           └── GROUP subg_idx
-//                 └── ATTRIBUTE op_idx
-//                        DATATYPE String
-//                        DATA { "model/your/op/name"}
+//     └── GROUP model_{idx}
+//           └── GROUP subg_{idx}
+//                       ├── ATTRIBUTE op_{idx}
+//                       │      DATATYPE String
+//                       │      DATA { "op/name"}
+//                       └── ATTRIBUTE input_{idx}
+//                              DATATYPE String
+//                              DATA { "input/name"}
 //
 class MinMaxDumper : private Dumper
 {
 public:
   MinMaxDumper(const std::string &filepath);
   /**
-   * @brief Dump minmax map
+   * @brief Dump input minmax map
    *
-   * @param[in] map  single model minmax map
+   * @param[in] in_minmax  input minmax map
+   * @param[in] op_minmax  op minmax map
    */
-  void dump(const exec::SMMinMaxMap &map) const;
+  void dump(const exec::IOMinMaxMap &in_minmax, const exec::OpMinMaxMap &op_minmax) const;
 
 private:
   H5::Group _val_grp;

@@ -32,16 +32,16 @@ static const char *h5_value_grpname = "value";
 /*
  * ensure grp_name exists in parent
  */
-H5::Group ensureGroup(H5::Group parent, const char *child)
+H5::Group ensureGroup(H5::Group parent, const std::string &child)
 {
   H5::Exception::dontPrint();
   try
   {
-    return parent.openGroup(child);
+    return parent.openGroup(child.c_str());
   }
   catch (H5::Exception &e)
   {
-    return parent.createGroup(child);
+    return parent.createGroup(child.c_str());
   }
 }
 
@@ -51,21 +51,33 @@ MinMaxDumper::MinMaxDumper(const std::string &filepath) : Dumper(filepath)
   ensureGroup(root_grp, h5_value_grpname);
 }
 
-void MinMaxDumper::dump(const exec::SMMinMaxMap &mmmap) const
+void MinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
+                        const exec::OpMinMaxMap &op_minmax) const
 {
   auto val_grp = _file.openGroup(h5_value_grpname);
   auto num_run = val_grp.getNumObjs();
-  auto num_grp = val_grp.createGroup(std::to_string(num_run));
-  auto model_grp = ensureGroup(num_grp, "0");
+  auto run_grp = val_grp.createGroup(std::string("run_") + std::to_string(num_run));
+  auto model_grp = ensureGroup(run_grp, std::string("model_") + "0");
   hsize_t dims[] = {2};
   H5::DataSpace dspace(1, dims); // rank=1, dim(0)=2, {min, max}
-  for (auto &&e : mmmap)
+  for (auto &&e : input_minmax)
+  {
+    // key = {subg_idx, io_idx} = e.first
+    const auto subg_idx = e.first.first.value();
+    const auto io_idx = e.first.second.value();
+    auto subg_grp = ensureGroup(model_grp, std::string("subg_") + std::to_string(subg_idx));
+    auto input_dset = subg_grp.createDataSet(std::string("input_") + std::to_string(io_idx),
+                                             H5::PredType::IEEE_F32BE, dspace);
+    input_dset.write(e.second.data, H5::PredType::NATIVE_FLOAT);
+  }
+  for (auto &&e : op_minmax)
   {
     // key = {subg_idx, op_idx} = e.first
     const auto subg_idx = e.first.first.value();
     const auto op_idx = e.first.second.value();
-    auto subg_grp = ensureGroup(model_grp, std::to_string(subg_idx).c_str());
-    auto op_dset = subg_grp.createDataSet(std::to_string(op_idx), H5::PredType::IEEE_F32BE, dspace);
+    auto subg_grp = ensureGroup(model_grp, std::string("subg_") + std::to_string(subg_idx));
+    auto op_dset = subg_grp.createDataSet(std::string("op_") + std::to_string(op_idx),
+                                          H5::PredType::IEEE_F32BE, dspace);
     op_dset.write(e.second.data, H5::PredType::NATIVE_FLOAT);
   }
 }

@@ -41,13 +41,15 @@ public:
   }
   void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                     const backend::Backend *) override;
+  void handleSubgraphBegin(ir::SubgraphIndex) override;
   void handleSubgraphEnd(ir::SubgraphIndex) override;
 
 private:
   const ir::Graph &_graph;
   const backend::BackendContexts &_backend_contexts;
   dumper::h5::MinMaxDumper _h5dumper;
-  SMMinMaxMap _minmax_map;
+  OpMinMaxMap _op_minmax;
+  IOMinMaxMap _input_minmax;
 };
 
 } // namespace exec
