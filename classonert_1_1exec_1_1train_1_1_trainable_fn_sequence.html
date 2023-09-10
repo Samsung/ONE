@@ -97,45 +97,59 @@ $(document).ready(function(){initNavTree('classonert_1_1exec_1_1train_1_1_traina
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for onert::exec::train::TrainableFnSequence:</div>
-<div class="dyncontent">
-<div class="center"><img src="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence__coll__graph.png" border="0" usemap="#aonert_1_1exec_1_1train_1_1_trainable_fn_sequence_coll__map" alt="Collaboration graph"/></div>
-<map name="aonert_1_1exec_1_1train_1_1_trainable_fn_sequence_coll__map" id="aonert_1_1exec_1_1train_1_1_trainable_fn_sequence_coll__map">
-<area shape="rect" title=" " alt="" coords="5,93,160,133"/>
-<area shape="rect" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="15,5,150,45"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa69d3ba021e941abd68939e676a6c433"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#aa69d3ba021e941abd68939e676a6c433">forward</a> (bool training) override</td></tr>
-<tr class="separator:aa69d3ba021e941abd68939e676a6c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2fd71521b6e9b994e47b55088749b1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#ac2fd71521b6e9b994e47b55088749b1c">backward</a> (uint32_t training_step) override</td></tr>
-<tr class="separator:ac2fd71521b6e9b994e47b55088749b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb09606edb78c7c2541c3aa67158500e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#afb09606edb78c7c2541c3aa67158500e">forward</a> (bool training)</td></tr>
+<tr class="separator:afb09606edb78c7c2541c3aa67158500e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac525bf24729b879b2f40c5d8d9b3d25b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#ac525bf24729b879b2f40c5d8d9b3d25b">backward</a> (uint32_t training_step)</td></tr>
+<tr class="separator:ac525bf24729b879b2f40c5d8d9b3d25b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74a0ca4877462e9ef28cdacf5d301757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a74a0ca4877462e9ef28cdacf5d301757">append</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a> &gt; &amp;&amp;fn)</td></tr>
 <tr class="separator:a74a0ca4877462e9ef28cdacf5d301757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63eb188cf1cfb20ad2b0f3109cecee48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a63eb188cf1cfb20ad2b0f3109cecee48">append</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_gradient_applier.html">IGradientApplier</a> &gt; &amp;&amp;applier)</td></tr>
+<tr class="separator:a63eb188cf1cfb20ad2b0f3109cecee48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25588aeb267485421a952719a7a89cf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a25588aeb267485421a952719a7a89cf4">iterate</a> (const std::function&lt; void(<a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a> &amp;)&gt; &amp;fn)</td></tr>
 <tr class="separator:a25588aeb267485421a952719a7a89cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">onert::exec::train::ITrainableFunction</a></td></tr>
-<tr class="memitem:a18d3e6fafe8019272fe7b37d0248bc69 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a18d3e6fafe8019272fe7b37d0248bc69">~ITrainableFunction</a> ()=default</td></tr>
-<tr class="separator:a18d3e6fafe8019272fe7b37d0248bc69 inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">forward</a> (bool training)=0</td></tr>
-<tr class="separator:a1902f86c136b2f95027a29ba9909d94d inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0cbc5dff13b732ee4439c7e097a651f inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">backward</a> (uint32_t training_step)=0</td></tr>
-<tr class="separator:ac0cbc5dff13b732ee4439c7e097a651f inherit pub_methods_classonert_1_1exec_1_1train_1_1_i_trainable_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a96fe595d43d0dfcf89b2175c8a7ca645"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html">ITrainableFunction</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a></td></tr>
 <tr class="separator:a96fe595d43d0dfcf89b2175c8a7ca645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9efa015cc634c244c2949115f48c509a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_gradient_applier.html">IGradientApplier</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a9efa015cc634c244c2949115f48c509a">_appliers</a></td></tr>
+<tr class="separator:a9efa015cc634c244c2949115f48c509a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8h_source.html#l00032">32</a> of file <a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8h_source.html#l00033">33</a> of file <a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a63eb188cf1cfb20ad2b0f3109cecee48" name="a63eb188cf1cfb20ad2b0f3109cecee48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63eb188cf1cfb20ad2b0f3109cecee48">&#9670;&#160;</a></span>append() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::exec::train::TrainableFnSequence::append </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1_i_gradient_applier.html">IGradientApplier</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>applier</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00052">52</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a9efa015cc634c244c2949115f48c509a">_appliers</a>.push_back(std::move(applier));</div>
+<div class="line"><span class="lineno">   55</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_fn_sequence_html_a9efa015cc634c244c2949115f48c509a"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a9efa015cc634c244c2949115f48c509a">onert::exec::train::TrainableFnSequence::_appliers</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; IGradientApplier &gt; &gt; _appliers</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_fn_sequence_8h_source.html#l00046">TrainableFnSequence.h:46</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00046">_appliers</a>.</p>
+
+</div>
+</div>
 <a id="a74a0ca4877462e9ef28cdacf5d301757" name="a74a0ca4877462e9ef28cdacf5d301757"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74a0ca4877462e9ef28cdacf5d301757">&#9670;&#160;</a></span>append()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a74a0ca4877462e9ef28cdacf5d301757">&#9670;&#160;</a></span>append() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,24 +164,21 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00042">42</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.push_back(std::move(function));</div>
-<div class="line"><span class="lineno">   45</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_fn_sequence_html_a96fe595d43d0dfcf89b2175c8a7ca645"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">onert::exec::train::TrainableFnSequence::_functions</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; ITrainableFunction &gt; &gt; _functions</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_fn_sequence_8h_source.html#l00043">TrainableFnSequence.h:43</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00047">47</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
+<div class="line"><span class="lineno">   49</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.push_back(std::move(function));</div>
+<div class="line"><span class="lineno">   50</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_fn_sequence_html_a96fe595d43d0dfcf89b2175c8a7ca645"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">onert::exec::train::TrainableFnSequence::_functions</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; ITrainableFunction &gt; &gt; _functions</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_fn_sequence_8h_source.html#l00045">TrainableFnSequence.h:45</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00043">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00045">_functions</a>.</p>
 
 </div>
 </div>
-<a id="ac2fd71521b6e9b994e47b55088749b1c" name="ac2fd71521b6e9b994e47b55088749b1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2fd71521b6e9b994e47b55088749b1c">&#9670;&#160;</a></span>backward()</h2>
+<a id="ac525bf24729b879b2f40c5d8d9b3d25b" name="ac525bf24729b879b2f40c5d8d9b3d25b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac525bf24729b879b2f40c5d8d9b3d25b">&#9670;&#160;</a></span>backward()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void onert::exec::train::TrainableFnSequence::backward </td>
@@ -177,35 +188,30 @@ Data Fields</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac0cbc5dff13b732ee4439c7e097a651f">onert::exec::train::ITrainableFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00034">34</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.rbegin(); it != <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>.rend(); ++it)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    (*it)-&gt;backward(training_step);</div>
+<div class="line"><span class="lineno">   38</span>    (*it)-&gt;backward();</div>
 <div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span>}</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;applier : <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a9efa015cc634c244c2949115f48c509a">_appliers</a>)</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    applier-&gt;applyGradient(training_step);</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00043">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00046">_appliers</a>, and <a class="el" href="_trainable_fn_sequence_8h_source.html#l00045">_functions</a>.</p>
 
 </div>
 </div>
-<a id="aa69d3ba021e941abd68939e676a6c433" name="aa69d3ba021e941abd68939e676a6c433"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa69d3ba021e941abd68939e676a6c433">&#9670;&#160;</a></span>forward()</h2>
+<a id="afb09606edb78c7c2541c3aa67158500e" name="afb09606edb78c7c2541c3aa67158500e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb09606edb78c7c2541c3aa67158500e">&#9670;&#160;</a></span>forward()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void onert::exec::train::TrainableFnSequence::forward </td>
@@ -215,14 +221,7 @@ Data Fields</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00026">26</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
@@ -232,7 +231,7 @@ Data Fields</h2></td></tr>
 <div class="line"><span class="lineno">   31</span>  }</div>
 <div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00043">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00045">_functions</a>.</p>
 
 </div>
 </div>
@@ -252,19 +251,37 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00047">47</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;func : <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>)</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    fn(*func);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00057">57</a> of file <a class="el" href="_trainable_fn_sequence_8cc_source.html">TrainableFnSequence.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;func : <a class="code hl_variable" href="classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html#a96fe595d43d0dfcf89b2175c8a7ca645">_functions</a>)</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    fn(*func);</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00043">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_fn_sequence_8h_source.html#l00045">_functions</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="a9efa015cc634c244c2949115f48c509a" name="a9efa015cc634c244c2949115f48c509a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9efa015cc634c244c2949115f48c509a">&#9670;&#160;</a></span>_appliers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::unique_ptr&lt;<a class="el" href="classonert_1_1exec_1_1train_1_1_i_gradient_applier.html">IGradientApplier</a>&gt; &gt; onert::exec::train::TrainableFnSequence::_appliers</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8h_source.html#l00046">46</a> of file <a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00052">append()</a>, and <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00034">backward()</a>.</p>
+
+</div>
+</div>
 <a id="a96fe595d43d0dfcf89b2175c8a7ca645" name="a96fe595d43d0dfcf89b2175c8a7ca645"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96fe595d43d0dfcf89b2175c8a7ca645">&#9670;&#160;</a></span>_functions</h2>
 
@@ -277,9 +294,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8h_source.html#l00043">43</a> of file <a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_fn_sequence_8h_source.html#l00045">45</a> of file <a class="el" href="_trainable_fn_sequence_8h_source.html">TrainableFnSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00042">append()</a>, <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00034">backward()</a>, <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00026">forward()</a>, and <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00047">iterate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00047">append()</a>, <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00034">backward()</a>, <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00026">forward()</a>, and <a class="el" href="_trainable_fn_sequence_8cc_source.html#l00057">iterate()</a>.</p>
 
 </div>
 </div>

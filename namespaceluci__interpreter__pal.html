@@ -295,9 +295,9 @@ Functions</h2></td></tr>
 <tr class="separator:ade7e465493338c56ffe9f4570f26e8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad03b8a33dae0a081b95f35e40a18014f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ad03b8a33dae0a081b95f35e40a18014f">Pad</a> (const <a class="el" href="structluci__interpreter__pal_1_1_pad_params.html">PadParams</a> &amp;op_params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input_shape, const float *input_data, const float *pad_value_ptr, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
 <tr class="separator:ad03b8a33dae0a081b95f35e40a18014f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99fd253ba1bda0c69f6f8cddc912af63"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a99fd253ba1bda0c69f6f8cddc912af63"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a99fd253ba1bda0c69f6f8cddc912af63">ReduceGeneric</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int64_t num_axis_dimensions, int *temp_index, int *resolved_axis, T init_value, const int output_flat_size, T reducer(const T, const T))</td></tr>
-<tr class="separator:a99fd253ba1bda0c69f6f8cddc912af63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c7f2a61a61c24cb90f4b126b1e80fb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a30c7f2a61a61c24cb90f4b126b1e80fb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a30c7f2a61a61c24cb90f4b126b1e80fb">ReduceGeneric</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int64_t num_axis_dimensions, T init_value, const int output_flat_size, T reducer(const T, const T))</td></tr>
+<tr class="separator:a30c7f2a61a61c24cb90f4b126b1e80fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48688247e185c907fdcc2394c6965aee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a48688247e185c907fdcc2394c6965aee">ReLUCommon</a> (const int flat_size, const float *input_data, float *output_data, const float alpha, const bool is_relu_6)</td></tr>
 <tr class="separator:a48688247e185c907fdcc2394c6965aee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82c89e57f9afe77171177d120c38a79d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a82c89e57f9afe77171177d120c38a79d">Offset</a> (const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;shape, int i0, int i1, int i2, int i3)</td></tr>
@@ -6423,7 +6423,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  169</span>  <span class="keywordflow">return</span> (carry == 0);</div>
 <div class="line"><span class="lineno">  170</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00072">ReduceGeneric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00073">ReduceGeneric()</a>.</p>
 
 </div>
 </div>
@@ -6891,12 +6891,12 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00072">ReduceGeneric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00073">ReduceGeneric()</a>.</p>
 
 </div>
 </div>
-<a id="a99fd253ba1bda0c69f6f8cddc912af63" name="a99fd253ba1bda0c69f6f8cddc912af63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99fd253ba1bda0c69f6f8cddc912af63">&#9670;&#160;</a></span>ReduceGeneric()</h2>
+<a id="a30c7f2a61a61c24cb90f4b126b1e80fb" name="a30c7f2a61a61c24cb90f4b126b1e80fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c7f2a61a61c24cb90f4b126b1e80fb">&#9670;&#160;</a></span>ReduceGeneric()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6945,18 +6945,6 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>temp_index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>resolved_axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>init_value</em>, </td>
         </tr>
@@ -6985,7 +6973,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00072">72</a> of file <a class="el" href="_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_p_a_l_reduce_common_8h_source.html#l00073">73</a> of file <a class="el" href="_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
 <div class="line"><span class="lineno">   77</span>  <span class="comment">// Return early when input shape has zero dim.</span></div>
 <div class="line"><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; input_num_dims; ++i)</div>
@@ -7001,25 +6989,26 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   88</span> </div>
 <div class="line"><span class="lineno">   89</span>  <span class="comment">// Resolve axis.</span></div>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &amp;num_resolved_axis))</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis, num_axis_dimensions, &amp;num_resolved_axis))</div>
 <div class="line"><span class="lineno">   92</span>  {</div>
 <div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   94</span>  }</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <span class="comment">// Reset input iterator.</span></div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
-<div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    temp_index[idx] = 0;</div>
-<div class="line"><span class="lineno">  100</span>  }</div>
-<div class="line"><span class="lineno">  101</span>  <span class="comment">// Iterate through input_data.</span></div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">do</span></div>
-<div class="line"><span class="lineno">  103</span>  {</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordtype">size_t</span> output_offset =</div>
-<div class="line"><span class="lineno">  106</span>      <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);</div>
-<div class="line"><span class="lineno">  107</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);</div>
-<div class="line"><span class="lineno">  108</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
-<div class="line"><span class="lineno">  109</span>}</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordtype">int</span> temp_index[5];</div>
+<div class="line"><span class="lineno">   97</span>  <span class="comment">// Reset input iterator.</span></div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
+<div class="line"><span class="lineno">   99</span>  {</div>
+<div class="line"><span class="lineno">  100</span>    temp_index[idx] = 0;</div>
+<div class="line"><span class="lineno">  101</span>  }</div>
+<div class="line"><span class="lineno">  102</span>  <span class="comment">// Iterate through input_data.</span></div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">do</span></div>
+<div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordtype">size_t</span> output_offset =</div>
+<div class="line"><span class="lineno">  107</span>      <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);</div>
+<div class="line"><span class="lineno">  108</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);</div>
+<div class="line"><span class="lineno">  109</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
+<div class="line"><span class="lineno">  110</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a5e63d69906e6cf5b21554e36ce52adad"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">luci_interpreter_pal::nextIndex</a></div><div class="ttdeci">bool nextIndex(const int num_dims, const int *dims, int *current)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_utils_8h_source.html#l00148">PALUtils.h:148</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ac67e9b769452d80a83023ec03abde2b7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">luci_interpreter_pal::reducedOutputOffset</a></div><div class="ttdeci">size_t reducedOutputOffset(const int num_dims, const int *dims, const int *index, const int num_axis, const int *axis)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_utils_8h_source.html#l00116">PALUtils.h:116</a></div></div>
 </div><!-- fragment -->

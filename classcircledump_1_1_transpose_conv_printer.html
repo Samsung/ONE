@@ -159,9 +159,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  665</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  666</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  667</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  668</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  669</span>    }</div>
-<div class="line"><span class="lineno">  670</span>  }</div>
+<div class="line"><span class="lineno">  668</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  669</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  670</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  671</span>    }</div>
+<div class="line"><span class="lineno">  672</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1375,6 +1375,7 @@ var hierarchy =
       [ "luci::CircleMul", "classluci_1_1_circle_mul.html", null ],
       [ "luci::CircleSVDF", "classluci_1_1_circle_s_v_d_f.html", null ],
       [ "luci::CircleSub", "classluci_1_1_circle_sub.html", null ],
+      [ "luci::CircleTransposeConv", "classluci_1_1_circle_transpose_conv.html", null ],
       [ "luci::CircleUnidirectionalSequenceLSTM", "classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html", null ]
     ] ],
     [ "locoex::CircleNodeMutableVisitorBase< T >", "structlocoex_1_1_circle_node_mutable_visitor_base.html", [
@@ -1718,6 +1719,7 @@ var hierarchy =
     [ "mir::Conv2DOpAttributes", "structmir_1_1_conv2_d_op_attributes.html", null ],
     [ "luci_interpreter::Conv2DParams", "structluci__interpreter_1_1_conv2_d_params.html", null ],
     [ "mir_onnx::ConverterContext", "classmir__onnx_1_1_converter_context.html", null ],
+    [ "nnfw::cker::ConvHybridTempArena", "structnnfw_1_1cker_1_1_conv_hybrid_temp_arena.html", null ],
     [ "ConvolutionSpec", "class_convolution_spec.html", null ],
     [ "luci_interpreter_pal::ConvParams", "structluci__interpreter__pal_1_1_conv_params.html", null ],
     [ "nnfw::cker::ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", null ],
@@ -2538,7 +2540,9 @@ var hierarchy =
       ] ],
       [ "onert::exec::NopFunction", "classonert_1_1exec_1_1_nop_function.html", null ]
     ] ],
-    [ "onert::exec::train::IGradientApplier", "classonert_1_1exec_1_1train_1_1_i_gradient_applier.html", null ],
+    [ "onert::exec::train::IGradientApplier", "classonert_1_1exec_1_1train_1_1_i_gradient_applier.html", [
+      [ "onert::backend::train::ops::GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", null ]
+    ] ],
     [ "onert::ir::IGraph", "structonert_1_1ir_1_1_i_graph.html", [
       [ "onert::ir::Graph", "classonert_1_1ir_1_1_graph.html", null ],
       [ "onert::ir::train::TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", null ]
@@ -2864,11 +2868,9 @@ var hierarchy =
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
       [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
-      [ "onert::backend::train::ops::GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", null ],
       [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
-      [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ],
-      [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ]
+      [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ]
     ] ],
     [ "ITransformWeights", null, [
       [ "arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", null ]
@@ -4467,6 +4469,7 @@ var hierarchy =
     [ "nnfw::cker::optimized::depthwise_conv::QuantizedDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized_1_1depthwise__conv_1_1_quantized_depthwise_conv_kernel.html", null ],
     [ "nnfw::cker::optimized_integer_ops::depthwise_conv::QuantizedDepthwiseConvKernel< kAllowStrided, kFixedInputDepth, kFixedDepthMultiplier >", "structnnfw_1_1cker_1_1optimized__integer__ops_1_1depthwise__conv_1_1_quantized_depthwise_conv_kernel.html", null ],
     [ "luci::QuantizedModelVerifier", "structluci_1_1_quantized_model_verifier.html", null ],
+    [ "onert::odc::QuantizeManager", "classonert_1_1odc_1_1_quantize_manager.html", null ],
     [ "mpqsolver::core::Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", null ],
     [ "mpqsolver::core::QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", [
       [ "mpqsolver::core::DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", null ]
@@ -5227,6 +5230,7 @@ var hierarchy =
     ] ],
     [ "onert::compiler::train::TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", null ],
     [ "onert::backend::train::TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", null ],
+    [ "onert::exec::train::TrainableFnSequence", "classonert_1_1exec_1_1train_1_1_trainable_fn_sequence.html", null ],
     [ "onert::ir::train::TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", [
       [ "onert::backend::train::KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", [
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],

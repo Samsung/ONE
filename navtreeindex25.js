@@ -1,5 +1,16 @@
 var NAVTREEINDEX25 =
 {
+"_segment_sum_options_8cpp_source.html":[35,0,0,115,2,0,128],
+"_segment_sum_options_8h.html":[35,0,0,115,2,0,129],
+"_segment_sum_options_8h.html#affe17044db9a748e31d08acef4ac74ee":[35,0,0,115,2,0,129,0],
+"_segment_sum_options_8h_source.html":[35,0,0,115,2,0,129],
+"_select_8cc.html":[35,0,4,2,2,1,4,0,52],
+"_select_8cc_source.html":[35,0,4,2,2,1,4,0,52],
+"_select_layer_8cc.html":[35,0,4,2,1,4,0,78],
+"_select_layer_8cc.html#a1327004010b84cb19659537df90867e7":[35,0,4,2,1,4,0,78,1],
+"_select_layer_8cc.html#aafffaacd008a5a680278758f27895c94":[35,0,4,2,1,4,0,78,0],
+"_select_layer_8cc_source.html":[35,0,4,2,1,4,0,78],
+"_select_layer_8h.html":[35,0,4,2,1,4,0,79],
 "_select_layer_8h_source.html":[35,0,4,2,1,4,0,79],
 "_select_options_8cpp.html":[35,0,0,115,2,0,130],
 "_select_options_8cpp.html#ae6e061f745f8ca774f18a71b9da758f1":[35,0,0,115,2,0,130,0],
@@ -238,16 +249,5 @@ var NAVTREEINDEX25 =
 "_softmax_8float_8h.html":[35,0,0,3,0,0,51],
 "_softmax_8float_8h.html#ab5e8a4ff9bf32ef77910e57e386d5dca":[35,0,0,3,0,0,51,0],
 "_softmax_8float_8h_source.html":[35,0,0,3,0,0,51],
-"_softmax_canonicalizer_8cpp.html":[35,0,0,69,1,0,40],
-"_softmax_canonicalizer_8cpp_source.html":[35,0,0,69,1,0,40],
-"_softmax_canonicalizer_8h.html":[35,0,0,69,1,0,41],
-"_softmax_canonicalizer_8h_source.html":[35,0,0,69,1,0,41],
-"_softmax_op_8h.html":[35,0,0,64,0,0,0,36],
-"_softmax_op_8h_source.html":[35,0,0,64,0,0,0,36],
-"_softmax_options_8cpp.html":[35,0,0,115,2,0,138],
-"_softmax_options_8cpp.html#afba4ab59520cedf1c9d736c2a0322dcc":[35,0,0,115,2,0,138,0],
-"_softmax_options_8cpp_source.html":[35,0,0,115,2,0,138],
-"_softmax_options_8h.html":[35,0,0,115,2,0,139],
-"_softmax_options_8h.html#afba4ab59520cedf1c9d736c2a0322dcc":[35,0,0,115,2,0,139,0],
-"_softmax_options_8h_source.html":[35,0,0,115,2,0,139]
+"_softmax_canonicalizer_8cpp.html":[35,0,0,69,1,0,40]
 };

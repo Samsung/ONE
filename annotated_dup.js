@@ -2385,6 +2385,7 @@ var annotated_dup =
         [ "ComparisonParams", "structnnfw_1_1cker_1_1_comparison_params.html", "structnnfw_1_1cker_1_1_comparison_params" ],
         [ "ConcatenationParams", "structnnfw_1_1cker_1_1_concatenation_params.html", "structnnfw_1_1cker_1_1_concatenation_params" ],
         [ "Conv", "classnnfw_1_1cker_1_1_conv.html", "classnnfw_1_1cker_1_1_conv" ],
+        [ "ConvHybridTempArena", "structnnfw_1_1cker_1_1_conv_hybrid_temp_arena.html", "structnnfw_1_1cker_1_1_conv_hybrid_temp_arena" ],
         [ "ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", "structnnfw_1_1cker_1_1_conv_params" ],
         [ "DepthwiseConvParams", "structnnfw_1_1cker_1_1_depthwise_conv_params.html", "structnnfw_1_1cker_1_1_depthwise_conv_params" ],
         [ "DepthwiseConvWorkerTask", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task.html", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task" ],
@@ -3107,6 +3108,7 @@ var annotated_dup =
       ] ],
       [ "odc", "namespaceonert_1_1odc.html", [
         [ "IQuantizer", "classonert_1_1odc_1_1_i_quantizer.html", "classonert_1_1odc_1_1_i_quantizer" ],
+        [ "QuantizeManager", "classonert_1_1odc_1_1_quantize_manager.html", "classonert_1_1odc_1_1_quantize_manager" ],
         [ "Quantizer", "classonert_1_1odc_1_1_quantizer.html", "classonert_1_1odc_1_1_quantizer" ],
         [ "QuantizerLoader", "classonert_1_1odc_1_1_quantizer_loader.html", "classonert_1_1odc_1_1_quantizer_loader" ]
       ] ],

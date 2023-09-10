@@ -147,20 +147,23 @@ $(document).ready(function(){initNavTree('compiler_2tflchef_2tflite_2src_2_op_2_
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  operation-&gt;set_type(<span class="stringliteral">&quot;TransposeConv&quot;</span>);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">auto</span> op_options = operation-&gt;mutable_transpose_conv_options();</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  op_options-&gt;set_stride_h(op_params-&gt;stride_h());</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  op_options-&gt;set_stride_w(op_params-&gt;stride_w());</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  op_options-&gt;set_padding(<a class="code hl_function" href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">as_tflchef_padding</a>(op_params-&gt;padding()));</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> operation;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace tflchef</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">auto</span> tflchef_activation = <a class="code hl_function" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">as_tflchef_activation</a>(op_params-&gt;fused_activation_function());</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  op_options-&gt;set_stride_h(op_params-&gt;stride_h());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  op_options-&gt;set_stride_w(op_params-&gt;stride_w());</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  op_options-&gt;set_padding(<a class="code hl_function" href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">as_tflchef_padding</a>(op_params-&gt;padding()));</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  op_options-&gt;set_activation(tflchef_activation);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">return</span> operation;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>} <span class="comment">// namespace tflchef</span></div>
 <div class="ttc" id="aclasstflchef_1_1_t_flite_import_html"><div class="ttname"><a href="classtflchef_1_1_t_flite_import.html">tflchef::TFliteImport</a></div><div class="ttdoc">Loads TF lite file and provides helpers to access attributes.</div><div class="ttdef"><b>Definition:</b> <a href="_t_flite_import_8h_source.html#l00040">TFliteImport.h:41</a></div></div>
 <div class="ttc" id="aclasstflchef_1_1_t_flite_op_transpose_conv_html_a1d9344795cb65a83a97cb794677ceac8"><div class="ttname"><a href="classtflchef_1_1_t_flite_op_transpose_conv.html#a1d9344795cb65a83a97cb794677ceac8">tflchef::TFliteOpTransposeConv::build</a></div><div class="ttdeci">tflchef::Operation * build(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *model_recipe) const override</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_op_2_transpose_conv_8cpp_source.html#l00044">TransposeConv.cpp:44</a></div></div>
 <div class="ttc" id="aclasstflchef_1_1_t_flite_op_transpose_conv_html_a9f25f001d88dce17d2ebe7bf2a63d566"><div class="ttname"><a href="classtflchef_1_1_t_flite_op_transpose_conv.html#a9f25f001d88dce17d2ebe7bf2a63d566">tflchef::TFliteOpTransposeConv::filler</a></div><div class="ttdeci">void filler(const tflite::Operator *op, TFliteImport *import, tflchef::ModelRecipe *model_recipe) const override</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tflchef_2tflite_2src_2_op_2_transpose_conv_8cpp_source.html#l00024">TransposeConv.cpp:24</a></div></div>
 <div class="ttc" id="anamespacetflchef_html"><div class="ttname"><a href="namespacetflchef.html">tflchef</a></div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2include_2tflchef_2_model_chef_8h_source.html#l00024">ModelChef.h:25</a></div></div>
 <div class="ttc" id="anamespacetflchef_html_a61c64eb65ff516bdcb1cacdaea104160"><div class="ttname"><a href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">tflchef::as_tflchef_padding</a></div><div class="ttdeci">tflchef::Padding as_tflchef_padding(const tflite::Padding padding)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00071">Convert.cpp:71</a></div></div>
+<div class="ttc" id="anamespacetflchef_html_af70fa66b2c38cfac03cae0770c795301"><div class="ttname"><a href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">tflchef::as_tflchef_activation</a></div><div class="ttdeci">tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType type)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00050">Convert.cpp:50</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

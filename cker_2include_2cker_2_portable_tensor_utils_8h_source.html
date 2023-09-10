@@ -238,117 +238,173 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_portable_tensor_
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">  147</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> int8_t *__restrict__ matrix,</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                                                        <span class="keyword">const</span> <span class="keywordtype">int</span> m_rows, <span class="keyword">const</span> <span class="keywordtype">int</span> m_cols,</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                                                        <span class="keyword">const</span> int8_t *__restrict__ vectors,</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *scaling_factors, <span class="keywordtype">int</span> n_batch,</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                                                        <span class="keywordtype">float</span> *__restrict__ result,</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                                                        <span class="keywordtype">int</span> result_stride)</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordtype">int</span> batch, row, col;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keywordflow">for</span> (batch = 0; batch &lt; n_batch; ++batch, vectors += m_cols)</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> batch_scaling_factor = scaling_factors[batch];</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="comment">// Get the address of the first row.</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keyword">const</span> int8_t *row_ptr = matrix;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">for</span> (row = 0; row &lt; m_rows; ++row, result += result_stride)</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    {</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <span class="comment">// Initialize the dot product sum for the row to 0.</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>      int32_t dotprod = 0;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#if defined(__GNUC__)</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      <span class="comment">// Prefetch the row to cache.</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      __builtin_prefetch(row_ptr, 0 <span class="comment">/* prefetch for read */</span>, 3 <span class="comment">/* temporal locality */</span>);</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      <span class="keywordflow">for</span> (col = 0; col &lt; m_cols; ++col, ++row_ptr)</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        dotprod += (*row_ptr) * (vectors[col]);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>      } <span class="comment">// for col</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      *result += (dotprod * batch_scaling_factor);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    } <span class="comment">// for row</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  }   <span class="comment">// for batch</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>}</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a3a77b7889e3f2199b69458352bc2b43c">  177</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> int8_t *__restrict__ matrix,</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                                                        <span class="keyword">const</span> <span class="keywordtype">int</span> m_rows, <span class="keyword">const</span> <span class="keywordtype">int</span> m_cols,</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                                                        <span class="keyword">const</span> int8_t *__restrict__ vector,</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *scaling_factors, <span class="keywordtype">int</span> n_batch,</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                                                        int32_t *, <span class="keywordtype">float</span> *__restrict__ result,</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                                                        <span class="keywordtype">int</span> result_stride, ruy::Context *)</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>{</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(matrix, m_rows, m_cols, vector, scaling_factors,</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                                              n_batch, result, result_stride);</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>}</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#abb30796a139e435de18844e91bd40fed">  188</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *matrix, <span class="keywordtype">int</span> m_rows, <span class="keywordtype">int</span> m_cols,</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *vector, <span class="keywordtype">int</span> n_batch,</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                                                        <span class="keywordtype">float</span> *result, <span class="keywordtype">int</span> result_stride)</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>{</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <span class="keywordtype">float</span> *result_in_batch = result;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; n_batch; b++)</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#ab79daa17324a512865ecbc4f6cb97be4">  147</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#ab79daa17324a512865ecbc4f6cb97be4">PortableAsymmetricQuantizeFloats</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *values, <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                                             int8_t *quantized_values, <span class="keywordtype">float</span> *scaling_factor,</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                                             int32_t *<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>{</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">/* Copied from TensorFlow PortableAsymmetricQuantizeFloats */</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keyword">const</span> int32_t kMinScale = -128;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keyword">const</span> int32_t kMaxScale = 127;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmin_double = kMinScale;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> qmax_double = kMaxScale;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keyword">const</span> <span class="keyword">auto</span> minmax = std::minmax_element(values, values + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmin = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(std::min(0.0f, *minmax.first));</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> rmax = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(std::max(0.0f, *minmax.second));</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordflow">if</span> (rmin == rmax)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    memset(quantized_values, 0, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> * <span class="keyword">sizeof</span>(int8_t));</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    *scaling_factor = 1;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    *<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  {</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordtype">double</span> scale = (rmax - rmin) / (qmax_double - qmin_double);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zero_point_from_min = qmin_double - rmin / scale;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zero_point_from_max = qmax_double - rmax / scale;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zero_point_from_min_error = std::abs(qmin_double) + std::abs(rmin / scale);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zero_point_from_max_error = std::abs(qmax_double) + std::abs(rmax / scale);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> zero_point_double = zero_point_from_min_error &lt; zero_point_from_max_error</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                                       ? zero_point_from_min</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                                       : zero_point_from_max;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    int8_t nudged_zero_point = 0;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">if</span> (zero_point_double &lt;= qmin_double)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>      nudged_zero_point = kMinScale;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (zero_point_double &gt;= qmax_double)</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      nudged_zero_point = kMaxScale;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    {</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>      nudged_zero_point = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(round(zero_point_double));</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    *scaling_factor = scale;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    *<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = nudged_zero_point;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scaling_factor_inv = 1.0f / *scaling_factor;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  {</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_ptr = matrix;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> r = 0; r &lt; m_rows; r++)</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    {</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <span class="keywordtype">float</span> dot_prod = 0.0f;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *vector_in_batch = vector + b * m_cols;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; m_cols; c++)</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>      {</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        dot_prod += *matrix_ptr++ * *vector_in_batch++;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>      }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      *result_in_batch += dot_prod;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>      result_in_batch += result_stride;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    }</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>}</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">  210</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">PortableMeanStddevNormalization</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *input_vector, <span class="keywordtype">float</span> *output_vector,</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                            <span class="keywordtype">int</span> v_size, <span class="keywordtype">int</span> n_batch)</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>{</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; n_batch; ++batch)</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  {</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordtype">float</span> sum = 0.0f;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    {</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>      sum += input_vector[i];</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    }</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> mean = sum / v_size;</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordtype">float</span> sum_diff_sq = 0.0f;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    {</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> diff = input_vector[i] - mean;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      sum_diff_sq += diff * diff;</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> variance = sum_diff_sq / v_size;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> kNormalizationConstant = 1e-8f;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> stddev_inv = 1.0f / std::sqrt(variance + kNormalizationConstant);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    {</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>      output_vector[i] = (input_vector[i] - mean) * stddev_inv;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    }</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    input_vector += v_size;</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    output_vector += v_size;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  }</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>}</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">  239</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">PortableZeroVector</a>(<span class="keywordtype">float</span> *vector, <span class="keywordtype">int</span> v_size) { std::fill_n(vector, v_size, 0); }</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>} <span class="comment">// namespace cker</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_PORTABLE_TENSOR_UTILS_H__</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keyword">const</span> int32_t quantized_value =</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(*<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> + values[i] * scaling_factor_inv));</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    quantized_values[i] = std::min(kMaxScale, std::max(kMinScale, quantized_value));</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  }</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>}</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">  201</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> int8_t *__restrict__ matrix,</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                                                        <span class="keyword">const</span> <span class="keywordtype">int</span> m_rows, <span class="keyword">const</span> <span class="keywordtype">int</span> m_cols,</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                                                        <span class="keyword">const</span> int8_t *__restrict__ vectors,</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *scaling_factors, <span class="keywordtype">int</span> n_batch,</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                                                        <span class="keywordtype">float</span> *__restrict__ result,</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                                                        <span class="keywordtype">int</span> result_stride)</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>{</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keywordtype">int</span> batch, row, col;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">for</span> (batch = 0; batch &lt; n_batch; ++batch, vectors += m_cols)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> batch_scaling_factor = scaling_factors[batch];</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="comment">// Get the address of the first row.</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keyword">const</span> int8_t *row_ptr = matrix;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordflow">for</span> (row = 0; row &lt; m_rows; ++row, result += result_stride)</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      <span class="comment">// Initialize the dot product sum for the row to 0.</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>      int32_t dotprod = 0;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">#if defined(__GNUC__)</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>      <span class="comment">// Prefetch the row to cache.</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      __builtin_prefetch(row_ptr, 0 <span class="comment">/* prefetch for read */</span>, 3 <span class="comment">/* temporal locality */</span>);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      <span class="keywordflow">for</span> (col = 0; col &lt; m_cols; ++col, ++row_ptr)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>      {</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        dotprod += (*row_ptr) * (vectors[col]);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>      } <span class="comment">// for col</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>      *result += (dotprod * batch_scaling_factor);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    } <span class="comment">// for row</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  }   <span class="comment">// for batch</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>}</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a3a77b7889e3f2199b69458352bc2b43c">  231</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> int8_t *__restrict__ matrix,</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                                                        <span class="keyword">const</span> <span class="keywordtype">int</span> m_rows, <span class="keyword">const</span> <span class="keywordtype">int</span> m_cols,</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                                                        <span class="keyword">const</span> int8_t *__restrict__ vector,</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *scaling_factors, <span class="keywordtype">int</span> n_batch,</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>                                                        int32_t *, <span class="keywordtype">float</span> *__restrict__ result,</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>                                                        <span class="keywordtype">int</span> result_stride, ruy::Context *)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>{</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(matrix, m_rows, m_cols, vector, scaling_factors,</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                                              n_batch, result, result_stride);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>}</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#abb30796a139e435de18844e91bd40fed">  242</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">PortableMatrixBatchVectorMultiplyAccumulate</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *matrix, <span class="keywordtype">int</span> m_rows, <span class="keywordtype">int</span> m_cols,</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                                                        <span class="keyword">const</span> <span class="keywordtype">float</span> *vector, <span class="keywordtype">int</span> n_batch,</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                                        <span class="keywordtype">float</span> *result, <span class="keywordtype">int</span> result_stride)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>{</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keywordtype">float</span> *result_in_batch = result;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; n_batch; b++)</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  {</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_ptr = matrix;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> r = 0; r &lt; m_rows; r++)</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    {</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>      <span class="keywordtype">float</span> dot_prod = 0.0f;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *vector_in_batch = vector + b * m_cols;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; m_cols; c++)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      {</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        dot_prod += *matrix_ptr++ * *vector_in_batch++;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>      }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>      *result_in_batch += dot_prod;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>      result_in_batch += result_stride;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    }</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">  264</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">PortableMeanStddevNormalization</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> *input_vector, <span class="keywordtype">float</span> *output_vector,</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                                            <span class="keywordtype">int</span> v_size, <span class="keywordtype">int</span> n_batch)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>{</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; n_batch; ++batch)</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordtype">float</span> sum = 0.0f;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    {</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>      sum += input_vector[i];</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> mean = sum / v_size;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordtype">float</span> sum_diff_sq = 0.0f;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    {</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> diff = input_vector[i] - mean;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>      sum_diff_sq += diff * diff;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    }</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> variance = sum_diff_sq / v_size;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> kNormalizationConstant = 1e-8f;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> stddev_inv = 1.0f / std::sqrt(variance + kNormalizationConstant);</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; v_size; ++i)</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    {</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>      output_vector[i] = (input_vector[i] - mean) * stddev_inv;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    }</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    input_vector += v_size;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    output_vector += v_size;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>  }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">  293</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">PortableZeroVector</a>(<span class="keywordtype">float</span> *vector, <span class="keywordtype">int</span> v_size) { std::fill_n(vector, v_size, 0); }</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>} <span class="comment">// namespace cker</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>} <span class="comment">// namespace nnfw</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_PORTABLE_TENSOR_UTILS_H__</span></div>
 <div class="ttc" id="acker_2include_2cker_2neon_2neon__check_8h_html"><div class="ttname"><a href="cker_2include_2cker_2neon_2neon__check_8h.html">neon_check.h</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_activation_functor_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_activation_functor.html">nnfw::cker::ActivationFunctor</a></div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00033">PortableTensorUtils.h:34</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_activation_functor_html_a6044a07e4b143e591af8f41e4f3fab64"><div class="ttname"><a href="classnnfw_1_1cker_1_1_activation_functor.html#a6044a07e4b143e591af8f41e4f3fab64">nnfw::cker::ActivationFunctor::operator()</a></div><div class="ttdeci">float operator()(float a) const</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00038">PortableTensorUtils.h:38</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_activation_functor_html_a91f129602af27821c8dee38d8ebe4ef4"><div class="ttname"><a href="classnnfw_1_1cker_1_1_activation_functor.html#a91f129602af27821c8dee38d8ebe4ef4">nnfw::cker::ActivationFunctor::ActivationFunctor</a></div><div class="ttdeci">ActivationFunctor(FusedActivationFunctionType act)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00036">PortableTensorUtils.h:36</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_types_8h_html"><div class="ttname"><a href="compute_2cker_2include_2cker_2_types_8h.html">Types.h</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a1dc82af4458e48aa71b114352d0487f5"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">nnfw::cker::PortableMeanStddevNormalization</a></div><div class="ttdeci">void PortableMeanStddevNormalization(const float *input_vector, float *output_vector, int v_size, int n_batch)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00210">PortableTensorUtils.h:210</a></div></div>
+<div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a1dc82af4458e48aa71b114352d0487f5"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1dc82af4458e48aa71b114352d0487f5">nnfw::cker::PortableMeanStddevNormalization</a></div><div class="ttdeci">void PortableMeanStddevNormalization(const float *input_vector, float *output_vector, int v_size, int n_batch)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00264">PortableTensorUtils.h:264</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a1fb3248a80c7e73d7c5f39f0407fb167"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1fb3248a80c7e73d7c5f39f0407fb167">nnfw::cker::PortableSub1Vector</a></div><div class="ttdeci">void PortableSub1Vector(const float *vector, int v_size, float *result)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00113">PortableTensorUtils.h:113</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a2846dec0123a34d88c14d9d0b2cff4a6"><div class="ttname"><a href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">nnfw::cker::PortableZeroVector</a></div><div class="ttdeci">void PortableZeroVector(float *vector, int v_size)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00239">PortableTensorUtils.h:239</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a2846dec0123a34d88c14d9d0b2cff4a6"><div class="ttname"><a href="namespacennfw_1_1cker.html#a2846dec0123a34d88c14d9d0b2cff4a6">nnfw::cker::PortableZeroVector</a></div><div class="ttdeci">void PortableZeroVector(float *vector, int v_size)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00293">PortableTensorUtils.h:293</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a57198f993b212efb8ed1d51e482e3717"><div class="ttname"><a href="namespacennfw_1_1cker.html#a57198f993b212efb8ed1d51e482e3717">nnfw::cker::PortableCwiseClipping</a></div><div class="ttdeci">void PortableCwiseClipping(T *vector, const int v_size, const T clipping_value)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00063">PortableTensorUtils.h:63</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a69b400675f60e3b59111b3ae24e25333"><div class="ttname"><a href="namespacennfw_1_1cker.html#a69b400675f60e3b59111b3ae24e25333">nnfw::cker::PortableApplyActivationToVector</a></div><div class="ttdeci">void PortableApplyActivationToVector(const float *vector, int v_size, FusedActivationFunctionType activation, float *result)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00103">PortableTensorUtils.h:103</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a77e3daa30f5e34a8ce6911b5c44c7254"><div class="ttname"><a href="namespacennfw_1_1cker.html#a77e3daa30f5e34a8ce6911b5c44c7254">nnfw::cker::PortableSymmetricQuantizeFloats</a></div><div class="ttdeci">void PortableSymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values, float *min_value, float *max_value, float *scaling_factor)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00121">PortableTensorUtils.h:121</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a7c51572ccca915a87e477b94360b8e9f"><div class="ttname"><a href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">nnfw::cker::PortableMatrixBatchVectorMultiplyAccumulate</a></div><div class="ttdeci">void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *__restrict__ vectors, const float *scaling_factors, int n_batch, float *__restrict__ result, int result_stride)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00147">PortableTensorUtils.h:147</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a7c51572ccca915a87e477b94360b8e9f"><div class="ttname"><a href="namespacennfw_1_1cker.html#a7c51572ccca915a87e477b94360b8e9f">nnfw::cker::PortableMatrixBatchVectorMultiplyAccumulate</a></div><div class="ttdeci">void PortableMatrixBatchVectorMultiplyAccumulate(const int8_t *__restrict__ matrix, const int m_rows, const int m_cols, const int8_t *__restrict__ vectors, const float *scaling_factors, int n_batch, float *__restrict__ result, int result_stride)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00201">PortableTensorUtils.h:201</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a9d016e6ec397ad9769d646221329e1f1"><div class="ttname"><a href="namespacennfw_1_1cker.html#a9d016e6ec397ad9769d646221329e1f1">nnfw::cker::PortableVectorBatchVectorAssign</a></div><div class="ttdeci">void PortableVectorBatchVectorAssign(const float *vector, int v_size, int n_batch, float *batch_vector)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00071">PortableTensorUtils.h:71</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_ab79daa17324a512865ecbc4f6cb97be4"><div class="ttname"><a href="namespacennfw_1_1cker.html#ab79daa17324a512865ecbc4f6cb97be4">nnfw::cker::PortableAsymmetricQuantizeFloats</a></div><div class="ttdeci">void PortableAsymmetricQuantizeFloats(const float *values, const int size, int8_t *quantized_values, float *scaling_factor, int32_t *offset)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00147">PortableTensorUtils.h:147</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_abdcf3b884808c3b19ecbf7a82d8ce8c4"><div class="ttname"><a href="namespacennfw_1_1cker.html#abdcf3b884808c3b19ecbf7a82d8ce8c4">nnfw::cker::PortableIsZeroVector</a></div><div class="ttdeci">bool PortableIsZeroVector(const float *vector, int v_size)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00093">PortableTensorUtils.h:93</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_ac5102c911ed67d134872e4e8cb74a57e"><div class="ttname"><a href="namespacennfw_1_1cker.html#ac5102c911ed67d134872e4e8cb74a57e">nnfw::cker::PortableVectorBatchVectorAdd</a></div><div class="ttdeci">void PortableVectorBatchVectorAdd(const float *vector, int v_size, int n_batch, float *batch_vector)</div><div class="ttdef"><b>Definition:</b> <a href="cker_2include_2cker_2_portable_tensor_utils_8h_source.html#l00080">PortableTensorUtils.h:80</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_af09a114337895158c72fde6226b568a2"><div class="ttname"><a href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2">nnfw::cker::FusedActivationFunctionType</a></div><div class="ttdeci">FusedActivationFunctionType</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00031">Types.h:32</a></div></div>

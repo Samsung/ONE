@@ -109,7 +109,7 @@ var namespaceluci__interpreter__pal =
     [ "PadKernelMaxDimensionCount", "namespaceluci__interpreter__pal.html#ade7e465493338c56ffe9f4570f26e8ab", null ],
     [ "ProcessBroadcastShapes", "namespaceluci__interpreter__pal.html#a350c07fcf03d4939d9a127e195bb2204", null ],
     [ "reducedOutputOffset", "namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7", null ],
-    [ "ReduceGeneric", "namespaceluci__interpreter__pal.html#a99fd253ba1bda0c69f6f8cddc912af63", null ],
+    [ "ReduceGeneric", "namespaceluci__interpreter__pal.html#a30c7f2a61a61c24cb90f4b126b1e80fb", null ],
     [ "ReLUCommon", "namespaceluci__interpreter__pal.html#a48688247e185c907fdcc2394c6965aee", null ],
     [ "roundingDivideByPOT", "namespaceluci__interpreter__pal.html#a5c932b06377cebd11c24549365e7dc86", null ],
     [ "saturatingRoundingDoublingHighMul", "namespaceluci__interpreter__pal.html#a52432e2760532f8efa10e992059bab17", null ],

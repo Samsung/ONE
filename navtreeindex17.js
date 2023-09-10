@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"_n_e_instance_normalization_layer_kernel_ex_8h.html":[35,0,1,0,0,0,1,0,6],
+"_n_e_instance_normalization_layer_kernel_ex_8h_source.html":[35,0,1,0,0,0,1,0,6],
+"_n_e_muliply_scale_factor_kernel_8h.html":[35,0,1,0,0,0,1,0,7],
 "_n_e_muliply_scale_factor_kernel_8h_source.html":[35,0,1,0,0,0,1,0,7],
 "_n_e_multiply_scale_factor_kernel_8cpp.html":[35,0,1,0,1,0,1,0,7],
 "_n_e_multiply_scale_factor_kernel_8cpp_source.html":[35,0,1,0,1,0,1,0,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "_neural_networks_shim_8h.html":[35,0,4,0,3,0,2],
 "_neural_networks_shim_8h.html#a222ba833c8bc04cfff556bda29c9faa8":[35,0,4,0,3,0,2,38],
 "_neural_networks_shim_8h.html#a5fb89d5036adf98798007ed7e46eb1fb":[35,0,4,0,3,0,2,37],
-"_neural_networks_shim_8h.html#ac3bb48936c58045f99f527a852ae4e1e":[35,0,4,0,3,0,2,42],
-"_neural_networks_shim_8h.html#ad648b4f2b038ee5ee24a9aced27c647c":[35,0,4,0,3,0,2,10],
-"_neural_networks_shim_8h_source.html":[35,0,4,0,3,0,2],
-"_neural_networks_types_8h.html":[35,0,4,0,3,0,3]
+"_neural_networks_shim_8h.html#ac3bb48936c58045f99f527a852ae4e1e":[35,0,4,0,3,0,2,42]
 };

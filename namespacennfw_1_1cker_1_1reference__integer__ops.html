@@ -97,10 +97,212 @@ $(document).ready(function(){initNavTree('namespacennfw_1_1cker_1_1reference__in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ae8e087e2b3673d5ff23849f5c5e12747"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1reference__integer__ops.html#ae8e087e2b3673d5ff23849f5c5e12747">DepthwiseConvHybridPerChannel</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, float *scaling_factors_ptr, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const int8_t *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_shape, const int8_t *filter_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;bias_shape, const float *bias_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data, const float *per_channel_scale, int32_t *input_offset)</td></tr>
+<tr class="separator:ae8e087e2b3673d5ff23849f5c5e12747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add363de1fa752992e683a41cdd38e6dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1reference__integer__ops.html#add363de1fa752992e683a41cdd38e6dc">DepthwiseConvPerChannel</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, const int32_t *output_multiplier, const int32_t *output_shift, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const uint8_t *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_shape, const uint8_t *filter_data, const int32_t *filter_zeropoint, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;bias_shape, const int32_t *bias_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, uint8_t *output_data)</td></tr>
 <tr class="separator:add363de1fa752992e683a41cdd38e6dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ae8e087e2b3673d5ff23849f5c5e12747" name="ae8e087e2b3673d5ff23849f5c5e12747"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8e087e2b3673d5ff23849f5c5e12747">&#9670;&#160;</a></span>DepthwiseConvHybridPerChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>scaling_factors_ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int8_t *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>filter_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int8_t *&#160;</td>
+          <td class="paramname"><em>filter_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>bias_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>bias_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>per_channel_scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>input_offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">32</a> of file <a class="el" href="_depthwise_conv_hybrid_8h_source.html">DepthwiseConvHybrid.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">stride_width</a>;</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_height = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ad2dbdcb99cb6434e20c073adf4266bef">stride_height</a>;</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_width_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">dilation_width_factor</a>;</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_height_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">dilation_height_factor</a>;</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">width</a>;</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_height = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">height</a>;</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth_multiplier = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">depth_multiplier</a>;</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> output_activation_min = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a0591df4ab5a62a8988ced9d209e42fcd">float_activation_min</a>;</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> output_activation_max = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a5ad1d3c93ba06b5ac78a2ca6a6d1ff4a">float_activation_max</a>;</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// Check dimensions of the tensors.</span></div>
+<div class="line"><span class="lineno">   51</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno">   52</span>  assert(filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno">   53</span>  assert(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == 4);</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batches = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 0, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(filter_shape, 3, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_width = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_depth = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3);</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_height = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_width = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_height = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1);</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_width = <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(2);</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> bias_depth = bias_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(output_depth);</div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(bias_shape);</div>
+<div class="line"><span class="lineno">   67</span>  assert(output_depth == input_depth * depth_multiplier);</div>
+<div class="line"><span class="lineno">   68</span>  assert(bias_depth == output_depth);</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; batches; ++batch)</div>
+<div class="line"><span class="lineno">   71</span>  {</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_y = 0; out_y &lt; output_height; ++out_y)</div>
+<div class="line"><span class="lineno">   73</span>    {</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_x = 0; out_x &lt; output_width; ++out_x)</div>
+<div class="line"><span class="lineno">   75</span>      {</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_channel = 0; in_channel &lt; input_depth; ++in_channel)</div>
+<div class="line"><span class="lineno">   77</span>        {</div>
+<div class="line"><span class="lineno">   78</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> = 0; <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> &lt; depth_multiplier; ++<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</div>
+<div class="line"><span class="lineno">   79</span>          {</div>
+<div class="line"><span class="lineno">   80</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> output_channel = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> + in_channel * depth_multiplier;</div>
+<div class="line"><span class="lineno">   81</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> in_x_origin = (out_x * stride_width) - pad_width;</div>
+<div class="line"><span class="lineno">   82</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> in_y_origin = (out_y * stride_height) - pad_height;</div>
+<div class="line"><span class="lineno">   83</span>            int32_t acc = 0;</div>
+<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = 0; filter_y &lt; filter_height; ++filter_y)</div>
+<div class="line"><span class="lineno">   85</span>            {</div>
+<div class="line"><span class="lineno">   86</span>              <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_x = 0; filter_x &lt; filter_width; ++filter_x)</div>
+<div class="line"><span class="lineno">   87</span>              {</div>
+<div class="line"><span class="lineno">   88</span>                <span class="keyword">const</span> <span class="keywordtype">int</span> in_x = in_x_origin + dilation_width_factor * filter_x;</div>
+<div class="line"><span class="lineno">   89</span>                <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + dilation_height_factor * filter_y;</div>
+<div class="line"><span class="lineno">   90</span>                <span class="comment">// Zero padding by omitting the areas outside the image.</span></div>
+<div class="line"><span class="lineno">   91</span>                <span class="keyword">const</span> <span class="keywordtype">bool</span> is_point_inside_image =</div>
+<div class="line"><span class="lineno">   92</span>                  (in_x &gt;= 0) &amp;&amp; (in_x &lt; input_width) &amp;&amp; (in_y &gt;= 0) &amp;&amp; (in_y &lt; input_height);</div>
+<div class="line"><span class="lineno">   93</span>                <span class="keywordflow">if</span> (is_point_inside_image)</div>
+<div class="line"><span class="lineno">   94</span>                {</div>
+<div class="line"><span class="lineno">   95</span>                  int32_t input_val =</div>
+<div class="line"><span class="lineno">   96</span>                    input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, in_channel)];</div>
+<div class="line"><span class="lineno">   97</span>                  int32_t filter_val =</div>
+<div class="line"><span class="lineno">   98</span>                    filter_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(filter_shape, 0, filter_y, filter_x, output_channel)];</div>
+<div class="line"><span class="lineno">   99</span>                  acc += filter_val * (input_val - input_offset[batch]);</div>
+<div class="line"><span class="lineno">  100</span>                }</div>
+<div class="line"><span class="lineno">  101</span>              }</div>
+<div class="line"><span class="lineno">  102</span>            }</div>
+<div class="line"><span class="lineno">  103</span>            <span class="keywordtype">float</span> acc_float = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(acc);</div>
+<div class="line"><span class="lineno">  104</span>            acc_float *= per_channel_scale[output_channel] * scaling_factors_ptr[batch];</div>
+<div class="line"><span class="lineno">  105</span>            <span class="keywordflow">if</span> (bias_data &amp;&amp; output_channel &lt; bias_depth)</div>
+<div class="line"><span class="lineno">  106</span>            {</div>
+<div class="line"><span class="lineno">  107</span>              acc_float += bias_data[output_channel];</div>
+<div class="line"><span class="lineno">  108</span>            }</div>
+<div class="line"><span class="lineno">  109</span>            <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, out_y, out_x, output_channel)] =</div>
+<div class="line"><span class="lineno">  110</span>              <a class="code hl_function" href="namespacennfw_1_1cker.html#a86b83772dd83256abffc3a8f1426819b">ActivationFunctionWithMinMax</a>(acc_float, output_activation_min, output_activation_max);</div>
+<div class="line"><span class="lineno">  111</span>          }</div>
+<div class="line"><span class="lineno">  112</span>        }</div>
+<div class="line"><span class="lineno">  113</span>      }</div>
+<div class="line"><span class="lineno">  114</span>    }</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
+<div class="line"><span class="lineno">  116</span>}</div>
+<div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
+<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition:</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Dims.h:64</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
+<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a86b83772dd83256abffc3a8f1426819b"><div class="ttname"><a href="namespacennfw_1_1cker.html#a86b83772dd83256abffc3a8f1426819b">nnfw::cker::ActivationFunctionWithMinMax</a></div><div class="ttdeci">T ActivationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00040">Utils.h:40</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a0591df4ab5a62a8988ced9d209e42fcd"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a0591df4ab5a62a8988ced9d209e42fcd">nnfw::cker::DepthwiseConvParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00243">Types.h:243</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2a11fa7f567b0faa4551dfe628d6de2b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a></div><div class="ttdeci">int16_t dilation_height_factor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">Types.h:230</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a50d46dad3a5d5bec206a3f10f1168768"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a></div><div class="ttdeci">int16_t dilation_width_factor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">Types.h:229</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a5ad1d3c93ba06b5ac78a2ca6a6d1ff4a"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a5ad1d3c93ba06b5ac78a2ca6a6d1ff4a">nnfw::cker::DepthwiseConvParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00244">Types.h:244</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a65cb7bfeb2b801d8a574a85da10598ff"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">nnfw::cker::DepthwiseConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00227">Types.h:227</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_aaa0e9f0f50f1ed3c8e25886d51a45f75"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">nnfw::cker::DepthwiseConvParams::depth_multiplier</a></div><div class="ttdeci">int16_t depth_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">Types.h:231</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ab424f92784d7f28eba2b61dcb1be277b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">nnfw::cker::DepthwiseConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00226">Types.h:226</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ad2dbdcb99cb6434e20c073adf4266bef"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ad2dbdcb99cb6434e20c073adf4266bef">nnfw::cker::DepthwiseConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">Types.h:228</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a1dc41a9ebbd61a7c34ed2b5dd2ec10eb"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">nnfw::cker::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">Types.h:69</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a2a3dd79d28c30c5da865290160601fd1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">nnfw::cker::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">Types.h:68</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00040">nnfw::cker::ActivationFunctionWithMinMax()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00244">nnfw::cker::DepthwiseConvParams::float_activation_max</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00243">nnfw::cker::DepthwiseConvParams::float_activation_min</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">nnfw::cker::PaddingValues::height</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00241">nnfw::cker::Offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00226">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00227">nnfw::cker::DepthwiseConvParams::stride_width</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">nnfw::cker::PaddingValues::width</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00151">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>.</p>
+
+</div>
+</div>
 <a id="add363de1fa752992e683a41cdd38e6dc" name="add363de1fa752992e683a41cdd38e6dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#add363de1fa752992e683a41cdd38e6dc">&#9670;&#160;</a></span>DepthwiseConvPerChannel()</h2>
 
@@ -305,32 +507,15 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  144</span>    }</div>
 <div class="line"><span class="lineno">  145</span>  }</div>
 <div class="line"><span class="lineno">  146</span>}</div>
-<div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
-<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition:</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Dims.h:64</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_af6b33a8f0c1d60e578337bdb8dcb3673"><div class="ttname"><a href="namespacennfw_1_1cker.html#af6b33a8f0c1d60e578337bdb8dcb3673">nnfw::cker::MultiplyByQuantizedMultiplier</a></div><div class="ttdeci">int32_t MultiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">Utils.h:93</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a01a008eb3a82ad7cd76020c35c944b25"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a01a008eb3a82ad7cd76020c35c944b25">nnfw::cker::DepthwiseConvParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">Types.h:236</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2660e5e3746138d3f3d31c6a17012fc1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2660e5e3746138d3f3d31c6a17012fc1">nnfw::cker::DepthwiseConvParams::input_offset</a></div><div class="ttdeci">int32_t input_offset</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">Types.h:234</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2a11fa7f567b0faa4551dfe628d6de2b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a></div><div class="ttdeci">int16_t dilation_height_factor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">Types.h:230</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a50d46dad3a5d5bec206a3f10f1168768"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a></div><div class="ttdeci">int16_t dilation_width_factor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">Types.h:229</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a54c8882742f94c3f5f601a9d81fce456"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a54c8882742f94c3f5f601a9d81fce456">nnfw::cker::DepthwiseConvParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00241">Types.h:241</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a65cb7bfeb2b801d8a574a85da10598ff"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">nnfw::cker::DepthwiseConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00227">Types.h:227</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a7cc7d4366172494e8a67dc7b69de07b1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a7cc7d4366172494e8a67dc7b69de07b1">nnfw::cker::DepthwiseConvParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00240">Types.h:240</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_aaa0e9f0f50f1ed3c8e25886d51a45f75"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">nnfw::cker::DepthwiseConvParams::depth_multiplier</a></div><div class="ttdeci">int16_t depth_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">Types.h:231</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ab424f92784d7f28eba2b61dcb1be277b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">nnfw::cker::DepthwiseConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00226">Types.h:226</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ad2dbdcb99cb6434e20c073adf4266bef"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ad2dbdcb99cb6434e20c073adf4266bef">nnfw::cker::DepthwiseConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">Types.h:228</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a1dc41a9ebbd61a7c34ed2b5dd2ec10eb"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">nnfw::cker::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">Types.h:69</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a2a3dd79d28c30c5da865290160601fd1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">nnfw::cker::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">Types.h:68</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::input_offset</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">nnfw::cker::MultiplyByQuantizedMultiplier()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00241">nnfw::cker::Offset()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00226">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00241">nnfw::cker::DepthwiseConvParams::quantized_activation_max</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00240">nnfw::cker::DepthwiseConvParams::quantized_activation_min</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00227">nnfw::cker::DepthwiseConvParams::stride_width</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">nnfw::cker::PaddingValues::width</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00087">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00088">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8uPerChannel()</a>.</p>
 
 </div>
 </div>

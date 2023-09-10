@@ -5084,13 +5084,21 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   47</span>  params.padding = node-&gt;padding();</div>
 <div class="line"><span class="lineno">   48</span>  params.stride_height = node-&gt;stride()-&gt;h();</div>
 <div class="line"><span class="lineno">   49</span>  params.stride_width = node-&gt;stride()-&gt;w();</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::TransposeConv&gt;(input_sizes, filter, out_backprop, bias, output,</div>
-<div class="line"><span class="lineno">   52</span>                                                  tmp, params);</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<div class="line"><span class="lineno">   50</span>  params.activation = node-&gt;fusedActivationFunction();</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="comment">// TODO support activation</span></div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (params.activation != <a class="code hl_enumvalue" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a>)</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported activation of TransposeConv&quot;</span>);</div>
+<div class="line"><span class="lineno">   56</span>  }</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::TransposeConv&gt;(input_sizes, filter, out_backprop, bias, output,</div>
+<div class="line"><span class="lineno">   59</span>                                                  tmp, params);</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aad9df55f11269ecadf7448b6b9a10ffb"><div class="ttname"><a href="namespaceluci__interpreter.html#aad9df55f11269ecadf7448b6b9a10ffb">luci_interpreter::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00031">DataType.h:32</a></div></div>
+<div class="ttc" id="anamespaceluci_html_aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="_kernel_params_8h_source.html#l00221">luci_interpreter::TransposeConvParams::padding</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::NONE</a>, and <a class="el" href="_kernel_params_8h_source.html#l00221">luci_interpreter::TransposeConvParams::padding</a>.</p>
 
 </div>
 </div>
@@ -5199,7 +5207,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">  103</span>    output_layer_norm_coefficients, output, tmp_1, tmp_2, tmp_3, params);</div>
 <div class="line"><span class="lineno">  104</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00228">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00229">luci_interpreter::UnidirectionalSequenceLSTMParams::activation</a>, <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00118">luci_interpreter::RuntimeGraph::addTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00094">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00031">luci_interpreter::KernelBuilderHelper::getOptionalInputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00057">luci_interpreter::KernelBuilderHelper::getRuntimeGraph()</a>, and <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00153">luci_interpreter::Tensor::set_observable()</a>.</p>
 
 </div>
 </div>
@@ -5245,10 +5253,10 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   38</span>  <span class="comment">// NOTE &#39;num&#39; attribute is ignored.</span></div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Unpack&gt;(input, std::move(outputs), params);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html">luci_interpreter::UnpackParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00235">KernelParams.h:236</a></div></div>
-<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html_ac87b2d39c4e1c7cfa33befaaee7a3a8e"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html#ac87b2d39c4e1c7cfa33befaaee7a3a8e">luci_interpreter::UnpackParams::axis</a></div><div class="ttdeci">int axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00237">KernelParams.h:237</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html">luci_interpreter::UnpackParams</a></div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00236">KernelParams.h:237</a></div></div>
+<div class="ttc" id="astructluci__interpreter_1_1_unpack_params_html_ac87b2d39c4e1c7cfa33befaaee7a3a8e"><div class="ttname"><a href="structluci__interpreter_1_1_unpack_params.html#ac87b2d39c4e1c7cfa33befaaee7a3a8e">luci_interpreter::UnpackParams::axis</a></div><div class="ttdeci">int axis</div><div class="ttdef"><b>Definition:</b> <a href="_kernel_params_8h_source.html#l00238">KernelParams.h:238</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00237">luci_interpreter::UnpackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00048">luci_interpreter::KernelBuilderHelper::getOutputTensors()</a>.</p>
+<p class="reference">References <a class="el" href="_kernel_params_8h_source.html#l00238">luci_interpreter::UnpackParams::axis</a>, <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00048">luci_interpreter::KernelBuilderHelper::getOutputTensors()</a>.</p>
 
 </div>
 </div>
@@ -7012,15 +7020,15 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reduce_common_8cpp_source.html#l00057">57</a> of file <a class="el" href="_reduce_common_8cpp_source.html">ReduceCommon.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> kernel(cur_op, runtime_graph);</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(kernel.input1()) == DataType::S32 or</div>
-<div class="line"><span class="lineno">   63</span>                         Tensor::element_type(kernel.input1()) == DataType::FLOAT32 or</div>
-<div class="line"><span class="lineno">   64</span>                         Tensor::element_type(kernel.input1()) == DataType::S64);</div>
-<div class="line"><span class="lineno">   65</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(kernel.input2()) == DataType::S32);</div>
-<div class="line"><span class="lineno">   66</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_common_8cpp_source.html#l00051">51</a> of file <a class="el" href="_reduce_common_8cpp_source.html">ReduceCommon.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> kernel(cur_op, runtime_graph);</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(kernel.input1()) == DataType::S32 or</div>
+<div class="line"><span class="lineno">   57</span>                         Tensor::element_type(kernel.input1()) == DataType::FLOAT32 or</div>
+<div class="line"><span class="lineno">   58</span>                         Tensor::element_type(kernel.input1()) == DataType::S64);</div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(kernel.input2()) == DataType::S32);</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00060">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input2()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00036">LUCI_INTERPRETER_CHECK</a>.</p>
 
@@ -10018,34 +10026,34 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reduce_common_8cpp_source.html#l00068">68</a> of file <a class="el" href="_reduce_common_8cpp_source.html">ReduceCommon.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> kernel(cur_op, runtime_graph);</div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> tiso_data = kernel.readData();</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_common_8cpp_source.html#l00062">62</a> of file <a class="el" href="_reduce_common_8cpp_source.html">ReduceCommon.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html">kernels::TISOKernel</a> kernel(cur_op, runtime_graph);</div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> tiso_data = kernel.readData();</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input = kernel.input1();</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *axis = kernel.input2();</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel.output();</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = cur_op-&gt;builtin_options_as_ReducerOptions();</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *input = kernel.input1();</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *axis = kernel.input2();</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *output = kernel.output();</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = cur_op-&gt;builtin_options_as_ReducerOptions();</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">switch</span> (Tensor::element_type(kernel.input1()))</div>
-<div class="line"><span class="lineno">   81</span>  {</div>
-<div class="line"><span class="lineno">   82</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">   84</span>      reduceProdGeneric&lt;float&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
-<div class="line"><span class="lineno">   85</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   86</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">case</span> DataType::S32:</div>
-<div class="line"><span class="lineno">   88</span>      reduceProdGeneric&lt;int32_t&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
-<div class="line"><span class="lineno">   89</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">case</span> DataType::S64:</div>
-<div class="line"><span class="lineno">   91</span>      reduceProdGeneric&lt;int64_t&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
-<div class="line"><span class="lineno">   92</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   94</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span>}</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">switch</span> (Tensor::element_type(kernel.input1()))</div>
+<div class="line"><span class="lineno">   75</span>  {</div>
+<div class="line"><span class="lineno">   76</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">   78</span>      reduceProdGeneric&lt;float&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
+<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   80</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">case</span> DataType::S32:</div>
+<div class="line"><span class="lineno">   82</span>      reduceProdGeneric&lt;int32_t&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
+<div class="line"><span class="lineno">   83</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">case</span> DataType::S64:</div>
+<div class="line"><span class="lineno">   85</span>      reduceProdGeneric&lt;int64_t&gt;(&amp;tiso_data, input, axis, output, options-&gt;keep_dims());</div>
+<div class="line"><span class="lineno">   86</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   88</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00060">luci_interpreter::kernels::TISOKernel::input1()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00061">luci_interpreter::kernels::TISOKernel::input2()</a>, <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00062">luci_interpreter::kernels::TISOKernel::output()</a>, and <a class="el" href="_t_i_s_o_kernel_8h_source.html#l00066">luci_interpreter::kernels::TISOKernel::readData()</a>.</p>
 

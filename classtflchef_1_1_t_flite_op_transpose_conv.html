@@ -181,16 +181,19 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   53</span>  operation-&gt;set_type(<span class="stringliteral">&quot;TransposeConv&quot;</span>);</div>
 <div class="line"><span class="lineno">   54</span> </div>
 <div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> op_options = operation-&gt;mutable_transpose_conv_options();</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  op_options-&gt;set_stride_h(op_params-&gt;stride_h());</div>
-<div class="line"><span class="lineno">   58</span>  op_options-&gt;set_stride_w(op_params-&gt;stride_w());</div>
-<div class="line"><span class="lineno">   59</span>  op_options-&gt;set_padding(<a class="code hl_function" href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">as_tflchef_padding</a>(op_params-&gt;padding()));</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">return</span> operation;</div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keyword">auto</span> tflchef_activation = <a class="code hl_function" href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">as_tflchef_activation</a>(op_params-&gt;fused_activation_function());</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  op_options-&gt;set_stride_h(op_params-&gt;stride_h());</div>
+<div class="line"><span class="lineno">   59</span>  op_options-&gt;set_stride_w(op_params-&gt;stride_w());</div>
+<div class="line"><span class="lineno">   60</span>  op_options-&gt;set_padding(<a class="code hl_function" href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">as_tflchef_padding</a>(op_params-&gt;padding()));</div>
+<div class="line"><span class="lineno">   61</span>  op_options-&gt;set_activation(tflchef_activation);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> operation;</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 <div class="ttc" id="anamespacetflchef_html_a61c64eb65ff516bdcb1cacdaea104160"><div class="ttname"><a href="namespacetflchef.html#a61c64eb65ff516bdcb1cacdaea104160">tflchef::as_tflchef_padding</a></div><div class="ttdeci">tflchef::Padding as_tflchef_padding(const tflite::Padding padding)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00071">Convert.cpp:71</a></div></div>
+<div class="ttc" id="anamespacetflchef_html_af70fa66b2c38cfac03cae0770c795301"><div class="ttname"><a href="namespacetflchef.html#af70fa66b2c38cfac03cae0770c795301">tflchef::as_tflchef_activation</a></div><div class="ttdeci">tflchef::Activation as_tflchef_activation(const tflite::ActivationFunctionType type)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00050">Convert.cpp:50</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00071">tflchef::as_tflchef_padding()</a>.</p>
+<p class="reference">References <a class="el" href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00050">tflchef::as_tflchef_activation()</a>, and <a class="el" href="tflchef_2tflite_2src_2_convert_8cpp_source.html#l00071">tflchef::as_tflchef_padding()</a>.</p>
 
 </div>
 </div>

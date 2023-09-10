@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"_memory_planner_factory_8h.html":[35,0,4,2,2,1,0,0,8],
+"_memory_planner_factory_8h_source.html":[35,0,4,2,2,1,0,0,8],
+"_memory_poller_8cpp.html":[35,0,4,0,0,1,2],
 "_memory_poller_8cpp_source.html":[35,0,4,0,0,1,2],
 "_memory_poller_8h.html":[35,0,4,0,0,0,0,2],
 "_memory_poller_8h_source.html":[35,0,4,0,0,0,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "_n_e_instance_normalization_layer_ex_8h.html":[35,0,1,0,0,1,1,0,8],
 "_n_e_instance_normalization_layer_ex_8h_source.html":[35,0,1,0,0,1,1,0,8],
 "_n_e_instance_normalization_layer_kernel_ex_8cpp.html":[35,0,1,0,1,0,1,0,6],
-"_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html":[35,0,1,0,1,0,1,0,6],
-"_n_e_instance_normalization_layer_kernel_ex_8h.html":[35,0,1,0,0,0,1,0,6],
-"_n_e_instance_normalization_layer_kernel_ex_8h_source.html":[35,0,1,0,0,0,1,0,6],
-"_n_e_muliply_scale_factor_kernel_8h.html":[35,0,1,0,0,0,1,0,7]
+"_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html":[35,0,1,0,1,0,1,0,6]
 };

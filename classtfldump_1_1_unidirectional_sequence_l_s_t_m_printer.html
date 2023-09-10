@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00666">666</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00668">668</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9cadd387d956d6face0404e228ebdcc6" name="a9cadd387d956d6face0404e228ebdcc6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cadd387d956d6face0404e228ebdcc6">&#9670;&#160;</a></span>options()</h2>
@@ -151,20 +151,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classtfldump_1_1_op_printer.html#a63d2bd24d5c01caa2f6f7f9ca5cbd83e">tfldump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00669">669</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  670</span>  {</div>
-<div class="line"><span class="lineno">  671</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_UnidirectionalSequenceLSTMOptions())</div>
-<div class="line"><span class="lineno">  672</span>    {</div>
-<div class="line"><span class="lineno">  673</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  674</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
-<div class="line"><span class="lineno">  675</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  676</span>      os &lt;&lt; <span class="stringliteral">&quot;cell_clip(&quot;</span> &lt;&lt; params-&gt;cell_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  677</span>      os &lt;&lt; <span class="stringliteral">&quot;proj_clip(&quot;</span> &lt;&lt; params-&gt;proj_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  678</span>      os &lt;&lt; <span class="stringliteral">&quot;time_major(&quot;</span> &lt;&lt; params-&gt;time_major() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  679</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  680</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  681</span>    }</div>
-<div class="line"><span class="lineno">  682</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00671">671</a> of file <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  672</span>  {</div>
+<div class="line"><span class="lineno">  673</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_UnidirectionalSequenceLSTMOptions())</div>
+<div class="line"><span class="lineno">  674</span>    {</div>
+<div class="line"><span class="lineno">  675</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  676</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  677</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  678</span>      os &lt;&lt; <span class="stringliteral">&quot;cell_clip(&quot;</span> &lt;&lt; params-&gt;cell_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  679</span>      os &lt;&lt; <span class="stringliteral">&quot;proj_clip(&quot;</span> &lt;&lt; params-&gt;proj_clip() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  680</span>      os &lt;&lt; <span class="stringliteral">&quot;time_major(&quot;</span> &lt;&lt; params-&gt;time_major() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  681</span>      os &lt;&lt; <span class="stringliteral">&quot;asymmetric_quantize_inputs(&quot;</span> &lt;&lt; params-&gt;asymmetric_quantize_inputs() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  682</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  683</span>    }</div>
+<div class="line"><span class="lineno">  684</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

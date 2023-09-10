@@ -284,11 +284,19 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   34</span>  options_builder.add_stride_h(operation.transpose_conv_options().stride_h());</div>
 <div class="line"><span class="lineno">   35</span>  options_builder.add_stride_w(operation.transpose_conv_options().stride_w());</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">return</span> options_builder.Finish().Union();</div>
-<div class="line"><span class="lineno">   38</span>}</div>
+<div class="line"><span class="lineno">   37</span>  <span class="comment">// TODO remove calling has_activation</span></div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> chef_activation = operation.transpose_conv_options().has_activation()</div>
+<div class="line"><span class="lineno">   39</span>                           ? operation.transpose_conv_options().activation()</div>
+<div class="line"><span class="lineno">   40</span>                           : tflchef::NONE;</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> tflite_activation = <a class="code hl_function" href="tflchef_2core_2src_2_convert_8cpp.html#a0168eabec6019278c3c1200e5fab2afd">as_tflite_activation</a>(chef_activation);</div>
+<div class="line"><span class="lineno">   42</span>  options_builder.add_fused_activation_function(tflite_activation);</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> options_builder.Finish().Union();</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="atflchef_2core_2src_2_convert_8cpp_html_a0168eabec6019278c3c1200e5fab2afd"><div class="ttname"><a href="tflchef_2core_2src_2_convert_8cpp.html#a0168eabec6019278c3c1200e5fab2afd">as_tflite_activation</a></div><div class="ttdeci">tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &amp;value)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2src_2_convert_8cpp_source.html#l00037">Convert.cpp:37</a></div></div>
 <div class="ttc" id="atflchef_2core_2src_2_convert_8cpp_html_aaa38c4bd6e3ddec7d478ae20e0b671cf"><div class="ttname"><a href="tflchef_2core_2src_2_convert_8cpp.html#aaa38c4bd6e3ddec7d478ae20e0b671cf">as_tflite_padding</a></div><div class="ttdeci">tflite::Padding as_tflite_padding(const tflchef::Padding &amp;value)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2src_2_convert_8cpp_source.html#l00022">Convert.cpp:22</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="tflchef_2core_2src_2_convert_8cpp_source.html#l00022">as_tflite_padding()</a>.</p>
+<p class="reference">References <a class="el" href="tflchef_2core_2src_2_convert_8cpp_source.html#l00037">as_tflite_activation()</a>, and <a class="el" href="tflchef_2core_2src_2_convert_8cpp_source.html#l00022">as_tflite_padding()</a>.</p>
 
 </div>
 </div>

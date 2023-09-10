@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00721">721</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00723">723</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2f39a2f91b3bfd24bead8b48b3a4a7c2" name="a2f39a2f91b3bfd24bead8b48b3a4a7c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2f39a2f91b3bfd24bead8b48b3a4a7c2">&#9670;&#160;</a></span>options()</h2>
@@ -151,41 +151,41 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00724">724</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  725</span>  {</div>
-<div class="line"><span class="lineno">  726</span>    <span class="keywordflow">if</span> (op-&gt;custom_options_format() != circle::CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS)</div>
-<div class="line"><span class="lineno">  727</span>    {</div>
-<div class="line"><span class="lineno">  728</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  729</span>      os &lt;&lt; <span class="stringliteral">&quot;Unknown custom option format&quot;</span>;</div>
-<div class="line"><span class="lineno">  730</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  731</span>    }</div>
-<div class="line"><span class="lineno">  732</span> </div>
-<div class="line"><span class="lineno">  733</span>    <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;uint8_t&gt;</a> *option_buf = op-&gt;custom_options();</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00726">726</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  727</span>  {</div>
+<div class="line"><span class="lineno">  728</span>    <span class="keywordflow">if</span> (op-&gt;custom_options_format() != circle::CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS)</div>
+<div class="line"><span class="lineno">  729</span>    {</div>
+<div class="line"><span class="lineno">  730</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  731</span>      os &lt;&lt; <span class="stringliteral">&quot;Unknown custom option format&quot;</span>;</div>
+<div class="line"><span class="lineno">  732</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  733</span>    }</div>
 <div class="line"><span class="lineno">  734</span> </div>
-<div class="line"><span class="lineno">  735</span>    <span class="keywordflow">if</span> (option_buf == <span class="keyword">nullptr</span> || option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() == 0)</div>
-<div class="line"><span class="lineno">  736</span>    {</div>
-<div class="line"><span class="lineno">  737</span>      os &lt;&lt; <span class="stringliteral">&quot;No attrs found.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  738</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  739</span>    }</div>
-<div class="line"><span class="lineno">  740</span> </div>
-<div class="line"><span class="lineno">  741</span>    <span class="comment">// printing attrs</span></div>
-<div class="line"><span class="lineno">  742</span>    <span class="comment">// attrs of custom ops are encoded in flexbuffer format</span></div>
-<div class="line"><span class="lineno">  743</span>    <span class="keyword">auto</span> attr_map = <a class="code hl_function" href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">flexbuffers::GetRoot</a>(option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8b1291de40ed961611b89d5f39fe571a">data</a>(), option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>()).<a class="code hl_function" href="classflexbuffers_1_1_reference.html#ab5b812bf56af8f6eab0e97c2089d2347">AsMap</a>();</div>
-<div class="line"><span class="lineno">  744</span> </div>
-<div class="line"><span class="lineno">  745</span>    os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  746</span>    <span class="keyword">auto</span> keys = attr_map.<a class="code hl_function" href="classflexbuffers_1_1_map.html#a2b4cbfe33d038ab89897c239ec95ea35">Keys</a>();</div>
-<div class="line"><span class="lineno">  747</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; keys.size(); i++)</div>
-<div class="line"><span class="lineno">  748</span>    {</div>
-<div class="line"><span class="lineno">  749</span>      <span class="keyword">auto</span> key = keys[i].ToString();</div>
-<div class="line"><span class="lineno">  750</span>      os &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; attr_map[key].ToString() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  751</span>    }</div>
-<div class="line"><span class="lineno">  752</span> </div>
-<div class="line"><span class="lineno">  753</span>    <span class="comment">// Note: attr in &quot;Shape&quot; type does not seem to be converted by circle_convert.</span></div>
-<div class="line"><span class="lineno">  754</span>    <span class="comment">// When the converted circle file (with custom op) is opened with hexa editory,</span></div>
-<div class="line"><span class="lineno">  755</span>    <span class="comment">// attrs names can be found but attr name in &quot;Shape&quot; type is not found.</span></div>
-<div class="line"><span class="lineno">  756</span> </div>
-<div class="line"><span class="lineno">  757</span>    os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  758</span>  }</div>
+<div class="line"><span class="lineno">  735</span>    <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;uint8_t&gt;</a> *option_buf = op-&gt;custom_options();</div>
+<div class="line"><span class="lineno">  736</span> </div>
+<div class="line"><span class="lineno">  737</span>    <span class="keywordflow">if</span> (option_buf == <span class="keyword">nullptr</span> || option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() == 0)</div>
+<div class="line"><span class="lineno">  738</span>    {</div>
+<div class="line"><span class="lineno">  739</span>      os &lt;&lt; <span class="stringliteral">&quot;No attrs found.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  740</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  741</span>    }</div>
+<div class="line"><span class="lineno">  742</span> </div>
+<div class="line"><span class="lineno">  743</span>    <span class="comment">// printing attrs</span></div>
+<div class="line"><span class="lineno">  744</span>    <span class="comment">// attrs of custom ops are encoded in flexbuffer format</span></div>
+<div class="line"><span class="lineno">  745</span>    <span class="keyword">auto</span> attr_map = <a class="code hl_function" href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">flexbuffers::GetRoot</a>(option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8b1291de40ed961611b89d5f39fe571a">data</a>(), option_buf-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>()).<a class="code hl_function" href="classflexbuffers_1_1_reference.html#ab5b812bf56af8f6eab0e97c2089d2347">AsMap</a>();</div>
+<div class="line"><span class="lineno">  746</span> </div>
+<div class="line"><span class="lineno">  747</span>    os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  748</span>    <span class="keyword">auto</span> keys = attr_map.<a class="code hl_function" href="classflexbuffers_1_1_map.html#a2b4cbfe33d038ab89897c239ec95ea35">Keys</a>();</div>
+<div class="line"><span class="lineno">  749</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; keys.size(); i++)</div>
+<div class="line"><span class="lineno">  750</span>    {</div>
+<div class="line"><span class="lineno">  751</span>      <span class="keyword">auto</span> key = keys[i].ToString();</div>
+<div class="line"><span class="lineno">  752</span>      os &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; attr_map[key].ToString() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  753</span>    }</div>
+<div class="line"><span class="lineno">  754</span> </div>
+<div class="line"><span class="lineno">  755</span>    <span class="comment">// Note: attr in &quot;Shape&quot; type does not seem to be converted by circle_convert.</span></div>
+<div class="line"><span class="lineno">  756</span>    <span class="comment">// When the converted circle file (with custom op) is opened with hexa editory,</span></div>
+<div class="line"><span class="lineno">  757</span>    <span class="comment">// attrs names can be found but attr name in &quot;Shape&quot; type is not found.</span></div>
+<div class="line"><span class="lineno">  758</span> </div>
+<div class="line"><span class="lineno">  759</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  760</span>  }</div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a8b1291de40ed961611b89d5f39fe571a"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a8b1291de40ed961611b89d5f39fe571a">flatbuffers::Vector::data</a></div><div class="ttdeci">const T * data() const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00366">flatbuffers.h:366</a></div></div>

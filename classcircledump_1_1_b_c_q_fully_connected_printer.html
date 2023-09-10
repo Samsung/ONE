@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00761">761</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00763">763</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a97e0bc28e955eb565dd9dfa00b3966bc" name="a97e0bc28e955eb565dd9dfa00b3966bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97e0bc28e955eb565dd9dfa00b3966bc">&#9670;&#160;</a></span>options()</h2>
@@ -151,17 +151,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00764">764</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  765</span>  {</div>
-<div class="line"><span class="lineno">  766</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_BCQFullyConnectedOptions())</div>
-<div class="line"><span class="lineno">  767</span>    {</div>
-<div class="line"><span class="lineno">  768</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  769</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
-<div class="line"><span class="lineno">  770</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  771</span>      os &lt;&lt; <span class="stringliteral">&quot;weights_hidden_size(&quot;</span> &lt;&lt; params-&gt;weights_hidden_size() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  772</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  773</span>    }</div>
-<div class="line"><span class="lineno">  774</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00766">766</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  767</span>  {</div>
+<div class="line"><span class="lineno">  768</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_BCQFullyConnectedOptions())</div>
+<div class="line"><span class="lineno">  769</span>    {</div>
+<div class="line"><span class="lineno">  770</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  771</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  772</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  773</span>      os &lt;&lt; <span class="stringliteral">&quot;weights_hidden_size(&quot;</span> &lt;&lt; params-&gt;weights_hidden_size() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  774</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  775</span>    }</div>
+<div class="line"><span class="lineno">  776</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

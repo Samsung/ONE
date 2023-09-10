@@ -103,12 +103,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a14a24c520685a5492fc247fcce3b17a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e817ae5dc76210707bf2558590aa36"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_computer.html#ab5e817ae5dc76210707bf2558590aa36">~MinMaxComputer</a> ()=default</td></tr>
 <tr class="separator:ab5e817ae5dc76210707bf2558590aa36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1da6869436934a72214ea3edd895c925"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_computer.html#a1da6869436934a72214ea3edd895c925">update_qparam</a> (<a class="el" href="classrecord__minmax_1_1_min_max_observer.html">MinMaxObserver</a> *observer)=0</td></tr>
-<tr class="separator:a1da6869436934a72214ea3edd895c925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef0a5ed8b6d33fdfdcfb43cf35497164"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_computer.html#aef0a5ed8b6d33fdfdcfb43cf35497164">update_qparam</a> (const std::unordered_map&lt; const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *, <a class="el" href="structrecord__minmax_1_1_min_max_vectors.html">MinMaxVectors</a> &gt; *minmax_map)=0</td></tr>
+<tr class="separator:aef0a5ed8b6d33fdfdcfb43cf35497164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_min_max_computer_8h_source.html#l00025">25</a> of file <a class="el" href="_min_max_computer_8h_source.html">MinMaxComputer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8h_source.html#l00030">30</a> of file <a class="el" href="_min_max_computer_8h_source.html">MinMaxComputer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a14a24c520685a5492fc247fcce3b17a2" name="a14a24c520685a5492fc247fcce3b17a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14a24c520685a5492fc247fcce3b17a2">&#9670;&#160;</a></span>MinMaxComputer()</h2>
@@ -133,10 +133,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_computer_8h_source.html#l00028">28</a> of file <a class="el" href="_min_max_computer_8h_source.html">MinMaxComputer.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>  {</div>
-<div class="line"><span class="lineno">   30</span>    <span class="comment">// Do nothing</span></div>
-<div class="line"><span class="lineno">   31</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8h_source.html#l00033">33</a> of file <a class="el" href="_min_max_computer_8h_source.html">MinMaxComputer.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="comment">// Do nothing</span></div>
+<div class="line"><span class="lineno">   36</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -166,8 +166,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1da6869436934a72214ea3edd895c925" name="a1da6869436934a72214ea3edd895c925"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1da6869436934a72214ea3edd895c925">&#9670;&#160;</a></span>update_qparam()</h2>
+<a id="aef0a5ed8b6d33fdfdcfb43cf35497164" name="aef0a5ed8b6d33fdfdcfb43cf35497164"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef0a5ed8b6d33fdfdcfb43cf35497164">&#9670;&#160;</a></span>update_qparam()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,8 +178,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void record_minmax::MinMaxComputer::update_qparam </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classrecord__minmax_1_1_min_max_observer.html">MinMaxObserver</a> *&#160;</td>
-          <td class="paramname"><em>observer</em></td><td>)</td>
+          <td class="paramtype">const std::unordered_map&lt; const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *, <a class="el" href="structrecord__minmax_1_1_min_max_vectors.html">MinMaxVectors</a> &gt; *&#160;</td>
+          <td class="paramname"><em>minmax_map</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classrecord__minmax_1_1_percentile_computer.html#a73bf7cc04bd071379a7dc15e823c9ff5">record_minmax::PercentileComputer</a>, and <a class="el" href="classrecord__minmax_1_1_moving_avg_computer.html#a98e06e9a2eb42ad26554dbd61a61aabf">record_minmax::MovingAvgComputer</a>.</p>
+<p>Implemented in <a class="el" href="classrecord__minmax_1_1_percentile_computer.html#a51d6db957331e7292f704ad0ec69f058">record_minmax::PercentileComputer</a>, and <a class="el" href="classrecord__minmax_1_1_moving_avg_computer.html#a6e0dcaf9e1b0e049603d3d299bd47a0d">record_minmax::MovingAvgComputer</a>.</p>
 
 </div>
 </div>

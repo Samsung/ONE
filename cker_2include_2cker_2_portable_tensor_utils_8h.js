@@ -2,6 +2,7 @@ var cker_2include_2cker_2_portable_tensor_utils_8h =
 [
     [ "nnfw::cker::ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "PortableApplyActivationToVector", "cker_2include_2cker_2_portable_tensor_utils_8h.html#a69b400675f60e3b59111b3ae24e25333", null ],
+    [ "PortableAsymmetricQuantizeFloats", "cker_2include_2cker_2_portable_tensor_utils_8h.html#ab79daa17324a512865ecbc4f6cb97be4", null ],
     [ "PortableCwiseClipping", "cker_2include_2cker_2_portable_tensor_utils_8h.html#a57198f993b212efb8ed1d51e482e3717", null ],
     [ "PortableIsZeroVector", "cker_2include_2cker_2_portable_tensor_utils_8h.html#abdcf3b884808c3b19ecbf7a82d8ce8c4", null ],
     [ "PortableMatrixBatchVectorMultiplyAccumulate", "cker_2include_2cker_2_portable_tensor_utils_8h.html#abb30796a139e435de18844e91bd40fed", null ],

@@ -24,11 +24,13 @@ var namespacennfw_1_1cker =
       [ "Conv", "namespacennfw_1_1cker_1_1reference.html#a68e86023ece236637b0dc8b131a16f70", null ],
       [ "Conv", "namespacennfw_1_1cker_1_1reference.html#a954de12511ee583ef0e6b01a0679d4d8", null ],
       [ "Conv", "namespacennfw_1_1cker_1_1reference.html#a0a0b3958e4e76a04596178b1fdeea09b", null ],
+      [ "HybridConvPerChannel", "namespacennfw_1_1cker_1_1reference.html#a0958f78457730903189b8f3e4988d156", null ],
       [ "Softmax", "namespacennfw_1_1cker_1_1reference.html#ab55312a313b1a6280c4fc9bafc80b05c", null ],
       [ "Transpose", "namespacennfw_1_1cker_1_1reference.html#a295888086391d908f57fa904c9d4544d", null ],
       [ "TransposeImpl", "namespacennfw_1_1cker_1_1reference.html#a77ee976f07a81db2abb12effb60384d7", null ]
     ] ],
     [ "reference_integer_ops", "namespacennfw_1_1cker_1_1reference__integer__ops.html", [
+      [ "DepthwiseConvHybridPerChannel", "namespacennfw_1_1cker_1_1reference__integer__ops.html#ae8e087e2b3673d5ff23849f5c5e12747", null ],
       [ "DepthwiseConvPerChannel", "namespacennfw_1_1cker_1_1reference__integer__ops.html#add363de1fa752992e683a41cdd38e6dc", null ]
     ] ],
     [ "ruy_support", "namespacennfw_1_1cker_1_1ruy__support.html", [
@@ -51,6 +53,7 @@ var namespacennfw_1_1cker =
     [ "ComparisonParams", "structnnfw_1_1cker_1_1_comparison_params.html", "structnnfw_1_1cker_1_1_comparison_params" ],
     [ "ConcatenationParams", "structnnfw_1_1cker_1_1_concatenation_params.html", "structnnfw_1_1cker_1_1_concatenation_params" ],
     [ "Conv", "classnnfw_1_1cker_1_1_conv.html", "classnnfw_1_1cker_1_1_conv" ],
+    [ "ConvHybridTempArena", "structnnfw_1_1cker_1_1_conv_hybrid_temp_arena.html", "structnnfw_1_1cker_1_1_conv_hybrid_temp_arena" ],
     [ "ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", "structnnfw_1_1cker_1_1_conv_params" ],
     [ "DepthwiseConvParams", "structnnfw_1_1cker_1_1_depthwise_conv_params.html", "structnnfw_1_1cker_1_1_depthwise_conv_params" ],
     [ "DepthwiseConvWorkerTask", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task.html", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task" ],
@@ -297,6 +300,7 @@ var namespacennfw_1_1cker =
     [ "Pad", "namespacennfw_1_1cker.html#a482480a7ca87d7fb7675de9661c9fe0b", null ],
     [ "PopulateSoftmaxLookupTable", "namespacennfw_1_1cker.html#afb6a2ce7936e42f6268ec7c9d8358a0b", null ],
     [ "PortableApplyActivationToVector", "namespacennfw_1_1cker.html#a69b400675f60e3b59111b3ae24e25333", null ],
+    [ "PortableAsymmetricQuantizeFloats", "namespacennfw_1_1cker.html#ab79daa17324a512865ecbc4f6cb97be4", null ],
     [ "PortableCwiseClipping", "namespacennfw_1_1cker.html#a57198f993b212efb8ed1d51e482e3717", null ],
     [ "PortableIsZeroVector", "namespacennfw_1_1cker.html#abdcf3b884808c3b19ecbf7a82d8ce8c4", null ],
     [ "PortableMatrixBatchVectorMultiplyAccumulate", "namespacennfw_1_1cker.html#abb30796a139e435de18844e91bd40fed", null ],

@@ -286,32 +286,35 @@ $(document).ready(function(){initNavTree('_n_n_pkg_8h_source.html',''); initResi
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    graph-&gt;changeShape(operand_index, new_shape);</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  }</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="comment">// TODO: Add iterate() or getter for edges</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  std::unordered_map&lt;ModelIndex, std::shared_ptr&lt;Model&gt;&gt; _models;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  <a class="code hl_struct" href="structonert_1_1ir_1_1_model_edges.html">ModelEdges</a> _edges;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>};</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>} <span class="comment">// namespace ir</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestd.html">std</a></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>{</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html">  297</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>hash&lt;<a class="code hl_namespace" href="namespaceonert.html">onert</a>::ir::IODesc&gt;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>{</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">  299</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">operator()</a>(const ::onert::ir::IODesc &amp;iodesc) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> (std::get&lt;0&gt;(iodesc).value() &lt;&lt; 24) | (std::get&lt;1&gt;(iodesc).value() &lt;&lt; 16) |</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>           std::get&lt;2&gt;(iodesc).value();</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  }</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>};</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="classonert_1_1ir_1_1_n_n_pkg.html#a070e6041037c97dd17c641d24cc988e6">  291</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a070e6041037c97dd17c641d24cc988e6">replaceModel</a>(std::shared_ptr&lt;Model&gt; <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>) { _models[<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ModelIndex</a>{0}] = <a class="code hl_function" href="classonert_1_1ir_1_1_n_n_pkg.html#a31089b86cbb99b26d9dcd7eddb1387fa">model</a>; }</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="comment">// TODO: Add iterate() or getter for edges</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  std::unordered_map&lt;ModelIndex, std::shared_ptr&lt;Model&gt;&gt; _models;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <a class="code hl_struct" href="structonert_1_1ir_1_1_model_edges.html">ModelEdges</a> _edges;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>};</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>} <span class="comment">// namespace ir</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestd.html">std</a></div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>{</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>} <span class="comment">// namespace std</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_NNPKG_H__</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html">  306</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>hash&lt;<a class="code hl_namespace" href="namespaceonert.html">onert</a>::ir::IODesc&gt;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>{</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">  308</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">operator()</a>(const ::onert::ir::IODesc &amp;iodesc) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  {</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">return</span> (std::get&lt;0&gt;(iodesc).value() &lt;&lt; 24) | (std::get&lt;1&gt;(iodesc).value() &lt;&lt; 16) |</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>           std::get&lt;2&gt;(iodesc).value();</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  }</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>};</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>} <span class="comment">// namespace std</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_NNPKG_H__</span></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html">onert::ir::NNPkg</a></div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00081">NNPkg.h:82</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html_a070e6041037c97dd17c641d24cc988e6"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html#a070e6041037c97dd17c641d24cc988e6">onert::ir::NNPkg::replaceModel</a></div><div class="ttdeci">void replaceModel(std::shared_ptr&lt; Model &gt; model)</div><div class="ttdoc">Replace model.</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00291">NNPkg.h:291</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html_a1885f70147d6e1e0b2a626bf30b63890"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html#a1885f70147d6e1e0b2a626bf30b63890">onert::ir::NNPkg::outputInfo</a></div><div class="ttdeci">const OperandInfo &amp; outputInfo(uint32_t index) const</div><div class="ttdoc">Get model output info.</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00253">NNPkg.h:253</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html_a1cf8af0168776b07c116c32283bf04b0"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html#a1cf8af0168776b07c116c32283bf04b0">onert::ir::NNPkg::output</a></div><div class="ttdeci">const IODesc &amp; output(uint32_t index) const</div><div class="ttdoc">Get pkg_output at index.</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00151">NNPkg.h:151</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_n_n_pkg_html_a1fc9c200cf95945d5f39d302e0665268"><div class="ttname"><a href="classonert_1_1ir_1_1_n_n_pkg.html#a1fc9c200cf95945d5f39d302e0665268">onert::ir::NNPkg::inputSize</a></div><div class="ttdeci">uint32_t inputSize() const</div><div class="ttdoc">Get model input size.</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00217">NNPkg.h:217</a></div></div>
@@ -358,7 +361,7 @@ $(document).ready(function(){initNavTree('_n_n_pkg_8h_source.html',''); initResi
 <div class="ttc" id="astructonert_1_1ir_1_1_model_edges_html_a8a94976cfe947e0f2de6903d5d18e363"><div class="ttname"><a href="structonert_1_1ir_1_1_model_edges.html#a8a94976cfe947e0f2de6903d5d18e363">onert::ir::ModelEdges::pkg_outputs</a></div><div class="ttdeci">std::vector&lt; ir::IODesc &gt; pkg_outputs</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00077">NNPkg.h:77</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_model_edges_html_a8e0e70000be73bdd1a1522bc9f3a0b83"><div class="ttname"><a href="structonert_1_1ir_1_1_model_edges.html#a8e0e70000be73bdd1a1522bc9f3a0b83">onert::ir::ModelEdges::edges</a></div><div class="ttdeci">ModelEdgeSet edges</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00078">NNPkg.h:78</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_model_edges_html_acaa752d9c353dd7e50917566a7ca1a64"><div class="ttname"><a href="structonert_1_1ir_1_1_model_edges.html#acaa752d9c353dd7e50917566a7ca1a64">onert::ir::ModelEdges::pkg_inputs</a></div><div class="ttdeci">std::vector&lt; ir::IODesc &gt; pkg_inputs</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00076">NNPkg.h:76</a></div></div>
-<div class="ttc" id="astructstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4_html_a70ba179017b10adec129e36df31f5ded"><div class="ttname"><a href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">std::hash&lt; onert::ir::IODesc &gt;::operator()</a></div><div class="ttdeci">size_t operator()(const ::onert::ir::IODesc &amp;iodesc) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00299">NNPkg.h:299</a></div></div>
+<div class="ttc" id="astructstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4_html_a70ba179017b10adec129e36df31f5ded"><div class="ttname"><a href="structstd_1_1hash_3_01onert_1_1ir_1_1_i_o_desc_01_4.html#a70ba179017b10adec129e36df31f5ded">std::hash&lt; onert::ir::IODesc &gt;::operator()</a></div><div class="ttdeci">size_t operator()(const ::onert::ir::IODesc &amp;iodesc) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="_n_n_pkg_8h_source.html#l00308">NNPkg.h:308</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

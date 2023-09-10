@@ -147,8 +147,13 @@ $(document).ready(function(){initNavTree('_error_metric_8cpp_source.html',''); i
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">return</span> error / output_size;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (output_size == 0)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> error / output_size;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 <div class="ttc" id="a_data_type_traits_8h_html"><div class="ttname"><a href="_data_type_traits_8h.html">DataTypeTraits.h</a></div></div>
 <div class="ttc" id="a_error_metric_8h_html"><div class="ttname"><a href="_error_metric_8h.html">ErrorMetric.h</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_m_a_e_metric_html_a1b08cfd5f8a144599fb2a04c99c6468b"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_m_a_e_metric.html#a1b08cfd5f8a144599fb2a04c99c6468b">mpqsolver::core::MAEMetric::compute</a></div><div class="ttdeci">float compute(const WholeOutput &amp;first, const WholeOutput &amp;second) const</div><div class="ttdoc">compare first and second operands in MAE (Mean Average Error metric)</div><div class="ttdef"><b>Definition:</b> <a href="_error_metric_8cpp_source.html#l00030">ErrorMetric.cpp:30</a></div></div>

@@ -226,47 +226,47 @@ Functions</h2></td></tr>
 
 <p>getMovingAverage calculates the weighted moving average of input vector The initial value is the minimum (or maximum) value of the first batch of the vector </p>
 
-<p class="definition">Definition at line <a class="el" href="_record_function_8h_source.html#l00065">65</a> of file <a class="el" href="_record_function_8h_source.html">RecordFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
-<div class="line"><span class="lineno">   68</span>  assert(!vector.empty());</div>
-<div class="line"><span class="lineno">   69</span>  assert(alpha &gt;= 0.0 &amp;&amp; alpha &lt;= 1.0);</div>
-<div class="line"><span class="lineno">   70</span>  assert(batch_size &gt; 0);</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> getBatchMinOrMax = [&amp;](uint32_t start_index) {</div>
-<div class="line"><span class="lineno">   73</span>    assert(start_index &lt; vector.size());</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordtype">float</span> res = is_min ? std::numeric_limits&lt;float&gt;::max() : <a class="code hl_namespace" href="namespacestd.html">std</a>::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">for</span> (uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; batch_size; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>++)</div>
-<div class="line"><span class="lineno">   77</span>    {</div>
-<div class="line"><span class="lineno">   78</span>      uint32_t index = start_index + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
-<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">if</span> (index &gt;= vector.size())</div>
-<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>      <span class="keywordflow">if</span> (is_min)</div>
-<div class="line"><span class="lineno">   83</span>      {</div>
-<div class="line"><span class="lineno">   84</span>        res = vector[index] &lt; res ? vector[index] : res;</div>
-<div class="line"><span class="lineno">   85</span>      }</div>
-<div class="line"><span class="lineno">   86</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   87</span>      {</div>
-<div class="line"><span class="lineno">   88</span>        res = vector[index] &gt; res ? vector[index] : res;</div>
-<div class="line"><span class="lineno">   89</span>      }</div>
-<div class="line"><span class="lineno">   90</span>    }</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   92</span>  };</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordtype">float</span> curr_avg = getBatchMinOrMax(0);</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">for</span> (uint32_t i = batch_size; i &lt; vector.size(); i += batch_size)</div>
-<div class="line"><span class="lineno">   96</span>  {</div>
-<div class="line"><span class="lineno">   97</span>    curr_avg = curr_avg * alpha + getBatchMinOrMax(i) * (1.0 - alpha);</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">return</span> curr_avg;</div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_record_function_8cpp_source.html#l00060">60</a> of file <a class="el" href="_record_function_8cpp_source.html">RecordFunction.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  assert(!vector.empty());</div>
+<div class="line"><span class="lineno">   64</span>  assert(alpha &gt;= 0.0 &amp;&amp; alpha &lt;= 1.0);</div>
+<div class="line"><span class="lineno">   65</span>  assert(batch_size &gt; 0);</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> getBatchMinOrMax = [&amp;](uint32_t start_index) {</div>
+<div class="line"><span class="lineno">   68</span>    assert(start_index &lt; vector.size());</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordtype">float</span> res = is_min ? std::numeric_limits&lt;float&gt;::max() : <a class="code hl_namespace" href="namespacestd.html">std</a>::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">for</span> (uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; batch_size; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>++)</div>
+<div class="line"><span class="lineno">   72</span>    {</div>
+<div class="line"><span class="lineno">   73</span>      uint32_t index = start_index + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">if</span> (index &gt;= vector.size())</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">if</span> (is_min)</div>
+<div class="line"><span class="lineno">   78</span>      {</div>
+<div class="line"><span class="lineno">   79</span>        res = vector[index] &lt; res ? vector[index] : res;</div>
+<div class="line"><span class="lineno">   80</span>      }</div>
+<div class="line"><span class="lineno">   81</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   82</span>      {</div>
+<div class="line"><span class="lineno">   83</span>        res = vector[index] &gt; res ? vector[index] : res;</div>
+<div class="line"><span class="lineno">   84</span>      }</div>
+<div class="line"><span class="lineno">   85</span>    }</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   87</span>  };</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordtype">float</span> curr_avg = getBatchMinOrMax(0);</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (uint32_t i = batch_size; i &lt; vector.size(); i += batch_size)</div>
+<div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span>    curr_avg = curr_avg * alpha + getBatchMinOrMax(i) * (1.0 - alpha);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">return</span> curr_avg;</div>
+<div class="line"><span class="lineno">   95</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_min_max_computer_8cpp_source.html#l00047">record_minmax::MovingAvgComputer::update_qparam()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_min_max_computer_8cpp_source.html#l00050">record_minmax::MovingAvgComputer::update_qparam()</a>.</p>
 
 </div>
 </div>
@@ -298,35 +298,35 @@ Functions</h2></td></tr>
 
 <p>getNthPercentile calculates the n-th percentile of input vector (0.0 &lt;= n &lt;= 100.0) linear interpolation is used when the desired percentile lies between two data points </p>
 
-<p class="definition">Definition at line <a class="el" href="_record_function_8h_source.html#l00031">31</a> of file <a class="el" href="_record_function_8h_source.html">RecordFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (percentile &lt; 0 || percentile &gt; 100)</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Percentile must be ranged from 0 to 100&quot;</span>);</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (vector.empty())</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Percentile must take a non-empty vector as an argument&quot;</span>);</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (vector.size() == 1)</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> vector[0];</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  std::vector&lt;float&gt; copy;</div>
-<div class="line"><span class="lineno">   43</span>  copy.assign(vector.begin(), vector.end());</div>
-<div class="line"><span class="lineno">   44</span>  std::sort(copy.begin(), copy.end());</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (percentile == 0.0)</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> copy.front();</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (percentile == 100.0)</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> copy.back();</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordtype">int</span> index = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor((copy.size() - 1) * percentile / 100.0));</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordtype">float</span> percent_i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(index) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(copy.size() - 1);</div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordtype">float</span> fraction =</div>
-<div class="line"><span class="lineno">   56</span>    (percentile / 100.0 - percent_i) / ((index + 1.0) / (copy.size() - 1.0) - percent_i);</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordtype">float</span> res = copy[index] + fraction * (copy[index + 1] - copy[index]);</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_record_function_8cpp_source.html#l00030">30</a> of file <a class="el" href="_record_function_8cpp_source.html">RecordFunction.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (percentile &lt; 0 || percentile &gt; 100)</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Percentile must be ranged from 0 to 100&quot;</span>);</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (vector.empty())</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Percentile must take a non-empty vector as an argument&quot;</span>);</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (vector.size() == 1)</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> vector[0];</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  std::vector&lt;float&gt; copy;</div>
+<div class="line"><span class="lineno">   42</span>  copy.assign(vector.begin(), vector.end());</div>
+<div class="line"><span class="lineno">   43</span>  std::sort(copy.begin(), copy.end());</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (percentile == 0.0)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> copy.front();</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (percentile == 100.0)</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> copy.back();</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordtype">int</span> index = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor((copy.size() - 1) * percentile / 100.0));</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordtype">float</span> percent_i = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(index) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(copy.size() - 1);</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordtype">float</span> fraction =</div>
+<div class="line"><span class="lineno">   55</span>    (percentile / 100.0 - percent_i) / ((index + 1.0) / (copy.size() - 1.0) - percent_i);</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordtype">float</span> res = copy[index] + fraction * (copy[index + 1] - copy[index]);</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   58</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_min_max_computer_8cpp_source.html#l00025">record_minmax::PercentileComputer::update_qparam()</a>.</p>
 
@@ -358,10 +358,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00074">74</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> std::make_unique&lt;MovingAvgComputer&gt;(batch_size, moving_avg_const);</div>
-<div class="line"><span class="lineno">   78</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00080">80</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">return</span> std::make_unique&lt;MovingAvgComputer&gt;(batch_size, moving_avg_const);</div>
+<div class="line"><span class="lineno">   84</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -391,10 +391,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00069">69</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">return</span> std::make_unique&lt;PercentileComputer&gt;(min_percentile, max_percentile);</div>
-<div class="line"><span class="lineno">   72</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_computer_8cpp_source.html#l00075">75</a> of file <a class="el" href="_min_max_computer_8cpp_source.html">MinMaxComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> std::make_unique&lt;PercentileComputer&gt;(min_percentile, max_percentile);</div>
+<div class="line"><span class="lineno">   78</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

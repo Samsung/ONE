@@ -189,8 +189,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>    }</div>
 <div class="line"><span class="lineno">   57</span>  }</div>
 <div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> / output_size;</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (output_size == 0)</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> / output_size;</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition:</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
