@@ -18,7 +18,9 @@
 
 #include <loco.h>
 
+#include <algorithm>
 #include <cassert>
+#include <iterator>
 #include <vector>
 
 namespace
