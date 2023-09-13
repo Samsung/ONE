@@ -176,6 +176,12 @@ int entry(int argc, char **argv)
              "This will turn off operator validations. May help input model investigation.");
   add_switch(arser, "--generate_profile_data", "This will turn on profiling data generation.");
 
+  // NOTE Experimental options; these will be removed someday
+  //      Add experimental options here
+  add_switch(arser, "--exp_disable_sep_transposeconv_actfunc",
+             "This will turn off experimental separation of activation function from "
+             "TransposeConv.");
+
   // Convert dynamic batch to single batch
   // Users have to use this option only when the first dimension of rank 4 input (NHWC or NCHW)
   // is dynamic. Remove this comment after non-rank 4 is supported.
@@ -331,6 +337,14 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ExpandBroadcastConst);
   if (arser.get<bool>("--unroll_unidirseqlstm"))
     options->enable(Algorithms::UnrollUnidirSeqLSTM);
+
+  // NOTE Experimental options; these will be removed someday
+  //      Add experimental options here
+  // NOTE XpSepActFromTransposeConv is enabled for default
+  //      exp_disable_sep_act_transposeconv is to turn it off
+  //      which will leave TransposeConv with fused activation
+  if (!arser.get<bool>("--exp_disable_sep_transposeconv_actfunc"))
+    options->enable(Algorithms::XpSepActFromTransposeConv);
 
   if (arser.get<bool>("--mute_warnings"))
     settings->set(luci::UserSettings::Key::MuteWarnings, true);
