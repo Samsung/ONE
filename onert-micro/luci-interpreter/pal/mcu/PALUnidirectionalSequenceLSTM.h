@@ -20,6 +20,8 @@
 
 #include "PALUnidirectionalSequenceLSTMCommon.h"
 
+#ifndef DIS_QUANT
+
 namespace luci_interpreter_pal
 {
 // Evaluate the LSTM kernel with (potential) multi-steps and multi-batch input
@@ -78,5 +80,7 @@ void evalLSTM<int8_t, int8_t, int16_t, int32_t>(
 }
 
 } // namespace luci_interpreter_pal
+
+#endif // DIS_QUANT
 
 #endif // LUCI_INTERPRETER_PAL_UNIDIRECTIONAL_SEQUENCE_LSTM_H
