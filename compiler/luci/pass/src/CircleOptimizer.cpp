@@ -73,6 +73,7 @@
 #include "luci/Pass/TransformMinReluToRelu6Pass.h"
 #include "luci/Pass/DecomposeHardSwishPass.h"
 #include "luci/Pass/UnrollUnidirectionalSequenceLSTMPass.h"
+#include "luci/Pass/XpSepActFromTransposeConvPass.h"
 // TODO add more passes
 
 #include "luci/Pass/CircleShapeInferencePass.h"
@@ -442,6 +443,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
   }
+
+  // NOTE Experimental options; these will be removed someday
+  //      Add experimental options here
+  if (_options->query(Options::Algorithm::XpSepActFromTransposeConv))
+  {
+    phase.emplace_back(std::make_unique<luci::XpSepActFromTransposeConvPass>());
+  }
+
   // Forward Reshape/Transpose is done after
   // 1. SubstituteXXXToReshape
   // 2. RemoveRedundantReshape/Transpose

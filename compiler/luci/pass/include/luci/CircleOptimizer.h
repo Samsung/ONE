@@ -90,6 +90,7 @@ public:
       RemoveQuantDequantSeq,
       RemoveDuplicateConst,
       UnrollUnidirSeqLSTM,
+      XpSepActFromTransposeConv,
     };
 
     enum AlgorithmParameters
