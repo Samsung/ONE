@@ -43,10 +43,10 @@ public:
     _output->dtype(loco::DataType::FLOAT32);
     graph_output->dtype(loco::DataType::FLOAT32);
 
-    graph_input->shape({1, _channel_size, _width, _height});
-    _input->shape({1, _channel_size, _width, _height});
-    _output->shape({1, _channel_size, _width, _height});
-    graph_output->shape({1, _channel_size, _width, _height});
+    graph_input->shape({1, _height, _width, _channel_size});
+    _input->shape({1, _height, _width, _channel_size});
+    _output->shape({1, _height, _width, _channel_size});
+    graph_output->shape({1, _height, _width, _channel_size});
 
     auto graph_body = insertGraphBody(_input);
     _output->from(graph_body);

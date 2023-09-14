@@ -50,8 +50,8 @@ protected:
     _add->dtype(loco::DataType::FLOAT32);
     _beta->dtype(loco::DataType::FLOAT32);
 
-    _add->shape({1, _channel_size, _width, _height});
-    _beta->shape({1, _channel_size, _width, _height});
+    _add->shape({1, _height, _width, _channel_size});
+    _beta->shape({1, _height, _width, _channel_size});
 
     _beta->size<loco::DataType::FLOAT32>(_channel_size * _width * _height);
     _add->x(input);
