@@ -1,0 +1,28 @@
+# CMakeLists.txt
+
+# refer https://github.com/Samsung/ONE/issues/11368
+
+find_package(Python COMPONENTS Interpreter REQUIRED)
+
+# install pybind11
+nnas_find_package(Pybind11 REQUIRED)
+if(NOT Pybind11_FOUND)
+  message(STATUS "Build onert/python: FAILED (Pybind11 is missing)")
+  return()
+endif()
+
+# Add the nnfw api and Pybind11 header
+include_directories(../../api/include ../../api/src ../../core/include)
+include_directories(${CMAKE_BINARY_DIR}/../overlay/include/pybind11)
+
+# Add the pybind tools include
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/../overlay/share/cmake/pybind11/")
+include(${CMAKE_BINARY_DIR}/../overlay/share/cmake/pybind11/pybind11Tools.cmake)
+
+# Add the Python module
+pybind11_add_module(nnfw_api_pybind ./src/nnfw_api_pybind.cc)
+
+target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
+
+# Install the Python module
+install(TARGETS nnfw_api_pybind DESTINATION lib)

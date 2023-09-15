@@ -29,5 +29,19 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
+# for python binding
+set(PYTHON_EXECUTABLE ${ROOTFS_AARCH64}/usr/bin/python3.8)
+
+execute_process(
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+                ${ROOTFS_AARCH64}/usr/lib/ld-linux-aarch64.so.1
+                /lib/ld-linux-aarch64.so.1
+        RESULT_VARIABLE symlink_result
+        OUTPUT_VARIABLE symlink_output
+        ERROR_VARIABLE symlink_error
+)
+
+set(ENV{LD_LIBRARY_PATH} "${ROOTFS_AARCH64}/usr/lib/aarch64-linux-gnu/:$ENV{LD_LIBRARY_PATH}")
+
 # Set cache variable to ignore try-run error by find_package(Threads REQUIRED) on cross build
 set(THREADS_PTHREAD_ARG "2" CACHE STRING "Result from TRY_RUN" FORCE)
