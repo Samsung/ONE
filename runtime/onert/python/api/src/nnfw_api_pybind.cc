@@ -1,231 +1,293 @@
-#include <pybind11.h>
-#include <stl.h>
-#include "nnfw.h" // 주어진 코드에 맞게 헤더 파일 경로를 수정해야 합니다.
-#include "nnfw_api_internal.h"
+#include "nnfw.h"
+#include "nnfw_api_pybind.h"
 
 namespace py = pybind11;
 
-uint64_t num_elems(const nnfw_tensorinfo *ti)
+void ensure_status(NNFW_STATUS status)
 {
-    uint64_t n = 1;
-    for (uint32_t i = 0; i < ti->rank; ++i)
-    {
-        n *= ti->dims[i];
-    }
-    return n;
+  switch (status)
+  {
+    case NNFW_STATUS::NNFW_STATUS_NO_ERROR:
+      break;
+    case NNFW_STATUS::NNFW_STATUS_ERROR:
+      std::cout << "[NNFW_STATUS]\tNNFW_STATUS_ERROR\n";
+      exit(1);
+      break;
+    case NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL:
+      std::cout << "[NNFW_STATUS]\tNNFW_STATUS_UNEXPECTED_NULL\n";
+      exit(1);
+      break;
+    case NNFW_STATUS::NNFW_STATUS_INVALID_STATE:
+      std::cout << "[NNFW_STATUS]\tNNFW_STATUS_INVALID_STATE\n";
+      exit(1);
+      break;
+    case NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY:
+      std::cout << "[NNFW_STATUS]\tNNFW_STATUS_OUT_OF_MEMORY\n";
+      exit(1);
+      break;
+    case NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE:
+      std::cout << "[NNFW_STATUS]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n";
+      exit(1);
+      break;
+  }
 }
 
-class NNFW_SESSION
+NNFW_LAYOUT layout_status(const char *layout = "")
 {
+  if (!strcmp(layout, "NCHW"))
+  {
+    return NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST;
+  }
 
-private:
-    nnfw_session *session;
-    nnfw_tensorinfo ti;
-    std::vector<float> input;
-    std::vector<float> output;
+  else if (!strcmp(layout, "NHWC"))
+  {
+    return NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST;
+  }
 
-public:
-    NNFW_STATUS create()
-    {
-        return nnfw_create_session(&session);
-    }
-    NNFW_STATUS close()
-    {
-        NNFW_STATUS state = nnfw_close_session(session);
-        session = nullptr;
-        return state;
-    }
-    NNFW_STATUS await()
-    {
-        return nnfw_await(session);
-    }
-    NNFW_STATUS apply_tensorinfo(uint32_t index, const nnfw_tensorinfo &tensor_info)
-    {
-        return nnfw_apply_tensorinfo(session, index, tensor_info);
-    }
-    NNFW_STATUS input_size(uint32_t *number)
-    {
-        return nnfw_input_size(session, number);
-    }
-    NNFW_STATUS load_model_from_file(const char *package_file_path)
-    {
-        return nnfw_load_model_from_file(session, package_file_path);
-    }
-    NNFW_STATUS output_size(uint32_t *number)
-    {
-        return nnfw_output_size(session, number);
-    }
-    NNFW_STATUS output_tensorinfo(uint32_t index)
-    {
-        return nnfw_output_tensorinfo(session, index, &ti);
-    }
-    NNFW_STATUS prepare()
-    {
-        return nnfw_prepare(session);
-    }
-    NNFW_STATUS query_info_u32(NNFW_INFO_ID id, uint32_t *val)
-    {
-        return nnfw_query_info_u32(session, id, val);
-    }
-    NNFW_STATUS run()
-    {
-        return nnfw_run(session);
-    }
-    NNFW_STATUS run_async()
-    {
-        return nnfw_run_async(session);
-    }
-    NNFW_STATUS set_available_backends(const char *backends)
-    {
-        return nnfw_set_available_backends(session, backends);
-    }
-    NNFW_STATUS set_input(uint32_t index)
-    {
-        NNFW_SESSION::set_input_tensorinfo(index);
-        uint32_t input_elements = num_elems(&ti);
-        input.resize(input_elements);
-        return nnfw_set_input(session, index, ti.dtype, input.data(), sizeof(float) * input_elements);
-    }
-    NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout)
-    {
-        return nnfw_set_input_layout(session, index, layout);
-    }
-    NNFW_STATUS set_input_tensorinfo(uint32_t index)
-    {
-        return nnfw_set_input_tensorinfo(session, index, &ti);
-    }
-    NNFW_STATUS set_op_backend(const char *op, const char *backend)
-    {
-        return nnfw_set_op_backend(session, op, backend);
-    }
-    NNFW_STATUS set_output(uint32_t index)
-    {
-        NNFW_SESSION::output_tensorinfo(index);
-        uint32_t output_elements = num_elems(&ti);
-        output.resize(output_elements);
-        return nnfw_set_output(session, index, ti.dtype, output.data(), sizeof(float) * output_elements);
-    }
-    NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout)
-    {
-        return nnfw_set_output_layout(session, index, layout);
-    }
-    NNFW_STATUS input_tensorinfo(uint32_t index)
-    {
-        return nnfw_input_tensorinfo(session, index, &ti);
-    }
-    void print_session()
-    {
-        std::cout << session << std::endl;
-    }
-    std::vector<float> get_input()
-    {
-        return input;
-    }
-    std::vector<float> get_output()
-    {
-        return output;
-    }
-    // Other methods can be added as needed
-};
+  else if (!strcmp(layout, "NONE"))
+  {
+    return NNFW_LAYOUT::NNFW_LAYOUT_NONE;
+  }
 
-// Function to get the values from nnfw_tensorinfo array and convert to a Python list
-py::list get_dims(const nnfw_tensorinfo &tensorinfo)
-{
-    py::list dims_list;
-    for (int i = 0; i < tensorinfo.rank; ++i)
-    {
-        dims_list.append(tensorinfo.dims[i]);
-    }
-    return dims_list;
+  else
+  {
+    std::cout << "layout type error\n";
+    exit(-1);
+  }
 }
 
-// Function to set the values of nnfw_tensorinfo array from a Python list
-void set_dims(nnfw_tensorinfo &tensorinfo, const py::list &dims_list)
+uint64_t num_elems(const nnfw_tensorinfo *tensor_info)
 {
-    tensorinfo.rank = py::len(dims_list);
-    for (int i = 0; i < tensorinfo.rank; ++i)
-    {
-        tensorinfo.dims[i] = py::cast<int>(dims_list[i]);
-    }
+  uint64_t n = 1;
+  for (uint32_t i = 0; i < tensor_info->rank; ++i)
+  {
+    n *= tensor_info->dims[i];
+  }
+  return n;
 }
 
-// 파이썬 모듈의 이름은 파일명에서 확장자를 제외한 이름으로 지정합니다.
+py::list get_dims(const nnfw_tensorinfo &tensor_info)
+{
+  py::list dims_list;
+  for (int32_t i = 0; i < tensor_info.rank; ++i)
+  {
+    dims_list.append(tensor_info.dims[i]);
+  }
+  return dims_list;
+}
+
+void set_dims(nnfw_tensorinfo &tensor_info, const py::list &array)
+{
+  tensor_info.rank = py::len(array);
+  for (int32_t i = 0; i < tensor_info.rank; ++i)
+  {
+    tensor_info.dims[i] = py::cast<int32_t>(array[i]);
+  }
+}
+
+NNFW_SESSION::NNFW_SESSION() : session(nullptr) {}
+NNFW_SESSION::~NNFW_SESSION()
+{
+  if (session)
+  {
+    close_session();
+  }
+}
+
+void NNFW_SESSION::create_session() { ensure_status(nnfw_create_session(&session)); }
+void NNFW_SESSION::close_session()
+{
+  ensure_status(nnfw_close_session(session));
+  session = nullptr;
+}
+void NNFW_SESSION::load_model_from_file(const char *package_file_path)
+{
+  ensure_status(nnfw_load_model_from_file(session, package_file_path));
+}
+void NNFW_SESSION::apply_tensorinfo(uint32_t index, nnfw_tensorinfo tensor_info)
+{
+  ensure_status(nnfw_apply_tensorinfo(session, index, tensor_info));
+}
+void NNFW_SESSION::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *tensor_info)
+{
+  ensure_status(nnfw_set_input_tensorinfo(session, index, tensor_info));
+}
+void NNFW_SESSION::prepare() { ensure_status(nnfw_prepare(session)); }
+void NNFW_SESSION::run() { ensure_status(nnfw_run(session)); }
+void NNFW_SESSION::run_async() { ensure_status(nnfw_run_async(session)); }
+void NNFW_SESSION::await() { ensure_status(nnfw_await(session)); }
+template <typename T>
+void NNFW_SESSION::set_input(uint32_t index, nnfw_tensorinfo *tensor_info, py::array_t<T> &buffer)
+{
+  NNFW_TYPE type = tensor_info->dtype;
+  uint32_t input_elements = num_elems(tensor_info);
+  size_t length = sizeof(T) * input_elements;
+
+  ensure_status(nnfw_set_input(session, index, type, buffer.request().ptr, length));
+}
+template <typename T>
+void NNFW_SESSION::set_output(uint32_t index, nnfw_tensorinfo *tensor_info, py::array_t<T> &buffer)
+{
+  NNFW_TYPE type = tensor_info->dtype;
+  uint32_t output_elements = num_elems(tensor_info);
+  size_t length = sizeof(T) * output_elements;
+
+  ensure_status(nnfw_set_output(session, index, type, buffer.request().ptr, length));
+}
+uint32_t NNFW_SESSION::input_size()
+{
+  uint32_t number;
+  NNFW_STATUS status = nnfw_input_size(session, &number);
+  ensure_status(status);
+  return number;
+}
+uint32_t NNFW_SESSION::output_size()
+{
+  uint32_t number;
+  NNFW_STATUS status = nnfw_output_size(session, &number);
+  ensure_status(status);
+  return number;
+}
+void NNFW_SESSION::set_input_layout(uint32_t index, const char *layout)
+{
+  NNFW_LAYOUT nnfw_layout = layout_status(layout);
+  ensure_status(nnfw_set_input_layout(session, index, nnfw_layout));
+}
+void NNFW_SESSION::set_output_layout(uint32_t index, const char *layout)
+{
+  NNFW_LAYOUT nnfw_layout = layout_status(layout);
+  ensure_status(nnfw_set_output_layout(session, index, nnfw_layout));
+}
+nnfw_tensorinfo NNFW_SESSION::input_tensorinfo(uint32_t index)
+{
+  nnfw_tensorinfo tensor_info = nnfw_tensorinfo();
+  ensure_status(nnfw_input_tensorinfo(session, index, &tensor_info));
+  return tensor_info;
+}
+nnfw_tensorinfo NNFW_SESSION::output_tensorinfo(uint32_t index)
+{
+  nnfw_tensorinfo tensor_info = nnfw_tensorinfo();
+  ensure_status(nnfw_output_tensorinfo(session, index, &tensor_info));
+  return tensor_info;
+}
+void NNFW_SESSION::set_available_backends(const char *backends)
+{
+  ensure_status(nnfw_set_available_backends(session, backends));
+}
+void NNFW_SESSION::set_op_backend(const char *op, const char *backend)
+{
+  ensure_status(nnfw_set_op_backend(session, op, backend));
+}
+uint32_t NNFW_SESSION::query_info_u32(NNFW_INFO_ID id)
+{
+  uint32_t val;
+  ensure_status(nnfw_query_info_u32(session, id, &val));
+  return val;
+}
+
 PYBIND11_MODULE(nnfw_api_pybind, m)
 {
-    m.doc() = "Python binding for nnfw"; // 모듈에 대한 설명
+  m.doc() = "python nnfw plugin";
 
-    // 모듈 내에 C++ 클래스, 함수, 변수를 추가하는 부분
-    // 예시: py::class_<YourCppClass>(m, "YourCppClass")
-    //        .def(py::init<>());
+  py::enum_<NNFW_TYPE>(m, "NNFW_TYPE")
+    .value("NNFW_TYPE_TENSOR_FLOAT32", NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32)
+    .value("NNFW_TYPE_TENSOR_INT32", NNFW_TYPE::NNFW_TYPE_TENSOR_INT32)
+    .value("NNFW_TYPE_TENSOR_QUANT8_ASYMM", NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM)
+    .value("NNFW_TYPE_TENSOR_BOOL", NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL)
+    .value("NNFW_TYPE_TENSOR_UINT8", NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8)
+    .value("NNFW_TYPE_TENSOR_INT64", NNFW_TYPE::NNFW_TYPE_TENSOR_INT64)
+    .value("NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED", NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED)
+    .value("NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED", NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
+    .export_values();
 
-    py::enum_<NNFW_TYPE>(m, "NNFW_TYPE")
-        .value("NNFW_TYPE_TENSOR_FLOAT32", NNFW_TYPE_TENSOR_FLOAT32)
-        .value("NNFW_TYPE_TENSOR_INT32", NNFW_TYPE_TENSOR_INT32)
-        .value("NNFW_TYPE_TENSOR_QUANT8_ASYMM", NNFW_TYPE_TENSOR_QUANT8_ASYMM)
-        .value("NNFW_TYPE_TENSOR_BOOL", NNFW_TYPE_TENSOR_BOOL)
-        .value("NNFW_TYPE_TENSOR_UINT8", NNFW_TYPE_TENSOR_UINT8)
-        .value("NNFW_TYPE_TENSOR_INT64", NNFW_TYPE_TENSOR_INT64)
-        .value("NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED", NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED)
-        .value("NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED", NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
-        .export_values();
+  py::enum_<NNFW_LAYOUT>(m, "NNFW_LAYOUT")
+    .value("NNFW_LAYOUT_NONE", NNFW_LAYOUT::NNFW_LAYOUT_NONE)
+    .value("NNFW_LAYOUT_CHANNELS_LAST", NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST)
+    .value("NNFW_LAYOUT_CHANNELS_FIRST", NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST)
+    .export_values();
 
-    py::enum_<NNFW_STATUS>(m, "NNFW_STATUS")
-        .value("NNFW_STATUS_NO_ERROR", NNFW_STATUS_NO_ERROR)
-        .value("NNFW_STATUS_ERROR", NNFW_STATUS_ERROR)
-        .value("NNFW_STATUS_UNEXPECTED_NULL", NNFW_STATUS_UNEXPECTED_NULL)
-        .value("NNFW_STATUS_INVALID_STATE", NNFW_STATUS_INVALID_STATE)
-        .value("NNFW_STATUS_OUT_OF_MEMORY", NNFW_STATUS_OUT_OF_MEMORY)
-        .value("NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE", NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE)
-        .export_values();
+  py::enum_<NNFW_INFO_ID>(m, "NNFW_INFO_ID")
+    .value("NNFW_INFO_ID_VERSION", NNFW_INFO_ID::NNFW_INFO_ID_VERSION)
+    .export_values();
 
-    py::enum_<NNFW_LAYOUT>(m, "NNFW_LAYOUT")
-        .value("NNFW_LAYOUT_NONE", NNFW_LAYOUT_NONE)
-        .value("NNFW_LAYOUT_CHANNELS_LAST", NNFW_LAYOUT_CHANNELS_LAST)
-        .value("NNFW_LAYOUT_CHANNELS_FIRST", NNFW_LAYOUT_CHANNELS_FIRST)
-        .export_values();
+  py::class_<nnfw_tensorinfo>(m, "nnfw_tensorinfo")
+    .def(py::init<>())
+    .def_readwrite("dtype", &nnfw_tensorinfo::dtype)
+    .def_readwrite("rank", &nnfw_tensorinfo::rank)
+    .def_property(
+      "dims", [](const nnfw_tensorinfo &tensorinfo) { return get_dims(tensorinfo); },
+      [](nnfw_tensorinfo &tensorinfo, const py::list &dims_list) {
+        set_dims(tensorinfo, dims_list);
+      });
 
-    py::enum_<NNFW_INFO_ID>(m, "NNFW_INFO_ID")
-        .value("NNFW_INFO_ID_VERSION", NNFW_INFO_ID_VERSION)
-        .export_values();
-
-    py::class_<nnfw_tensorinfo>(m, "nnfw_tensorinfo")
-        .def(py::init<>())
-        .def_readwrite("dtype", &nnfw_tensorinfo::dtype)
-        .def_readwrite("rank", &nnfw_tensorinfo::rank)
-        .def_property(
-            "dims",
-            [](const nnfw_tensorinfo &tensorinfo)
-            {
-                return get_dims(tensorinfo);
-            },
-            [](nnfw_tensorinfo &tensorinfo, const py::list &dims_list)
-            {
-                set_dims(tensorinfo, dims_list);
-            });
-
-    py::class_<NNFW_SESSION>(m, "nnfw_session")
-        .def(py::init<>())
-        .def("create", &NNFW_SESSION::create)
-        .def("close", &NNFW_SESSION::close)
-        .def("await", &NNFW_SESSION::await)
-        .def("apply_tensorinfo", &NNFW_SESSION::apply_tensorinfo)
-        .def("input_size", &NNFW_SESSION::input_size)
-        .def("load_model_from_file", &NNFW_SESSION::load_model_from_file)
-        .def("output_size", &NNFW_SESSION::output_size)
-        .def("output_tensorinfo", &NNFW_SESSION::output_tensorinfo)
-        .def("prepare", &NNFW_SESSION::prepare)
-        .def("query_info_u32", &NNFW_SESSION::query_info_u32)
-        .def("run", &NNFW_SESSION::run)
-        .def("run_async", &NNFW_SESSION::run_async)
-        .def("set_available_backends", &NNFW_SESSION::set_available_backends)
-        .def("set_input", &NNFW_SESSION::set_input)
-        .def("set_input_layout", &NNFW_SESSION::set_input_layout)
-        .def("set_input_tensorinfo", &NNFW_SESSION::set_input_tensorinfo)
-        .def("set_op_backend", &NNFW_SESSION::set_op_backend)
-        .def("set_output", &NNFW_SESSION::set_output)
-        .def("input_tensorinfo", &NNFW_SESSION::input_tensorinfo)
-        .def("set_output_layout", &NNFW_SESSION::set_output_layout)
-        .def("print_session", &NNFW_SESSION::print_session)
-        .def("get_input", &NNFW_SESSION::get_input)
-        .def("get_output", &NNFW_SESSION::get_output);
+  py::class_<NNFW_SESSION>(m, "nnfw_session")
+    .def(py::init<>())
+    .def("create_session", &NNFW_SESSION::create_session)
+    .def("close_session", &NNFW_SESSION::close_session)
+    .def("load_model_from_file", &NNFW_SESSION::load_model_from_file)
+    .def("apply_tensorinfo", &NNFW_SESSION::apply_tensorinfo)
+    .def("set_input_tensorinfo", &NNFW_SESSION::set_input_tensorinfo)
+    .def("prepare", &NNFW_SESSION::prepare)
+    .def("run", &NNFW_SESSION::run)
+    .def("run_async", &NNFW_SESSION::run_async)
+    .def("await", &NNFW_SESSION::await)
+    .def("set_input",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<float> &buffer) { session.set_input<float>(index, tensorinfo, buffer); })
+    .def("set_input",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<int> &buffer) { session.set_input<int>(index, tensorinfo, buffer); })
+    .def(
+      "set_input",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<uint8_t> &buffer) { session.set_input<uint8_t>(index, tensorinfo, buffer); })
+    .def("set_input",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<bool> &buffer) { session.set_input<bool>(index, tensorinfo, buffer); })
+    .def(
+      "set_input",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<int64_t> &buffer) { session.set_input<int64_t>(index, tensorinfo, buffer); })
+    .def("set_input",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<int8_t> &buffer) { session.set_input<int8_t>(index, tensorinfo, buffer); })
+    .def(
+      "set_input",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<int16_t> &buffer) { session.set_input<int16_t>(index, tensorinfo, buffer); })
+    .def("set_output",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<float> &buffer) { session.set_output<float>(index, tensorinfo, buffer); })
+    .def("set_output",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<int> &buffer) { session.set_output<int>(index, tensorinfo, buffer); })
+    .def(
+      "set_output",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<uint8_t> &buffer) { session.set_output<uint8_t>(index, tensorinfo, buffer); })
+    .def("set_output",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<bool> &buffer) { session.set_output<bool>(index, tensorinfo, buffer); })
+    .def(
+      "set_output",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<int64_t> &buffer) { session.set_output<int64_t>(index, tensorinfo, buffer); })
+    .def("set_output",
+         [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+            py::array_t<int8_t> &buffer) { session.set_output<int8_t>(index, tensorinfo, buffer); })
+    .def(
+      "set_output",
+      [](NNFW_SESSION &session, uint32_t index, nnfw_tensorinfo *tensorinfo,
+         py::array_t<int16_t> &buffer) { session.set_output<int16_t>(index, tensorinfo, buffer); })
+    .def("input_size", &NNFW_SESSION::input_size)
+    .def("output_size", &NNFW_SESSION::output_size)
+    .def("set_input_layout", &NNFW_SESSION::set_input_layout, py::arg("index"),
+         py::arg("layout") = "NONE")
+    .def("set_output_layout", &NNFW_SESSION::set_output_layout, py::arg("index"),
+         py::arg("layout") = "NONE")
+    .def("input_tensorinfo", &NNFW_SESSION::input_tensorinfo)
+    .def("output_tensorinfo", &NNFW_SESSION::output_tensorinfo)
+    .def("set_available_backends", &NNFW_SESSION::set_available_backends)
+    .def("set_op_backend", &NNFW_SESSION::set_op_backend)
+    .def("query_info_u32", &NNFW_SESSION::query_info_u32);
 }
