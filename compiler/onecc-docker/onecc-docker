@@ -49,7 +49,9 @@ def _request_recent_version(token=None):
         # Return the latest version containing one-compiler-bionic_{version}_amd64.deb in assets
         version = release_item["tag_name"]
         for asset in release_item["assets"]:
-            if bool(re.match(r'one-compiler-bionic_\d+\.\d+\.\d_amd64.deb', asset["name"])):
+            if bool(
+                    re.match(r'one-compiler-bionic_\d+\.\d+\.\d_amd64.deb',
+                             asset["name"])):
                 return version
 
     raise SystemExit('[onecc-docker] Failed to get latest onecc version')
