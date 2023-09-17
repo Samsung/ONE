@@ -1,5 +1,13 @@
 var NAVTREEINDEX162 =
 {
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_conv2_d_8h.html":[35,0,0,113,2,1,0,0,12],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_conv2_d_8h_source.html":[35,0,0,113,2,1,0,0,12],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_depth_to_space_8h.html":[35,0,0,113,2,1,0,0,14],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_depth_to_space_8h_source.html":[35,0,0,113,2,1,0,0,14],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_depthwise_conv2_d_8h.html":[35,0,0,113,2,1,0,0,15],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_depthwise_conv2_d_8h_source.html":[35,0,0,113,2,1,0,0,15],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h.html":[35,0,0,113,2,1,0,0,16],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h_source.html":[35,0,0,113,2,1,0,0,16],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_e_l_u_8h.html":[35,0,0,113,2,1,0,0,18],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_e_l_u_8h_source.html":[35,0,0,113,2,1,0,0,18],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_exp_8h.html":[35,0,0,113,2,1,0,0,20],
@@ -241,13 +249,5 @@ var NAVTREEINDEX162 =
 "compute_2cker_2include_2cker_2eigen_2_utils_8h.html#af11aaac12c14c821a1ae89e66e7195d0":[35,0,1,1,0,0,0,6,3],
 "compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html":[35,0,1,1,0,0,0,6],
 "compute_2cker_2include_2cker_2operation_2_add_n_8h.html":[35,0,1,1,0,0,3,3],
-"compute_2cker_2include_2cker_2operation_2_add_n_8h.html#a73d075a8d75ae6478e8433fc6f2dea2b":[35,0,1,1,0,0,3,3,0],
-"compute_2cker_2include_2cker_2operation_2_add_n_8h_source.html":[35,0,1,1,0,0,3,3],
-"compute_2cker_2include_2cker_2operation_2_arg_min_max_8h.html":[35,0,1,1,0,0,3,4],
-"compute_2cker_2include_2cker_2operation_2_arg_min_max_8h.html#a7cf7f3580ebfdb1f6bb770a66a067cf3":[35,0,1,1,0,0,3,4,0],
-"compute_2cker_2include_2cker_2operation_2_arg_min_max_8h_source.html":[35,0,1,1,0,0,3,4],
-"compute_2cker_2include_2cker_2operation_2_average_pool_8h.html":[35,0,1,1,0,0,3,5],
-"compute_2cker_2include_2cker_2operation_2_average_pool_8h.html#a3ba4eaa9f87f87b6df09dafee1f7b0da":[35,0,1,1,0,0,3,5,3],
-"compute_2cker_2include_2cker_2operation_2_average_pool_8h.html#aa97fae0da1b06f703476b62a8d51d33f":[35,0,1,1,0,0,3,5,0],
-"compute_2cker_2include_2cker_2operation_2_average_pool_8h.html#ab454779d0fe796abe4b6291874cb67d0":[35,0,1,1,0,0,3,5,2]
+"compute_2cker_2include_2cker_2operation_2_add_n_8h.html#a73d075a8d75ae6478e8433fc6f2dea2b":[35,0,1,1,0,0,3,3,0]
 };

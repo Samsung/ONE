@@ -105,5 +105,6 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "VerifyQuantizedNodeGranularity.cpp", "_verify_quantized_node_granularity_8cpp.html", null ],
     [ "VerifyQuantizedNodeGranularity.h", "_verify_quantized_node_granularity_8h.html", "_verify_quantized_node_granularity_8h" ],
     [ "VerifyQuantizedNodeType.cpp", "_verify_quantized_node_type_8cpp.html", "_verify_quantized_node_type_8cpp" ],
-    [ "VerifyQuantizedNodeType.h", "_verify_quantized_node_type_8h.html", "_verify_quantized_node_type_8h" ]
+    [ "VerifyQuantizedNodeType.h", "_verify_quantized_node_type_8h.html", "_verify_quantized_node_type_8h" ],
+    [ "XpSepActFromTransposeConvPass.cpp", "_xp_sep_act_from_transpose_conv_pass_8cpp.html", null ]
 ];

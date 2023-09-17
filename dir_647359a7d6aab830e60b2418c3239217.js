@@ -5,5 +5,6 @@ var dir_647359a7d6aab830e60b2418c3239217 =
     [ "Interpreter.h", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h.html", "onert-micro_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h" ],
     [ "InterpreterConfigure.h", "_interpreter_configure_8h.html", null ],
     [ "onert-micro-version.h", "onert-micro-version_8h.html", "onert-micro-version_8h" ],
+    [ "TrainableWeightStorage.h", "_trainable_weight_storage_8h.html", null ],
     [ "TrainingSettings.h", "_training_settings_8h.html", null ]
 ];

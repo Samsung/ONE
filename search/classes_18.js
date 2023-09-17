@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ylorrd9palette_0',['YLORRD9Palette',['../class_palette_1_1_y_l_o_r_r_d9_palette.html',1,'Palette']]]
+  ['xpsepactfromtransposeconvpass_0',['XpSepActFromTransposeConvPass',['../structluci_1_1_xp_sep_act_from_transpose_conv_pass.html',1,'luci']]]
 ];

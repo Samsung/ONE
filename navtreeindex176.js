@@ -1,5 +1,14 @@
 var NAVTREEINDEX176 =
 {
+"helpers_8h.html#aa8d95ba04fc73845abc6045952cae5be":[35,0,1,0,1,0,0,0,2,9],
+"helpers_8h.html#aa9601c02904caf78396432626dcd3523":[35,0,1,0,1,0,0,0,2,86],
+"helpers_8h.html#aaa93f37edb33e102ecb9dae5eafaaf43":[35,0,1,0,1,0,0,0,2,16],
+"helpers_8h.html#aabdbe431f2713c5c2604cb9872b66aab":[35,0,1,0,1,0,0,0,2,7],
+"helpers_8h.html#aac479c79aab47d60fabbb253e0aa7d36":[35,0,1,0,1,0,0,0,2,109],
+"helpers_8h.html#aadad789e5f2b295a59b036d49efd2bce":[35,0,1,0,1,0,0,0,2,33],
+"helpers_8h.html#ab5975aa797b02c8e21551e4a3425c499":[35,0,1,0,1,0,0,0,2,64],
+"helpers_8h.html#ab8153d4b4070b65cf483e336c69e7dd6":[35,0,1,0,1,0,0,0,2,24],
+"helpers_8h.html#abcadce1c5f0c9f446d1a72cac2421121":[35,0,1,0,1,0,0,0,2,75],
 "helpers_8h.html#abead6332b4ad3dfa04a673e83616abc3":[35,0,1,0,1,0,0,0,2,142],
 "helpers_8h.html#abec52f2c766de0c9d54cb312c847f351":[35,0,1,0,1,0,0,0,2,99],
 "helpers_8h.html#ac03804bb54dcbd2a27abef692beef629":[35,0,1,0,1,0,0,0,2,73],
@@ -86,9 +95,9 @@ var NAVTREEINDEX176 =
 "hermes_8h.html":[35,0,0,40,0,1],
 "hermes_8h_source.html":[35,0,0,40,0,1],
 "hierarchy.html":[34,2],
-"i5diff_2src_2entry_8cpp.html":[35,0,0,42,0,0],
-"i5diff_2src_2entry_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[35,0,0,42,0,0,0],
-"i5diff_2src_2entry_8cpp_source.html":[35,0,0,42,0,0],
+"i5diff_2src_2_entry_8cpp.html":[35,0,0,42,0,0],
+"i5diff_2src_2_entry_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[35,0,0,42,0,0,0],
+"i5diff_2src_2_entry_8cpp_source.html":[35,0,0,42,0,0],
 "idl_8h.html":[35,0,3,1,0,8],
 "idl_8h.html#a00957b1d3a2dd9f4eef8397de5b36f35":[35,0,3,1,0,8,49],
 "idl_8h.html#a00bf1d8f2dc92792b1c1982981da5655":[35,0,3,1,0,8,15],
@@ -240,14 +249,5 @@ var NAVTREEINDEX176 =
 "import_2include_2luci_2_import_2_nodes_2_circle_if_8h.html":[35,0,0,51,2,0,0,0,0,39],
 "import_2include_2luci_2_import_2_nodes_2_circle_if_8h_source.html":[35,0,0,51,2,0,0,0,0,39],
 "import_2include_2luci_2_import_2_nodes_2_circle_instance_norm_8h.html":[35,0,0,51,2,0,0,0,0,40],
-"import_2include_2luci_2_import_2_nodes_2_circle_instance_norm_8h_source.html":[35,0,0,51,2,0,0,0,0,40],
-"import_2include_2luci_2_import_2_nodes_2_circle_l2_normalize_8h.html":[35,0,0,51,2,0,0,0,0,41],
-"import_2include_2luci_2_import_2_nodes_2_circle_l2_normalize_8h_source.html":[35,0,0,51,2,0,0,0,0,41],
-"import_2include_2luci_2_import_2_nodes_2_circle_l2_pool2_d_8h.html":[35,0,0,51,2,0,0,0,0,42],
-"import_2include_2luci_2_import_2_nodes_2_circle_l2_pool2_d_8h_source.html":[35,0,0,51,2,0,0,0,0,42],
-"import_2include_2luci_2_import_2_nodes_2_circle_leaky_relu_8h.html":[35,0,0,51,2,0,0,0,0,43],
-"import_2include_2luci_2_import_2_nodes_2_circle_leaky_relu_8h_source.html":[35,0,0,51,2,0,0,0,0,43],
-"import_2include_2luci_2_import_2_nodes_2_circle_less_8h.html":[35,0,0,51,2,0,0,0,0,44],
-"import_2include_2luci_2_import_2_nodes_2_circle_less_8h_source.html":[35,0,0,51,2,0,0,0,0,44],
-"import_2include_2luci_2_import_2_nodes_2_circle_less_equal_8h.html":[35,0,0,51,2,0,0,0,0,45]
+"import_2include_2luci_2_import_2_nodes_2_circle_instance_norm_8h_source.html":[35,0,0,51,2,0,0,0,0,40]
 };

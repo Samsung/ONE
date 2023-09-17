@@ -3702,53 +3702,53 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00027">27</a> of file <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html">PALUnidirectionalSequenceLSTM.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_struct" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html">lstm_internal::LstmSizeInfo</a> size_info;</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a> = lstm_struct-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">options</a>-&gt;time_major();</div>
-<div class="line"><span class="lineno">   37</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
-<div class="line"><span class="lineno">   38</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 1)</div>
-<div class="line"><span class="lineno">   39</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 0);</div>
-<div class="line"><span class="lineno">   40</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
-<div class="line"><span class="lineno">   41</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 0)</div>
-<div class="line"><span class="lineno">   42</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 1);</div>
-<div class="line"><span class="lineno">   43</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#a2b33623c51f63533b256070e6f68f5dd">input_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 2);</div>
-<div class="line"><span class="lineno">   44</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#ae83403d96192e896a8fb766b70e05919">state_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a8bd7f330047f012b2bc71d238dd2afa2">output_state</a>(), 1);</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_class" href="classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html">lstm_internal::LstmStepManager</a> step_info(size_info);</div>
+<p class="definition">Definition at line <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html#l00029">29</a> of file <a class="el" href="mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html">PALUnidirectionalSequenceLSTM.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <a class="code hl_struct" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html">lstm_internal::LstmSizeInfo</a> size_info;</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a> = lstm_struct-&gt;<a class="code hl_variable" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a508cb785c9678c744c5265f0578b5f5f">options</a>-&gt;time_major();</div>
+<div class="line"><span class="lineno">   39</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
+<div class="line"><span class="lineno">   40</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 1)</div>
+<div class="line"><span class="lineno">   41</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 0);</div>
+<div class="line"><span class="lineno">   42</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a> = size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a></div>
+<div class="line"><span class="lineno">   43</span>                           ? <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 0)</div>
+<div class="line"><span class="lineno">   44</span>                           : <a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a>::<a class="code hl_class" href="class_tensor.html">Tensor</a>::dim(lstm_struct-&gt;input(), 1);</div>
+<div class="line"><span class="lineno">   45</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#a2b33623c51f63533b256070e6f68f5dd">input_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a744ca2bef714c74b4b2af604c2931296">input</a>(), 2);</div>
+<div class="line"><span class="lineno">   46</span>  size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#ae83403d96192e896a8fb766b70e05919">state_dimension</a> = <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">luci_interpreter::Tensor::dim</a>(lstm_struct-&gt;<a class="code hl_function" href="structluci__interpreter_1_1lstm_1_1_l_s_t_m_struct.html#a8bd7f330047f012b2bc71d238dd2afa2">output_state</a>(), 1);</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="comment">// time is the first dimention, enable batch computation</span></div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a>)</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
-<div class="line"><span class="lineno">   52</span>    {</div>
-<div class="line"><span class="lineno">   53</span>      lstm_internal::lstmStep&lt;int8_t, int8_t, int16_t, int32_t&gt;(</div>
-<div class="line"><span class="lineno">   54</span>        lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
-<div class="line"><span class="lineno">   55</span>        scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
-<div class="line"><span class="lineno">   56</span>      <span class="comment">// prepare for the next time step</span></div>
-<div class="line"><span class="lineno">   57</span>      step_info.updateTime();</div>
-<div class="line"><span class="lineno">   58</span>    }</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   61</span>  {</div>
-<div class="line"><span class="lineno">   62</span>    <span class="comment">// batch first, unable to size the input data. single batch inference</span></div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a>; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>++)</div>
-<div class="line"><span class="lineno">   64</span>    {</div>
-<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
-<div class="line"><span class="lineno">   66</span>      {</div>
-<div class="line"><span class="lineno">   67</span>        lstm_internal::lstmStep&lt;int8_t, int8_t, int16_t, int32_t&gt;(</div>
-<div class="line"><span class="lineno">   68</span>          lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
-<div class="line"><span class="lineno">   69</span>          scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
-<div class="line"><span class="lineno">   70</span>        <span class="comment">// prepare for the next time step</span></div>
-<div class="line"><span class="lineno">   71</span>        step_info.updateTime();</div>
-<div class="line"><span class="lineno">   72</span>      }</div>
-<div class="line"><span class="lineno">   73</span>      <span class="comment">// prepare for the next batch</span></div>
-<div class="line"><span class="lineno">   74</span>      step_info.updateBatch();</div>
-<div class="line"><span class="lineno">   75</span>      step_info.resetTime();</div>
-<div class="line"><span class="lineno">   76</span>    }</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
-<div class="line"><span class="lineno">   78</span>}</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html">lstm_internal::LstmStepManager</a> step_info(size_info);</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// time is the first dimention, enable batch computation</span></div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af04705d5fb47306f96d174300fb303fa">time_major</a>)</div>
+<div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
+<div class="line"><span class="lineno">   54</span>    {</div>
+<div class="line"><span class="lineno">   55</span>      lstm_internal::lstmStep&lt;int8_t, int8_t, int16_t, int32_t&gt;(</div>
+<div class="line"><span class="lineno">   56</span>        lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
+<div class="line"><span class="lineno">   57</span>        scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
+<div class="line"><span class="lineno">   58</span>      <span class="comment">// prepare for the next time step</span></div>
+<div class="line"><span class="lineno">   59</span>      step_info.updateTime();</div>
+<div class="line"><span class="lineno">   60</span>    }</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    <span class="comment">// batch first, unable to size the input data. single batch inference</span></div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#aa0e1c34c2bddb52181fb7d0446d829e5">batch_size</a>; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>++)</div>
+<div class="line"><span class="lineno">   66</span>    {</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; size_info.<a class="code hl_variable" href="structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html#af906856fe0ea73c3cb242f5e8de1c21d">time_steps</a>; t++)</div>
+<div class="line"><span class="lineno">   68</span>      {</div>
+<div class="line"><span class="lineno">   69</span>        lstm_internal::lstmStep&lt;int8_t, int8_t, int16_t, int32_t&gt;(</div>
+<div class="line"><span class="lineno">   70</span>          lstm_struct, lstm_params, &amp;step_info, cell_state_info, output_state_data, cell_state_data,</div>
+<div class="line"><span class="lineno">   71</span>          scratch0, scratch1, scratch2, scratch3, runtime_graph);</div>
+<div class="line"><span class="lineno">   72</span>        <span class="comment">// prepare for the next time step</span></div>
+<div class="line"><span class="lineno">   73</span>        step_info.updateTime();</div>
+<div class="line"><span class="lineno">   74</span>      }</div>
+<div class="line"><span class="lineno">   75</span>      <span class="comment">// prepare for the next batch</span></div>
+<div class="line"><span class="lineno">   76</span>      step_info.updateBatch();</div>
+<div class="line"><span class="lineno">   77</span>      step_info.resetTime();</div>
+<div class="line"><span class="lineno">   78</span>    }</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="line"><span class="lineno">   80</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00184">luci_interpreter_pal::lstm_internal::LstmSizeInfo::batch_size</a>, <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">circle_eval_diff::TensorShape::dim()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00145">luci_interpreter::lstm::LSTMStruct::input()</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00186">luci_interpreter_pal::lstm_internal::LstmSizeInfo::input_dimension</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00178">luci_interpreter::lstm::LSTMStruct::options</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_unidirectional_sequence_l_s_t_m_8h_source.html#l00169">luci_interpreter::lstm::LSTMStruct::output_state()</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00228">luci_interpreter_pal::lstm_internal::LstmStepManager::resetTime()</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00187">luci_interpreter_pal::lstm_internal::LstmSizeInfo::state_dimension</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00183">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_major</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00185">luci_interpreter_pal::lstm_internal::LstmSizeInfo::time_steps</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00215">luci_interpreter_pal::lstm_internal::LstmStepManager::updateBatch()</a>, and <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00198">luci_interpreter_pal::lstm_internal::LstmStepManager::updateTime()</a>.</p>
 
@@ -7080,7 +7080,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  }</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_leaky_relu_8cpp_source.html#l00038">luci_interpreter::execute_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu6()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_leaky_relu_8cpp_source.html#l00038">luci_interpreter::execute_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu6()</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,14 @@
 var NAVTREEINDEX208 =
 {
+"reference_2_binary_arithmetic_ops_8h.html#a0ab57f1de7a3d7c735f732c550280f5b":[35,0,1,1,0,0,3,2,2,0],
+"reference_2_binary_arithmetic_ops_8h.html#a9a225c0ef74f6e779c39130ec580e324":[35,0,1,1,0,0,3,2,2,2],
+"reference_2_binary_arithmetic_ops_8h.html#aa1d85bb7454deb60df52ee2c920746a4":[35,0,1,1,0,0,3,2,2,3],
+"reference_2_binary_arithmetic_ops_8h.html#ae7dd56ac62e8a99481b4874aae08836b":[35,0,1,1,0,0,3,2,2,1],
+"reference_2_binary_arithmetic_ops_8h.html#af03169b7be90f5dddc977e41b8acaec5":[35,0,1,1,0,0,3,2,2,4],
+"reference_2_binary_arithmetic_ops_8h_source.html":[35,0,1,1,0,0,3,2,2],
+"reference_2integer__ops_2_depthwise_conv_u_int8_8h.html":[35,0,1,1,0,0,3,2,0,1],
+"reference_2integer__ops_2_depthwise_conv_u_int8_8h.html#add363de1fa752992e683a41cdd38e6dc":[35,0,1,1,0,0,3,2,0,1,0],
+"reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html":[35,0,1,1,0,0,3,2,0,1],
 "reflection_8h.html":[35,0,3,1,0,10],
 "reflection_8h.html#a06d4b97a3d782d99eef774f8b6f3286d":[35,0,3,1,0,10,1],
 "reflection_8h.html#a0d655a27fc629f93d84498cb1488fb3b":[35,0,3,1,0,10,23],
@@ -240,14 +249,5 @@ var NAVTREEINDEX208 =
 "runtime_2onert_2backend_2acl__neon_2_backend_8h.html":[35,0,4,2,1,2,2],
 "runtime_2onert_2backend_2acl__neon_2_backend_8h_source.html":[35,0,4,2,1,2,2],
 "runtime_2onert_2backend_2acl__neon_2_config_8h.html":[35,0,4,2,1,2,5],
-"runtime_2onert_2backend_2acl__neon_2_config_8h_source.html":[35,0,4,2,1,2,5],
-"runtime_2onert_2backend_2acl__neon_2_optimizer_8h.html":[35,0,4,2,1,2,11],
-"runtime_2onert_2backend_2acl__neon_2_optimizer_8h_source.html":[35,0,4,2,1,2,11],
-"runtime_2onert_2backend_2cpu_2_backend_8h.html":[35,0,4,2,1,4,1],
-"runtime_2onert_2backend_2cpu_2_backend_8h_source.html":[35,0,4,2,1,4,1],
-"runtime_2onert_2backend_2cpu_2_config_8h.html":[35,0,4,2,1,4,5],
-"runtime_2onert_2backend_2cpu_2_config_8h_source.html":[35,0,4,2,1,4,5],
-"runtime_2onert_2backend_2cpu_2_tensor_8h.html":[35,0,4,2,1,4,11],
-"runtime_2onert_2backend_2cpu_2_tensor_8h.html#a6a4274e703d080840ec463354ad19634":[35,0,4,2,1,4,11,1],
-"runtime_2onert_2backend_2cpu_2_tensor_8h.html#ab124247f139b3e0c80b34e0e7b617a57":[35,0,4,2,1,4,11,0]
+"runtime_2onert_2backend_2acl__neon_2_config_8h_source.html":[35,0,4,2,1,2,5]
 };

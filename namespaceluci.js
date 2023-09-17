@@ -589,6 +589,7 @@ var namespaceluci =
     [ "VerifyQuantizedNodeTypeBase", "classluci_1_1_verify_quantized_node_type_base.html", "classluci_1_1_verify_quantized_node_type_base" ],
     [ "VerifyQuantizedNodeU8Type", "classluci_1_1_verify_quantized_node_u8_type.html", null ],
     [ "VirtualOutputDetector", "structluci_1_1_virtual_output_detector.html", "structluci_1_1_virtual_output_detector" ],
+    [ "XpSepActFromTransposeConvPass", "structluci_1_1_xp_sep_act_from_transpose_conv_pass.html", "structluci_1_1_xp_sep_act_from_transpose_conv_pass" ],
     [ "CircleNodeID", "namespaceluci.html#ad084b164cb1a5fe130abfc3e30e67cae", null ],
     [ "CircleTensorIndex", "namespaceluci.html#a9567887715016bcac656b4d6d82ec85f", null ],
     [ "ExecutionPlanTable", "namespaceluci.html#a98696859b261123c4b4dc1dc81d119e1", null ],

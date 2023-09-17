@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classlogo_1_1_pass.html" title=" " alt="" coords="5,4450,88,4475"/>
+<area shape="rect" id="node1" href="$classlogo_1_1_pass.html" title=" " alt="" coords="5,4474,88,4499"/>
 <area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,5,359,45"/>
 <area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,69,359,109"/>
 <area shape="rect" id="node6" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,133,359,173"/>
@@ -136,20 +136,21 @@
 <area shape="rect" id="node184" href="$structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="147,7643,378,7669"/>
 <area shape="rect" id="node185" href="$structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="178,7693,347,7733"/>
 <area shape="rect" id="node186" href="$structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="182,7757,343,7797"/>
-<area shape="rect" id="node187" href="$classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,7822,343,7847"/>
-<area shape="rect" id="node188" href="$classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,7871,342,7897"/>
-<area shape="rect" id="node189" href="$classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,7921,346,7946"/>
-<area shape="rect" id="node190" href="$classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,7971,352,8011"/>
-<area shape="rect" id="node191" href="$classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8035,365,8061"/>
-<area shape="rect" id="node192" href="$structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8085,361,8110"/>
-<area shape="rect" id="node193" href="$classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8134,361,8159"/>
-<area shape="rect" id="node194" href="$classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8183,367,8209"/>
-<area shape="rect" id="node195" href="$classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8233,378,8258"/>
-<area shape="rect" id="node196" href="$classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8282,369,8307"/>
-<area shape="rect" id="node197" href="$classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8331,355,8357"/>
-<area shape="rect" id="node198" href="$classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8381,360,8406"/>
-<area shape="rect" id="node199" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8431,365,8471"/>
-<area shape="rect" id="node200" href="$classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8495,356,8521"/>
+<area shape="rect" id="node187" href="$structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="163,7821,362,7861"/>
+<area shape="rect" id="node188" href="$classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,7886,343,7911"/>
+<area shape="rect" id="node189" href="$classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,7935,342,7961"/>
+<area shape="rect" id="node190" href="$classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,7985,346,8010"/>
+<area shape="rect" id="node191" href="$classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,8035,352,8075"/>
+<area shape="rect" id="node192" href="$classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8099,365,8125"/>
+<area shape="rect" id="node193" href="$structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8149,361,8174"/>
+<area shape="rect" id="node194" href="$classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8198,361,8223"/>
+<area shape="rect" id="node195" href="$classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8247,367,8273"/>
+<area shape="rect" id="node196" href="$classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8297,378,8322"/>
+<area shape="rect" id="node197" href="$classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8346,369,8371"/>
+<area shape="rect" id="node198" href="$classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8395,355,8421"/>
+<area shape="rect" id="node199" href="$classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8445,360,8470"/>
+<area shape="rect" id="node200" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8495,365,8535"/>
+<area shape="rect" id="node201" href="$classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8559,356,8585"/>
 <area shape="rect" id="node3" href="$classexo_1_1_avg_pool2_d_converter.html" title="Convert loco::AvgPool2D to locoex::TFLAveragePool2D." alt="" coords="466,13,635,38"/>
 <area shape="rect" id="node5" href="$classexo_1_1_const_gen_converter.html" title=" " alt="" coords="469,77,632,102"/>
 <area shape="rect" id="node7" href="$classexo_1_1_conv2_d_converter.html" title="Convert loco::Conv2D to locoex::TFLConv2D." alt="" coords="475,141,626,166"/>

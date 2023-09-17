@@ -1,5 +1,13 @@
 var NAVTREEINDEX153 =
 {
+"cmsisnn_2_p_a_l_s_v_d_f_8h.html":[35,0,0,53,1,0,22],
+"cmsisnn_2_p_a_l_s_v_d_f_8h_source.html":[35,0,0,53,1,0,22],
+"cmsisnn_2_p_a_l_space_to_batch_n_d_8h.html":[35,0,0,53,1,0,19],
+"cmsisnn_2_p_a_l_space_to_batch_n_d_8h_source.html":[35,0,0,53,1,0,19],
+"cmsisnn_2_p_a_l_space_to_depth_8h.html":[35,0,0,53,1,0,20],
+"cmsisnn_2_p_a_l_space_to_depth_8h_source.html":[35,0,0,53,1,0,20],
+"cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html":[35,0,3,3,1,0,5],
+"cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html#a15e54cf21be2fb24c7575d140e2a8d1a":[35,0,3,3,1,0,5,0],
 "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html#a6a0b2d1d970f94be53e13b87b4bffa13":[35,0,3,3,1,0,5,1],
 "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h_source.html":[35,0,3,3,1,0,5],
 "cmsisnn_2_p_a_lreference__ops_8h.html":[35,0,0,53,1,0,15],
@@ -239,15 +247,7 @@ var NAVTREEINDEX153 =
 "compiler_2ann-ref_2src_2ops_2_re_l_u6_8h.html":[35,0,0,3,0,0,46],
 "compiler_2ann-ref_2src_2ops_2_re_l_u6_8h.html#a0fd41189716d21145ca9896b75908baf":[35,0,0,3,0,0,46,0],
 "compiler_2ann-ref_2src_2ops_2_re_l_u6_8h_source.html":[35,0,0,3,0,0,46],
-"compiler_2ann-ref_2src_2ops_2_re_l_u_8h.html":[35,0,0,3,0,0,42],
-"compiler_2ann-ref_2src_2ops_2_re_l_u_8h.html#a770fa870b6c261647e7ed76580eafc3e":[35,0,0,3,0,0,42,0],
-"compiler_2ann-ref_2src_2ops_2_re_l_u_8h_source.html":[35,0,0,3,0,0,42],
-"compiler_2ann-ref_2src_2ops_2_relu_8cpp.html":[35,0,0,3,0,0,39],
-"compiler_2ann-ref_2src_2ops_2_relu_8cpp.html#a770fa870b6c261647e7ed76580eafc3e":[35,0,0,3,0,0,39,0],
-"compiler_2ann-ref_2src_2ops_2_relu_8cpp_source.html":[35,0,0,3,0,0,39],
-"compiler_2ann-ref_2src_2ops_2_reshape_8cpp.html":[35,0,0,3,0,0,47],
-"compiler_2ann-ref_2src_2ops_2_reshape_8cpp.html#a5faeeb0d2549ad9b71047c71b765a75e":[35,0,0,3,0,0,47,0],
-"compiler_2ann-ref_2src_2ops_2_reshape_8cpp.html#aaf864d34b303e5a8b895442068be547a":[35,0,0,3,0,0,47,1],
-"compiler_2ann-ref_2src_2ops_2_reshape_8cpp_source.html":[35,0,0,3,0,0,47],
-"compiler_2ann-ref_2src_2ops_2_reshape_8h.html":[35,0,0,3,0,0,48]
+"compiler_2ann-ref_2src_2ops_2_re_l_u_8cpp.html":[35,0,0,3,0,0,39],
+"compiler_2ann-ref_2src_2ops_2_re_l_u_8cpp.html#a770fa870b6c261647e7ed76580eafc3e":[35,0,0,3,0,0,39,0],
+"compiler_2ann-ref_2src_2ops_2_re_l_u_8cpp_source.html":[35,0,0,3,0,0,39]
 };

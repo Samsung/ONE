@@ -1440,7 +1440,8 @@ var annotated_dup =
       [ "VerifyQuantizedNodeType", "classluci_1_1_verify_quantized_node_type.html", "classluci_1_1_verify_quantized_node_type" ],
       [ "VerifyQuantizedNodeTypeBase", "classluci_1_1_verify_quantized_node_type_base.html", "classluci_1_1_verify_quantized_node_type_base" ],
       [ "VerifyQuantizedNodeU8Type", "classluci_1_1_verify_quantized_node_u8_type.html", null ],
-      [ "VirtualOutputDetector", "structluci_1_1_virtual_output_detector.html", "structluci_1_1_virtual_output_detector" ]
+      [ "VirtualOutputDetector", "structluci_1_1_virtual_output_detector.html", "structluci_1_1_virtual_output_detector" ],
+      [ "XpSepActFromTransposeConvPass", "structluci_1_1_xp_sep_act_from_transpose_conv_pass.html", "structluci_1_1_xp_sep_act_from_transpose_conv_pass" ]
     ] ],
     [ "luci_interpreter", "namespaceluci__interpreter.html", [
       [ "kernels", "namespaceluci__interpreter_1_1kernels.html", [

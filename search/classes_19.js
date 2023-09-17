@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['zeroslikechef_0',['ZerosLikeChef',['../class_zeros_like_chef.html',1,'']]],
-  ['zeroslikecheffactory_1',['ZerosLikeChefFactory',['../struct_zeros_like_chef_factory.html',1,'']]],
-  ['zipper_2',['Zipper',['../classnnfw_1_1misc_1_1tensor_1_1_zipper.html',1,'nnfw::misc::tensor']]]
+  ['ylorrd9palette_0',['YLORRD9Palette',['../class_palette_1_1_y_l_o_r_r_d9_palette.html',1,'Palette']]]
 ];

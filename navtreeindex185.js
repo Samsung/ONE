@@ -1,5 +1,14 @@
 var NAVTREEINDEX185 =
 {
+"namespacearm__compute.html#ae1a4d9334f986f2a8a269850e31e327d":[33,0,4,74],
+"namespacearm__compute.html#aee9a058eb42f5f20e97f4832cf2e5d08":[33,0,4,77],
+"namespacearm__compute_1_1misc.html":[33,0,4,0],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html":[33,0,4,0,0],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html#a04b0c0423728894eea6d77c2e01aa0ab":[33,0,4,0,0,2],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html#a2ce8b629c4ffa62fd0d3b209b3b9be80":[33,0,4,0,0,5],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html#a639ed6b2f361df361565bf1cb2a22bb2":[33,0,4,0,0,4],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html#a7986ee821cb6645d21c377cc4b4ba6eb":[33,0,4,0,0,3],
+"namespacearm__compute_1_1misc_1_1shape__calculator.html#ade860b5dca74d78f1a7a4acc98e815e2":[33,0,4,0,0,0],
 "namespacearm__compute_1_1misc_1_1shape__calculator.html#ae64ffb880c8978e720b1724418683504":[33,0,4,0,0,1],
 "namespacearm__compute_1_1weights__transformations.html":[33,0,4,1],
 "namespacearser.html":[33,0,5],
@@ -240,14 +249,5 @@ var NAVTREEINDEX185 =
 "namespaceenco.html#a3f74cb35d79da97e807fd6b83c0c3261":[33,0,35,43],
 "namespaceenco.html#a4f0518cc02a4ac36303ba0d03dce5ba0":[33,0,35,44],
 "namespaceenco.html#a557ffc07108fac5ea7e599e74175a6d1":[33,0,35,51],
-"namespaceenco.html#a577bf7d7b1d4373230201000570e3b13":[33,0,35,63],
-"namespaceenco.html#a64ffef250ffa33efadd30fe871066da2":[33,0,35,39],
-"namespaceenco.html#a81b59f2e10a9142e39eaccf332e9b9ef":[33,0,35,32],
-"namespaceenco.html#a840d3d313a65c9fe95dde3d4428c21fa":[33,0,35,37],
-"namespaceenco.html#a846843be0066d3f26c1c218b3f46315f":[33,0,35,33],
-"namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684":[33,0,35,61],
-"namespaceenco.html#a9096629d7162d7dac7730c489ab5e29a":[33,0,35,52],
-"namespaceenco.html#a9737bdf1cf46deb3c78dc3efae659114":[33,0,35,57],
-"namespaceenco.html#aaccbaaf5bbeba1ba56d4d9044d5b7a1b":[33,0,35,42],
-"namespaceenco.html#ab25b418d78ede9bce080ce499afb446a":[33,0,35,59]
+"namespaceenco.html#a577bf7d7b1d4373230201000570e3b13":[33,0,35,63]
 };

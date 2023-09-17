@@ -1,5 +1,14 @@
 var NAVTREEINDEX178 =
 {
+"import_2src_2_nodes_2_circle_less_equal_8cpp_source.html":[35,0,0,51,2,1,0,45],
+"import_2src_2_nodes_2_circle_local_response_normalization_8cpp.html":[35,0,0,51,2,1,0,46],
+"import_2src_2_nodes_2_circle_local_response_normalization_8cpp_source.html":[35,0,0,51,2,1,0,46],
+"import_2src_2_nodes_2_circle_log_8cpp.html":[35,0,0,51,2,1,0,47],
+"import_2src_2_nodes_2_circle_log_8cpp_source.html":[35,0,0,51,2,1,0,47],
+"import_2src_2_nodes_2_circle_log_softmax_8cpp.html":[35,0,0,51,2,1,0,52],
+"import_2src_2_nodes_2_circle_log_softmax_8cpp_source.html":[35,0,0,51,2,1,0,52],
+"import_2src_2_nodes_2_circle_logical_and_8cpp.html":[35,0,0,51,2,1,0,48],
+"import_2src_2_nodes_2_circle_logical_and_8cpp_source.html":[35,0,0,51,2,1,0,48],
 "import_2src_2_nodes_2_circle_logical_not_8cpp.html":[35,0,0,51,2,1,0,49],
 "import_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[35,0,0,51,2,1,0,49],
 "import_2src_2_nodes_2_circle_logical_or_8cpp.html":[35,0,0,51,2,1,0,50],
@@ -240,14 +249,5 @@ var NAVTREEINDEX178 =
 "kuma_8h.html":[35,0,0,43,0,0],
 "kuma_8h.html#a56eb60c063d89aaef20b7ad37a5aa2be":[35,0,0,43,0,0,4],
 "kuma_8h.html#a5856c2632ffabd723ea2328efa5e8a2e":[35,0,0,43,0,0,7],
-"kuma_8h.html#a68f73ceda2a09317f0f7f31f8eb8912f":[35,0,0,43,0,0,2],
-"kuma_8h.html#a7a58189df752b1befc8a1330b81883e1":[35,0,0,43,0,0,3],
-"kuma_8h.html#aa887f95a62bbe57942ed4fb85cdaeedb":[35,0,0,43,0,0,5],
-"kuma_8h.html#adfde98209fbfa4b3e48f21f3e33023d5":[35,0,0,43,0,0,8],
-"kuma_8h.html#af8c611896759acfcb36f1174428b4d8b":[35,0,0,43,0,0,6],
-"kuma_8h.html#af8c611896759acfcb36f1174428b4d8ba00dd9aff4cb9a1496aed07b3e8718db7":[35,0,0,43,0,0,6,0],
-"kuma_8h.html#af8c611896759acfcb36f1174428b4d8ba65ef6d9ba3ca40009b57c9dac10ec6b8":[35,0,0,43,0,0,6,1],
-"kuma_8h_source.html":[35,0,0,43,0,0],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_abs_8h.html":[35,0,0,51,3,0,0,0,0,0],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_abs_8h_source.html":[35,0,0,51,3,0,0,0,0,0]
+"kuma_8h.html#a68f73ceda2a09317f0f7f31f8eb8912f":[35,0,0,43,0,0,2]
 };

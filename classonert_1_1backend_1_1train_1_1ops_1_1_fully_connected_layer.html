@@ -270,7 +270,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  117</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
 <div class="line"><span class="lineno">  118</span>    {</div>
 <div class="line"><span class="lineno">  119</span>      assert(data_type == _grad_weights-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
-<div class="line"><span class="lineno">  120</span>      assert(data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
+<div class="line"><span class="lineno">  120</span>      assert(_grad_bias == <span class="keyword">nullptr</span> || data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
 <div class="line"><span class="lineno">  121</span>      backwardFloat32();</div>
 <div class="line"><span class="lineno">  122</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  123</span>    }</div>

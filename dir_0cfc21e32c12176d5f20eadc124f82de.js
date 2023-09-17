@@ -71,5 +71,6 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "SubstituteTransposeToReshapePass.h", "_substitute_transpose_to_reshape_pass_8h.html", "_substitute_transpose_to_reshape_pass_8h" ],
     [ "TransformMinMaxToRelu6Pass.h", "_transform_min_max_to_relu6_pass_8h.html", "_transform_min_max_to_relu6_pass_8h" ],
     [ "TransformMinReluToRelu6Pass.h", "_transform_min_relu_to_relu6_pass_8h.html", "_transform_min_relu_to_relu6_pass_8h" ],
-    [ "UnrollUnidirectionalSequenceLSTMPass.h", "_unroll_unidirectional_sequence_l_s_t_m_pass_8h.html", "_unroll_unidirectional_sequence_l_s_t_m_pass_8h" ]
+    [ "UnrollUnidirectionalSequenceLSTMPass.h", "_unroll_unidirectional_sequence_l_s_t_m_pass_8h.html", "_unroll_unidirectional_sequence_l_s_t_m_pass_8h" ],
+    [ "XpSepActFromTransposeConvPass.h", "_xp_sep_act_from_transpose_conv_pass_8h.html", "_xp_sep_act_from_transpose_conv_pass_8h" ]
 ];

@@ -4353,6 +4353,7 @@ var hierarchy =
       [ "luci::TransformMinMaxToRelu6Pass", "structluci_1_1_transform_min_max_to_relu6_pass.html", null ],
       [ "luci::TransformMinReluToRelu6Pass", "structluci_1_1_transform_min_relu_to_relu6_pass.html", null ],
       [ "luci::UnrollUnidirectionalSequenceLSTMPass", "structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html", null ],
+      [ "luci::XpSepActFromTransposeConvPass", "structluci_1_1_xp_sep_act_from_transpose_conv_pass.html", null ],
       [ "moco::ConstantFoldAdd", "classmoco_1_1_constant_fold_add.html", null ],
       [ "moco::ConstantFoldMul", "classmoco_1_1_constant_fold_mul.html", null ],
       [ "moco::ConstantFoldPack", "classmoco_1_1_constant_fold_pack.html", null ],

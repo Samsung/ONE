@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('train_2ops_2_fully_connected_layer_8cc
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    {</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      assert(data_type == _grad_weights-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      assert(data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      assert(_grad_bias == <span class="keyword">nullptr</span> || data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      backwardFloat32();</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>

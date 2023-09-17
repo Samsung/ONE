@@ -1,5 +1,14 @@
 var NAVTREEINDEX207 =
 {
+"partition_2src_2_nodes_2_circle_instance_norm_8cpp.html":[35,0,0,51,6,1,0,41],
+"partition_2src_2_nodes_2_circle_instance_norm_8cpp_source.html":[35,0,0,51,6,1,0,41],
+"partition_2src_2_nodes_2_circle_l2_normalize_8cpp.html":[35,0,0,51,6,1,0,42],
+"partition_2src_2_nodes_2_circle_l2_normalize_8cpp_source.html":[35,0,0,51,6,1,0,42],
+"partition_2src_2_nodes_2_circle_l2_pool2_d_8cpp.html":[35,0,0,51,6,1,0,43],
+"partition_2src_2_nodes_2_circle_l2_pool2_d_8cpp_source.html":[35,0,0,51,6,1,0,43],
+"partition_2src_2_nodes_2_circle_leaky_relu_8cpp.html":[35,0,0,51,6,1,0,44],
+"partition_2src_2_nodes_2_circle_leaky_relu_8cpp_source.html":[35,0,0,51,6,1,0,44],
+"partition_2src_2_nodes_2_circle_less_8cpp.html":[35,0,0,51,6,1,0,45],
 "partition_2src_2_nodes_2_circle_less_8cpp_source.html":[35,0,0,51,6,1,0,45],
 "partition_2src_2_nodes_2_circle_less_equal_8cpp.html":[35,0,0,51,6,1,0,46],
 "partition_2src_2_nodes_2_circle_less_equal_8cpp_source.html":[35,0,0,51,6,1,0,46],
@@ -240,14 +249,5 @@ var NAVTREEINDEX207 =
 "record-minmax-conversion-test_2gen__h5__random__inputs_8py_source.html":[35,0,0,100,0],
 "record-minmax-thread-safety-test_2gen__h5__random__inputs_8py.html":[35,0,0,101,0],
 "record-minmax-thread-safety-test_2gen__h5__random__inputs_8py_source.html":[35,0,0,101,0],
-"reference_2_binary_arithmetic_ops_8h.html":[35,0,1,1,0,0,3,2,2],
-"reference_2_binary_arithmetic_ops_8h.html#a0ab57f1de7a3d7c735f732c550280f5b":[35,0,1,1,0,0,3,2,2,0],
-"reference_2_binary_arithmetic_ops_8h.html#a9a225c0ef74f6e779c39130ec580e324":[35,0,1,1,0,0,3,2,2,2],
-"reference_2_binary_arithmetic_ops_8h.html#aa1d85bb7454deb60df52ee2c920746a4":[35,0,1,1,0,0,3,2,2,3],
-"reference_2_binary_arithmetic_ops_8h.html#ae7dd56ac62e8a99481b4874aae08836b":[35,0,1,1,0,0,3,2,2,1],
-"reference_2_binary_arithmetic_ops_8h.html#af03169b7be90f5dddc977e41b8acaec5":[35,0,1,1,0,0,3,2,2,4],
-"reference_2_binary_arithmetic_ops_8h_source.html":[35,0,1,1,0,0,3,2,2],
-"reference_2integer__ops_2_depthwise_conv_u_int8_8h.html":[35,0,1,1,0,0,3,2,0,1],
-"reference_2integer__ops_2_depthwise_conv_u_int8_8h.html#add363de1fa752992e683a41cdd38e6dc":[35,0,1,1,0,0,3,2,0,1,0],
-"reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html":[35,0,1,1,0,0,3,2,0,1]
+"reference_2_binary_arithmetic_ops_8h.html":[35,0,1,1,0,0,3,2,2]
 };
