@@ -207,7 +207,7 @@ tar -xf %{SOURCE3019} -C ./externals
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
 # nncc build
 %if %{odc_build} == 1
-%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_OS=tizen \
+%{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle06;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
 %{nncc_env} ./nncc build %{build_jobs}
