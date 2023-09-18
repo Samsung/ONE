@@ -16,7 +16,7 @@
 
 #ifdef ENABLE_TRAINING
 
-#include "luci_interpreter/core/TrainableWeightStorage.h"
+#include "luci_interpreter/TrainableWeightStorage.h"
 
 namespace luci_interpreter
 {
