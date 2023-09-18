@@ -4,6 +4,7 @@ set(SOURCES
     RuntimeGraph.h
     RuntimeGraph.cpp
     RuntimeModule.h
+    GradientCalculationStorage.cpp
     TrainableWeightStorage.cpp)
 
 add_library(${LUCI_INTERPRETER_CORE} STATIC ${SOURCES})
