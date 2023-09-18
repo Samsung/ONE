@@ -4,6 +4,7 @@ set(SOURCES
     RuntimeGraph.h
     RuntimeGraph.cpp
     RuntimeModule.h
+    TrainingGraph.cpp
     GradientCalculationStorage.cpp
     TrainableWeightStorage.cpp)
 
