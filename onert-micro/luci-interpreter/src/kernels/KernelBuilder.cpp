@@ -41,4 +41,21 @@ void KernelExecuteRegistry::execute_kernel(const circle::Operator *cur_op,
   specific_execute_func(cur_op, runtime_graph);
 }
 
+#ifdef ENABLE_TRAINING
+
+training::Status training::KernelTrainRegistry::train_kernel(
+  const circle::Operator *cur_op, circle::BuiltinOperator opcode, CircleReader *reader,
+  GradientCalculationStorage *gradient_calculation_storage, const TrainingSettings &settings,
+  TrainableWeightStorage *weight_storage, bool is_compute_gradient) const
+{
+  auto specific_train_func = get_kernel_train_func(opcode);
+  if (specific_train_func == nullptr)
+    assert(false && "Unsupported operator");
+
+  return specific_train_func(cur_op, reader, gradient_calculation_storage, settings, weight_storage,
+                             is_compute_gradient);
+}
+
+#endif // ENABLE_TRAINING
+
 } // namespace luci_interpreter
