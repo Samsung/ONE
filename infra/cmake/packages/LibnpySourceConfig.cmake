@@ -10,9 +10,7 @@ function(_LibnpySource_import)
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(LIBNPY_URL ${EXTERNAL_DOWNLOAD_SERVER}/llohse/libnpy/archive/refs/tags/v0.1.0.tar.gz)
 
-  ExternalSource_Download(LIBNPY
-    DIRNAME LIBNPY
-    URL ${LIBNPY_URL})
+  ExternalSource_Download(LIBNPY ${LIBNPY_URL})
 
   set(LibnpySource_DIR ${LIBNPY_SOURCE_DIR} PARENT_SCOPE)
   set(LibnpySource_FOUND TRUE PARENT_SCOPE)
