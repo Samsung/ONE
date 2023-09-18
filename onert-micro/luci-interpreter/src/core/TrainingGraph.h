@@ -20,7 +20,7 @@
 #define LUCI_INTERPRETER_SRC_CORE_TRAINING_GRAPH_H
 
 #include "luci_interpreter/TrainingSettings.h"
-#include "luci_interpreter/core/TrainableWeightStorage.h"
+#include "luci_interpreter/TrainableWeightStorage.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 #include "memory_managers/SimpleMemoryManager.h"
 

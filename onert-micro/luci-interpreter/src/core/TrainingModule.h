@@ -21,7 +21,7 @@
 
 #include "core/RuntimeModule.h"
 
-#include "luci_interpreter/core/TrainableWeightStorage.h"
+#include "luci_interpreter/TrainableWeightStorage.h"
 #include "TrainingGraph.h"
 
 namespace luci_interpreter
