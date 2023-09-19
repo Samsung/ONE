@@ -1,6 +1,6 @@
 nnas_find_package(Jsoncpp)
 if(NOT Jsoncpp_FOUND)
-  message(STATUS "Build jsoncpp: FAILED (missing jsoncpp)")
+  message(STATUS "q-implant: Jsoncpp NOT FOUND")
   return()
 endif(NOT Jsoncpp_FOUND)
 
