@@ -25,6 +25,10 @@ if (DIS_FLOAT)
     add_definitions(-DDIS_FLOAT)
 endif()
 
+if (ENABLE_TRAINING)
+    add_definitions(-DENABLE_TRAINING)
+endif()
+
 add_compile_options(-fno-exceptions)
 add_compile_options(-Os)
 

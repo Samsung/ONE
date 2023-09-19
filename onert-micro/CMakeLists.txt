@@ -121,6 +121,12 @@ if (ENABLE_ONERT_MICRO_TEST)
     list(APPEND CMAKE_ARM_OPTIONS "-DENABLE_TEST=ON")
 endif ()
 
+if (ENABLE_ONERT_MICRO_TRAINING)
+    message(STATUS "ENABLE TRAINING PART")
+    add_definitions(-DENABLE_TRAINING)
+    list(APPEND CMAKE_ARM_OPTIONS "-DENABLE_TRAINING=ON")
+endif ()
+
 if (DIS_QUANT)
     message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
     add_definitions(-DDIS_QUANT)
@@ -194,6 +200,9 @@ add_custom_command(
 add_custom_target(luci_interpreter_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
 add_subdirectory(eval-driver)
+
+# Should be after add_subdirectory
+unset(ENABLE_ONERT_MICRO_TRAINING CACHE)
 
 if (NOT DEFINED BUILD_TEST)
     return()
