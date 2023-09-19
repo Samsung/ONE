@@ -46,6 +46,7 @@ using BaseRuntimeGraph = RuntimeGraph;
 
 #undef REGISTER_KERNEL
 
+#ifdef ENABLE_TRAINING
 namespace training
 {
 #define REGISTER_TRAIN_KERNEL(builtin_operator, name)                                           \
@@ -58,6 +59,8 @@ namespace training
 
 #undef REGISTER_TRAIN_KERNEL
 } // namespace training
+#endif // ENABLE_TRAINING
+
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_KERNELS_NODES_BUILDERS_H
