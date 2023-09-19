@@ -6,7 +6,7 @@ endif(NOT Jsoncpp_FOUND)
 
 nnas_find_package(LibnpySource QUIET)
 if(NOT LibnpySource_FOUND)
-  message(STATUS "LibnpySource NOT FOUND")
+  message(STATUS "q-implant: LibnpySource NOT FOUND")
   return()
 endif(NOT LibnpySource_FOUND)
 
