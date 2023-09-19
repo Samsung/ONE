@@ -2,7 +2,7 @@
 
 # refer https://github.com/Samsung/ONE/issues/11368
 
-# Set root directory of Python
+# Set root directory ofPython
 set(PYTHON_EXECUTABLE ${ROOTFS_ARM}/usr/bin/python3.8)
 
 # Disable pybind11 python search mechanism
@@ -30,7 +30,8 @@ include_directories(../../api/include ../../api/src ../../core/include)
 include_directories(${CMAKE_BINARY_DIR}/../../../externals/PYBIND11/include/pybind11/)
 
 # Add the pybind tools include
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/../overlay/share/cmake/pybind11/")
+list(APPEND CMAKE_MODULE_PATH ${PYBIND11_INCLUDE_DIR}/../tools)
+include(${PYBIND11_INCLUDE_DIR}/../tools/pybind11Tools.cmake)
 # Add the Python module
 pybind11_add_module(nnfw_api_pybind src/nnfw_api_pybind.cc)
 
