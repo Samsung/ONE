@@ -9,5 +9,5 @@ Homepage: https://github.com/Samsung/ONE
 Package: onecc-docker
 Architecture: amd64
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}, python3.8
+Depends: ${misc:Depends}, ${shlibs:Depends}, python3
 Description: On-device Neural Engine docker package
