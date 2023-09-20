@@ -17,29 +17,35 @@
 #ifndef LUCI_INTERPRETER_PAL_MUL_H
 #define LUCI_INTERPRETER_PAL_MUL_H
 
-#include <tensorflow/lite/kernels/internal/reference/mul.h>
+#include "PALMulCommon.h"
+#include "arm_nnfunctions.h"
 
 namespace luci_interpreter_pal
 {
-template <typename T>
-static inline void Mul(tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
-                       const T *input1_data, const tflite::RuntimeShape &input2_shape,
-                       const T *input2_data, const tflite::RuntimeShape &output_shape,
-                       T *output_data)
+
+template <>
+inline void Mul<int8_t>(const ArithmeticParams &params, const int flat_size,
+                        const int8_t *input1_data, const int8_t *input2_data, int8_t *output_data)
 {
-  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
-                                            input2_data, output_shape, output_data);
+  auto status = arm_elementwise_mul_s8(
+    input1_data, input2_data, params.input1_offset, params.input2_offset, output_data,
+    params.output_offset, params.output_multiplier, params.output_shift,
+    params.quantized_activation_min, params.quantized_activation_max, flat_size);
+  assert(status == ARM_CMSIS_NN_SUCCESS);
 }
 
-template <typename T>
-static inline void
-BroadcastMul4DSlow(tflite::ArithmeticParams &params, const tflite::RuntimeShape &input1_shape,
-                   const T *input1_data, const tflite::RuntimeShape &input2_shape,
-                   const T *input2_data, const tflite::RuntimeShape &output_shape, T *output_data)
+template <>
+inline void Mul<int16_t>(const ArithmeticParams &params, const int flat_size,
+                         const int16_t *input1_data, const int16_t *input2_data,
+                         int16_t *output_data)
 {
-  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
-                                            input2_data, output_shape, output_data);
+  auto status = arm_elementwise_mul_s16(
+    input1_data, input2_data, params.input1_offset, params.input2_offset, output_data,
+    params.output_offset, params.output_multiplier, params.output_shift,
+    params.quantized_activation_min, params.quantized_activation_max, flat_size);
+  assert(status == ARM_CMSIS_NN_SUCCESS);
 }
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_MUL_H
