@@ -209,15 +209,15 @@ protected:
   const unsigned char *_test_kernel_model_circle;
 };
 
-class NegTestDataInvalidInputTypeConv2DKernel : public NegTestDataBase
+class NegTestDataInvalidInputShapeConv2DKernel : public NegTestDataBase
 {
 public:
-  NegTestDataInvalidInputTypeConv2DKernel()
+  NegTestDataInvalidInputShapeConv2DKernel()
   {
-    _test_kernel_model_circle = neg_conv2d_bias_wrong_type::test_kernel_model_circle;
+    _test_kernel_model_circle = neg_conv2d_invalid_input_shape::test_kernel_model_circle;
   }
 
-  ~NegTestDataInvalidInputTypeConv2DKernel() override = default;
+  ~NegTestDataInvalidInputShapeConv2DKernel() override = default;
 
   const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
 
