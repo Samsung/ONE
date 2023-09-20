@@ -2,13 +2,6 @@
 
 # refer https://github.com/Samsung/ONE/issues/11368
 
-# Set root directory ofPython
-set(PYTHON_EXECUTABLE ${ROOTFS_ARM}/usr/bin/python3.8)
-
-# Disable pybind11 python search mechanism
-set(PYTHONLIBS_FOUND TRUE CACHE INTERNAL "")
-
-# Settings before running find_package
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY "Set to find packages only in cross root path by force")
 find_package(Python COMPONENTS Interpreter Development)
 
@@ -18,23 +11,22 @@ set(PYTHON_LIBRARIES ${Python_LIBRARIES} CACHE INTERNAL "Cross python include pa
 set(PYTHON_MODULE_PREFIX "lib" CACHE INTERNAL "Cross python lib prefix")
 set(PYTHON_MODULE_EXTENSION ".so" CACHE INTERNAL "Cross python lib extension")
 
-# Install pybind11
+# Disable pybind11 python search mechanism
+set(PYTHONLIBS_FOUND TRUE CACHE INTERNAL "")
+
+# install pybind11
 nnfw_find_package(Pybind11 REQUIRED)
 if(NOT Pybind11_FOUND)
   message(STATUS "Build onert/python: FAILED (Pybind11 is missing)")
   return()
 endif()
 
-# Add the nnfw api and Pybind11 header
-include_directories(../../api/include ../../api/src ../../core/include)
-include_directories(${CMAKE_BINARY_DIR}/../../../externals/PYBIND11/include/)
-
-# Add the pybind tools include
-list(APPEND CMAKE_MODULE_PATH ${PYBIND11_INCLUDE_DIR}/../tools)
-include(${PYBIND11_INCLUDE_DIR}/../tools/pybind11Tools.cmake)
 # Add the Python module
-pybind11_add_module(nnfw_api_pybind src/nnfw_api_wrapper_pybind.cc src/nnfw_api_wrapper.cc)
+file(GLOB_RECURSE NNFW_API_PYBIND_SOURCES "src/*.cc")
+pybind11_add_module(nnfw_api_pybind ${NNFW_API_PYBIND_SOURCES})
 
+# Add the nnfw api and Pybind11 header
+target_include_directories(nnfw_api_pybind PRIVATE ${pybind11_SOURCE_DIR}/include/pybind11)
 target_include_directories(nnfw_api_pybind PRIVATE include ../../api/include)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
 
