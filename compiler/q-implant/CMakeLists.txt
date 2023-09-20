@@ -1,0 +1,32 @@
+nnas_find_package(Jsoncpp)
+if(NOT Jsoncpp_FOUND)
+  message(STATUS "q-implant: Jsoncpp NOT FOUND")
+  return()
+endif(NOT Jsoncpp_FOUND)
+
+nnas_find_package(LibnpySource QUIET)
+if(NOT LibnpySource_FOUND)
+  message(STATUS "q-implant: LibnpySource NOT FOUND")
+  return()
+endif(NOT LibnpySource_FOUND)
+
+set(DRIVER "driver/Driver.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_executable(q-implant ${DRIVER} ${SOURCES})
+target_include_directories(q-implant PRIVATE ${Jsoncpp_INCLUDE_DIRS})
+target_include_directories(q-implant PRIVATE ${LibnpySource_DIR}/include)
+target_include_directories(q-implant PRIVATE include)
+
+target_link_libraries(q-implant ${Jsoncpp_STATIC_LIB})
+target_link_libraries(q-implant safemain)
+target_link_libraries(q-implant loco)
+target_link_libraries(q-implant luci_import)
+target_link_libraries(q-implant luci_service)
+target_link_libraries(q-implant luci_pass)
+target_link_libraries(q-implant luci_export)
+target_link_libraries(q-implant luci_env)
+target_link_libraries(q-implant arser)
+target_link_libraries(q-implant vconone)
+
+install(TARGETS q-implant DESTINATION bin)

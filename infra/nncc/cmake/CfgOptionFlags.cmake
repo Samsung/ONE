@@ -26,6 +26,7 @@ option(DOWNLOAD_ABSEIL "Download Abseil-cpp source" ON)
 option(DOWNLOAD_OPENCL_HEADERS "Download OpenCl Header source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
 option(DOWNLOAD_JSONCPP "Download Jsoncpp source" ON)
+option(DOWNLOAD_LIBNPY "Download Libnpy source" OFF)
 
 option(DOWNLOAD_GTEST "Download Google Test source" ON)
 option(BUILD_GTEST "Build Google Test from the downloaded source" ON)

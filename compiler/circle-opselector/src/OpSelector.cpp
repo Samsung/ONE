@@ -119,6 +119,14 @@ std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode
       // the node isn't graph input if it is an other node's input
       if (std::find(nodes.begin(), nodes.end(), arg) != nodes.end())
         continue;
+      // do not set graph input if the node is CircleOutputExclude.
+      auto circle_output_exclude = dynamic_cast<luci::CircleOutputExclude *>(arg);
+      if (circle_output_exclude)
+      {
+        auto clone = luci::clone_node(circle_output_exclude, graph.get());
+        ctx.emplace(circle_output_exclude, clone);
+        continue;
+      }
       auto circle_const = dynamic_cast<luci::CircleConst *>(arg);
       if (circle_const != nullptr)
       {
