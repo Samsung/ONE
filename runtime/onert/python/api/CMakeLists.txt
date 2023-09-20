@@ -27,13 +27,13 @@ endif()
 
 # Add the nnfw api and Pybind11 header
 include_directories(../../api/include ../../api/src ../../core/include)
-include_directories(${CMAKE_BINARY_DIR}/../../../externals/PYBIND11/include/pybind11/)
+include_directories(${CMAKE_BINARY_DIR}/../../../externals/PYBIND11/include/)
 
 # Add the pybind tools include
 list(APPEND CMAKE_MODULE_PATH ${PYBIND11_INCLUDE_DIR}/../tools)
 include(${PYBIND11_INCLUDE_DIR}/../tools/pybind11Tools.cmake)
 # Add the Python module
-pybind11_add_module(nnfw_api_pybind src/nnfw_api_pybind.cc)
+pybind11_add_module(nnfw_api_pybind src/nnfw_api_wrapper_pybind.cc src/nnfw_api_wrapper.cc)
 
 target_include_directories(nnfw_api_pybind PRIVATE include ../../api/include)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
