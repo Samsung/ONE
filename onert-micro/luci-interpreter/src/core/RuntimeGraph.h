@@ -18,6 +18,11 @@
 #define LUCI_INTERPRETER_CORE_RUNTIMEGRAPH_H
 
 #include "luci_interpreter/core/Tensor.h"
+
+#ifdef ENABLE_TRAINING
+#include "TrainingGraph.h"
+#endif // ENABLE_TRAINING
+
 #ifdef USE_STATIC_ALLOC
 #include "memory_managers/StaticMemoryManager.h"
 #else
@@ -110,6 +115,18 @@ public:
     return _inplace_op_indexes.find(op) != _inplace_op_indexes.end();
   }
 
+#ifdef ENABLE_TRAINING
+  void setLastTrainingLayersNumber(uint32_t training_number)
+  {
+    _number_of_last_trainable_layers = training_number;
+  }
+  void setGradientCalculationStorage(training::GradientCalculationStorage *gradient_calc_storage)
+  {
+    _gradient_calc_storage = gradient_calc_storage;
+  }
+  void setTrainingWeightStorage(training::TrainableWeightStorage *storage) { _storage = storage; }
+#endif // ENABLE_TRAINING
+
 #ifndef DIS_DYN_SHAPES
   void addDynamicShapeTensor(const circle::Tensor *tensor, luci_interpreter::RuntimeShape &&shapes);
 
@@ -132,6 +149,12 @@ private:
   std::unordered_set<const circle::Operator *> _inplace_op_indexes;
 
   bool _is_valid = false;
+
+#ifdef ENABLE_TRAINING
+  uint32_t _number_of_last_trainable_layers = 0; // 0 means there is no training
+  training::GradientCalculationStorage *_gradient_calc_storage = nullptr;
+  training::TrainableWeightStorage *_storage = nullptr;
+#endif // ENABLE_TRAINING
 
   // Tensors that are not used anymore after given op
   std::vector<std::vector<const circle::Tensor *>> _alloc_plan;

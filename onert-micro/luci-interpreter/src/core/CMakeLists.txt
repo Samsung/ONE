@@ -4,7 +4,10 @@ set(SOURCES
     RuntimeGraph.h
     RuntimeGraph.cpp
     RuntimeModule.h
-    TrainableWeightStorage.cpp)
+    TrainingGraph.cpp
+    GradientCalculationStorage.cpp
+    TrainableWeightStorage.cpp
+    TrainingModule.cpp)
 
 add_library(${LUCI_INTERPRETER_CORE} STATIC ${SOURCES})
 if (NOT NNCC_LIBRARY_NO_PIC)

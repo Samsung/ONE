@@ -45,7 +45,8 @@ public:
 
   ~Interpreter();
 
-  void allocateAndWriteInputTensor(int32_t input_tensor_index, const void *data, size_t data_size);
+  void allocateAndWriteInputTensor(int32_t input_tensor_index, const uint8_t *data,
+                                   size_t data_size);
   uint8_t *allocateInputTensor(int32_t input_tensor_index);
 
   uint8_t *readOutputTensor(int32_t output_tensor_index);
