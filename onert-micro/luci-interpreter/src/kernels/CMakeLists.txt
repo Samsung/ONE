@@ -14,6 +14,12 @@ macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND SOURCES "${NODE}.cpp")
 endmacro(REGISTER_KERNEL)
 
+macro(REGISTER_TRAIN_KERNEL OPERATOR, NODE)
+  list(APPEND SOURCES "${NODE}.train.cpp")
+endmacro(REGISTER_TRAIN_KERNEL)
+
+include("${LUCI_INTERPRETER_PAL_DIR}/KernelsToTrain.lst")
+
 include(${KERNEL_REGISTER_FILE})
 
 add_library(${LUCI_INTERPRETER_KERNELS} STATIC ${SOURCES})
@@ -37,13 +43,7 @@ macro(REGISTER_KERNEL OPERATOR, NODE)
   list(APPEND TEST_SOURCES "${NODE}.test.cpp")
 endmacro(REGISTER_KERNEL)
 
-macro(REGISTER_TRAIN_KERNEL OPERATOR, NODE)
-  list(APPEND SOURCES "${NODE}.train.cpp")
-endmacro(REGISTER_TRAIN_KERNEL)
-
 include(${KERNEL_REGISTER_FILE})
-
-include("${LUCI_INTERPRETER_PAL_DIR}/KernelsToTrain.lst")
 
 list(APPEND TEST_SOURCES TestUtils.h TestUtils.cpp)
 
