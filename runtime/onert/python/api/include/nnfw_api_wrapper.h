@@ -16,20 +16,32 @@
 
 #include "nnfw.h"
 
-#include <stl.h>
-#include <stl_bind.h>
-#include <numpy.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 namespace py = pybind11;
 
+struct tensorinfo
+{
+  const char *dtype;
+  int32_t rank;
+  int32_t dims[NNFW_MAX_RANK];
+};
+
 /**
- * @brief     Handle erros with NNFW_STATUS in API functions.
+ * @brief     Handle errors with NNFW_STATUS in API functions.
  *
  * This only handles NNFW_STATUS errors.
  *
  * @param[in] status The status returned by API functions
  */
 void ensure_status(NNFW_STATUS status);
+
+NNFW_LAYOUT getLayout(const char *layout = "");
+
+NNFW_TYPE getType(const char *type = "");
+
+const char *getStringType(NNFW_TYPE type);
 
 /**
  * @brief     Get the total number of elements in nnfw_tensorinfo->dims.
@@ -47,7 +59,7 @@ uint64_t num_elems(const nnfw_tensorinfo *tensor_info);
  *
  * @param[in] tensor_info Tensor info (shape, type, etc)
  */
-py::list get_dims(const nnfw_tensorinfo &tensor_info);
+py::list get_dims(const tensorinfo &tensor_info);
 
 /**
  * @brief     Set nnfw_tensorinfo->dims.
@@ -57,7 +69,7 @@ py::list get_dims(const nnfw_tensorinfo &tensor_info);
  * @param[in] tensor_info Tensor info (shape, type, etc)
  * @param[in] array       array to set dimension
  */
-void set_dims(nnfw_tensorinfo &tensor_info, const py::list &array);
+void set_dims(tensorinfo &tensor_info, const py::list &array);
 
 class NNFW_SESSION
 {
@@ -65,15 +77,12 @@ private:
   nnfw_session *session;
 
 public:
-  NNFW_SESSION();
+  NNFW_SESSION(const char *package_file_path, const char *backends);
+  NNFW_SESSION(const char *package_file_path, const char *op, const char *backend);
   ~NNFW_SESSION();
 
-  void create_session();
   void close_session();
-  void load_model_from_file(const char *package_file_path);
-  void apply_tensorinfo(uint32_t index, nnfw_tensorinfo tensor_info);
-  void set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *tensor_info);
-  void prepare();
+  void set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info);
   void run();
   void run_async();
   void await();
@@ -81,14 +90,30 @@ public:
    * @brief   process input array according to data type of numpy array sent by Python
    *          (int, float, uint8_t, bool, int64_t, int8_t, int16_t)
    */
-  template <typename T>
-  void set_input(uint32_t index, nnfw_tensorinfo *tensor_info, py::array_t<T> &buffer);
+  template <typename T> void set_input(uint32_t index, py::array_t<T> &buffer)
+  {
+    nnfw_tensorinfo tensor_info;
+    nnfw_input_tensorinfo(this->session, index, &tensor_info);
+    NNFW_TYPE type = tensor_info.dtype;
+    uint32_t input_elements = num_elems(&tensor_info);
+    size_t length = sizeof(T) * input_elements;
+
+    ensure_status(nnfw_set_input(session, index, type, buffer.request().ptr, length));
+  }
   /**
    * @brief   process output array according to data type of numpy array sent by Python
    *          (int, float, uint8_t, bool, int64_t, int8_t, int16_t)
    */
-  template <typename T>
-  void set_output(uint32_t index, nnfw_tensorinfo *tensor_info, py::array_t<T> &buffer);
+  template <typename T> void set_output(uint32_t index, py::array_t<T> &buffer)
+  {
+    nnfw_tensorinfo tensor_info;
+    nnfw_output_tensorinfo(this->session, index, &tensor_info);
+    NNFW_TYPE type = tensor_info.dtype;
+    uint32_t input_elements = num_elems(&tensor_info);
+    size_t length = sizeof(T) * input_elements;
+
+    ensure_status(nnfw_set_output(session, index, type, buffer.request().ptr, length));
+  }
   uint32_t input_size();
   uint32_t output_size();
   void set_input_layout(uint32_t index,
@@ -97,9 +122,7 @@ public:
   void set_output_layout(uint32_t index,
                          const char *layout); // process the output layout by receiving a string
                                               // from Python instead of NNFW_LAYOUT
-  nnfw_tensorinfo input_tensorinfo(uint32_t index);
-  nnfw_tensorinfo output_tensorinfo(uint32_t index);
-  void set_available_backends(const char *backends);
-  void set_op_backend(const char *op, const char *backend);
+  tensorinfo input_tensorinfo(uint32_t index);
+  tensorinfo output_tensorinfo(uint32_t index);
   uint32_t query_info_u32(NNFW_INFO_ID id);
 };
