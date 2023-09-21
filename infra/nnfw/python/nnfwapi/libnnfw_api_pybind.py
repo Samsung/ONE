@@ -20,3 +20,4 @@ def nnfw_session():
 
 def tensorinfo():
     return libnnfw_api_pybind.nnfw_tensorinfo()
+

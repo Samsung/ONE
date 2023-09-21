@@ -52,3 +52,4 @@ setup(
     packages=[package_directory],
     package_data={package_directory: ['x86_64/libnnfw_api_pybind.so', 'x86_64/libnnfw-dev.so', 'x86_64/libonert_core.so', 'x86_64/libbackend_cpu.so','armv7l/libnnfw_api_pybind.so', 'armv7l/libnnfw-dev.so', 'armv7l/libonert_core.so', 'armv7l/libbackend_cpu.so','aarch64/libnnfw_api_pybind.so', 'aarch64/libnnfw-dev.so', 'aarch64/libonert_core.so', 'aarch64/libbackend_cpu.so']},
 )
+
