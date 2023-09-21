@@ -65,7 +65,8 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
 #ifndef DIS_QUANT
 void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
                    const circle::Tensor *bias, const circle::Tensor *output,
-                   const circle::FullyConnectedOptions *options, BaseRuntimeGraph *runtime_graph)
+                   const circle::FullyConnectedOptions *options, BaseRuntimeGraph *runtime_graph,
+                   DataType type)
 {
   double real_multiplier = 0.0;
   int output_shift;
@@ -80,7 +81,9 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
                                              &output_activation_max);
 
   int32_t input_offset = -Tensor::zero_point(input);
-  int32_t filter_offset = -Tensor::zero_point(weights);
+  int32_t filter_offset = 0;
+  if (type == DataType::U8)
+    filter_offset = -Tensor::zero_point(weights);
   int32_t output_offset = Tensor::zero_point(output);
 
   luci_interpreter_pal::FullyConnectedParams op_params{};
@@ -112,11 +115,31 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
 
   int32_t output_shape[kMaxSmallSize];
   kernels::getTensorDims(output, runtime_graph, output_shape);
-
-  luci_interpreter_pal::FullyConnected(
-    op_params, input_shape, kernels::getTensorData<uint8_t>(input_data), weights_shape,
-    kernels::getTensorData<uint8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
-    output_shape, kernels::getTensorData<uint8_t>(output_data));
+  if (type == DataType::S8)
+  {
+    luci_interpreter_pal::FullyConnected<int8_t>(
+      op_params, input_shape, kernels::getTensorData<int8_t>(input_data), weights_shape,
+      kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
+      output_shape, kernels::getTensorData<int8_t>(output_data));
+  }
+  else if (type == DataType::U8)
+  {
+    luci_interpreter_pal::FullyConnected<uint8_t>(
+      op_params, input_shape, kernels::getTensorData<uint8_t>(input_data), weights_shape,
+      kernels::getTensorData<uint8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
+      output_shape, kernels::getTensorData<uint8_t>(output_data));
+  }
+  else if (type == DataType::S16)
+  {
+    luci_interpreter_pal::FullyConnected(
+      op_params, input_shape, kernels::getTensorData<int16_t>(input_data), weights_shape,
+      kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<int64_t>(bias_data),
+      output_shape, kernels::getTensorData<int16_t>(output_data));
+  }
+  else
+  {
+    assert(false && "Unsupported quantize type");
+  }
 }
 #endif
 
@@ -160,9 +183,12 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
   }
   else if (Tensor::element_type(weights) == DataType::S8)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8);
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S8);
-    LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32)
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8 ||
+                           Tensor::element_type(input) == DataType::S16);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S8 ||
+                           Tensor::element_type(output) == DataType::S16);
+    LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32 ||
+                           Tensor::element_type(bias) == DataType::S64)
   }
 #endif // DIS_QUANT
   else
@@ -210,12 +236,14 @@ void execute_kernel_CircleFullyConnected(const circle::Operator *cur_op,
   assert(output != nullptr);
 
   const auto *options = cur_op->builtin_options_as_FullyConnectedOptions();
-
-  switch (Tensor::element_type(input))
+  const auto input_type = Tensor::element_type(input);
+  switch (input_type)
   {
 #ifndef DIS_QUANT
     case DataType::U8:
-      evalQuantized(input, weights, bias, output, options, runtime_graph);
+    case DataType::S8:
+    case DataType::S16:
+      evalQuantized(input, weights, bias, output, options, runtime_graph, input_type);
       break;
 #endif // DIS_QUANT
 #ifndef DIS_FLOAT

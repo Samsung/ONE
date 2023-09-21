@@ -47,7 +47,7 @@ inline void FullyConnected(const luci_interpreter_pal::FullyConnectedParams &, c
                            const int32_t *, int16_t *)
 {
   // MARK: At this moment this operation doesn't support
-  assert(false && "FullyConnected INT8 NYI");
+  assert(false && "FullyConnected INT16 NYI");
 }
 
 } // namespace luci_interpreter_pal
