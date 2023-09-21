@@ -2,7 +2,10 @@
 
 # refer https://github.com/Samsung/ONE/issues/11368
 
-set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY "Set to find packages only in cross root path by force")
+if(CMAKE_CROSSCOMPILING)
+    set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY "Set to find packages only in cross root path by force")
+endif()
+
 find_package(Python COMPONENTS Interpreter Development)
 
 # Tell pybind11 where the target python installation is
@@ -23,10 +26,11 @@ endif()
 
 # Add the Python module
 file(GLOB_RECURSE NNFW_API_PYBIND_SOURCES "src/*.cc")
-pybind11_add_module(nnfw_api_pybind ${NNFW_API_PYBIND_SOURCES})
+add_library(nnfw_api_pybind MODULE ${NNFW_API_PYBIND_SOURCES})
 
 # Add the nnfw api and Pybind11 header
-target_include_directories(nnfw_api_pybind PRIVATE ${pybind11_SOURCE_DIR}/include/pybind11)
+target_include_directories(nnfw_api_pybind PRIVATE ${pybind11_SOURCE_DIR}/include)
+target_include_directories(nnfw_api_pybind PRIVATE ${PYTHON_INCLUDE_DIRS})
 target_include_directories(nnfw_api_pybind PRIVATE include ../../api/include)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
 
