@@ -118,6 +118,17 @@ struct TransposeParams
   int32_t perm[5];
 };
 
+struct PreluParams
+{
+  int32_t input_offset;
+  int32_t alpha_offset;
+  int32_t output_offset;
+  int32_t output_multiplier_1;
+  int output_shift_1;
+  int32_t output_multiplier_2;
+  int output_shift_2;
+};
+
 struct ComparisonParams
 {
   // uint8_t inference params.
