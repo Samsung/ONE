@@ -104,9 +104,9 @@ TEST_F(Conv2DTest, Wrong_bias_type_NEG)
                "");
 }
 
-TEST_F(Conv2DTest, Invalid_input_type_NEG)
+TEST_F(Conv2DTest, Invalid_input_shape_NEG)
 {
-  test_kernel::NegTestDataInvalidInputTypeConv2DKernel test_data_kernel;
+  test_kernel::NegTestDataInvalidInputShapeConv2DKernel test_data_kernel;
 
   MemoryManager memory_manager{};
   RuntimeModule runtime_module{};
