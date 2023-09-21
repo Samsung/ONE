@@ -14,6 +14,10 @@ option(BUILD_XNNPACK "Build XNNPACK" OFF)
 option(DOWNLOAD_OPENCL_HEADERS "Download opencl headers" OFF)
 
 option(BUILD_NPUD "Build NPU daemon" ON)
+
+option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
+option(BUILD_PYTHON_BINDING "Build python binding" OFF)
+
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 
