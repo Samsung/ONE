@@ -22,7 +22,14 @@
 
 namespace luci_interpreter_pal
 {
-// TODO: add S8 and S16 kernel
+
+inline void AveragePool(const PoolParams &, const luci_interpreter::RuntimeShape &, const uint8_t *,
+                        const luci_interpreter::RuntimeShape &, uint8_t *,
+                        luci_interpreter::DataType)
+{
+  assert(false && "Not impl yet");
+}
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_AVERAGE_POOL_2D_H

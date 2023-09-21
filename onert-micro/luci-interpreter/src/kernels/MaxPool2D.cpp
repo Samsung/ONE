@@ -34,7 +34,7 @@ void configure_kernel_CircleMaxPool2D(const circle::Operator *cur_op,
   const auto output = runtime_graph->getCircleTensorByIndex(output_index);
 
   LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
-  assert(Tensor::num_dims(input) == 4);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(input) == 4);
 
 #ifndef DIS_QUANT
   if (Tensor::element_type(input) == DataType::U8)
@@ -79,10 +79,33 @@ void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeG
   const auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
+  const DataType input_type = Tensor::element_type(input);
+
   float activation_min{};
   float activation_max{};
-  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
-                                    &activation_min, &activation_max);
+  int32_t quantized_activation_min{};
+  int32_t quantized_activation_max{};
+
+  if (input_type == DataType::S8 or input_type == DataType::S16)
+  {
+#ifndef DIS_QUANT
+    kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
+                                               output, &quantized_activation_min,
+                                               &quantized_activation_max);
+#endif // DIS_QUANT
+  }
+  else if (input_type == DataType::FLOAT32)
+  {
+#ifndef DIS_FLOAT
+    kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
+                                      &activation_min, &activation_max);
+#endif // DIS_FLOAT
+  }
+  else
+  {
+    assert(false && "Not supported type");
+  }
+
   luci_interpreter_pal::PoolParams params{};
   params.padding_values.height = padding_height;
   params.padding_values.width = padding_width;
@@ -92,8 +115,10 @@ void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeG
   params.filter_width = options->filter_width();
   params.float_activation_min = activation_min;
   params.float_activation_max = activation_max;
+  params.quantized_activation_max = quantized_activation_max;
+  params.quantized_activation_min = quantized_activation_min;
 
-  switch (Tensor::element_type(input))
+  switch (input_type)
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
@@ -103,15 +128,11 @@ void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeG
       break;
 #endif // DIS_FLOAT
 #ifndef DIS_QUANT
-    case DataType::U8:
-      luci_interpreter_pal::MaxPool(
-        params, kernels::getTensorShape(input), kernels::getTensorData<uint8_t>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data));
-      break;
+    case DataType::S8:
     case DataType::S16:
       luci_interpreter_pal::MaxPool(
-        params, kernels::getTensorShape(input), kernels::getTensorData<int16_t>(input_data),
-        kernels::getTensorShape(output), kernels::getTensorData<int16_t>(output_data));
+        params, kernels::getTensorShape(input), kernels::getTensorData<uint8_t>(input_data),
+        kernels::getTensorShape(output), kernels::getTensorData<uint8_t>(output_data), input_type);
       break;
 #endif // DIS_QUANT
     default:
