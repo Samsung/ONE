@@ -21,10 +21,28 @@
 
 namespace py = pybind11;
 
+/**
+ *  @brief  tensor info describes the type and shape of tensors
+ *
+ * This structure is used to describe input and output tensors.
+ * Application can get input and output tensor type and shape described in model by using
+ * {@link input_tensorinfo} and {@link output_tensorinfo}
+ *
+ * Maximum rank is 6 (NNFW_MAX_RANK).
+ * And tensor's dimension value is filled in 'dims' field from index 0.
+ * For example, if tensor's rank is 4,
+ * application can get dimension value from dims[0], dims[1], dims[2], and dims[3]
+ */
 struct tensorinfo
 {
+  /** The data type */
   const char *dtype;
+  /** The number of dimensions (rank) */
   int32_t rank;
+  /**
+   * The dimension of tensor.
+   * Maximum rank is 6 (NNFW_MAX_RANK).
+   */
   int32_t dims[NNFW_MAX_RANK];
 };
 
@@ -37,10 +55,28 @@ struct tensorinfo
  */
 void ensure_status(NNFW_STATUS status);
 
+/**
+ * Convert the layout with string to NNFW_LAYOUT
+ *
+ * @param[in] layout layout to be converted
+ * @return proper layout if exists
+ */
 NNFW_LAYOUT getLayout(const char *layout = "");
 
+/**
+ * Convert the type with string to NNFW_TYPE
+ *
+ * @param[in] type type to be converted
+ * @return proper type if exists
+ */
 NNFW_TYPE getType(const char *type = "");
 
+/**
+ * Convert the type with NNFW_TYPE to string
+ *
+ * @param[in] type type to be converted
+ * @return proper type
+ */
 const char *getStringType(NNFW_TYPE type);
 
 /**
@@ -49,6 +85,7 @@ const char *getStringType(NNFW_TYPE type);
  * This function is called to set the size of the input, output array.
  *
  * @param[in] tensor_info Tensor info (shape, type, etc)
+ * @return total number of elements
  */
 uint64_t num_elems(const nnfw_tensorinfo *tensor_info);
 
@@ -58,6 +95,7 @@ uint64_t num_elems(const nnfw_tensorinfo *tensor_info);
  * This function is called to get dimension array of tensorinfo.
  *
  * @param[in] tensor_info Tensor info (shape, type, etc)
+ * @return python list of dims
  */
 py::list get_dims(const tensorinfo &tensor_info);
 
