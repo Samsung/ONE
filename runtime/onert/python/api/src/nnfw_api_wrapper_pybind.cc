@@ -38,7 +38,10 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
       "set available backends and prepare session to be ready for inference\n"
       "Parameters:\n"
       "\tpackage_file_path (str): Path to the nnpackage file or unzipped directory to be loaded\n"
-      "\tbackends (str): Available backends on which nnfw uses\n")
+      "\tbackends (str): Available backends on which nnfw uses\n"
+      "\t\tMultiple backends can be set and they must be separated by a semicolon "
+      "(ex: \"acl_cl;cpu\")\n"
+      "\t\tAmong the multiple backends, the 1st element is used as the default backend.")
     .def(
       py::init<const char *, const char *, const char *>(), py::arg("package_file_path"),
       py::arg("op"), py::arg("backends"),
@@ -198,11 +201,11 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
       "\tindex (int): Index of output to be set (0-indexed)\n"
       "\tbuffer (numpy): Raw buffer for output")
     .def("input_size", &NNFW_SESSION::input_size,
-         "Get the number of inputs\n"
+         "Get the number of inputs defined in loaded model\n"
          "Returns:\n"
          "\tint: The number of inputs")
     .def("output_size", &NNFW_SESSION::output_size,
-         "Get the number of outputs\n"
+         "Get the number of outputs defined in loaded model\n"
          "Returns:\n"
          "\tint: The number of outputs")
     .def("set_input_layout", &NNFW_SESSION::set_input_layout, py::arg("index"),

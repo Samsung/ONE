@@ -155,7 +155,7 @@ public:
   uint32_t input_size();
   uint32_t output_size();
   // process the input layout by receiving a string from Python instead of NNFW_LAYOUT
-  void set_input_layout(uint32_t index, const char *layout); 
+  void set_input_layout(uint32_t index, const char *layout);
   // process the output layout by receiving a string from Python instead of NNFW_LAYOUT
   void set_output_layout(uint32_t index, const char *layout);
   tensorinfo input_tensorinfo(uint32_t index);
