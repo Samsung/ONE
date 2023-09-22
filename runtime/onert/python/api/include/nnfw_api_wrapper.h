@@ -160,5 +160,4 @@ public:
   void set_output_layout(uint32_t index, const char *layout);
   tensorinfo input_tensorinfo(uint32_t index);
   tensorinfo output_tensorinfo(uint32_t index);
-  uint32_t query_info_u32(NNFW_INFO_ID id);
 };
