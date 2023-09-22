@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/Floor.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/floor/FloatFloorKernel.h"
+#include "luci_interpreter/test_models/floor/NegFloorKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -29,48 +30,71 @@ using namespace testing;
 
 class FloorTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(FloorTest, SimpleFloat)
+template <typename T> std::vector<T> checkFloorKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::initializer_list<int32_t> input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0.2, 8.6, 2.4,  4.3,  // Row 1
-    3,   7.1, 10.5, -0.9, // Row 2
-  };
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::initializer_list<int32_t> ref_output_shape{1, 2, 4, 1};
-  std::vector<float> ref_output_data{
-    0, 8, 2,  4,  // Row 1
-    3, 7, 10, -1, // Row 2
-  };
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Floor kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(FloorTest, Input_Output_Type_NEG)
+TEST_F(FloorTest, Float_P)
 {
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S32);
+  test_kernel::TestDataFloatFloor test_data_kernel;
+  std::vector<float> output_data_vector = checkFloorKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
 
-  Floor kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+TEST_F(FloorTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchFloorKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(FloorTest, Invalid_input_output_shape_NEG)
+{
+  test_kernel::NegTestDataInvalidInputOutputShapeFloorKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
