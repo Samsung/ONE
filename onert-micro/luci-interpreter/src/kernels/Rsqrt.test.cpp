@@ -14,77 +14,73 @@
  * limitations under the License.
  */
 
-#include "kernels/Rsqrt.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/rsqrt/FloatRsqrtKernel.h"
+#include "luci_interpreter/test_models/rsqrt/NegRsqrtKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
+class RsqrtTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  // Do nothing
+};
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+template <typename T> std::vector<T> checkRsqrtKernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Rsqrt kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(RsqrtTest, SimpleRsqrt)
+TEST_F(RsqrtTest, Float_P)
 {
-  Check(
-    /*input_shape=*/{1, 2, 4, 1}, /*output_shape=*/{1, 2, 4, 1},
-    /*input_data=*/
-    {
-      5, 4, 8, 2,     //
-      6, 7.5, 9, 0.3, //
-    },
-    /*output_data=*/
-    {
-      0.44721360, 0.5, 0.35355339, 0.70710678,       //
-      0.40824829, 0.36514837, 0.33333333, 1.8257419, //
-    });
+  test_kernel::TestDataFloatRsqrt test_data_kernel;
+  std::vector<float> output_data_vector = checkRsqrtKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(RsqrtTest, Input_Output_Type_NEG)
+TEST_F(RsqrtTest, Input_output_type_mismatch_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S32);
-
-  Rsqrt kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST(RsqrtTest, Invalid_Input_Type_NEG)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  Tensor input_tensor = makeInputTensor<DataType::S64>({1}, {1}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S64);
-
-  Rsqrt kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  EXPECT_ANY_THROW(kernel.execute());
+  test_kernel::NegTestDataInputOutputTypeMismatchRsqrtKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
