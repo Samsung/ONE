@@ -246,9 +246,3 @@ tensorinfo NNFW_SESSION::output_tensorinfo(uint32_t index)
   }
   return ti;
 }
-uint32_t NNFW_SESSION::query_info_u32(NNFW_INFO_ID id)
-{
-  uint32_t val;
-  ensure_status(nnfw_query_info_u32(session, id, &val));
-  return val;
-}
