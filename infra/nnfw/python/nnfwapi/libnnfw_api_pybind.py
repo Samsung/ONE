@@ -15,9 +15,17 @@ elif architecture == 'aarch64':
 else:
     raise ImportError(f"Unsupported architecture: {architecture}")
 
-def nnfw_session():
-    return libnnfw_api_pybind.nnfw_session
+
+def nnfw_session(*args):
+    num = len(args)
+    if (num == 2):
+        return libnnfw_api_pybind.nnfw_session(args[0], args[1])
+    elif (num == 3):
+        return libnnfw_api_pybind.nnfw_session(args[0], args[2], args[1])
+    else:
+        print("Syntax Error")
+        return
+
 
 def tensorinfo():
     return libnnfw_api_pybind.nnfw_tensorinfo()
-
