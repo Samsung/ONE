@@ -51,3 +51,4 @@ def main(NNPACKAGE_PATH, BACKEND = "cpu", OPERATION = ""):
 if __name__ == "__main__":
     argv = sys.argv[1:]
     main(*argv)
+    
