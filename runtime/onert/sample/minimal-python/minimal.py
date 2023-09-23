@@ -47,8 +47,6 @@ def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
     # Do inference
     session.run()
 
-    session.close_session()
-
     print(f"nnpackage {NNPACKAGE_PATH.split('/')[-1]} runs successfully.")
     return
 
