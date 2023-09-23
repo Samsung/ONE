@@ -2,17 +2,21 @@ from nnfwapi.libnnfw_api_pybind import *
 import numpy as np
 import sys
 
+
 def num_elems(tensor_info):
     n = 1
     for x in range(tensor_info.rank):
         n *= tensor_info.dims[x]
     return n
 
-def main(NNPACKAGE_PATH, BACKEND = "cpu", OPERATION = ""):
+
+def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
     # OPERATION is optional for assigning a specific backend to operations.
     # "cpu" is default value of BACKEND.
-    if OPERATION: session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
-    else: session = nnfw_session(NNPACKAGE_PATH, BACKEND)
+    if OPERATION:
+        session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
+    else:
+        session = nnfw_session(NNPACKAGE_PATH, BACKEND)
 
     input_size = session.input_size()
     inputs = []
@@ -30,7 +34,7 @@ def main(NNPACKAGE_PATH, BACKEND = "cpu", OPERATION = ""):
     output_size = session.output_size()
     outputs = []
 
-    for i in range(output_size) :
+    for i in range(output_size):
         output_tensorinfo = session.output_tensorinfo(i)
         ti_dtype = output_tensorinfo.dtype
 
@@ -48,7 +52,7 @@ def main(NNPACKAGE_PATH, BACKEND = "cpu", OPERATION = ""):
     print(f"nnpackage {NNPACKAGE_PATH.split('/')[-1]} runs successfully.")
     return
 
+
 if __name__ == "__main__":
     argv = sys.argv[1:]
     main(*argv)
-    
