@@ -17,6 +17,7 @@ Here are basic steps to build app with [NNFW PYTHON API](https://github.com/Sams
 1. Initialize nnfw_session
 
 ```python
+# Create session and Loading nnpackage
 # OPERATION is optional for assigning a specific backend to operations.
 # "cpu" is default value of BACKEND.
 if OPERATION: session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
@@ -26,27 +27,32 @@ else: session = nnfw_session(NNPACKAGE_PATH, BACKEND)
 2. Prepare Input/Output
 
 ```python
+# Prepare input. Here we just allocate dummy input arrays.
 input_size = session.input_size()
 inputs = []
 
 for i in range(input_size):
+    # Get i-th input's info
     input_tensorinfo = session.input_tensorinfo(i)
     ti_dtype = input_tensorinfo.dtype
 
-    input_array = [0.] * num_elems(input_tensorinfo) # how to process num_elems define in python or c++?
+    input_array = [0.] * num_elems(input_tensorinfo)
     input_array = np.array(input_array, dtype=ti_dtype)
+    # TODO: Please add initialization for your input.
     session.set_input(i, input_array)
 
     inputs.append(input_array)
 
+# Prepare output
 output_size = session.output_size()
 outputs = []
 
-for i in range(output_size) :
+for i in range(output_size):
+    # Get i-th output's info
     output_tensorinfo = session.output_tensorinfo(i)
     ti_dtype = output_tensorinfo.dtype
 
-    output_array = [0.] * num_elems(output_tensorinfo) # how to process num_elems define in python or c++?
+    output_array = [0.] * num_elems(output_tensorinfo)
     output_array = np.array(output_array, dtype=ti_dtype)
     session.set_output(i, output_array)
 
