@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <ctime>
+#include <unordered_map>
 #include <vector>
 
 namespace
@@ -34,7 +35,20 @@ uint64_t nowMicros()
 namespace onert_train
 {
 
+enum PhaseType
+{
+  MODEL_LOAD,
+  PREPARE,
+  EXECUTE,
+  END_OF_PHASE
+};
+
 struct Step
+{
+  uint64_t time; // us
+};
+
+struct Phase
 {
   uint64_t time; // us
   // TODO Support memory usage
@@ -47,42 +61,53 @@ public:
 
   void set(const int epoch, const int step)
   {
-    _results.clear();
-    _results.resize(epoch);
-    std::for_each(_results.begin(), _results.end(), [step](auto &v) { v.resize(step); });
+    _step_results.clear();
+    _step_results.resize(epoch);
+    std::for_each(_step_results.begin(), _step_results.end(), [step](auto &v) { v.resize(step); });
   }
 
   void run(const int epoch, const int step, const std::function<void()> &func)
   {
-    if (_results.empty() || _results.size() <= epoch || _results[epoch].size() <= step)
+    if (_step_results.empty() || _step_results.size() <= epoch ||
+        _step_results[epoch].size() <= step)
     {
       throw std::runtime_error("Please set the number of epochs and steps first");
     }
 
-    _results[epoch][step].time = nowMicros();
+    _step_results[epoch][step].time = nowMicros();
 
     func();
 
-    _results[epoch][step].time = nowMicros() - _results[epoch][step].time;
+    _step_results[epoch][step].time = nowMicros() - _step_results[epoch][step].time;
+  }
+
+  void run(const PhaseType phaseType, const std::function<void()> &func)
+  {
+    _phase_results[phaseType].time = nowMicros();
+
+    func();
+
+    _phase_results[phaseType].time = nowMicros() - _phase_results[phaseType].time;
   }
 
   double timeMicros(const int epoch)
   {
-    if (_results.empty() || _results.size() <= epoch)
+    if (_step_results.empty() || _step_results.size() <= epoch)
     {
       throw std::runtime_error("Invalid epoch");
     }
 
     double sum = 0u;
-    std::for_each(_results[epoch].begin(), _results[epoch].end(),
+    std::for_each(_step_results[epoch].begin(), _step_results[epoch].end(),
                   [&sum](auto &v) { sum += v.time; });
-    return sum / _results[epoch].size();
+    return sum / _step_results[epoch].size();
   }
 
   double timeMs(const int epoch) { return timeMicros(epoch) / 1e3; }
 
 private:
-  std::vector<std::vector<Step>> _results;
+  std::unordered_map<PhaseType, Phase> _phase_results;
+  std::vector<std::vector<Step>> _step_results;
 };
 
 } // namespace onert_train
