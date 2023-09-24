@@ -46,7 +46,7 @@ class nnfw_session():
 
     Args:
         nnpackage_path (str): Path to the nnpackage file or unzipped directory to be loaded
-        *backends (str): Available backends on which nnfw uses
+        backends (str): Available backends on which nnfw uses
                          Multiple backends can be set and they must be separated by a semicolon
                          (ex: "acl_cl;cpu")
         *op (str): operation to be set
