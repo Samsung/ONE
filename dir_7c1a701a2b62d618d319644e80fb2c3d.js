@@ -5,7 +5,7 @@ var dir_7c1a701a2b62d618d319644e80fb2c3d =
     [ "PALBatchToSpaceND.h", "cmsisnn_2_p_a_l_batch_to_space_n_d_8h.html", null ],
     [ "PALConv2d.h", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_conv2d_8h.html", null ],
     [ "PALDepthToSpace.h", "cmsisnn_2_p_a_l_depth_to_space_8h.html", null ],
-    [ "PALDepthwiseConv2d.h", "cmsisnn_2_p_a_l_depthwise_conv2d_8h.html", "cmsisnn_2_p_a_l_depthwise_conv2d_8h" ],
+    [ "PALDepthwiseConv2d.h", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h.html", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h" ],
     [ "PALDequantize.h", "cmsisnn_2_p_a_l_dequantize_8h.html", null ],
     [ "PALElu.h", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_elu_8h.html", null ],
     [ "PALFullyConnected.h", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h.html", "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h" ],

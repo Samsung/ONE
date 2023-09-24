@@ -5,7 +5,7 @@ var classluci__interpreter_1_1_interpreter =
     [ "~Interpreter", "classluci__interpreter_1_1_interpreter.html#a9ff74c7aae99250e8cbee386cb621ba9", null ],
     [ "Interpreter", "classluci__interpreter_1_1_interpreter.html#a44f223b9d1f5a1c7a7270c42b15eec68", null ],
     [ "~Interpreter", "classluci__interpreter_1_1_interpreter.html#a9ff74c7aae99250e8cbee386cb621ba9", null ],
-    [ "allocateAndWriteInputTensor", "classluci__interpreter_1_1_interpreter.html#aadfc04e73a386a452a23d4a48b382da8", null ],
+    [ "allocateAndWriteInputTensor", "classluci__interpreter_1_1_interpreter.html#a11536ed09b7d1014036dd4e5ba3bd677", null ],
     [ "allocateInputTensor", "classluci__interpreter_1_1_interpreter.html#a5e1cfa835c28b159e82d1217bd395703", null ],
     [ "attachObserver", "classluci__interpreter_1_1_interpreter.html#a427f7dd4fe2ff762acb16aace182766f", null ],
     [ "getInputDataSizeByIndex", "classluci__interpreter_1_1_interpreter.html#a4c364cfa24a5b6a72da81d52fd825497", null ],

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/core/src/exec/train/optimizer/OptimizerCode.cc File Reference</title>
+<title>ONE - On-device Neural Engine: runtime/onert/core/src/ir/train/OptimizerCode.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('_optimizer_code_8cc.html',''); initRes
   <div class="headertitle"><div class="title">OptimizerCode.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_optimizer_code_8h_source.html">exec/train/optimizer/OptimizerCode.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_optimizer_code_8h_source.html">ir/train/OptimizerCode.h</a>&quot;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
 </div>
 <p><a href="_optimizer_code_8cc_source.html">Go to the source code of this file.</a></p>
@@ -104,25 +104,23 @@ $(document).ready(function(){initNavTree('_optimizer_code_8cc.html',''); initRes
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1exec"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html">onert::exec</a></td></tr>
+<tr class="memitem:namespaceonert_1_1ir"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html">onert::ir</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1exec_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec_1_1train.html">onert::exec::train</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1exec_1_1train_1_1optimizer"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html">onert::exec::train::optimizer</a></td></tr>
+<tr class="memitem:namespaceonert_1_1ir_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html">onert::ir::train</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a32f866b103d1d3355527d0d81699d73a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a32f866b103d1d3355527d0d81699d73a">onert::exec::train::optimizer::toString</a> (OptimizerCode opcode)</td></tr>
-<tr class="memdesc:a32f866b103d1d3355527d0d81699d73a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <a href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a32f866b103d1d3355527d0d81699d73a">More...</a><br /></td></tr>
-<tr class="separator:a32f866b103d1d3355527d0d81699d73a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a3b1cf34f72baebbcd6f6ce8b735071fe">onert::ir::train::toString</a> (OptimizerCode opcode)</td></tr>
+<tr class="memdesc:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <a href="namespaceonert_1_1ir_1_1train.html#a3b1cf34f72baebbcd6f6ce8b735071fe">More...</a><br /></td></tr>
+<tr class="separator:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_8ea121fb9ddeebd13575ba6eec205704.html">src</a></li><li class="navelem"><a class="el" href="dir_1a57c43998dad7c420bf3ee2c51b13d1.html">exec</a></li><li class="navelem"><a class="el" href="dir_00ee29fd2d6a3d105eb471cbb78a0176.html">train</a></li><li class="navelem"><a class="el" href="dir_669af8b133491301a30b48da207864c2.html">optimizer</a></li><li class="navelem"><a class="el" href="_optimizer_code_8cc.html">OptimizerCode.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_8ea121fb9ddeebd13575ba6eec205704.html">src</a></li><li class="navelem"><a class="el" href="dir_a6e25b3747fd02a5be8f50c50d00a5db.html">ir</a></li><li class="navelem"><a class="el" href="dir_e4e0ac3c515543dce30bfdd2cc8168d5.html">train</a></li><li class="navelem"><a class="el" href="_optimizer_code_8cc.html">OptimizerCode.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

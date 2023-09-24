@@ -456,6 +456,7 @@ var namespaces_dup =
     [ "pp", "namespacepp.html", "namespacepp" ],
     [ "profiling", "namespaceprofiling.html", "namespaceprofiling" ],
     [ "prunner", "namespaceprunner.html", "namespaceprunner" ],
+    [ "q_implant", "namespaceq__implant.html", "namespaceq__implant" ],
     [ "QErrorComputer", "namespace_q_error_computer.html", "namespace_q_error_computer" ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", "namespace_random_data_generator" ],
     [ "record_minmax", "namespacerecord__minmax.html", "namespacerecord__minmax" ],

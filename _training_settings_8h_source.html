@@ -142,14 +142,14 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">enum</span> OptimizerTypeEnum</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a2970115d811ba93ba7ef1920df7a8c4fa50ecf75f1077e1d250a781764b89cbc2">SGD</a></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">struct </span>TrainingSettings</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  MetricsTypeEnum metric = <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">MSE</a>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  LossTypeEnum error_type = MSE_Loss;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  OptimizerTypeEnum optimizer_type = <a class="code hl_enumvalue" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a2970115d811ba93ba7ef1920df7a8c4fa50ecf75f1077e1d250a781764b89cbc2">SGD</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  OptimizerTypeEnum optimizer_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  uint32_t number_of_epochs = 1;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  uint32_t batch_size = 1;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">float</span> learning_rate = 0.00001;</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="ttc" id="anamespacecircle__eval__diff_html_a5c3f0374bf404b03613f7ad266e587ccad7bfc720460d75c28ce69ce26d239f9f"><div class="ttname"><a href="namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587ccad7bfc720460d75c28ce69ce26d239f9f">circle_eval_diff::Metric::MAE</a></div><div class="ttdeci">@ MAE</div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_ac56dcc0882ef61d9d8f9c9132d917ba0"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">nnfw::cker::train::MSE</a></div><div class="ttdeci">void MSE(const Shape &amp;y_pred_shape, const T *y_pred_data, const Shape &amp;y_true_shape, const T *y_true_data, const Shape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00031">Loss.h:31</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1exec_1_1train_1_1optimizer_html_a2970115d811ba93ba7ef1920df7a8c4fa50ecf75f1077e1d250a781764b89cbc2"><div class="ttname"><a href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a2970115d811ba93ba7ef1920df7a8c4fa50ecf75f1077e1d250a781764b89cbc2">onert::exec::train::optimizer::OptimizerCode::SGD</a></div><div class="ttdeci">@ SGD</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">onert::ir::train::OptimizerCode::SGD</a></div><div class="ttdeci">@ SGD</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

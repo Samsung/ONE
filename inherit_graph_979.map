@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classnnkit_1_1support_1_1onnx_1_1_runner.html" title=" " alt="" coords="5,5,137,45"/>
+<area shape="rect" id="node1" href="$structnnkit_1_1support_1_1caffe_1_1_blob_context.html" title=" " alt="" coords="5,41,163,81"/>
+<area shape="rect" id="node2" href="$classnnkit_1_1support_1_1caffe_1_1_input_blob_context.html" title=" " alt="" coords="211,5,397,45"/>
+<area shape="rect" id="node3" href="$classnnkit_1_1support_1_1caffe_1_1_output_blob_context.html" title=" " alt="" coords="231,70,377,125"/>
 </map>

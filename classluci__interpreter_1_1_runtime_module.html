@@ -243,11 +243,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00042">42</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    _graphs.emplace_back(memory_manager, &amp;_circle_reader, <span class="keyword">this</span>,</div>
-<div class="line"><span class="lineno">   45</span>                         _circle_reader.get_current_subgraph_index());</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00061">61</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>  {</div>
+<div class="line"><span class="lineno">   63</span>    _graphs.emplace_back(memory_manager, &amp;_circle_reader, <span class="keyword">this</span>,</div>
+<div class="line"><span class="lineno">   64</span>                         _circle_reader.get_current_subgraph_index());</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,8 +274,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00050">50</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ getMainGraph()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a70de0eedebc428c88ed3bbe062d5b8df">execute</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00069">69</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>{ getMainGraph()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a70de0eedebc428c88ed3bbe062d5b8df">execute</a>(); }</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a70de0eedebc428c88ed3bbe062d5b8df"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a70de0eedebc428c88ed3bbe062d5b8df">luci_interpreter::RuntimeGraph::execute</a></div><div class="ttdeci">void execute() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00151">RuntimeGraph.cpp:151</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00151">luci_interpreter::RuntimeGraph::execute()</a>.</p>
@@ -335,8 +335,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00052">52</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> _circle_reader; }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00071">71</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> _circle_reader; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>.</p>
 
@@ -426,9 +426,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00054">54</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span><a class="code hl_typedef" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *<span class="keyword">&gt;</span>(&amp;_graphs[0]); }</div>
-<div class="ttc" id="anamespaceluci__interpreter_html_a536f70436969ec0208abfe68640bfc71"><div class="ttname"><a href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a></div><div class="ttdeci">RuntimeGraph BaseRuntimeGraph</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00033">RuntimeModule.h:33</a></div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00073">73</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span><a class="code hl_typedef" href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">BaseRuntimeGraph</a> *<span class="keyword">&gt;</span>(&amp;_graphs[0]); }</div>
+<div class="ttc" id="anamespaceluci__interpreter_html_a536f70436969ec0208abfe68640bfc71"><div class="ttname"><a href="namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71">luci_interpreter::BaseRuntimeGraph</a></div><div class="ttdeci">RuntimeGraph BaseRuntimeGraph</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00039">RuntimeModule.h:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -489,8 +489,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00048">48</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> &amp;_graphs.at(pos); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00067">67</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> &amp;_graphs.at(pos); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>.</p>
 
@@ -520,8 +520,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00056">56</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ _circle_reader.<a class="code hl_function" href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">select_subgraph</a>(index); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html#l00075">75</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_module_8h_source.html">RuntimeModule.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{ _circle_reader.<a class="code hl_function" href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">select_subgraph</a>(index); }</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a521013fe39256de7e187b2519c7b5db9"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">luci::CircleReader::select_subgraph</a></div><div class="ttdeci">bool select_subgraph(uint32_t subgraph)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_reader_8cpp_source.html#l00330">CircleReader.cpp:330</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00330">luci::CircleReader::select_subgraph()</a>.</p>

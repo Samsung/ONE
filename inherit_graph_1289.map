@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,13,144,38"/>
-<area shape="rect" id="node2" href="$structflatbuffers_1_1is__floating__point.html" title=" " alt="" coords="192,5,335,45"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,45,151,70"/>
+<area shape="rect" id="node2" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="199,5,340,45"/>
+<area shape="rect" id="node4" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="206,69,333,109"/>
+<area shape="rect" id="node3" href="$structflatbuffers_1_1bool__constant.html" title=" " alt="" coords="388,13,584,38"/>
 </map>

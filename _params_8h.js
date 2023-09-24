@@ -6,6 +6,7 @@ var _params_8h =
     [ "luci_interpreter_pal::ConvParams", "structluci__interpreter__pal_1_1_conv_params.html", "structluci__interpreter__pal_1_1_conv_params" ],
     [ "luci_interpreter_pal::ConcatenationParams", "structluci__interpreter__pal_1_1_concatenation_params.html", "structluci__interpreter__pal_1_1_concatenation_params" ],
     [ "luci_interpreter_pal::TransposeParams", "structluci__interpreter__pal_1_1_transpose_params.html", "structluci__interpreter__pal_1_1_transpose_params" ],
+    [ "luci_interpreter_pal::PreluParams", "structluci__interpreter__pal_1_1_prelu_params.html", "structluci__interpreter__pal_1_1_prelu_params" ],
     [ "luci_interpreter_pal::ComparisonParams", "structluci__interpreter__pal_1_1_comparison_params.html", "structluci__interpreter__pal_1_1_comparison_params" ],
     [ "luci_interpreter_pal::StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", "structluci__interpreter__pal_1_1_strided_slice_params" ],
     [ "luci_interpreter_pal::ArithmeticParams", "structluci__interpreter__pal_1_1_arithmetic_params.html", "structluci__interpreter__pal_1_1_arithmetic_params" ],

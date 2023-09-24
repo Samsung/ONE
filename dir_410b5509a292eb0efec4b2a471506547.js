@@ -5,7 +5,7 @@ var dir_410b5509a292eb0efec4b2a471506547 =
     [ "PALBatchToSpaceND.h", "mcu_2_p_a_l_batch_to_space_n_d_8h.html", null ],
     [ "PALConv2d.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_conv2d_8h.html", null ],
     [ "PALDepthToSpace.h", "mcu_2_p_a_l_depth_to_space_8h.html", null ],
-    [ "PALDepthwiseConv2d.h", "mcu_2_p_a_l_depthwise_conv2d_8h.html", "mcu_2_p_a_l_depthwise_conv2d_8h" ],
+    [ "PALDepthwiseConv2d.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_depthwise_conv2d_8h.html", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_depthwise_conv2d_8h" ],
     [ "PALDequantize.h", "mcu_2_p_a_l_dequantize_8h.html", null ],
     [ "PALElu.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h.html", null ],
     [ "PALFullyConnected.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h" ],

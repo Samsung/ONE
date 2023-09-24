@@ -95,8 +95,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2cm
   <div class="headertitle"><div class="title">PALFullyConnected.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;tensorflow/lite/kernels/internal/reference/fully_connected.h&gt;</code><br />
-<code>#include &lt;tensorflow/lite/kernels/internal/reference/integer_ops/fully_connected.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_p_a_l_fully_connected_common_8h_source.html">PALFullyConnectedCommon.h</a>&quot;</code><br />
 <code>#include &lt;arm_nnfunctions.h&gt;</code><br />
 </div>
 <p><a href="onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html">Go to the source code of this file.</a></p>
@@ -108,9 +107,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6">luci_interpreter_pal::FullyConnected&lt; int8_t &gt;</a> (const tflite::FullyConnectedParams &amp;params, const tflite::RuntimeShape &amp;input_shape, const int8_t *input_data, const tflite::RuntimeShape &amp;filter_shape, const int8_t *filter_data, const tflite::RuntimeShape &amp;bias_shape, const int32_t *bias_data, const tflite::RuntimeShape &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data)</td></tr>
-<tr class="separator:a90a2d5d095d1e99b34df27491a89fdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad22a469cf09a51980f125b192d6fe37f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ad22a469cf09a51980f125b192d6fe37f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ad22a469cf09a51980f125b192d6fe37f">luci_interpreter_pal::FullyConnected&lt; int8_t &gt;</a> (const <a class="el" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;params, const int32_t *, const int8_t *input_data, const int32_t *filter_shape, const int8_t *filter_data, const int32_t *bias_data, const int32_t *<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data)</td></tr>
+<tr class="separator:ad22a469cf09a51980f125b192d6fe37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29d30983b98ea8957f51427338af158f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a29d30983b98ea8957f51427338af158f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a29d30983b98ea8957f51427338af158f">luci_interpreter_pal::FullyConnected</a> (const <a class="el" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;params, const int32_t *, const int16_t *input_data, const int32_t *filter_shape, const int8_t *filter_data, const int64_t *bias_data, const int32_t *<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int16_t *output_data)</td></tr>
+<tr class="separator:a29d30983b98ea8957f51427338af158f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
