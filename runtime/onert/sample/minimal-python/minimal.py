@@ -11,7 +11,7 @@ def num_elems(tensor_info):
     return n
 
 
-def main(NNPACKAGE_PATH, BACKEND = "cpu", OPERATION = ""):
+def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
     # Create session and Loading nnpackage
     # OPERATION is optional for assigning a specific backend to operations.
     # "cpu" is default value of BACKEND.
