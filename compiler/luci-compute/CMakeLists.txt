@@ -1,6 +1,7 @@
 nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
 nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.8.0 QUIET)
 nnas_find_package(TensorFlowRuySource EXACT 2.8.0 QUIET)
+nnas_find_package(NEON2SSESource QUIET)
 
 if(NOT TensorFlowSource_FOUND)
   message(STATUS "Build luci-compute: FAILED (missing TensorFlowSource 2.8.0)")
@@ -17,7 +18,13 @@ if(NOT TensorFlowRuySource_FOUND)
   return()
 endif(NOT TensorFlowRuySource_FOUND)
 
+if(NOT NEON2SSESource_FOUND)
+  message(STATUS "Build luci-compute: FAILED (missing NEON2SSESource)")
+  return()
+endif(NOT NEON2SSESource_FOUND)
+
 add_library(luci_compute INTERFACE)
 target_include_directories(luci_compute SYSTEM INTERFACE "${TensorFlowSource_DIR}")
 target_include_directories(luci_compute SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
 target_include_directories(luci_compute SYSTEM INTERFACE "${TensorFlowRuySource_DIR}")
+target_include_directories(luci_compute SYSTEM INTERFACE "${NEON2SSESource_DIR}")
