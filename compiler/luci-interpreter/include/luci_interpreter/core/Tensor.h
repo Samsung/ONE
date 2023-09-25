@@ -60,6 +60,17 @@ public:
     return result;
   }
 
+  // TODO Replace num_elements
+  int64_t large_num_elements() const
+  {
+    int64_t result = 1;
+    for (const int32_t dim : _dims)
+    {
+      result *= dim;
+    }
+    return result;
+  }
+
   bool operator==(const Shape &other) const { return _dims == other._dims; }
 
   bool operator!=(const Shape &other) const { return !operator==(other); }

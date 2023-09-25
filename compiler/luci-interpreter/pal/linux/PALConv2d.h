@@ -111,9 +111,11 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
     const int32_t output_width = output_shape.Dims(2);
 
     auto data_type_size = static_cast<int32_t>(luci_interpreter::getDataTypeSize(input_data_type));
-    int32_t scratchpad_size = batches * output_width * output_height * input_depth * filter_height *
-                              filter_width * data_type_size;
-    luci_interpreter::Shape scratchpad_shape{scratchpad_size};
+    // im2col_shape
+    // data_type_size is added because we use U8 for scratchpad buffer dtype
+    luci_interpreter::Shape scratchpad_shape{batches, output_height, output_width,
+                                             input_depth * filter_height * filter_width,
+                                             data_type_size};
     scratchpad->resize(scratchpad_shape);
   }
   else
