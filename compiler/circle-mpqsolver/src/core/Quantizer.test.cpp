@@ -20,59 +20,7 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include <cmath>
-
-namespace
-{
-
-class AddGraph final : public SimpleGraph
-{
-protected:
-  void initInput(loco::Node *input) override
-  {
-    auto ci_input = loco::must_cast<luci::CircleNode *>(input);
-    initMinMax(ci_input);
-  }
-
-  void initMinMax(luci::CircleNode *node)
-  {
-    auto qparam = std::make_unique<luci::CircleQuantParam>();
-    qparam->min.assign(1, _a_min);
-    qparam->max.assign(1, _a_max);
-    node->quantparam(std::move(qparam));
-  }
-
-  loco::Node *insertGraphBody(loco::Node *input) override
-  {
-    _add = _g->nodes()->create<luci::CircleAdd>();
-    _beta = _g->nodes()->create<luci::CircleConst>();
-
-    _add->dtype(loco::DataType::FLOAT32);
-    _beta->dtype(loco::DataType::FLOAT32);
-
-    _add->shape({1, _height, _width, _channel_size});
-    _beta->shape({1, _height, _width, _channel_size});
-
-    _beta->size<loco::DataType::FLOAT32>(_channel_size * _width * _height);
-    _add->x(input);
-    _add->y(_beta);
-    _add->fusedActivationFunction(luci::FusedActFunc::NONE);
-
-    _add->name("add");
-    _beta->name("beta");
-    initMinMax(_add);
-
-    return _add;
-  }
-
-public:
-  float _a_min = -1.f;
-  float _a_max = 1.f;
-  luci::CircleAdd *_add = nullptr;
-  luci::CircleConst *_beta = nullptr;
-};
-
-} // namespace
+using namespace mpqsolver::test::models;
 
 TEST(CircleMPQSolverQuantizerTest, verifyResultsTest)
 {

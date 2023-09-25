@@ -16,31 +16,10 @@
 
 #include "VISQErrorApproximator.h"
 
+#include "core/TestHelper.h"
+
 #include <json.h>
-#include <fstream>
 #include <gtest/gtest.h>
-
-namespace
-{
-
-void writeDataToFile(const std::string &path, const std::string &data)
-{
-  std::ofstream file;
-  file.open(path);
-  file << data;
-  file.close();
-}
-
-void makeTemporaryFile(char *name_template)
-{
-  int fd = mkstemp(name_template);
-  if (fd == -1)
-  {
-    throw std::runtime_error{"mkstemp failed"};
-  }
-}
-
-} // namespace
 
 TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest)
 {
@@ -57,8 +36,8 @@ TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest)
   auto data = Json::writeString(builder, error_data);
 
   char path[] = "VISQErrorApproximator-TEST-XXXXXX";
-  makeTemporaryFile(path);
-  writeDataToFile(path, data);
+  mpqsolver::test::io_utils::makeTemporaryFile(path);
+  mpqsolver::test::io_utils::writeDataToFile(path, data);
 
   mpqsolver::bisection::VISQErrorApproximator approximator;
   EXPECT_NO_THROW(approximator.init(path));
@@ -74,8 +53,8 @@ TEST(CircleMPQSolverVISQErrorApproximatorTest, verifyResultsTest_NEG)
   auto data = Json::writeString(builder, error_data);
 
   char path[] = "VISQErrorApproximator-TEST-NEG-XXXXXX";
-  makeTemporaryFile(path);
-  writeDataToFile(path, data);
+  mpqsolver::test::io_utils::makeTemporaryFile(path);
+  mpqsolver::test::io_utils::writeDataToFile(path, data);
 
   mpqsolver::bisection::VISQErrorApproximator approximator;
   EXPECT_THROW(approximator.init(path), std::exception);
