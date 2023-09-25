@@ -30,3 +30,5 @@ target_link_libraries(q-implant arser)
 target_link_libraries(q-implant vconone)
 
 install(TARGETS q-implant DESTINATION bin)
+
+add_subdirectory(tests)
