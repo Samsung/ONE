@@ -68,7 +68,7 @@ session.run()
 
 ## Run Inference with app on the target devices
 
-reference app : [minimal app](https://github.com/Samsung/ONE/blob/master/runtime/onert/sample/minimal)
+reference app : [minimal-python app](https://github.com/Samsung/ONE/blob/master/runtime/onert/sample/minimal-python)
 
 ```
 $ python3 minimal.py path_to_nnpackage_directory

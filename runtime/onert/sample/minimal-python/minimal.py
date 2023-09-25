@@ -4,7 +4,7 @@ import sys
 
 
 def num_elems(tensor_info):
-    """Get a flatten size of tensorinfo.dims"""
+    """Get the total number of elements in nnfw_tensorinfo->dims."""
     n = 1
     for x in range(tensor_info.rank):
         n *= tensor_info.dims[x]
