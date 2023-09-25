@@ -177,6 +177,19 @@ inline int MatchingDim(const luci_interpreter::RuntimeShape &shape1, int index1,
   return shape1.dims(index1);
 }
 
+// Data is required to be contiguous, and so many operators can use either the
+// full array flat size or the flat size with one dimension skipped (commonly
+// the depth).
+inline int flatSizeSkipDim(const int32_t *dims_data, int skip_dim, int num_dims)
+{
+  int flat_size = 1;
+  for (int i = 0; i < num_dims; ++i)
+  {
+    flat_size *= (i == skip_dim) ? 1 : dims_data[i];
+  }
+  return flat_size;
+}
+
 inline int offset(const int32_t *dims_data, int i0, int i1, int i2, int i3)
 {
   return ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;

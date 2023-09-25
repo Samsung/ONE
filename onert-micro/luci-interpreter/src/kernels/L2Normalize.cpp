@@ -14,61 +14,55 @@
  * limitations under the License.
  */
 
-#include "kernels/L2Normalize.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
 #include "PALL2Normalize.h"
 
 namespace luci_interpreter
 {
 
-namespace kernels
+void configure_kernel_CircleL2Normalize(const circle::Operator *cur_op,
+                                        BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-L2Normalize::L2Normalize(const Tensor *input, Tensor *output, const L2NormParams &params)
-  : KernelWithParams<L2NormParams>({input}, {output}, params)
-{
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
 }
 
-void L2Normalize::configure()
+void execute_kernel_CircleL2Normalize(const circle::Operator *cur_op,
+                                      BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() <= 4);
-  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32 ||
-                         output()->element_type() == DataType::U8);
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  if (output()->element_type() == DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(output()->scale() == (1. / 128.));
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == 128);
-  }
-  LUCI_INTERPRETER_CHECK(params().activation == Activation::NONE);
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
-}
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-void L2Normalize::execute() const
-{
-  switch (output()->element_type())
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      eval<float>(0);
+    {
+      const auto *input_data_float = kernels::getTensorData<float>(input_data);
+      auto *output_data_float = kernels::getTensorData<float>(output_data);
+
+      assert(output_data_float);
+
+      luci_interpreter_pal::L2Normalization(
+        kernels::getTensorRuntimeShape(kernel.input(), runtime_graph), input_data_float,
+        kernels::getTensorRuntimeShape(kernel.output(), runtime_graph), output_data_float);
       break;
-    case DataType::U8:
-      eval<uint8_t>(input()->zero_point());
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-template <typename T> void L2Normalize::eval(int32_t zero_point) const
-{
-  tflite::L2NormalizationParams op_params{};
-  op_params.input_zero_point = zero_point;
-  luci_interpreter_pal::L2Normalization(op_params, getTensorShape(input()),
-                                        getTensorData<T>(input()), getTensorShape(output()),
-                                        getTensorData<T>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
