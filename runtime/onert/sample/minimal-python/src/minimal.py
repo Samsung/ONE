@@ -11,14 +11,14 @@ def num_elems(tensor_info):
     return n
 
 
-def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
+def main(nnpackage_path, backends="cpu", operations=""):
     # Create session and load nnpackage
-    # OPERATION is optional for assigning a specific backend to operations.
-    # "cpu" is default value of BACKEND.
-    if OPERATION:
-        session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
+    # operations is optional to assign a specific backends to each operation.
+    # The default value of backends is "cpu".
+    if operations:
+        session = nnfw_session(nnpackage_path, backends, operations)
     else:
-        session = nnfw_session(NNPACKAGE_PATH, BACKEND)
+        session = nnfw_session(nnpackage_path, backends)
 
     # Prepare input. Here we just allocate dummy input arrays.
     input_size = session.input_size()
@@ -56,7 +56,7 @@ def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
 
     # TODO: Please print or compare the output value in your way.
 
-    print(f"nnpackage {NNPACKAGE_PATH.split('/')[-1]} runs successfully.")
+    print(f"nnpackage {nnpackage_path.split('/')[-1]} runs successfully.")
     return
 
 

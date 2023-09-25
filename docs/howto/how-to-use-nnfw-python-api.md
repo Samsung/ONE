@@ -18,10 +18,12 @@ Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nn
 
 ```python
 # Create session and load nnpackage
-# OPERATION is optional for assigning a specific backend to operations.
-# "cpu" is default value of BACKEND.
-if OPERATION: session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
-else: session = nnfw_session(NNPACKAGE_PATH, BACKEND)
+# operations is optional to assign a specific backends to each operation.
+# The default value of backends is "cpu".
+if operations:
+    session = nnfw_session(nnpackage_path, backends, operations)
+else:
+    session = nnfw_session(nnpackage_path, backends)
 ```
 
 2. Prepare Input/Output
