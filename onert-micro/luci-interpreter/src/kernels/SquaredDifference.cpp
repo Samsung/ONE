@@ -15,51 +15,64 @@
  * limitations under the License.
  */
 
-#include "kernels/SquaredDifference.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "TISOKernel.h"
 
-#include "kernels/BinaryOpCommon.h"
+#include "PALSquaredDifference.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-SquaredDifference::SquaredDifference(const Tensor *input1, const Tensor *input2, Tensor *output)
-  : Kernel({input1, input2}, {output})
+void configure_kernel_CircleSquaredDifference(const circle::Operator *cur_op,
+                                              BaseRuntimeGraph *runtime_graph)
 {
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input1()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input1()) ==
+                         Tensor::num_elements(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) == Tensor::num_dims(kernel.output()));
 }
 
-void SquaredDifference::configure()
+void execute_kernel_CircleSquaredDifference(const circle::Operator *cur_op,
+                                            BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type())
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type())
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
-}
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
 
-void SquaredDifference::execute() const
-{
-  switch (input1()->element_type())
+  const auto *input_data_1 = runtime_graph->getDataByTensor(kernel.input1());
+  const auto *input_data_2 = runtime_graph->getDataByTensor(kernel.input2());
+  assert(input_data_1);
+  assert(input_data_2);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  switch (Tensor::element_type(kernel.input1()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalSquaredDifference<float>();
+    {
+      const float *input_data_1_float = kernels::getTensorData<float>(input_data_1);
+      const float *input_data_2_float = kernels::getTensorData<float>(input_data_2);
+      float *output_data_float = kernels::getTensorData<float>(output_data);
+
+      assert(output_data_float);
+
+      const int flat_size =
+        kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph).flatSize();
+
+      luci_interpreter_pal::SquaredDifference(flat_size, input_data_1_float, input_data_2_float,
+                                              output_data_float);
       break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-template <typename T> inline void SquaredDifference::evalSquaredDifference() const
-{
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<T>(input1()),
-                        getTensorShape(input2()), getTensorData<T>(input2()),
-                        getTensorShape(output()), getTensorData<T>(output()), [](T x, T y) {
-                          const T difference = x - y;
-                          return difference * difference;
-                        });
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
