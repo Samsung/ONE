@@ -1,6 +1,6 @@
 # CMakeLists.txt
 
-# refer https://github.com/Samsung/ONE/issues/11368
+# refer to https://github.com/Samsung/ONE/issues/11368
 
 if(CMAKE_CROSSCOMPILING)
     set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY "Set to find packages only in cross root path by force")
