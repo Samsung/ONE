@@ -20,6 +20,8 @@ option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" ON)
 
 option(BUILD_NPUD "Build NPU daemon" ON)
+option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
+option(BUILD_PYTHON_BINDING "Build python binding" OFF)
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 
