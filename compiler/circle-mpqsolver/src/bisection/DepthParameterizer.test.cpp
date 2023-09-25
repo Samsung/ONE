@@ -43,7 +43,7 @@ protected:
     _conv->padding(luci::Padding::SAME);
     _conv->fusedActivationFunction(luci::FusedActFunc::NONE);
     _conv->dtype(loco::DataType::FLOAT32);
-    _conv->shape({1, _width, _height, _channel_size});
+    _conv->shape({1, _height, _width, _channel_size});
     _conv->name("conv");
     _conv->filter(_filter);
     _conv->bias(_bias);

@@ -86,6 +86,9 @@ struct ConvParams
   // float activation params.
   float float_activation_min;
   float float_activation_max;
+  int32_t depth_multiplier;
+  std::vector<int32_t> per_channel_output_multiplier;
+  std::vector<int> per_channel_output_shift;
 };
 
 enum class BroadcastableOpCategory : uint8_t
@@ -113,6 +116,17 @@ struct TransposeParams
 {
   int8_t perm_count;
   int32_t perm[5];
+};
+
+struct PreluParams
+{
+  int32_t input_offset;
+  int32_t alpha_offset;
+  int32_t output_offset;
+  int32_t output_multiplier_1;
+  int output_shift_1;
+  int32_t output_multiplier_2;
+  int output_shift_2;
 };
 
 struct ComparisonParams

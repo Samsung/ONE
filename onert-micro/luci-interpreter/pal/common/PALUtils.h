@@ -177,6 +177,24 @@ inline int MatchingDim(const luci_interpreter::RuntimeShape &shape1, int index1,
   return shape1.dims(index1);
 }
 
+inline int offset(const int32_t *dims_data, int i0, int i1, int i2, int i3)
+{
+  return ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;
+}
+
+inline int offset(const int32_t *dims_data, int i0, int i1, int i2, int i3, int i4)
+{
+  return (((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3) * dims_data[4] + i4;
+}
+
+template <typename T>
+inline T activationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)
+{
+  using std::max;
+  using std::min;
+  return min(max(x, output_activation_min), output_activation_max);
+}
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_UTILS_H

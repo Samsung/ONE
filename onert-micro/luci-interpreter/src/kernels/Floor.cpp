@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,44 +15,69 @@
  * limitations under the License.
  */
 
-#include "kernels/Floor.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/floor.h>
+#include "PALFloor.h"
 
 namespace luci_interpreter
 {
-
-namespace kernels
+void configure_kernel_CircleFloor(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
 
-Floor::Floor(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+  assert(input_index != -1);
+  assert(output_index != -1);
 
-void Floor::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+  // check that input and output dimensions are equal
+  int N = kernels::getTensorShape(input).dimensionsCount();
+  LUCI_INTERPRETER_CHECK(N == kernels::getTensorShape(output).dimensionsCount());
+
+  // check that sizes of all dimensions are equal
+  for (int i = 0; i < N; ++i)
+  {
+    LUCI_INTERPRETER_CHECK(kernels::getTensorShape(input).dims(i) ==
+                           kernels::getTensorShape(output).dims(i));
+  }
 }
 
-void Floor::execute() const
+void execute_kernel_CircleFloor(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
-  {
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
 
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  assert(input_data != nullptr);
+  assert(output_data != nullptr);
+
+  switch (Tensor::element_type(input))
+  {
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+
+      luci_interpreter_pal::Floor(
+        kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
+
+      break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void Floor::evalFloat() const
-{
-  tflite::reference_ops::Floor(getTensorShape(input()), getTensorData<float>(input()),
-                               getTensorShape(output()), getTensorData<float>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
