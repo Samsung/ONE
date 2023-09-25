@@ -22,35 +22,25 @@ class tensorinfo():
     """
     Tensorinfo describes the type and shape of tensors
 
-    Args:
+    Attributes:
         dtype (str): The data type
         rank (int): The number of dimensions (rank)
         dims (list): The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK).
     """
 
-    def __init__(self, dtype, rank, dims):
+    def __init__(self):
         """The constructor of tensorinfo"""
-        self.dtype = dtype
-        self.rank = rank
-        self.dims = dims
-
-    def get_dims(self):
-        """Get dims of tensorinfo"""
-
-    def set_dims(self, dims_list):
-        """Set dims_list to dims of tensorinfo"""
 
 class nnfw_session():
     """
     Session to query with runtime
 
-    Args:
+    Attributes:
         nnpackage_path (str): Path to the nnpackage file or unzipped directory to be loaded
-        backends (str): Available backends on which nnfw uses
-                         Multiple backends can be set and they must be separated by a semicolon
-                         (ex: "acl_cl;cpu")
-        *op (str): operation to be set
-                   Among the multiple backends, the 1st element is used as the default backend.
+        backends (str): Available backends on which nnfw uses (cpu, acl_cl, acl_neon)
+                        Multiple backends can be set and they must be separated by a semicolon (ex: "acl_cl;cpu")
+                        Among the multiple backends, the 1st element is used as the default backend.
+        op (str): operation to be set
     """
 
     def __init__(self, nnpackage_path, backends, *op):
@@ -116,7 +106,7 @@ class nnfw_session():
 
     def set_input_layout(self, index, *layout):
         """
-        Set the layout of an input
+        Set the layout of an input (NONE, NCHW, NHWC)
 
         Args:
             index (int): Index of input to be set (0-indexed)
@@ -125,7 +115,7 @@ class nnfw_session():
 
     def set_output_layout(self, index, *layout):
         """
-        Set the layout of an output
+        Set the layout of an output (NONE, NCHW, NHWC)
 
         Args:
             index (int): Index of output to be set (0-indexed)

@@ -4,7 +4,7 @@ import sys
 
 
 def num_elems(tensor_info):
-    """Get the total number of elements in nnfw_tensorinfo->dims."""
+    """Get the total number of elements in nnfw_tensorinfo.dims."""
     n = 1
     for x in range(tensor_info.rank):
         n *= tensor_info.dims[x]
@@ -12,7 +12,7 @@ def num_elems(tensor_info):
 
 
 def main(NNPACKAGE_PATH, BACKEND="cpu", OPERATION=""):
-    # Create session and Loading nnpackage
+    # Create session and load nnpackage
     # OPERATION is optional for assigning a specific backend to operations.
     # "cpu" is default value of BACKEND.
     if OPERATION:

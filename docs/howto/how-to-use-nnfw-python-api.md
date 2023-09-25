@@ -10,14 +10,14 @@ Follow the [compiler guide](https://github.com/Samsung/ONE/blob/master/docs/nncc
 
 Please see [model2nnpkg](https://github.com/Samsung/ONE/tree/master/tools/nnpackage_tool/model2nnpkg) for converting from tflite model file.
 
-## Build app with NNFW PYTHON API
+## Install nnfw python API
 
-Here are basic steps to build app with [NNFW PYTHON API](https://github.com/Samsung/ONE/blob/master/runtime/onert/python/api)
+Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nnfw/python) for installing nnfw python api.
 
 1. Initialize nnfw_session
 
 ```python
-# Create session and Loading nnpackage
+# Create session and load nnpackage
 # OPERATION is optional for assigning a specific backend to operations.
 # "cpu" is default value of BACKEND.
 if OPERATION: session = nnfw_session(NNPACKAGE_PATH, BACKEND, OPERATION)
