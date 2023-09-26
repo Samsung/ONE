@@ -28,7 +28,9 @@ try:
             os.makedirs(arch_path)
             print(f"Created directory '{arch_path}'")
 
-            so_dir = os.path.join('../../../Product', arch_dir + '-linux.release/out/lib')
+            THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+            so_dir = os.path.join(THIS_FILE_DIR, '../../../Product')
+            so_dir = os.path.join(so_dir, arch_dir + '-linux.release/out/lib')
 
             for so in os.listdir(so_dir):
                 if so.endswith(".so"):
