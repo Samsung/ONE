@@ -4,8 +4,10 @@ endif ()
 
 nnfw_find_package(TRIXEngine QUIET 2.5.0)
 if(TRIXEngine_FOUND)
+  message(STATUS "ONERT frontend: Found TRIXEngine")
   list(APPEND SOURCES src/trix_loader.cc)
 else()
+  message(STATUS "ONERT frontend: Failed to find TRIXEngine")
   list(APPEND SOURCES src/trix_loader_dummy.cc)
 endif(TRIXEngine_FOUND)
 

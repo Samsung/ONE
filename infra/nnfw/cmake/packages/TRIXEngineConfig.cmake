@@ -13,6 +13,13 @@ function(_TRIXEngine_import)
     PATHS "${TRIX_ENGINE_PREFIX}/include/npu-engine"
   )
 
+  # npubinfmt.h is in different path on version >=2.6.0
+  find_path(NPUBINFMT_INCLUDE_DIR
+    NAMES npubinfmt.h
+    HINTS "${TRIX_ENGINE_PREFIX}/include/npubin-fmt"
+          "${TRIX_ENGINE_PREFIX}/include/npu-engine"
+  )
+
   set(TRIXEngine_FOUND TRUE)
 
   if(NOT TRIXEngine_LIB)
@@ -23,6 +30,10 @@ function(_TRIXEngine_import)
     set(TRIXEngine_FOUND FALSE)
   endif(NOT TRIXEngine_INCLUDE_DIR)
 
+  if(NOT NPUBINFMT_INCLUDE_DIR)
+    set(TRIXEngine_FOUND FALSE)
+  endif(NOT NPUBINFMT_INCLUDE_DIR)
+
   if(NOT TRIXEngine_FOUND)
     message(STATUS "Failed to find TRIX Engine")
   else(NOT TRIXEngine_FOUND)
@@ -31,12 +42,14 @@ function(_TRIXEngine_import)
     if(NOT TARGET trix_engine)
       add_library(trix_engine INTERFACE)
       target_link_libraries(trix_engine INTERFACE ${TRIXEngine_LIB})
-      target_include_directories(trix_engine INTERFACE ${TRIXEngine_INCLUDE_DIR})
-    endif(NOT TARGET trix_engine)
+      target_include_directories(trix_engine INTERFACE ${TRIXEngine_INCLUDE_DIR} ${NPUBINFMT_INCLUDE_DIR})
+     endif(NOT TARGET trix_engine)
   endif(NOT TRIXEngine_FOUND)
 
   set(TRIXEngine_FOUND ${TRIXEngine_FOUND} PARENT_SCOPE)
-  set(TRIXEngine_INCLUDE_DIRS ${TRIXEngine_INCLUDE_DIR} PARENT_SCOPE)
+  set(TRIXEngine_INCLUDE_DIRS ${TRIXEngine_INCLUDE_DIR} ${NPUBINFMT_INCLUDE_DIR} PARENT_SCOPE)
+
+
 endfunction(_TRIXEngine_import)
 
 _TRIXEngine_import()
