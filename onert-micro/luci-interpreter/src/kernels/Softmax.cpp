@@ -33,11 +33,90 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *output,
   const auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
-  luci_interpreter_pal::Softmax(options->beta(), kernels::getTensorShape(input),
-                                kernels::getTensorData<float>(input_data),
+  const float beta = options->beta();
+
+  const auto trailing_dim = Tensor::num_dims(input) - 1;
+
+  int flat_size = 1;
+  for (int i = 0; i < Tensor::num_dims(input); ++i)
+  {
+    flat_size *= (i == trailing_dim) ? 1 : Tensor::dim(input, i);
+  }
+
+  luci_interpreter_pal::SoftmaxParams params;
+  params.beta = beta;
+  params.num_rows = flat_size;
+  params.row_size = std::min(Tensor::dim(input, trailing_dim), Tensor::dim(output, trailing_dim));
+
+  luci_interpreter_pal::Softmax(params, kernels::getTensorData<float>(input_data),
                                 kernels::getTensorData<float>(output_data));
 }
 #endif // DIS_FLOAT
+
+#ifndef DIS_QUANT
+void preprocessSoftmaxScaling(double beta, double input_scale, int input_integer_bits,
+                              int32_t *quantized_multiplier, int *left_shift)
+{
+  const double max_real_multiplier = (1LL << 31) - 1.0;
+  const double input_beta_real_multiplier =
+    std::min<double>(beta * input_scale * (1 << (31 - input_integer_bits)), max_real_multiplier);
+
+  kernels::quantizeMultiplier(input_beta_real_multiplier, quantized_multiplier, left_shift);
+}
+
+void evalQuantize(const circle::Tensor *input, const circle::Tensor *output,
+                  const circle::SoftmaxOptions *options, BaseRuntimeGraph *runtime_graph)
+{
+  static const int kScaledDiffIntegerBits = 5;
+
+  const float beta = options->beta();
+
+  const auto trailing_dim = Tensor::num_dims(input) - 1;
+
+  int flat_size = 1;
+  for (int i = 0; i < Tensor::num_dims(input); ++i)
+  {
+    flat_size *= (i == trailing_dim) ? 1 : Tensor::dim(input, i);
+  }
+
+  luci_interpreter_pal::SoftmaxParams params;
+  params.beta = beta;
+  params.num_rows = flat_size;
+  params.row_size = std::min(Tensor::dim(input, trailing_dim), Tensor::dim(output, trailing_dim));
+
+  if (Tensor::element_type(input) == DataType::S16)
+  {
+    int left_shift = params.input_left_shift;
+    double input_scale_beta_rescale =
+      static_cast<double>(Tensor::scale(input)) * static_cast<double>(beta) /
+      (10.0 / 65535.0); // scale the input_diff such that [-65535, 0]
+    // correspond to [-10.0, 0.0]
+    kernels::quantizeMultiplier(input_scale_beta_rescale, &params.input_multiplier, &left_shift);
+    params.input_left_shift = left_shift;
+    luci_interpreter_pal::Softmax(
+      params, kernels::getTensorData<int16_t>(runtime_graph->getDataByTensor(input)),
+      kernels::getTensorData<int16_t>(runtime_graph->getDataByTensor(output)));
+  }
+  else
+  {
+    int left_shift = params.input_left_shift;
+    preprocessSoftmaxScaling(static_cast<double>(params.beta),
+                             static_cast<double>(Tensor::scale(input)), kScaledDiffIntegerBits,
+                             &params.input_multiplier, &left_shift);
+    params.input_left_shift = left_shift;
+    params.diff_min =
+      -1.0 * kernels::calculateInputRadius(kScaledDiffIntegerBits, params.input_left_shift, 31);
+    if (Tensor::element_type(output) == DataType::S8)
+      luci_interpreter_pal::Softmax(
+        params, kernels::getTensorData<int8_t>(runtime_graph->getDataByTensor(input)),
+        kernels::getTensorData<int8_t>(runtime_graph->getDataByTensor(output)));
+    else if (Tensor::element_type(output) == DataType::S16)
+      luci_interpreter_pal::Softmax(
+        params, kernels::getTensorData<int8_t>(runtime_graph->getDataByTensor(input)),
+        kernels::getTensorData<int16_t>(runtime_graph->getDataByTensor(output)));
+  }
+}
+#endif // DIS_QUANT
 
 } // namespace
 
@@ -67,14 +146,20 @@ void execute_kernel_CircleSoftmax(const circle::Operator *cur_op, BaseRuntimeGra
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 
   const auto *options = cur_op->builtin_options_as_SoftmaxOptions();
-
-  switch (Tensor::element_type(kernel.input()))
+  const auto input_type = Tensor::element_type(kernel.input());
+  switch (input_type)
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
       evalFloat(kernel.input(), kernel.output(), options, runtime_graph);
       break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case DataType::S8:
+    case DataType::S16:
+      evalQuantize(kernel.input(), kernel.output(), options, runtime_graph);
+      break;
+#endif
     default:
       assert(false && "Unsupported type.");
   }
