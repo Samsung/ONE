@@ -14,113 +14,75 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "kernels/L2Normalize.h"
+
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/l2_normalization/FloatL2NormalizeKernel.h"
+#include "luci_interpreter/test_models/l2_normalization/NegL2NormalizeKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<float> input_data, std::initializer_list<float> output_data)
+class L2NormalizeTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  L2NormParams params{};
-  params.activation = Activation::NONE;
-
-  L2Normalize kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-}
-
-template <>
-void Check<uint8_t>(std::initializer_list<int32_t> input_shape,
-                    std::initializer_list<int32_t> output_shape,
-                    std::initializer_list<float> input_data,
-                    std::initializer_list<float> output_data)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::pair<float, int32_t> quant_param =
-    quantizationParams<uint8_t>(std::min(input_data) < 0 ? std::min(input_data) : 0.f,
-                                std::max(input_data) > 0 ? std::max(input_data) : 0.f);
-
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    input_shape, quant_param.first, quant_param.second, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 128., 128);
-
-  L2NormParams params{};
-  params.activation = Activation::NONE;
-
-  L2Normalize kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(output_data, output_tensor.scale()));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-}
-
-template <typename T> class L2NormalizeTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(L2NormalizeTest, DataTypes);
-
-TYPED_TEST(L2NormalizeTest, Simple)
+template <typename T>
+std::vector<T> checkL2NormalizeKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>({1, 1, 1, 6}, {1, 1, 1, 6}, {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1},
-                   {-0.55, 0.3, 0.35, 0.6, -0.35, 0.05});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(L2NormalizeTest, ActivationType_NEG)
+TEST_F(L2NormalizeTest, Float_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 1, 6}, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  L2NormParams params{};
-  params.activation = Activation::RELU6;
-
-  L2Normalize kernel(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataFloatL2Normalization test_data_kernel;
+  std::vector<float> output_data_vector = checkL2NormalizeKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST(L2NormalizeTest, InvalidOutputQuantParam_NEG)
+TEST_F(L2NormalizeTest, Input_output_type_mismatch_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data = {-1.1, 0.6, 0.7, 1.2, -0.7, 0.1};
+  test_kernel::NegTestDataInputOutputTypeMismatchNegKernel test_data_kernel;
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 1, 1, 6}, 1. / 64., 127, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, 1. / 64., 127);
-
-  L2NormParams params{};
-  params.activation = Activation::NONE;
-
-  L2Normalize kernel(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
