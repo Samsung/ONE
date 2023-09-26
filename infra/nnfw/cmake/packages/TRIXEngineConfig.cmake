@@ -43,13 +43,11 @@ function(_TRIXEngine_import)
       add_library(trix_engine INTERFACE)
       target_link_libraries(trix_engine INTERFACE ${TRIXEngine_LIB})
       target_include_directories(trix_engine INTERFACE ${TRIXEngine_INCLUDE_DIR} ${NPUBINFMT_INCLUDE_DIR})
-     endif(NOT TARGET trix_engine)
+    endif(NOT TARGET trix_engine)
   endif(NOT TRIXEngine_FOUND)
 
   set(TRIXEngine_FOUND ${TRIXEngine_FOUND} PARENT_SCOPE)
   set(TRIXEngine_INCLUDE_DIRS ${TRIXEngine_INCLUDE_DIR} ${NPUBINFMT_INCLUDE_DIR} PARENT_SCOPE)
-
-
 endfunction(_TRIXEngine_import)
 
 _TRIXEngine_import()
