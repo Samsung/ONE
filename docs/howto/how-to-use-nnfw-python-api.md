@@ -2,13 +2,9 @@
 
 ## Prepare nnpackage
 
-### Convert tensorflow pb file to nnpackage
+### Use nnpackage examples
 
-Follow the [compiler guide](https://github.com/Samsung/ONE/blob/master/docs/nncc/v1.0.0/tutorial.md) to generate nnpackge from tensorflow pb file
-
-### Convert tflite file to nnpackage
-
-Please see [model2nnpkg](https://github.com/Samsung/ONE/tree/master/tools/nnpackage_tool/model2nnpkg) for converting from tflite model file.
+Use the [nnpackage examples](https://github.com/Samsung/ONE/tree/master/nnpackage/examples/v1.0.0) to run tutorial code.
 
 ## Install nnfw python API
 
