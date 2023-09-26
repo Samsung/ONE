@@ -1,8 +1,10 @@
 nnfw_find_package(TRIXEngine QUIET 2.5.0)
 
 if(NOT TRIXEngine_FOUND)
+  message(STATUS "NPUD backend: Failed to find TRIXEngine")
   return()
 endif(NOT TRIXEngine_FOUND)
+message(STATUS "NPUD backend: Found TRIXEngine")
 
 file(GLOB_RECURSE SOURCES "*.cc")
 

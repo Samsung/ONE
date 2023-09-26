@@ -2,8 +2,10 @@ set(LIB_ONERT_BACKEND_TRIX onert_backend_trix)
 
 nnfw_find_package(TRIXEngine QUIET 2.5.0)
 if(NOT TRIXEngine_FOUND)
+  message(STATUS "ONERT backend: Failed to find TRIXEngine")
   return()
 endif(NOT TRIXEngine_FOUND)
+message(STATUS "ONERT backend: Found TRIXEngine")
 
 file(GLOB_RECURSE SOURCES "*.cc")
 
