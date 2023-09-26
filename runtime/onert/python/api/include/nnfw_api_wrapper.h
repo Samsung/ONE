@@ -147,8 +147,8 @@ public:
     nnfw_tensorinfo tensor_info;
     nnfw_output_tensorinfo(this->session, index, &tensor_info);
     NNFW_TYPE type = tensor_info.dtype;
-    uint32_t input_elements = num_elems(&tensor_info);
-    size_t length = sizeof(T) * input_elements;
+    uint32_t output_elements = num_elems(&tensor_info);
+    size_t length = sizeof(T) * output_elements;
 
     ensure_status(nnfw_set_output(session, index, type, buffer.request().ptr, length));
   }
