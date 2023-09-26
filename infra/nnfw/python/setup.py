@@ -14,7 +14,7 @@ try:
             print(f"Deleting existing directory '{packaging_dir}'...")
             shutil.rmtree(packaging_dir)
 
-    # remove architectory directory
+    # remove architecture directory
     if os.path.exists(package_directory):
         for arch_dir in architecture_directory:
             arch_path = os.path.join(package_directory, arch_dir)
