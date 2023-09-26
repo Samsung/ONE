@@ -23,7 +23,7 @@ def nnfw_session(*args):
     elif (num == 3):
         return libnnfw_api_pybind.nnfw_session(args[0], args[2], args[1])
     else:
-        print("Syntax Error")
+        print("TypeError: nnfw_session() takes 2(MODEL, BACKEND) or 3(MODEL, BACKEND, OPERATION) positional arguments but {} were given".format(num))
         return
 
 

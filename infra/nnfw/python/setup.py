@@ -52,7 +52,7 @@ setup(
     name=package_directory,
     version='0.1.0',
     description='nnfw_api binding',
-    long_description='you can use nnfw_api by python',
+    long_description='It provides nnfw Python api',
     packages=[package_directory],
     package_data={package_directory: so_list},
 )

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# packge
+# package
 python3 setup.py sdist bdist_wheel
 
 # deploy for TestPyPI
