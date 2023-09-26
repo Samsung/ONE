@@ -18,32 +18,15 @@
 #ifndef LUCI_INTERPRETER_PAL_SOFTMAX_COMMON_H
 #define LUCI_INTERPRETER_PAL_SOFTMAX_COMMON_H
 
+#include "Params.h"
+
 namespace luci_interpreter_pal
 {
-namespace
+inline void Softmax(const SoftmaxParams &params, const float *input_data, float *output_data)
 {
-
-inline int flatSizeSkipDim(const luci_interpreter::RuntimeShape &shape, int skip_dim)
-{
-  const int dims_count = shape.dimensionsCount();
-  const auto *dims_data = shape.dimsData();
-  int flat_size = 1;
-  for (int i = 0; i < dims_count; ++i)
-  {
-    flat_size *= (i == skip_dim) ? 1 : dims_data[i];
-  }
-  return flat_size;
-}
-
-} // namespace
-
-inline void Softmax(const double beta, const luci_interpreter::RuntimeShape &input_shape,
-                    const float *input_data, float *output_data)
-{
-  const int trailing_dim = input_shape.dimensionsCount() - 1;
-  const int outer_size = flatSizeSkipDim(input_shape, trailing_dim);
-
-  const int depth = input_shape.dims(trailing_dim);
+  const int outer_size = params.num_rows;
+  const int depth = params.row_size;
+  const double beta = params.beta;
 
   for (int i = 0; i < outer_size; ++i)
   {
