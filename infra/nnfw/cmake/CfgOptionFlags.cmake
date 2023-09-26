@@ -89,8 +89,8 @@ option(DOWNLOAD_FP16 "Download fp16 source" ON)
 option(BUILD_FP16 "Build fp16 library from the source" ON)
 option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
 option(BUILD_FXDIV "Build fxdiv library from the source" ON)
-option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
-option(BUILD_PYTHON_BINDING "Build python binding" ON)
+option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
+option(BUILD_PYTHON_BINDING "Build python binding" OFF)
 
 #
 ## Default sample build configuration

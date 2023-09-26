@@ -15,5 +15,3 @@ option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" ON)
 
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
-option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
-option(BUILD_PYTHON_BINDING "Build python binding" OFF)
