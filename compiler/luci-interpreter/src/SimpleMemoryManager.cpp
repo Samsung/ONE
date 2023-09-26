@@ -30,7 +30,9 @@ void SimpleMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
     release_memory(tensor);
   }
   const auto element_size = getDataTypeSize(tensor.element_type());
-  const auto num_elements = tensor.shape().num_elements();
+
+  // Use large_num_elements to avoid overflow
+  const auto num_elements = tensor.shape().large_num_elements();
 
   auto *data = new uint8_t[num_elements * element_size];
   tensor.set_data_buffer(data);
