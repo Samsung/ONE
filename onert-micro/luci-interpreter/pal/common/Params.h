@@ -233,6 +233,12 @@ struct SoftmaxParams
   int row_size;
 };
 
+struct QuantizationParams
+{
+  float scale;
+  int zero_point;
+};
+
 } // namespace luci_interpreter_pal
 
 #endif // LUCI_INTERPRETER_PAL_PARAMS_H

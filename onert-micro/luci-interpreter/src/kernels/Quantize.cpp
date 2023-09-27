@@ -14,147 +14,77 @@
  * limitations under the License.
  */
 
-#include "kernels/Quantize.h"
+#ifndef DIS_QUANT
+
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
+
 #include "PALQuantize.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+
+void configure_kernel_CircleQuantize(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-namespace
-{
-
-template <typename input_dtype> void call_requantize(const Tensor *input, Tensor *output)
-{
-  int32_t multiplier;
-  int shift;
-
-  const double effective_output_scale = input->scale() / output->scale();
-  quantizeMultiplier(effective_output_scale, &multiplier, &shift);
-
-  const auto input_shape = getTensorShape(input);
-  const auto output_shape = getTensorShape(output);
-  const auto size = tflite::MatchingFlatSize(input_shape, output_shape);
-
-  const auto input_data = getTensorData<input_dtype>(input);
-
-  switch (output->element_type())
-  {
-    case DataType::S8:
-      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
-                                       output->zero_point(), getTensorData<int8_t>(output));
-      break;
-    case DataType::U8:
-      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
-                                       output->zero_point(), getTensorData<uint8_t>(output));
-      break;
-    case DataType::S16:
-      luci_interpreter_pal::Requantize(input_data, size, multiplier, shift, input->zero_point(),
-                                       output->zero_point(), getTensorData<int16_t>(output));
-      break;
-    default:
-      assert(false && "Unsupported quantized type, yet!");
-  }
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
+  LUCI_INTERPRETER_CHECK(!Tensor::scales(kernel.output()).empty());
+  LUCI_INTERPRETER_CHECK(!Tensor::zero_points(kernel.output()).empty());
 }
 
-} // namespace
-
-Quantize::Quantize(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
-
-void Quantize::configure()
+void execute_kernel_CircleQuantize(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  if (input()->element_type() == DataType::S16)
-    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
 
-  switch (input()->element_type())
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+  assert(output_data);
+
+  const int flat_size = kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
     {
-      LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::U8 ||
-                             output()->element_type() == DataType::S8 ||
-                             output()->element_type() == DataType::S16);
-      break;
-    }
-    case DataType::S16:
-    case DataType::S8:
-    case DataType::U8:
-    {
-      LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S8 ||
-                             output()->element_type() == DataType::U8 ||
-                             output()->element_type() == DataType::S16);
-      if (output()->element_type() == DataType::S16)
+      luci_interpreter_pal::QuantizationParams params{};
+      params.zero_point = Tensor::zero_point(kernel.output());
+      params.scale = Tensor::scale(kernel.output());
+      switch (Tensor::element_type(kernel.output()))
       {
-        LUCI_INTERPRETER_CHECK(output()->zero_point() == 0);
+        case DataType::S8:
+          luci_interpreter_pal::Quantize(params, flat_size,
+                                         kernels::getTensorData<float>(input_data),
+                                         kernels::getTensorData<int8_t>(output_data));
+          break;
+        case DataType::U8:
+          luci_interpreter_pal::Quantize(params, flat_size,
+                                         kernels::getTensorData<float>(input_data),
+                                         kernels::getTensorData<uint8_t>(output_data));
+          break;
+        case DataType::S16:
+          luci_interpreter_pal::Quantize(params, flat_size,
+                                         kernels::getTensorData<float>(input_data),
+                                         kernels::getTensorData<int16_t>(output_data));
+          break;
+        default:
+          assert(false && "Unsupported type");
       }
       break;
     }
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type");
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
 }
 
-void Quantize::execute() const
-{
-  switch (input()->element_type())
-  {
-    case DataType::FLOAT32:
-    {
-      tflite::QuantizationParams op_params;
-      op_params.zero_point = output()->zero_point();
-      op_params.scale = output()->scale();
-      const auto input_data = getTensorData<float>(input());
-
-      switch (output()->element_type())
-      {
-        case DataType::S8:
-        {
-          luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
-                                         getTensorShape(output()), getTensorData<int8_t>(output()));
-          break;
-        }
-        case DataType::U8:
-        {
-          luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
-                                         getTensorShape(output()),
-                                         getTensorData<uint8_t>(output()));
-          break;
-        }
-        case DataType::S16:
-        {
-          luci_interpreter_pal::Quantize(op_params, getTensorShape(input()), input_data,
-                                         getTensorShape(output()),
-                                         getTensorData<int16_t>(output()));
-          break;
-        }
-        default:
-          assert(false && "Unsupported type.");
-      }
-      break;
-    }
-    case DataType::S16:
-    {
-      call_requantize<int16_t>(input(), output());
-      break;
-    }
-    case DataType::S8:
-    {
-      call_requantize<int8_t>(input(), output());
-      break;
-    }
-    case DataType::U8:
-    {
-      call_requantize<uint8_t>(input(), output());
-      break;
-    }
-    default:
-      assert(false && "Unsupported type.");
-  }
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
+
+#endif // DIS_QUANT
