@@ -12,7 +12,7 @@ include("test.lst")
 
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 
-add_test(NAME q_implant_test
+add_test(NAME q_implant_op_level_test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/q-implant-op-level-test.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "${ARTIFACTS_BIN_PATH}"
