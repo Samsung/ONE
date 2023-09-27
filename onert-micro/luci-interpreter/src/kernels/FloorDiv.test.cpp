@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/FloorDiv.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/floordiv/FloatFloorDivKernel.h"
+#include "luci_interpreter/test_models/floordiv/NegFloorDivKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,118 +30,94 @@ using namespace testing;
 
 class FloorDivTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(FloorDivTest, FloatSimple)
+template <typename T>
+std::vector<T> checkFloorDivKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape x_shape{2, 3};
-  std::vector<float> x_data{
-    0.5, 2.4,  3.1,  // Row 1
-    1.9, -1.9, -2.8, // Row 2
-  };
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Shape y_shape = x_shape;
-  std::vector<float> y_data{
-    2.0, 0.5,  3.0,  // Row 1
-    1.0, -1.0, -2.0, // Row 2
-  };
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  std::vector<int32_t> ref_output_shape{2, 3};
-  std::vector<float> ref_output_data{
-    0, 4, 1, // Row 1
-    1, 1, 1, // Row 2
-  };
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 2);
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data, _memory_manager.get());
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  // set left input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // set right input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(1));
+    std::copy(test_data_base->get_input_data_by_index(1).begin(),
+              test_data_base->get_input_data_by_index(1).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(FloorDivTest, FloatBroadcast)
+TEST_F(FloorDivTest, Float_P)
 {
-  Shape x_shape{1, 3};
-  std::vector<float> x_data{
-    0.5, 2.4, -3.1, // Row 1
-  };
-
-  Shape y_shape{3, 3};
-  std::vector<float> y_data{
-    1.0, 1.0,  1.0,  // Row 1
-    2.0, -0.5, -2.0, // Row 2
-    0.3, 0.7,  0.9,  // Row 3
-  };
-
-  std::vector<int32_t> ref_output_shape{3, 3};
-  std::vector<float> ref_output_data{
-    0, 2,  -4, // Row 1
-    0, -5, 1,  // Row 2
-    1, 3,  -4, // Row 3
-  };
-
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(x_shape, x_data, _memory_manager.get());
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(y_shape, y_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_kernel::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
+    std::vector<float> output_data_vector = checkFloorDivKernel(&test_data_kernel);
+    EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                      test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
+  // With broadcast
+  {
+    const bool is_with_broadcast = true;
+    test_kernel::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
+    std::vector<float> output_data_vector = checkFloorDivKernel(&test_data_kernel);
+    EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                      test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
 }
 
-TEST_F(FloorDivTest, DivByZero_NEG)
+TEST_F(FloorDivTest, Wrong_Input1_Type_NEG)
 {
-  Shape shape{3};
-  std::vector<float> x_data{1, 0, -1};
-  std::vector<float> y_data{0, 0, 0};
+  test_kernel::NegTestDataInput1WrongTypeFloorDiv test_data_kernel;
 
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>(shape, x_data, _memory_manager.get());
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>(shape, y_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-
-  EXPECT_ANY_THROW(kernel.execute());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
-TEST_F(FloorDivTest, Input_Output_Type_Mismatch_NEG)
+TEST_F(FloorDivTest, Wrong_Input2_Type_NEG)
 {
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
-  Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1.f}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
+  test_kernel::NegTestDataInput2WrongTypeFloorDiv test_data_kernel;
 
-  FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
-TEST_F(FloorDivTest, Input_Type_Mismatch_NEG)
-{
-  Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor y_tensor = makeInputTensor<DataType::U8>({1}, {1}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  FloorDiv kernel(&x_tensor, &y_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
+// TODO: add tests for inplace optimizations for all types
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,72 +14,93 @@
  * limitations under the License.
  */
 
-#include "kernels/FloorDiv.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
 
-#include <tensorflow/lite/kernels/internal/reference/binary_function.h>
-#include <cmath>
+#include "kernels/BinaryOpCommon.h"
+
+#include "PALFloorDiv.h"
 
 namespace luci_interpreter
 {
 
-namespace kernels
+void configure_kernel_CircleFloorDiv(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
 
-FloorDiv::FloorDiv(const Tensor *input, const Tensor *alpha, Tensor *output)
-  : Kernel({input, alpha}, {output})
-{
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
 }
 
-void FloorDiv::configure()
+void execute_kernel_CircleFloorDiv(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(x()->element_type() == output()->element_type());
-  LUCI_INTERPRETER_CHECK(y()->element_type() == output()->element_type());
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
 
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(x()->shape(), y()->shape()));
-}
+  const auto *options = cur_op->builtin_options_as_FloorDivOptions();
 
-void FloorDiv::execute() const
-{
-  switch (x()->element_type())
+  luci_interpreter::RuntimeShape input_shape1 =
+    kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph);
+  luci_interpreter::RuntimeShape input_shape2 =
+    kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph);
+  luci_interpreter::RuntimeShape output_shape =
+    kernels::getTensorRuntimeShape(kernel.output(), runtime_graph);
+
+  const uint8_t *input_data1 = runtime_graph->getDataByTensor(kernel.input1());
+  const uint8_t *input_data2 = runtime_graph->getDataByTensor(kernel.input2());
+  uint8_t *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  assert(input_data1 != nullptr);
+  assert(input_data2 != nullptr);
+  assert(output_data != nullptr);
+
+  switch (Tensor::element_type(kernel.input1()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
-      break;
+    {
+      // Check the denominator
+      for (int i = 0; i < input_shape2.flatSize(); ++i)
+      {
+        LUCI_INTERPRETER_CHECK(kernels::getTensorData<float>(input_data2)[i] != 0);
+      }
+      // check that input and output dimensions are equal
+      auto AreShapesEqual = [](const luci_interpreter::RuntimeShape &input_shape1,
+                               const luci_interpreter::RuntimeShape &input_shape2) -> bool {
+        if (input_shape1.dimensionsCount() == input_shape2.dimensionsCount())
+        {
+          int N = input_shape1.dimensionsCount();
+          for (int i = 0; i < N; ++i)
+          {
+            if (input_shape1.dims(i) != input_shape2.dims(i))
+              return false;
+          }
+          return true;
+        }
+        return false;
+      };
+      if (AreShapesEqual(input_shape1, input_shape2))
+      {
+        const int flat_size = input_shape1.flatSize();
+        luci_interpreter_pal::FloorDiv(flat_size, kernels::getTensorData<float>(input_data1),
+                                       kernels::getTensorData<float>(input_data2),
+                                       kernels::getTensorData<float>(output_data));
+      }
+      else
+      {
+        luci_interpreter_pal::BroadcastFloorDiv4DSlow(
+          input_shape1, kernels::getTensorData<float>(input_data1), input_shape2,
+          kernels::getTensorData<float>(input_data2), output_shape,
+          kernels::getTensorData<float>(output_data));
+      }
+    }
+    break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-void FloorDiv::evalFloat() const
-{
-  auto FloorDivFunc = [](float x, float y) -> float {
-    return std::floor(static_cast<double>(x) / static_cast<double>(y));
-  };
-
-  const auto x_data = getTensorData<float>(x());
-  const auto y_data = getTensorData<float>(y());
-
-  // Check the denominator
-  for (int i = 0; i < getTensorShape(y()).FlatSize(); ++i)
-  {
-    LUCI_INTERPRETER_CHECK(y_data[i] != 0);
-  }
-
-  if (x()->shape() != y()->shape())
-  {
-    tflite::reference_ops::BroadcastBinaryFunction4DSlow<float, float, float>(
-      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-      getTensorData<float>(output()), FloorDivFunc);
-  }
-  else
-  {
-    tflite::reference_ops::BinaryFunction<float, float, float>(
-      getTensorShape(x()), x_data, getTensorShape(y()), y_data, getTensorShape(output()),
-      getTensorData<float>(output()), FloorDivFunc);
-  }
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
