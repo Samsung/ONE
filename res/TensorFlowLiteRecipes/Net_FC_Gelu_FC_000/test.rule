@@ -1,0 +1,9 @@
+# To check if extract_gelu_from_opt_fc works
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "GELU_EXIST"              $(op_count GELU) '=' 1
+RULE    "FC_EXIST"                $(op_count FULLY_CONNECTED) '=' 2
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
+RULE    "NO_CUSTOM"               $(op_count 'CUSTOM(Erf)') '=' 0

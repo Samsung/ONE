@@ -1,0 +1,138 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "fc1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "fc2"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "fc1_w"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+    arg: "1"
+  }
+}
+operand {
+  name: "fc2_w"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0.7071067690849304"
+    arg: "0.7071067690849304"
+    arg: "0.7071067690849304"
+    arg: "0.7071067690849304"
+  }
+}
+operand {
+  name: "erf"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "add_one"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "one"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "mul"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "fc3"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 }
+}
+operand {
+  name: "fc3_w"
+  type: FLOAT32
+  shape { dim: 2 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "1.0"
+    arg: "1.0"
+    arg: "1.0"
+  }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+    keep_num_dims: true
+  }
+  input: "ifm"
+  input: "fc1_w"
+  input: ""
+  output: "fc1"
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+    keep_num_dims: true
+  }
+  input: "ifm"
+  input: "fc2_w"
+  input: ""
+  output: "fc2"
+}
+operation {
+  type: "Erf"
+  input: "fc2"
+  output: "erf"
+}
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "erf"
+  input: "one"
+  output: "add_one"
+}
+operation {
+  type: "Mul"
+  mul_options {
+    activation: NONE
+  }
+  input: "fc1"
+  input: "add_one"
+  output: "mul"
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+    keep_num_dims: true
+  }
+  input: "mul"
+  input: "fc3_w"
+  input: ""
+  output: "fc3"
+}
+input: "ifm"
+output: "fc3"
