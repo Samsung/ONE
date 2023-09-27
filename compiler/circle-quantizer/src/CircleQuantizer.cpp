@@ -35,8 +35,37 @@ using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 using Algorithms = luci::CircleQuantizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
 
+struct QConfReader
+{
+  void init(const std::string &filename)
+  {
+    std::ifstream ifs;
+
+    ifs.open(filename);
+
+    // Failed to open cfg file
+    if (not ifs.is_open())
+      throw std::runtime_error("Cannot open config file. " + filename);
+
+    JSONCPP_STRING errs;
+    Json::CharReaderBuilder builder;
+
+    // Failed to parse
+    if (not parseFromStream(builder, ifs, &_root, &errs))
+      throw std::runtime_error("Cannot parse config file (json format). " + errs);
+
+    ifs.close();
+  }
+
+  Json::Value &root(void) { return _root; }
+
+private:
+  Json::Value _root;
+};
+
 LayerParams read_layer_params(std::string &filename)
 {
+#if 0 // TODO remove
   Json::Value root;
   std::ifstream ifs(filename);
 
@@ -50,8 +79,11 @@ LayerParams read_layer_params(std::string &filename)
   // Failed to parse
   if (not parseFromStream(builder, ifs, &root, &errs))
     throw std::runtime_error("Cannot parse config file (json format). " + errs);
+#endif
+  QConfReader qcr;
+  qcr.init(filename);
 
-  auto layers = root["layers"];
+  auto layers = qcr.root()["layers"];
   LayerParams p;
   for (auto layer : layers)
   {
