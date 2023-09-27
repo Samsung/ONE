@@ -34,10 +34,11 @@
 using OptionHook = std::function<int(const char **)>;
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
+using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 using Algorithms = luci::CircleQuantizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
 
-std::vector<std::shared_ptr<LayerParam>> read_layer_params(std::string &filename)
+LayerParams read_layer_params(std::string &filename)
 {
   Json::Value root;
   std::ifstream ifs(filename);
@@ -54,7 +55,7 @@ std::vector<std::shared_ptr<LayerParam>> read_layer_params(std::string &filename
     throw std::runtime_error("Cannot parse config file (json format). " + errs);
 
   auto layers = root["layers"];
-  std::vector<std::shared_ptr<LayerParam>> p;
+  LayerParams p;
   for (auto layer : layers)
   {
     if (layer.isMember("name"))
