@@ -37,6 +37,8 @@ public:
       std::string granularity;
     };
 
+    using LayerParams = std::vector<std::shared_ptr<LayerParam>>;
+
     enum Algorithm
     {
       QuantizeDequantizeWeights,
@@ -78,8 +80,8 @@ public:
     virtual std::vector<std::string> params(AlgorithmParameters) const = 0;
 
     // Quantization parameters for multiple layers
-    virtual void layer_params(AlgorithmParameters, std::vector<std::shared_ptr<LayerParam>> &) = 0;
-    virtual std::vector<std::shared_ptr<LayerParam>> layer_params(AlgorithmParameters) const = 0;
+    virtual void layer_params(AlgorithmParameters, LayerParams &) = 0;
+    virtual LayerParams layer_params(AlgorithmParameters) const = 0;
   };
 
 public:
