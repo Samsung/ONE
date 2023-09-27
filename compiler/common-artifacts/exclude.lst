@@ -69,6 +69,7 @@ tcgenerate(Net_Conv_FakeQuant_000) # luci-interpreter doesn't support FakeQuant 
 tcgenerate(Net_Dangle_001)
 tcgenerate(Net_Densify_Add_000) # luci-interpreter doesn't support Densify yet
 tcgenerate(Net_Densify_Dequantize_Add_000) # luci-interpreter doesn't support Densify/Dequantize yet
+tcgenerate(Net_FC_Gelu_FC_000) # luci-interpreter doesn't support custom operator Erf
 tcgenerate(Net_Gather_SparseToDense_AddV2_000) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_Gelu_000) # luci-interpreter doesn't support custom operator
 tcgenerate(Net_Gelu_001) # luci-interpreter doesn't support custom operator
