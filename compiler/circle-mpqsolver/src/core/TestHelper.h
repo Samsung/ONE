@@ -20,52 +20,30 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/Module.h>
 
+namespace mpqsolver
+{
+namespace test
+{
+namespace models
+{
+
+/**
+ * @brief base class of simple graphs used for testing
+ */
 class SimpleGraph
 {
 public:
   SimpleGraph() : _g(loco::make_graph()) {}
 
 public:
-  void init()
-  {
-    _input = _g->nodes()->create<luci::CircleInput>();
-    _output = _g->nodes()->create<luci::CircleOutput>();
-    _input->name("input");
-    _output->name("output");
-
-    auto graph_input = _g->inputs()->create();
-    _input->index(graph_input->index());
-    auto graph_output = _g->outputs()->create();
-    _output->index(graph_output->index());
-
-    graph_input->dtype(loco::DataType::FLOAT32);
-    _input->dtype(loco::DataType::FLOAT32);
-    _output->dtype(loco::DataType::FLOAT32);
-    graph_output->dtype(loco::DataType::FLOAT32);
-
-    graph_input->shape({1, _height, _width, _channel_size});
-    _input->shape({1, _height, _width, _channel_size});
-    _output->shape({1, _height, _width, _channel_size});
-    graph_output->shape({1, _height, _width, _channel_size});
-
-    auto graph_body = insertGraphBody(_input);
-    _output->from(graph_body);
-
-    initInput(_input);
-  }
+  void init();
 
   virtual ~SimpleGraph() = default;
-  void transfer_to(luci::Module *module)
-  {
-    // WARNING: after g is transfered, _graph_inputs, _inputs
-    //          and _graph_outputs, _outputs in TestOsGraphlet will be invalid.
-    //          arrays are not cleared as this is just helpers to unit tests
-    module->add(std::move(_g));
-  }
+  void transfer_to(luci::Module *module);
 
 protected:
   virtual loco::Node *insertGraphBody(loco::Node *input) = 0;
-  virtual void initInput(loco::Node *input){};
+  virtual void initInput(loco::Node *){};
 
 public:
   std::unique_ptr<loco::Graph> _g;
@@ -75,5 +53,42 @@ public:
   uint32_t _width = 4;
   uint32_t _height = 4;
 };
+
+/**
+ * @brief simple model with just an Add of input and constant
+ */
+class AddGraph final : public SimpleGraph
+{
+protected:
+  void initInput(loco::Node *input) override;
+  void initMinMax(luci::CircleNode *node);
+
+  loco::Node *insertGraphBody(loco::Node *input) override;
+
+public:
+  float _a_min = -1.f;
+  float _a_max = 1.f;
+  luci::CircleAdd *_add = nullptr;
+  luci::CircleConst *_beta = nullptr;
+};
+
+} // namespace models
+
+namespace io_utils
+{
+
+/**
+ * @brief create valid name of temporary file
+ */
+void makeTemporaryFile(char *name_template);
+
+/**
+ * @brief write data to file_path
+ */
+void writeDataToFile(const std::string &file_path, const std::string &data);
+
+} // namespace io_utils
+} // namespace test
+} // namespace mpqsolver
 
 #endif //__MPQSOLVER_TEST_HELPER_H__

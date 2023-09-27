@@ -24,7 +24,7 @@
 namespace
 {
 
-class NConvGraph final : public SimpleGraph
+class NConvGraph final : public mpqsolver::test::models::SimpleGraph
 {
 protected:
   loco::Node *insertGraphBody(loco::Node *input) override
