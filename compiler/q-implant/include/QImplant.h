@@ -33,6 +33,8 @@ public:
 
 private:
   const std::string &_path;
+
+  void forward_qparam(loco::Graph *g);
 };
 
 } // namespace q_implant
