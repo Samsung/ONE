@@ -16,6 +16,10 @@
 
 #include "PatternResolver.h"
 
+#include <map>
+#include <set>
+#include <vector>
+
 using namespace mpqsolver::pattern;
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;

@@ -21,6 +21,8 @@
 #include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
 
+#include <map>
+
 namespace mpqsolver
 {
 namespace pattern
