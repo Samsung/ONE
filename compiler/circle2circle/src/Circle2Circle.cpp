@@ -171,6 +171,8 @@ int entry(int argc, char **argv)
              "Transform Minimum(6)-Relu pattern to Relu6 operator");
   add_switch(arser, "--decompose_hardswish",
              "Decompose HardSwish operator to Add, Mul and Relu6 operators");
+  add_switch(arser, "--extract_gelu_from_opt_fc",
+             "Extract gelu operator from optimized fc pattern");
   add_switch(arser, "--mute_warnings", "This will turn off warning messages");
   add_switch(arser, "--disable_validation",
              "This will turn off operator validations. May help input model investigation.");
@@ -335,6 +337,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::DecomposeHardSwishPass);
   if (arser.get<bool>("--expand_broadcast_const"))
     options->enable(Algorithms::ExpandBroadcastConst);
+  if (arser.get<bool>("--extract_gelu_from_opt_fc"))
+    options->enable(Algorithms::ExtractGeluFromOptFC);
   if (arser.get<bool>("--unroll_unidirseqlstm"))
     options->enable(Algorithms::UnrollUnidirSeqLSTM);
 

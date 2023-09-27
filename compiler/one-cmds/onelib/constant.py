@@ -70,6 +70,7 @@ class CONSTANT:
         'forward_reshape_to_unaryop',
         'forward_transpose_op',
         'replace_non_const_fc_with_batch_matmul',  # For quantization
+        'extract_gelu_from_opt_fc',
     )
 
     OPTIMIZATION_OPTS = (
@@ -78,6 +79,7 @@ class CONSTANT:
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
         ('expand_broadcast_const', 'expand broadcastable constant node inputs'),
+        ('extract_gelu_from_opt_fc', 'extract gelu from optimized fc pattern'),
         ('nchw_to_nhwc_input_shape',
          'convert the input shape of the model (argument for convert_nchw_to_nhwc)'),
         ('nchw_to_nhwc_output_shape',

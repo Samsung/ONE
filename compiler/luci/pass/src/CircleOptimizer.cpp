@@ -18,6 +18,7 @@
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/ExpandBroadcastConstPass.h"
+#include "luci/Pass/ExtractGeluFromOptFCPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
 #include "luci/Pass/FoldCastPass.h"
 #include "luci/Pass/FoldDensifyPass.h"
@@ -349,6 +350,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ExpandBroadcastConst))
   {
     phase.emplace_back(std::make_unique<luci::ExpandBroadcastConstPass>());
+  }
+  if (_options->query(Options::Algorithm::ExtractGeluFromOptFC))
+  {
+    phase.emplace_back(std::make_unique<luci::ExtractGeluFromOptFCPass>());
   }
   if (_options->query(Options::Algorithm::RemoveDuplicateConst))
   {

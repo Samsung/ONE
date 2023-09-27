@@ -34,6 +34,7 @@ public:
   {
     enum Algorithm
     {
+      ExtractGeluFromOptFC,
       FuseAddWithFullyConnected,
       FuseAddWithTConv,
       FuseBatchNormWithConv,
