@@ -87,6 +87,16 @@ void makeTemporaryFile(char *name_template);
  */
 void writeDataToFile(const std::string &file_path, const std::string &data);
 
+/**
+ * @brief create valid name of temporary folder
+ */
+std::string makeTemporaryFolder(char *name_template);
+
+/**
+ * @brief checks whether file exists
+ */
+bool isFileExists(const std::string &file_path);
+
 } // namespace io_utils
 } // namespace test
 } // namespace mpqsolver

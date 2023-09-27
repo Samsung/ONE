@@ -38,6 +38,7 @@ set(TEST_SOURCES
     "src/bisection/VISQErrorApproximator.cpp"
     "src/core/ErrorMetric.cpp"
     "src/pattern/PatternResolver.cpp"
+    "src/core/Dumper.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
@@ -48,3 +49,4 @@ target_link_libraries(circle_mpqsolver_test ${Jsoncpp_STATIC_LIB})
 target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
 target_link_libraries(circle_mpqsolver_test luci_testhelper)
+target_link_libraries(circle_mpqsolver_test luci_export)

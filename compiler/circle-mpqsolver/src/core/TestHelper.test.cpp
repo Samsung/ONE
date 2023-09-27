@@ -121,6 +121,22 @@ void writeDataToFile(const std::string &path, const std::string &data)
   file.close();
 }
 
+std::string makeTemporaryFolder(char *name_template)
+{
+  auto const res = mkdtemp(name_template);
+  if (res == nullptr)
+  {
+    throw std::runtime_error{"mkdtemp failed"};
+  }
+  return res;
+}
+
+bool isFileExists(const std::string &path)
+{
+  std::ifstream f(path);
+  return f.good();
+}
+
 } // namespace io_utils
 } // namespace test
 } // namespace mpqsolver
