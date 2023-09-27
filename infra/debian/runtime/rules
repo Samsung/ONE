@@ -1,22 +1,31 @@
 #!/usr/bin/make -f
+
+# x64 only
+# TODO: Support more architectures
 DEBVER := $(shell dpkg-parsechangelog -SVersion)
+NPROC ?= $(shell nproc)
+
 export DH_VERBOSE = 1
-export _DESTDIR = debian/tmp/
-export BUILD_TYPE=release
-export OPTIONS=-DBUILD_LOGGING=0 -DBUILD_TFLITE_COMPARATOR_TEST_TOOL=0 -DBUILD_ONERT_RUN=0 -DBUILD_TFLITE_RUN=0 -DBUILD_RUNTIME_NNAPI_TEST=0 -DBUILD_TFLITE_VANILLA_RUN=0 -DBUILD_TENSORFLOW_LITE_2_8_0=0 -DBUILD_TENSORFLOW_LITE=0
-export DEBIAN_BUILD=1
-export INSTALL_PATH=debian/tmp/usr/
+export NNFW_WORKSPACE = build
+export NNFW_INSTALL_PREFIX = $(CURDIR)/debian/tmp/usr/
+
 %:
 	dh $@
 
 override_dh_auto_build:
-	make -f Makefile.template
+	test -d externals || mkdir -p externals
+	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
+	mkdir -p $(NNFW_WORKSPACE)
+	./nnfw configure -DCMAKE_BUILD_TYPE=Release -DEXTERNALS_BUILD_THREADS=$(NPROC) \
+		-DBUILD_LOGGING=OFF -DDOWNLOAD_GTEST=OFF -DENABLE_TEST=OFF \
+		-DBUILD_TENSORFLOW_LITE=OFF -DBUILD_PYTHON_BINDING=OFF -DBUILD_MINMAX_H5DUMPER=OFF
+	./nnfw build -j$(NPROC)
 override_dh_auto_install:
-	make -f Makefile.template install
+	./nnfw install
 override_dh_install:
-	install -d debian/tmp/usr/lib/pkgconfig
+	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
 	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
 	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
 	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
-	install -m 0644 packaging/nnfw.pc.in -T debian/tmp/usr/lib/pkgconfig/nnfw.pc
+	install -m 0644 packaging/nnfw.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/nnfw.pc
 	dh_install
