@@ -43,7 +43,9 @@
 #include <logo/Phase.h>
 #include <pepper/csv2vec.h>
 
+#include <map>
 #include <memory>
+#include <string>
 
 namespace
 {
