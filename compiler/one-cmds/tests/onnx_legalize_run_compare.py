@@ -52,7 +52,14 @@ def _run_model(model, inputs):
         list of numpy.ndarray: inference outputs
     """
     output_names = list(map(lambda output: output.name, model.graph.output))
-    session = rt.InferenceSession(model.SerializeToString())
+    options = rt.SessionOptions()
+    # NOTE this is needed for U18.04
+    # referenced: https://github.com/microsoft/onnxruntime/issues/10113
+    options.intra_op_num_threads = 4
+    # NOTE set `providers` for https://github.com/microsoft/onnxruntime/issues/17631
+    providers = rt.get_available_providers()
+    session = rt.InferenceSession(
+        model.SerializeToString(), sess_options=options, providers=providers)
     outputs = session.run(output_names, inputs)
     return outputs
 

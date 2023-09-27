@@ -64,7 +64,14 @@ class OnnxRunner:
     def load(self):
         model = onnx.load(self.filepath)
         onnx.checker.check_model(model)
-        self.session = ort.InferenceSession(self.filepath)
+        options = ort.SessionOptions()
+        # NOTE this is needed for U18.04
+        # referenced: https://github.com/microsoft/onnxruntime/issues/10113
+        options.intra_op_num_threads = 4
+        # NOTE set `providers` for https://github.com/microsoft/onnxruntime/issues/17631
+        providers = ort.get_available_providers()
+        self.session = ort.InferenceSession(
+            self.filepath, sess_options=options, providers=providers)
 
     def feed_random_inputs(self):
         self.inputs = self.session.get_inputs()
