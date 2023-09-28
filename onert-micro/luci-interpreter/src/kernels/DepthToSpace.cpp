@@ -14,68 +14,67 @@
  * limitations under the License.
  */
 
-#include "DepthToSpace.h"
-#include "Utils.h"
+#include "Builders.h"
+#include "kernels/Utils.h"
+#include "SISOKernel.h"
+
 #include "PALDepthToSpace.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-DepthToSpace::DepthToSpace(const Tensor *input, Tensor *output, const DepthToSpaceParams &params)
-  : KernelWithParams<DepthToSpaceParams>({input}, {output}, params)
+void configure_kernel_CircleDepthToSpace(const circle::Operator *cur_op,
+                                         BaseRuntimeGraph *runtime_graph)
 {
-}
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-void DepthToSpace::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
-  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32 ||
-                         output()->element_type() == DataType::U8)
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type())
-  const int block_size = params().block_size;
-  const int32_t input_height = input()->shape().dim(1);
-  const int32_t input_width = input()->shape().dim(2);
-  const int32_t input_channels = input()->shape().dim(3);
-  int32_t output_height = input_height * block_size;
-  int32_t output_width = input_width * block_size;
-  int32_t output_channels = input_channels / block_size / block_size;
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
+
+  const auto *options = cur_op->builtin_options_as_DepthToSpaceOptions();
+
+  const int32_t block_size = options->block_size();
+  LUCI_INTERPRETER_CHECK(block_size > 0);
+
+  constexpr int kHeightRank = 1;
+  constexpr int kWidthRank = 2;
+  constexpr int kDepthRank = 3;
+
+  const int input_height = Tensor::dim(kernel.input(), kHeightRank);
+  const int input_width = Tensor::dim(kernel.input(), kWidthRank);
+  const int input_channels = Tensor::dim(kernel.input(), kDepthRank);
+  int output_height = input_height * block_size;
+  int output_width = input_width * block_size;
+  int output_channels = input_channels / block_size / block_size;
 
   LUCI_INTERPRETER_CHECK(input_height == output_height / block_size);
   LUCI_INTERPRETER_CHECK(input_width == output_width / block_size);
   LUCI_INTERPRETER_CHECK(input_channels == output_channels * block_size * block_size);
-
-  Shape output_shape(4);
-  output_shape.dim(0) = input()->shape().dim(0);
-  output_shape.dim(1) = output_height;
-  output_shape.dim(2) = output_width;
-  output_shape.dim(3) = output_channels;
-
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
 }
 
-void DepthToSpace::execute() const
+void execute_kernel_CircleDepthToSpace(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
-  tflite::DepthToSpaceParams op_params;
-  op_params.block_size = params().block_size;
-  switch (input()->element_type())
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *options = cur_op->builtin_options_as_DepthToSpaceOptions();
+  const int32_t block_size = options->block_size();
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      luci_interpreter_pal::DepthToSpace(op_params, getTensorShape(input()),
-                                         getTensorData<float>(input()), getTensorShape(output()),
-                                         getTensorData<float>(output()));
+    {
+      luci_interpreter_pal::DepthToSpace(
+        block_size, kernels::getTensorRuntimeShape(kernel.input(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.input())),
+        kernels::getTensorRuntimeShape(kernel.output(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.output())));
       break;
-    case DataType::U8:
-      luci_interpreter_pal::DepthToSpace(op_params, getTensorShape(input()),
-                                         getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                         getTensorData<uint8_t>(output()));
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported Type.");
+      assert(false && "Unsupported type");
   }
 }
-
-} // namespace kernels
 } // namespace luci_interpreter

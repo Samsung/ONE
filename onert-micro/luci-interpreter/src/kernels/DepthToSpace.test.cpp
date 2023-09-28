@@ -14,102 +14,74 @@
  * limitations under the License.
  */
 
-#include "kernels/DepthToSpace.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/depth_to_space/FloatDepthToSpaceKernel.h"
+#include "luci_interpreter/test_models/depth_to_space/NegDepthToSpaceKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T> class DepthToSpaceTest : public ::testing::Test
+class DepthToSpaceTest : public ::testing::Test
 {
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(DepthToSpaceTest, DataTypes);
-
-TYPED_TEST(DepthToSpaceTest, SimpleCase)
+template <typename T>
+std::vector<T> checkDepthToSpaceKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<TypeParam> input_data{1, 2, 3, 4, 5, 6, 7, 8};
-  Shape input_shape{1, 1, 2, 4};
-  std::vector<TypeParam> output_data{1, 2, 5, 6, 3, 4, 7, 8};
-  std::vector<int32_t> output_shape{1, 2, 4, 1};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Tensor input_tensor =
-    makeInputTensor<getElementType<TypeParam>()>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(getElementType<TypeParam>());
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  DepthToSpaceParams params{};
-  params.block_size = 2;
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),
-              ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(DepthToSpaceTest, InvalidInputShape_NEG)
+TEST_F(DepthToSpaceTest, Float_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
-  Shape input_shape{1, 2, 4};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  DepthToSpaceParams params{};
-  params.block_size = 2;
-
-  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataFloatDepthToSpace test_data_kernel;
+  std::vector<float> output_data_vector = checkDepthToSpaceKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(DepthToSpaceTest, InOutTypeMismatch_NEG)
+TEST_F(DepthToSpaceTest, Input_output_type_mismatch_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
-  Shape input_shape{1, 1, 2, 4};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  DepthToSpaceParams params{};
-  params.block_size = 2;
-
-  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST(DepthToSpaceTest, InvalidBlockSize_NEG)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
-  Shape input_shape{1, 1, 2, 4};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  DepthToSpaceParams params{};
-  params.block_size = 3;
-
-  DepthToSpace kernel = DepthToSpace(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::NegTestDataInputOutputTypeMismatchDepthToSpaceKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
