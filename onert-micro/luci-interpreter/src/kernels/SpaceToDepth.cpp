@@ -14,66 +14,64 @@
  * limitations under the License.
  */
 
-#include "SpaceToDepth.h"
-#include "Utils.h"
+#include "Builders.h"
+#include "kernels/Utils.h"
+#include "SISOKernel.h"
+
 #include "PALSpaceToDepth.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-SpaceToDepth::SpaceToDepth(const Tensor *input, Tensor *output, const SpaceToDepthParams &params)
-  : KernelWithParams<SpaceToDepthParams>({input}, {output}, params)
+void configure_kernel_CircleSpaceToDepth(const circle::Operator *cur_op,
+                                         BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
+
+  const auto *options = cur_op->builtin_options_as_SpaceToDepthOptions();
+
+  const int32_t block_size = options->block_size();
+  LUCI_INTERPRETER_CHECK(block_size > 0);
+
+  constexpr int kHeightRank = 1;
+  constexpr int kWidthRank = 2;
+  constexpr int kDepthRank = 3;
+
+  const int input_height = Tensor::dim(kernel.input(), kHeightRank);
+  const int input_width = Tensor::dim(kernel.input(), kWidthRank);
+  int output_height = input_height / block_size;
+  int output_width = input_width / block_size;
+
+  LUCI_INTERPRETER_CHECK(input_height == output_height * block_size);
+  LUCI_INTERPRETER_CHECK(input_width == output_width * block_size);
 }
 
-void SpaceToDepth::configure()
+void execute_kernel_CircleSpaceToDepth(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
-  assert(input()->shape().num_dims() == 4);
-  assert(output()->element_type() == DataType::FLOAT32 ||
-         output()->element_type() == DataType::U8 || output()->element_type() == DataType::S8 ||
-         output()->element_type() == DataType::S32 || output()->element_type() == DataType::S64);
-  assert(input()->element_type() == output()->element_type());
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  const int block_size = params().block_size;
-  const int32_t input_height = input()->shape().dim(1);
-  const int32_t input_width = input()->shape().dim(2);
-  int32_t output_height = input_height / block_size;
-  int32_t output_width = input_width / block_size;
+  const auto *options = cur_op->builtin_options_as_SpaceToDepthOptions();
+  const int32_t block_size = options->block_size();
 
-  assert(input_height == output_height * block_size);
-  assert(input_width == output_width * block_size);
-
-  Shape output_shape(4);
-  output_shape.dim(0) = input()->shape().dim(0);
-  output_shape.dim(1) = output_height;
-  output_shape.dim(2) = output_width;
-  output_shape.dim(3) = input()->shape().dim(3) * block_size * block_size;
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
-}
-
-void SpaceToDepth::execute() const
-{
-  tflite::SpaceToDepthParams op_params{};
-  op_params.block_size = params().block_size;
-  switch (input()->element_type())
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      luci_interpreter_pal::SpaceToDepth(op_params, getTensorShape(input()),
-                                         getTensorData<float>(input()), getTensorShape(output()),
-                                         getTensorData<float>(output()));
+    {
+      luci_interpreter_pal::SpaceToDepth(
+        block_size, kernels::getTensorRuntimeShape(kernel.input(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.input())),
+        kernels::getTensorRuntimeShape(kernel.output(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.output())));
       break;
-    case DataType::U8:
-      luci_interpreter_pal::SpaceToDepth(op_params, getTensorShape(input()),
-                                         getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                         getTensorData<uint8_t>(output()));
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-} // namespace kernels
 } // namespace luci_interpreter

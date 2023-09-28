@@ -14,52 +14,74 @@
  * limitations under the License.
  */
 
-#include "kernels/SpaceToDepth.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/space_to_depth/FloatSpaceToDepthKernel.h"
+#include "luci_interpreter/test_models/space_to_depth/NegSpaceToDepthKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T> class SpaceToDepthTest : public ::testing::Test
+class SpaceToDepthTest : public ::testing::Test
 {
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(SpaceToDepthTest, DataTypes);
-
-TYPED_TEST(SpaceToDepthTest, SimpleCase)
+template <typename T>
+std::vector<T> checkSpaceToDepthKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  constexpr DataType element_type = getElementType<TypeParam>();
-  std::vector<TypeParam> input_data{1, 5, 6, 7, 2, 3, 4, 8};
-  Shape input_shape{1, 2, 2, 2};
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  std::vector<TypeParam> output_data{1, 5, 6, 7, 2, 3, 4, 8};
-  std::vector<int32_t> output_shape{1, 1, 1, 8};
-  Tensor output_tensor = makeOutputTensor(element_type);
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  SpaceToDepthParams params{};
-  params.block_size = 2;
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  SpaceToDepth kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<TypeParam>(output_tensor),
-              ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
+}
+
+TEST_F(SpaceToDepthTest, Float_P)
+{
+  test_kernel::TestDataFloatSpaceToDepth test_data_kernel;
+  std::vector<float> output_data_vector = checkSpaceToDepthKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(SpaceToDepthTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchSpaceToDepthKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
