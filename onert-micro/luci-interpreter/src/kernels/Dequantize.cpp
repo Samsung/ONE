@@ -14,67 +14,78 @@
  * limitations under the License.
  */
 
-#include "kernels/Dequantize.h"
+#ifndef DIS_QUANT
+
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
+
 #include "PALDequantize.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+
+void configure_kernel_CircleDequantize(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-Dequantize::Dequantize(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
-
-void Dequantize::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::S8 ||
-                         input()->element_type() == DataType::U8 ||
-                         input()->element_type() == DataType::S16);
-
-  LUCI_INTERPRETER_CHECK(input()->scales().size() == 1);
-
-  if (input()->element_type() == DataType::S16)
-    LUCI_INTERPRETER_CHECK(input()->zero_point() == 0);
-
-  LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
-
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
+  LUCI_INTERPRETER_CHECK(!Tensor::scales(kernel.input()).empty());
+  LUCI_INTERPRETER_CHECK(!Tensor::zero_points(kernel.input()).empty());
 }
 
-void Dequantize::execute() const
+void execute_kernel_CircleDequantize(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
-  tflite::DequantizationParams op_params;
-  op_params.zero_point = input()->zero_point();
-  op_params.scale = input()->scale();
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  switch (input()->element_type())
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+  assert(output_data);
+
+  const int flat_size = kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+  switch (Tensor::element_type(kernel.output()))
   {
-    case DataType::U8:
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
     {
-      luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
-                                       getTensorData<uint8_t>(input()), getTensorShape(output()),
-                                       getTensorData<float>(output()));
+      luci_interpreter_pal::QuantizationParams params{};
+      params.zero_point = Tensor::zero_point(kernel.input());
+      params.scale = Tensor::scale(kernel.input());
+      switch (Tensor::element_type(kernel.input()))
+      {
+        case DataType::S8:
+          luci_interpreter_pal::Dequantize(params, flat_size,
+                                           kernels::getTensorData<int8_t>(input_data),
+                                           kernels::getTensorData<float>(output_data));
+          break;
+        case DataType::U8:
+          luci_interpreter_pal::Dequantize(params, flat_size,
+                                           kernels::getTensorData<uint8_t>(input_data),
+                                           kernels::getTensorData<float>(output_data));
+          break;
+        case DataType::S16:
+          luci_interpreter_pal::Dequantize(params, flat_size,
+                                           kernels::getTensorData<int16_t>(input_data),
+                                           kernels::getTensorData<float>(output_data));
+          break;
+        default:
+          assert(false && "Unsupported type");
+      }
       break;
     }
-    case DataType::S8:
-    {
-      luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
-                                       getTensorData<int8_t>(input()), getTensorShape(output()),
-                                       getTensorData<float>(output()));
-      break;
-    }
-    case DataType::S16:
-    {
-      luci_interpreter_pal::Dequantize(op_params, getTensorShape(input()),
-                                       getTensorData<int16_t>(input()), getTensorShape(output()),
-                                       getTensorData<float>(output()));
-      break;
-    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
 
-} // namespace kernels
 } // namespace luci_interpreter
+
+#endif // DIS_QUANT
