@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_FLOORMOD_H
-#define LUCI_INTERPRETER_PAL_FLOORMOD_H
+#ifndef LUCI_INTERPRETER_PAL_MINIMUM_H
+#define LUCI_INTERPRETER_PAL_MINIMUM_H
 
 #include "PALMinimumCommon.h"
 
@@ -25,4 +25,4 @@ namespace luci_interpreter_pal
 
 } // namespace luci_interpreter_pal
 
-#endif // LUCI_INTERPRETER_PAL_FLOORMOD_H
+#endif // LUCI_INTERPRETER_PAL_MINIMUM_H
