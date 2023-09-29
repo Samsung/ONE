@@ -15,88 +15,54 @@
  * limitations under the License.
  */
 
-#include "kernels/SpaceToBatchND.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "MISOKernel.h"
 
 #include "PALSpaceToBatchND.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
-namespace
-{
 
-const int kInputMinDimensionNum = 3;
-const int kInputMaxDimensionNum = 4;
-
-} // namespace
-
-SpaceToBatchND::SpaceToBatchND(const Tensor *input, const Tensor *block_shape,
-                               const Tensor *paddings, Tensor *output)
-  : Kernel({input, block_shape, paddings}, {output})
+void configure_kernel_CircleSpaceToBatchND(const circle::Operator *cur_op,
+                                           BaseRuntimeGraph *runtime_graph)
 {
+  kernels::MISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input2()) == DataType::S32);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input3()) == DataType::S32);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.output()) >= 3);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) >= 3);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.output()) <= 4);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input1()) <= 4);
 }
 
-void SpaceToBatchND::configure()
+void execute_kernel_CircleSpaceToBatchND(const circle::Operator *cur_op,
+                                         BaseRuntimeGraph *runtime_graph)
 {
-  const auto *block_shape_data = block_shape()->data<int32_t>();
-  const auto *paddings_data = paddings()->data<int32_t>();
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() >= kInputMinDimensionNum);
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() <= kInputMaxDimensionNum);
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-
-  int spatial_dims_num = input()->shape().num_dims() - 2;
-
-  LUCI_INTERPRETER_CHECK(block_shape()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(block_shape()->shape().dim(0) == spatial_dims_num);
-
-  LUCI_INTERPRETER_CHECK(paddings()->shape().num_dims() == 2);
-  LUCI_INTERPRETER_CHECK(paddings()->shape().dim(0) == spatial_dims_num);
-  LUCI_INTERPRETER_CHECK(paddings()->shape().dim(1) == 2);
-
-  Shape output_shape = Shape(input()->shape().num_dims());
-  int output_batch_size = input()->shape().dim(0);
-  for (int i = 0; i < spatial_dims_num; ++i)
+  kernels::MISOKernel kernel(cur_op, runtime_graph);
+  const int32_t pad_value = 0;
+  switch (Tensor::element_type(kernel.input1()))
   {
-    int final_dim_size =
-      (input()->shape().dim(i + 1) + paddings_data[i * 2] + paddings_data[i * 2 + 1]);
-    LUCI_INTERPRETER_CHECK(final_dim_size % block_shape_data[i] == 0);
-    output_shape.dim(i + 1) = final_dim_size / block_shape_data[i];
-    output_batch_size = output_batch_size * block_shape_data[i];
-  }
-  output_shape.dim(0) = output_batch_size;
-  output_shape.dim(input()->shape().num_dims() - 1) =
-    input()->shape().dim(input()->shape().num_dims() - 1);
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
-}
-
-void SpaceToBatchND::execute() const
-{
-  switch (input()->element_type())
-  {
-    tflite::SpaceToBatchParams op_params;
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      op_params.output_offset = 0;
+    {
       luci_interpreter_pal::SpaceToBatchND(
-        op_params, getTensorShape(input()), getTensorData<float>(input()),
-        getTensorShape(block_shape()), getTensorData<int32_t>(block_shape()),
-        getTensorShape(paddings()), getTensorData<int32_t>(paddings()), getTensorShape(output()),
-        getTensorData<float>(output()));
+        pad_value, kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.input1())),
+        kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph),
+        kernels::getTensorData<int32_t>(runtime_graph->getConstDataByTensor(kernel.input2())),
+        kernels::getTensorRuntimeShape(kernel.input3(), runtime_graph),
+        kernels::getTensorData<int32_t>(runtime_graph->getConstDataByTensor(kernel.input3())),
+        kernels::getTensorRuntimeShape(kernel.output(), runtime_graph),
+        kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.output())));
       break;
-    case DataType::U8:
-      op_params.output_offset = output()->zero_point();
-      luci_interpreter_pal::SpaceToBatchND(
-        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()),
-        getTensorShape(block_shape()), getTensorData<int32_t>(block_shape()),
-        getTensorShape(paddings()), getTensorData<int32_t>(paddings()), getTensorShape(output()),
-        getTensorData<uint8_t>(output()));
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-} // namespace kernels
 } // namespace luci_interpreter

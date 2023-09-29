@@ -14,110 +14,74 @@
  * limitations under the License.
  */
 
-#include "kernels/SpaceToBatchND.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/space_to_batch_nd/FloatSpaceToBatchNDKernel.h"
+#include "luci_interpreter/test_models/space_to_batch_nd/NegSpaceToBatchNDKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape,
-           std::initializer_list<int32_t> block_shape_shape,
-           std::initializer_list<int32_t> paddings_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<float> input_data,
-           std::initializer_list<int32_t> block_shape_data,
-           std::initializer_list<int32_t> paddings_data, std::initializer_list<float> output_data)
+class SpaceToBatchNDTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T>();
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor block_shape_tensor =
-    makeInputTensor<DataType::S32>(block_shape_shape, block_shape_data, memory_manager.get());
-  Tensor paddings_tensor =
-    makeInputTensor<DataType::S32>(paddings_shape, paddings_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(element_type);
-
-  SpaceToBatchND kernel(&input_tensor, &block_shape_tensor, &paddings_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
-}
-
-template <>
-void Check<uint8_t>(
-  std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> block_shape_shape,
-  std::initializer_list<int32_t> paddings_shape, std::initializer_list<int32_t> output_shape,
-  std::initializer_list<float> input_data, std::initializer_list<int32_t> block_shape_data,
-  std::initializer_list<int32_t> paddings_data, std::initializer_list<float> output_data)
-{
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  std::pair<float, int32_t> input_quant_param =
-    quantizationParams<uint8_t>(std::min(input_data), std::max(input_data));
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>(input_shape, input_quant_param.first, input_quant_param.second,
-                                  input_data, memory_manager.get());
-  Tensor block_shape_tensor =
-    makeInputTensor<DataType::S32>(block_shape_shape, block_shape_data, memory_manager.get());
-  Tensor paddings_tensor =
-    makeInputTensor<DataType::S32>(paddings_shape, paddings_data, memory_manager.get());
-  Tensor output_tensor =
-    makeOutputTensor(DataType::U8, input_quant_param.first, input_quant_param.second);
-
-  SpaceToBatchND kernel(&input_tensor, &block_shape_tensor, &paddings_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(output_data, output_tensor.scale()));
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
-}
-
-template <typename T> class SpaceToBatchNDTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(SpaceToBatchNDTest, DataTypes);
-
-TYPED_TEST(SpaceToBatchNDTest, Simple)
+template <typename T>
+std::vector<T> checkSpaceToBatchNDKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>(/*input_shape=*/{1, 5, 2, 1}, /*block_shape_shape=*/{2},
-                   /*paddings_shape=*/{2, 2},
-                   /*output_shape=*/{6, 2, 2, 1},
-                   /*input_data=*/{-1.0, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8, -0.9, 1.0},
-                   /*block_shape_data=*/{3, 2}, /*paddings_data=*/{1, 0, 2, 0},
-                   /*output_data=*/{0, 0,   0, -0.5, 0, 0,    0, 0.6,  0, -1.0, 0, -0.7,
-                                    0, 0.2, 0, 0.8,  0, -0.3, 0, -0.9, 0, 0.4,  0, 1.0});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(SpaceToBatchNDTest, Invalid_Shape_NEG)
+TEST_F(SpaceToBatchNDTest, Float_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  test_kernel::TestDataFloatSpaceToBatchND test_data_kernel;
+  std::vector<float> output_data_vector = checkSpaceToBatchNDKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
 
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
-    {1, 3, 3, 1}, {1, 2, 3, 4, 5, 6, 7, 8, 9}, memory_manager.get());
-  Tensor block_shape_tensor = makeInputTensor<DataType::S32>({2}, {2, 2}, memory_manager.get());
-  Tensor paddings_tensor =
-    makeInputTensor<DataType::S32>({2, 2}, {0, 0, 0, 0}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  SpaceToBatchND kernel(&input_tensor, &block_shape_tensor, &paddings_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+TEST_F(SpaceToBatchNDTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchSpaceToBatchNDKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
