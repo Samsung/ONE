@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/Quantize.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/quantize/FloatQuantizeKernel.h"
+#include "luci_interpreter/test_models/quantize/NegQuantizeKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,225 +30,58 @@ using namespace testing;
 
 class QuantizeTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(QuantizeTest, FloatUint8)
+template <typename T, typename U>
+std::vector<U> checkQuantizeKernel(test_kernel::TestDataBase<T, U> *test_data_base)
 {
-  std::vector<float> input_data{-63.5, -63, -62.5, -62, -61.5, 62, 62.5, 63, 63.5, 64};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<uint8_t> ref_output_data{0, 1, 2, 3, 4, 251, 252, 253, 254, 255};
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, /*scale*/ 0.5, /*zero_point*/ 127);
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 5}));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  U *output_data = reinterpret_cast<U *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(U));
+  std::vector<U> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(QuantizeTest, FloatInt8)
+TEST_F(QuantizeTest, Float_P)
 {
-  std::vector<float> input_data{-63.5, -63, -62.5, -62, -61.5, 62, 62.5, 63, 63.5, 64};
-
-  std::vector<int8_t> ref_output_data{-128, -127, -126, -125, -124, 123, 124, 125, 126, 127};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, /*scale*/ 0.5, /*zero_point*/ -1);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<int8_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 5}));
+  test_kernel::TestDataFloatQuantize test_data_kernel;
+  std::vector<uint8_t> output_data_vector = checkQuantizeKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(QuantizeTest, FloatInt16)
+TEST_F(QuantizeTest, Input_output_shape_mismatch_NEG)
 {
-  std::vector<float> input_data{-63.5, -63, -3, -2, -1, 1, 2, 3, 63.5, 64};
-
-  std::vector<int16_t> ref_output_data{-12700, -12600, -600, -400,  -200,
-                                       200,    400,    600,  12700, 12800};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 5}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S16, /*scale*/ 0.005, /*zero_point*/ 0);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<int16_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 5}));
-}
-
-TEST_F(QuantizeTest, Int16Int16)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  std::vector<int16_t> ref_output_data{2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-
-  Tensor input_tensor = makeInputTensor<DataType::S16>(
-    {1, 1, 2, 5}, /*scale*/ 1.0, /*zero_point*/ 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S16, /*scale*/ 0.5, /*zero_point*/ 0);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<int16_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 5}));
-}
-
-TEST_F(QuantizeTest, Int8Int8)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  std::vector<int8_t> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-
-  Tensor input_tensor = makeInputTensor<DataType::S8>(
-    {1, 1, 2, 5}, /*scale*/ 0.5, /*zero_point*/ -1, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, /*scale*/ 0.5, /*zero_point*/ -1);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<int8_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 5}));
-}
-
-TEST_F(QuantizeTest, Uint8Uint8)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  std::vector<uint8_t> ref_output_data{129, 131, 133, 135, 137, 139, 141, 143, 145, 147};
-
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 1, 2, 5}, /*scale*/ 0.5, /*zero_point*/ 127, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8, /*scale*/ 0.5, /*zero_point*/ 127);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 5}));
-}
-
-TEST_F(QuantizeTest, Int16Int8)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  std::vector<int8_t> ref_output_data{1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-
-  Tensor input_tensor = makeInputTensor<DataType::S16>(
-    {1, 1, 2, 5}, /*scale*/ 1.0, /*zero_point*/ 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, /*scale*/ 0.5, /*zero_point*/ -1);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<int8_t>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 2, 5}));
-}
-
-TEST_F(QuantizeTest, InvalidInputType_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S32>({1, 1, 2, 5}, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S8, /*scale*/ 0.5, /*zero_point*/ -1);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(QuantizeTest, InvalidOutputTypeForFloatInput_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({1, 1, 2, 5}, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(QuantizeTest, InvalidOutputTypeForInt16Input_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S16>({1, 1, 2, 5}, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(QuantizeTest, InvalidOutputTypeForInt8Input_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S8>({1, 1, 2, 5}, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(QuantizeTest, InvalidOutputTypeForUint8Input_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::U8>({1, 1, 2, 5}, 0.5, 0, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S32);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(QuantizeTest, InvalidInputZeroPoint_NEG)
-{
-  std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S16>({1, 1, 2, 5}, 0.5, -1, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.5, 0);
-
-  Quantize kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::NegTestDataInputOutputShapeMismatchQuantizeKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
