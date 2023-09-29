@@ -26,6 +26,7 @@ bool isInplaceOperation(const circle::BuiltinOperator &op)
   switch (op)
   {
     case circle::BuiltinOperator_ABS:
+    case circle::BuiltinOperator_CEIL:
     case circle::BuiltinOperator_LOGISTIC:
     case circle::BuiltinOperator_RESHAPE:
     case circle::BuiltinOperator_ELU:
