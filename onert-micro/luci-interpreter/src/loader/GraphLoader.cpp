@@ -40,6 +40,7 @@ bool isInplaceOperation(const circle::BuiltinOperator &op)
     case circle::BuiltinOperator_MUL:
     case circle::BuiltinOperator_SUB:
     case circle::BuiltinOperator_WHILE:
+    case circle::BuiltinOperator_ZEROS_LIKE:
       return true;
     default:
       return false;
