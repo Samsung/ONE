@@ -14,87 +14,74 @@
  * limitations under the License.
  */
 
-#include "kernels/BatchToSpaceND.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/batch_to_space_nd/FloatBatchToSpaceNDKernel.h"
+#include "luci_interpreter/test_models/batch_to_space_nd/NegBatchToSpaceNDKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape,
-           std::initializer_list<int32_t> block_shape_shape,
-           std::initializer_list<int32_t> crops_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<T> input_data, std::initializer_list<int32_t> block_shape_data,
-           std::initializer_list<int32_t> crops_data, std::initializer_list<T> output_data)
+class BatchToSpaceNDTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T>();
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor block_shape_tensor =
-    makeInputTensor<DataType::S32>(block_shape_shape, block_shape_data, memory_manager.get());
-  Tensor crops_tensor =
-    makeInputTensor<DataType::S32>(crops_shape, crops_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(element_type);
-
-  BatchToSpaceND kernel(&input_tensor, &block_shape_tensor, &crops_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
-}
-
-template <typename T> class BatchToSpaceNDTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(BatchToSpaceNDTest, DataTypes);
-
-TYPED_TEST(BatchToSpaceNDTest, Simple)
+template <typename T>
+std::vector<T> checkBatchToSpaceNDKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>(/*input_shape=*/{4, 2, 2, 1}, /*block_shape_shape=*/{2}, /*crops_shape=*/{2, 2},
-                   /*output_shape=*/{1, 4, 4, 1},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-                   /*block_shape_data=*/{2, 2}, /*crops_data=*/{0, 0, 0, 0},
-                   /*output_data=*/{1, 5, 2, 6, 9, 13, 10, 14, 3, 7, 4, 8, 11, 15, 12, 16});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST(BatchToSpaceNDTest, Invalid_Shape_NEG)
+TEST_F(BatchToSpaceNDTest, Float_P)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
-    {3, 2, 2, 1}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}, memory_manager.get());
-  Tensor block_shape_tensor = makeInputTensor<DataType::S32>({2}, {2, 2}, memory_manager.get());
-  Tensor crops_tensor = makeInputTensor<DataType::S32>({2, 2}, {0, 0, 0, 0}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  BatchToSpaceND kernel(&input_tensor, &block_shape_tensor, &crops_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataFloatBatchToSpaceND test_data_kernel;
+  std::vector<float> output_data_vector = checkBatchToSpaceNDKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST(BatchToSpaceNDTest, Invalid_Crops_NEG)
+TEST_F(BatchToSpaceNDTest, Input_output_type_mismatch_NEG)
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>(
-    {4, 2, 2, 1}, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}, memory_manager.get());
-  Tensor block_shape_tensor = makeInputTensor<DataType::S32>({2}, {2, 2}, memory_manager.get());
-  Tensor crops_tensor = makeInputTensor<DataType::S32>({2, 2}, {0, 0, -1, 0}, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  BatchToSpaceND kernel(&input_tensor, &block_shape_tensor, &crops_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
