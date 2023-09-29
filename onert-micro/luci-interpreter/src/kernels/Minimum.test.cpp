@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/Minimum.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/minimum/FloatMinimumKernel.h"
+#include "luci_interpreter/test_models/minimum/NegMinimumKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,53 +30,92 @@ using namespace testing;
 
 class MinimumTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(MinimumTest, Float)
+template <typename T>
+std::vector<T> checkMinimumKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape input_shape{3, 1, 2};
-  std::vector<float> input_data1{1.0, 0.0, -1.0, 11.0, -2.0, -1.44};
-  std::vector<float> input_data2{-1.0, 0.0, 1.0, 12.0, -3.0, -1.43};
-  Tensor input_tensor1 =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data1, _memory_manager.get());
-  Tensor input_tensor2 =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data2, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Minimum kernel(&input_tensor1, &input_tensor2, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  std::vector<float> ref_output_data{-1.0, 0.0, -1.0, 11.0, -3.0, -1.44};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 2);
+
+  // set left input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  // set right input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(1));
+    std::copy(test_data_base->get_input_data_by_index(1).begin(),
+              test_data_base->get_input_data_by_index(1).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(MinimumTest, Uint8)
+TEST_F(MinimumTest, Float_P)
 {
-  Shape input_shape{3, 1, 2};
-  std::vector<uint8_t> input_data1{1, 0, 2, 11, 2, 23};
-  std::vector<uint8_t> input_data2{0, 0, 1, 12, 255, 1};
-  Tensor input_tensor1 =
-    makeInputTensor<DataType::U8>(input_shape, input_data1, _memory_manager.get());
-  Tensor input_tensor2 =
-    makeInputTensor<DataType::U8>(input_shape, input_data2, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_kernel::TestDataFloatMinimum test_data_kernel(is_with_broadcast);
+    std::vector<float> output_data_vector = checkMinimumKernel(&test_data_kernel);
+    EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                      test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
+  // With broadcast
+  {
+    const bool is_with_broadcast = true;
+    test_kernel::TestDataFloatMinimum test_data_kernel(is_with_broadcast);
+    std::vector<float> output_data_vector = checkMinimumKernel(&test_data_kernel);
+    EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                      test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
+}
 
-  Minimum kernel(&input_tensor1, &input_tensor2, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+TEST_F(MinimumTest, Wrong_Input1_Type_NEG)
+{
+  test_kernel::NegTestDataInput1WrongTypeMinimum test_data_kernel;
 
-  std::vector<int32_t> ref_output_shape{2, 4};
-  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor),
-              ::testing::ElementsAreArray({0, 0, 1, 11, 2, 1}));
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(MinimumTest, Wrong_Input2_Type_NEG)
+{
+  test_kernel::NegTestDataInput2WrongTypeMinimum test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
