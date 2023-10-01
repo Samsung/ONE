@@ -19,5 +19,6 @@ var searchData=
   ['how_20to_20use_20api_16',['How to Use API',['../md_docs_howto_how_to_use_api.html',1,'']]],
   ['how_20to_20use_20nnapi_20binding_17',['How to Use NNAPI Binding',['../md_docs_howto_how_to_use_nnapi_binding.html',1,'']]],
   ['how_20to_20use_20nnfw_20api_18',['How to Use NNFW API',['../md_docs_howto_how_to_use_nnfw_api.html',1,'']]],
-  ['how_20to_20use_20specific_20backend_20during_20inference_19',['How to Use Specific Backend during Inference',['../md_docs_howto_how_to_use_specific_backend.html',1,'']]]
+  ['how_20to_20use_20nnfw_20python_20api_19',['How to Use NNFW PYTHON API',['../md_docs_howto_how_to_use_nnfw_python_api.html',1,'']]],
+  ['how_20to_20use_20specific_20backend_20during_20inference_20',['How to Use Specific Backend during Inference',['../md_docs_howto_how_to_use_specific_backend.html',1,'']]]
 ];

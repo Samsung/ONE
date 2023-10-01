@@ -11,6 +11,8 @@ var _params_8h =
     [ "luci_interpreter_pal::StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", "structluci__interpreter__pal_1_1_strided_slice_params" ],
     [ "luci_interpreter_pal::ArithmeticParams", "structluci__interpreter__pal_1_1_arithmetic_params.html", "structluci__interpreter__pal_1_1_arithmetic_params" ],
     [ "luci_interpreter_pal::PoolParams", "structluci__interpreter__pal_1_1_pool_params.html", "structluci__interpreter__pal_1_1_pool_params" ],
+    [ "luci_interpreter_pal::SoftmaxParams", "structluci__interpreter__pal_1_1_softmax_params.html", "structluci__interpreter__pal_1_1_softmax_params" ],
+    [ "luci_interpreter_pal::QuantizationParams", "structluci__interpreter__pal_1_1_quantization_params.html", "structluci__interpreter__pal_1_1_quantization_params" ],
     [ "BroadcastableOpCategory", "_params_8h.html#a06f2777ae390466061247361a9a416c2", [
       [ "kNone", "_params_8h.html#a06f2777ae390466061247361a9a416c2a35c3ace1970663a16e5c65baa5941b13", null ],
       [ "kNonBroadcast", "_params_8h.html#a06f2777ae390466061247361a9a416c2a474311140849eefcabdcbb172ad82866", null ],

@@ -1,6 +1,7 @@
 var structluci_1_1_circle_quantizer_1_1_options =
 [
     [ "LayerParam", "structluci_1_1_circle_quantizer_1_1_options_1_1_layer_param.html", "structluci_1_1_circle_quantizer_1_1_options_1_1_layer_param" ],
+    [ "LayerParams", "structluci_1_1_circle_quantizer_1_1_options.html#ac6d2d3003d39e5d31359a5a237a72b04", null ],
     [ "Algorithm", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968b", [
       [ "QuantizeDequantizeWeights", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd", null ],
       [ "QuantizeWithMinMax", "structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8", null ],
@@ -26,8 +27,8 @@ var structluci_1_1_circle_quantizer_1_1_options =
     ] ],
     [ "~Options", "structluci_1_1_circle_quantizer_1_1_options.html#ae659e52c9265a3e672ec2c190c6bea66", null ],
     [ "enable", "structluci_1_1_circle_quantizer_1_1_options.html#a1d4e2e9a64707b4283fffc79bfd6473f", null ],
-    [ "layer_params", "structluci_1_1_circle_quantizer_1_1_options.html#a8c73bbd6e398e31cc9f765c36a00d6f3", null ],
-    [ "layer_params", "structluci_1_1_circle_quantizer_1_1_options.html#a3b3c024b125467f46a24fd625ed5c969", null ],
+    [ "layer_params", "structluci_1_1_circle_quantizer_1_1_options.html#af92dfa2f1582d26d2e72f7fc3c003085", null ],
+    [ "layer_params", "structluci_1_1_circle_quantizer_1_1_options.html#a24d2f97c40a6de8cfeb1c580a1439edf", null ],
     [ "param", "structluci_1_1_circle_quantizer_1_1_options.html#ab5ceebe5d0b2d2585707fe17ad74fe5b", null ],
     [ "param", "structluci_1_1_circle_quantizer_1_1_options.html#ab454383b88cd8864cb754ff5bea5c6a3", null ],
     [ "params", "structluci_1_1_circle_quantizer_1_1_options.html#ae3a7956ec0c412e101cffc0e10da66f4", null ],

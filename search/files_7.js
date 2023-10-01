@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['hardswish_2ecpp_0',['HardSwish.cpp',['../tflchef_2tflite_2src_2_op_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../tflchef_2core_2src_2_op_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../mir-interpreter_2src_2ops_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../luci-interpreter_2src_2kernels_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../luci-interpreter_2src_2loader_2nodes_2_hard_swish_8cpp.html',1,'(Global Namespace)']]],
+  ['hardswish_2ecpp_0',['HardSwish.cpp',['../tflchef_2tflite_2src_2_op_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../tflchef_2core_2src_2_op_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../mir-interpreter_2src_2ops_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../luci-interpreter_2src_2loader_2nodes_2_hard_swish_8cpp.html',1,'(Global Namespace)'],['../luci-interpreter_2src_2kernels_2_hard_swish_8cpp.html',1,'(Global Namespace)']]],
   ['hardswish_2eh_1',['HardSwish.h',['../tflchef_2tflite_2src_2_op_2include_2_hard_swish_8h.html',1,'(Global Namespace)'],['../tflchef_2core_2src_2_op_2_hard_swish_8h.html',1,'(Global Namespace)'],['../mir-interpreter_2src_2ops_2_hard_swish_8h.html',1,'(Global Namespace)'],['../luci-interpreter_2src_2kernels_2_hard_swish_8h.html',1,'(Global Namespace)']]],
   ['hardswishop_2eh_2',['HardSwishOp.h',['../_hard_swish_op_8h.html',1,'']]],
   ['hash_2eh_3',['hash.h',['../hash_8h.html',1,'']]],
@@ -11,8 +11,8 @@ var searchData=
   ['help_2dcompile_2ecpp_8',['help-compile.cpp',['../help-compile_8cpp.html',1,'']]],
   ['help_2dinfer_2ecpp_9',['help-infer.cpp',['../help-infer_8cpp.html',1,'']]],
   ['help_2dprofile_2ecpp_10',['help-profile.cpp',['../help-profile_8cpp.html',1,'']]],
-  ['helper_2ecpp_11',['Helper.cpp',['../mio-tflite280_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite260_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite2121_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle06_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle05_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle04_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle_2src_2_helper_8cpp.html',1,'(Global Namespace)']]],
-  ['helper_2eh_12',['Helper.h',['../mio-tflite260_2include_2mio__tflite260_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite2121_2include_2mio__tflite2121_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle06_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle05_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle04_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite280_2include_2mio__tflite280_2_helper_8h.html',1,'(Global Namespace)']]],
+  ['helper_2ecpp_11',['Helper.cpp',['../mio-circle_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle04_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle05_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle06_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite2121_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite260_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite280_2src_2_helper_8cpp.html',1,'(Global Namespace)']]],
+  ['helper_2eh_12',['Helper.h',['../mio-circle06_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle05_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle04_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite280_2include_2mio__tflite280_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite260_2include_2mio__tflite260_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite2121_2include_2mio__tflite2121_2_helper_8h.html',1,'(Global Namespace)']]],
   ['helperpath_2ecpp_13',['HelperPath.cpp',['../_helper_path_8cpp.html',1,'']]],
   ['helperpath_2eh_14',['HelperPath.h',['../_helper_path_8h.html',1,'']]],
   ['helpers_2eh_15',['helpers.h',['../helpers_8h.html',1,'']]],
@@ -42,7 +42,8 @@ var searchData=
   ['how_2dto_2duse_2dapi_2emd_39',['how-to-use-api.md',['../how-to-use-api_8md.html',1,'']]],
   ['how_2dto_2duse_2dnnapi_2dbinding_2emd_40',['how-to-use-nnapi-binding.md',['../how-to-use-nnapi-binding_8md.html',1,'']]],
   ['how_2dto_2duse_2dnnfw_2dapi_2emd_41',['how-to-use-nnfw-api.md',['../how-to-use-nnfw-api_8md.html',1,'']]],
-  ['how_2dto_2duse_2dspecific_2dbackend_2emd_42',['how-to-use-specific-backend.md',['../how-to-use-specific-backend_8md.html',1,'']]],
-  ['hwclayout_2ecpp_43',['HWCLayout.cpp',['../_h_w_c_layout_8cpp.html',1,'']]],
-  ['hwclayout_2eh_44',['HWCLayout.h',['../_h_w_c_layout_8h.html',1,'']]]
+  ['how_2dto_2duse_2dnnfw_2dpython_2dapi_2emd_42',['how-to-use-nnfw-python-api.md',['../how-to-use-nnfw-python-api_8md.html',1,'']]],
+  ['how_2dto_2duse_2dspecific_2dbackend_2emd_43',['how-to-use-specific-backend.md',['../how-to-use-specific-backend_8md.html',1,'']]],
+  ['hwclayout_2ecpp_44',['HWCLayout.cpp',['../_h_w_c_layout_8cpp.html',1,'']]],
+  ['hwclayout_2eh_45',['HWCLayout.h',['../_h_w_c_layout_8h.html',1,'']]]
 ];

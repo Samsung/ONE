@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html#a20b0df82cd0e86d5d46b8d9265a5a2d8", null ],
+    [ "~NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html#a7bb382c9b1a8a4cf731b44ef28778547", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html#a1e5fe80369912669767b6bf8eccf88bb", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html#a928a0e9e76cbd3418f3e5494e96138fa", null ]
+];

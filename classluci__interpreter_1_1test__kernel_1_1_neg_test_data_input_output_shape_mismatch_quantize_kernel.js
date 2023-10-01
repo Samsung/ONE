@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_quantize_kernel =
+[
+    [ "NegTestDataInputOutputShapeMismatchQuantizeKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_quantize_kernel.html#adb6bc5464ff68434344969bbabcd03ea", null ],
+    [ "~NegTestDataInputOutputShapeMismatchQuantizeKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_quantize_kernel.html#a2090c423b218d255070a7109ebc7ca43", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_quantize_kernel.html#a94063eb437eed54640d07781b055edb7", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_quantize_kernel.html#a78e9eb3e6663fdf39e8f42147f741884", null ]
+];

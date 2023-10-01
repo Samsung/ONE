@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci_2log_2src_2_log_8cpp_source.html#l00060">60</a> of file <a class="el" href="luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00060">60</a> of file <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keyword">auto</span> settings = <a class="code hl_function" href="structluci_1_1_user_settings.html#a3bdb4f451fdade571d10cf59348f8b1f">luci::UserSettings::settings</a>();</div>
 <div class="line"><span class="lineno">   63</span> </div>
@@ -198,7 +198,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structhermes_1_1_config.html#af117fa6b5d2e375dc120b7391d4d670f">hermes::Config</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="luci_2log_2src_2_log_8cpp_source.html#l00071">71</a> of file <a class="el" href="luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">71</a> of file <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
 <div class="line"><span class="lineno">   73</span>  <span class="comment">// Let&#39;s ignore hermes::Sources if that is not a moco logger</span></div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> logger = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>Logger *<span class="keyword">&gt;</span>(source))</div>
@@ -206,11 +206,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>    <a class="code hl_function" href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">configure</a>(logger, setting);</div>
 <div class="line"><span class="lineno">   77</span>  }</div>
 <div class="line"><span class="lineno">   78</span>}</div>
-<div class="ttc" id="aclassluci_1_1_logger_config_html_a1c1ce6e230a3f21b027e45288479af81"><div class="ttname"><a href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">luci::LoggerConfig::configure</a></div><div class="ttdeci">void configure(const hermes::Source *, hermes::Source::Setting &amp;) const final</div><div class="ttdef"><b>Definition:</b> <a href="luci_2log_2src_2_log_8cpp_source.html#l00071">Log.cpp:71</a></div></div>
+<div class="ttc" id="aclassluci_1_1_logger_config_html_a1c1ce6e230a3f21b027e45288479af81"><div class="ttname"><a href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">luci::LoggerConfig::configure</a></div><div class="ttdeci">void configure(const hermes::Source *, hermes::Source::Setting &amp;) const final</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">Log.cpp:71</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci_2log_2src_2_log_8cpp_source.html#l00080">80</a> of file <a class="el" href="luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00080">80</a> of file <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
 <div class="line"><span class="lineno">   82</span>  setting.<a class="code hl_function" href="classhermes_1_1_source_setting.html#ac57d36abb5e7bd4eff2e9d3512ce92b6">reject_all</a>();</div>
 <div class="line"><span class="lineno">   83</span>  setting.<a class="code hl_function" href="classhermes_1_1_source_setting.html#a1a5b555ab835a78e5cfba7c86d195ccf">filter</a>(<a class="code hl_enumvalue" href="namespacehermes.html#aeb54ce9ebdeb2deb129a0eb96aa61d07a155e13df99cf45b9c7fa0eede68d537b">hermes::SeverityCategory::FATAL</a>).<a class="code hl_function" href="classhermes_1_1_filter.html#a27fc31b268f6dfb3157d5810ba5dce10">accept_upto</a>(_show_verbose);</div>
@@ -267,7 +267,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>compiler/luci/log/include/luci/<a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html">Log.h</a></li>
-<li>compiler/luci/log/src/<a class="el" href="luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a></li>
+<li>compiler/luci/log/src/<a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

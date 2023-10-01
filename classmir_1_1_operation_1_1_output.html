@@ -333,11 +333,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00098">98</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classmir_1_1_operation_1_1_output.html#af70ca7d36cd7cc0da77fd6145da505aa">getType</a>().<a class="code hl_function" href="classmir_1_1_tensor_type.html#adb2f4f0d58a1b2ae5e7453cb841d0707">getElementType</a>(); }</div>
-<div class="ttc" id="aclassmir_1_1_operation_1_1_output_html_af70ca7d36cd7cc0da77fd6145da505aa"><div class="ttname"><a href="classmir_1_1_operation_1_1_output.html#af70ca7d36cd7cc0da77fd6145da505aa">mir::Operation::Output::getType</a></div><div class="ttdeci">const TensorType &amp; getType() const</div><div class="ttdoc">Gets the type of this output.</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00091">Operation.h:91</a></div></div>
-<div class="ttc" id="aclassmir_1_1_tensor_type_html_adb2f4f0d58a1b2ae5e7453cb841d0707"><div class="ttname"><a href="classmir_1_1_tensor_type.html#adb2f4f0d58a1b2ae5e7453cb841d0707">mir::TensorType::getElementType</a></div><div class="ttdeci">DataType getElementType() const</div><div class="ttdef"><b>Definition:</b> <a href="_tensor_type_8h_source.html#l00041">TensorType.h:41</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="nnfw__api__wrapper_8h.html#a10aeb460626a274b47c4cc9dea685423">getType</a>().getElementType(); }</div>
+<div class="ttc" id="annfw__api__wrapper_8h_html_a10aeb460626a274b47c4cc9dea685423"><div class="ttname"><a href="nnfw__api__wrapper_8h.html#a10aeb460626a274b47c4cc9dea685423">getType</a></div><div class="ttdeci">NNFW_TYPE getType(const char *type=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__wrapper_8cc_source.html#l00064">nnfw_api_wrapper.cc:64</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_tensor_type_8h_source.html#l00041">mir::TensorType::getElementType()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00091">getType()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00064">getType()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_squeeze_op_8cpp_source.html#l00024">mir::ops::SqueezeOp::inferOutputTypes()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00108">setQuantization()</a>, and <a class="el" href="mir2loco_8cpp_source.html#l00581">mir2loco::Transformer::visit()</a>.</p>
 
@@ -487,10 +486,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00099">99</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html">Operation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classmir_1_1_operation_1_1_output.html#af70ca7d36cd7cc0da77fd6145da505aa">getType</a>().<a class="code hl_function" href="classmir_1_1_tensor_type.html#a2a937ecf277b9ea0c79a6b2941117270">getShape</a>(); }</div>
-<div class="ttc" id="aclassmir_1_1_tensor_type_html_a2a937ecf277b9ea0c79a6b2941117270"><div class="ttname"><a href="classmir_1_1_tensor_type.html#a2a937ecf277b9ea0c79a6b2941117270">mir::TensorType::getShape</a></div><div class="ttdeci">const Shape &amp; getShape() const</div><div class="ttdef"><b>Definition:</b> <a href="_tensor_type_8h_source.html#l00043">TensorType.h:43</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="nnfw__api__wrapper_8h.html#a10aeb460626a274b47c4cc9dea685423">getType</a>().getShape(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_tensor_type_8h_source.html#l00043">mir::TensorType::getShape()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00091">getType()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00064">getType()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00161">mir::Operation::getInputShape()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00163">mir::Operation::getOutputShape()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00108">setQuantization()</a>, and <a class="el" href="mir2loco_8cpp_source.html#l00404">mir2loco::Transformer::visit()</a>.</p>
 
@@ -524,7 +522,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00091">91</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html">Operation.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   91</span>{ <span class="keywordflow">return</span> _type; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00098">getElementType()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00099">getShape()</a>, <a class="el" href="mir-interpreter_2src_2ops_2_avg_pool2_d_8cpp_source.html#l00099">mir_interpreter::AvgPool2DImpl&lt; uint8_t &gt;::run()</a>, <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_depthwise_conv2_d_8cpp_source.html#l00100">mir_interpreter::DepthwiseConv2DImpl&lt; uint8_t &gt;::run()</a>, <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_max_pool2_d_8cpp_source.html#l00093">mir_interpreter::MaxPool2DImpl&lt; uint8_t &gt;::run()</a>, and <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_fully_connected_8cpp_source.html#l00130">mir_interpreter::FullyConnectedImpl&lt; uint8_t &gt;::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="mir-interpreter_2src_2ops_2_avg_pool2_d_8cpp_source.html#l00099">mir_interpreter::AvgPool2DImpl&lt; uint8_t &gt;::run()</a>, <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_depthwise_conv2_d_8cpp_source.html#l00100">mir_interpreter::DepthwiseConv2DImpl&lt; uint8_t &gt;::run()</a>, <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_max_pool2_d_8cpp_source.html#l00093">mir_interpreter::MaxPool2DImpl&lt; uint8_t &gt;::run()</a>, and <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_fully_connected_8cpp_source.html#l00130">mir_interpreter::FullyConnectedImpl&lt; uint8_t &gt;::run()</a>.</p>
 
 </div>
 </div>
@@ -766,6 +764,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00102">102</a> of file <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html">Operation.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  102</span>{ <a class="code hl_function" href="classmir_1_1_operation_1_1_output.html#aa888176ef345d125765a29196c73a476">setType</a>(<a class="code hl_enumeration" href="namespaceonert_1_1backend_1_1gpu__cl.html#a97ac54cf9f02c2e236f356e7311bff5e">TensorType</a>(_type.<a class="code hl_function" href="classmir_1_1_tensor_type.html#adb2f4f0d58a1b2ae5e7453cb841d0707">getElementType</a>(), shape)); }</div>
+<div class="ttc" id="aclassmir_1_1_tensor_type_html_adb2f4f0d58a1b2ae5e7453cb841d0707"><div class="ttname"><a href="classmir_1_1_tensor_type.html#adb2f4f0d58a1b2ae5e7453cb841d0707">mir::TensorType::getElementType</a></div><div class="ttdeci">DataType getElementType() const</div><div class="ttdef"><b>Definition:</b> <a href="_tensor_type_8h_source.html#l00041">TensorType.h:41</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_tensor_type_8h_source.html#l00041">mir::TensorType::getElementType()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00095">setType()</a>.</p>
 

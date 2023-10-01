@@ -351,6 +351,11 @@ var namespaces_dup =
       [ "make_tf2tfliteV2_cmd", "namespacemake__cmd.html#ab33d7adacab906604d2c6cb7fef048f0", null ],
       [ "make_tflite2circle_cmd", "namespacemake__cmd.html#a18452866463209cb3e8faf8f04d65598", null ]
     ] ],
+    [ "minimal", "namespaceminimal.html", [
+      [ "main", "namespaceminimal.html#a65bb779a0417e64d8694719fc85d8eea", null ],
+      [ "num_elems", "namespaceminimal.html#ae6b9408705915e80f6c3840a3309196c", null ],
+      [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]
+    ] ],
     [ "mio", "namespacemio.html", "namespacemio" ],
     [ "mir", "namespacemir.html", "namespacemir" ],
     [ "mir2loco", "namespacemir2loco.html", "namespacemir2loco" ],

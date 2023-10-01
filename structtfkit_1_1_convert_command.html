@@ -167,9 +167,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  107</span>  <span class="comment">// TODO Support more options</span></div>
 <div class="line"><span class="lineno">  108</span>  assert(argc &gt;= 4);</div>
 <div class="line"><span class="lineno">  109</span>  assert(std::string(argv[0]) == <span class="stringliteral">&quot;--input-format&quot;</span>);</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> std::string input_format{argv[1]};</div>
+<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> std::string input_format{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1]};</div>
 <div class="line"><span class="lineno">  111</span>  assert(std::string(argv[2]) == <span class="stringliteral">&quot;--output-format&quot;</span>);</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> std::string output_format{argv[3]};</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> std::string output_format{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[3]};</div>
 <div class="line"><span class="lineno">  113</span> </div>
 <div class="line"><span class="lineno">  114</span>  std::map&lt;std::string, std::unique_ptr&lt;Importer&gt;&gt; importers;</div>
 <div class="line"><span class="lineno">  115</span> </div>
@@ -201,6 +201,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  141</span> </div>
 <div class="line"><span class="lineno">  142</span>  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><span class="lineno">  143</span>}</div>
+<div class="ttc" id="anamespaceminimal_html_a5f2767e1a6e0198d72dfe1719abc3b2a"><div class="ttname"><a href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">minimal.argv</a></div><div class="ttdeci">argv</div><div class="ttdef"><b>Definition:</b> <a href="minimal_8py_source.html#l00064">minimal.py:64</a></div></div>
 <div class="ttc" id="anamespacetfkit_html_a11aa726ebc55390d9eb38d132ee4a7fc"><div class="ttname"><a href="namespacetfkit.html#a11aa726ebc55390d9eb38d132ee4a7fc">tfkit::make_ioconfig</a></div><div class="ttdeci">std::unique_ptr&lt; IOConfiguration &gt; make_ioconfig(const CmdArguments &amp;cmdargs)</div><div class="ttdef"><b>Definition:</b> <a href="tfkit_2src_2_support_8cpp_source.html#l00111">Support.cpp:111</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="tfkit_2src_2_support_8cpp_source.html#l00111">tfkit::make_ioconfig()</a>.</p>

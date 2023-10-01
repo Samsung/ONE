@@ -212,14 +212,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  242</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; first_output.size(); i++)</div>
 <div class="line"><span class="lineno">  243</span>    {</div>
 <div class="line"><span class="lineno">  244</span>      <span class="keyword">auto</span> out = first_output[i];</div>
-<div class="line"><span class="lineno">  245</span>      writeDataToFile(_ctx.get()-&gt;output_prefix + <span class="stringliteral">&quot;.&quot;</span> + std::to_string(data_idx) + <span class="stringliteral">&quot;.first.output&quot;</span> +</div>
+<div class="line"><span class="lineno">  245</span>      <a class="code hl_function" href="namespacempqsolver_1_1test_1_1io__utils.html#a557b2c2b60ff3fa92cd88ff33f313525">writeDataToFile</a>(_ctx.get()-&gt;output_prefix + <span class="stringliteral">&quot;.&quot;</span> + std::to_string(data_idx) + <span class="stringliteral">&quot;.first.output&quot;</span> +</div>
 <div class="line"><span class="lineno">  246</span>                        std::to_string(i),</div>
 <div class="line"><span class="lineno">  247</span>                      (<span class="keywordtype">char</span> *)(out-&gt;buffer()), out-&gt;byte_size());</div>
 <div class="line"><span class="lineno">  248</span>    }</div>
 <div class="line"><span class="lineno">  249</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; second_output.size(); i++)</div>
 <div class="line"><span class="lineno">  250</span>    {</div>
 <div class="line"><span class="lineno">  251</span>      <span class="keyword">auto</span> out = second_output[i];</div>
-<div class="line"><span class="lineno">  252</span>      writeDataToFile(_ctx.get()-&gt;output_prefix + <span class="stringliteral">&quot;.&quot;</span> + std::to_string(data_idx) +</div>
+<div class="line"><span class="lineno">  252</span>      <a class="code hl_function" href="namespacempqsolver_1_1test_1_1io__utils.html#a557b2c2b60ff3fa92cd88ff33f313525">writeDataToFile</a>(_ctx.get()-&gt;output_prefix + <span class="stringliteral">&quot;.&quot;</span> + std::to_string(data_idx) +</div>
 <div class="line"><span class="lineno">  253</span>                        <span class="stringliteral">&quot;.second.output&quot;</span> + std::to_string(i),</div>
 <div class="line"><span class="lineno">  254</span>                      (<span class="keywordtype">char</span> *)(out-&gt;buffer()), out-&gt;byte_size());</div>
 <div class="line"><span class="lineno">  255</span>    }</div>
@@ -232,6 +232,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  262</span>}</div>
 <div class="ttc" id="anamespacecircle__eval__diff_html_a134fa667ef5df44a488fb77c13287e53"><div class="ttname"><a href="namespacecircle__eval__diff.html#a134fa667ef5df44a488fb77c13287e53">circle_eval_diff::interpret</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; Tensor &gt; &gt; interpret(const luci::Module *module, const InputDataLoader::Data &amp;data)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_eval_diff_8cpp_source.html#l00125">CircleEvalDiff.cpp:125</a></div></div>
 <div class="ttc" id="anamespacecircle__eval__diff_html_ab8509019f67f01b27b8f2037f3480e33"><div class="ttname"><a href="namespacecircle__eval__diff.html#ab8509019f67f01b27b8f2037f3480e33">circle_eval_diff::makeDataLoader</a></div><div class="ttdeci">std::unique_ptr&lt; InputDataLoader &gt; makeDataLoader(const std::string &amp;file_path, const InputFormat &amp;format, const std::vector&lt; loco::Node * &gt; &amp;input_nodes)</div><div class="ttdef"><b>Definition:</b> <a href="_input_data_loader_8cpp_source.html#l00219">InputDataLoader.cpp:219</a></div></div>
+<div class="ttc" id="anamespacempqsolver_1_1test_1_1io__utils_html_a557b2c2b60ff3fa92cd88ff33f313525"><div class="ttname"><a href="namespacempqsolver_1_1test_1_1io__utils.html#a557b2c2b60ff3fa92cd88ff33f313525">mpqsolver::test::io_utils::writeDataToFile</a></div><div class="ttdeci">void writeDataToFile(const std::string &amp;file_path, const std::string &amp;data)</div><div class="ttdoc">write data to file_path</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_eval_diff_8cpp_source.html#l00125">circle_eval_diff::interpret()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00219">circle_eval_diff::makeDataLoader()</a>.</p>
 

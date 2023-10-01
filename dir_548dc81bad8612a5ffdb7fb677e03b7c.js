@@ -63,7 +63,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "Softmax.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_softmax_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_softmax_8cpp" ],
     [ "Softmax.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_soft_max_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_soft_max_8h" ],
     [ "Sqrt.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sqrt_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sqrt_8cpp" ],
-    [ "Sqrt.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h" ],
+    [ "Sqrt.h", "mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h" ],
     [ "Sub.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sub_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sub_8cpp" ],
     [ "Sub.h", "mir_2src_2mir__onnx__importer_2_op_2_sub_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_sub_8h" ],
     [ "Sum.cpp", "mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp" ],

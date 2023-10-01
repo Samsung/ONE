@@ -1,6 +1,7 @@
 var _p_a_l_utils_8h =
 [
     [ "activationFunctionWithMinMax", "_p_a_l_utils_8h.html#afdecaeb89ff3e89a7c3b8994aab89924", null ],
+    [ "flatSizeSkipDim", "_p_a_l_utils_8h.html#a32baf8c5cec5334d992739072d644f52", null ],
     [ "getActivationParams", "_p_a_l_utils_8h.html#aca8a4aba675fd48ae37ec34f7e31a49c", null ],
     [ "getActivationParams", "_p_a_l_utils_8h.html#a53161f1e64fad4c5bd9aee2c604e0b49", null ],
     [ "getActivationParams", "_p_a_l_utils_8h.html#aa52b9e0d9ebe22ff803fb7d7b9bb2a23", null ],
