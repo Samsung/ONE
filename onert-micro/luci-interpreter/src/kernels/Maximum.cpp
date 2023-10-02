@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2018 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,52 +14,84 @@
  * limitations under the License.
  */
 
-#include "kernels/Maximum.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
 
 #include "kernels/BinaryOpCommon.h"
 
+#include "PALMaximum.h"
+
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-Maximum::Maximum(const Tensor *input1, const Tensor *input2, Tensor *output)
-  : Kernel({input1, input2}, {output})
+void configure_kernel_CircleMaximum(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
 }
 
-void Maximum::configure()
+void execute_kernel_CircleMaximum(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == input2()->element_type())
-  LUCI_INTERPRETER_CHECK(input1()->element_type() == output()->element_type())
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(calculateShapeForBroadcast(input1()->shape(), input2()->shape()));
-}
+  kernels::TISOKernel kernel(cur_op, runtime_graph);
+  luci_interpreter::RuntimeShape input_shape1 =
+    kernels::getTensorRuntimeShape(kernel.input1(), runtime_graph);
+  luci_interpreter::RuntimeShape input_shape2 =
+    kernels::getTensorRuntimeShape(kernel.input2(), runtime_graph);
+  luci_interpreter::RuntimeShape output_shape =
+    kernels::getTensorRuntimeShape(kernel.output(), runtime_graph);
 
-void Maximum::execute() const
-{
-  switch (input1()->element_type())
+  const uint8_t *input_data1 = runtime_graph->getDataByTensor(kernel.input1());
+  const uint8_t *input_data2 = runtime_graph->getDataByTensor(kernel.input2());
+  uint8_t *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  assert(input_data1 != nullptr);
+  assert(input_data2 != nullptr);
+  assert(output_data != nullptr);
+
+  switch (Tensor::element_type(kernel.input1()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalMaximum<float>();
-      break;
-    case DataType::U8:
-      evalMaximum<uint8_t>();
-      break;
+    {
+      // check that input and output dimensions are equal
+      auto AreShapesEqual = [](const luci_interpreter::RuntimeShape &input_shape1,
+                               const luci_interpreter::RuntimeShape &input_shape2) -> bool {
+        if (input_shape1.dimensionsCount() == input_shape2.dimensionsCount())
+        {
+          int N = input_shape1.dimensionsCount();
+          for (int i = 0; i < N; ++i)
+          {
+            if (input_shape1.dims(i) != input_shape2.dims(i))
+              return false;
+          }
+          return true;
+        }
+        return false;
+      };
+      if (AreShapesEqual(input_shape1, input_shape2))
+      {
+        const int flat_size = input_shape1.flatSize();
+        luci_interpreter_pal::Maximum(flat_size, kernels::getTensorData<float>(input_data1),
+                                      kernels::getTensorData<float>(input_data2),
+                                      kernels::getTensorData<float>(output_data));
+      }
+      else
+      {
+        luci_interpreter_pal::BroadcastMaximum4DSlow(
+          input_shape1, kernels::getTensorData<float>(input_data1), input_shape2,
+          kernels::getTensorData<float>(input_data2), output_shape,
+          kernels::getTensorData<float>(output_data));
+      }
+    }
+    break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-template <typename T> inline void Maximum::evalMaximum() const
-{
-  BinaryOpBroadcastSlow(getTensorShape(input1()), getTensorData<T>(input1()),
-                        getTensorShape(input2()), getTensorData<T>(input2()),
-                        getTensorShape(output()), getTensorData<T>(output()),
-                        [](T x, T y) { return std::max(x, y); });
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
