@@ -14,80 +14,53 @@
  * limitations under the License.
  */
 
-#include "kernels/LogSoftmax.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
-
-#include <tensorflow/lite/kernels/internal/reference/log_softmax.h>
+#include "SISOKernel.h"
 
 #include "PALLogSoftmax.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+
+void configure_kernel_CircleLogSoftmax(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-LogSoftmax::LogSoftmax(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
-
-void LogSoftmax::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  if (input()->element_type() == DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(output()->scale() == 16. / 256);
-    LUCI_INTERPRETER_CHECK(output()->zero_point() == 255);
-
-    tflite::SoftmaxParams params{};
-
-    params.table = _table;
-    params.beta = 1.0;
-    luci_interpreter_pal::PopulateSoftmaxLookupTable(&params, input()->scale(), params.beta);
-  }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
 }
 
-void LogSoftmax::execute() const
+void execute_kernel_CircleLogSoftmax(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+    {
+      const float *input_data_float = kernels::getTensorData<float>(input_data);
+      float *output_data_float = kernels::getTensorData<float>(output_data);
+      assert(output_data_float);
+
+      luci_interpreter_pal::LogSoftmax(
+        kernels::getTensorRuntimeShape(kernel.input(), runtime_graph), input_data_float,
+        kernels::getTensorRuntimeShape(kernel.output(), runtime_graph), output_data_float);
       break;
-    case DataType::U8:
-      evalQuantized();
-      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-void LogSoftmax::evalFloat() const
-{
-  tflite::SoftmaxParams params{};
-  tflite::reference_ops::LogSoftmax(params, getTensorShape(input()), getTensorData<float>(input()),
-                                    getTensorShape(output()), getTensorData<float>(output()));
-}
-
-void LogSoftmax::evalQuantized() const
-{
-  const auto input_shape = getTensorShape(input());
-  const auto output_shape = getTensorShape(output());
-  const auto input_scale = input()->scale();
-  uint8_t *output_data = getTensorData<uint8_t>(output());
-  const uint8_t *input_data = getTensorData<uint8_t>(input());
-  const float beta = 1.0;
-
-  tflite::SoftmaxParams params{};
-
-  params.table = const_cast<float *>(_table);
-  params.zero_point = output()->zero_point();
-  params.scale = output()->scale();
-
-  luci_interpreter_pal::InitializeParams(&params, input_scale, beta);
-  luci_interpreter_pal::LogSoftmax(params, input_scale, input_shape, input_data, output_shape,
-                                   output_data);
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
