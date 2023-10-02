@@ -15,130 +15,69 @@
  * limitations under the License.
  */
 
-#include "kernels/Cast.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
+namespace luci_interpreter
+{
 namespace
 {
 
-using namespace luci_interpreter;
-using namespace luci_interpreter::kernels;
-
-template <typename InT, typename OutT>
-void cast_data(const InT *in_data, OutT *out_data, uint32_t elements_count)
+template <typename FromT, typename ToT> void copyCast(const FromT *in, ToT *out, int num_elements)
 {
-  std::transform(in_data, in_data + elements_count, out_data,
-                 [](InT a) { return static_cast<OutT>(a); });
-}
-
-template <typename InT> void cast_from_pointer_to_tensor(const InT *in_data, Tensor *out_tensor)
-{
-  auto const out_type = out_tensor->element_type();
-  auto const elements_count = out_tensor->shape().num_elements();
-
-  switch (out_type)
-  {
-    case DataType::U8:
-      cast_data(in_data, getTensorData<uint8_t>(out_tensor), elements_count);
-      break;
-    case DataType::U16:
-      cast_data(in_data, getTensorData<uint16_t>(out_tensor), elements_count);
-      break;
-    case DataType::U32:
-      cast_data(in_data, getTensorData<uint32_t>(out_tensor), elements_count);
-      break;
-    case DataType::U64:
-      cast_data(in_data, getTensorData<uint64_t>(out_tensor), elements_count);
-      break;
-    case DataType::S8:
-      cast_data(in_data, getTensorData<int8_t>(out_tensor), elements_count);
-      break;
-    case DataType::S16:
-      cast_data(in_data, getTensorData<int16_t>(out_tensor), elements_count);
-      break;
-    case DataType::S32:
-      cast_data(in_data, getTensorData<int32_t>(out_tensor), elements_count);
-      break;
-    case DataType::S64:
-      cast_data(in_data, getTensorData<int64_t>(out_tensor), elements_count);
-      break;
-    case DataType::FLOAT32:
-      cast_data(in_data, getTensorData<float>(out_tensor), elements_count);
-      break;
-    case DataType::BOOL:
-      cast_data(in_data, getTensorData<bool>(out_tensor), elements_count);
-      break;
-    default:
-      assert(false && "Unsupported output type.");
-  }
-}
-
-void cast_from_tensor_to_tensor(const Tensor *in_tensor, Tensor *out_tensor)
-{
-  auto in_type = in_tensor->element_type();
-
-  switch (in_type)
-  {
-    case DataType::U8:
-      cast_from_pointer_to_tensor(getTensorData<uint8_t>(in_tensor), out_tensor);
-      break;
-    case DataType::U16:
-      cast_from_pointer_to_tensor(getTensorData<uint16_t>(in_tensor), out_tensor);
-      break;
-    case DataType::U32:
-      cast_from_pointer_to_tensor(getTensorData<uint32_t>(in_tensor), out_tensor);
-      break;
-    case DataType::U64:
-      cast_from_pointer_to_tensor(getTensorData<uint64_t>(in_tensor), out_tensor);
-      break;
-    case DataType::S8:
-      cast_from_pointer_to_tensor(getTensorData<int8_t>(in_tensor), out_tensor);
-      break;
-    case DataType::S16:
-      cast_from_pointer_to_tensor(getTensorData<int16_t>(in_tensor), out_tensor);
-      break;
-    case DataType::S32:
-      cast_from_pointer_to_tensor(getTensorData<int32_t>(in_tensor), out_tensor);
-      break;
-    case DataType::S64:
-      cast_from_pointer_to_tensor(getTensorData<int64_t>(in_tensor), out_tensor);
-      break;
-    case DataType::FLOAT32:
-      cast_from_pointer_to_tensor(getTensorData<float>(in_tensor), out_tensor);
-      break;
-    case DataType::BOOL:
-      cast_from_pointer_to_tensor(getTensorData<bool>(in_tensor), out_tensor);
-      break;
-    default:
-      assert(false && "Unsupported input type.");
-  }
+  std::transform(in, in + num_elements, out, [](FromT a) { return static_cast<ToT>(a); });
 }
 
 } // namespace
 
-namespace luci_interpreter
+void configure_kernel_CircleCast(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-namespace kernels
-{
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-Cast::Cast(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
-
-void Cast::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() != DataType::Unknown);
-  LUCI_INTERPRETER_CHECK(output()->element_type() != DataType::Unknown);
-
-  const Shape &shape = input()->shape();
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(shape);
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
+                         Tensor::num_elements(kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
 }
 
-void Cast::execute() const
+void execute_kernel_CircleCast(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  assert(input()->shape().num_elements() == output()->shape().num_elements());
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  cast_from_tensor_to_tensor(input(), output());
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+  assert(output_data);
+
+  const int flat_size = kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+  switch (Tensor::element_type(kernel.input()))
+  {
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+    {
+      const float *input_data_float = kernels::getTensorData<float>(input_data);
+
+      switch (Tensor::element_type(kernel.output()))
+      {
+        case DataType::S8:
+          copyCast(input_data_float, kernels::getTensorData<int8_t>(output_data), flat_size);
+          break;
+        case DataType::S16:
+          copyCast(input_data_float, kernels::getTensorData<int16_t>(output_data), flat_size);
+          break;
+        case DataType::S32:
+          copyCast(input_data_float, kernels::getTensorData<int32_t>(output_data), flat_size);
+          break;
+        default:
+          assert(false && "Not supported type");
+      }
+      break;
+    }
+#endif // DIS_FLOAT
+    default:
+      assert(false && "Unsupported type");
+  }
 }
-
-} // namespace kernels
 } // namespace luci_interpreter
