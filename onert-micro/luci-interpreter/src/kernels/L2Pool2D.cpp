@@ -15,73 +15,82 @@
  * limitations under the License.
  */
 
-#include "kernels/L2Pool2D.h"
-
+#include "Builders.h"
+#include "SISOKernel.h"
 #include "kernels/Utils.h"
-
 #include "PALL2Pool2D.h"
 
 namespace luci_interpreter
 {
-
-namespace kernels
+void configure_kernel_CircleL2Pool2D(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
+  const kernels::SISOKernel siso_kernel(cur_op, runtime_graph);
 
-L2Pool2D::L2Pool2D(const Tensor *input, Tensor *output, const Pool2DParams &params)
-  : KernelWithParams<Pool2DParams>({input}, {output}, params)
-{
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(siso_kernel.input()) ==
+                         Tensor::element_type(siso_kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(siso_kernel.input()) == 4);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(siso_kernel.input()) ==
+                         Tensor::num_dims(siso_kernel.output()));
 }
 
-void L2Pool2D::configure()
+void execute_kernel_CircleL2Pool2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+  const kernels::SISOKernel siso_kernel(cur_op, runtime_graph);
 
-  int batches = input()->shape().dim(0);
-  int height = input()->shape().dim(1);
-  int width = input()->shape().dim(2);
-  int channels_out = input()->shape().dim(3);
+  const auto *options = cur_op->builtin_options_as_Pool2DOptions();
 
-  // Matching GetWindowedOutputSize in TensorFlow.
-  auto padding = params().padding;
-  int out_width, out_height;
-  out_width = computeOutputSize(padding, width, params().filter_width, params().stride_width, 1);
-  out_height =
-    computeOutputSize(padding, height, params().filter_height, params().stride_height, 1);
-  _padding_width =
-    computePadding(params().stride_width, 1, width, params().filter_width, out_width);
-  _padding_height =
-    computePadding(params().stride_height, 1, height, params().filter_height, out_height);
+  const auto input = siso_kernel.input();
+  const auto output = siso_kernel.output();
 
-  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize({batches, out_height, out_width, channels_out});
-}
+  const int32_t input_height = Tensor::dim(input, 1);
+  const int32_t input_width = Tensor::dim(input, 2);
 
-void L2Pool2D::execute() const
-{
-  switch (input()->element_type())
+  const int32_t output_height = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
+  const int32_t output_width = kernels::computeOutputSize(
+    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
+
+  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
+                                                      options->filter_height(), output_height);
+  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
+                                                     options->filter_width(), output_width);
+
+  const auto *input_data = runtime_graph->getDataByTensor(input);
+  auto *output_data = runtime_graph->getDataByTensor(output);
+
+  const DataType input_type = Tensor::element_type(input);
+
+  float activation_min{};
+  float activation_max{};
+
+#ifndef DIS_FLOAT
+  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
+                                    &activation_min, &activation_max);
+#endif // DIS_FLOAT
+
+  luci_interpreter_pal::PoolParams params{};
+  params.padding_values.height = padding_height;
+  params.padding_values.width = padding_width;
+  params.stride_height = options->stride_h();
+  params.stride_width = options->stride_w();
+  params.filter_height = options->filter_height();
+  params.filter_width = options->filter_width();
+  params.float_activation_min = activation_min;
+  params.float_activation_max = activation_max;
+
+  switch (input_type)
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      float activation_min, activation_max;
-      calculateActivationRange(params().activation, &activation_min, &activation_max);
-      tflite::PoolParams op_params;
-      op_params.stride_height = params().stride_height;
-      op_params.stride_width = params().stride_width;
-      op_params.filter_height = params().filter_height;
-      op_params.filter_width = params().filter_width;
-      op_params.padding_values.height = _padding_height;
-      op_params.padding_values.width = _padding_width;
-      op_params.float_activation_min = activation_min;
-      op_params.float_activation_max = activation_max;
-      luci_interpreter_pal::L2Pool(op_params, getTensorShape(input()),
-                                   getTensorData<float>(input()), getTensorShape(output()),
-                                   getTensorData<float>(output()));
+      luci_interpreter_pal::L2Pool(
+        params, kernels::getTensorShape(input), kernels::getTensorData<float>(input_data),
+        kernels::getTensorShape(output), kernels::getTensorData<float>(output_data));
       break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-} // namespace kernels
 } // namespace luci_interpreter

@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/L2Pool2D.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/l2_poop_2d/FloatL2Pool2DKernel.h"
+#include "luci_interpreter/test_models/l2_poop_2d/NegL2Pool2DKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,262 +30,59 @@ using namespace testing;
 
 class L2Pool2DTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(L2Pool2DTest, FloatNone)
+template <typename T>
+std::vector<T> checkL2Pool2DKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  std::vector<float> ref_output_data{3.5, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(L2Pool2DTest, FloatRelu)
+TEST_F(L2Pool2DTest, Float_P)
 {
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    -1, -6, 2,  4, //
-    -3, -2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::RELU;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{3.53553, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
+  test_kernel::TestDataFloatL2Pool2D test_data_kernel;
+  std::vector<float> output_data_vector = checkL2Pool2DKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST_F(L2Pool2DTest, FloatRelu1)
+TEST_F(L2Pool2DTest, Input_output_type_mismatch_NEG)
 {
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    -0.1, -0.6, 2,  4, //
-    -0.3, -0.2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::RELU_N1_TO_1;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{0.353553, 1.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
-}
-
-TEST_F(L2Pool2DTest, FloatRelu6)
-{
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    -0.1, -0.6, 2,  4, //
-    -0.3, -0.2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::RELU6;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{0.353553, 6.0};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
-}
-
-TEST_F(L2Pool2DTest, FloatPaddingSame)
-{
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::SAME;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 2;
-  params.stride_width = 2;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{3.5, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
-}
-
-TEST_F(L2Pool2DTest, FloatPaddingSameStride)
-{
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::SAME;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 1;
-  params.stride_width = 1;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{3.5, 6.0, 6.5, 5.70088, 2.54951, 7.2111, 8.63134, 7.0};
-  // NOTE with NEON+ruy, error is #1=-1.14441e-05, #6=-1.81198e-05
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data, 1.0e-4f));
-  // TODO make a Shape checking of output_tensor.
-}
-
-TEST_F(L2Pool2DTest, FloatPaddingValidStride)
-{
-  Shape input_shape{1, 2, 4, 1};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 1;
-  params.stride_width = 1;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{3.5, 6.0, 6.5};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  // TODO make a Shape checking of output_tensor.
-}
-
-TEST_F(L2Pool2DTest, InvalidInputShape_NEG)
-{
-  Shape input_shape{1, 2, 4};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 1;
-  params.stride_width = 1;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(L2Pool2DTest, InvalidInputOutputType_NEG)
-{
-  Shape input_shape{1, 2, 4};
-  std::vector<float> input_data{
-    0, 6, 2,  4, //
-    3, 2, 10, 7, //
-  };
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::U8);
-
-  Pool2DParams params{};
-  params.padding = Padding::VALID;
-  params.activation = Activation::NONE;
-  params.filter_height = 2;
-  params.filter_width = 2;
-  params.stride_height = 1;
-  params.stride_width = 1;
-
-  L2Pool2D kernel(&input_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::NegTestDataInputOutputTypeMismatchL2Pool2DKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
