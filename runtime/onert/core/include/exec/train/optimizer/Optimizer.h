@@ -60,6 +60,13 @@ public:
   virtual double getLearningRate(uint32_t iteration) const = 0;
 
   /**
+   * @brief Get the number of optimizer variables
+   *s
+   * @return The number of optimizer variables
+   */
+  virtual uint32_t getVarCount() const = 0;
+
+  /**
    * @brief Apply gradient to a trainable tensor
    *
    * @param factors UpdateFactors to be used for applying gradient to a trainable tensor

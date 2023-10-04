@@ -75,8 +75,14 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
     auto tensor = std::make_unique<GradientTensor>(info, layout);
     _tensor_reg->setGradientTensor(index, std::move(tensor));
 
-    // TODO Register variables of the optimizer
-    UNUSED_RELEASE(_optimizer);
+    // Initialize tensors for gradient variables
+    for (uint32_t i = 0; i < _optimizer->getVarCount(); ++i)
+    {
+      // TODO Optimize memory
+      auto tensor = std::make_unique<Tensor>(info, layout);
+      tensor->setBuffer(std::make_shared<basic::Allocator>(tensor->total_size()));
+      _tensor_reg->getTrainableTensor(index)->appendOptVar(std::move(tensor));
+    }
   }
   else
   {
