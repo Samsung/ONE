@@ -1,6 +1,6 @@
-# q-implant-op-level-test
+# q-implant-qparam-test
 
-`q-implant-op-level-test` validates that q-implant supports common used operators.
+`q-implant-qparam-test` validates that q-implant supports common used operators.
 
 The test proceeds as follows
 

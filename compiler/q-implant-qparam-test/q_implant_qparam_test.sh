@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/q_implant_op_level_test.py"
+VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/q_implant_qparam_test.py"
 BINDIR="$1"; shift
 WORKDIR="$1"; shift
 VIRTUALENV="$1"; shift
