@@ -6,7 +6,7 @@ import os
 
 def _dump_npy_included_json(output_dir: str, json_content: dict):
     """
-    Dump json to output_dir, and save all included npy files
+    Dump json and npy files to output_dir
     """
     # Create output_dir if not exists
     if not os.path.exists(output_dir):

@@ -36,4 +36,4 @@ class Mul_001_Q8(TestCase):
 
 _name_ = 'Mul_001_Q8'
 
-_model_ = Mul_001_Q8()
+_test_case_ = Mul_001_Q8()

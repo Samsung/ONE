@@ -28,4 +28,4 @@ class AveragePool2D_000_Q8(TestCase):
 
 _name_ = 'AveragePool2D_000_Q8'
 
-_model_ = AveragePool2D_000_Q8()
+_test_case_ = AveragePool2D_000_Q8()

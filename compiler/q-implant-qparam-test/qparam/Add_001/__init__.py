@@ -36,4 +36,4 @@ class Add_001_Q8(TestCase):
 
 _name_ = 'Add_001_Q8'
 
-_model_ = Add_001_Q8()
+_test_case_ = Add_001_Q8()

@@ -28,4 +28,4 @@ class Softmax_000_Q8(TestCase):
 
 _name_ = 'Softmax_000_Q8'
 
-_model_ = Softmax_000_Q8()
+_test_case_ = Softmax_000_Q8()

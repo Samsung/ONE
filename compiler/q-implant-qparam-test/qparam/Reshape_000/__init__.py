@@ -28,4 +28,4 @@ class Reshape_000_Q8(TestCase):
 
 _name_ = 'Reshape_000_Q8'
 
-_model_ = Reshape_000_Q8()
+_test_case_ = Reshape_000_Q8()

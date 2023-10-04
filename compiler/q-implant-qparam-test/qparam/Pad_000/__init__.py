@@ -28,4 +28,4 @@ class Pad_000_Q8(TestCase):
 
 _name_ = 'Pad_000_Q8'
 
-_model_ = Pad_000_Q8()
+_test_case_ = Pad_000_Q8()

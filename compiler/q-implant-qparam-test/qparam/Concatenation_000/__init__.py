@@ -35,4 +35,4 @@ class Concatenation_000_Q8(TestCase):
 
 _name_ = 'Concatenation_000_Q8'
 
-_model_ = Concatenation_000_Q8()
+_test_case_ = Concatenation_000_Q8()

@@ -28,4 +28,4 @@ class MaxPool2D_000_Q8(TestCase):
 
 _name_ = 'MaxPool2D_000_Q8'
 
-_model_ = MaxPool2D_000_Q8()
+_test_case_ = MaxPool2D_000_Q8()

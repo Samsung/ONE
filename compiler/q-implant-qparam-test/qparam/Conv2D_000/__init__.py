@@ -44,4 +44,4 @@ class Conv2D_000_Q8(TestCase):
 
 _name_ = 'Conv2D_000_Q8'
 
-_model_ = Conv2D_000_Q8()
+_test_case_ = Conv2D_000_Q8()

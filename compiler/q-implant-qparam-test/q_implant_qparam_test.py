@@ -36,7 +36,7 @@ driver = args.driver
 dump = args.dump
 model = args.model
 
-module = importlib.import_module('import.' + model)
+module = importlib.import_module('qparam.' + model)
 
 input_circle = input_dir + '.circle'
 output_circle = output_dir + f'/{module._name_}/output.circle'
@@ -50,7 +50,7 @@ if not os.path.exists(input_circle):
 # generate qparam.json and numpys
 test_runner = TestRunner(output_dir)
 
-test_runner.register(module._model_)
+test_runner.register(module._test_case_)
 
 test_runner.run()
 

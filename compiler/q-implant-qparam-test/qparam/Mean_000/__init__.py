@@ -28,4 +28,4 @@ class Mean_000_Q8(TestCase):
 
 _name_ = 'Mean_000_Q8'
 
-_model_ = Mean_000_Q8()
+_test_case_ = Mean_000_Q8()
