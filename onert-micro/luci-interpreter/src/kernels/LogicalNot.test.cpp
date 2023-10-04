@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "kernels/LogicalNot.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/logical_not/BoolLogicalNotKernel.h"
+#include "luci_interpreter/test_models/logical_not/NegLogicalNotKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,49 +29,72 @@ using namespace testing;
 
 class LogicalNotTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(LogicalNotTest, Basic)
+template <typename T>
+std::vector<T> checkLogicalNotKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Shape input_shape{1, 1, 1, 4};
-  Tensor input_tensor =
-    makeInputTensor<DataType::BOOL>(input_shape, {true, false, false, true}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  LogicalNot kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  EXPECT_THAT(extractTensorData<bool>(output_tensor),
-              ::testing::ElementsAre(false, true, true, false));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAre(1, 1, 1, 4));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(LogicalNotTest, OutputTypeInvalid_NEG)
+TEST_F(LogicalNotTest, Bool_P)
 {
-  Tensor input_tensor = makeInputTensor<DataType::BOOL>({1, 1, 1, 4}, {true, false, false, true},
-                                                        _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::S32);
-
-  LogicalNot kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  test_kernel::TestDataBoolLogicalNot test_data_kernel;
+  std::vector<bool> output_data_vector = checkLogicalNotKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(LogicalNotTest, InputTypeInvalid_NEG)
+TEST_F(LogicalNotTest, Input_output_type_mismatch_NEG)
 {
-  Tensor input_tensor =
-    makeInputTensor<DataType::S32>({1, 1, 1, 4}, {1, 0, 0, 1}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+  test_kernel::NegTestDataInputOutputTypeMismatchLogicalNotKernel test_data_kernel;
 
-  LogicalNot kernel(&input_tensor, &output_tensor);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(LogicalNotTest, Invalid_input_output_shape_NEG)
+{
+  test_kernel::NegTestDataInputOutputShapeMismatchLogicalNotKernel test_data_kernel;
+
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
