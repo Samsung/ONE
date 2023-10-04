@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include <exec/train/optimizer/SGD.h>
+#include "SGD.h"
 
 #include "OptimizerHelpers.h"
 
 namespace onert
 {
-namespace exec
+namespace backend
 {
 namespace train
 {
@@ -43,7 +43,6 @@ void SGD::applyGradient(const UpdateFactors &factors) const
   const auto shape = trainable_tensor.getShape();
   const auto &grad_shape = grad_tensor.get_info().shape();
 
-  // TODO Support for different shapes
   if (shape != grad_shape)
   {
     throw std::runtime_error("SGD: Invalid gradient tensor");
@@ -62,5 +61,5 @@ void SGD::applyGradient(const UpdateFactors &factors) const
 
 } // namespace optimizer
 } // namespace train
-} // namespace exec
+} // namespace backend
 } // namespace onert

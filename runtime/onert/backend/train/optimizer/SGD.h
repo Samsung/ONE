@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_OPTIMIZER_SGD_H__
-#define __ONERT_EXEC_TRAIN_OPTIMIZER_SGD_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__
+#define __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__
 
-#include "exec/train/optimizer/Optimizer.h"
+#include <exec/train/optimizer/Optimizer.h>
 
 namespace onert
 {
-namespace exec
+namespace backend
 {
 namespace train
 {
@@ -32,8 +32,11 @@ namespace optimizer
  * @class   SGD optimizer class
  * @brief   SGD optimizer
  */
-class SGD : public Optimizer
+class SGD : public exec::train::optimizer::Optimizer
 {
+public:
+  using UpdateFactors = exec::train::optimizer::UpdateFactors;
+
 public:
   struct Property
   {
@@ -77,7 +80,7 @@ private:
 
 } // namespace optimizer
 } // namespace train
-} // namespace exec
+} // namespace backend
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAIN_OPTIMIZER_SGD_H__
+#endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__

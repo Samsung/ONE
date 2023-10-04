@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
-#define __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
+#define __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
 
 #include "backend/IPortableTensor.h"
 
 namespace onert
 {
-namespace exec
+namespace backend
 {
 namespace train
 {
@@ -41,7 +41,7 @@ void elementwise(const ir::Shape &shape, const backend::ITensor &src, backend::I
 
 } // namespace optimizer
 } // namespace train
-} // namespace exec
+} // namespace backend
 } // namespace onert
 
-#endif // __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__
+#endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZER_HELPERS_H__

@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-#include "GradientApplier.h"
+#ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__
+#define __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__
 
-#include <exec/train/optimizer/Optimizer.h>
+#include "SGD.h"
+
+#include <ir/train/OptimizerInfo.h>
 
 namespace onert
 {
@@ -24,29 +27,22 @@ namespace backend
 {
 namespace train
 {
-namespace ops
-{
 
-GradientApplier::GradientApplier() : _optimizer{nullptr}, _gradient_tensor{}, _trainable_tensor{}
+std::unique_ptr<exec::train::optimizer::Optimizer>
+createOptimizer(const ir::train::OptimizerInfo &optim_info)
 {
-  // DO NOTHING
+  // TODO Set properties of optimizer
+  if (optim_info.optim_code == ir::train::OptimizerCode::SGD)
+  {
+    return std::make_unique<optimizer::SGD>(optim_info.learning_rate);
+  }
+  else
+    throw std::runtime_error("Invalid optimizer type, " +
+                             ir::train::toString(optim_info.optim_code));
 }
 
-void GradientApplier::configure(const exec::train::optimizer::Optimizer *optimizer,
-                                const IPortableTensor *gradient, ITrainableTensor *trainable)
-{
-  _optimizer = optimizer;
-  _gradient_tensor = gradient;
-  _trainable_tensor = trainable;
-}
-
-void GradientApplier::applyGradient(uint32_t training_step)
-{
-  _optimizer->applyGradient(
-    std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));
-}
-
-} // namespace ops
 } // namespace train
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__
