@@ -8,6 +8,7 @@ Step 0: Use circle file in 'common-artifacts' folder as the source model.
    - circle file is used as source of `q-implant`
 
 Step 1: Generate qparam file(.json) and numpy array(.npy) through the operator python file.
+operator python file that is in qparam folder name from TensorFlowLiteRecipes.
 ```
 operator file -> qparam file, numpy array
 ```
