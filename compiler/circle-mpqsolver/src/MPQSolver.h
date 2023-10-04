@@ -17,7 +17,10 @@
 #ifndef __MPQSOLVER_MPQSOLEVR_SOLVER_H__
 #define __MPQSOLVER_MPQSOLEVR_SOLVER_H__
 
+#include "core/Quantizer.h"
 #include <core/DumpingHooks.h>
+
+#include <luci/IR/CircleNodes.h>
 
 #include <memory>
 #include <string>
@@ -48,9 +51,13 @@ public:
   void set_save_intermediate(const std::string &save_path);
 
 protected:
+  std::unique_ptr<luci::Module> read_module(const std::string &path);
+
+protected:
   std::string _input_data_path;
   std::string _input_quantization;
   std::string _output_quantization;
+  std::unique_ptr<core::Quantizer> _quantizer;
   float _qerror_ratio = 0.f; // quantization error ratio
   std::unique_ptr<core::DumpingHooks> _hooks;
 };

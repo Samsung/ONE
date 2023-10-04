@@ -17,7 +17,6 @@
 #ifndef __MPQSOLVER_BISECTION_SOLVER_H__
 #define __MPQSOLVER_BISECTION_SOLVER_H__
 
-#include <core/Quantizer.h>
 #include <core/Evaluator.h>
 #include <MPQSolver.h>
 
@@ -78,7 +77,6 @@ private:
 private:
   float _qerror = 0.f; // quantization error
   Algorithm _algorithm = Algorithm::ForceQ16Front;
-  std::unique_ptr<core::Quantizer> _quantizer;
   std::string _visq_data_path;
 };
 
