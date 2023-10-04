@@ -298,6 +298,7 @@ void QImplant::forward_qparam(loco::Graph *g)
   std::set<luci::CircleOpcode> forwardable_opcode;
   forwardable_opcode.emplace(luci::CircleOpcode::RESHAPE);
   forwardable_opcode.emplace(luci::CircleOpcode::SPLIT);
+  forwardable_opcode.emplace(luci::CircleOpcode::CIRCLESPLITOUT);
   forwardable_opcode.emplace(luci::CircleOpcode::TRANSPOSE);
   // TODO add more Ops
 
