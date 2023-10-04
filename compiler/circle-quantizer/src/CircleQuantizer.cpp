@@ -118,7 +118,7 @@ LayerParams read_layer_params(std::string &filename)
   return p;
 }
 
-LayerParamsSet read_layer_params_set(const std::string &filename)
+LayerParamsSet read_layer_params_set(std::string &filename)
 {
   LayerParamsSet lpss;
 
