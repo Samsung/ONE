@@ -18,7 +18,6 @@
 #ifndef __NNFW_CKER_TRAIN_OPTIMIZER_SGD_H__
 #define __NNFW_CKER_TRAIN_OPTIMIZER_SGD_H__
 
-// #include "OptimizerHelpers.h"
 #include "cker/eigen/training_ops.h"
 #include "cker/eigen/EigenSupport.h"
 
