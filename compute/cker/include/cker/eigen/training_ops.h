@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef TENSORFLOW_CORE_KERNELS_TRAINING_OPS_H_
-#define TENSORFLOW_CORE_KERNELS_TRAINING_OPS_H_
+#ifndef __NNFW_CKER_EIGEN_TRAINING_OPS_H__
+#define __NNFW_CKER_EIGEN_TRAINING_OPS_H__
 
 // From tensorflow/core/kernels/training_ops.cc
 #define EIGEN_USE_THREADS
@@ -146,4 +146,4 @@ template <typename T> struct ApplyAdam<CPUDevice, T> : ApplyAdamNonCuda<CPUDevic
 } // namespace cker
 } // namespace nnfw
 
-#endif // TENSORFLOW_CORE_KERNELS_TRAINING_OPS_H_
+#endif // __NNFW_CKER_EIGEN_TRAINING_OPS_H__

@@ -16,6 +16,7 @@
  */
 
 #ifndef __NNFW_CKER_TRAIN_OPTIMIZER_ADAM_H__
+#define __NNFW_CKER_TRAIN_OPTIMIZER_ADAM_H__
 
 #include "cker/eigen/training_ops.h"
 #include "cker/eigen/EigenSupport.h"
