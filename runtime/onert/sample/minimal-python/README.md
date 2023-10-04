@@ -12,7 +12,7 @@ It assumes model of float32 tensor type as an input.
 $ python3 minimal.py path_to_nnpackage_directory
 ```
 
-## Classes
+## Class
 
 ```python
 class nnfw_session():
