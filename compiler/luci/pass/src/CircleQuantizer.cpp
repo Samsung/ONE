@@ -53,6 +53,7 @@ namespace
 using namespace luci;
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 using LayerParams = luci::CircleQuantizer::Options::LayerParams;
+using LayerParamsSet = luci::CircleQuantizer::Options::LayerParamsSet;
 
 // This function updates user-given input_type to match with the input signature of graph
 // If user gives only one input_type, it will be expanded to the number of graph inputs
@@ -229,6 +230,8 @@ public:
   std::vector<std::string> params(AlgorithmParameters) const final;
   void layer_params(AlgorithmParameters, LayerParams &) final;
   LayerParams layer_params(AlgorithmParameters) const final;
+  void layer_params_set(LayerParamsSet &) final;
+  LayerParamsSet layer_params_set(void) const final;
   bool query(Algorithm) final;
 
 private:
@@ -236,6 +239,7 @@ private:
   std::map<AlgorithmParameters, const std::string> _algorithm_params;
   std::map<AlgorithmParameters, std::vector<std::string>> _multiple_params;
   std::map<AlgorithmParameters, LayerParams> _layer_params;
+  LayerParamsSet _layer_params_set;
 };
 
 void QuantizeOptionsImpl::enable(Algorithm algo) { _algorithms.push_back(algo); }
@@ -293,6 +297,10 @@ LayerParams QuantizeOptionsImpl::layer_params(AlgorithmParameters param) const
     return LayerParams();
   }
 }
+
+void QuantizeOptionsImpl::layer_params_set(LayerParamsSet &vec) { _layer_params_set = vec; }
+
+LayerParamsSet QuantizeOptionsImpl::layer_params_set(void) const { return _layer_params_set; }
 
 bool QuantizeOptionsImpl::query(Algorithm algo)
 {
