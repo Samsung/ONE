@@ -23,35 +23,54 @@
 #include <ftw.h>
 #include <string>
 
-TEST(CircleMPQSolverDumperTest, verifyResultsTest)
+namespace
 {
-  char folderTemplate[] = "CircleMPQSolverDumperTestXXXXXX";
-  auto const folder = mpqsolver::test::io_utils::makeTemporaryFolder(folderTemplate);
-  mpqsolver::core::Dumper dumper(folder);
+
+class CircleMPQSolverDumperTest : public ::testing::Test
+{
+public:
+  CircleMPQSolverDumperTest()
+  {
+    char folderTemplate[] = "CircleMPQSolverDumperTestXXXXXX";
+    _folder = mpqsolver::test::io_utils::makeTemporaryFolder(folderTemplate);
+  }
+
+  ~CircleMPQSolverDumperTest()
+  {
+    // cleanup
+    auto callback = [](const char *child, const struct stat *, int, struct FTW *) {
+      return remove(child);
+    };
+    nftw(_folder.c_str(), callback, 128, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
+  }
+
+protected:
+  std::string _folder;
+};
+
+} // namespace
+
+TEST_F(CircleMPQSolverDumperTest, verifyResultsTest)
+{
+  mpqsolver::core::Dumper dumper(_folder);
   dumper.set_model_path("");
   mpqsolver::core::LayerParams params;
   auto const step = 0;
   dumper.dump_MPQ_configuration(params, "uint8", step);
 
-  std::string step_path = folder + "/Configuration_" + std::to_string(step) + ".mpq.json";
+  std::string step_path = _folder + "/Configuration_" + std::to_string(step) + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(step_path));
 
   dumper.dump_final_MPQ(params, "uint8");
-  std::string fin_path = folder + "/FinalConfiguration" + ".mpq.json";
+  std::string fin_path = _folder + "/FinalConfiguration" + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(fin_path));
 
   dumper.prepare_for_error_dumping();
-  std::string errors_path = folder + "/errors" + ".mpq.txt";
+  std::string errors_path = _folder + "/errors" + ".mpq.txt";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(errors_path));
-
-  // cleanup
-  auto callback = [](const char *child, const struct stat *, int, struct FTW *) {
-    return remove(child);
-  };
-  nftw(folder.c_str(), callback, 128, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
 }
 
-TEST(CircleMPQSolverDumperTest, verifyResultsTest_NEG)
+TEST_F(CircleMPQSolverDumperTest, empty_path_NEG)
 {
   mpqsolver::core::Dumper dumper("");
   dumper.set_model_path("");
