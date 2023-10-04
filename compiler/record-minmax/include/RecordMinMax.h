@@ -60,6 +60,8 @@ public:
 
   void saveModel(const std::string &output_model_path);
 
+  void loadMinMax(const std::string &output_model_path);
+
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreters[0].get(); }
 

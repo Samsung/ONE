@@ -617,4 +617,9 @@ void RecordMinMax::saveModel(const std::string &output_model_path)
   }
 }
 
+void RecordMinMax::loadMinMax(const std::string &output_model_path)
+{
+  throw std::runtime_error("loadMinMax is not supported yet.");
+}
+
 } // namespace record_minmax

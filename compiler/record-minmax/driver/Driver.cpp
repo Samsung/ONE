@@ -45,7 +45,14 @@ int entry(const int argc, char **argv)
   arser.add_argument("--input_model").required(true).help("Input model filepath");
 
   arser.add_argument("--input_data")
-    .help("Input data filepath. If not given, record-minmax will run with randomly generated data. "
+    .help("Input data filepath. If neither --input_data nor --minmax_data are given, "
+          "record-minmax will run with randomly generated data. "
+          "Note that the random dataset does not represent inference workload, leading to poor "
+          "model accuracy.");
+
+  arser.add_argument("--minmax_data")
+    .help("Minmax data filepath. If neither --input_data nor --minmax_data are given, "
+          "record-minmax will run with randomly generated data. "
           "Note that the random dataset does not represent inference workload, leading to poor "
           "model accuracy.");
 
@@ -76,6 +83,8 @@ int entry(const int argc, char **argv)
 
   arser.add_argument("--input_data_format")
     .help("Input data format. h5/hdf5 (default) or list/filelist");
+
+  arser.add_argument("--minmax_data_format").help("Minmax data format. h5/hdf5 (default)");
 
   arser.add_argument("--generate_profile_data")
     .nargs(0)
@@ -112,6 +121,7 @@ int entry(const int argc, char **argv)
   uint32_t moving_avg_batch = 16;
   float moving_avg_const = 0.1;
   std::string input_data_format("h5");
+  std::string minmax_data_format("h5");
   uint32_t num_threads = 1;
 
   if (arser["--min_percentile"])
@@ -143,6 +153,9 @@ int entry(const int argc, char **argv)
 
   if (arser["--input_data_format"])
     input_data_format = arser.get<std::string>("--input_data_format");
+
+  if (arser["--minmax_data_format"])
+    minmax_data_format = arser.get<std::string>("--minmax_data_format");
 
   std::unique_ptr<MinMaxComputer> computer;
   {
@@ -215,6 +228,20 @@ int entry(const int argc, char **argv)
     {
       throw std::runtime_error(
         "Unsupported input data format (supported formats: h5/hdf5 (default), list/filelist)");
+    }
+  }
+  else if (arser["--minmax_data"])
+  {
+    auto minmax_data_path = arser.get<std::string>("--minmax_data");
+
+    if (minmax_data_format == "h5" || minmax_data_format == "hdf5")
+    {
+      rmm.loadMinMax(minmax_data_path);
+    }
+    else
+    {
+      throw std::runtime_error(
+        "Unsupported input data format (supported formats: h5/hdf5 (default), fb)");
     }
   }
   else
