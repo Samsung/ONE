@@ -32,6 +32,7 @@
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 using LayerParams = luci::CircleQuantizer::Options::LayerParams;
+using LayerParamsSet = luci::CircleQuantizer::Options::LayerParamsSet;
 using Algorithms = luci::CircleQuantizer::Options::Algorithm;
 using AlgorithmParameters = luci::CircleQuantizer::Options::AlgorithmParameters;
 
@@ -100,6 +101,46 @@ LayerParams read_layer_params(std::string &filename)
   }
 
   return p;
+}
+
+LayerParamsSet read_layer_params_set(std::string &filename)
+{
+  LayerParamsSet lpss;
+
+  // read default values
+  LayerParams lps = read_layer_params(filename);
+  lpss.emplace_back(lps);
+
+  QConfReader qcr;
+  qcr.init(filename);
+
+  auto layers = qcr.root()["layers"];
+  // alternate names
+  for (auto layer : layers)
+  {
+    const std::string key_alt_names = "alternate";
+    if (layer.isMember(key_alt_names))
+    {
+      auto alternate = layer[key_alt_names];
+      for (auto altkey : alternate.getMemberNames())
+      {
+        LayerParams lps;
+        for (auto altvalue : alternate[altkey])
+        {
+          auto l = std::make_shared<LayerParam>();
+          {
+            l->name = altvalue.asString();
+            l->dtype = layer["dtype"].asString();
+            l->granularity = layer["granularity"].asString();
+          }
+          lps.emplace_back(l);
+        }
+        lpss.emplace_back(lps);
+      }
+    }
+  }
+
+  return lpss;
 }
 
 void print_exclusive_options(void)
@@ -272,6 +313,10 @@ int entry(int argc, char **argv)
         auto layer_params = read_layer_params(filename);
 
         options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
+
+        auto layer_params_set = read_layer_params_set(filename);
+
+        options->layer_params_set(layer_params_set);
       }
       catch (const std::runtime_error &e)
       {
@@ -314,6 +359,10 @@ int entry(int argc, char **argv)
         auto layer_params = read_layer_params(filename);
 
         options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
+
+        auto layer_params_set = read_layer_params_set(filename);
+
+        options->layer_params_set(layer_params_set);
       }
       catch (const std::runtime_error &e)
       {
