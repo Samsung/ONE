@@ -32,6 +32,7 @@ using namespace q_implant;
 
 namespace
 {
+
 // Return directory path of given file path
 // TODO Find a platform-independent way to do this
 std::string directory_path(const std::string &file_path)
@@ -287,19 +288,26 @@ void QImplant::write(loco::Graph *g)
 
 void QImplant::forward_qparam(loco::Graph *g)
 {
-  std::set<luci::CircleOpcode> forwardable_opcode{
-    luci::CircleOpcode::RESHAPE, luci::CircleOpcode::SPLIT, luci::CircleOpcode::TRANSPOSE};
+  /*
+   * TODO: add comment about how to add to the set
+   *
+   * If the operator doesn't change input tensor value,
+   * (Operator don't change input quantization parameter to output tensor)
+   * the operator's quantization parameter can be forwarded
+   */
+  std::set<luci::CircleOpcode> forwardable_opcode;
+  forwardable_opcode.emplace(luci::CircleOpcode::RESHAPE);
+  forwardable_opcode.emplace(luci::CircleOpcode::SPLIT);
+  forwardable_opcode.emplace(luci::CircleOpcode::TRANSPOSE);
+  // TODO add more Ops
 
   auto forwardable = [&forwardable_opcode](luci::CircleOpcode opcode) {
     return forwardable_opcode.find(opcode) != forwardable_opcode.end();
   };
 
-  for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    // skip when node is output
-    if (circle_node->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
-      continue;
 
     auto quantparam = circle_node->quantparam();
     if (quantparam == nullptr)
@@ -312,11 +320,11 @@ void QImplant::forward_qparam(loco::Graph *g)
       {
         if (!forwardable(successor_node->opcode()))
           continue;
-        assert(circle_node->quantparam());
         copy_quantparam(circle_node, successor_node);
         copy_dtype(circle_node, successor_node);
       }
     }
   }
 }
+
 #undef THROW_UNLESS

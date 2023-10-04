@@ -28,13 +28,13 @@ class QImplant final
 {
 public:
   QImplant(const std::string &path) : _path(path) {}
-
   void write(loco::Graph *g);
 
 private:
-  const std::string &_path;
-
   void forward_qparam(loco::Graph *g);
+
+private:
+  const std::string &_path;
 };
 
 } // namespace q_implant
