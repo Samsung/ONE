@@ -56,6 +56,7 @@
 #include "luci/Pass/ReplaceNonConstFCWithBatchMatMulPass.h"
 #include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
 #include "luci/Pass/ReplaceSubWithAddPass.h"
+#include "luci/Pass/ReplaceWithFCGeluFCPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
@@ -402,6 +403,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ReplaceSubWithAdd))
   {
     phase.emplace_back(std::make_unique<luci::ReplaceSubWithAddPass>());
+  }
+  if (_options->query(Options::Algorithm::ReplaceWithFCGeluFC))
+  {
+    phase.emplace_back(std::make_unique<luci::ReplaceWithFCGeluFCPass>());
   }
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
