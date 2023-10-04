@@ -69,6 +69,7 @@ public:
       ReplaceMulAddWithDepthwiseConv,
       ReplaceNonConstFCWithBatchMatMul,
       ReplaceSubWithAdd,
+      ReplaceWithFCGeluFC,
       SubstitutePackToReshape,
       SubstitutePadV2ToPad,
       SubstituteSplitVToSplit,
