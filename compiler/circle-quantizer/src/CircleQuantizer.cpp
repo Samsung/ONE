@@ -65,21 +65,6 @@ private:
 
 LayerParams read_layer_params(std::string &filename)
 {
-#if 0 // TODO remove
-  Json::Value root;
-  std::ifstream ifs(filename);
-
-  // Failed to open cfg file
-  if (not ifs.is_open())
-    throw std::runtime_error("Cannot open config file. " + filename);
-
-  Json::CharReaderBuilder builder;
-  JSONCPP_STRING errs;
-
-  // Failed to parse
-  if (not parseFromStream(builder, ifs, &root, &errs))
-    throw std::runtime_error("Cannot parse config file (json format). " + errs);
-#endif
   QConfReader qcr;
   qcr.init(filename);
 
