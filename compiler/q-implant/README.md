@@ -2,7 +2,40 @@
 
 _q-implant_ writes quantization parameters and weights (given as .json and .npy files) to a circle model.
 
-Therefore, before proceeding with q-implant, you should define `qparam.json` and `\*.npy` files so that they can be applied to the same operand as the circle you want to apply.
+## Format of input files (`.json` and `.npy`)
+The main input file is a `.json` file, which is a dictionary whose key is a tensor name and value is quantization parameters and values (if exists).
+
+The `.npy` file is a NumPy file that is generated through the `numpy.save` function. 
+
+When filling the value of `quantization parameters` or `values`(acting like a key inside `<tensor_name>`) in the param.json, the `.npy` file must be saved.
+
+```
+{
+  <tensor_name>: {
+    "dtype": <dtype>,
+    "scale": <path/to/scale_npy>,
+    "zerop": <path/to/zerop_npy>,
+    "quantized_dimension": <dim>,
+    "value": <path/to/value_npy>
+  },
+  ...
+}
+```
+`<tensor_name>`: String (target tensor name)
+
+`<dtype>`: String (data type of the target tensor. ex: "uint8" or "int16")
+
+`<path/to/scale_npy>`: String (path to the .npy file that contains scale. The npy file has to be 1d array of fp32.)
+
+`<path/to/zerop_npy>`: String (path to the .npy file that contains zerop. The npy file has to be 1d array of int64.)
+
+`<dim>`: Integer (quantized dimension)
+
+`<path/to/value_npy>`: String (path to the .npy file that contains zerop. The npy file should have the same shape/dtype with the target tensor.)
+
+NOTE "value" is an optional attribute. It is only necessary for weights.
+
+NOTE `.npy` files have to be placed in the same directory with `qparam.json`.
 
 ## Example
 
