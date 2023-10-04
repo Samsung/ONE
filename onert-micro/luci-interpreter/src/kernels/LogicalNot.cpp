@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,49 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "kernels/LogicalNot.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
-#include "kernels/BinaryOpCommon.h"
+#include "PALLogicalNot.h"
 
 namespace luci_interpreter
 {
-namespace kernels
+void configure_kernel_CircleLogicalNot(const circle::Operator *cur_op,
+                                       BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-LogicalNot::LogicalNot(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) == DataType::BOOL);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::BOOL);
 
-void LogicalNot::configure()
-{
-  LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
-}
+  // check that input and output dimensions are equal
+  int N = Tensor::num_dims(kernel.input());
+  LUCI_INTERPRETER_CHECK(N == Tensor::num_dims(kernel.output()));
 
-void LogicalNot::execute() const
-{
-  switch (input()->element_type())
+  // check that sizes of all dimensions are equal
+  for (int i = 0; i < N; ++i)
   {
-    case DataType::BOOL:
-      evalLogicalNot();
-      break;
-    default:
-      assert(false && "Unsupported type.");
+    LUCI_INTERPRETER_CHECK(kernels::getTensorShape(kernel.input()).dims(i) ==
+                           kernels::getTensorShape(kernel.output()).dims(i));
   }
 }
 
-inline void LogicalNot::evalLogicalNot() const
+void execute_kernel_CircleLogicalNot(const circle::Operator *cur_op,
+                                     BaseRuntimeGraph *runtime_graph)
 {
-  const int size = tflite::MatchingFlatSize(getTensorShape(input()), getTensorShape(output()));
-  bool *output_data = getTensorData<bool>(output());
-  const bool *input_data = getTensorData<bool>(input());
-  for (int i = 0; i < size; ++i)
-  {
-    output_data[i] = !input_data[i];
-  }
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  auto data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(kernel.input()));
+  if (data == nullptr)
+    data = kernels::getTensorData<bool>(runtime_graph->getConstDataByTensor(kernel.input()));
+
+  assert(data != nullptr);
+
+  auto output_data = kernels::getTensorData<bool>(runtime_graph->getDataByTensor(kernel.output()));
+
+  const int64_t flat_size = kernels::getTensorShape(kernel.input()).flatSize();
+  luci_interpreter_pal::LogicalNot(flat_size, data, output_data);
 }
 
-} // namespace kernels
 } // namespace luci_interpreter
