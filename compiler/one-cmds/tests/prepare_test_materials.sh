@@ -124,6 +124,13 @@ if [[ ! -s "UnidirSeqLSTM.tflite" ]]; then
     # https://github.com/Samsung/ONE/issues/9940#issuecomment-1293282484
 fi
 
+if [[ ! -s "onnx_conv2d_conv2d_split.onnx" ]]; then
+    rm -rf onnx_conv2d_conv2d_split.zip
+    wget -nv https://github.com/Samsung/ONE/files/12711381/onnx_conv2d_conv2d_split.zip
+    unzip onnx_conv2d_conv2d_split.zip
+    # https://github.com/Samsung/ONE/issues/11280#issuecomment-1732852295
+fi
+
 function files_missing() {
     condition="test "
 
