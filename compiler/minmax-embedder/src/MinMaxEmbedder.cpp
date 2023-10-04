@@ -127,6 +127,28 @@ int entry(int argc, char **argv)
   {
     auto graph = module->graph(idx);
 
+    /* read subgraph inputs */
+    const auto input_nodes = loco::input_nodes(graph);
+    const auto num_inputs = input_nodes.size();
+    for (uint32_t input_idx = 0; input_idx < num_inputs; ++input_idx)
+    {
+      const auto *circle_input = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+      if (not circle_input->index() == input_idx)
+      {
+        throw std::runtime_error("The input order in model and recording are different.");
+      }
+      auto minmax = mmr.read_input(0, idx, input_idx);
+      auto min = getNthPercentile(minmax.min_vector, min_percentile);
+      auto max = getNthPercentile(minmax.max_vector, max_percentile);
+      auto quantparam = std::make_unique<luci::CircleQuantParam>();
+      quantparam->min.push_back(min);
+      quantparam->max.push_back(max);
+      const auto *circle_node = loco::must_cast<const luci::CircleNode *>(input_nodes[input_idx]);
+      auto mutable_node = const_cast<luci::CircleNode *>(circle_node);
+      mutable_node->quantparam(std::move(quantparam));
+    }
+
+    /* read op outputs */
     uint32_t node_num = graph->nodes()->size();
     for (uint32_t i = 0; i < node_num; ++i)
     {

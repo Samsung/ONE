@@ -26,24 +26,31 @@ namespace minmax
 {
 namespace h5
 {
-// The hierachy of minmax h5 file
+// The hierachy of single model minmax h5 file
 //
 // GROUP /
 //   GROUP value
-//     └── GROUP run_idx
-//           └── GROUP model_idx
-//                 └── GROUP subg_idx
-//                       └── DATASET op_idx
+//     └── GROUP run_{idx}
+//           └── GROUP model_{idx}
+//                 └── GROUP subg_{idx}
+//                       ├── DATASET op_{idx}
+//                       │      DATATYPE Float32
+//                       │      DATASPACE (2)
+//                       │      DATA { min, max }
+//                       └── DATASET input_{idx}
 //                              DATATYPE Float32
 //                              DATASPACE (2)
 //                              DATA { min, max }
 //   GROUP name   (optional, for debug)
-//     └── GROUP model_idx
-//           └── GROUP subg_idx
-//                 └── ATTRIBUTE op_idx
-//                        DATATYPE String
-//                        DATA { "model/your/op/name"}
-//
+//     └── GROUP model_{idx}
+//           └── GROUP subg_{idx}
+//                       ├── ATTRIBUTE op_{idx}
+//                       │      DATATYPE String
+//                       │      DATA { "op/name"}
+
+//                       └── ATTRIBUTE input_{idx}
+//                              DATATYPE String
+//                              DATA { "input/name"}
 struct MinMaxVectors
 {
   std::vector<float> min_vector;
@@ -55,11 +62,17 @@ class Reader
 public:
   Reader(const std::string &filepath);
   /**
-   * @brief Returns minmax recording at {model_idx, subg_idx, op_idx}
+   * @brief Returns minmax recording for op {model_idx, subg_idx, op_idx}
    *
    * @return MinMaxVectors
    */
   MinMaxVectors read(int model_idx, int subg_idx, int op_idx) const;
+  /**
+   * @brief Returns minmax recording for input {model_idx, subg_idx, input_idx}
+   *
+   * @return MinMaxVectors
+   */
+  MinMaxVectors read_input(int model_idx, int subg_idx, int input_idx) const;
 
 private:
   H5::H5File _file;

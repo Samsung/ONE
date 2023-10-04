@@ -42,14 +42,41 @@ MinMaxVectors Reader::read(int model_idx, int subg_idx, int op_idx) const
   for (uint32_t r = 0; r < num_run; ++r)
   {
     // check whether minmax exists
-    char path[128]; // enough to print 4 x { '-' (1) int64 (18) + '/' (1) } + null
-    snprintf(path, 128, "/value/%d/%d/%d/%d", r, model_idx, subg_idx, op_idx);
+    char path[128]; // 128 is enough to print "/value/run_%d/model_%d/subg_%d/op_%d" + null
+    snprintf(path, 128, "/value/run_%d/model_%d/subg_%d/op_%d", r, model_idx, subg_idx, op_idx);
     if (!exists(_file.getId(), path))
       continue;
-    auto run_grp = _val_grp.openGroup(std::to_string(r));
-    auto model_grp = run_grp.openGroup(std::to_string(model_idx));
-    auto subg_grp = model_grp.openGroup(std::to_string(subg_idx));
-    auto op_dset = subg_grp.openDataSet(std::to_string(op_idx));
+    auto run_grp = _val_grp.openGroup(std::string("run_") + std::to_string(r));
+    auto model_grp = run_grp.openGroup(std::string("model_") + std::to_string(model_idx));
+    auto subg_grp = model_grp.openGroup(std::string("subg_") + std::to_string(subg_idx));
+    auto op_dset = subg_grp.openDataSet(std::string("op_") + std::to_string(op_idx));
+    H5::DataType dtype = op_dset.getDataType();
+    if (not(dtype == H5::PredType::IEEE_F32BE || dtype == H5::PredType::IEEE_F32LE))
+      throw std::runtime_error{"dtype of min, max in h5 is not float."};
+    op_dset.read(minmax, H5::PredType::NATIVE_FLOAT);
+    mmv.min_vector.emplace_back(minmax[0]);
+    mmv.max_vector.emplace_back(minmax[1]);
+  }
+  return mmv;
+}
+
+MinMaxVectors Reader::read_input(int model_idx, int subg_idx, int input_idx) const
+{
+  MinMaxVectors mmv;
+  float minmax[2];
+  auto num_run = _val_grp.getNumObjs();
+  for (uint32_t r = 0; r < num_run; ++r)
+  {
+    // check whether minmax exists
+    char path[128]; // 128 is enough to print "/value/run_%d/model_%d/subg_%d/input_%d" + null
+    snprintf(path, 128, "/value/run_%d/model_%d/subg_%d/op_%d", r, model_idx, subg_idx, input_idx);
+    if (!exists(_file.getId(), path))
+      continue;
+    auto run_grp = _val_grp.openGroup(std::string("run_") + std::to_string(r));
+    auto model_grp = run_grp.openGroup(std::string("model_") + std::to_string(model_idx));
+    auto subg_grp = model_grp.openGroup(std::string("subg_") + std::to_string(subg_idx));
+    auto op_dset = subg_grp.openDataSet(std::string("input_") + std::to_string(input_idx));
+
     H5::DataType dtype = op_dset.getDataType();
     if (not(dtype == H5::PredType::IEEE_F32BE || dtype == H5::PredType::IEEE_F32LE))
       throw std::runtime_error{"dtype of min, max in h5 is not float."};
