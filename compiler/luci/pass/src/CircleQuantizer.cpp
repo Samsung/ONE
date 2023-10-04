@@ -46,6 +46,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 namespace
 {
@@ -313,6 +314,66 @@ bool QuantizeOptionsImpl::query(Algorithm algo)
 
 } // namespace
 
+namespace
+{
+
+bool is_valid_params(loco::Graph *g, LayerParams &lps)
+{
+  // no same name in lps
+  std::unordered_set<std::string> us;
+  for (auto &lp : lps)
+  {
+    if (us.find(lp->name) != us.end())
+      throw std::runtime_error("Duplicate name found in configuration: " + lp->name);
+    us.emplace(lp->name);
+  }
+
+  // all name should be found in graph
+  for (auto &lp : lps)
+  {
+    auto name = lp->name;
+    bool found = false;
+    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    {
+      auto cnode = loco::must_cast<luci::CircleNode *>(node);
+      if (cnode->opcode() == luci::CircleOpcode::CIRCLEOUTPUT)
+        continue;
+
+      if (cnode->name() == name)
+      {
+        found = true;
+        break;
+      }
+    }
+    if (not found)
+      return false;
+  }
+  return true;
+}
+
+LayerParams find_valid_params(loco::Graph *g, LayerParamsSet &lpss)
+{
+  // valid condition: there should be only one LayerParams that is OK
+  uint32_t valid_count = 0;
+  LayerParams params;
+  for (auto &lps : lpss)
+  {
+    if (is_valid_params(g, lps))
+    {
+      valid_count++;
+      params = lps;
+    }
+  }
+  if (valid_count != 1)
+    throw std::runtime_error(
+      "Configuration file has layer names (and alternates) that can be mapped in multiple or no "
+      "ways. Please update configuration file to have only one valid name mapping.");
+
+  return params;
+}
+
+} // namespace
+
 namespace luci
 {
 
@@ -341,6 +402,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
     auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
     auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+    auto layer_params_set = _options->layer_params_set();
 
     if (!in_array(to_lower_case(input_model_dtype), fakeq_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input type: " +
@@ -357,6 +419,11 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
+
+    if (layer_params_set.size() > 1u)
+    {
+      layer_params = find_valid_params(g, layer_params_set);
+    }
 
     // Check dtype/granularity of layer params
     for (auto layer_param : layer_params)
@@ -436,6 +503,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
 
     auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+    auto layer_params_set = _options->layer_params_set();
 
     if (!in_array(to_lower_case(input_model_dtype), qwmm_supported_input_model_dtype))
       throw std::runtime_error("Unsupported input type. List of supported input types: " +
@@ -466,6 +534,11 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     if (str_to_granularity(granularity) == QuantizationGranularity::LayerWise &&
         str_to_dtype(output_model_dtype) != loco::DataType::U8)
       throw std::runtime_error("Layer-wise quantization only supports uint8 dtype.");
+
+    if (layer_params_set.size() > 1u)
+    {
+      layer_params = find_valid_params(g, layer_params_set);
+    }
 
     // Check dtype/granularity of layer params
     for (auto layer_param : layer_params)
