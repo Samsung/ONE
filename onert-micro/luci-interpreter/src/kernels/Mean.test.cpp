@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include "kernels/Mean.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/mean/FloatMeanKernel.h"
+#include "luci_interpreter/test_models/mean/NegMeanKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -30,211 +30,58 @@ using namespace testing;
 
 class MeanTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-TEST_F(MeanTest, FloatKeepDims)
+template <typename T> std::vector<T> checkMeanKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  std::vector<int32_t> axis_data{0, 2};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({4, 3, 2}, input_data, _memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({2}, axis_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::FLOAT32, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  ReducerParams params{};
-  params.keep_dims = true;
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
 
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
 
-  std::vector<float> ref_output_data{10.5, 12.5, 14.5};
-  std::initializer_list<int32_t> ref_output_shape{1, 3, 1};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-TEST_F(MeanTest, FloatKeepDims4DMean)
+TEST_F(MeanTest, Float_P)
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
-
-  std::vector<int32_t> axis_data{1, 2};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({2, 2, 3, 2}, input_data, _memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({2}, axis_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::FLOAT32, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ReducerParams params{};
-  params.keep_dims = true;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{6, 7, 18, 19};
-  std::initializer_list<int32_t> ref_output_shape{2, 1, 1, 2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+  test_kernel::TestDataFloatMean test_data_kernel;
+  std::vector<float> output_data_vector = checkMeanKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
-TEST_F(MeanTest, FloatNotKeepDims)
+TEST_F(MeanTest, Input_output_type_mismatch_NEG)
 {
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
-
-  std::vector<int32_t> axis_data{1, 0, -3, -3};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>({4, 3, 2}, input_data, _memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({4}, axis_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::FLOAT32, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  ReducerParams params{};
-  params.keep_dims = false;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{12, 13};
-  std::initializer_list<int32_t> ref_output_shape{2};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-}
-
-TEST_F(MeanTest, Uint8KeepDims)
-{
-  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
-  std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
-
-  std::vector<int32_t> axis_data{1};
-  Tensor input_tensor = makeInputTensor<DataType::U8>({3, 2}, quant_param.first, quant_param.second,
-                                                      input_data, _memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::U8, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  ReducerParams params{};
-  params.keep_dims = true;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{0.3, 0.35, 0.55};
-  std::initializer_list<int32_t> ref_output_shape{3, 1};
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(ref_output_data, kQuantizedTolerance));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-}
-
-TEST_F(MeanTest, Uint8NotKeepDims)
-{
-  float kQuantizedTolerance = getTolerance(-1.0, 1.0, 255);
-  std::vector<float> input_data = {0.4, 0.2, 0.3, 0.4, 0.5, 0.6};
-  std::pair<float, int32_t> quant_param = quantizationParams<uint8_t>(-1.0f, 1.0f);
-
-  std::vector<int32_t> axis_data{1};
-  Tensor input_tensor = makeInputTensor<DataType::U8>(
-    {1, 3, 2}, quant_param.first, quant_param.second, input_data, _memory_manager.get());
-  Tensor axis_tensor = makeInputTensor<DataType::S32>({1}, axis_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::FLOAT32, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::U8, quant_param.first, quant_param.second);
-
-  ReducerParams params{};
-  params.keep_dims = false;
-
-  Mean kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  std::vector<float> ref_output_data{0.4, 0.4};
-  std::initializer_list<int32_t> ref_output_shape{1, 2};
-  EXPECT_THAT(dequantizeTensorData(output_tensor),
-              FloatArrayNear(ref_output_data, kQuantizedTolerance));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
-}
-
-TEST_F(MeanTest, SInt16KeepDims4D)
-{
-  std::vector<float> input_data = {1.0,  2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
-                                   9.0,  10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
-                                   17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0};
-  std::vector<int32_t> axes_data{1, 2};
-  std::vector<float> ref_output_data{6, 7, 18, 19};
-
-  Tensor input_tensor =
-    makeInputTensor<DataType::S16>({2, 2, 3, 2}, 0.25, 0, input_data, _memory_manager.get());
-  Tensor axes_tensor = makeInputTensor<DataType::S32>({2}, axes_data, _memory_manager.get());
-  Tensor temp_index(DataType::S32, Shape({}), {}, "");
-  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
-  Tensor temp_sum(DataType::FLOAT32, Shape({}), {}, "");
-  Tensor output_tensor = makeOutputTensor(DataType::S16, 0.2, 0);
-
-  ReducerParams params{};
-  params.keep_dims = true;
-
-  Mean kernel(&input_tensor, &axes_tensor, &output_tensor, &temp_index, &resolved_axes, &temp_sum,
-              params);
-  kernel.configure();
-  _memory_manager->allocate_memory(temp_index);
-  _memory_manager->allocate_memory(resolved_axes);
-  _memory_manager->allocate_memory(temp_sum);
-  _memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 1, 1, 2}));
-  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(ref_output_data));
+  test_kernel::NegTestDataInputOutputTypeMismatchMeanKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

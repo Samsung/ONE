@@ -21,6 +21,12 @@
 namespace luci_interpreter_pal
 {
 
+struct MeanParams
+{
+  int8_t axis_count;
+  int16_t axis[4];
+};
+
 struct PadParams
 {
   int8_t left_padding_count;
