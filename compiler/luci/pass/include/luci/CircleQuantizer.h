@@ -19,6 +19,7 @@
 
 #include <loco.h>
 
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -38,6 +39,22 @@ public:
     };
 
     using LayerParams = std::vector<std::shared_ptr<LayerParam>>;
+
+    // NOTE ...Set is not related with std::set but used as to denote
+    //      multple 'set' of LayerParams.
+    class LayerParamsSet
+    {
+    public:
+      // some helper methods
+      size_t size(void) const { return items.size(); }
+      template <class... Args> void emplace_back(Args &&... args) { items.emplace_back(args...); }
+      std::vector<LayerParams>::iterator begin() { return items.begin(); };
+      std::vector<LayerParams>::iterator end() { return items.end(); };
+
+    private:
+      // store multiple set of LayerParams
+      std::vector<LayerParams> items;
+    };
 
     enum Algorithm
     {
@@ -82,6 +99,8 @@ public:
     // Quantization parameters for multiple layers
     virtual void layer_params(AlgorithmParameters, LayerParams &) = 0;
     virtual LayerParams layer_params(AlgorithmParameters) const = 0;
+    virtual void layer_params_set(LayerParamsSet &) = 0;
+    virtual LayerParamsSet layer_params_set(void) const = 0;
   };
 
 public:
