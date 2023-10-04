@@ -26,12 +26,9 @@
 #include <vconone/vconone.h>
 #include <json.h>
 
-#include <functional>
 #include <iostream>
 #include <map>
 #include <string>
-
-using OptionHook = std::function<int(const char **)>;
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 using LayerParams = luci::CircleQuantizer::Options::LayerParams;
