@@ -28,7 +28,7 @@ class QImplant final
 {
 public:
   QImplant(const std::string &path) : _path(path) {}
-  
+
   void write(loco::Graph *g);
 
 private:
