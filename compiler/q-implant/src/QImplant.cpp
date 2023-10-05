@@ -103,6 +103,8 @@ Json::Value load_json(const std::string &path)
 
 void set_dtype(luci::CircleNode *node, loco::DataType dtype) { node->dtype(dtype); }
 
+void copy_dtype(const luci::CircleNode *src, luci::CircleNode *dest) { dest->dtype(src->dtype()); }
+
 void set_scale(luci::CircleNode *node, const std::string &scale_path)
 {
   assert(node);               // FIX CALLER UNLESS
@@ -251,6 +253,8 @@ void QImplant::write(loco::Graph *g)
     }
   }
 
+  forward_qparam(g);
+
   // Update output nodes
   auto graph_outputs = g->outputs();
   assert(graph_outputs); // FIX_CALLER_UNLESS
@@ -279,6 +283,48 @@ void QImplant::write(loco::Graph *g)
     // Throw an exception if dtype is not float32
     // TODO Operator-level verification (ex: using QuantizedModelVerifier)
     THROW_UNLESS(circle_node->dtype() != loco::DataType::FLOAT32);
+  }
+}
+
+void QImplant::forward_qparam(loco::Graph *g)
+{
+  /*
+   * TODO: add comment about how to add to the set
+   *
+   * If the operator doesn't change input tensor value,
+   * (Operator don't change input quantization parameter to output tensor)
+   * the operator's quantization parameter can be forwarded
+   */
+  std::set<luci::CircleOpcode> forwardable_opcode;
+  forwardable_opcode.emplace(luci::CircleOpcode::RESHAPE);
+  forwardable_opcode.emplace(luci::CircleOpcode::SPLIT);
+  forwardable_opcode.emplace(luci::CircleOpcode::CIRCLESPLITOUT);
+  forwardable_opcode.emplace(luci::CircleOpcode::TRANSPOSE);
+  // TODO add more Ops
+
+  auto forwardable = [&forwardable_opcode](luci::CircleOpcode opcode) {
+    return forwardable_opcode.find(opcode) != forwardable_opcode.end();
+  };
+
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    auto quantparam = circle_node->quantparam();
+    if (quantparam == nullptr)
+      continue;
+
+    for (auto successor : loco::succs(node))
+    {
+      auto successor_node = loco::must_cast<luci::CircleNode *>(successor);
+      if (successor_node->quantparam() == nullptr)
+      {
+        if (!forwardable(successor_node->opcode()))
+          continue;
+        copy_quantparam(circle_node, successor_node);
+        copy_dtype(circle_node, successor_node);
+      }
+    }
   }
 }
 

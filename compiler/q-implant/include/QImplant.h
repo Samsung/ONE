@@ -32,6 +32,9 @@ public:
   void write(loco::Graph *g);
 
 private:
+  void forward_qparam(loco::Graph *g);
+
+private:
   const std::string &_path;
 };
 
