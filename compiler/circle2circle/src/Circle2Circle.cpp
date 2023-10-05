@@ -130,6 +130,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--replace_cw_mul_add_with_depthwise_conv",
              "This will replace channel-wise mul/add with DepthwiseConv2D operator");
   add_switch(arser, "--replace_sub_with_add", "This will replace sub with add operator");
+  add_switch(arser, "--replace_with_fc_gelu_fc",
+             "This will replace a specific pattern into FC + Gelu + FC pattern.");
   add_switch(arser, "--resolve_customop_add", "This will convert Custom(Add) to Add operator");
   add_switch(arser, "--resolve_customop_batchmatmul",
              "This will convert Custom(BatchMatmul) to BatchMatmul operator");
@@ -301,6 +303,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
   if (arser.get<bool>("--replace_sub_with_add"))
     options->enable(Algorithms::ReplaceSubWithAdd);
+  if (arser.get<bool>("--replace_with_fc_gelu_fc"))
+    options->enable(Algorithms::ReplaceWithFCGeluFC);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
