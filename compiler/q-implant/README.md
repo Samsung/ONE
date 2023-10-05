@@ -3,7 +3,10 @@
 _q-implant_ writes quantization parameters and weights (given as .json and .npy files) to a circle model.
 
 ## Format of input files (`.json` and `.npy`)
-The main input file is a `.json` file, which is a dictionary whose key is a tensor name and value is quantization parameters and values (if exists).
+
+The main input file is a `.json` file, which is a dictionary.
+
+The dictionary's key is a tensor name, and its value is quantization parameters and values(if exists).
 
 The `.npy` file is a NumPy file that is generated through the `numpy.save` function. 
 
