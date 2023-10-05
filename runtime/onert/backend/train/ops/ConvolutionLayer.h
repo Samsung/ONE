@@ -22,6 +22,7 @@
 #include "../Tensor.h"
 
 #include <exec/train/ITrainableFunction.h>
+#include <ops/ReduceLayer.h>
 
 namespace onert
 {
@@ -59,10 +60,16 @@ private:
   IPortableTensor *_deriv_input;
   const IPortableTensor *_deriv_output;
 
-  // TODO Consider if this tensor should be built in TensorBuilder
+  // TODO Consider if these tensors should be built in TensorBuilder
   std::unique_ptr<Tensor> _transposed_weights;
   std::unique_ptr<DerivativeTensor> _conv_deriv_output;
   std::unique_ptr<DerivativeTensor> _act_deriv_output;
+  std::unique_ptr<GradientTensor> _transposed_grad_weights;
+
+private:
+  // The layer for calculating bias gradient
+  cpu::ops::ReduceLayer _grad_bias_layer;
+  std::unique_ptr<Tensor> _grad_bias_axes;
 };
 
 } // namespace ops

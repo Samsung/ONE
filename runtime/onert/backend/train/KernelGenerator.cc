@@ -174,7 +174,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   _return_fn = std::move(fn);
 
   // Generate GradientApplier
-  _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
+  if (bias_tensor)
+    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
   _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));
 }
 

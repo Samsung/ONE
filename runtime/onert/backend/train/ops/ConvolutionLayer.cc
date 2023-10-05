@@ -19,10 +19,31 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Conv.h>
-#include <cker/operation/TransposeConv.h>
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
+
+namespace
+{
+
+using namespace onert;
+
+template <typename Tensor>
+std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *origin_weights)
+{
+  const auto &origin_shape = origin_weights->getShape();
+  assert(origin_shape.rank() == 4);
+
+  auto transposed_info = origin_weights->get_info();
+  // OHWI to HWIO
+  auto transposed_shape =
+    ir::Shape{origin_shape.dim(1), origin_shape.dim(2), origin_shape.dim(3), origin_shape.dim(0)};
+  transposed_info.shape(transposed_shape);
+
+  return std::make_unique<Tensor>(transposed_info, origin_weights->layout());
+}
+
+} // namespace
 
 namespace onert
 {
@@ -34,7 +55,7 @@ namespace ops
 {
 ConvolutionLayer::ConvolutionLayer()
   : cpu::ops::ConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
-    _deriv_input{nullptr}, _deriv_output{nullptr}, _transposed_weights{nullptr}
+    _deriv_input{nullptr}, _deriv_output{nullptr}, _transposed_weights{nullptr}, _grad_bias_layer{}
 {
   // DO NOTHING
 }
@@ -61,18 +82,45 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _grad_bias = grad_bias;
   _deriv_output = deriv_output;
 
-  _transposed_weights = std::make_unique<Tensor>(weights->get_info(), weights->layout());
-  _transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
+  if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
+    throw std::runtime_error("train convolution: Unsupported dilation yet");
+
+  //
+  _transposed_weights = createTransposedWeights<Tensor>(weights);
+  _transposed_weights->setBuffer(
+    std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
 
   _conv_deriv_output =
     std::make_unique<DerivativeTensor>(deriv_output->get_info(), deriv_output->layout());
-  _conv_deriv_output->setBuffer(std::make_shared<basic::Allocator>(deriv_output->total_size()));
+  _conv_deriv_output->setBuffer(
+    std::make_shared<basic::Allocator>(_conv_deriv_output->total_size()));
+
+  _transposed_grad_weights = createTransposedWeights<GradientTensor>(weights);
+  _transposed_grad_weights->setBuffer(
+    std::make_shared<basic::Allocator>(_transposed_grad_weights->total_size()));
 
   if (activation != ir::Activation::NONE)
   {
     _act_deriv_output =
-      std::make_unique<Tensor>(_deriv_output->get_info(), _deriv_output->layout());
-    _act_deriv_output->setBuffer(std::make_shared<basic::Allocator>(_deriv_output->total_size()));
+      std::make_unique<DerivativeTensor>(_deriv_output->get_info(), _deriv_output->layout());
+    _act_deriv_output->setBuffer(
+      std::make_shared<basic::Allocator>(_act_deriv_output->total_size()));
+  }
+
+  // Initialize the layer for calculating bias gradient
+  if (bias)
+  {
+    assert(grad_bias);
+    const ir::OperandInfo axes_info{ir::Shape{3}, ir::TypeInfo{ir::DataType::INT32},
+                                    ir::MemAllocType::STATIC};
+    _grad_bias_axes = std::make_unique<Tensor>(axes_info, grad_bias->layout());
+    _grad_bias_axes->setBuffer(std::make_shared<basic::Allocator>(_grad_bias_axes->total_size()));
+    int32_t *axes_values = reinterpret_cast<int32_t *>(_grad_bias_axes->buffer());
+    axes_values[0] = 0;
+    axes_values[1] = 1;
+    axes_values[2] = 2;
+    _grad_bias_layer.configure(input, _grad_bias_axes.get(), output, cpu::ops::ReduceType::kSum,
+                               false);
   }
 }
 
@@ -114,65 +162,60 @@ void ConvolutionLayer::backwardFloat32()
       throw std::runtime_error("train FullyConnectedLayer: Unsupported activation type yet");
   }
 
-  // Transpose weights from OHWI to IHWO
+  // Initialize conv params for training kernels
+  nnfw::cker::ConvParams conv_train_params;
+  conv_train_params.padding_type = getPaddingType(_paddingType);
+  conv_train_params.padding_values.width = _paddingLeft;
+  conv_train_params.padding_values.height = _paddingTop;
+  conv_train_params.stride_width = _strideWidth;
+  conv_train_params.stride_height = _strideHeight;
+  conv_train_params.dilation_width_factor = _dilationWidthFactor;
+  conv_train_params.dilation_height_factor = _dilationHeightFactor;
+
+  // Transpose weights from OHWI to HWIO
   auto transposed_weights = _transposed_weights.get();
   assert(transposed_weights->getShape().rank() == 4);
   nnfw::cker::TransposeParams transpose_param;
   transpose_param.perm_count = transposed_weights->getShape().rank();
-  transpose_param.perm[0] = 3;
-  transpose_param.perm[1] = 1;
-  transpose_param.perm[2] = 2;
+  transpose_param.perm[0] = 1;
+  transpose_param.perm[1] = 2;
+  transpose_param.perm[2] = 3;
   transpose_param.perm[3] = 0;
   nnfw::cker::Transpose(transpose_param, getShape(_kernel), getBuffer<float>(_kernel),
                         getShape(transposed_weights), getBuffer<float>(transposed_weights));
 
   // Calculate gradient for input
-  // nnfw::cker::TransposeConvParams tconv_op_params;
-  // tconv_op_params.padding_type = getPaddingType(_paddingType);
-  // tconv_op_params.padding_values.width = _paddingLeft;
-  // tconv_op_params.padding_values.height = _paddingTop;
-  // tconv_op_params.stride_width = _strideWidth;
-  // tconv_op_params.stride_height = _strideHeight;
-  // nnfw::cker::TransposeConv(tconv_op_params, getShape(backprop_act),
-  //                           getBuffer<float>(backprop_act), getShape(transposed_weights),
-  //                           getBuffer<float>(transposed_weights), getShape(_deriv_input),
-  //                           getBuffer<float>(_deriv_input));
+  nnfw::cker::train::ConvInputGrad(
+    conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act),
+    getShape(transposed_weights), getBuffer<float>(transposed_weights), _paddingBottom,
+    _paddingRight, getShape(_deriv_input), getBuffer<float>(_deriv_input));
 
   // Calculate gradient for weights
-  if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
-    throw std::runtime_error("Convolution: Unsupported dilation yet");
-  if (_strideHeight != 1 || _strideWidth != 1)
-    throw std::runtime_error("Convolution: Unsupported stride yet");
-
-  nnfw::cker::ConvParams conv_op_params;
-  conv_op_params.padding_type = getPaddingType(_paddingType);
-  conv_op_params.padding_values.width = _paddingLeft;
-  conv_op_params.padding_values.height = _paddingTop;
-  conv_op_params.stride_width = _strideWidth;
-  conv_op_params.stride_height = _strideHeight;
-  conv_op_params.dilation_width_factor = _dilationWidthFactor;
-  conv_op_params.dilation_height_factor = _dilationHeightFactor;
-  // Ignore activation min/max
-  conv_op_params.float_activation_min = std::numeric_limits<float>::min();
-  conv_op_params.float_activation_max = std::numeric_limits<float>::max();
-
+  auto transposed_grad_weights = _transposed_grad_weights.get();
   assert(_grad_weights->getShape().rank() == 4);
-  const auto nums_channels = _grad_weights->getShape().asFeature(_grad_weights->layout()).C;
-  std::vector<float> zeros(nums_channels);
-  memset(zeros.data(), 0, nums_channels * sizeof(float));
+  assert(transposed_grad_weights->getShape().rank() == 4);
+  nnfw::cker::train::ConvFilterGrad(
+    conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
+    getBuffer<float>(_input), _paddingBottom, _paddingRight, getShape(transposed_grad_weights),
+    getBuffer<float>(transposed_grad_weights));
 
-  nnfw::cker::Conv cal_weights_grad_kernel;
-  cal_weights_grad_kernel(conv_op_params, getShape(_input), getBuffer<float>(_input),
-                          getShape(backprop_act), getBuffer<float>(backprop_act),
-                          nnfw::cker::Shape{nums_channels}, zeros.data(), getShape(_grad_weights),
-                          getBuffer<float>(_grad_weights));
+  // Transpose weights gradient from HWIO to OHWI
+  nnfw::cker::TransposeParams transpose_grad_param;
+  transpose_grad_param.perm_count = transposed_grad_weights->getShape().rank();
+  transpose_grad_param.perm[0] = 3;
+  transpose_grad_param.perm[1] = 0;
+  transpose_grad_param.perm[2] = 1;
+  transpose_grad_param.perm[3] = 2;
+  nnfw::cker::Transpose(transpose_grad_param, getShape(transposed_grad_weights),
+                        getBuffer<float>(transposed_grad_weights), getShape(_grad_weights),
+                        getBuffer<float>(_grad_weights));
 
   // Calculate gradient for bias
-  const auto incomming_shape = backprop_act->getShape();
-  assert(incomming_shape.rank() == 4);
-  assert(incomming_shape.dim(3) == _grad_bias->getShape().dim(0));
-  nnfw::cker::train::ConvBiasGrad<float>(getShape(backprop_act), getBuffer<float>(backprop_act),
-                                         getShape(_grad_bias), getBuffer<float>(_grad_bias));
+  if (_bias)
+  {
+    assert(_grad_bias);
+    _grad_bias_layer.run();
+  }
 }
 
 } // namespace ops
