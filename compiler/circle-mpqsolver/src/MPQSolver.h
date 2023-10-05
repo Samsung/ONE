@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __MPQSOLVER_MPQSOLEVR_SOLVER_H__
-#define __MPQSOLVER_MPQSOLEVR_SOLVER_H__
+#ifndef __MPQSOLVER_MPQSOLVER_SOLVER_H__
+#define __MPQSOLVER_MPQSOLVER_SOLVER_H__
 
 #include "core/Quantizer.h"
 #include <core/DumpingHooks.h>
@@ -64,4 +64,4 @@ protected:
 
 } // namespace mpqsolver
 
-#endif //__MPQSOLVER_MPQSOLEVR_SOLVER_H__
+#endif //__MPQSOLVER_MPQSOLVER_SOLVER_H__
