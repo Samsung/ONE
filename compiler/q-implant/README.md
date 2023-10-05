@@ -1,16 +1,20 @@
 # q-implant
 
-_q-implant_ writes quantization parameters and weights (given as .json and .npy files) to a circle model.
+_q-implant_ implants quantization parameters and weights 
+(given as .json and .npy files) to a circle model.
 
 ## Format of input files (`.json` and `.npy`)
 
 The main input file is a `.json` file, which is a dictionary.
 
-The dictionary's key is a tensor name, and its value is quantization parameters and values(if exists).
+The dictionary's key is a tensor name, and its value is quantization parameters
+and values(if exists).
 
 The `.npy` file is a NumPy file that is generated through the `numpy.save` function. 
 
-When filling the value of `quantization parameters` or `values`(acting like a key inside `<tensor_name>`) in the param.json, the `.npy` file must be saved.
+When filling the value of `quantization parameters` or `values`
+(acting like a key inside `<tensor_name>`) in the param.json, 
+the `.npy` file must be saved.
 
 ```
 {
@@ -28,13 +32,16 @@ When filling the value of `quantization parameters` or `values`(acting like a ke
 
 `<dtype>`: String (data type of the target tensor. ex: "uint8" or "int16")
 
-`<path/to/scale_npy>`: String (path to the .npy file that contains scale. The npy file has to be 1d array of fp32.)
+`<path/to/scale_npy>`: String (path to the .npy file that contains scale. 
+The npy file has to be 1d array of fp32.)
 
-`<path/to/zerop_npy>`: String (path to the .npy file that contains zerop. The npy file has to be 1d array of int64.)
+`<path/to/zerop_npy>`: String (path to the .npy file that contains zerop. 
+The npy file has to be 1d array of int64.)
 
 `<dim>`: Integer (quantized dimension)
 
-`<path/to/value_npy>`: String (path to the .npy file that contains zerop. The npy file should have the same shape/dtype with the target tensor.)
+`<path/to/value_npy>`: String (path to the .npy file that contains zerop. 
+The npy file should have the same shape/dtype with the target tensor.)
 
 NOTE "value" is an optional attribute. It is only necessary for weights.
 
@@ -48,9 +55,11 @@ q-implant input.circle qparam.json output.circle
 
 `qparam.json` and `*.npy` files must exist in the same directory.
 
-For example, there are four operands in Conv2D_000.circle: `ifm`, `ker`, `bias`, and `ofm`.
+For example, there are four operands in Conv2D_000.circle: 
+`ifm`, `ker`, `bias`, and `ofm`.
 
-In this regard, `qparam.json` and `*.npy` can be defined as follows.(`*.npy` internal values are random values for testing)
+In this regard, `qparam.json` and `*.npy` can be defined as follows.
+(`*.npy` internal values are random values for testing)
 
 - qparam.json
 
