@@ -39,6 +39,7 @@ set(TEST_SOURCES
     "src/core/ErrorMetric.cpp"
     "src/pattern/PatternResolver.cpp"
     "src/core/Dumper.cpp"
+    "src/core/DumpingHooks.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
