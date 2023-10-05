@@ -40,14 +40,25 @@ set(TEST_SOURCES
     "src/pattern/PatternResolver.cpp"
     "src/core/Dumper.cpp"
     "src/core/DumpingHooks.cpp"
+    "src/MPQSolver.cpp"
+    "src/bisection/BisectionSolver.cpp"
+    "src/core/DumpingHooks.cpp"
+    "src/core/SolverOutput.cpp"
+    "src/core/Evaluator.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_mpqsolver_test ${TESTS} ${TEST_SOURCES})
 target_include_directories(circle_mpqsolver_test PRIVATE src)
 target_include_directories(circle_mpqsolver_test PRIVATE ${Jsoncpp_INCLUDE_DIRS})
+target_include_directories(circle_mpqsolver_test PUBLIC ${HDF5_INCLUDE_DIRS})
 target_link_libraries(circle_mpqsolver_test ${Jsoncpp_STATIC_LIB})
+target_link_libraries(circle_mpqsolver_test PUBLIC ${HDF5_CXX_LIBRARIES})
 target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
 target_link_libraries(circle_mpqsolver_test luci_testhelper)
 target_link_libraries(circle_mpqsolver_test luci_export)
+target_link_libraries(circle_mpqsolver_test luci_import)
+target_link_libraries(circle_mpqsolver_test luci_export)
+target_link_libraries(circle_mpqsolver_test luci_interpreter)
+target_link_libraries(circle_mpqsolver_test dio_hdf5)

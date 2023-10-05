@@ -138,5 +138,32 @@ bool isFileExists(const std::string &path)
 }
 
 } // namespace io_utils
+
+namespace hdf5_utils
+{
+
+void createHDF5File(char *name_template, uint32_t channels, uint32_t width, uint32_t height)
+{
+  io_utils::makeTemporaryFile(name_template);
+
+  const auto rank = 4;
+  hsize_t dim[4] = {1, height, width, channels};
+  H5::DataSpace space(rank, dim);
+
+  // let it be just zero
+  std::vector<float> data(height * width * channels, 0.f);
+
+  // Create test file in the current directory
+  H5::H5File file(name_template, H5F_ACC_TRUNC);
+  {
+    file.createGroup("/value");
+    file.createGroup("/value/0");
+    H5::DataSet dataset(file.createDataSet("/value/0/0", H5::PredType::IEEE_F32BE, space));
+    dataset.write(data.data(), H5::PredType::NATIVE_FLOAT);
+  }
+}
+
+} // namespace hdf5_utils
+
 } // namespace test
 } // namespace mpqsolver

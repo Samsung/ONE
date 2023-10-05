@@ -98,6 +98,16 @@ std::string makeTemporaryFolder(char *name_template);
 bool isFileExists(const std::string &file_path);
 
 } // namespace io_utils
+
+namespace hdf5_utils
+{
+
+/**
+ * @brief create hdf5 temporary file with zero-initialized data and dimensions specified
+ */
+void createHDF5File(char *name_template, uint32_t channels, uint32_t width, uint32_t height);
+
+} // namespace hdf5_utils
 } // namespace test
 } // namespace mpqsolver
 
