@@ -5,6 +5,7 @@ import shutil
 architecture_directory = ['x86_64', 'armv7l', 'aarch64']
 package_directory = 'nnfwapi'
 packaging_directory = ['build', 'dist', package_directory + '.egg-info']
+THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 so_list = []
 
 try:
@@ -13,6 +14,22 @@ try:
         if os.path.exists(packaging_dir):
             print(f"Deleting existing directory '{packaging_dir}'...")
             shutil.rmtree(packaging_dir)
+    
+    # initialize package_directory
+    if os.path.exists(package_directory):
+        print(f"Deleting existing directory '{package_directory}'...")
+        shutil.rmtree(package_directory)
+    os.makedirs(package_directory)
+    print(f"Created directory '{package_directory}'...")
+    
+    # copy *py files to package_directory
+    PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/python/package')
+    for py_file in os.listdir(PY_DIR):
+        if py_file.endswith(".py"):
+            src_path = os.path.join(PY_DIR, py_file)
+            dest_path = os.path.join(THIS_FILE_DIR, package_directory)
+            shutil.copy(src_path, dest_path)
+            print(f"Copied '{src_path}' to '{dest_path}'")
 
     # remove architecture directory
     if os.path.exists(package_directory):
@@ -28,7 +45,6 @@ try:
             os.makedirs(arch_path)
             print(f"Created directory '{arch_path}'")
 
-            THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
             so_dir = os.path.join(THIS_FILE_DIR, '../../../Product')
             so_dir = os.path.join(so_dir, arch_dir + '-linux.release/out/lib')
 
