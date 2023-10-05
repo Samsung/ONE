@@ -140,16 +140,45 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   _qerror = int16_qerror + _qerror_ratio * std::fabs(uint8_qerror - int16_qerror);
   SolverOutput::get() << "Target qerror: " << _qerror << "\n";
 
-  if (uint8_qerror <= _qerror)
+  // it'is assumed that int16_qerror <= _qerror <= uint8_qerror,
+  if (int16_qerror >= _qerror)
   {
-    // no need for bisectioning just return Q8 model
+    // return Q16 model (we can not make it more accurate)
+    if (!_quantizer->quantize(module.get(), "int16", layer_params))
+    {
+      std::cerr << "ERROR: Failed to quantize model" << std::endl;
+      return nullptr;
+    }
+
+    if (_hooks)
+    {
+      _hooks->on_end_solver(layer_params, "int16", int16_qerror);
+    }
+
+    SolverOutput::get() << "The best configuration is int16 configuration "
+                        << "\n";
+    return module;
+  }
+  else if (uint8_qerror <= _qerror)
+  {
+    // return Q8 model (we can not make it less accurate)
     if (!_quantizer->quantize(module.get(), "uint8", layer_params))
     {
       std::cerr << "ERROR: Failed to quantize model" << std::endl;
       return nullptr;
     }
+
+    if (_hooks)
+    {
+      _hooks->on_end_solver(layer_params, "uint8", uint8_qerror);
+    }
+
+    SolverOutput::get() << "The best configuration is uint8 configuration "
+                        << "\n";
+    return module;
   }
 
+  // search for optimal mixed precision quantization configuration
   int last_depth = -1;
   float best_depth = -1;
   float best_accuracy = -1;
