@@ -57,7 +57,7 @@ luci::CircleConst *multiply_const(luci::CircleConst *node, float multiplier)
  *     +---- [In]
  *     |      |
  *     |      V
- *     |     fc2 (w = w of fc1 * sqrt(0.5)) -> const folded
+ *     |     fc2 (w = w of fc1 * sqrt(0.5). bias as well) -> const folded
  *     |      |
  *    fc1     V
  *     |     erf
@@ -100,6 +100,9 @@ public:
   luci::CircleConst *_fc1_w = nullptr;
   luci::CircleConst *_fc2_w = nullptr;
   luci::CircleConst *_fc3_w = nullptr;
+  luci::CircleConst *_fc1_b = nullptr;
+  luci::CircleConst *_fc2_b = nullptr;
+  luci::CircleConst *_fc3_b = nullptr;
 };
 
 #define CHECK_OR_FALSE(condition) \
@@ -161,12 +164,6 @@ bool FCGeluFCPattern::matched()
   CHECK_OR_FALSE(_fc2_w->dtype() == loco::DataType::FLOAT32);
   CHECK_OR_FALSE(_fc3_w->dtype() == loco::DataType::FLOAT32);
 
-  // Check all fc layers have no bias
-  // TODO Remove this restriction if necessary
-  CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc1->bias()) != nullptr);
-  CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc2->bias()) != nullptr);
-  CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc3->bias()) != nullptr);
-
   // Check _const_one condition
   CHECK_OR_FALSE(_const_one->dtype() == loco::DataType::FLOAT32);
   CHECK_OR_FALSE(_const_one->size<loco::DataType::FLOAT32>() == 1);
@@ -180,6 +177,40 @@ bool FCGeluFCPattern::matched()
     const auto fc1_val = _fc1_w->at<loco::DataType::FLOAT32>(i);
     const auto fc2_val = _fc2_w->at<loco::DataType::FLOAT32>(i);
     CHECK_OR_FALSE(::same(fc1_val * sqrtf(0.5f), fc2_val));
+  }
+
+  // Start to check bias
+  _fc1_b = dynamic_cast<luci::CircleConst *>(_fc1->bias());
+  _fc2_b = dynamic_cast<luci::CircleConst *>(_fc2->bias());
+  _fc3_b = dynamic_cast<luci::CircleConst *>(_fc3->bias());
+
+  // Check there is no non-constant bias
+  if (_fc1_b == nullptr)
+    CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc1->bias()) != nullptr);
+
+  if (_fc2_b == nullptr)
+    CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc2->bias()) != nullptr);
+
+  if (_fc3_b == nullptr)
+    CHECK_OR_FALSE(dynamic_cast<luci::CircleOutputExclude *>(_fc3->bias()) != nullptr);
+
+  // Check both fc1 and fc2 have biases, or both have no bias
+  CHECK_OR_FALSE((_fc1_b == nullptr and _fc2_b == nullptr) or
+                 (_fc1_b != nullptr and _fc2_b != nullptr));
+
+  // Check values of fc1 and fc2 bias (if bias exists)
+  if (_fc1_b != nullptr and _fc2_b != nullptr)
+  {
+    CHECK_OR_FALSE(_fc1_b->size<loco::DataType::FLOAT32>() ==
+                   _fc2_b->size<loco::DataType::FLOAT32>());
+    for (uint32_t i = 0; i < _fc1_b->size<loco::DataType::FLOAT32>(); i++)
+    {
+      const auto fc1_val = _fc1_b->at<loco::DataType::FLOAT32>(i);
+      const auto fc2_val = _fc2_b->at<loco::DataType::FLOAT32>(i);
+
+      // fc2_b = fc1_b * sqrt(0.5)
+      CHECK_OR_FALSE(::same(fc1_val * sqrtf(0.5f), fc2_val));
+    }
   }
 
   return true;

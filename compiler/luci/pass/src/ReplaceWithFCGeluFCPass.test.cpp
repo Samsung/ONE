@@ -135,6 +135,60 @@ protected:
   luci::CircleConst *_fc3_w = nullptr;
 };
 
+class FCGeluFCGraphletWithBias : public FCGeluFCGraphlet
+{
+public:
+  FCGeluFCGraphletWithBias() = default;
+
+  virtual ~FCGeluFCGraphletWithBias() = default;
+
+  void init(loco::Graph *g)
+  {
+    // Create graphlet without bias
+    FCGeluFCGraphlet::init(g);
+
+    // Set bias
+    _fc1_b = g->nodes()->create<luci::CircleConst>();
+    _fc2_b = g->nodes()->create<luci::CircleConst>();
+    _fc3_b = g->nodes()->create<luci::CircleConst>();
+
+    _fc1_b->name("fc1_b");
+    _fc2_b->name("fc2_b");
+    _fc3_b->name("fc3_b");
+
+    _fc1_b->dtype(loco::DataType::FLOAT32);
+    _fc1_b->size<loco::DataType::FLOAT32>(4);
+    _fc1_b->shape({4});
+    for (uint32_t i = 0; i < 4; i++)
+      _fc1_b->at<loco::DataType::FLOAT32>(i) = 1.0;
+    _fc1_b->shape_status(luci::ShapeStatus::VALID);
+
+    _fc2_b->dtype(loco::DataType::FLOAT32);
+    _fc2_b->size<loco::DataType::FLOAT32>(4);
+    _fc2_b->shape({4});
+    for (uint32_t i = 0; i < 4; i++)
+      _fc2_b->at<loco::DataType::FLOAT32>(i) = sqrtf(0.5);
+    _fc2_b->shape_status(luci::ShapeStatus::VALID);
+
+    _fc3_b->dtype(loco::DataType::FLOAT32);
+    _fc3_b->size<loco::DataType::FLOAT32>(4);
+    _fc3_b->shape({4});
+    for (uint32_t i = 0; i < 4; i++)
+      _fc3_b->at<loco::DataType::FLOAT32>(i) = 1.0;
+    _fc3_b->shape_status(luci::ShapeStatus::VALID);
+
+    // Connect nodes
+    _fc1->bias(_fc1_b);
+    _fc2->bias(_fc2_b);
+    _fc3->bias(_fc3_b);
+  }
+
+protected:
+  luci::CircleConst *_fc1_b = nullptr;
+  luci::CircleConst *_fc2_b = nullptr;
+  luci::CircleConst *_fc3_b = nullptr;
+};
+
 class ReplaceWithFCGeluFCTestGraph : public TestIOGraph, public FCGeluFCGraphlet
 {
 public:
@@ -168,6 +222,40 @@ public:
   }
 };
 
+class ReplaceWithFCGeluFCWithBiasTestGraph : public TestIOGraph, public FCGeluFCGraphletWithBias
+{
+public:
+  ReplaceWithFCGeluFCWithBiasTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1, 4, 4}, {1, 4, 4});
+    FCGeluFCGraphletWithBias::init(g());
+
+    _fc1->input(input());
+    _fc2->input(input());
+
+    output()->from(_fc3);
+  }
+};
+
+class ReplaceWithFCGeluFCWithBiasNegTestGraph : public TestIOGraph, public FCGeluFCGraphletWithBias
+{
+public:
+  ReplaceWithFCGeluFCWithBiasNegTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1, 4, 4}, {1, 4, 4});
+    FCGeluFCGraphletWithBias::init(g());
+
+    _fc1->input(input());
+    _fc2->input(_fc1);
+
+    output()->from(_fc3);
+  }
+};
+
 } // namespace
 
 TEST(ReplaceWithFCGeluFCPassTest, basic)
@@ -183,6 +271,26 @@ TEST(ReplaceWithFCGeluFCPassTest, basic)
 TEST(ReplaceWithFCGeluFCPassTest, wrong_pattern_NEG)
 {
   ReplaceWithFCGeluFCTestNegGraph g;
+  luci::ReplaceWithFCGeluFCPass pass;
+
+  g.init();
+
+  EXPECT_FALSE(pass.run(g.g()));
+}
+
+TEST(ReplaceWithFCGeluFCPassTest, with_bias)
+{
+  ReplaceWithFCGeluFCWithBiasTestGraph g;
+  luci::ReplaceWithFCGeluFCPass pass;
+
+  g.init();
+
+  EXPECT_TRUE(pass.run(g.g()));
+}
+
+TEST(ReplaceWithFCGeluFCPassTest, with_bias_wrong_pattern_NEG)
+{
+  ReplaceWithFCGeluFCWithBiasNegTestGraph g;
   luci::ReplaceWithFCGeluFCPass pass;
 
   g.init();
