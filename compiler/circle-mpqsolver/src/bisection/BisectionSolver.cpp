@@ -72,19 +72,6 @@ bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string 
   return error_at_input > error_at_output;
 }
 
-std::unique_ptr<luci::Module> read_module(const std::string &path)
-{
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(path);
-  if (module.get() == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load " << path << std::endl;
-    return nullptr;
-  }
-
-  return module;
-}
-
 } // namespace
 
 BisectionSolver::BisectionSolver(const std::string &input_data_path, float qerror_ratio,
@@ -92,7 +79,6 @@ BisectionSolver::BisectionSolver(const std::string &input_data_path, float qerro
                                  const std::string &output_quantization)
   : MPQSolver(input_data_path, qerror_ratio, input_quantization, output_quantization)
 {
-  _quantizer = std::make_unique<core::Quantizer>(_input_quantization, _output_quantization);
 }
 
 float BisectionSolver::evaluate(const core::DatasetEvaluator &evaluator,

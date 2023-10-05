@@ -16,6 +16,9 @@
 
 #include "MPQSolver.h"
 
+#include <luci/ImporterEx.h>
+#include <iostream>
+
 using namespace mpqsolver;
 
 MPQSolver::MPQSolver(const std::string &input_data_path, float qerror_ratio,
@@ -23,9 +26,23 @@ MPQSolver::MPQSolver(const std::string &input_data_path, float qerror_ratio,
   : _input_data_path(input_data_path), _qerror_ratio(qerror_ratio),
     _input_quantization(input_quantization), _output_quantization(output_quantization)
 {
+  _quantizer = std::make_unique<core::Quantizer>(_input_quantization, _output_quantization);
 }
 
 void MPQSolver::set_save_intermediate(const std::string &save_path)
 {
   _hooks = std::make_unique<core::DumpingHooks>(save_path);
+}
+
+std::unique_ptr<luci::Module> MPQSolver::read_module(const std::string &path)
+{
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(path);
+  if (module.get() == nullptr)
+  {
+    std::cerr << "ERROR: Failed to load " << path << std::endl;
+    return nullptr;
+  }
+
+  return module;
 }
