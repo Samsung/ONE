@@ -1,0 +1,3 @@
+addTest(Abs_000)             # input: 1, op: 1, output: 1
+addTest(Add_000)             # input: 2, op: 1, output: 1
+addTest(Net_Conv_Relu6_000)  # input: 1, op: 3, output: 1
