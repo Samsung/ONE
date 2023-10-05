@@ -6,15 +6,12 @@ _q-implant_ implants quantization parameters and weights
 ## Format of input files (`.json` and `.npy`)
 
 The main input file is a `.json` file, which is a dictionary.
-
 The dictionary's key is a tensor name, and its value is quantization parameters
 and values(if exists).
 
-The `.npy` file is a NumPy file that is generated through the `numpy.save` function. 
+The `.npy` file is a NumPy file that can be generated with `numpy.save` function. 
 
-When filling the value of `quantization parameters` or `values`
-(acting like a key inside `<tensor_name>`) in the param.json, 
-the `.npy` file must be saved.
+The content of the json file is as below.
 
 ```
 {
@@ -53,12 +50,10 @@ NOTE `.npy` files have to be placed in the same directory with `qparam.json`.
 q-implant input.circle qparam.json output.circle
 ```
 
-`qparam.json` and `*.npy` files must exist in the same directory.
+Let's assume a circle model with a single Conv layer. 
+It has four tensors: `ifm`, `ker`, `bias`, and `ofm`.
 
-For example, there are four operands in Conv2D_000.circle: 
-`ifm`, `ker`, `bias`, and `ofm`.
-
-In this regard, `qparam.json` and `*.npy` can be defined as follows.
+For the model, `qparam.json` and `*.npy` can be defined as follows.
 (`*.npy` internal values are random values for testing)
 
 - qparam.json
