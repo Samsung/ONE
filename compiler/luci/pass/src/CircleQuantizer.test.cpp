@@ -208,6 +208,7 @@ struct SimpleQuantGraph
   luci::CircleConst *bias = nullptr;
 };
 
+// Have two conv layers named "c1" and "c2".
 void SimpleQuantGraph::init()
 {
   auto graph_input = g.inputs()->create();
