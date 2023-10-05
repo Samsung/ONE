@@ -318,7 +318,7 @@ TEST(CircleQuantizerTest, quantize_layer_param_set)
   EXPECT_NO_THROW(scq.quantize(&sqg.g));
 }
 
-TEST(CircleQuantizerTest, quantize_layer_param_set_no_NEG)
+TEST(CircleQuantizerTest, invalid_layer_params_NEG)
 {
   SimpleQuantGraph sqg;
   sqg.init();
