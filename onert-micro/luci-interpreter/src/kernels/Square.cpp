@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,54 +13,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "kernels/Square.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
 
-#include <cmath>
+#include "PALSquare.h"
 
 namespace luci_interpreter
 {
-
-namespace kernels
+void configure_kernel_CircleSquare(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-Square::Square(const Tensor *input, Tensor *output) : Kernel({input}, {output}) {}
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()));
 
-void Square::configure()
-{
-  if (input()->element_type() != output()->element_type())
+  // check that input and output dimensions are equal
+  int N = Tensor::num_dims(kernel.input());
+  LUCI_INTERPRETER_CHECK(N == Tensor::num_dims(kernel.output()));
+
+  // check that sizes of all dimensions are equal
+  for (int i = 0; i < N; ++i)
   {
-    assert(false && "Input/output tensor data type mismatch.");
+    LUCI_INTERPRETER_CHECK(kernels::getTensorShape(kernel.input()).dims(i) ==
+                           kernels::getTensorShape(kernel.output()).dims(i));
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(input()->shape());
 }
 
-void Square::execute() const
+void execute_kernel_CircleSquare(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  switch (input()->element_type())
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
+
+  const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
+  assert(input_data);
+
+  auto *output_data = runtime_graph->getDataByTensor(kernel.output());
+
+  bool is_inplace = runtime_graph->is_inplace_op(cur_op);
+
+  switch (Tensor::element_type(kernel.input()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      evalFloat();
+    {
+      const float *input_data_float = kernels::getTensorData<float>(input_data);
+      float *output_data_float = kernels::getTensorData<float>(output_data);
+      if (is_inplace)
+      {
+        output_data_float = const_cast<float *>(input_data_float);
+      }
+
+      assert(output_data_float);
+
+      const int flat_size =
+        kernels::getTensorRuntimeShape(kernel.input(), runtime_graph).flatSize();
+
+      luci_interpreter_pal::Square(flat_size, input_data_float, output_data_float);
       break;
-
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
+
+  if (is_inplace)
+    runtime_graph->makeInplaceOperation(kernel.input(), kernel.output());
 }
 
-void Square::evalFloat() const
-{
-  auto in = getTensorData<float>(input());
-  auto out = getTensorData<float>(output());
-  auto size = getTensorShape(input()).FlatSize();
-  for (auto i = in; i != in + size; ++i)
-  {
-    *out = (*i) * (*i);
-    ++out;
-  }
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
