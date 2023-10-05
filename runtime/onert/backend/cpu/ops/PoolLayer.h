@@ -53,10 +53,11 @@ public:
 
   void run() override;
 
-private:
+protected:
   const IPortableTensor *_input;
   IPortableTensor *_output;
 
+private:
   std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
