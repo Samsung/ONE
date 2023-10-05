@@ -14,14 +14,14 @@ try:
         if os.path.exists(packaging_dir):
             print(f"Deleting existing directory '{packaging_dir}'...")
             shutil.rmtree(packaging_dir)
-    
+
     # initialize package_directory
     if os.path.exists(package_directory):
         print(f"Deleting existing directory '{package_directory}'...")
         shutil.rmtree(package_directory)
     os.makedirs(package_directory)
     print(f"Created directory '{package_directory}'...")
-    
+
     # copy *py files to package_directory
     PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/python/package')
     for py_file in os.listdir(PY_DIR):
