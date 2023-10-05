@@ -70,6 +70,7 @@ class CONSTANT:
         'forward_reshape_to_unaryop',
         'forward_transpose_op',
         'replace_non_const_fc_with_batch_matmul',  # For quantization
+        'replace_with_fc_gelu_fc',
     )
 
     OPTIMIZATION_OPTS = (
@@ -125,6 +126,7 @@ class CONSTANT:
         ('replace_non_const_fc_with_batch_matmul',
          'replace FullyConnected op with non-const weights to BatchMatMul op'),
         ('replace_sub_with_add', 'replace Sub op with Add op'),
+        ('replace_with_fc_gelu_fc', 'replace a certain pattern with FC-Gelu-FC ops'),
         ('resolve_customop_add', 'convert Custom(Add) op to Add op'),
         ('resolve_customop_batchmatmul',
          'convert Custom(BatchMatmul) op to BatchMatmul op'),
