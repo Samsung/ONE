@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,38 +14,73 @@
  * limitations under the License.
  */
 
-#include "kernels/Square.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/square/FloatSquareKernel.h"
+#include "luci_interpreter/test_models/square/NegSquareKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-TEST(SquareTest, Float)
+class SquareTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  // Do nothing
+};
 
-  Shape input_shape{3, 1, 2};
-  std::vector<float> input_data1{1.0, 0.0, -1.0, 11.0, -2.0, -1.44};
-  Tensor input_tensor =
-    makeInputTensor<DataType::FLOAT32>(input_shape, input_data1, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+template <typename T> std::vector<T> checkSquareKernel(test_kernel::TestDataBase<T> *test_data_base)
+{
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  Square kernel(&input_tensor, &output_tensor);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  std::vector<float> ref_output_data{1.0, 0.0, 1.0, 121.0, 4.0, 2.0736};
-  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
+}
+
+TEST_F(SquareTest, Float_P)
+{
+  test_kernel::TestDataFloatSquare test_data_kernel;
+  std::vector<float> output_data_vector = checkSquareKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, kernels::testing::FloatArrayNear(
+                                    test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(SquareTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestDataInputOutputTypeMismatchSquareKernel test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
