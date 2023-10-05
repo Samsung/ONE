@@ -15,228 +15,184 @@
  * limitations under the License.
  */
 
-#include "kernels/SVDF.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
+
 #include "PALSVDF.h"
 
-#include <tensorflow/lite/kernels/internal/quantization_util.h>
-
 namespace luci_interpreter
-{
-namespace kernels
 {
 
 namespace
 {
-TfLiteFusedActivation get_tflite_activation(Activation activation)
-{
-  switch (activation)
-  {
-    case FusedActFunc::RELU:
-      return kTfLiteActRelu;
-    case FusedActFunc::RELU6:
-      return kTfLiteActRelu6;
-    case FusedActFunc::RELU_N1_TO_1:
-      return kTfLiteActReluN1To1;
-    case FusedActFunc::TANH:
-      return kTfLiteActTanh;
-    case FusedActFunc::SIGN_BIT:
-      return kTfLiteActSignBit;
-    case FusedActFunc::NONE:
-      return kTfLiteActNone;
-    default:
-      assert(false && "Unsupported activation type");
-  }
-}
+const int kSvdfInputTensor = 0;
+const int kSvdfWeightsFeatureTensor = 1;
+const int kSvdfWeightsTimeTensor = 2;
+const int kSvdfBiasTensor = 3;
+const int kSvdfInputActivationStateTensor =
+  4; // This is a variable tensor, and will be modified by this op.
+const int kSvdfOutputTensor = 0;
 } // namespace
 
-SVDF::SVDF(const Tensor *input, const Tensor *weight_feature, const Tensor *weight_time,
-           const Tensor *bias, const Tensor *input_activation_state, Tensor *output,
-           Tensor *scratchpad_activation_state, Tensor *scratchpad_1, Tensor *scratchpad_2,
-           Tensor *scratchpad_3, Tensor *scratchpad_4, Tensor *scratchpad_5, Tensor *scratchpad_6,
-           const SVDFParams &params)
-  : KernelWithParams<SVDFParams>({input, weight_feature, weight_time, bias, input_activation_state},
-                                 {output, scratchpad_activation_state, scratchpad_1, scratchpad_2,
-                                  scratchpad_3, scratchpad_4, scratchpad_5, scratchpad_6},
-                                 params)
+void configure_kernel_CircleSVDF(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  // Do nothing
-}
+  // Validate Tensor Inputs (dtype depends on quantization):
+  // [0] = Input, {2, batch_size, input_size}
+  // [1] = Weights Feature, {2, num_filters, input_size}
+  // [2] = Weights Time, {2, num_filters, memory_size}
+  // [3] = Bias (optional), {1, num_units}
+  // [4] = Activation State (variable),
+  //         {2, batch_size, memory_size * num_filters}
+  const auto input_index = cur_op->inputs()->operator[](kSvdfInputTensor);
+  const auto weights_feature_index = cur_op->inputs()->operator[](kSvdfWeightsFeatureTensor);
+  const auto weights_time_index = cur_op->inputs()->operator[](kSvdfWeightsTimeTensor);
+  const auto bias_index = cur_op->inputs()->operator[](kSvdfBiasTensor);
+  const auto activation_state_index = cur_op->inputs()->operator[](kSvdfInputActivationStateTensor);
+  const auto output_index = cur_op->outputs()->operator[](kSvdfOutputTensor);
 
-void SVDF::configure()
-{
-  const Shape &input_shape = input()->shape();
-  const Shape &weight_features_shape = weight_feature()->shape();
-  const Shape &weight_time_shape = weight_time()->shape();
+  assert(input_index != -1);
+  assert(weights_feature_index != -1);
+  assert(weights_time_index != -1);
+  assert(activation_state_index != -1);
+  assert(output_index != -1);
 
-  // Validate Input Tensor:
-  LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32 ||
-                         input()->element_type() == DataType::S8);
-  LUCI_INTERPRETER_CHECK(input_shape.num_dims() == 2);
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto weights_feature = runtime_graph->getCircleTensorByIndex(weights_feature_index);
+  const auto weights_time = runtime_graph->getCircleTensorByIndex(weights_time_index);
+  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
+  const auto activation_state = runtime_graph->getCircleTensorByIndex(activation_state_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
 
-  // Validate inputs and output types
-  if (input()->element_type() == DataType::S8)
-  {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == DataType::S8);
-    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == DataType::S16 ||
-                           weight_time()->element_type() == DataType::S8);
-    if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == DataType::S32);
+  assert(input != nullptr);
+  assert(weights_feature != nullptr);
+  assert(weights_time != nullptr);
+  assert(activation_state != nullptr);
+  assert(output != nullptr);
 
-    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == DataType::S16 ||
-                           input_activation_state()->element_type() == DataType::S8);
-    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S8);
+  const auto *options = cur_op->builtin_options_as_SVDFOptions();
 
-    // Note: now tflite support only ReLU activation for integer SVDF
-    LUCI_INTERPRETER_CHECK(params().activation == FusedActFunc::RELU);
-  }
-  else if (weight_feature()->element_type() == DataType::FLOAT32)
-  {
-    LUCI_INTERPRETER_CHECK(weight_feature()->element_type() == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(weight_time()->element_type() == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(input_activation_state()->element_type() == DataType::FLOAT32);
-    if (bias())
-      LUCI_INTERPRETER_CHECK(bias()->element_type() == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
-  }
-  else if ((weight_feature()->element_type() == DataType::U8 ||
-            weight_feature()->element_type() == DataType::S8) &&
-           input()->element_type() == DataType::FLOAT32)
-  {
-    // TODO:: support hybrid SVDF op
-    assert(false && "Hybrid type is not currently supported");
-  }
-  else
-  {
-    assert(false && "Unsupported type.");
-  }
-
-  // Check all the parameters of tensor match within themselves and match the
-  // input configuration.
-  const int rank = params().svdf_rank;
-  const int batch_size = input_shape.dim(0);
-  const int num_filters = weight_features_shape.dim(0);
-  LUCI_INTERPRETER_CHECK(rank != 0);
+  // Define input constants based on input tensor definition above:
+  const int rank = options->rank();
+  const int input_size = Tensor::dim(input, 1);
+  const int batch_size = Tensor::dim(input, 0);
+  const int num_filters = Tensor::dim(weights_feature, 0);
   LUCI_INTERPRETER_CHECK(num_filters % rank == 0);
 
   const int num_units = num_filters / rank;
-  const int memory_size = weight_time_shape.dim(1);
+  const int memory_size = Tensor::dim(weights_time, 1);
 
-  // Validate Weight_Feature Input Tensor:
-  LUCI_INTERPRETER_CHECK(weight_features_shape.num_dims() == 2);
-  LUCI_INTERPRETER_CHECK(weight_features_shape.dim(1) == input_shape.dim(1));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::FLOAT32 or
+                         Tensor::element_type(input) == DataType::S8);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(input) == 2);
 
-  // Validate Weight_Time Input Tensor:
-  LUCI_INTERPRETER_CHECK(weight_time_shape.num_dims() == 2);
-  LUCI_INTERPRETER_CHECK(weight_time_shape.dim(0) == num_filters);
+  // Validate Tensor Output:
+  // [0] = float/int8_t, {2, batch_size, num_units}
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(output) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(output, 0) == batch_size);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(output, 1) == num_units);
 
-  // Validate Bias
-  if (bias())
-    LUCI_INTERPRETER_CHECK(bias()->shape().dim(0) == num_units);
+  // Validate Weights Feature Input Tensor
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights_feature) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_feature, 1) == input_size);
 
-  // Validate Input Activation State
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().num_dims() == 2);
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(0) == batch_size);
-  LUCI_INTERPRETER_CHECK(input_activation_state()->shape().dim(1) == memory_size * num_filters);
+  // Validate Weights Time Input Tensor:
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights_time) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_time, 0) == num_filters);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_time, 1) == memory_size);
 
-  // Resize scratchpad_state to input_activation_state
-  auto scratchpad_activation_state = getOutputTensors()[1];
-  scratchpad_activation_state->resize({batch_size, memory_size * num_filters});
-
-  // TODO: enable it only if kernel with dynamic shapes
-  // Resize output tensor
-  output()->resize({batch_size, num_units});
-
-  luci_interpreter_pal::SetupScratchpadTensor(
-    input()->element_type(), weight_feature()->element_type(), getOutputTensors()[2],
-    getOutputTensors()[3], getOutputTensors()[4], getOutputTensors()[5], getOutputTensors()[6],
-    getOutputTensors()[7], input_shape, weight_time_shape, batch_size, num_filters, num_units);
-}
-
-void SVDF::execute() const
-{
-  switch (weight_feature()->element_type())
+  // Validate Optional Bias Input Tensor:
+  if (bias != nullptr)
   {
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
-    case DataType::S8:
-    {
-      if (input()->element_type() == DataType::S8)
-        evalInteger();
-      else
-        // TODO:: support hybrid SVDF op
-        assert(false && "Hybrid type is not currently supported");
-      break;
-    }
-    default:
-      assert(false && "Unsupported type");
+    LUCI_INTERPRETER_CHECK(Tensor::dim(bias, 0) == num_units);
+  }
+
+  // Validate Activation State Input Tensor:
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(activation_state) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(activation_state, 0) == batch_size);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(activation_state, 1) == memory_size * num_filters);
+
+  if (Tensor::element_type(input) == DataType::FLOAT32)
+  {
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(weights_feature) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(weights_time) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(activation_state) == DataType::FLOAT32);
+    if (bias)
+      LUCI_INTERPRETER_CHECK(Tensor::element_type(bias) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::FLOAT32);
   }
 }
 
-void SVDF::evalInteger() const
+void execute_kernel_CircleSVDF(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto effective_scale_1 = static_cast<double>(input()->scale() * weight_feature()->scale() /
-                                                     input_activation_state()->scale());
-  const auto effective_scale_2 = static_cast<double>(input_activation_state()->scale() *
-                                                     weight_time()->scale() / output()->scale());
+  const auto input_index = cur_op->inputs()->operator[](kSvdfInputTensor);
+  const auto weights_feature_index = cur_op->inputs()->operator[](kSvdfWeightsFeatureTensor);
+  const auto weights_time_index = cur_op->inputs()->operator[](kSvdfWeightsTimeTensor);
+  const auto bias_index = cur_op->inputs()->operator[](kSvdfBiasTensor);
+  const auto activation_state_index = cur_op->inputs()->operator[](kSvdfInputActivationStateTensor);
+  const auto output_index = cur_op->outputs()->operator[](kSvdfOutputTensor);
 
-  int32_t effective_scale_1_a;
-  int effective_scale_1_b;
-  int32_t effective_scale_2_a;
-  int effective_scale_2_b;
+  assert(input_index != -1);
+  assert(weights_feature_index != -1);
+  assert(weights_time_index != -1);
+  assert(activation_state_index != -1);
+  assert(output_index != -1);
 
-  tflite::QuantizeMultiplier(effective_scale_1, &effective_scale_1_a, &effective_scale_1_b);
-  tflite::QuantizeMultiplier(effective_scale_2, &effective_scale_2_a, &effective_scale_2_b);
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto weights_feature = runtime_graph->getCircleTensorByIndex(weights_feature_index);
+  const auto weights_time = runtime_graph->getCircleTensorByIndex(weights_time_index);
+  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
+  const auto activation_state = runtime_graph->getCircleTensorByIndex(activation_state_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
 
-  TfLiteSVDFParams params_svdf{};
-  params_svdf.asymmetric_quantize_inputs = params().asymmetric_quantize_inputs;
-  params_svdf.rank = params().svdf_rank;
-  params_svdf.activation = get_tflite_activation(params().activation);
+  assert(input != nullptr);
+  assert(weights_feature != nullptr);
+  assert(weights_time != nullptr);
+  assert(activation_state != nullptr);
+  assert(output != nullptr);
 
-  auto scratchpad_activation_state = getOutputTensors()[1];
-  // Note: it is expected that activation_state input variable tensor reset to zero,
-  // also expected that this variable tensor doesn't have buffer
-  auto scratchpad_data = getTensorData<int16_t>(scratchpad_activation_state);
-  std::fill_n(scratchpad_data, scratchpad_activation_state->shape().num_elements(), 0);
+  const auto *options = cur_op->builtin_options_as_SVDFOptions();
 
-  auto scratchpad = getOutputTensors()[2];
-  auto output_temp = getOutputTensors()[3];
+  // Define input constants based on input tensor definition above:
+  const int rank = options->rank();
+  const int input_size = Tensor::dim(input, 1);
+  const int batch_size = Tensor::dim(input, 0);
+  const int num_filters = Tensor::dim(weights_feature, 0);
+  LUCI_INTERPRETER_CHECK(num_filters % rank == 0);
 
-  int32_t input_zp = input()->zero_point();
-  int32_t output_zp = output()->zero_point();
-  luci_interpreter_pal::IntegerSVDF(
-    params_svdf, getTensorShape(input()), getTensorData<int8_t>(input()),
-    getTensorShape(weight_feature()), getTensorData<int8_t>(weight_feature()),
-    getTensorShape(weight_time()), getTensorData<int16_t>(weight_time()), getTensorShape(bias()),
-    getTensorData<int32_t>(bias()), scratchpad_data, getTensorShape(output()),
-    getTensorData<int8_t>(output()), getTensorData<int32_t>(scratchpad),
-    getTensorData<int32_t>(output_temp), effective_scale_1_a, effective_scale_1_b,
-    effective_scale_2_a, effective_scale_2_b, input_zp, output_zp);
+  const int num_units = num_filters / rank;
+  const int memory_size = Tensor::dim(weights_time, 1);
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
+  const uint8_t *weights_feature_data = runtime_graph->getConstDataByTensor(weights_feature);
+  const uint8_t *weights_time_data = runtime_graph->getConstDataByTensor(weights_time);
+  const uint8_t *bias_data = runtime_graph->getConstDataByTensor(bias);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  const auto type = Tensor::element_type(input);
+  switch (type)
+  {
+#ifndef DIS_FLOAT
+    case DataType::FLOAT32:
+    {
+      // Create and fill with 0 state tensor
+      auto state_data = std::make_unique<float[]>(Tensor::num_elements(activation_state));
+      std::fill_n(state_data.get(), Tensor::num_elements(activation_state), 0);
+
+      auto scratch_data = std::make_unique<uint8_t[]>(batch_size * num_filters * sizeof(float));
+
+      luci_interpreter_pal::SVDF(
+        kernels::getTensorData<float>(input_data),
+        kernels::getTensorData<float>(weights_feature_data),
+        kernels::getTensorData<float>(weights_time_data), kernels::getTensorData<float>(bias_data),
+        state_data.get(), kernels::getTensorData<float>(scratch_data.get()),
+        kernels::getTensorData<float>(output_data), rank, input_size, batch_size, num_filters,
+        num_units, memory_size, options->fused_activation_function());
+    }
+    break;
+#endif // DIS_FLOAT
+    default:
+      assert(false && "Unsupported type.");
+  }
 }
 
-void SVDF::evalFloat() const
-{
-  TfLiteSVDFParams params_svdf{};
-  params_svdf.asymmetric_quantize_inputs = params().asymmetric_quantize_inputs;
-  params_svdf.rank = params().svdf_rank;
-  params_svdf.activation = get_tflite_activation(params().activation);
-
-  auto scratchpad_activation_state = getOutputTensors()[1];
-  // Note: it is expected that activation_state input variable tensor reset to zero,
-  // also expected that this variable tensor doesn't have buffer
-  auto scratchpad_data = getTensorData<float>(scratchpad_activation_state);
-  std::fill_n(scratchpad_data, scratchpad_activation_state->shape().num_elements(), 0);
-
-  auto scratchpad_1 = getOutputTensors()[2];
-
-  luci_interpreter_pal::FloatSVDF(
-    params_svdf, getTensorShape(input()), getTensorData<float>(input()),
-    getTensorShape(weight_feature()), getTensorData<float>(weight_feature()),
-    getTensorShape(weight_time()), getTensorData<float>(weight_time()), getTensorShape(bias()),
-    getTensorData<float>(bias()), getTensorData<float>(scratchpad_1), scratchpad_data,
-    getTensorShape(output()), getTensorData<float>(output()));
-}
-
-} // namespace kernels
 } // namespace luci_interpreter
