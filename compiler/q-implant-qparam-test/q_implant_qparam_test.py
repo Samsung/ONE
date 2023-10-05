@@ -47,6 +47,13 @@ if not os.path.exists(input_circle):
     print('fail to load input circle')
     quit(255)
 
+# if the previous test dummy file exist, remove it.
+if os.path.exists(output_circle):
+    os.remove(output_circle)
+
+if os.path.exists(h5_path):
+    os.remove(h5_path)
+
 # generate qparam.json and numpys
 test_runner = TestRunner(output_dir)
 
@@ -59,14 +66,26 @@ if not os.path.exists(qparam_dir):
     quit(255)
 
 # run q-implant
-subprocess.run([driver, input_circle, qparam_dir, output_circle], check=True)
+process = subprocess.run([driver, input_circle, qparam_dir, output_circle], check=True)
+
+try:
+    process.check_returncode()
+except:
+    print('q-implant run failed')
+    quit(255)
 
 if not os.path.exists(output_circle):
     print('output circle generate fail')
     quit(255)
 
 # dump circle to h5
-subprocess.run([dump, '--tensors_to_hdf5', h5_path, output_circle], check=True)
+process = subprocess.run([dump, '--tensors_to_hdf5', h5_path, output_circle], check=True)
+
+try:
+    process.check_returncode()
+except:
+    print('circle-tensordump run failed')
+    quit(255)
 
 if not os.path.exists(h5_path):
     print('h5 dump failed')
