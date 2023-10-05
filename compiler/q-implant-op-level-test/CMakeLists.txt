@@ -18,5 +18,6 @@ add_test(NAME q_implant_op_level_test
           "${ARTIFACTS_BIN_PATH}"
           "${NNCC_OVERLAY_DIR}/venv_2_12_1"
           "$<TARGET_FILE:q-implant>"
+          "$<TARGET_FILE:circle-tensordump>"
           ${Q_IMPLANT_TESTS}
 )
