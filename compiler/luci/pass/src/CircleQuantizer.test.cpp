@@ -396,7 +396,7 @@ TEST(CircleQuantizerTest, duplicate_name_in_layer_params_NEG)
   EXPECT_THROW(scq.quantize(&sqg.g), std::runtime_error);
 }
 
-TEST(CircleQuantizerTest, quantize_layer_param_set_dup2_NEG)
+TEST(CircleQuantizerTest, duplicate_layer_params_NEG)
 {
   SimpleQuantGraph sqg;
   sqg.init();
