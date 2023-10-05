@@ -67,7 +67,7 @@ private:
   void convQ8i();
   void convQ8iHybridPerChannel();
 
-private:
+protected:
   const IPortableTensor *_input;
   const IPortableTensor *_kernel;
   const IPortableTensor *_bias;
