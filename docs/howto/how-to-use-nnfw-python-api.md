@@ -1,5 +1,9 @@
 # How to Use NNFW PYTHON API
 
+## CAUTION
+
+This Python API is experimental yet. It can be changed later.
+
 ## Prepare nnpackage
 
 ### Use nnpackage examples
@@ -19,7 +23,6 @@ Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nn
 if operations:
     session = nnfw_session(nnpackage_path, backends, operations)
 else:
-    # NOTE: This Python API is experimental yet. It can be changed later.
     session = nnfw_session(nnpackage_path, backends)
 ```
 
