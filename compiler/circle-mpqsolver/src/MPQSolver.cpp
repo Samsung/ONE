@@ -24,7 +24,7 @@
 using namespace mpqsolver;
 
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
-using LayerParams = std::vector<std::shared_ptr<LayerParam>>;
+using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 
 MPQSolver::MPQSolver(const std::string &input_data_path, float qerror_ratio,
                      const std::string &input_quantization, const std::string &output_quantization)
@@ -62,12 +62,10 @@ void MPQSolver::resolve_patterns(luci::Module *module)
     switch (pattern)
     {
       case QuantizationPattern::Q8LayerNormWithQ16Variance:
-      {
         resolver = std::make_unique<pattern::Q8LayerNormWithQ16VarianceResolver>();
-      }
-      break;
+        break;
       default:
-        throw std::runtime_error("ERROR: unsupported pattern to resolve");
+        throw std::runtime_error("Unsupported pattern to resolve");
     }
 
     auto const resolved = resolver->resolve(module);
@@ -82,7 +80,7 @@ void MPQSolver::resolve_patterns(luci::Module *module)
       else if (frozen->second.dtype != node_param.second.dtype)
       {
         // ambiguity (incoming description conflicts with current)
-        throw std::runtime_error("ERROR: resolved patterns contradict each other");
+        throw std::runtime_error("Resolved patterns contradict each other");
       }
     }
   }

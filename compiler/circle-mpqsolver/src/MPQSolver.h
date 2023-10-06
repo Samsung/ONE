@@ -22,8 +22,10 @@
 
 #include <luci/IR/CircleNodes.h>
 
+#include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace mpqsolver
 {
@@ -86,8 +88,7 @@ protected:
   /**
    * @brief transform _frozen nodes to Quantizer friendly form
    */
-  std::vector<std::shared_ptr<luci::CircleQuantizer::Options::LayerParam>>
-  get_frozen_params() const;
+  luci::CircleQuantizer::Options::LayerParams get_frozen_params() const;
 
 protected:
   std::string _input_data_path;
