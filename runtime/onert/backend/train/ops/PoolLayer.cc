@@ -59,6 +59,7 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
+  std::unique_ptr<Tensor> _act_deriv_output;
   std::unique_ptr<Tensor> _arg_max_index;
 
 public:
@@ -81,6 +82,12 @@ public:
 
     _arg_max_index = std::make_unique<Tensor>(_output->get_info(), _output->layout());
     _arg_max_index->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+
+    if (activation != ir::Activation::NONE)
+    {
+      _act_deriv_output = std::make_unique<Tensor>(_output->get_info(), _output->layout());
+      _act_deriv_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+    }
   };
 
   ~MaxPool2D() {}
@@ -118,7 +125,9 @@ public:
       case ir::Activation::RELU:
         nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
                                     getShape(deriv_out), getBuffer<float>(deriv_out),
-                                    getShape(deriv_in), getBuffer<float>(deriv_in));
+                                    getShape(_act_deriv_output.get()),
+                                    getBuffer<float>(_act_deriv_output.get()));
+        deriv_out = _act_deriv_output.get();
         break;
       default:
         throw std::runtime_error("PoolLayer: Unsupported activation type yet");
