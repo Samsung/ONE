@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchSpaceToDepthKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel.html#a887a0d7de03fec485d78a3c0c4082147", null ],
+    [ "~NegTestDataInputOutputTypeMismatchSpaceToDepthKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel.html#abd3c49279b68fe6c1dfe13978a19c93d", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel.html#a55b74a92c4123c99b072c712c5a33893", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel.html#a9c375b8dfaccd6486bde5aac73f3f0bb", null ]
+];

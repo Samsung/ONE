@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchReduceMaxKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html#a919d50bf569c150fb0f7581715ba5009", null ],
+    [ "~NegTestDataInputOutputTypeMismatchReduceMaxKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html#ab676c98377fee006a82533a78cd0c013", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html#ae3f038f079c033a4087959063f24abd2", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html#ae22fb54f13dfe68df614d6f11778134a", null ]
+];

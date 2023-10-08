@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchLogSoftmaxKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html#a44b0b26beae7ca4de6f3060c9a060d0f", null ],
+    [ "~NegTestDataInputOutputTypeMismatchLogSoftmaxKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html#aa84f23d002eb3ad524576a6d829db587", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html#afe155e0a93792f53c446a0b063b8b652", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html#a6626185174490f6070a7dce55f170a1b", null ]
+];

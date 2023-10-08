@@ -1,5 +1,8 @@
 var namespaces_dup =
 [
+    [ "Add_000", "namespace_add__000.html", "namespace_add__000" ],
+    [ "Add_001", "namespace_add__001.html", "namespace_add__001" ],
+    [ "Add_002", "namespace_add__002.html", "namespace_add__002" ],
     [ "adt", "namespaceadt.html", "namespaceadt" ],
     [ "AnalysisTemplate", "namespace_analysis_template.html", "namespace_analysis_template" ],
     [ "angkor", "namespaceangkor.html", [
@@ -9,6 +12,7 @@ var namespaces_dup =
     [ "ann", "namespaceann.html", "namespaceann" ],
     [ "arm_compute", "namespacearm__compute.html", "namespacearm__compute" ],
     [ "arser", "namespacearser.html", "namespacearser" ],
+    [ "AveragePool2D_000", "namespace_average_pool2_d__000.html", "namespace_average_pool2_d__000" ],
     [ "backends", "namespacebackends.html", [
       [ "get_list", "namespacebackends.html#a7560637717af3d1ce5928f0dfff9c4d9", null ],
       [ "search_driver", "namespacebackends.html#a4f3ad8c118eacdf5d4e0050018ecbe80", null ]
@@ -56,10 +60,21 @@ var namespaces_dup =
       [ "type", "namespacecompare__tensors.html#a1f1e7b00605aebcadd5d5164d938a06d", null ]
     ] ],
     [ "compat", "namespacecompat.html", null ],
+    [ "Concatenation_000", "namespace_concatenation__000.html", "namespace_concatenation__000" ],
     [ "constant", "namespaceconstant.html", "namespaceconstant" ],
+    [ "Conv2D_000", "namespace_conv2_d__000.html", "namespace_conv2_d__000" ],
+    [ "Conv2D_001", "namespace_conv2_d__001.html", "namespace_conv2_d__001" ],
+    [ "Conv2D_002", "namespace_conv2_d__002.html", "namespace_conv2_d__002" ],
+    [ "Conv2D_003", "namespace_conv2_d__003.html", "namespace_conv2_d__003" ],
+    [ "Conv2D_004", "namespace_conv2_d__004.html", "namespace_conv2_d__004" ],
+    [ "Conv2D_005", "namespace_conv2_d__005.html", "namespace_conv2_d__005" ],
     [ "crew", "namespacecrew.html", "namespacecrew" ],
     [ "cwrap", "namespacecwrap.html", "namespacecwrap" ],
     [ "dalgona", "namespacedalgona.html", "namespacedalgona" ],
+    [ "DepthwiseConv2D_000", "namespace_depthwise_conv2_d__000.html", "namespace_depthwise_conv2_d__000" ],
+    [ "DepthwiseConv2D_001", "namespace_depthwise_conv2_d__001.html", "namespace_depthwise_conv2_d__001" ],
+    [ "DepthwiseConv2D_002", "namespace_depthwise_conv2_d__002.html", "namespace_depthwise_conv2_d__002" ],
+    [ "DepthwiseConv2D_003", "namespace_depthwise_conv2_d__003.html", "namespace_depthwise_conv2_d__003" ],
     [ "dio", "namespacedio.html", "namespacedio" ],
     [ "DotBuilder", "namespace_dot_builder.html", "namespace_dot_builder" ],
     [ "DumpFakeQuantFM", "namespace_dump_fake_quant_f_m.html", "namespace_dump_fake_quant_f_m" ],
@@ -351,6 +366,8 @@ var namespaces_dup =
       [ "make_tf2tfliteV2_cmd", "namespacemake__cmd.html#ab33d7adacab906604d2c6cb7fef048f0", null ],
       [ "make_tflite2circle_cmd", "namespacemake__cmd.html#a18452866463209cb3e8faf8f04d65598", null ]
     ] ],
+    [ "MaxPool2D_000", "namespace_max_pool2_d__000.html", "namespace_max_pool2_d__000" ],
+    [ "Mean_000", "namespace_mean__000.html", "namespace_mean__000" ],
     [ "minimal", "namespaceminimal.html", [
       [ "main", "namespaceminimal.html#a65bb779a0417e64d8694719fc85d8eea", null ],
       [ "num_elems", "namespaceminimal.html#ae6b9408705915e80f6c3840a3309196c", null ],
@@ -384,6 +401,8 @@ var namespaces_dup =
     ] ],
     [ "morph", "namespacemorph.html", "namespacemorph" ],
     [ "mpqsolver", "namespacempqsolver.html", "namespacempqsolver" ],
+    [ "Mul_000", "namespace_mul__000.html", "namespace_mul__000" ],
+    [ "Mul_001", "namespace_mul__001.html", "namespace_mul__001" ],
     [ "ndarray", "namespacendarray.html", "namespacendarray" ],
     [ "nest", "namespacenest.html", "namespacenest" ],
     [ "nike", "namespacenike.html", "namespacenike" ],
@@ -407,6 +426,7 @@ var namespaces_dup =
     [ "opselector", "namespaceopselector.html", "namespaceopselector" ],
     [ "optimized_ops", "namespaceoptimized__ops.html", "namespaceoptimized__ops" ],
     [ "OptionBuilder", "namespace_option_builder.html", "namespace_option_builder" ],
+    [ "Pad_000", "namespace_pad__000.html", "namespace_pad__000" ],
     [ "Palette", "namespace_palette.html", "namespace_palette" ],
     [ "part_eval_one", "namespacepart__eval__one.html", [
       [ "args", "namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394", null ],
@@ -462,6 +482,28 @@ var namespaces_dup =
     [ "profiling", "namespaceprofiling.html", "namespaceprofiling" ],
     [ "prunner", "namespaceprunner.html", "namespaceprunner" ],
     [ "q_implant", "namespaceq__implant.html", "namespaceq__implant" ],
+    [ "q_implant_qparam_test", "namespaceq__implant__qparam__test.html", [
+      [ "args", "namespaceq__implant__qparam__test.html#afa8abd8516a8dabaeb6765682ac9163c", null ],
+      [ "driver", "namespaceq__implant__qparam__test.html#a2e2a30586a4b7cd0a8e36645c597eb9e", null ],
+      [ "dump", "namespaceq__implant__qparam__test.html#a5d28e0126c67d6156c28641b8ac02742", null ],
+      [ "h5_path", "namespaceq__implant__qparam__test.html#acbe20d4d0a3e9f14a8888432b08e0193", null ],
+      [ "input_circle", "namespaceq__implant__qparam__test.html#ae021878d7ec5c845a3bdc07a3729c743", null ],
+      [ "input_dir", "namespaceq__implant__qparam__test.html#ad82773961151865e8f974875f209f8ec", null ],
+      [ "model", "namespaceq__implant__qparam__test.html#a6624421793d1308270fa485ef752e9b2", null ],
+      [ "module", "namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9", null ],
+      [ "output_circle", "namespaceq__implant__qparam__test.html#aa24b6db34148ecc9d2da38df86e18c6e", null ],
+      [ "output_dir", "namespaceq__implant__qparam__test.html#a226a6b63cc7ba30f4618416ab50aad54", null ],
+      [ "parser", "namespaceq__implant__qparam__test.html#a1c38066bfa8759cfcf5e0fbd65cc3095", null ],
+      [ "process", "namespaceq__implant__qparam__test.html#a6facb80894f4809e35e906434957fc3e", null ],
+      [ "qparam_dir", "namespaceq__implant__qparam__test.html#af3d265bc354be7cb5c50e04cde5e76bd", null ],
+      [ "required", "namespaceq__implant__qparam__test.html#ab047f90b383bbb5b5d2a34f9b939c3d6", null ],
+      [ "str", "namespaceq__implant__qparam__test.html#a005c6f4cb18db85b9179a476027473cb", null ],
+      [ "test_runner", "namespaceq__implant__qparam__test.html#ab21ed39a70f9f66a3d3e85b39cd157f7", null ],
+      [ "type", "namespaceq__implant__qparam__test.html#a1bb4e57372e621626120bc9fd8e65616", null ]
+    ] ],
+    [ "q_implant_validator", "namespaceq__implant__validator.html", [
+      [ "validate", "namespaceq__implant__validator.html#a85ba1f22a87b82f0a8e5135fa0aba3e8", null ]
+    ] ],
     [ "QErrorComputer", "namespace_q_error_computer.html", "namespace_q_error_computer" ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", "namespace_random_data_generator" ],
     [ "record_minmax", "namespacerecord__minmax.html", "namespacerecord__minmax" ],
@@ -469,6 +511,7 @@ var namespaces_dup =
       [ "res2bin", "namespaceres2bin.html#ab4171dc1e2bbce09fea09a422f1b606f", null ],
       [ "argc", "namespaceres2bin.html#a133d5b5550eb87dda5c6c5417a87990e", null ]
     ] ],
+    [ "Reshape_000", "namespace_reshape__000.html", "namespace_reshape__000" ],
     [ "resolve_includes", "namespaceresolve__includes.html", [
       [ "resolve_includes", "namespaceresolve__includes.html#afa9da7d0eff724eb243ba6c5e2f48f58", null ],
       [ "cl_files", "namespaceresolve__includes.html#ac0718ed4c36d2c8b5d61017256cdaf8d", null ],
@@ -477,9 +520,11 @@ var namespaces_dup =
     [ "rua", "namespacerua.html", "namespacerua" ],
     [ "ShapeTransform", "namespace_shape_transform.html", null ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", "namespace_single_operator_test" ],
+    [ "Softmax_000", "namespace_softmax__000.html", "namespace_softmax__000" ],
     [ "souschef", "namespacesouschef.html", "namespacesouschef" ],
     [ "sparsity", "namespacesparsity.html", "namespacesparsity" ],
     [ "std", "namespacestd.html", "namespacestd" ],
+    [ "test_utils", "namespacetest__utils.html", "namespacetest__utils" ],
     [ "TestUtil", "namespace_test_util.html", [
       [ "assertTrue", "namespace_test_util.html#af2a3b06e7e76c316cdf8668179f23311", null ],
       [ "checkActivation", "namespace_test_util.html#aa396cb29ff653bac6d4ae4e13e2f068e", null ],

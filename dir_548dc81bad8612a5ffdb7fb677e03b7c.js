@@ -66,7 +66,7 @@ var dir_548dc81bad8612a5ffdb7fb677e03b7c =
     [ "Sqrt.h", "mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_sqrt_8h" ],
     [ "Sub.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sub_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sub_8cpp" ],
     [ "Sub.h", "mir_2src_2mir__onnx__importer_2_op_2_sub_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_sub_8h" ],
-    [ "Sum.cpp", "mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp.html", "mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp" ],
+    [ "Sum.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_sum_8cpp" ],
     [ "Sum.h", "mir_2src_2mir__onnx__importer_2_op_2_sum_8h.html", "mir_2src_2mir__onnx__importer_2_op_2_sum_8h" ],
     [ "Tanh.cpp", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8cpp.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8cpp" ],
     [ "Tanh.h", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8h.html", "compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8h" ],

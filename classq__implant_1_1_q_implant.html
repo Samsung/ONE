@@ -154,87 +154,89 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_q_implant_8cpp_source.html#l00203">203</a> of file <a class="el" href="_q_implant_8cpp_source.html">QImplant.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  204</span>{</div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a> = load_json(_path);</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dir_path = directory_path(_path);</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>  std::unordered_map&lt;std::string, luci::CircleNode *&gt; name_to_node;</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a2316705571d54991d81041a0b9cbc557">loco::all_nodes</a>(g))</div>
-<div class="line"><span class="lineno">  210</span>  {</div>
-<div class="line"><span class="lineno">  211</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">if</span> (circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLEOUTPUT)</div>
-<div class="line"><span class="lineno">  213</span>    {</div>
-<div class="line"><span class="lineno">  214</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  215</span>    }</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    name_to_node[circle_node-&gt;name()] = circle_node;</div>
-<div class="line"><span class="lineno">  218</span>  }</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>  <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(<a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>.isObject());</div>
+<p class="definition">Definition at line <a class="el" href="_q_implant_8cpp_source.html#l00205">205</a> of file <a class="el" href="_q_implant_8cpp_source.html">QImplant.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
+<div class="line"><span class="lineno">  207</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a> = load_json(_path);</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dir_path = directory_path(_path);</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>  std::unordered_map&lt;std::string, luci::CircleNode *&gt; name_to_node;</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a2316705571d54991d81041a0b9cbc557">loco::all_nodes</a>(g))</div>
+<div class="line"><span class="lineno">  212</span>  {</div>
+<div class="line"><span class="lineno">  213</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  214</span>    <span class="keywordflow">if</span> (circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLEOUTPUT)</div>
+<div class="line"><span class="lineno">  215</span>    {</div>
+<div class="line"><span class="lineno">  216</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  217</span>    }</div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>    name_to_node[circle_node-&gt;name()] = circle_node;</div>
+<div class="line"><span class="lineno">  220</span>  }</div>
 <div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> tensor_name : <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>.getMemberNames())</div>
-<div class="line"><span class="lineno">  223</span>  {</div>
-<div class="line"><span class="lineno">  224</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>[<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>];</div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>    verify_tensor(tensor);</div>
+<div class="line"><span class="lineno">  222</span>  <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(<a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>.isObject());</div>
+<div class="line"><span class="lineno">  223</span> </div>
+<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> tensor_name : <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>.getMemberNames())</div>
+<div class="line"><span class="lineno">  225</span>  {</div>
+<div class="line"><span class="lineno">  226</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>[<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>];</div>
 <div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    <span class="keyword">const</span> <span class="keyword">auto</span> scale_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;scale&quot;</span>].asString();</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keyword">const</span> <span class="keyword">auto</span> zerop_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;zerop&quot;</span>].asString();</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keyword">const</span> <span class="keyword">auto</span> quantized_dimension = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;quantized_dimension&quot;</span>].asUInt();</div>
-<div class="line"><span class="lineno">  231</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(tensor[<span class="stringliteral">&quot;dtype&quot;</span>].asString());</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    <span class="keyword">auto</span> node = name_to_node.at(tensor_name);</div>
+<div class="line"><span class="lineno">  228</span>    verify_tensor(tensor);</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>    <span class="keyword">const</span> <span class="keyword">auto</span> scale_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;scale&quot;</span>].asString();</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keyword">const</span> <span class="keyword">auto</span> zerop_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;zerop&quot;</span>].asString();</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keyword">const</span> <span class="keyword">auto</span> quantized_dimension = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;quantized_dimension&quot;</span>].asUInt();</div>
+<div class="line"><span class="lineno">  233</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = <a class="code hl_function" href="namespaceluci.html#abe7a3902e3613ca9fcda2242cfb50c26">str_to_dtype</a>(tensor[<span class="stringliteral">&quot;dtype&quot;</span>].asString());</div>
 <div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>    <span class="comment">// Node must be fp32</span></div>
-<div class="line"><span class="lineno">  236</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>    node-&gt;quantparam(std::make_unique&lt;luci::CircleQuantParam&gt;());</div>
+<div class="line"><span class="lineno">  235</span>    <span class="keyword">auto</span> node = name_to_node.at(tensor_name);</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    <span class="comment">// Node must be fp32</span></div>
+<div class="line"><span class="lineno">  238</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
 <div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    set_dtype(node, dtype);</div>
-<div class="line"><span class="lineno">  241</span>    set_scale(node, scale_path);</div>
-<div class="line"><span class="lineno">  242</span>    set_zerop(node, zerop_path);</div>
-<div class="line"><span class="lineno">  243</span>    set_quantized_dimension(node, quantized_dimension);</div>
-<div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.isMember(<span class="stringliteral">&quot;value&quot;</span>))</div>
-<div class="line"><span class="lineno">  246</span>    {</div>
-<div class="line"><span class="lineno">  247</span>      <span class="keyword">auto</span> const_node = loco::must_cast&lt;luci::CircleConst *&gt;(node);</div>
-<div class="line"><span class="lineno">  248</span>      <span class="keyword">const</span> <span class="keyword">auto</span> value_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;value&quot;</span>].asString();</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>      set_value(const_node, value_path, dtype);</div>
-<div class="line"><span class="lineno">  251</span>    }</div>
-<div class="line"><span class="lineno">  252</span>  }</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>  <span class="comment">// Update output nodes</span></div>
-<div class="line"><span class="lineno">  255</span>  <span class="keyword">auto</span> graph_outputs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;outputs();</div>
-<div class="line"><span class="lineno">  256</span>  assert(graph_outputs); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g))</div>
-<div class="line"><span class="lineno">  258</span>  {</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keyword">auto</span> out_node = loco::must_cast&lt;luci::CircleOutput *&gt;(node);</div>
-<div class="line"><span class="lineno">  260</span>    <span class="keyword">auto</span> from_node = loco::must_cast&lt;luci::CircleNode *&gt;(out_node-&gt;from());</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(from_node-&gt;quantparam());</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>    out_node-&gt;quantparam(std::make_unique&lt;luci::CircleQuantParam&gt;());</div>
-<div class="line"><span class="lineno">  265</span>    out_node-&gt;quantparam()-&gt;scale = from_node-&gt;quantparam()-&gt;scale;</div>
-<div class="line"><span class="lineno">  266</span>    out_node-&gt;quantparam()-&gt;zerop = from_node-&gt;quantparam()-&gt;zerop;</div>
-<div class="line"><span class="lineno">  267</span>    out_node-&gt;quantparam()-&gt;quantized_dimension = from_node-&gt;quantparam()-&gt;quantized_dimension;</div>
-<div class="line"><span class="lineno">  268</span>    out_node-&gt;dtype(from_node-&gt;dtype());</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>    <span class="keyword">auto</span> graph_output = graph_outputs-&gt;at(out_node-&gt;index());</div>
-<div class="line"><span class="lineno">  271</span>    graph_output-&gt;dtype(out_node-&gt;dtype());</div>
-<div class="line"><span class="lineno">  272</span>  }</div>
+<div class="line"><span class="lineno">  240</span>    node-&gt;quantparam(std::make_unique&lt;luci::CircleQuantParam&gt;());</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>    set_dtype(node, dtype);</div>
+<div class="line"><span class="lineno">  243</span>    set_scale(node, scale_path);</div>
+<div class="line"><span class="lineno">  244</span>    set_zerop(node, zerop_path);</div>
+<div class="line"><span class="lineno">  245</span>    set_quantized_dimension(node, quantized_dimension);</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.isMember(<span class="stringliteral">&quot;value&quot;</span>))</div>
+<div class="line"><span class="lineno">  248</span>    {</div>
+<div class="line"><span class="lineno">  249</span>      <span class="keyword">auto</span> const_node = loco::must_cast&lt;luci::CircleConst *&gt;(node);</div>
+<div class="line"><span class="lineno">  250</span>      <span class="keyword">const</span> <span class="keyword">auto</span> value_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>[<span class="stringliteral">&quot;value&quot;</span>].asString();</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>      set_value(const_node, value_path, dtype);</div>
+<div class="line"><span class="lineno">  253</span>    }</div>
+<div class="line"><span class="lineno">  254</span>  }</div>
+<div class="line"><span class="lineno">  255</span> </div>
+<div class="line"><span class="lineno">  256</span>  forward_qparam(g);</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>  <span class="comment">// Update output nodes</span></div>
+<div class="line"><span class="lineno">  259</span>  <span class="keyword">auto</span> graph_outputs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;outputs();</div>
+<div class="line"><span class="lineno">  260</span>  assert(graph_outputs); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g))</div>
+<div class="line"><span class="lineno">  262</span>  {</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keyword">auto</span> out_node = loco::must_cast&lt;luci::CircleOutput *&gt;(node);</div>
+<div class="line"><span class="lineno">  264</span>    <span class="keyword">auto</span> from_node = loco::must_cast&lt;luci::CircleNode *&gt;(out_node-&gt;from());</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(from_node-&gt;quantparam());</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>    out_node-&gt;quantparam(std::make_unique&lt;luci::CircleQuantParam&gt;());</div>
+<div class="line"><span class="lineno">  269</span>    out_node-&gt;quantparam()-&gt;scale = from_node-&gt;quantparam()-&gt;scale;</div>
+<div class="line"><span class="lineno">  270</span>    out_node-&gt;quantparam()-&gt;zerop = from_node-&gt;quantparam()-&gt;zerop;</div>
+<div class="line"><span class="lineno">  271</span>    out_node-&gt;quantparam()-&gt;quantized_dimension = from_node-&gt;quantparam()-&gt;quantized_dimension;</div>
+<div class="line"><span class="lineno">  272</span>    out_node-&gt;dtype(from_node-&gt;dtype());</div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>  <span class="comment">// Verify quantized model</span></div>
-<div class="line"><span class="lineno">  275</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  276</span>  {</div>
-<div class="line"><span class="lineno">  277</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>    <span class="comment">// Throw an exception if dtype is not float32</span></div>
-<div class="line"><span class="lineno">  280</span>    <span class="comment">// TODO Operator-level verification (ex: using QuantizedModelVerifier)</span></div>
-<div class="line"><span class="lineno">  281</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(circle_node-&gt;dtype() != loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">  282</span>  }</div>
-<div class="line"><span class="lineno">  283</span>}</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keyword">auto</span> graph_output = graph_outputs-&gt;at(out_node-&gt;index());</div>
+<div class="line"><span class="lineno">  275</span>    graph_output-&gt;dtype(out_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">  276</span>  }</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>  <span class="comment">// Verify quantized model</span></div>
+<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><span class="lineno">  280</span>  {</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>    <span class="comment">// Throw an exception if dtype is not float32</span></div>
+<div class="line"><span class="lineno">  284</span>    <span class="comment">// TODO Operator-level verification (ex: using QuantizedModelVerifier)</span></div>
+<div class="line"><span class="lineno">  285</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(circle_node-&gt;dtype() != loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  286</span>  }</div>
+<div class="line"><span class="lineno">  287</span>}</div>
 <div class="ttc" id="a_metric_printer_8cpp_html_ad1515c4010b62f2e17704bb149a64d6b"><div class="ttname"><a href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a></div><div class="ttdeci">#define THROW_UNLESS(COND, MSG)</div><div class="ttdef"><b>Definition:</b> <a href="_metric_printer_8cpp_source.html#l00027">MetricPrinter.cpp:27</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>

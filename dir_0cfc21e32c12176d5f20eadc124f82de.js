@@ -55,6 +55,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "ReplaceMulAddWithDepthwiseConvPass.h", "_replace_mul_add_with_depthwise_conv_pass_8h.html", "_replace_mul_add_with_depthwise_conv_pass_8h" ],
     [ "ReplaceNonConstFCWithBatchMatMulPass.h", "_replace_non_const_f_c_with_batch_mat_mul_pass_8h.html", "_replace_non_const_f_c_with_batch_mat_mul_pass_8h" ],
     [ "ReplaceSubWithAddPass.h", "_replace_sub_with_add_pass_8h.html", "_replace_sub_with_add_pass_8h" ],
+    [ "ReplaceWithFCGeluFCPass.h", "_replace_with_f_c_gelu_f_c_pass_8h.html", "_replace_with_f_c_gelu_f_c_pass_8h" ],
     [ "RequantizePass.h", "_requantize_pass_8h.html", "_requantize_pass_8h" ],
     [ "ResolveCustomOpAddPass.h", "_resolve_custom_op_add_pass_8h.html", "_resolve_custom_op_add_pass_8h" ],
     [ "ResolveCustomOpBatchMatMulPass.h", "_resolve_custom_op_batch_mat_mul_pass_8h.html", "_resolve_custom_op_batch_mat_mul_pass_8h" ],

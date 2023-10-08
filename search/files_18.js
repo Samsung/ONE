@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['zeroslike_2ecpp_0',['ZerosLike.cpp',['../compiler_2tflchef_2core_2src_2_op_2_zeros_like_8cpp.html',1,'(Global Namespace)'],['../compiler_2tflchef_2tflite_2src_2_op_2_zeros_like_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_zeros_like_8cpp.html',1,'(Global Namespace)']]],
-  ['zeroslike_2eh_1',['ZerosLike.h',['../core_2src_2_op_2_zeros_like_8h.html',1,'(Global Namespace)'],['../tflite_2src_2_op_2include_2_zeros_like_8h.html',1,'(Global Namespace)']]],
-  ['zeroslikeoptions_2ecpp_2',['ZerosLikeOptions.cpp',['../_zeros_like_options_8cpp.html',1,'']]],
-  ['zeroslikeoptions_2eh_3',['ZerosLikeOptions.h',['../_zeros_like_options_8h.html',1,'']]],
-  ['zipper_2eh_4',['Zipper.h',['../_zipper_8h.html',1,'']]]
+  ['xnnpack_2ecc_0',['xnnpack.cc',['../xnnpack_8cc.html',1,'']]],
+  ['xpsepactfromtransposeconvpass_2ecpp_1',['XpSepActFromTransposeConvPass.cpp',['../_xp_sep_act_from_transpose_conv_pass_8cpp.html',1,'']]],
+  ['xpsepactfromtransposeconvpass_2eh_2',['XpSepActFromTransposeConvPass.h',['../_xp_sep_act_from_transpose_conv_pass_8h.html',1,'']]]
 ];

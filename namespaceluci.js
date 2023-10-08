@@ -540,6 +540,7 @@ var namespaceluci =
     [ "ReplaceMulAddWithDepthwiseConvPass", "structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html", "structluci_1_1_replace_mul_add_with_depthwise_conv_pass" ],
     [ "ReplaceNonConstFCWithBatchMatMulPass", "structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html", "structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass" ],
     [ "ReplaceSubWithAddPass", "structluci_1_1_replace_sub_with_add_pass.html", "structluci_1_1_replace_sub_with_add_pass" ],
+    [ "ReplaceWithFCGeluFCPass", "structluci_1_1_replace_with_f_c_gelu_f_c_pass.html", "structluci_1_1_replace_with_f_c_gelu_f_c_pass" ],
     [ "RequantizePass", "classluci_1_1_requantize_pass.html", "classluci_1_1_requantize_pass" ],
     [ "ResolveCustomOpAddPass", "structluci_1_1_resolve_custom_op_add_pass.html", "structluci_1_1_resolve_custom_op_add_pass" ],
     [ "ResolveCustomOpBatchMatMulPass", "structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html", "structluci_1_1_resolve_custom_op_batch_mat_mul_pass" ],
