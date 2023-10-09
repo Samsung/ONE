@@ -78,7 +78,7 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 }
 
 std::unique_ptr<ops::GradientApplier>
-generateGradientApplier(const std::shared_ptr<exec::train::optimizer::Optimizer> optimizer,
+generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
                         const IPortableTensor *gradient, ITrainableTensor *trainable)
 {
   auto update_fn = std::make_unique<ops::GradientApplier>();
@@ -119,7 +119,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context,
-                                 std::shared_ptr<exec::train::optimizer::Optimizer> optimizer)
+                                 const exec::train::optimizer::Optimizer *optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg},
     _external_context(external_context), _optimizer{optimizer}, _update_funcs{}

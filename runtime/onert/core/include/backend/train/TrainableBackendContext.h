@@ -20,9 +20,9 @@
 #include "backend/Backend.h"
 #include "backend/train/ITensorRegistry.h"
 #include "backend/train/ITrainableBackend.h"
-#include "exec/train/optimizer/Optimizer.h"
 #include "exec/train/TrainableFnSequence.h"
 #include "ir/OperandIndexMap.h"
+#include "ir/train/OptimizerInfo.h"
 #include "ir/train/TrainableGraph.h"
 #include "util/Set.h"
 
@@ -50,8 +50,8 @@ struct TrainableContextData
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
   bool is_linear_executor;
-  /* Optimizer */
-  std::shared_ptr<exec::train::optimizer::Optimizer> optimizer;
+  /* Optimizer information */
+  ir::train::OptimizerInfo optim_info;
 };
 
 class TrainableBackendContext

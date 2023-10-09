@@ -20,6 +20,8 @@
 #include "TensorManager.h"
 #include "TensorRegistry.h"
 
+#include <exec/train/optimizer/Optimizer.h>
+
 namespace onert
 {
 namespace backend
@@ -31,7 +33,8 @@ namespace train
 class TensorBuilder
 {
 public:
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                const exec::train::optimizer::Optimizer *optimizer, const std::string planner_id);
 
   /**
    * @brief     Register tensor information to allocate on train backend
@@ -68,6 +71,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::OperandInfo> _backward_tensor_info_map;
   ir::OperandIndexMap<bool> _as_constants;
+  const exec::train::optimizer::Optimizer *_optimizer;
 };
 
 } // namespace train

@@ -20,6 +20,7 @@
 #include "BackendContext.h"
 #include "Config.h"
 #include "KernelGenerator.h"
+#include "optimizer/Optimizers.h"
 
 #include <backend/Backend.h>
 #include <backend/train/ITrainableBackend.h>
@@ -51,13 +52,15 @@ public:
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
     const auto &tgraph = *tdata.tgraph;
+    auto optimizer = createOptimizer(tdata.optim_info);
     auto tr = std::make_shared<TensorRegistry>();
-    auto tb = std::make_shared<TensorBuilder>(tr, "Bump");
+    auto tb = std::make_shared<TensorBuilder>(tr, optimizer.get(), "Bump");
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
-    auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb);
+    auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb,
+                                                           std::move(optimizer));
 
     context->kernel_gen = std::make_shared<train::KernelGenerator>(
-      tgraph, tr, context->external_context(), context->data()->optimizer);
+      tgraph, tr, context->external_context(), context->optimizer());
     return context;
   }
 
