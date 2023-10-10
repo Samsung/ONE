@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+ * Copyright 2023 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,61 +15,67 @@
  * limitations under the License.
  */
 
-#include "kernels/ResizeNearestNeighbor.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "TISOKernel.h"
 
-#include <tensorflow/lite/kernels/internal/reference/resize_nearest_neighbor.h>
 #include "PALResizeNearestNeighbor.h"
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-ResizeNearestNeighbor::ResizeNearestNeighbor(const Tensor *input, const Tensor *size,
-                                             Tensor *output,
-                                             const ResizeNearestNeighborParams &params)
-  : KernelWithParams<ResizeNearestNeighborParams>({input, size}, {output}, params)
+void configure_kernel_CircleResizeNearestNeighbor(const circle::Operator *cur_op,
+                                                  BaseRuntimeGraph *runtime_graph)
 {
+  // Check of the size of input. Should be 2
+  LUCI_INTERPRETER_CHECK(cur_op->inputs()->size() == 2);
+  const kernels::TISOKernel tiso_kernel(cur_op, runtime_graph);
+
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(tiso_kernel.input1()) ==
+                         Tensor::element_type(tiso_kernel.output()));
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(tiso_kernel.input1()) == 4);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(tiso_kernel.input2()) == 1);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(tiso_kernel.input2()) == DataType::S32);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(tiso_kernel.input2(), 0) == 2);
+
+  const auto *params = cur_op->builtin_options_as_ResizeNearestNeighborOptions();
+  if (params->half_pixel_centers() && params->align_corners())
+    assert(false && "If half_pixel_centers is True, align_corners must be False.");
 }
 
-void ResizeNearestNeighbor::configure()
+void execute_kernel_CircleResizeNearestNeighbor(const circle::Operator *cur_op,
+                                                BaseRuntimeGraph *runtime_graph)
 {
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
-  LUCI_INTERPRETER_CHECK(size()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(size()->element_type() == DataType::S32);
-  LUCI_INTERPRETER_CHECK(size()->shape().dim(0) == 2);
-  Shape output_shape(4);
-  output_shape.dim(0) = input()->shape().dim(0);
-  output_shape.dim(1) = getTensorData<int32_t>(size())[0];
-  output_shape.dim(2) = getTensorData<int32_t>(size())[1];
-  output_shape.dim(3) = input()->shape().dim(3);
-  // TODO: enable it only if kernel with dynamic shapes
-  output()->resize(output_shape);
-}
+  kernels::TISOKernel tiso_kernel(cur_op, runtime_graph);
+  kernels::TISOData tiso_data = tiso_kernel.readData();
 
-void ResizeNearestNeighbor::execute() const
-{
-  tflite::ResizeNearestNeighborParams op_params{};
-  op_params.align_corners = params().align_corners;
-  op_params.half_pixel_centers = params().half_pixel_centers;
-  switch (output()->element_type())
+  // Get parameters
+  const auto *op_params = cur_op->builtin_options_as_ResizeNearestNeighborOptions();
+
+  luci_interpreter_pal::ResizeNearestNeighborParams params;
+  params.align_corners = op_params->align_corners();
+  params.half_pixel_centers = false;
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(tiso_kernel.input1());
+  const uint8_t *size_data = runtime_graph->getConstDataByTensor(tiso_kernel.input2());
+  uint8_t *output_data = runtime_graph->getDataByTensor(tiso_kernel.output());
+
+  switch (Tensor::element_type(tiso_kernel.output()))
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      tflite::reference_ops::ResizeNearestNeighbor(
-        op_params, getTensorShape(input()), getTensorData<int32_t>(input()), getTensorShape(size()),
-        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<int32_t>(output()));
-      break;
-    case DataType::U8:
       luci_interpreter_pal::ResizeNearestNeighbor(
-        op_params, getTensorShape(input()), getTensorData<uint8_t>(input()), getTensorShape(size()),
-        getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
+        params, kernels::getTensorRuntimeShape(tiso_kernel.input1(), runtime_graph),
+        kernels::getTensorData<float>(input_data),
+        kernels::getTensorRuntimeShape(tiso_kernel.input2(), runtime_graph),
+        kernels::getTensorData<int32_t>(size_data),
+        kernels::getTensorRuntimeShape(tiso_kernel.output(), runtime_graph),
+        kernels::getTensorData<float>(output_data));
       break;
+#endif // DIS_FLOAT
     default:
       assert(false && "Unsupported type.");
   }
 }
 
-} // namespace kernels
 } // namespace luci_interpreter

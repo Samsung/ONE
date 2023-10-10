@@ -27,6 +27,12 @@ struct MeanParams
   int16_t axis[4];
 };
 
+struct ResizeNearestNeighborParams
+{
+  bool align_corners;
+  bool half_pixel_centers;
+};
+
 struct PadParams
 {
   int8_t left_padding_count;
