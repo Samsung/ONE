@@ -204,6 +204,8 @@ struct FakeQuantize final : public luci::CircleNodeMutableVisitor<void>
   void visit(luci::CircleLogistic *node) { fq_activation(node); }
   void visit(luci::CircleLogSoftmax *node) { fq_activation(node); }
   void visit(luci::CircleMaxPool2D *node) { fq_activation(node); }
+  void visit(luci::CircleMaximum *node) { fq_activation(node); }
+  void visit(luci::CircleMinimum *node) { fq_activation(node); }
   void visit(luci::CircleMul *node) { fq_activation(node); }
   void visit(luci::CircleNeg *node) { fq_activation(node); }
   void visit(luci::CirclePad *node) { fq_activation(node); }
