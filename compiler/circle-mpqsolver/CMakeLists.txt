@@ -40,6 +40,7 @@ set(TEST_SOURCES
     "src/pattern/PatternResolver.cpp"
     "src/core/Dumper.cpp"
     "src/core/DumpingHooks.cpp"
+    "src/core/Evaluator.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
@@ -51,3 +52,5 @@ target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
 target_link_libraries(circle_mpqsolver_test luci_testhelper)
 target_link_libraries(circle_mpqsolver_test luci_export)
+target_link_libraries(circle_mpqsolver_test luci_interpreter)
+target_link_libraries(circle_mpqsolver_test dio_hdf5)
