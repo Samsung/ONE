@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2018 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +14,36 @@
  * limitations under the License.
  */
 
-#include "kernels/Squeeze.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
+#include "SISOKernel.h"
+
+#include <cassert>
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-Squeeze::Squeeze(const Tensor *input, Tensor *output, const SqueezeParams &params)
-  : KernelWithParams<SqueezeParams>({input}, {output}, params)
+void configure_kernel_CircleSqueeze(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-}
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-void Squeeze::configure()
-{
-  int input_num_dims = input()->shape().num_dims();
-  int num_squeeze_dims = params().squeeze_dims.size();
+  assert(cur_op->inputs()->size() == 1);
+
+  const circle::Tensor *input = kernel.input();
+  const circle::Tensor *output = kernel.output();
+
+  assert(Tensor::num_elements(input) == Tensor::num_elements(output));
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  int input_num_dims = kernels::getTensorShape(input).dimensionsCount();
+
+  // Get parameters
+  const circle::SqueezeOptions *op_params = cur_op->builtin_options_as_SqueezeOptions();
+
+  // Verification of the Squeeze parameters
+  int num_squeeze_dims = op_params->squeeze_dims()->size();
   assert(input_num_dims <= 8);
   bool should_squeeze[8] = {false};
   int num_squeezed_dims = 0;
@@ -40,7 +51,8 @@ void Squeeze::configure()
   {
     for (int idx = 0; idx < input_num_dims; ++idx)
     {
-      if (input()->shape().dim(idx) == 1)
+
+      if (kernels::getTensorShape(input).dims(idx) == 1)
       {
         should_squeeze[idx] = true;
         ++num_squeezed_dims;
@@ -51,35 +63,37 @@ void Squeeze::configure()
   {
     for (int idx = 0; idx < num_squeeze_dims; ++idx)
     {
-      int current = params().squeeze_dims[idx] < 0 ? params().squeeze_dims[idx] + input_num_dims
-                                                   : params().squeeze_dims[idx];
-      assert(current >= 0 && current < input_num_dims && input()->shape().dim(current) == 1);
+      int current = (*op_params->squeeze_dims())[idx] < 0
+                      ? (*op_params->squeeze_dims())[idx] + input_num_dims
+                      : (*op_params->squeeze_dims())[idx];
+      assert(current >= 0 && current < input_num_dims &&
+             kernels::getTensorShape(input).dims(current) == 1);
       if (!should_squeeze[current])
         ++num_squeezed_dims;
       should_squeeze[current] = true;
     }
   }
-  // TODO: enable it only if kernel with dynamic shapes
-  Shape output_shape(input_num_dims - num_squeezed_dims);
-  for (int in_idx = 0, out_idx = 0; in_idx < input_num_dims; ++in_idx)
-  {
-    if (!should_squeeze[in_idx])
-    {
-      output_shape.dim(out_idx++) = input()->shape().dim(in_idx);
-    }
-  }
-  output()->resize(output_shape);
 }
 
-void Squeeze::execute() const
+void execute_kernel_CircleSqueeze(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  assert(input()->shape().num_elements() == output()->shape().num_elements());
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  const auto *input_data = input()->data<void>();
-  auto *output_data = output()->data<void>();
+  assert(cur_op->inputs()->size() == 1);
+
+  const circle::Tensor *input = kernel.input();
+  const circle::Tensor *output = kernel.output();
+
+  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
+  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+
+  assert(input_data != nullptr);
+  assert(output_data != nullptr);
+
+  assert(Tensor::num_elements(input) == Tensor::num_elements(output));
+
   std::memcpy(output_data, input_data,
-              getDataTypeSize(input()->element_type()) * input()->shape().num_elements());
+              getDataTypeSize(Tensor::element_type(input)) * Tensor::num_elements(input));
 }
 
-} // namespace kernels
 } // namespace luci_interpreter

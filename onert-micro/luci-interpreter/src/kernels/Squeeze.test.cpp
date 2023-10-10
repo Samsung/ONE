@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "kernels/Squeeze.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "loader/ModuleLoader.h"
+#include "luci_interpreter/test_models/squeeze/FloatSqueezeKernel.h"
+#include "luci_interpreter/test_models/squeeze/NegSqueezeKernel.h"
 
 namespace luci_interpreter
 {
@@ -27,46 +28,82 @@ namespace
 
 using namespace testing;
 
-template <typename T>
-void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> output_shape,
-           std::initializer_list<T> input_data, std::initializer_list<T> output_data,
-           std::initializer_list<int32_t> squeeze_dims)
+class SqueezeTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-
-  constexpr DataType element_type = getElementType<T>();
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(element_type);
-
-  SqueezeParams params{};
-  params.squeeze_dims = squeeze_dims;
-
-  Squeeze kernel(&input_tensor, &output_tensor, params);
-  kernel.configure();
-  memory_manager->allocate_memory(output_tensor);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<T>(output_tensor), ::testing::ElementsAreArray(output_data));
-  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
-}
-
-template <typename T> class SqueezeTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(SqueezeTest, DataTypes);
-
-TYPED_TEST(SqueezeTest, TotalTest)
+template <typename T> std::vector<T> checkKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>(
-    /*input_shape=*/{1, 24, 1}, /*output_shape=*/{24},
-    /*input_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
-                    13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
-    /*output_data=*/{1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
-                     13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
-    {-1, 0});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // Set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
+}
+
+TEST_F(SqueezeTest, Float_P)
+{
+  test_kernel::TestDataFloatSqueeze test_data_kernel(false);
+  std::vector<float> output_data_vector = checkKernel(&test_data_kernel);
+
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(SqueezeTest, Float_No_Param_P)
+{
+  test_kernel::TestDataFloatSqueeze test_data_kernel(true);
+  std::vector<float> output_data_vector = checkKernel(&test_data_kernel);
+
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(SqueezeTest, Input_output_type_mismatch_NEG)
+{
+  test_kernel::NegTestIOMismatchParamFloatSqueeze test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
+}
+
+TEST_F(SqueezeTest, Wrong_Param_NEG)
+{
+  test_kernel::NegTestDataWrongParamFloatSqueeze test_data_kernel;
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
