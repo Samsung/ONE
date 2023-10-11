@@ -20,7 +20,7 @@
 #include <luci_interpreter/Interpreter.h>
 #include <iostream>
 #include <cstring>
-
+#include <cstdio>
 #include "modelfully.circle.h"
 
 // Blinking rate in milliseconds
@@ -43,7 +43,7 @@ int main()
     for (int32_t i = 0; i < num_inputs; i++)
     {
       auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
-      std::memset(input_data, 0, interpreter.getInputDataSizeByIndex(i));
+      std::memset(input_data, 1.f, interpreter.getInputDataSizeByIndex(i));
     }
 
     // Do inference.
@@ -58,10 +58,15 @@ int main()
   for (int i = 0; i < num_outputs; i++)
   {
     auto data = interpreter.readOutputTensor(i);
+    float output = *reinterpret_cast<float *>(data);
+//    printf("%f", output)
+    std::cout << static_cast<int>(output * 1000) << "\n";
+
   }
+
   while (true)
   {
-    std::cout << "Hello world\n";
+//    std::cout << "Hello world\n";
     ThisThread::sleep_for(BLINKING_RATE);
   }
 }
