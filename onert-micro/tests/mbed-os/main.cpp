@@ -15,58 +15,62 @@
  */
 
 #include "mbed.h"
-#undef ARG_MAX
-#define LUCI_LOG 0
 #include <luci_interpreter/Interpreter.h>
 #include <iostream>
-#include <cstring>
-#include <cstdio>
-#include "modelfully.circle.h"
-
-// Blinking rate in milliseconds
-#define BLINKING_RATE 500ms
+#include <vector>
+#include "speech_recognition_float.circle.h"
+#include "test_data.h"
 
 luci_interpreter::Interpreter interpreter(circle_model_raw, true);
-
+std::vector<float> infer()
+{
+  auto input_data = reinterpret_cast<float *>(interpreter.allocateInputTensor(0));
+  for (int i = 0; i < 1960; ++i)
+  {
+    *(input_data + i) = test_data[i];
+  }
+  interpreter.interpret();
+  auto data = interpreter.readOutputTensor(0);
+  std::vector<float> output;
+  for (int i = 0; i < 4; ++i)
+  {
+    output.push_back(*(reinterpret_cast<float *>(data) + i));
+  }
+  return output;
+}
+void print_float(float x)
+{
+  int tmp = x * 1000000 - static_cast<int>(x) * 1000000;
+  std::cout << (tmp >= 0 ? "" : "-") << static_cast<int>(x) << ".";
+  int zeros_to_add = 0;
+  for (int i = 100000; i >= 1; i = i / 10)
+  {
+    if (tmp / i != 0)
+      break;
+    zeros_to_add++;
+  }
+  for (int i = 0; i < zeros_to_add; ++i)
+  {
+    std::cout << "0";
+  }
+  std::cout << (tmp >= 0 ? tmp : -tmp) << "\n";
+}
 int main()
 {
-#ifdef LED1
-  DigitalOut led(LED1);
-#else
-  bool led;
-#endif
-  int num_inference = 1;
-  const int32_t num_inputs = 1;
+  Timer t;
+  t.start();
+  auto res = infer();
+  t.stop();
+  std::cout << "Executed in " << t.read_us() << "us\n";
 
-  for (int j = 0; j < num_inference; ++j)
-  {
-    for (int32_t i = 0; i < num_inputs; i++)
-    {
-      auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
-      std::memset(input_data, 1.f, interpreter.getInputDataSizeByIndex(i));
-    }
+  // Predictions after inference with TFLite on PC:
+  std::cout << "CORRECT PREDICTION\n0.960639\n0.006082\n0.005203\n0.028074\n";
 
-    // Do inference.
-    Timer t;
-    t.start();
-    interpreter.interpret();
-    t.stop();
-    std::cout << "Executed in " << t.read_us() << "us\n";
-  }
-  // Get output.
-  int num_outputs = 1;
-  for (int i = 0; i < num_outputs; i++)
-  {
-    auto data = interpreter.readOutputTensor(i);
-    float output = *reinterpret_cast<float *>(data);
-//    printf("%f", output)
-    std::cout << static_cast<int>(output * 1000) << "\n";
-
-  }
-
+  std::cout << "MODEL PREDICTION\n";
+  for (int i = 0; i < 4; ++i)
+    print_float(res[i]);
   while (true)
   {
-//    std::cout << "Hello world\n";
-    ThisThread::sleep_for(BLINKING_RATE);
+    ThisThread::sleep_for(100ms);
   }
 }
