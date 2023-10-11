@@ -37,6 +37,10 @@ PatternSolver::PatternSolver(const std::string &input_quantization,
 std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 {
   auto module = read_module(module_path);
+  if (!module)
+  {
+    throw std::runtime_error("Failed to load model");
+  }
 
   resolve_patterns(module.get());
 
@@ -44,8 +48,7 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 
   if (!_quantizer->quantize(module.get(), "uint8", layer_params))
   {
-    std::cerr << "ERROR: Failed to quantize model" << std::endl;
-    return nullptr;
+    throw std::runtime_error("Failed to quantize model");
   }
 
   return module;
