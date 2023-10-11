@@ -19,6 +19,7 @@
 
 #include "MPQSolver.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -27,6 +28,21 @@ namespace mpqsolver
 {
 namespace pattern
 {
+
+enum class QuantizationPattern
+{
+  Q8LayerNormWithQ16Variance
+};
+
+struct MPQOptions
+{
+  std::vector<QuantizationPattern> _patterns;
+};
+
+struct FrozenNodes
+{
+  std::map<luci::CircleNode *, luci::CircleQuantizer::Options::LayerParam> _node_to_param;
+};
 
 class PatternSolver final : public MPQSolver
 {
@@ -42,6 +58,26 @@ public:
    * @brief run solver for recorded float module at module_path
    */
   std::unique_ptr<luci::Module> run(const std::string &module_path) override;
+
+private:
+  /**
+   * @brief set quantization options
+   */
+  void set_mpq_options(MPQOptions &options);
+
+  /**
+   * @brief fill _frozen with prescribed quantization parameters of resolved nodes
+   */
+  void resolve_patterns(luci::Module *module);
+
+  /**
+   * @brief transform _frozen nodes to Quantizer friendly form
+   */
+  luci::CircleQuantizer::Options::LayerParams get_frozen_params() const;
+
+private:
+  MPQOptions _options; // options for mpq quantization
+  FrozenNodes _frozen; // nodes with prescribed quantization parameters
 };
 
 } // namespace pattern

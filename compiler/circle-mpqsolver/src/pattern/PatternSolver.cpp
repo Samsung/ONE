@@ -16,9 +16,14 @@
 
 #include "PatternSolver.h"
 
+#include "PatternResolver.h"
+
 #include <iostream>
 
 using namespace mpqsolver::pattern;
+
+using LayerParam = luci::CircleQuantizer::Options::LayerParam;
+using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 
 PatternSolver::PatternSolver(const std::string &input_quantization,
                              const std::string &output_quantization,
@@ -44,4 +49,51 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
   }
 
   return module;
+}
+
+void PatternSolver::set_mpq_options(MPQOptions &options) { _options = options; }
+
+LayerParams PatternSolver::get_frozen_params() const
+{
+  LayerParams params;
+  for (auto node_to_param : _frozen._node_to_param)
+  {
+    params.push_back(std::make_shared<LayerParam>(node_to_param.second));
+  }
+
+  return params;
+}
+
+void PatternSolver::resolve_patterns(luci::Module *module)
+{
+  _frozen._node_to_param.clear();
+
+  for (auto pattern : _options._patterns)
+  {
+    std::unique_ptr<pattern::PatternResolver> resolver;
+    switch (pattern)
+    {
+      case QuantizationPattern::Q8LayerNormWithQ16Variance:
+        resolver = std::make_unique<pattern::Q8LayerNormWithQ16VarianceResolver>();
+        break;
+      default:
+        throw std::runtime_error("Unsupported pattern to resolve");
+    }
+
+    auto const resolved = resolver->resolve(module);
+    for (auto node_param : resolved)
+    {
+      auto const frozen = _frozen._node_to_param.find(node_param.first);
+      if (frozen == _frozen._node_to_param.end())
+      {
+        // node was not previously defined - just set it (no ambiguity)
+        _frozen._node_to_param[node_param.first] = node_param.second;
+      }
+      else if (frozen->second.dtype != node_param.second.dtype)
+      {
+        // ambiguity (incoming description conflicts with current)
+        throw std::runtime_error("Resolved patterns contradict each other");
+      }
+    }
+  }
 }
