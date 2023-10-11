@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__
 #define __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__
 
+#include "Adam.h"
 #include "SGD.h"
 
 #include <ir/train/OptimizerInfo.h>
@@ -35,6 +36,10 @@ createOptimizer(const ir::train::OptimizerInfo &optim_info)
   if (optim_info.optim_code == ir::train::OptimizerCode::SGD)
   {
     return std::make_unique<optimizer::SGD>(optim_info.learning_rate);
+  }
+  else if (optim_info.optim_code == ir::train::OptimizerCode::Adam)
+  {
+    return std::make_unique<optimizer::Adam>(optim_info.learning_rate);
   }
   else
     throw std::runtime_error("Invalid optimizer type, " +
