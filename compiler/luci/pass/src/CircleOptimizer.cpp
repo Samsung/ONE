@@ -64,11 +64,13 @@
 #include "luci/Pass/ReplaceMulAddWithDepthwiseConvPass.h"
 #include "luci/Pass/ReplaceSubWithAddPass.h"
 #include "luci/Pass/ReplaceWithFCGeluFCPass.h"
+#include "luci/Pass/ResolveBuiltinOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpAddPass.h"
 #include "luci/Pass/ResolveCustomOpBatchMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
 #include "luci/Pass/ResolveCustomOpSplitVPass.h"
+#include "luci/Pass/ResolveFormerCustomOpPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
@@ -159,11 +161,13 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   // Resolve custom Ops
+  phase.emplace_back(std::make_unique<luci::ResolveBuiltinOpAddPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveFormerCustomOpPass>());
 
   // Fuse FullyConnected with Add
   // Why we perform FuseAddWithFullyConnectedPass before ConvertNCHWToNHWCPass?
@@ -251,6 +255,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::CommonSubExpressionEliminationPass>());
   }
+  if (_options->query(Options::Algorithm::ResolveBuiltinOpAdd))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveBuiltinOpAddPass>());
+  }
   if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
@@ -262,6 +270,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
+  }
+  if (_options->query(Options::Algorithm::ResolveFormerCustomOp))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveFormerCustomOpPass>());
   }
   if (_options->query(Options::Algorithm::FuseMeanWithMean))
   {

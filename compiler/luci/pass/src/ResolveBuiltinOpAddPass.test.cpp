@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/ResolveCustomOpAddPass.h"
+#include "luci/Pass/ResolveBuiltinOpAddPass.h"
 
-#include <gtest/gtest.h>
 #include <luci/test/TestIOGraph.h>
 
 #include <luci/IR/CircleNodes.h>
+#include <gtest/gtest.h>
 
 using namespace luci::test;
 
@@ -38,10 +38,10 @@ namespace
  *                  |
  *              [Output]
  */
-class BroadcastToAddGraphlet
+class BuiltinOpAddGraphlet
 {
 public:
-  BroadcastToAddGraphlet() = default;
+  BuiltinOpAddGraphlet() = default;
 
 public:
   void init(loco::Graph *g)
@@ -52,6 +52,11 @@ public:
     _addV2->shape({2, 3});
     _addV2->dtype(loco::DataType::FLOAT32);
     _addV2->name("addV2");
+
+    // BroadcastTo
+    _broadcastTo = g->nodes()->create<luci::CircleBroadcastTo>();
+    _broadcastTo->dtype(loco::DataType::FLOAT32);
+    _broadcastTo->name("BroadcastTo");
 
     // CircleConst (BroadcastTo-input)
     auto input = g->nodes()->create<luci::CircleConst>();
@@ -70,22 +75,10 @@ public:
     shape->at<loco::DataType::S32>(0) = 2;
     shape->at<loco::DataType::S32>(1) = 3;
 
-    // Custom BroadcastTo
-    _custom_broadcastTo = g->nodes()->create<luci::CircleCustom>(2, 1);
-    _custom_broadcastTo->custom_code("BroadcastTo");
-    _custom_broadcastTo->dtype(loco::DataType::FLOAT32);
-    _custom_broadcastTo->shape({2, 3});
-    _custom_broadcastTo->name("BroadcastTo");
+    _broadcastTo->input(input);
+    _broadcastTo->shape(shape);
 
-    _custom_broadcastTo->inputs(0, input);
-    _custom_broadcastTo->inputs(1, shape);
-
-    // Builtin BroadcastTo
-    _builtin_broadcastTo = g->nodes()->create<luci::CircleBroadcastTo>();
-    _builtin_broadcastTo->dtype(loco::DataType::FLOAT32);
-    _builtin_broadcastTo->name("BroadcastTo");
-    _builtin_broadcastTo->input(input);
-    _builtin_broadcastTo->shape(shape);
+    _addV2->inputs(1, _broadcastTo);
 
     // CircleCustomOut
     _addV2_out = g->nodes()->create<luci::CircleCustomOut>();
@@ -97,28 +90,26 @@ public:
 
 public:
   luci::CircleCustom *addV2() { return _addV2; }
-  luci::CircleCustom *custom_broadcastTo() { return _custom_broadcastTo; }
-  luci::CircleBroadcastTo *builtin_broadcastTo() { return _builtin_broadcastTo; }
+  luci::CircleBroadcastTo *broadcastTo() { return _broadcastTo; }
 
 protected:
   luci::CircleCustom *_addV2 = nullptr;
   luci::CircleCustomOut *_addV2_out = nullptr;
-  luci::CircleCustom *_custom_broadcastTo = nullptr;
-  luci::CircleBroadcastTo *_builtin_broadcastTo = nullptr;
+  luci::CircleBroadcastTo *_broadcastTo = nullptr;
 };
 
-class BroadcastToAddV2Graph : public TestIGraphlet,
+class BuiltinOpAddV2Graph : public TestIGraphlet,
                             public TestOsGraphlet<1>,
-                            public BroadcastToAddGraphlet
+                            public BuiltinOpAddGraphlet
 {
 public:
-  BroadcastToAddV2Graph() = default;
+  BuiltinOpAddV2Graph() = default;
 
   void init(void)
   {
     TestIGraphlet::init(g(), {2, 3});
     TestOsGraphlet<1>::init(g(), {{2, 3}});
-    BroadcastToAddGraphlet::init(g());
+    BuiltinOpAddGraphlet::init(g());
 
     // connect graph
     _addV2->inputs(0, input());
@@ -127,25 +118,24 @@ public:
   }
 };
 
-class ResolveCustomOpAddPassTest : public ::testing::Test
+class BuitlinAddV2GraphTest : public ::testing::Test
 {
 public:
-  BroadcastToAddV2Graph _g;
-  luci::ResolveCustomOpAddPass _pass;
+  BuiltinOpAddV2Graph _g;
+  luci::ResolveBuiltinOpAddPass _pass;
 };
 
 } // namespace
 
-TEST_F(ResolveCustomOpAddPassTest, name_test)
+TEST_F(BuitlinAddV2GraphTest, name_test)
 {
   auto const name = _pass.name();
   ASSERT_NE(nullptr, name);
 }
 
-TEST_F(ResolveCustomOpAddPassTest, simple_test_CustomBroadcastTo)
+TEST_F(BuitlinAddV2GraphTest, simple_test_BroadcastToAddV2)
 {
   _g.init();
-  _g.addV2()->inputs(1, _g.custom_broadcastTo());
 
   auto ret = _pass.run(_g.g());
   EXPECT_EQ(true, ret);
@@ -153,10 +143,7 @@ TEST_F(ResolveCustomOpAddPassTest, simple_test_CustomBroadcastTo)
   auto add = dynamic_cast<luci::CircleAdd *>(_g.output(0)->from());
   EXPECT_NE(nullptr, add);
 
-  auto broadcastTo = dynamic_cast<luci::CircleCustom *>(add->y());
-  EXPECT_NE(nullptr, broadcastTo);
-
-  auto broadcastTo_input = dynamic_cast<luci::CircleConst *>(broadcastTo->inputs(0));
+  auto broadcastTo_input = dynamic_cast<luci::CircleConst *>(add->y());
   EXPECT_NE(nullptr, broadcastTo_input);
   EXPECT_EQ(1, broadcastTo_input->at<loco::DataType::FLOAT32>(0));
   EXPECT_EQ(2, broadcastTo_input->at<loco::DataType::FLOAT32>(1));
@@ -168,48 +155,31 @@ TEST_F(ResolveCustomOpAddPassTest, simple_test_CustomBroadcastTo)
   EXPECT_EQ(3, input->dim(1));
 }
 
-TEST_F(ResolveCustomOpAddPassTest, simple_test_BuiltinBroadcastTo)
+TEST_F(BuitlinAddV2GraphTest, wrong_custom_code_NEG)
 {
   _g.init();
-  _g.addV2()->inputs(1, _g.builtin_broadcastTo());
-  
-  auto ret = _pass.run(_g.g());
-  EXPECT_EQ(true, ret);
-
-  auto add = dynamic_cast<luci::CircleAdd *>(_g.output(0)->from());
-  EXPECT_NE(nullptr, add);
-
-  auto broadcastTo = dynamic_cast<luci::CircleBroadcastTo *>(add->y());
-  EXPECT_NE(nullptr, broadcastTo);
-  
-  auto broadcastTo_input = dynamic_cast<luci::CircleConst *>(broadcastTo->input());
-  EXPECT_NE(nullptr, broadcastTo_input);
-  EXPECT_EQ(1, broadcastTo_input->at<loco::DataType::FLOAT32>(0));
-  EXPECT_EQ(2, broadcastTo_input->at<loco::DataType::FLOAT32>(1));
-  EXPECT_EQ(3, broadcastTo_input->at<loco::DataType::FLOAT32>(2));
-
-  auto input = dynamic_cast<luci::CircleNode *>(add->x());
-  EXPECT_NE(nullptr, input);
-  EXPECT_EQ(2, input->dim(0));
-  EXPECT_EQ(3, input->dim(1));
-}
-
-TEST_F(ResolveCustomOpAddPassTest, wrong_custom_code_NEG)
-{
-  _g.init();
-  _g.addV2()->inputs(1, _g.builtin_broadcastTo());
   _g.addV2()->custom_code("UNSUPORTED_CUSTOM_CODE");
 
   auto ret = _pass.run(_g.g());
   EXPECT_EQ(false, ret);
 }
 
-TEST_F(ResolveCustomOpAddPassTest, wrong_input_type_NEG)
+TEST_F(BuitlinAddV2GraphTest, wrong_input_NEG)
 {
   _g.init();
-  _g.builtin_broadcastTo()->dtype(loco::DataType::BOOL);
-  _g.addV2()->inputs(1, _g.builtin_broadcastTo());
-  
+
+  _g.addV2()->inputs(0, nullptr);
+
+  auto ret = _pass.run(_g.g());
+  EXPECT_EQ(false, ret);
+}
+
+TEST_F(BuitlinAddV2GraphTest, wrong_input_type_NEG)
+{
+  _g.init();
+
+  _g.broadcastTo()->dtype(loco::DataType::BOOL);
+
   auto ret = _pass.run(_g.g());
   EXPECT_EQ(false, ret);
 }

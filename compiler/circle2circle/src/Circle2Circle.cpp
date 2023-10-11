@@ -144,6 +144,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--replace_sub_with_add", "This will replace sub with add operator");
   add_switch(arser, "--replace_with_fc_gelu_fc",
              "This will replace a specific pattern into FC + Gelu + FC pattern.");
+  add_switch(arser, "--resolve_builtinop_add",
+             "This will convert Custom(Add) with Builtin input(BroadcastTo) to Add operator");
   add_switch(arser, "--resolve_customop_add", "This will convert Custom(Add) to Add operator");
   add_switch(arser, "--resolve_customop_batchmatmul",
              "This will convert Custom(BatchMatmul) to BatchMatmul operator");
@@ -153,6 +155,8 @@ int entry(int argc, char **argv)
              "This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
   add_switch(arser, "--resolve_customop_splitv",
              "This will convert Custom(SplitV) to SplitV operator");
+  add_switch(arser, "--resolve_former_customop",
+             "This will convert a former custom op to builtin op from schema version upgrade");
   add_switch(arser, "--shuffle_weight_to_16x1float32",
              "This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
              "it only converts weights whose row is a multiple of 16");
@@ -333,6 +337,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ReplaceSubWithAdd);
   if (arser.get<bool>("--replace_with_fc_gelu_fc"))
     options->enable(Algorithms::ReplaceWithFCGeluFC);
+  if (arser.get<bool>("--resolve_builtinop_add"))
+    options->enable(Algorithms::ResolveBuiltinOpAdd);
   if (arser.get<bool>("--resolve_customop_add"))
     options->enable(Algorithms::ResolveCustomOpAdd);
   if (arser.get<bool>("--resolve_customop_batchmatmul"))
@@ -343,6 +349,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
   if (arser.get<bool>("--resolve_customop_splitv"))
     options->enable(Algorithms::ResolveCustomOpSplitV);
+  if (arser.get<bool>("--resolve_former_customop"))
+    options->enable(Algorithms::ResolveFormerCustomOp);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--replace_non_const_fc_with_batch_matmul"))

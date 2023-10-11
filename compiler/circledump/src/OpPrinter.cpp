@@ -817,6 +817,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_BATCH_MATMUL] = make_unique<BatchMatMulPrinter>();
   _op_map[circle::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM] =
     make_unique<BidirectionalSequenceLSTMPrinter>();
+  // There is no Option for BroadcastTo
   _op_map[circle::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   // There is no Option for CEIL
   _op_map[circle::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();

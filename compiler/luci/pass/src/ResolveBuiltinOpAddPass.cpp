@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/ResolveCustomOpAddPass.h"
+#include "luci/Pass/ResolveBuiltinOpAddPass.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
 #include <flatbuffers/flexbuffers.h>
-
 namespace
 {
 
@@ -29,40 +28,22 @@ namespace
 // NOTE This function assumes there is only one BroadcastTo node among its inputs.
 int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
 {
-  int32_t bc_idx = -1;
   for (uint32_t idx = 0; idx < cop->numInputs(); idx++)
   {
-    auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
-    if (input)
-    {
-      auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
-      if (broadcastTo->custom_code() == "BroadcastTo")
-      {
-        // check if there is only one BroadcastTo node
-        if (bc_idx != -1)
-        {
-          return -1;
-        }
-        bc_idx = static_cast<int32_t>(idx);
-      }
-      else
-      {
-        auto broadcastTo = dynamic_cast<luci::CircleBroadcastTo *>(cop->inputs(idx));
-        if (broadcastTo)
-          return idx;
-      } 
-    }
+    auto broadcastTo = dynamic_cast<luci::CircleBroadcastTo *>(cop->inputs(idx));
+    if (broadcastTo)
+      return idx;
   }
 
-  return bc_idx;
+  return -1;
 }
 
 /** BEFORE
- *                                  [CircleConst]
- *                                        |
- *        [CircleNode]         [BroadcastTo(CircleCustom or Builtin)]
- *              \                         |
- *               \                [CircleCustomOUt]
+ *
+ *
+ *        [CircleNode]            [CircleConst]
+ *              \                      |
+ *               \           [CircleBroadcastTo(Builtin)]
  *                \                   /
  *               [AddV2(CircleCustom)]
  *  AFTER
@@ -79,33 +60,20 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *addv2)
   if (broadcastTo_idx == -1)
     return false;
 
-  auto input = dynamic_cast<const luci::CircleCustomOut *>(addv2->inputs(broadcastTo_idx));
-  auto customBroadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
-
   auto name = addv2->name();
   assert(name.length() > 0);
 
   auto add = addv2->graph()->nodes()->create<luci::CircleAdd>();
+
+  auto brodcastTo =
+    loco::must_cast<const luci::CircleBroadcastTo *>(addv2->inputs(broadcastTo_idx));
+
   add->fusedActivationFunction(luci::FusedActFunc::NONE);
   add->x(addv2->inputs(1 - broadcastTo_idx));
-
-  // BroadcastTo(Custom)
-  if (customBroadcastTo)
-  {
-    add->y(customBroadcastTo->inputs(0));
-    luci::add_origin(
-      add, luci::composite_origin({luci::get_origin(customBroadcastTo), luci::get_origin(addv2)}));
-  }
-  // BroadcastTo(Builtin)
-  else
-  {
-    auto broadcastTo = loco::must_cast<luci::CircleBroadcastTo *>(addv2->inputs(broadcastTo_idx));
-    add->y(broadcastTo->input());
-    luci::add_origin(
-      add, luci::composite_origin({luci::get_origin(broadcastTo), luci::get_origin(addv2)}));
-  }
-
+  add->y(brodcastTo->input());
   add->name(name + "/Add");
+  luci::add_origin(add,
+                   luci::composite_origin({luci::get_origin(brodcastTo), luci::get_origin(addv2)}));
 
   auto customOut = loco::succs(addv2);
   assert(customOut.size() == 1);
@@ -125,9 +93,13 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
   if (addv2->numInputs() != 2)
     return false;
 
-  // check if inputs are suppport data types
   for (uint32_t i = 0; i < addv2->numInputs(); i++)
   {
+    // check if inputs are nullptr
+    if (addv2->inputs(i) == nullptr)
+      return false;
+
+    // check if inputs are suppport data types
     auto input = loco::must_cast<luci::CircleNode *>(addv2->inputs(i));
     switch (input->dtype())
     {
@@ -141,7 +113,6 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
         return false;
     }
   }
-
   if (resolve_with_BroadcastTo(addv2))
     return true;
 
@@ -167,7 +138,7 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
 namespace luci
 {
 
-bool ResolveCustomOpAddPass::run(loco::Graph *g)
+bool ResolveBuiltinOpAddPass::run(loco::Graph *g)
 {
   bool changed = false;
 

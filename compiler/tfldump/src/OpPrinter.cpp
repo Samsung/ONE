@@ -747,6 +747,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[tflite::BuiltinOperator_AVERAGE_POOL_2D] = make_unique<Pool2DPrinter>();
   _op_map[tflite::BuiltinOperator_BIDIRECTIONAL_SEQUENCE_LSTM] =
     make_unique<BidirectionalSequenceLSTMPrinter>();
+  // There is no Option for BroadcastTo
   _op_map[tflite::BuiltinOperator_CAST] = make_unique<CastPrinter>();
   // There is no Option for CEIL
   _op_map[tflite::BuiltinOperator_CONCATENATION] = make_unique<ConcatenationPrinter>();
