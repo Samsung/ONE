@@ -73,6 +73,7 @@
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 #include "luci/Pass/TransformMinReluToRelu6Pass.h"
 #include "luci/Pass/DecomposeHardSwishPass.h"
+#include "luci/Pass/DecomposeSoftmaxPass.h"
 #include "luci/Pass/UnrollUnidirectionalSequenceLSTMPass.h"
 #include "luci/Pass/XpSepActFromTransposeConvPass.h"
 // TODO add more passes
@@ -443,6 +444,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::DecomposeHardSwishPass))
   {
     phase.emplace_back(std::make_unique<luci::DecomposeHardSwishPass>());
+  }
+  if (_options->query(Options::Algorithm::DecomposeSoftmaxPass))
+  {
+    phase.emplace_back(std::make_unique<luci::DecomposeSoftmaxPass>());
   }
   if (_options->query(Options::Algorithm::UnrollUnidirSeqLSTM))
   {
