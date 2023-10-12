@@ -22,28 +22,11 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace mpqsolver
 {
-
-enum class QuantizationPattern
-{
-  Q8LayerNormWithQ16Variance
-};
-
-struct MPQOptions
-{
-  std::vector<QuantizationPattern> _patterns;
-};
-
-struct FrozenNodes
-{
-  std::map<luci::CircleNode *, luci::CircleQuantizer::Options::LayerParam> _node_to_param;
-};
 
 class MPQSolver
 {
@@ -70,33 +53,11 @@ public:
 protected:
   std::unique_ptr<luci::Module> read_module(const std::string &path);
 
-  /**
-   * @brief set quantization options
-   */
-  void set_mpq_options(MPQOptions &options);
-
-  /**
-   * @brief fill _frozen with prescribed quantization parameters of resolved nodes
-   */
-  void resolve_patterns(luci::Module *module);
-
-  /**
-   * @brief resolve Q8LayerNormWithQ16Variance pattern
-   */
-  void resolve_layer_norm_pattern(luci::Module *module);
-
-  /**
-   * @brief transform _frozen nodes to Quantizer friendly form
-   */
-  luci::CircleQuantizer::Options::LayerParams get_frozen_params() const;
-
 protected:
   std::string _input_data_path;
   std::string _input_quantization;
   std::string _output_quantization;
   std::unique_ptr<core::Quantizer> _quantizer;
-  MPQOptions _options;       // options for mpq quantization
-  FrozenNodes _frozen;       // nodes with prescribed quantization parameters
   float _qerror_ratio = 0.f; // quantization error ratio
   std::unique_ptr<core::DumpingHooks> _hooks;
 };
