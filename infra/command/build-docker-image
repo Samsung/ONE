@@ -14,7 +14,7 @@ DOCKER_FILE_RPATH_BASE="infra/docker"
 DOCKER_BUILD_ARGS=()
 
 # Default setting
-UBUNTU_CODENAME="bionic"
+UBUNTU_CODENAME="focal"
 DOCKER_TAG="latest"
 
 while [[ $# -gt 0 ]]
