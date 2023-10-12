@@ -41,6 +41,9 @@ set(TEST_SOURCES
     "src/core/Dumper.cpp"
     "src/core/DumpingHooks.cpp"
     "src/core/Evaluator.cpp"
+    "src/MPQSolver.cpp"
+    "src/core/SolverOutput.cpp"
+    "src/bisection/BisectionSolver.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)
@@ -51,6 +54,7 @@ target_link_libraries(circle_mpqsolver_test ${Jsoncpp_STATIC_LIB})
 target_link_libraries(circle_mpqsolver_test luci_service)
 target_link_libraries(circle_mpqsolver_test luci_pass)
 target_link_libraries(circle_mpqsolver_test luci_testhelper)
+target_link_libraries(circle_mpqsolver_test luci_import)
 target_link_libraries(circle_mpqsolver_test luci_export)
 target_link_libraries(circle_mpqsolver_test luci_interpreter)
 target_link_libraries(circle_mpqsolver_test dio_hdf5)
