@@ -173,6 +173,8 @@ int entry(int argc, char **argv)
              "Transform Minimum(6)-Relu pattern to Relu6 operator");
   add_switch(arser, "--decompose_hardswish",
              "Decompose HardSwish operator to Add, Mul and Relu6 operators");
+  add_switch(arser, "--decompose_softmax",
+             "Decompose Softmax operator into multiple operators for special backends");
   add_switch(arser, "--mute_warnings", "This will turn off warning messages");
   add_switch(arser, "--disable_validation",
              "This will turn off operator validations. May help input model investigation.");
@@ -337,6 +339,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
   if (arser.get<bool>("--decompose_hardswish"))
     options->enable(Algorithms::DecomposeHardSwishPass);
+  if (arser.get<bool>("--decompose_softmax"))
+    options->enable(Algorithms::DecomposeSoftmaxPass);
   if (arser.get<bool>("--expand_broadcast_const"))
     options->enable(Algorithms::ExpandBroadcastConst);
   if (arser.get<bool>("--unroll_unidirseqlstm"))
