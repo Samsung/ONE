@@ -22,7 +22,6 @@
 #include "../Tensor.h"
 
 #include <exec/train/ITrainableFunction.h>
-#include <ops/ReduceLayer.h>
 
 namespace onert
 {
@@ -65,11 +64,6 @@ private:
   std::unique_ptr<DerivativeTensor> _conv_deriv_output;
   std::unique_ptr<DerivativeTensor> _act_deriv_output;
   std::unique_ptr<GradientTensor> _transposed_grad_weights;
-
-private:
-  // The layer for calculating bias gradient
-  cpu::ops::ReduceLayer _grad_bias_layer;
-  std::unique_ptr<Tensor> _grad_bias_axes;
 };
 
 } // namespace ops

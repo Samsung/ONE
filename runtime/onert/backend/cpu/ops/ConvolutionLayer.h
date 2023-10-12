@@ -56,7 +56,7 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
                  const uint32_t dilationHeightFactor, const ir::Activation activation,
-                 IPortableTensor *output);
+                 IPortableTensor *output, bool is_cachable_weights);
   void prepare() override;
   void run() override;
 
@@ -90,6 +90,7 @@ protected:
   std::unique_ptr<nnfw::cker::ConvHybridTempArena> _hybrid_arena;
 
   bool _prepare;
+  bool _is_cachable_weights;
   bool _is_hybrid;
 };
 

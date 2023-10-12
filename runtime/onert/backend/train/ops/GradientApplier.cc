@@ -17,6 +17,7 @@
 #include "GradientApplier.h"
 
 #include <exec/train/optimizer/Optimizer.h>
+#include <iostream>
 
 namespace onert
 {

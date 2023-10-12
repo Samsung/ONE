@@ -142,6 +142,7 @@ void TrainableExecutor::forwardImpl(bool training)
 
 void TrainableExecutor::backward(const IODescription &, uint32_t training_step)
 {
+  // std::cout << "=============================================" << std::endl;
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)

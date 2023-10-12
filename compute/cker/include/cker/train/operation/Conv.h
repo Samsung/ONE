@@ -82,23 +82,22 @@ template <typename Device, typename T> struct SpatialConvolutionBackwardInputWit
 template <typename Device, typename T> struct LaunchConv2DBackpropInputOpImpl
 {
   void operator()(const Device &d, const T *out_backprop_data, int batches, int out_backprop_height,
-                  int out_backprop_width, int out_backprop_depth, const T *filter_data,
-                  int filter_height, int filter_width, int row_dilation, int col_dilation,
-                  int row_stride /* H */, int col_stride /* W */, const PaddingType &padding_type,
-                  int padding_top, int padding_bottom, int padding_left, int padding_right,
-                  T *in_backprop_data, int in_backprop_height, int in_backprop_width,
-                  int in_backprop_depth)
+                  int out_backprop_width, int output_depth, const T *filter_data, int filter_height,
+                  int filter_width, int row_dilation, int col_dilation, int row_stride /* H */,
+                  int col_stride /* W */, const PaddingType &padding_type, int padding_top,
+                  int padding_bottom, int padding_left, int padding_right, T *in_backprop_data,
+                  int in_backprop_height, int in_backprop_width, int input_depth)
   {
     // WARNING: Need to swap row/col, padding_top/padding_left, and
     // padding_bottom/padding_right when calling Eigen. Eigen expects tensors
     // in NWHC format, but Tensorflow uses NHWC.
 
     eigen_support::EigenTensor in_backprop_t(in_backprop_data, batches, in_backprop_height,
-                                             in_backprop_width, in_backprop_depth);
-    eigen_support::ConstEigenTensor filter_t(filter_data, filter_height, filter_width,
-                                             in_backprop_depth, out_backprop_depth);
+                                             in_backprop_width, input_depth);
+    eigen_support::ConstEigenTensor filter_t(filter_data, filter_height, filter_width, input_depth,
+                                             output_depth);
     eigen_support::ConstEigenTensor out_backprop_t(out_backprop_data, batches, out_backprop_height,
-                                                   out_backprop_width, out_backprop_depth);
+                                                   out_backprop_width, output_depth);
 
     if (padding_type != PaddingType::kNone /* EXPLICIT */)
     {
@@ -123,19 +122,18 @@ template <typename Device, typename T> struct LaunchConv2DBackpropInputOpImpl
 template <typename T> struct LaunchConv2DBackpropInputOp
 {
   void operator()(const T *out_backprop_data, int batches, int out_backprop_height,
-                  int out_backprop_width, int out_backprop_depth, const T *filter_data,
-                  int filter_height, int filter_width, int row_dilation, int col_dilation,
-                  int row_stride /* H */, int col_stride /* W */, const PaddingType &padding_type,
-                  int padding_top, int padding_bottom, int padding_left, int padding_right,
-                  T *in_backprop_data, int in_backprop_height, int in_backprop_width,
-                  int in_backprop_depth)
+                  int out_backprop_width, int output_depth, const T *filter_data, int filter_height,
+                  int filter_width, int row_dilation, int col_dilation, int row_stride /* H */,
+                  int col_stride /* W */, const PaddingType &padding_type, int padding_top,
+                  int padding_bottom, int padding_left, int padding_right, T *in_backprop_data,
+                  int in_backprop_height, int in_backprop_width, int input_depth)
   {
     LaunchConv2DBackpropInputOpImpl<Eigen::ThreadPoolDevice, T> launcher;
     launcher(*eigen_support::GetThreadPoolDevice(), out_backprop_data, batches, out_backprop_height,
-             out_backprop_width, out_backprop_depth, filter_data, filter_height, filter_width,
+             out_backprop_width, output_depth, filter_data, filter_height, filter_width,
              row_dilation, col_dilation, row_stride, col_stride, padding_type, padding_top,
              padding_bottom, padding_left, padding_right, in_backprop_data, in_backprop_height,
-             in_backprop_width, in_backprop_depth);
+             in_backprop_width, input_depth);
   }
 };
 
@@ -143,20 +141,18 @@ template <typename T> struct LaunchConv2DBackpropInputOp
 template <typename T> struct LaunchConv2DBackpropFilterOp
 {
   void operator()(const T *out_backprop_data, int batches, int out_backprop_height,
-                  int out_backprop_width, int out_backprop_depth, const T *input_data,
-                  int input_height, int input_width, int input_depth, int row_dilation,
-                  int col_dilation, int row_stride /* H */, int col_stride /* W */,
-                  const PaddingType &padding_type, int padding_top, int padding_bottom,
-                  int padding_left, int padding_right, T *filter_backprop_data,
-                  int filter_backprop_height, int filter_backprop_width)
+                  int out_backprop_width, int output_depth, const T *input_data, int input_height,
+                  int input_width, int input_depth, int row_dilation, int col_dilation,
+                  int row_stride /* H */, int col_stride /* W */, const PaddingType &padding_type,
+                  int padding_top, int padding_bottom, int padding_left, int padding_right,
+                  T *filter_backprop_data, int filter_backprop_height, int filter_backprop_width)
   {
     eigen_support::EigenTensor filter_backprop_t(filter_backprop_data, filter_backprop_height,
-                                                 filter_backprop_width, input_depth,
-                                                 out_backprop_depth);
+                                                 filter_backprop_width, input_depth, output_depth);
     eigen_support::ConstEigenTensor input_t(input_data, batches, input_height, input_width,
                                             input_depth);
     eigen_support::ConstEigenTensor out_backprop_t(out_backprop_data, batches, out_backprop_height,
-                                                   out_backprop_width, out_backprop_depth);
+                                                   out_backprop_width, output_depth);
 
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
 
@@ -189,11 +185,10 @@ template <typename T> struct LaunchConv2DBackpropFilterOp
   }
 };
 
-inline void ConvInputGrad(const ConvParams &params, const Shape &out_backprop_shape,
-                          const float *out_backprop_data, const Shape &filter_shape,
+inline void ConvInputGrad(const ConvParams &params, const Shape &incoming_shape,
+                          const float *incoming_data, const Shape &filter_shape,
                           const float *filter_data, const int padding_bottom,
-                          const int padding_right, const Shape &in_backprop_shape,
-                          float *in_backprop_data)
+                          const int padding_right, const Shape &grad_shape, float *grad_data)
 {
   const int stride_rows = params.stride_height;
   const int stride_cols = params.stride_width;
@@ -207,28 +202,28 @@ inline void ConvInputGrad(const ConvParams &params, const Shape &out_backprop_sh
   const int dilation_rows = params.dilation_height_factor;
   const int dilation_cols = params.dilation_width_factor;
 
-  const int batches = MatchingDim(in_backprop_shape, 0, out_backprop_shape, 0);
-  const int in_backprop_depth = MatchingDim(in_backprop_shape, 3, filter_shape, 2);
-  const int out_backprop_depth = MatchingDim(filter_shape, 3, out_backprop_shape, 3);
-  const int in_backprop_height = in_backprop_shape.Dims(1);
-  const int in_backprop_width = in_backprop_shape.Dims(2);
+  const int batches = MatchingDim(grad_shape, 0, incoming_shape, 0);
+  const int input_depth = MatchingDim(filter_shape, 2, grad_shape, 3);
+  const int output_depth = MatchingDim(filter_shape, 3, incoming_shape, 3);
+  const int grad_height = grad_shape.Dims(1);
+  const int grad_width = grad_shape.Dims(2);
   const int filter_height = filter_shape.Dims(0);
   const int filter_width = filter_shape.Dims(1);
-  const int out_backprop_height = out_backprop_shape.Dims(1);
-  const int out_backprop_width = out_backprop_shape.Dims(2);
+  const int incoming_height = incoming_shape.Dims(1);
+  const int incoming_width = incoming_shape.Dims(2);
 
   if (dilation_rows != 1 || dilation_cols != 1)
     throw std::runtime_error("cker::ConvFilterGrad: not yet support dilation rates larger than 1.");
 
   LaunchConv2DBackpropInputOp<float>()(
-    out_backprop_data, batches, out_backprop_height, out_backprop_width, out_backprop_depth,
-    filter_data, filter_height, filter_width, dilation_rows, dilation_cols, stride_rows,
-    stride_cols, padding, padding_top, padding_bottom, padding_left, padding_right,
-    in_backprop_data, in_backprop_height, in_backprop_width, in_backprop_depth);
+    incoming_data, batches, incoming_height, incoming_width, output_depth, filter_data,
+    filter_height, filter_width, dilation_rows, dilation_cols, stride_rows, stride_cols, padding,
+    padding_top, padding_bottom, padding_left, padding_right, grad_data, grad_height, grad_width,
+    input_depth);
 }
 
-inline void ConvFilterGrad(const ConvParams &params, const Shape &out_backprop_shape,
-                           const float *out_backprop_data, const Shape &input_shape,
+inline void ConvFilterGrad(const ConvParams &params, const Shape &incoming_shape,
+                           const float *incoming_data, const Shape &input_shape,
                            const float *input_data, const int padding_bottom,
                            const int padding_right, const Shape &filter_backprop_shape,
                            float *filter_backprop_data)
@@ -245,24 +240,24 @@ inline void ConvFilterGrad(const ConvParams &params, const Shape &out_backprop_s
   const int dilation_rows = params.dilation_height_factor;
   const int dilation_cols = params.dilation_width_factor;
 
-  const int batches = MatchingDim(input_shape, 0, out_backprop_shape, 0);
-  const int input_depth = MatchingDim(input_shape, 3, filter_backprop_shape, 2);
-  const int out_backprop_depth = MatchingDim(filter_backprop_shape, 3, out_backprop_shape, 3);
+  const int batches = MatchingDim(input_shape, 0, incoming_shape, 0);
+  const int input_depth = MatchingDim(filter_backprop_shape, 2, input_shape, 3);
+  const int output_depth = MatchingDim(filter_backprop_shape, 3, incoming_shape, 3);
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
   const int filter_backprop_height = filter_backprop_shape.Dims(0);
   const int filter_backprop_width = filter_backprop_shape.Dims(1);
-  const int out_backprop_height = out_backprop_shape.Dims(1);
-  const int out_backprop_width = out_backprop_shape.Dims(2);
+  const int incoming_height = incoming_shape.Dims(1);
+  const int incoming_width = incoming_shape.Dims(2);
 
   if (dilation_rows != 1 || dilation_cols != 1)
     throw std::runtime_error("cker::ConvFilterGrad: not yet support dilation rates larger than 1.");
 
   LaunchConv2DBackpropFilterOp<float>()(
-    out_backprop_data, batches, out_backprop_height, out_backprop_width, out_backprop_depth,
-    input_data, input_height, input_width, input_depth, dilation_rows, dilation_cols, stride_rows,
-    stride_cols, padding, padding_top, padding_bottom, padding_left, padding_right,
-    filter_backprop_data, filter_backprop_height, filter_backprop_width);
+    incoming_data, batches, incoming_height, incoming_width, output_depth, input_data, input_height,
+    input_width, input_depth, dilation_rows, dilation_cols, stride_rows, stride_cols, padding,
+    padding_top, padding_bottom, padding_left, padding_right, filter_backprop_data,
+    filter_backprop_height, filter_backprop_width);
 }
 
 } // namespace train

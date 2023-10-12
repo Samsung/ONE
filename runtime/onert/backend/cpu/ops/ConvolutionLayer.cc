@@ -200,7 +200,8 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t strideWidth, const uint32_t strideHeight,
                                  const uint32_t dilationWidthFactor,
                                  const uint32_t dilationHeightFactor,
-                                 const ir::Activation activation, IPortableTensor *output)
+                                 const ir::Activation activation, IPortableTensor *output,
+                                 bool is_cachable_weights)
 {
   _input = input;
   _kernel = kernel;
@@ -218,6 +219,7 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _output = output;
   _is_hybrid = _input->data_type() == OperandType::FLOAT32 &&
                _kernel->data_type() == OperandType::QUANT_INT8_SYMM;
+  _is_cachable_weights = is_cachable_weights;
 }
 
 void ConvolutionLayer::run()
@@ -305,7 +307,7 @@ void ConvolutionLayer::prepare()
   }
 
   nnfw::cker::Conv &kernel = *_conv_kernel;
-  if (_input->data_type() == OperandType::FLOAT32 && _kernel->is_constant())
+  if (_input->data_type() == OperandType::FLOAT32 && _is_cachable_weights)
   {
     bool is_transposed = false;
     kernel.prepareF32(getShape(_kernel), getBuffer<float>(_kernel), getPaddingType(_paddingType),
@@ -320,7 +322,7 @@ void ConvolutionLayer::prepare()
         const_cast<Tensor *>(kernel_tensor)->decrease_ref();
     }
   }
-  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _kernel->is_constant() &&
+  else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM && _is_cachable_weights &&
            !_input->is_dynamic() && !_output->is_dynamic())
   {
     const bool per_channel_quantized = _kernel->data_scales().size() > 1;
@@ -340,7 +342,7 @@ void ConvolutionLayer::prepare()
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
-    if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
+    if (_is_cachable_weights && !_input->is_dynamic() && !_output->is_dynamic())
     {
       GetQuantizedConvolutionMultipliersAndShifts(
         _input->data_scale(), _output->data_scale(), _kernel->data_scales().data(),

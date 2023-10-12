@@ -19,9 +19,12 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Conv.h>
+#include <cker/operation/Reduce.h>
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
+
+#include <cker/operation/TransposeConv.h>
 
 namespace
 {
@@ -55,7 +58,7 @@ namespace ops
 {
 ConvolutionLayer::ConvolutionLayer()
   : cpu::ops::ConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
-    _deriv_input{nullptr}, _deriv_output{nullptr}, _transposed_weights{nullptr}, _grad_bias_layer{}
+    _deriv_input{nullptr}, _deriv_output{nullptr}, _transposed_weights{nullptr}
 {
   // DO NOTHING
 }
@@ -73,9 +76,11 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t dilationHeightFactor,
                                  const ir::Activation activation)
 {
-  cpu::ops::ConvolutionLayer::configure(
-    input, weights, bias, paddingType, paddingLeft, paddingRight, paddingTop, paddingBottom,
-    strideWidth, strideHeight, dilationWidthFactor, dilationHeightFactor, activation, output);
+  const bool is_cacheable_weights = false;
+  cpu::ops::ConvolutionLayer::configure(input, weights, bias, paddingType, paddingLeft,
+                                        paddingRight, paddingTop, paddingBottom, strideWidth,
+                                        strideHeight, dilationWidthFactor, dilationHeightFactor,
+                                        activation, output, is_cacheable_weights);
 
   _deriv_input = deriv_input;
   _grad_weights = grad_weights;
@@ -83,7 +88,7 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _deriv_output = deriv_output;
 
   if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
-    throw std::runtime_error("train convolution: Unsupported dilation yet");
+    throw std::runtime_error("train ConvolutionLayer: Unsupported dilation yet");
 
   //
   _transposed_weights = createTransposedWeights<Tensor>(weights);
@@ -105,22 +110,6 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
       std::make_unique<DerivativeTensor>(_deriv_output->get_info(), _deriv_output->layout());
     _act_deriv_output->setBuffer(
       std::make_shared<basic::Allocator>(_act_deriv_output->total_size()));
-  }
-
-  // Initialize the layer for calculating bias gradient
-  if (bias)
-  {
-    assert(grad_bias);
-    const ir::OperandInfo axes_info{ir::Shape{3}, ir::TypeInfo{ir::DataType::INT32},
-                                    ir::MemAllocType::STATIC};
-    _grad_bias_axes = std::make_unique<Tensor>(axes_info, grad_bias->layout());
-    _grad_bias_axes->setBuffer(std::make_shared<basic::Allocator>(_grad_bias_axes->total_size()));
-    int32_t *axes_values = reinterpret_cast<int32_t *>(_grad_bias_axes->buffer());
-    axes_values[0] = 0;
-    axes_values[1] = 1;
-    axes_values[2] = 2;
-    _grad_bias_layer.configure(input, _grad_bias_axes.get(), output, cpu::ops::ReduceType::kSum,
-                               false);
   }
 }
 
@@ -159,7 +148,7 @@ void ConvolutionLayer::backwardFloat32()
       backprop_act = _act_deriv_output.get();
       break;
     default:
-      throw std::runtime_error("train FullyConnectedLayer: Unsupported activation type yet");
+      throw std::runtime_error("train ConvolutionLayer: Unsupported activation type yet");
   }
 
   // Initialize conv params for training kernels
@@ -199,7 +188,7 @@ void ConvolutionLayer::backwardFloat32()
     getBuffer<float>(_input), _paddingBottom, _paddingRight, getShape(transposed_grad_weights),
     getBuffer<float>(transposed_grad_weights));
 
-  // Transpose weights gradient from HWIO to OHWI
+  // Transpose weights'gradient from HWIO to OHWI
   nnfw::cker::TransposeParams transpose_grad_param;
   transpose_grad_param.perm_count = transposed_grad_weights->getShape().rank();
   transpose_grad_param.perm[0] = 3;
@@ -214,7 +203,18 @@ void ConvolutionLayer::backwardFloat32()
   if (_bias)
   {
     assert(_grad_bias);
-    _grad_bias_layer.run();
+    std::vector<int32_t> axes{0, 1, 2};
+    nnfw::cker::Reduce reduce_kernel;
+    reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
+    bool result = reduce_kernel.ReduceGeneric<float>(
+      getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
+      getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
+      [](const float current, const float in) -> float { return in + current; });
+
+    if (!result)
+    {
+      throw std::runtime_error{"train ConvolutionLayer: Fail to caculate bias gradient"};
+    }
   }
 }
 
