@@ -99,9 +99,10 @@ void execute_kernel_CircleMean(const circle::Operator *cur_op, BaseRuntimeGraph 
       else
       {
         luci_interpreter_pal::Mean(
-          kernels::getTensorData<float>(tiso_data.input1_data), wrap(input->shape()).data(),
-          Tensor::num_dims(input), kernels::getTensorData<float>(tiso_data.output_data),
-          wrap(output->shape()).data(), Tensor::num_dims(output),
+          kernels::getTensorData<float>(tiso_data.input1_data),
+          reinterpret_cast<const int *>(wrap(input->shape()).data()), Tensor::num_dims(input),
+          kernels::getTensorData<float>(tiso_data.output_data),
+          reinterpret_cast<const int *>(wrap(output->shape()).data()), Tensor::num_dims(output),
           kernels::getTensorData<int>(tiso_data.input2_data), num_axis, options->keep_dims(),
           temp_index, resolved_axis, kernels::getTensorData<float>(tiso_data.output_data));
       }
