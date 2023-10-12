@@ -1,0 +1,11 @@
+# To check if Softmax is converted to Max, Sub, Exp, Sum and Div operations
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "REDUCE_MAX_EXIST"        $(op_count REDUCE_MAX) '=' 1
+RULE    "SUB_EXIST"               $(op_count SUB) '=' 1
+RULE    "MUL_NOT_EXIST"           $(op_count MUL) '=' 0
+RULE    "EXP_EXIST"               $(op_count EXP) '=' 1
+RULE    "SUM_EXIST"               $(op_count SUM) '=' 1
+RULE    "DIV_EXIST"               $(op_count DIV) '=' 1
+RULE    "SOFTMAX_NOT_EXIST"       $(op_count SOFTMAX) '=' 0
