@@ -155,8 +155,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       _hooks->on_end_solver(layer_params, "int16", int16_qerror);
     }
 
-    SolverOutput::get() << "The best configuration is int16 configuration "
-                        << "\n";
+    SolverOutput::get() << "The best configuration is int16 configuration\n";
     return module;
   }
   else if (uint8_qerror <= _qerror)
@@ -173,8 +172,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       _hooks->on_end_solver(layer_params, "uint8", uint8_qerror);
     }
 
-    SolverOutput::get() << "The best configuration is uint8 configuration "
-                        << "\n";
+    SolverOutput::get() << "The best configuration is uint8 configuration\n";
     return module;
   }
 
