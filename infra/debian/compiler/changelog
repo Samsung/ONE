@@ -1,3 +1,9 @@
+one (1.24.1) bionic; urgency=medium
+
+  * Updates error message of rawdata2hdf5 test
+
+ -- seongwoo <seongwoo@sw>  Thu, 12 Oct 2023 17:38:22 +0900
+
 one (1.24.0) bionic; urgency=medium
 
   * Introduce _one-import-onnx_ extension interface
