@@ -40,6 +40,8 @@ addeval(Net_StridedSlice_StridedSlice_000 remove_unnecessary_strided_slice)
 addeval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
 addeval(Net_Transpose_Add_000 forward_transpose_op)
 addeval(Net_Transpose_Abs_000 forward_transpose_op)
+addeval(Softmax_001 decompose_softmax)
+addeval(Softmax_002 decompose_softmax)
 addeval(UnidirectionalSequenceLSTM_003 unroll_unidirseqlstm)
 addeval(UnidirectionalSequenceLSTM_004 unroll_unidirseqlstm)
 
