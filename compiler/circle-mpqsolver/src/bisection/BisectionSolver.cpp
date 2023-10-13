@@ -179,7 +179,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   // search for optimal mixed precision quantization configuration
   int last_depth = -1;
   float best_depth = -1;
-  float best_accuracy = -1;
+  float best_error = -1; // minimal error
   core::LayerParams best_params;
   if (module->size() != 1)
   {
@@ -262,34 +262,34 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
       }
     }
 
-    float cur_accuracy = evaluate(evaluator, module_path, "uint8", layer_params);
+    float cur_error = evaluate(evaluator, module_path, "uint8", layer_params);
 
     if (_hooks)
     {
-      _hooks->on_end_iteration(layer_params, "uint8", cur_accuracy);
+      _hooks->on_end_iteration(layer_params, "uint8", cur_error);
     }
 
-    if (cur_accuracy < _qerror)
+    if (cur_error < _qerror)
     {
-      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_accuracy
+      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_error
                           << " < target qerror (" << _qerror << ")\n";
       int16_front ? (max_depth = cut_depth) : (min_depth = cut_depth);
       best_params = layer_params;
       best_depth = cut_depth;
-      best_accuracy = cur_accuracy;
+      best_error = cur_error;
     }
     else
     {
-      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_accuracy
-                          << (cur_accuracy > _qerror ? " > " : " == ") << "target qerror ("
-                          << _qerror << ")\n";
+      SolverOutput::get() << "Qerror at depth " << cut_depth << " is " << cur_error
+                          << (cur_error > _qerror ? " > " : " == ") << "target qerror (" << _qerror
+                          << ")\n";
       int16_front ? (min_depth = cut_depth) : (max_depth = cut_depth);
     }
   }
 
   if (_hooks)
   {
-    _hooks->on_end_solver(best_params, "uint8", best_accuracy);
+    _hooks->on_end_solver(best_params, "uint8", best_error);
   }
 
   SolverOutput::get() << "Found the best configuration at depth " << best_depth << "\n";
