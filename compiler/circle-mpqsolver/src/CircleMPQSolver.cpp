@@ -20,6 +20,7 @@
 #include <luci/CircleFileExpContract.h>
 
 #include "bisection/BisectionSolver.h"
+#include "pattern/PatternSolver.h"
 #include <core/SolverOutput.h>
 
 #include <iostream>
@@ -47,6 +48,8 @@ int handleAutoAlgorithm(arser::Arser &arser, mpqsolver::bisection::BisectionSolv
 int entry(int argc, char **argv)
 {
   const std::string bisection_str = "--bisection";
+  const std::string patterns_str = "--patterns";
+  const std::string layernorm_str = "--u8_layernorm_with_s16_variance";
   const std::string save_intermediate_str = "--save_intermediate";
 
   arser::Arser arser("circle-mpqsolver provides light-weight methods for finding a high-quality "
@@ -55,7 +58,8 @@ int entry(int argc, char **argv)
   arser::Helper::add_version(arser, print_version);
   arser::Helper::add_verbose(arser);
 
-  arser.add_argument("--data").required(true).help("Path to the test data");
+  // if patterns are set we don't need data
+  arser.add_argument("--data").required(false).default_value("").help("Path to the test data");
   arser.add_argument("--data_format").required(false).help("Test data format (default: h5)");
 
   arser.add_argument("--qerror_ratio")
@@ -65,9 +69,20 @@ int entry(int argc, char **argv)
 
   arser.add_argument(bisection_str)
     .nargs(1)
+    .required(false)
     .type(arser::DataType::STR)
     .help("Single optional argument for bisection method. "
           "Whether input node should be quantized to Q16: 'auto', 'true', 'false'.");
+
+  arser.add_argument(patterns_str)
+    .nargs(0)
+    .required(false)
+    .help("Argument to define patterns applied (LayerNorm is the only supported) ");
+
+  arser.add_argument(layernorm_str)
+    .nargs(0)
+    .required(false)
+    .help("Use int16 for computing variance in uint8 layer normalization");
 
   arser.add_argument("--input_model")
     .required(true)
@@ -127,24 +142,35 @@ int entry(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
+  if (arser[bisection_str] && arser[patterns_str])
+  {
+    // only one solver can be used for now
+    std::cerr << "ERROR: only one method is allowed to use" << std::endl;
+    return EXIT_FAILURE;
+  }
+
   SolverOutput::get() << ">> Searching mixed precision configuration \n"
                       << "model:" << input_model_path << "\n"
                       << "dataset: " << data_path << "\n"
                       << "input dtype: " << input_dtype << "\n"
                       << "output dtype: " << output_dtype << "\n";
 
+  std::unique_ptr<mpqsolver::MPQSolver> solver;
   if (arser[bisection_str])
   {
     // optimize
-    using namespace mpqsolver::bisection;
+    SolverOutput::get() << "using bisection\n";
 
-    BisectionSolver solver(data_path, qerror_ratio, input_dtype, output_dtype);
+    using namespace mpqsolver::bisection;
+    auto bi_solver =
+      std::make_unique<BisectionSolver>(data_path, qerror_ratio, input_dtype, output_dtype);
+
     {
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
       {
         SolverOutput::get() << "algorithm: bisection (auto)\n";
-        if (!handleAutoAlgorithm(arser, solver))
+        if (!handleAutoAlgorithm(arser, *bi_solver))
         {
           return EXIT_FAILURE;
         }
@@ -152,12 +178,12 @@ int entry(int argc, char **argv)
       else if (value == "true")
       {
         SolverOutput::get() << "algorithm: bisection (Q16AtFront)";
-        solver.algorithm(BisectionSolver::Algorithm::ForceQ16Front);
+        bi_solver->algorithm(BisectionSolver::Algorithm::ForceQ16Front);
       }
       else if (value == "false")
       {
         SolverOutput::get() << "algorithm: bisection (Q8AtFront)";
-        solver.algorithm(BisectionSolver::Algorithm::ForceQ16Back);
+        bi_solver->algorithm(BisectionSolver::Algorithm::ForceQ16Back);
       }
       else
       {
@@ -172,37 +198,50 @@ int entry(int argc, char **argv)
       auto data_path = arser.get<std::string>(save_intermediate_str);
       if (!data_path.empty())
       {
-        solver.set_save_intermediate(data_path);
+        bi_solver->set_save_intermediate(data_path);
       }
     }
 
     SolverOutput::get() << "qerror metric: MAE\n"
                         << "target qerror ratio: " << qerror_ratio << "\n";
 
-    auto optimized = solver.run(input_model_path);
-    if (optimized == nullptr)
-    {
-      std::cerr << "ERROR: Failed to build mixed precision model" << input_model_path << std::endl;
-      return EXIT_FAILURE;
-    }
+    solver.reset(bi_solver.release());
+  }
+  else if (arser[patterns_str])
+  {
+    SolverOutput::get() << "using patterns\n";
 
-    // save optimized
+    std::vector<mpqsolver::pattern::QuantizationPattern> patterns;
+    if (arser[layernorm_str])
     {
-      SolverOutput::get() << "Saving output model to " << output_model_path << "\n";
-      luci::CircleExporter exporter;
-      luci::CircleFileExpContract contract(optimized.get(), output_model_path);
-      if (!exporter.invoke(&contract))
-      {
-        std::cerr << "ERROR: Failed to export mixed precision model" << input_model_path
-                  << std::endl;
-        return EXIT_FAILURE;
-      }
+      patterns.push_back(mpqsolver::pattern::QuantizationPattern::Q8LayerNormWithQ16Variance);
     }
+    solver =
+      std::make_unique<mpqsolver::pattern::PatternSolver>(input_dtype, output_dtype, patterns);
   }
   else
   {
     std::cerr << "ERROR: Unrecognized solver" << std::endl;
     return EXIT_FAILURE;
+  }
+
+  auto optimized = solver->run(input_model_path);
+  if (optimized == nullptr)
+  {
+    std::cerr << "ERROR: Failed to build mixed precision model" << input_model_path << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  // save optimized
+  {
+    SolverOutput::get() << "Saving output model to " << output_model_path << "\n";
+    luci::CircleExporter exporter;
+    luci::CircleFileExpContract contract(optimized.get(), output_model_path);
+    if (!exporter.invoke(&contract))
+    {
+      std::cerr << "ERROR: Failed to export mixed precision model" << input_model_path << std::endl;
+      return EXIT_FAILURE;
+    }
   }
 
   return EXIT_SUCCESS;
