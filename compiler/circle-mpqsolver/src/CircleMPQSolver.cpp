@@ -49,7 +49,7 @@ int entry(int argc, char **argv)
 {
   const std::string bisection_str = "--bisection";
   const std::string patterns_str = "--patterns";
-  const std::string layernorm_str = "--LayerNorm";
+  const std::string layernorm_str = "--u8_layernorm_with_s16_variance";
   const std::string save_intermediate_str = "--save_intermediate";
 
   arser::Arser arser("circle-mpqsolver provides light-weight methods for finding a high-quality "
@@ -82,7 +82,7 @@ int entry(int argc, char **argv)
   arser.add_argument(layernorm_str)
     .nargs(0)
     .required(false)
-    .help("Whether to apply LayerNorm pattern");
+    .help("Use int16 for computing variance in uint8 layer normalization");
 
   arser.add_argument("--input_model")
     .required(true)
