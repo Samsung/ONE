@@ -18,7 +18,7 @@
 #define __MPQSOLVER_MPQSOLVER_SOLVER_H__
 
 #include "core/Quantizer.h"
-#include <core/DumpingHooks.h>
+#include "core/DumpingHooks.h"
 
 #include <luci/IR/CircleNodes.h>
 

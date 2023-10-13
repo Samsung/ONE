@@ -17,8 +17,8 @@
 #ifndef __MPQSOLVER_BISECTION_SOLVER_H__
 #define __MPQSOLVER_BISECTION_SOLVER_H__
 
-#include <core/Evaluator.h>
-#include <MPQSolver.h>
+#include "core/Evaluator.h"
+#include "MPQSolver.h"
 
 #include <luci/IR/Module.h>
 

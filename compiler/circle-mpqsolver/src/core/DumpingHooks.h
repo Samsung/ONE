@@ -19,9 +19,9 @@
 
 #include <luci/IR/Module.h>
 
-#include <core/Quantizer.h>
-#include <core/SolverHooks.h>
-#include <core/Dumper.h>
+#include "core/Quantizer.h"
+#include "core/SolverHooks.h"
+#include "core/Dumper.h"
 
 #include <string>
 

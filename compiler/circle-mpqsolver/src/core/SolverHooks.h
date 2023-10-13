@@ -19,7 +19,7 @@
 
 #include <luci/IR/Module.h>
 
-#include <core/Quantizer.h>
+#include "core/Quantizer.h"
 
 #include <string>
 

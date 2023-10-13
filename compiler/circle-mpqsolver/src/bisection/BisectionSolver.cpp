@@ -18,8 +18,8 @@
 #include "DepthParameterizer.h"
 #include "VISQErrorApproximator.h"
 
-#include <core/ErrorMetric.h>
-#include <core/SolverOutput.h>
+#include "core/ErrorMetric.h"
+#include "core/SolverOutput.h"
 
 #include <luci/ImporterEx.h>
 
