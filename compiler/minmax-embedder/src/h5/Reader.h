@@ -22,7 +22,7 @@
 #include <utility>
 #include <vector>
 
-namespace minmax
+namespace minmax_embedder
 {
 namespace h5
 {
@@ -80,6 +80,6 @@ private:
 };
 
 } // namespace h5
-} // namespace minmax
+} // namespace minmax_embedder
 
 #endif // __MINMAX_EMBEDDER_H5_READER_H__

@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace minmax
+namespace minmax_embedder
 {
 namespace h5
 {
@@ -69,7 +69,8 @@ MinMaxVectors Reader::read_input(int model_idx, int subg_idx, int input_idx) con
   {
     // check whether minmax exists
     char path[128]; // 128 is enough to print "/value/run_%d/model_%d/subg_%d/input_%d" + null
-    snprintf(path, 128, "/value/run_%d/model_%d/subg_%d/op_%d", r, model_idx, subg_idx, input_idx);
+    snprintf(path, 128, "/value/run_%d/model_%d/subg_%d/input_%d", r, model_idx, subg_idx,
+             input_idx);
     if (!exists(_file.getId(), path))
       continue;
     auto run_grp = _val_grp.openGroup(std::string("run_") + std::to_string(r));
@@ -88,4 +89,4 @@ MinMaxVectors Reader::read_input(int model_idx, int subg_idx, int input_idx) con
 }
 
 } // namespace h5
-} // namespace minmax
+} // namespace minmax_embedder

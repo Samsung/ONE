@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <H5Cpp.h>
+#include "minmax-embedder/Embedder.h"
 
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
@@ -23,9 +23,6 @@
 #include <luci/IR/CircleQuantParam.h>
 #include <luci/Profile/CircleNodeID.h>
 #include <luci/Service/Validate.h>
-
-#include <arser/arser.h>
-#include <vconone/vconone.h>
 
 #include "h5/Reader.h"
 
@@ -36,12 +33,6 @@
 
 namespace
 {
-
-void print_version(void)
-{
-  std::cout << "minmax-embedder version " << vconone::get_string() << std::endl;
-  std::cout << vconone::get_copyright() << std::endl;
-}
 
 /* NOTE: getNthPercentile is copied from compiler/record-minmax/include/RecordFunction.h */
 /**
@@ -80,48 +71,19 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
 
 } // namespace
 
-int entry(int argc, char **argv)
+namespace minmax_embedder
 {
-  arser::Arser arser("minmax-embedder embeds given minmax into circle");
-  arser::Helper::add_version(arser, print_version);
-  arser::Helper::add_verbose(arser);
-  // named args
-  arser.add_argument("--min_percentile")
-    .type(arser::DataType::FLOAT)
-    .default_value(1.f)
-    .help("Set min percentile");
-  arser.add_argument("--max_percentile")
-    .type(arser::DataType::FLOAT)
-    .default_value(99.f)
-    .help("Set max percentile");
-  arser.add_argument("-o").default_value("out.circle").help("Path to output circle model");
-  // positional args: minmax(h5), input(circle)
-  arser.add_argument("circle").help("Path to input circle model");
-  arser.add_argument("minmax").help("Path to minmax data in hdf5");
-  try
-  {
-    arser.parse(argc, argv);
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    std::cout << arser;
-    return 255;
-  }
 
-  std::string mm_path = arser.get<std::string>("minmax");
-  std::string ic_path = arser.get<std::string>("circle");
-  std::string oc_path = arser.get<std::string>("-o");
-  float min_percentile = arser.get<float>("--min_percentile");
-  float max_percentile = arser.get<float>("--max_percentile");
-
+void Embedder::embed(const std::string &output_path, const std::string &input_path,
+                     const std::string &minmax_path, const EmbedderOptions &opt)
+{
   // Load model from the file
   luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(ic_path);
+  auto module = importerex.importVerifyModule(input_path);
   if (module.get() == nullptr)
-    return EXIT_FAILURE;
+    throw std::runtime_error{"Input circle is invalid"};
 
-  minmax::h5::Reader mmr{mm_path};
+  h5::Reader mmr{minmax_path};
 
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
@@ -129,17 +91,16 @@ int entry(int argc, char **argv)
 
     /* read subgraph inputs */
     const auto input_nodes = loco::input_nodes(graph);
-    const auto num_inputs = input_nodes.size();
-    for (uint32_t input_idx = 0; input_idx < num_inputs; ++input_idx)
+    const auto n_inputs = input_nodes.size();
+    for (size_t input_idx = 0; input_idx < n_inputs; ++input_idx)
     {
       const auto *circle_input = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
-      if (not circle_input->index() == input_idx)
-      {
-        throw std::runtime_error("The input order in model and recording are different.");
-      }
+      if (not circle_input || circle_input->index() != input_idx)
+        throw std::runtime_error("Input order in minmax recording does not match to circle");
+
       auto minmax = mmr.read_input(0, idx, input_idx);
-      auto min = getNthPercentile(minmax.min_vector, min_percentile);
-      auto max = getNthPercentile(minmax.max_vector, max_percentile);
+      auto min = getNthPercentile(minmax.min_vector, opt.min_percentile);
+      auto max = getNthPercentile(minmax.max_vector, opt.max_percentile);
       auto quantparam = std::make_unique<luci::CircleQuantParam>();
       quantparam->min.push_back(min);
       quantparam->max.push_back(max);
@@ -149,16 +110,16 @@ int entry(int argc, char **argv)
     }
 
     /* read op outputs */
-    uint32_t node_num = graph->nodes()->size();
-    for (uint32_t i = 0; i < node_num; ++i)
+    uint32_t n_nodes = graph->nodes()->size();
+    for (uint32_t i = 0; i < n_nodes; ++i)
     {
       auto node = loco::must_cast<luci::CircleNode *>(graph->nodes()->at(i));
       if (not has_node_id(node)) // Skip non-op nodes (e.g. input/const/output)
         continue;
       auto op_idx = luci::get_node_id(node);
       auto minmax = mmr.read(0, idx, op_idx);
-      auto min = getNthPercentile(minmax.min_vector, min_percentile);
-      auto max = getNthPercentile(minmax.max_vector, max_percentile);
+      auto min = getNthPercentile(minmax.min_vector, opt.min_percentile);
+      auto max = getNthPercentile(minmax.max_vector, opt.max_percentile);
       auto quantparam = std::make_unique<luci::CircleQuantParam>();
       quantparam->min.push_back(min);
       quantparam->max.push_back(max);
@@ -167,22 +128,16 @@ int entry(int argc, char **argv)
     }
 
     if (!luci::validate(graph))
-    {
-      std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
-      return 255;
-    }
+      throw std::runtime_error{"Circle after embedding minmax is invalid"};
   }
 
   // Export to output Circle file
   luci::CircleExporter exporter;
 
-  luci::CircleFileExpContract contract(module.get(), oc_path);
+  luci::CircleFileExpContract contract(module.get(), output_path);
 
   if (!exporter.invoke(&contract))
-  {
-    std::cerr << "ERROR: Failed to export '" << oc_path << "'" << std::endl;
-    return 255;
-  }
-
-  return 0;
+    throw std::runtime_error{"Failed to export circle"};
 }
+
+} // namespace minmax_embedder
