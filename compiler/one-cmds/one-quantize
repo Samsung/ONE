@@ -250,10 +250,15 @@ def _get_parser():
 
     # ampq_algorithm
     ampq_quant_group.add_argument(
-        '--ampq_algorithm', type=str, help='type of algorithm (bisection)')
+        '--ampq_algorithm', type=str, help='type of algorithm (bisection, pattern)')
 
     ampq_quant_group.add_argument(
         '--bisection_type', type=str, help="one of 'auto', 'i16_front', 'i16_back'")
+
+    ampq_quant_group.add_argument(
+        '--mixed_layernorm',
+        action='store_true',
+        help='whether to apply LayerNorm pattern in pattern algorithm')
 
     # ampq_bisection_visq
     ampq_quant_group.add_argument(
@@ -783,6 +788,10 @@ def _ampq_solve(args):
                         ampq_quantize_cmd.extend(['--bisection', 'true'])
                     elif bisection_type == 'i16_back':
                         ampq_quantize_cmd.extend(['--bisection', 'false'])
+            elif algorithm == 'pattern':
+                ampq_quantize_cmd.append('--patterns')
+                if oneutils.is_valid_attr(args, 'mixed_layernorm'):
+                    ampq_quantize_cmd.append('--u8_layernorm_with_s16_variance')
 
         # recorded model as input
         ampq_quantize_cmd.extend(['--input_model', tmp_minmax_recorded_path])
