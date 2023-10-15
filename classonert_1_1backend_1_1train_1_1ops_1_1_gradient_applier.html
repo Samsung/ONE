@@ -112,8 +112,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a819fae3db65310753cb6934cd584bacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a355a700059818286a05d8e09c41f60ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html#a355a700059818286a05d8e09c41f60ea">~GradientApplier</a> ()=default</td></tr>
 <tr class="separator:a355a700059818286a05d8e09c41f60ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e8af2001c3cbc915a9da8b2e8155b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html#a96e8af2001c3cbc915a9da8b2e8155b3">configure</a> (std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> &gt; optimizer, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *gradient, <a class="el" href="classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html">ITrainableTensor</a> *trainable)</td></tr>
-<tr class="separator:a96e8af2001c3cbc915a9da8b2e8155b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75575a2be507ad9ab58cba3e98985da5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html#a75575a2be507ad9ab58cba3e98985da5">configure</a> (const <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> *optimizer, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *gradient, <a class="el" href="classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html">ITrainableTensor</a> *trainable)</td></tr>
+<tr class="separator:a75575a2be507ad9ab58cba3e98985da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9a756b0a1f2370387e1fc4813007f4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html#ac9a756b0a1f2370387e1fc4813007f4c">applyGradient</a> (uint32_t training_step) override</td></tr>
 <tr class="memdesc:ac9a756b0a1f2370387e1fc4813007f4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply gradients to a trainable tensor.  <a href="classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html#ac9a756b0a1f2370387e1fc4813007f4c">More...</a><br /></td></tr>
 <tr class="separator:ac9a756b0a1f2370387e1fc4813007f4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,14 +213,17 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00043">43</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  _optimizer-&gt;applyGradient(</div>
+<div class="line"><span class="lineno">   45</span>  _optimizer-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">applyGradient</a>(</div>
 <div class="line"><span class="lineno">   46</span>    std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));</div>
 <div class="line"><span class="lineno">   47</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer_html_aeef6393a96d49d19b0d83070e0bbe077"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">onert::exec::train::optimizer::Optimizer::applyGradient</a></div><div class="ttdeci">virtual void applyGradient(const UpdateFactors &amp;factors) const =0</div><div class="ttdoc">Apply gradient to a trainable tensor.</div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">onert::exec::train::optimizer::Optimizer::applyGradient()</a>.</p>
+
 </div>
 </div>
-<a id="a96e8af2001c3cbc915a9da8b2e8155b3" name="a96e8af2001c3cbc915a9da8b2e8155b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96e8af2001c3cbc915a9da8b2e8155b3">&#9670;&#160;</a></span>configure()</h2>
+<a id="a75575a2be507ad9ab58cba3e98985da5" name="a75575a2be507ad9ab58cba3e98985da5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75575a2be507ad9ab58cba3e98985da5">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +231,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void onert::backend::train::ops::GradientApplier::configure </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> &gt;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> *&#160;</td>
           <td class="paramname"><em>optimizer</em>, </td>
         </tr>
         <tr>

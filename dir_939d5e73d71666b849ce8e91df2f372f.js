@@ -13,6 +13,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "ConvertToFakeQuantizedModelPass.cpp", "_convert_to_fake_quantized_model_pass_8cpp.html", "_convert_to_fake_quantized_model_pass_8cpp" ],
     [ "CopyQuantParamPass.cpp", "_copy_quant_param_pass_8cpp.html", null ],
     [ "DecomposeHardSwishPass.cpp", "_decompose_hard_swish_pass_8cpp.html", null ],
+    [ "DecomposeSoftmaxPass.cpp", "_decompose_softmax_pass_8cpp.html", null ],
     [ "DynamicBatchToSingleBatch.cpp", "_dynamic_batch_to_single_batch_8cpp.html", "_dynamic_batch_to_single_batch_8cpp" ],
     [ "DynamicBatchToSingleBatchPass.cpp", "_dynamic_batch_to_single_batch_pass_8cpp.html", null ],
     [ "ExpandBroadcastConstPass.cpp", "_expand_broadcast_const_pass_8cpp.html", null ],

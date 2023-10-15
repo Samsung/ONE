@@ -40,11 +40,13 @@ var namespacennfw_1_1cker =
       [ "ToRuyCachePolicy", "namespacennfw_1_1cker_1_1ruy__support.html#a608f87d002e314885c6c0adb6bf228e8", null ]
     ] ],
     [ "train", "namespacennfw_1_1cker_1_1train.html", [
+      [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
       [ "FullyConnectedBiasGrad", "namespacennfw_1_1cker_1_1train.html#ae451e8541f4091a1c41c54ba240824f4", null ],
       [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
       [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
       [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ]
     ] ],
+    [ "training_ops", "namespacennfw_1_1cker_1_1training__ops.html", "namespacennfw_1_1cker_1_1training__ops" ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],
     [ "BCast", "classnnfw_1_1cker_1_1_b_cast.html", "classnnfw_1_1cker_1_1_b_cast" ],

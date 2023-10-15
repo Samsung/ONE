@@ -1,6 +1,7 @@
 var _params_8h =
 [
     [ "luci_interpreter_pal::MeanParams", "structluci__interpreter__pal_1_1_mean_params.html", "structluci__interpreter__pal_1_1_mean_params" ],
+    [ "luci_interpreter_pal::ResizeNearestNeighborParams", "structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter__pal_1_1_resize_nearest_neighbor_params" ],
     [ "luci_interpreter_pal::PadParams", "structluci__interpreter__pal_1_1_pad_params.html", "structluci__interpreter__pal_1_1_pad_params" ],
     [ "luci_interpreter_pal::FullyConnectedParams", "structluci__interpreter__pal_1_1_fully_connected_params.html", "structluci__interpreter__pal_1_1_fully_connected_params" ],
     [ "luci_interpreter_pal::PaddingValues", "structluci__interpreter__pal_1_1_padding_values.html", "structluci__interpreter__pal_1_1_padding_values" ],

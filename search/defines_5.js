@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['eigen_5fuse_5fthreads_0',['EIGEN_USE_THREADS',['../eigen__spatial__convolutions_8h.html#a86a59fe12b00dac8ede2329ebba1d766',1,'EIGEN_USE_THREADS():&#160;eigen_spatial_convolutions.h'],['../_random_op_cpu_8h.html#a86a59fe12b00dac8ede2329ebba1d766',1,'EIGEN_USE_THREADS():&#160;RandomOpCpu.h']]],
+  ['eigen_5fuse_5fthreads_0',['EIGEN_USE_THREADS',['../eigen__spatial__convolutions_8h.html#a86a59fe12b00dac8ede2329ebba1d766',1,'EIGEN_USE_THREADS():&#160;eigen_spatial_convolutions.h'],['../training__ops_8h.html#a86a59fe12b00dac8ede2329ebba1d766',1,'EIGEN_USE_THREADS():&#160;training_ops.h'],['../_random_op_cpu_8h.html#a86a59fe12b00dac8ede2329ebba1d766',1,'EIGEN_USE_THREADS():&#160;RandomOpCpu.h']]],
   ['elu_5fop_1',['elu_op',['../activation__float__helpers_8h.html#a3d828b57d03a6109bdc4719408927179',1,'activation_float_helpers.h']]],
   ['enable_5ffloat_5fequality_5fwarning_2',['ENABLE_FLOAT_EQUALITY_WARNING',['../_random_op_cpu_8h.html#afedfe099991bc24675c079401dcee3f6',1,'RandomOpCpu.h']]],
   ['execute_5ffunction_3',['EXECUTE_FUNCTION',['../_neural_networks_load_helpers_8h.html#a44c2b9abdcfd86c931344f01eb966622',1,'NeuralNetworksLoadHelpers.h']]],

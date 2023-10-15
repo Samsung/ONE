@@ -162,7 +162,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "Sum.cpp", "compiler_2luci-interpreter_2src_2kernels_2_sum_8cpp.html", null ],
     [ "Sum.h", "luci-interpreter_2src_2kernels_2_sum_8h.html", "luci-interpreter_2src_2kernels_2_sum_8h" ],
     [ "SVDF.cpp", "compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp.html", null ],
-    [ "SVDF.h", "compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8h" ],
+    [ "SVDF.h", "luci-interpreter_2src_2kernels_2_s_v_d_f_8h.html", "luci-interpreter_2src_2kernels_2_s_v_d_f_8h" ],
     [ "Tanh.cpp", "compiler_2luci-interpreter_2src_2kernels_2_tanh_8cpp.html", null ],
     [ "Tanh.h", "compiler_2luci-interpreter_2src_2kernels_2_tanh_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_tanh_8h" ],
     [ "TestUtils.cpp", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8cpp.html", "compiler_2luci-interpreter_2src_2kernels_2_test_utils_8cpp" ],

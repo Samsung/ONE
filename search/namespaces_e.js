@@ -38,7 +38,7 @@ var searchData=
   ['ops_35',['ops',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html',1,'onert::backend::cpu::ops'],['../namespaceonert_1_1backend_1_1ruy_1_1ops.html',1,'onert::backend::ruy::ops'],['../namespaceonert_1_1backend_1_1train_1_1ops.html',1,'onert::backend::train::ops'],['../namespaceonert_1_1backend_1_1trix_1_1ops.html',1,'onert::backend::trix::ops'],['../namespaceonert_1_1backend_1_1xnnpack_1_1ops.html',1,'onert::backend::xnnpack::ops']]],
   ['opselector_36',['opselector',['../namespaceopselector.html',1,'']]],
   ['optimized_5fops_37',['optimized_ops',['../namespaceoptimized__ops.html',1,'']]],
-  ['optimizer_38',['optimizer',['../namespaceonert_1_1exec_1_1train_1_1optimizer.html',1,'onert::exec::train']]],
+  ['optimizer_38',['optimizer',['../namespaceonert_1_1backend_1_1train_1_1optimizer.html',1,'onert::backend::train::optimizer'],['../namespaceonert_1_1exec_1_1train_1_1optimizer.html',1,'onert::exec::train::optimizer']]],
   ['optionbuilder_39',['OptionBuilder',['../namespace_option_builder.html',1,'']]],
   ['pass_40',['pass',['../namespaceonert_1_1compiler_1_1pass.html',1,'onert::compiler::pass'],['../namespaceonert_1_1compiler_1_1train_1_1pass.html',1,'onert::compiler::train::pass']]],
   ['ruy_41',['ruy',['../namespaceonert_1_1backend_1_1ruy.html',1,'onert::backend']]],

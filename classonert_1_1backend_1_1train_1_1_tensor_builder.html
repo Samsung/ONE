@@ -99,8 +99,8 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1train_1_1_ten
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3bb68293c9e3aeaec2720ae77ced873e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a3bb68293c9e3aeaec2720ae77ced873e">TensorBuilder</a> (const std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2">TensorRegistry</a> &gt; &amp;tensor_reg, const std::string planner_id)</td></tr>
-<tr class="separator:a3bb68293c9e3aeaec2720ae77ced873e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef433f2d636b43dcaf208bd8bfb670c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#aef433f2d636b43dcaf208bd8bfb670c9">TensorBuilder</a> (const std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2">TensorRegistry</a> &gt; &amp;tensor_reg, const <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> *optimizer, const std::string planner_id)</td></tr>
+<tr class="separator:aef433f2d636b43dcaf208bd8bfb670c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dca26251cbc424cad9af635e9e8812f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a2dca26251cbc424cad9af635e9e8812f">registerTensorInfo</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> backend_layout)</td></tr>
 <tr class="memdesc:a2dca26251cbc424cad9af635e9e8812f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register tensor information to allocate on train backend.  <a href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a2dca26251cbc424cad9af635e9e8812f">More...</a><br /></td></tr>
 <tr class="separator:a2dca26251cbc424cad9af635e9e8812f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,10 +124,10 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00031">31</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00033">33</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3bb68293c9e3aeaec2720ae77ced873e" name="a3bb68293c9e3aeaec2720ae77ced873e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bb68293c9e3aeaec2720ae77ced873e">&#9670;&#160;</a></span>TensorBuilder()</h2>
+<a id="aef433f2d636b43dcaf208bd8bfb670c9" name="aef433f2d636b43dcaf208bd8bfb670c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef433f2d636b43dcaf208bd8bfb670c9">&#9670;&#160;</a></span>TensorBuilder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,6 +137,12 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2">TensorRegistry</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>tensor_reg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html">exec::train::optimizer::Optimizer</a> *&#160;</td>
+          <td class="paramname"><em>optimizer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -153,10 +159,11 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00028">28</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>  : _tensor_reg{tensor_reg}, _tensor_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">TensorManager</a>(tensor_reg, planner_id)}</div>
-<div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">/* empty */</span></div>
-<div class="line"><span class="lineno">   33</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>  : _tensor_reg{tensor_reg}, _tensor_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">TensorManager</a>(tensor_reg, planner_id)}, _optimizer{</div>
+<div class="line"><span class="lineno">   32</span>                                                                                       optimizer}</div>
+<div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">/* empty */</span></div>
+<div class="line"><span class="lineno">   35</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1acl__cl_html_a7fa14cb8cd7dc2738a942198b5e5b963"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">onert::backend::acl_cl::TensorManager</a></div><div class="ttdeci">acl_common::AclTensorManager&lt; operand::ICLTensor, operand::CLTensor, operand::CLSubTensor &gt; TensorManager</div><div class="ttdef"><b>Definition:</b> <a href="acl__cl_2_tensor_manager_8h_source.html#l00056">TensorManager.h:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -178,11 +185,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00124">124</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>{</div>
-<div class="line"><span class="lineno">  126</span>  _tensor_mgr-&gt;allocateNonConstTensors();</div>
-<div class="line"><span class="lineno">  127</span>  _tensor_mgr-&gt;allocateTrainableTensors();</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00135">135</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
+<div class="line"><span class="lineno">  137</span>  _tensor_mgr-&gt;allocateNonConstTensors();</div>
+<div class="line"><span class="lineno">  138</span>  _tensor_mgr-&gt;allocateTrainableTensors();</div>
+<div class="line"><span class="lineno">  139</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -202,11 +209,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00130">130</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  _tensor_mgr-&gt;allocateDerivativeTensors();</div>
-<div class="line"><span class="lineno">  133</span>  _tensor_mgr-&gt;allocateGradientTensors();</div>
-<div class="line"><span class="lineno">  134</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00141">141</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
+<div class="line"><span class="lineno">  143</span>  _tensor_mgr-&gt;allocateDerivativeTensors();</div>
+<div class="line"><span class="lineno">  144</span>  _tensor_mgr-&gt;allocateGradientTensors();</div>
+<div class="line"><span class="lineno">  145</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -226,10 +233,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00114">114</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">return</span> _tensor_info_map.find(index) != _tensor_info_map.end();</div>
-<div class="line"><span class="lineno">  117</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00125">125</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>{</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> _tensor_info_map.find(index) != _tensor_info_map.end();</div>
+<div class="line"><span class="lineno">  128</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -249,10 +256,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00119">119</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>{</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">return</span> _backward_tensor_info_map.find(index) != _backward_tensor_info_map.end();</div>
-<div class="line"><span class="lineno">  122</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00130">130</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">return</span> _backward_tensor_info_map.find(index) != _backward_tensor_info_map.end();</div>
+<div class="line"><span class="lineno">  133</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -272,18 +279,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00101">101</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
-<div class="line"><span class="lineno">  103</span>  <span class="comment">// TODO Support momory plan</span></div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">  105</span>  {</div>
-<div class="line"><span class="lineno">  106</span>    _tensor_mgr-&gt;claimGradientPlan(index);</div>
-<div class="line"><span class="lineno">  107</span>  }</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  109</span>  {</div>
-<div class="line"><span class="lineno">  110</span>    _tensor_mgr-&gt;claimDerivativePlan(index);</div>
-<div class="line"><span class="lineno">  111</span>  }</div>
-<div class="line"><span class="lineno">  112</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00112">112</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
+<div class="line"><span class="lineno">  114</span>  <span class="comment">// TODO Support momory plan</span></div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">  116</span>  {</div>
+<div class="line"><span class="lineno">  117</span>    _tensor_mgr-&gt;claimGradientPlan(index);</div>
+<div class="line"><span class="lineno">  118</span>  }</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    _tensor_mgr-&gt;claimDerivativePlan(index);</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
+<div class="line"><span class="lineno">  123</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,18 +310,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00083">83</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{</div>
-<div class="line"><span class="lineno">   85</span>  <span class="comment">// TODO Support momory plan</span></div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    _tensor_mgr-&gt;claimTrainablePlan(index);</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   91</span>  {</div>
-<div class="line"><span class="lineno">   92</span>    _tensor_mgr-&gt;claimNonConstPlan(index);</div>
-<div class="line"><span class="lineno">   93</span>  }</div>
-<div class="line"><span class="lineno">   94</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00094">94</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
+<div class="line"><span class="lineno">   96</span>  <span class="comment">// TODO Support momory plan</span></div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    _tensor_mgr-&gt;claimTrainablePlan(index);</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    _tensor_mgr-&gt;claimNonConstPlan(index);</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -334,10 +341,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00096">96</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  <span class="comment">// TODO Support momory plan</span></div>
-<div class="line"><span class="lineno">   99</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00107">107</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>{</div>
+<div class="line"><span class="lineno">  109</span>  <span class="comment">// TODO Support momory plan</span></div>
+<div class="line"><span class="lineno">  110</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -383,33 +390,43 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00059">59</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  _backward_tensor_info_map.emplace(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  <span class="comment">// Train backend supports only one layout as NHWC</span></div>
-<div class="line"><span class="lineno">   65</span>  assert(layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">   66</span>  assert(!<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic());</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>  <span class="comment">// NOTE For now, whether or not to build operands to trainable tensor depends on whether</span></div>
-<div class="line"><span class="lineno">   69</span>  <span class="comment">//      the corresponding operand is constant.</span></div>
-<div class="line"><span class="lineno">   70</span>  assert(_as_constants[index] == <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant());</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;GradientTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">   74</span>    _tensor_reg-&gt;setGradientTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;DerivativeTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">   79</span>    _tensor_reg-&gt;setDerivativeTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">   80</span>  }</div>
-<div class="line"><span class="lineno">   81</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00061">61</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  _backward_tensor_info_map.emplace(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="comment">// Train backend supports only one layout as NHWC</span></div>
+<div class="line"><span class="lineno">   67</span>  assert(layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
+<div class="line"><span class="lineno">   68</span>  assert(!<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic());</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="comment">// NOTE For now, whether or not to build operands to trainable tensor depends on whether</span></div>
+<div class="line"><span class="lineno">   71</span>  <span class="comment">//      the corresponding operand is constant.</span></div>
+<div class="line"><span class="lineno">   72</span>  assert(_as_constants[index] == <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant());</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">   74</span>  {</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;GradientTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
+<div class="line"><span class="lineno">   76</span>    _tensor_reg-&gt;setGradientTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment">// Initialize tensors for gradient variables</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _optimizer-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">getVarCount</a>(); ++i)</div>
+<div class="line"><span class="lineno">   80</span>    {</div>
+<div class="line"><span class="lineno">   81</span>      <span class="comment">// TODO Optimize memory</span></div>
+<div class="line"><span class="lineno">   82</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;Tensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
+<div class="line"><span class="lineno">   83</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size()));</div>
+<div class="line"><span class="lineno">   84</span>      _tensor_reg-&gt;getTrainableTensor(index)-&gt;appendOptVar(std::move(tensor));</div>
+<div class="line"><span class="lineno">   85</span>    }</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   88</span>  {</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;DerivativeTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
+<div class="line"><span class="lineno">   90</span>    _tensor_reg-&gt;setDerivativeTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">   91</span>  }</div>
+<div class="line"><span class="lineno">   92</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer_html_a38b5645ba9ab8c3320ce7e9977d1d547"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">onert::exec::train::optimizer::Optimizer::getVarCount</a></div><div class="ttdeci">virtual uint32_t getVarCount() const =0</div><div class="ttdoc">Get the number of optimizer variables s.</div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition:</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">onert::exec::train::optimizer::Optimizer::getVarCount()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
 
 </div>
 </div>
@@ -455,28 +472,28 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00035">35</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  _tensor_info_map.emplace(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">   39</span>  _as_constants[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant();</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <span class="comment">// Train backend supports only one layout as NHWC</span></div>
-<div class="line"><span class="lineno">   42</span>  assert(layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">   43</span>  assert(!<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic());</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="comment">// NOTE For now, whether or not to build operands to trainable tensor depends on whether</span></div>
-<div class="line"><span class="lineno">   46</span>  <span class="comment">//      the corresponding operand is constant.</span></div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;TrainableTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">   50</span>    _tensor_reg-&gt;setTrainableTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;Tensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">   55</span>    _tensor_reg-&gt;setNonConstTensor(index, std::move(tensor));</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00037">37</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  _tensor_info_map.emplace(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">   41</span>  _as_constants[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant();</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="comment">// Train backend supports only one layout as NHWC</span></div>
+<div class="line"><span class="lineno">   44</span>  assert(layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(!<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic());</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// NOTE For now, whether or not to build operands to trainable tensor depends on whether</span></div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">//      the corresponding operand is constant.</span></div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;TrainableTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
+<div class="line"><span class="lineno">   52</span>    _tensor_reg-&gt;setTrainableTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;Tensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
+<div class="line"><span class="lineno">   57</span>    _tensor_reg-&gt;setNonConstTensor(index, std::move(tensor));</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>

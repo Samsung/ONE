@@ -185,14 +185,14 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   66</span>  ShapeRange kernel_range(kernel_shape);</div>
 <div class="line"><span class="lineno">   67</span>  ShapeRange out_range(<a class="code hl_struct" href="struct_shape.html">Shape</a>{out_shape.dim(0), out_shape.dim(1), out_shape.dim(2), 1});</div>
 <div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  Index in_index;</div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> in_index;</div>
 <div class="line"><span class="lineno">   70</span>  in_index.resize(4);</div>
 <div class="line"><span class="lineno">   71</span> </div>
 <div class="line"><span class="lineno">   72</span>  erase&lt;T&gt;(output);</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index : out_range)</div>
 <div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    Index out_index_k = out_index;</div>
+<div class="line"><span class="lineno">   76</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> out_index_k = out_index;</div>
 <div class="line"><span class="lineno">   77</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;kernel_index : kernel_range)</div>
 <div class="line"><span class="lineno">   78</span>    {</div>
 <div class="line"><span class="lineno">   79</span>      in_index.at(0) = out_index.at(0);</div>
@@ -215,9 +215,12 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_depthwise_conv2_d_op_html_a9999d04004e554fcf46050ea8efe298c"><div class="ttname"><a href="classmir_1_1ops_1_1_depthwise_conv2_d_op.html#a9999d04004e554fcf46050ea8efe298c">mir::ops::DepthwiseConv2DOp::getPaddingBefore</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getPaddingBefore() const</div><div class="ttdef"><b>Definition:</b> <a href="_depthwise_conv2_d_op_8h_source.html#l00055">DepthwiseConv2DOp.h:55</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00062">training_ops.h:62</a></div></div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00031">mir::Tensor&lt; T &gt;::at()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_index_8h_source.html#l00064">mir::Index::at()</a>, <a class="el" href="_shape_range_8h_source.html#l00092">mir::ShapeRange::contains()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00047">mir::Shape::dim()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00161">mir::Operation::getInputShape()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00163">mir::Operation::getOutputShape()</a>, <a class="el" href="_depthwise_conv2_d_op_8h_source.html#l00055">mir::ops::DepthwiseConv2DOp::getPaddingBefore()</a>, <a class="el" href="_depthwise_conv2_d_op_8h_source.html#l00053">mir::ops::DepthwiseConv2DOp::getStrides()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00043">mir::Shape::rank()</a>, and <a class="el" href="mir_2src_2_index_8cpp_source.html#l00024">mir::Index::resize()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>.</p>
 
 </div>
 </div>

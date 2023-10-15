@@ -92,7 +92,9 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_use_nnfw_python_a
   <div class="headertitle"><div class="title">How to Use NNFW PYTHON API </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>Prepare nnpackage</h1>
+<div class="textblock"><h1>CAUTION</h1>
+<p >This Python API is experimental yet. It can be changed later.</p>
+<h1>Prepare nnpackage</h1>
 <h2>Use nnpackage examples</h2>
 <p >Use the <a href="https://github.com/Samsung/ONE/tree/master/nnpackage/examples/v1.0.0">nnpackage examples</a> to run tutorial code.</p>
 <h1>Install nnfw python API</h1>
@@ -109,44 +111,16 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_use_nnfw_python_a
 <div class="line">    session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends)</div>
 <div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__internal_8h_source.html#l00057">nnfw_api_internal.h:58</a></div></div>
 </div><!-- fragment --><ol type="1">
-<li>Prepare Input/Output</li>
+<li>Prepare Input</li>
 </ol>
 <div class="fragment"><div class="line"><span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
 <div class="line">input_size = session.input_size()</div>
-<div class="line">inputs = []</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(input_size):</div>
-<div class="line">    <span class="comment"># Get i-th input&#39;s info</span></div>
-<div class="line">    input_tensorinfo = session.input_tensorinfo(i)</div>
-<div class="line">    ti_dtype = input_tensorinfo.dtype</div>
-<div class="line"> </div>
-<div class="line">    input_array = [0.] * <a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(input_tensorinfo)</div>
-<div class="line">    input_array = np.array(input_array, dtype=ti_dtype)</div>
-<div class="line">    <span class="comment"># TODO: Please add initialization for your input.</span></div>
-<div class="line">    session.set_input(i, input_array)</div>
-<div class="line"> </div>
-<div class="line">    inputs.append(input_array)</div>
-<div class="line"> </div>
-<div class="line"><span class="comment"># Prepare output</span></div>
-<div class="line">output_size = session.output_size()</div>
-<div class="line">outputs = []</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(output_size):</div>
-<div class="line">    <span class="comment"># Get i-th output&#39;s info</span></div>
-<div class="line">    output_tensorinfo = session.output_tensorinfo(i)</div>
-<div class="line">    ti_dtype = output_tensorinfo.dtype</div>
-<div class="line"> </div>
-<div class="line">    output_array = [0.] * <a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(output_tensorinfo)</div>
-<div class="line">    output_array = np.array(output_array, dtype=ti_dtype)</div>
-<div class="line">    session.set_output(i, output_array)</div>
-<div class="line"> </div>
-<div class="line">    outputs.append(output_array)</div>
-<div class="ttc" id="annfw__api__wrapper_8h_html_ab58aba1368b0c5f5b8219480d1b4e558"><div class="ttname"><a href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get the total number of elements in nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__wrapper_8cc_source.html#l00127">nnfw_api_wrapper.cc:127</a></div></div>
+<div class="line">session.set_inputs(input_size)</div>
 </div><!-- fragment --><ol type="1">
 <li>Inference</li>
 </ol>
 <div class="fragment"><div class="line"><span class="comment"># Do inference</span></div>
-<div class="line">session.run()</div>
+<div class="line">outputs = session.inference()</div>
 </div><!-- fragment --><h1>Run Inference with app on the target devices</h1>
 <p >reference app : <a href="https://github.com/Samsung/ONE/blob/master/runtime/onert/sample/minimal-python">minimal-python app</a></p>
 <div class="fragment"><div class="line">$ python3 minimal.py path_to_nnpackage_directory</div>

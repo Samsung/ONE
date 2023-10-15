@@ -14,7 +14,7 @@ var searchData=
   ['unalignedscalar_11',['UnalignedScalar',['../structnnfw_1_1cker_1_1_t_types.html#a0490e689629479a61fb229365b2dab9a',1,'nnfw::cker::TTypes']]],
   ['unalignedtensor_12',['UnalignedTensor',['../structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536',1,'nnfw::cker::TTypes']]],
   ['unalignedvec_13',['UnalignedVec',['../structnnfw_1_1cker_1_1_t_types.html#aae4873dbaf0d36c9733c17c1fe794330',1,'nnfw::cker::TTypes']]],
-  ['updatefactors_14',['UpdateFactors',['../namespaceonert_1_1exec_1_1train_1_1optimizer.html#a9d8456813e1ba2e25e1f82c09c7fc109',1,'onert::exec::train::optimizer']]],
+  ['updatefactors_14',['UpdateFactors',['../classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a3b8eefc21ad45d9e99213645a7fef961',1,'onert::backend::train::optimizer::SGD::UpdateFactors()'],['../namespaceonert_1_1exec_1_1train_1_1optimizer.html#a9d8456813e1ba2e25e1f82c09c7fc109',1,'onert::exec::train::optimizer::UpdateFactors()'],['../classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a1be0baa550db556ebd58e880e829732c',1,'onert::backend::train::optimizer::Adam::UpdateFactors()']]],
   ['updaterset_15',['UpdaterSet',['../classcoco_1_1_bag.html#ab371ac33a034ea05da1f8eaeaac23e00',1,'coco::Bag']]],
   ['updateset_16',['UpdateSet',['../namespacecoco.html#ab4d0fe8a736c29e3d5397d9ad3bb0e2d',1,'coco']]],
   ['useset_17',['UseSet',['../namespacecoco.html#a122b489cf4940ffaaf41706a44d14bbc',1,'coco']]],

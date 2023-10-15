@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6becaeb9599024c54bb366b4527d951"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#ad6becaeb9599024c54bb366b4527d951">getLearningRate</a> (uint32_t iteration) const =0</td></tr>
 <tr class="memdesc:ad6becaeb9599024c54bb366b4527d951"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Learning Rate.  <a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#ad6becaeb9599024c54bb366b4527d951">More...</a><br /></td></tr>
 <tr class="separator:ad6becaeb9599024c54bb366b4527d951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38b5645ba9ab8c3320ce7e9977d1d547"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">getVarCount</a> () const =0</td></tr>
+<tr class="memdesc:a38b5645ba9ab8c3320ce7e9977d1d547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of optimizer variables s.  <a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">More...</a><br /></td></tr>
+<tr class="separator:a38b5645ba9ab8c3320ce7e9977d1d547"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeef6393a96d49d19b0d83070e0bbe077"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">applyGradient</a> (const <a class="el" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a9d8456813e1ba2e25e1f82c09c7fc109">UpdateFactors</a> &amp;factors) const =0</td></tr>
 <tr class="memdesc:aeef6393a96d49d19b0d83070e0bbe077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply gradient to a trainable tensor.  <a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">More...</a><br /></td></tr>
 <tr class="separator:aeef6393a96d49d19b0d83070e0bbe077"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,7 +181,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a47a0d4c547552be16d7a4d58509f0ee1">onert::exec::train::optimizer::SGD</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a00d0fe8536c9fe41e62ea6ed7a5b5ce2">onert::backend::train::optimizer::Adam</a>, and <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#aac090b1462d6590496fc66bc71a5a4ac">onert::backend::train::optimizer::SGD</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_gradient_applier_8cc_source.html#l00043">onert::backend::train::ops::GradientApplier::applyGradient()</a>.</p>
 
 </div>
 </div>
@@ -215,7 +220,39 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Learning rate </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a0bc254fda5c4689b611a42db0bac9d4b">onert::exec::train::optimizer::SGD</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">onert::backend::train::optimizer::SGD</a>, and <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#ab62d20c84c76f37456c9df3d5cc15138">onert::backend::train::optimizer::Adam</a>.</p>
+
+</div>
+</div>
+<a id="a38b5645ba9ab8c3320ce7e9977d1d547" name="a38b5645ba9ab8c3320ce7e9977d1d547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38b5645ba9ab8c3320ce7e9977d1d547">&#9670;&#160;</a></span>getVarCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t onert::exec::train::optimizer::Optimizer::getVarCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of optimizer variables s. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of optimizer variables </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a04d9adc010a07770ab347a0dc68cfde3">onert::backend::train::optimizer::Adam</a>, and <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#af224dfad5f164600915ce56e777ebb88">onert::backend::train::optimizer::SGD</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00061">onert::backend::train::TensorBuilder::registerBackwardTensorInfo()</a>.</p>
 
 </div>
 </div>
@@ -245,7 +282,7 @@ Public Member Functions</h2></td></tr>
 <p>Get the name of optimizer. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name of optimizer </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a343d5bedf8bb7933af57ecc8c610d777">onert::exec::train::optimizer::SGD</a>.</p>
+<p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a1e2b1007a5c25c47b1b81bb4ca71b0d7">onert::backend::train::optimizer::Adam</a>, and <a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a815d75dc7743289b92693a5419ee58de">onert::backend::train::optimizer::SGD</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2exec_2train_2optimizer_2_optimizer_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2core_2include_2exec_2train_2optimizer_2_optimizer_8h_source.html">Optimizer.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;Invalid&quot;</span>}; }</div>

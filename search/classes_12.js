@@ -114,7 +114,7 @@ var searchData=
   ['resizenearestneighbor_111',['ResizeNearestNeighbor',['../classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor.html',1,'luci_interpreter::kernels::ResizeNearestNeighbor'],['../classonert_1_1ir_1_1operation_1_1_resize_nearest_neighbor.html',1,'onert::ir::operation::ResizeNearestNeighbor']]],
   ['resizenearestneighborchef_112',['ResizeNearestNeighborChef',['../class_resize_nearest_neighbor_chef.html',1,'']]],
   ['resizenearestneighborcheffactory_113',['ResizeNearestNeighborChefFactory',['../struct_resize_nearest_neighbor_chef_factory.html',1,'']]],
-  ['resizenearestneighborparams_114',['ResizeNearestNeighborParams',['../structluci__interpreter_1_1_resize_nearest_neighbor_params.html',1,'luci_interpreter']]],
+  ['resizenearestneighborparams_114',['ResizeNearestNeighborParams',['../structluci__interpreter_1_1_resize_nearest_neighbor_params.html',1,'luci_interpreter::ResizeNearestNeighborParams'],['../structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html',1,'luci_interpreter_pal::ResizeNearestNeighborParams']]],
   ['resizenearestneighborprinter_115',['ResizeNearestNeighborPrinter',['../classcircledump_1_1_resize_nearest_neighbor_printer.html',1,'circledump::ResizeNearestNeighborPrinter'],['../classtfldump_1_1_resize_nearest_neighbor_printer.html',1,'tfldump::ResizeNearestNeighborPrinter']]],
   ['resizeop_116',['ResizeOp',['../classmir_1_1ops_1_1_resize_op.html',1,'mir::ops']]],
   ['resolveconstantshape_117',['ResolveConstantShape',['../classmoco_1_1_resolve_constant_shape.html',1,'moco']]],

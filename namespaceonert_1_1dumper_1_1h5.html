@@ -105,12 +105,12 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a41087481025399c748228e7d2105162b"><td class="memItemLeft" align="right" valign="top">H5::Group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1dumper_1_1h5.html#a41087481025399c748228e7d2105162b">ensureGroup</a> (H5::Group parent, const char *child)</td></tr>
-<tr class="separator:a41087481025399c748228e7d2105162b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7119c447ea399be57f95a6efc33075f1"><td class="memItemLeft" align="right" valign="top">H5::Group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1dumper_1_1h5.html#a7119c447ea399be57f95a6efc33075f1">ensureGroup</a> (H5::Group parent, const std::string &amp;child)</td></tr>
+<tr class="separator:a7119c447ea399be57f95a6efc33075f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a41087481025399c748228e7d2105162b" name="a41087481025399c748228e7d2105162b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41087481025399c748228e7d2105162b">&#9670;&#160;</a></span>ensureGroup()</h2>
+<a id="a7119c447ea399be57f95a6efc33075f1" name="a7119c447ea399be57f95a6efc33075f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7119c447ea399be57f95a6efc33075f1">&#9670;&#160;</a></span>ensureGroup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,7 +124,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>child</em>&#160;</td>
         </tr>
         <tr>
@@ -140,11 +140,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>  H5::Exception::dontPrint();</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> parent.openGroup(child);</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> parent.openGroup(child.c_str());</div>
 <div class="line"><span class="lineno">   41</span>  }</div>
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">catch</span> (H5::Exception &amp;e)</div>
 <div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> parent.createGroup(child);</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> parent.createGroup(child.c_str());</div>
 <div class="line"><span class="lineno">   45</span>  }</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->

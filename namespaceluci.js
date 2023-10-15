@@ -447,6 +447,7 @@ var namespaceluci =
     [ "CopyQuantParamPass", "classluci_1_1_copy_quant_param_pass.html", "classluci_1_1_copy_quant_param_pass" ],
     [ "DeadNodeQueryServiceImpl", "structluci_1_1_dead_node_query_service_impl.html", "structluci_1_1_dead_node_query_service_impl" ],
     [ "DecomposeHardSwishPass", "structluci_1_1_decompose_hard_swish_pass.html", "structluci_1_1_decompose_hard_swish_pass" ],
+    [ "DecomposeSoftmaxPass", "structluci_1_1_decompose_softmax_pass.html", "structluci_1_1_decompose_softmax_pass" ],
     [ "Dilation", "classluci_1_1_dilation.html", "classluci_1_1_dilation" ],
     [ "DimMetaData", "classluci_1_1_dim_meta_data.html", "classluci_1_1_dim_meta_data" ],
     [ "DynamicBatchToSingleBatchPass", "classluci_1_1_dynamic_batch_to_single_batch_pass.html", "classluci_1_1_dynamic_batch_to_single_batch_pass" ],

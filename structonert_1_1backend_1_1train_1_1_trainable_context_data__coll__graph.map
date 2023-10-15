@@ -1,5 +1,6 @@
 <map id="onert::backend::train::TrainableContextData" name="onert::backend::train::TrainableContextData">
-<area shape="rect" id="node1" title=" " alt="" coords="14,196,166,236"/>
+<area shape="rect" id="node1" title=" " alt="" coords="106,196,258,236"/>
 <area shape="rect" id="node2" href="$classonert_1_1util_1_1_set.html" title=" " alt="" coords="20,93,160,133"/>
 <area shape="rect" id="node3" href="$classonert_1_1util_1_1_set.html" title="Class for set of custom element &amp;." alt="" coords="5,5,175,31"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1train_1_1_optimizer_info.html" title=" " alt="" coords="185,101,363,126"/>
 </map>

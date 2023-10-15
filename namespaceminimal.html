@@ -98,8 +98,6 @@ $(document).ready(function(){initNavTree('namespaceminimal.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae6b9408705915e80f6c3840a3309196c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceminimal.html#ae6b9408705915e80f6c3840a3309196c">num_elems</a> (tensor_info)</td></tr>
-<tr class="separator:ae6b9408705915e80f6c3840a3309196c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65bb779a0417e64d8694719fc85d8eea"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceminimal.html#a65bb779a0417e64d8694719fc85d8eea">main</a> (nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;)</td></tr>
 <tr class="separator:a65bb779a0417e64d8694719fc85d8eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -141,92 +139,29 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00014">14</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span><span class="keyword">def </span><a class="code hl_function" href="example__array_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
-<div class="line"><span class="lineno">   15</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="lineno">   16</span>    <span class="comment"># operations is optional to assign a specific backends to each operation.</span></div>
-<div class="line"><span class="lineno">   17</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
-<div class="line"><span class="lineno">   18</span>    <span class="keywordflow">if</span> operations:</div>
-<div class="line"><span class="lineno">   19</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends, operations)</div>
-<div class="line"><span class="lineno">   20</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   21</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends)</div>
+<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00005">5</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span><a class="code hl_function" href="example__array_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
+<div class="line"><span class="lineno">    6</span>    <span class="comment"># Create session and load nnpackage</span></div>
+<div class="line"><span class="lineno">    7</span>    <span class="comment"># operations is optional to assign a specific backends to each operation.</span></div>
+<div class="line"><span class="lineno">    8</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
+<div class="line"><span class="lineno">    9</span>    <span class="keywordflow">if</span> operations:</div>
+<div class="line"><span class="lineno">   10</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends, operations)</div>
+<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   12</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends)</div>
+<div class="line"><span class="lineno">   13</span> </div>
+<div class="line"><span class="lineno">   14</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
+<div class="line"><span class="lineno">   15</span>    input_size = session.input_size()</div>
+<div class="line"><span class="lineno">   16</span>    session.set_inputs(input_size)</div>
+<div class="line"><span class="lineno">   17</span> </div>
+<div class="line"><span class="lineno">   18</span>    outputs = session.inference()</div>
+<div class="line"><span class="lineno">   19</span> </div>
+<div class="line"><span class="lineno">   20</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">return</span></div>
 <div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
-<div class="line"><span class="lineno">   24</span>    input_size = session.input_size()</div>
-<div class="line"><span class="lineno">   25</span>    inputs = []</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(input_size):</div>
-<div class="line"><span class="lineno">   28</span>        <span class="comment"># Get i-th input&#39;s info</span></div>
-<div class="line"><span class="lineno">   29</span>        input_tensorinfo = session.input_tensorinfo(i)</div>
-<div class="line"><span class="lineno">   30</span>        ti_dtype = input_tensorinfo.dtype</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>        input_array = [0.] * <a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(input_tensorinfo)</div>
-<div class="line"><span class="lineno">   33</span>        input_array = np.array(input_array, dtype=ti_dtype)</div>
-<div class="line"><span class="lineno">   34</span>        <span class="comment"># TODO: Please add initialization for your input.</span></div>
-<div class="line"><span class="lineno">   35</span>        session.set_input(i, input_array)</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>        inputs.append(input_array)</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    <span class="comment"># Prepare output</span></div>
-<div class="line"><span class="lineno">   40</span>    output_size = session.output_size()</div>
-<div class="line"><span class="lineno">   41</span>    outputs = []</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(output_size):</div>
-<div class="line"><span class="lineno">   44</span>        <span class="comment"># Get i-th output&#39;s info</span></div>
-<div class="line"><span class="lineno">   45</span>        output_tensorinfo = session.output_tensorinfo(i)</div>
-<div class="line"><span class="lineno">   46</span>        ti_dtype = output_tensorinfo.dtype</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        output_array = [0.] * <a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(output_tensorinfo)</div>
-<div class="line"><span class="lineno">   49</span>        output_array = np.array(output_array, dtype=ti_dtype)</div>
-<div class="line"><span class="lineno">   50</span>        session.set_output(i, output_array)</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>        outputs.append(output_array)</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    <span class="comment"># Do inference</span></div>
-<div class="line"><span class="lineno">   55</span>    session.run()</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>    <span class="comment"># TODO: Please print or compare the output value in your way.</span></div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   23</span> </div>
 <div class="ttc" id="aexample__array_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="example__array_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition:</b> <a href="example__array_8cpp_source.html#l00040">example_array.cpp:40</a></div></div>
-<div class="ttc" id="annfw__api__wrapper_8h_html_ab58aba1368b0c5f5b8219480d1b4e558"><div class="ttname"><a href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get the total number of elements in nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__wrapper_8cc_source.html#l00127">nnfw_api_wrapper.cc:127</a></div></div>
 <div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__internal_8h_source.html#l00057">nnfw_api_internal.h:58</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="minimal_8py_source.html#l00006">num_elems()</a>.</p>
-
-</div>
-</div>
-<a id="ae6b9408705915e80f6c3840a3309196c" name="ae6b9408705915e80f6c3840a3309196c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6b9408705915e80f6c3840a3309196c">&#9670;&#160;</a></span>num_elems()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def minimal.num_elems </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>tensor_info</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Get the total number of elements in nnfw_tensorinfo.dims.</pre> 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00006">6</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span><a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(tensor_info):</div>
-<div class="line"><span class="lineno">    7</span>    <span class="stringliteral">&quot;&quot;&quot;Get the total number of elements in nnfw_tensorinfo.dims.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">    8</span>    n = 1</div>
-<div class="line"><span class="lineno">    9</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> range(tensor_info.rank):</div>
-<div class="line"><span class="lineno">   10</span>        n *= tensor_info.dims[x]</div>
-<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">return</span> n</div>
-<div class="line"><span class="lineno">   12</span> </div>
-<div class="line"><span class="lineno">   13</span> </div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="minimal_8py_source.html#l00014">main()</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -242,7 +177,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00064">64</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00025">25</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
 
 </div>
 </div>

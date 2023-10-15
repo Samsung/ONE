@@ -17,5 +17,6 @@ var dir_132de01d1c06e6c7d9be57d5e7d50eec =
     [ "PALSin.h", "_p_a_l_sin_8h.html", null ],
     [ "PALSoftmax.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h" ],
     [ "PALSquare.h", "_p_a_l_square_8h.html", null ],
+    [ "PALSVDF.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", null ],
     [ "PALUnidirectionalSequenceLSTM.h", "mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html", "mcu_2_p_a_l_unidirectional_sequence_l_s_t_m_8h" ]
 ];

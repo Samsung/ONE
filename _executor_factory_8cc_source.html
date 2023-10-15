@@ -707,14 +707,14 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>ExecutorFactory::create(std::unique_ptr&lt;compiler::train::LoweredTrainableGraph&gt; lowered_graph,</div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                        <span class="keyword">const</span> std::shared_ptr&lt;exec::IExecutors&gt; &amp;executors,</div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                        <span class="keyword">const</span> ExecutorFactoryArgs &amp;args,</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                        <span class="keyword">const</span> std::shared_ptr&lt;exec::train::optimizer::Optimizer&gt; &amp;optimizer)</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                        <span class="keyword">const</span> compiler::train::TrainingInfo &amp;training_info)</div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>{</div>
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span> </div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
 <div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span> </div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, optimizer);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>}</div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
 <div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="keywordtype">void</span> ExecutorFactory::prepareMigrantTensors(</div>
@@ -748,7 +748,7 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>exec::IExecutor *ExecutorFactory::createTrainableExecutor(</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>  std::unique_ptr&lt;compiler::train::LoweredTrainableGraph&gt; lowered_graph,</div>
 <div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>  <span class="keyword">const</span> std::shared_ptr&lt;exec::IExecutors&gt; &amp;, <span class="keyword">const</span> ExecutorFactoryArgs &amp;args,</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>  <span class="keyword">const</span> std::shared_ptr&lt;exec::train::optimizer::Optimizer&gt; &amp;optimizer)</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>  <span class="keyword">const</span> compiler::train::TrainingInfo &amp;training_info)</div>
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>{</div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a> = <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options;</div>
 <div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tracing_ctx = <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.tracing_ctx;</div>
@@ -817,7 +817,7 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>    tdata.operand_layouts = std::move(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.operand_layouts);</div>
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>    tdata.custom_kernel_builder = std::move(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.custom_kernel_builder);</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>    tdata.is_linear_executor = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.is_linear_executor;</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>    tdata.optimizer = optimizer;</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>    tdata.optim_info = training_info.optimizerInfo();</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span> </div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>    <span class="comment">// TODO Remove dynamic_cast</span></div>
 <div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>    <span class="keywordflow">try</span></div>

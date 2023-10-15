@@ -17,10 +17,10 @@ var dir_410b5509a292eb0efec4b2a471506547 =
     [ "PALQuantize.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h.html", null ],
     [ "PALreference_ops.h", "mcu_2_p_a_lreference__ops_8h.html", "mcu_2_p_a_lreference__ops_8h" ],
     [ "PALResizeBilinear.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html", null ],
-    [ "PALResizeNearestNeighbor.h", "mcu_2_p_a_l_resize_nearest_neighbor_8h.html", null ],
+    [ "PALResizeNearestNeighbor.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h.html", null ],
     [ "PALSoftmax.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html", null ],
     [ "PALSpaceToBatchND.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_batch_n_d_8h.html", null ],
     [ "PALSpaceToDepth.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_depth_8h.html", null ],
     [ "PALSub.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_sub_8h.html", null ],
-    [ "PALSVDF.h", "mcu_2_p_a_l_s_v_d_f_8h.html", null ]
+    [ "PALSVDF.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", null ]
 ];

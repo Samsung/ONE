@@ -5,6 +5,6 @@ var structonert_1_1backend_1_1train_1_1_trainable_context_data =
     [ "is_linear_executor", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a2ab5beae1e228dc54d6f5ef318d204a4", null ],
     [ "op_order", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a4a9b0b23a61f1237f7b24b3b86f7ba25", null ],
     [ "operand_layouts", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#abf537f3d5045c903134682d138e4c253", null ],
-    [ "optimizer", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a3c550cb7c6443e7d5b2d0b5aa81a9e2a", null ],
+    [ "optim_info", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a0e03981c96947927959e96077928186b", null ],
     [ "tgraph", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a59c952a3ce359e004a035852a0f56e1b", null ]
 ];

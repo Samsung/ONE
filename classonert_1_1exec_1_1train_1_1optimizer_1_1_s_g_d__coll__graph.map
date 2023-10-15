@@ -1,4 +1,0 @@
-<map id="onert::exec::train::optimizer::SGD" name="onert::exec::train::optimizer::SGD">
-<area shape="rect" id="node1" title="SGD optimizer." alt="" coords="19,93,133,133"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html" title="Base class for all optimizers." alt="" coords="5,5,147,45"/>
-</map>

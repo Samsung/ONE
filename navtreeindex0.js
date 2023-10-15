@@ -99,6 +99,8 @@ var NAVTREEINDEX0 =
 "_activation_utils_8h.html#ac623903689abbf2720795f6559258ca5":[36,0,0,3,0,0,0,0,2],
 "_activation_utils_8h.html#af4ba29fb93ecd7bda391d4cc889b1eb7":[36,0,0,3,0,0,0,0,1],
 "_activation_utils_8h_source.html":[36,0,0,3,0,0,0,0],
+"_adam_8cc.html":[36,0,4,2,1,7,1,0],
+"_adam_8cc_source.html":[36,0,4,2,1,7,1,0],
 "_add_8float_8cpp.html":[36,0,0,3,0,0,2],
 "_add_8float_8cpp.html#a09396309fc071e5b03f036c5f3090dbb":[36,0,0,3,0,0,2,2],
 "_add_8float_8cpp.html#a1fb6c330aa1fc2a6e2438dbbfb5cb71b":[36,0,0,3,0,0,2,0],
@@ -109,12 +111,6 @@ var NAVTREEINDEX0 =
 "_add_8float_8h.html":[36,0,0,3,0,0,3],
 "_add_8float_8h.html#a3874d0751e257d6e3da9f0aaa3c5a040":[36,0,0,3,0,0,3,0],
 "_add_8float_8h_source.html":[36,0,0,3,0,0,3],
-"_add__000_2____init_____8py.html":[36,0,0,100,0,0,0],
-"_add__000_2____init_____8py_source.html":[36,0,0,100,0,0,0],
-"_add__001_2____init_____8py.html":[36,0,0,100,0,1,0],
-"_add__001_2____init_____8py_source.html":[36,0,0,100,0,1,0],
-"_add__002_2____init_____8py.html":[36,0,0,100,0,2,0],
-"_add__002_2____init_____8py_source.html":[36,0,0,100,0,2,0],
 "_add_canonicalizer_8cpp.html":[36,0,0,69,1,0,0],
 "_add_canonicalizer_8cpp_source.html":[36,0,0,69,1,0,0],
 "_add_canonicalizer_8h.html":[36,0,0,69,1,0,1],
@@ -249,5 +245,9 @@ var NAVTREEINDEX0 =
 "_attr_dilation_8h.html":[36,0,0,51,3,0,0,0,1],
 "_attr_dilation_8h_source.html":[36,0,0,51,3,0,0,0,1],
 "_attr_filter_8cpp.html":[36,0,0,51,3,1,2],
-"_attr_filter_8cpp_source.html":[36,0,0,51,3,1,2]
+"_attr_filter_8cpp_source.html":[36,0,0,51,3,1,2],
+"_attr_filter_8h.html":[36,0,0,51,3,0,0,0,2],
+"_attr_filter_8h_source.html":[36,0,0,51,3,0,0,0,2],
+"_attr_fused_act_func_8h.html":[36,0,0,51,3,0,0,0,3],
+"_attr_fused_act_func_8h.html#aadc51aac82492942392bd3e255b4c945":[36,0,0,51,3,0,0,0,3,0]
 };

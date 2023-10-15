@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a63089bb34bd552d054650323d99d7ce8" name="a63089bb34bd552d054650323d99d7ce8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63089bb34bd552d054650323d99d7ce8">&#9670;&#160;</a></span>Backend()</h2>
@@ -157,8 +157,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00042">42</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>: _config{std::make_shared&lt;Config&gt;()} {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -188,8 +188,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _config; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _config; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -219,19 +219,24 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1train_1_1_i_trainable_backend.html#ad0f3f8ec4bcc5d8fe2526831596c3b52">onert::backend::train::ITrainableBackend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00051">51</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <span class="stringliteral">&quot;Bump&quot;</span>);</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb);</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    context-&gt;kernel_gen = std::make_shared&lt;train::KernelGenerator&gt;(</div>
-<div class="line"><span class="lineno">   60</span>      tgraph, tr, context-&gt;external_context(), context-&gt;data()-&gt;optimizer);</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> context;</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> optimizer = <a class="code hl_function" href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">createOptimizer</a>(tdata.optim_info);</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, optimizer.get(), <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
+<div class="line"><span class="lineno">   60</span>                                                           std::move(optimizer));</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    context-&gt;kernel_gen = std::make_shared&lt;train::KernelGenerator&gt;(</div>
+<div class="line"><span class="lineno">   63</span>      tgraph, tr, context-&gt;external_context(), context-&gt;optimizer());</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a9487515b281a36b5c774eb456275e89e"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">onert::backend::train::createOptimizer</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::optimizer::Optimizer &gt; createOptimizer(const ir::train::OptimizerInfo &amp;optim_info)</div><div class="ttdef"><b>Definition:</b> <a href="_optimizers_8h_source.html#l00033">Optimizers.h:33</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_optimizers_8h_source.html#l00033">onert::backend::train::createOptimizer()</a>.</p>
+
 </div>
 </div>
 <a id="a502c31ad7adb63214824e2b07a64e11c" name="a502c31ad7adb63214824e2b07a64e11c"></a>
@@ -260,10 +265,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_backend.html#afa956662b060cbf562dfef4ad433b869">onert::backend::Backend</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00045">45</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> std::make_unique&lt;DummyBackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00046">46</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> std::make_unique&lt;DummyBackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

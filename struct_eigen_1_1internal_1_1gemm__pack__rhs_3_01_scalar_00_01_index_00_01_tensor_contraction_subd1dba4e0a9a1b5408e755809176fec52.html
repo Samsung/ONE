@@ -239,8 +239,8 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1054</span>    (void)stride;</div>
 <div class="line"><span class="lineno"> 1055</span>    (void)<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
 <div class="line"><span class="lineno"> 1056</span> </div>
-<div class="line"><span class="lineno"> 1057</span>    <span class="keyword">const</span> Index packet_cols4 = (cols / 4) * 4;</div>
-<div class="line"><span class="lineno"> 1058</span>    <span class="keyword">const</span> Index peeled_k = (depth / packet_size) * packet_size;</div>
+<div class="line"><span class="lineno"> 1057</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> packet_cols4 = (cols / 4) * 4;</div>
+<div class="line"><span class="lineno"> 1058</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> peeled_k = (depth / packet_size) * packet_size;</div>
 <div class="line"><span class="lineno"> 1059</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> non_standard_patches = rhs.nonStandardPatches();</div>
 <div class="line"><span class="lineno"> 1060</span> </div>
 <div class="line"><span class="lineno"> 1061</span>    <span class="keywordflow">for</span> (Index j2 = 0; j2 &lt; packet_cols4; j2 += 4)</div>
@@ -250,7 +250,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1065</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52.html#ade9c17a43e0920b3d8341f65958a1649">SubMapper</a> dm2 = rhs.getLinearMapper(0, j2 + 2);</div>
 <div class="line"><span class="lineno"> 1066</span>      <span class="keyword">const</span> <a class="code hl_typedef" href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52.html#ade9c17a43e0920b3d8341f65958a1649">SubMapper</a> dm3 = rhs.getLinearMapper(0, j2 + 3);</div>
 <div class="line"><span class="lineno"> 1067</span> </div>
-<div class="line"><span class="lineno"> 1068</span>      Index k = 0;</div>
+<div class="line"><span class="lineno"> 1068</span>      <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> k = 0;</div>
 <div class="line"><span class="lineno"> 1069</span>      <span class="keywordflow">if</span> ((packet_size % 4) == 0 &amp;&amp; !non_standard_patches)</div>
 <div class="line"><span class="lineno"> 1070</span>      {</div>
 <div class="line"><span class="lineno"> 1071</span>        <span class="comment">// FAST PATH:</span></div>
@@ -258,15 +258,15 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1073</span>        <span class="comment">// packet do not span across multiple rows or columns.</span></div>
 <div class="line"><span class="lineno"> 1074</span>        <span class="keywordflow">if</span> ((rhs.patchDepth() % packet_size) == 0)</div>
 <div class="line"><span class="lineno"> 1075</span>        {</div>
-<div class="line"><span class="lineno"> 1076</span>          <span class="keyword">const</span> Index start_col = rhs.colOffset();</div>
-<div class="line"><span class="lineno"> 1077</span>          <span class="keyword">const</span> Index max_col = rhs.maxCol(peeled_k);</div>
+<div class="line"><span class="lineno"> 1076</span>          <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> start_col = rhs.colOffset();</div>
+<div class="line"><span class="lineno"> 1077</span>          <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_col = rhs.maxCol(peeled_k);</div>
 <div class="line"><span class="lineno"> 1078</span> </div>
 <div class="line"><span class="lineno"> 1079</span>          <span class="keywordflow">for</span> (Index c = start_col; c &lt; max_col; ++c)</div>
 <div class="line"><span class="lineno"> 1080</span>          {</div>
 <div class="line"><span class="lineno"> 1081</span>            eigen_assert(k &lt;= peeled_k);</div>
 <div class="line"><span class="lineno"> 1082</span> </div>
-<div class="line"><span class="lineno"> 1083</span>            <span class="keyword">const</span> Index start_row = (c == start_col) ? rhs.rowOffset() : 0;</div>
-<div class="line"><span class="lineno"> 1084</span>            <span class="keyword">const</span> Index max_row = rhs.maxRow(peeled_k, c);</div>
+<div class="line"><span class="lineno"> 1083</span>            <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> start_row = (c == start_col) ? rhs.rowOffset() : 0;</div>
+<div class="line"><span class="lineno"> 1084</span>            <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_row = rhs.maxRow(peeled_k, c);</div>
 <div class="line"><span class="lineno"> 1085</span> </div>
 <div class="line"><span class="lineno"> 1086</span>            <span class="keyword">const</span> <span class="keywordtype">bool</span> pad_col0 = dm0.padCol(c);</div>
 <div class="line"><span class="lineno"> 1087</span>            <span class="keyword">const</span> <span class="keywordtype">bool</span> pad_col1 = dm1.padCol(c);</div>
@@ -282,20 +282,20 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1097</span>                !dm3.padRow(start_row) &amp;&amp; !dm3.padRow(max_row - 1))</div>
 <div class="line"><span class="lineno"> 1098</span>            {</div>
 <div class="line"><span class="lineno"> 1099</span>              <span class="comment">// Compute how many elements we can squeeze read.</span></div>
-<div class="line"><span class="lineno"> 1100</span>              <span class="keyword">const</span> Index start_depth = (c == start_col) ? rhs.depthOffset() : 0;</div>
+<div class="line"><span class="lineno"> 1100</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> start_depth = (c == start_col) ? rhs.depthOffset() : 0;</div>
 <div class="line"><span class="lineno"> 1101</span> </div>
 <div class="line"><span class="lineno"> 1102</span>              <span class="comment">// Upper bound for the number of elements in the depth dimension</span></div>
 <div class="line"><span class="lineno"> 1103</span>              <span class="comment">// that we can squeeze read.</span></div>
-<div class="line"><span class="lineno"> 1104</span>              <span class="keyword">const</span> Index squeeze_length = (max_row - start_row) * rhs.patchDepth() - start_depth;</div>
+<div class="line"><span class="lineno"> 1104</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> squeeze_length = (max_row - start_row) * rhs.patchDepth() - start_depth;</div>
 <div class="line"><span class="lineno"> 1105</span> </div>
 <div class="line"><span class="lineno"> 1106</span>              <span class="comment">// Do not overshoot beyond the block size.</span></div>
-<div class="line"><span class="lineno"> 1107</span>              <span class="keyword">const</span> Index max_depth = start_depth + std::min&lt;Index&gt;(peeled_k - k, squeeze_length);</div>
+<div class="line"><span class="lineno"> 1107</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_depth = start_depth + std::min&lt;Index&gt;(peeled_k - k, squeeze_length);</div>
 <div class="line"><span class="lineno"> 1108</span>              eigen_assert((max_depth - start_depth) % packet_size == 0);</div>
 <div class="line"><span class="lineno"> 1109</span> </div>
-<div class="line"><span class="lineno"> 1110</span>              <span class="keyword">const</span> Index idx0 = dm0.baseIndex(start_row, c);</div>
-<div class="line"><span class="lineno"> 1111</span>              <span class="keyword">const</span> Index idx1 = dm1.baseIndex(start_row, c);</div>
-<div class="line"><span class="lineno"> 1112</span>              <span class="keyword">const</span> Index idx2 = dm2.baseIndex(start_row, c);</div>
-<div class="line"><span class="lineno"> 1113</span>              <span class="keyword">const</span> Index idx3 = dm3.baseIndex(start_row, c);</div>
+<div class="line"><span class="lineno"> 1110</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx0 = dm0.baseIndex(start_row, c);</div>
+<div class="line"><span class="lineno"> 1111</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx1 = dm1.baseIndex(start_row, c);</div>
+<div class="line"><span class="lineno"> 1112</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx2 = dm2.baseIndex(start_row, c);</div>
+<div class="line"><span class="lineno"> 1113</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx3 = dm3.baseIndex(start_row, c);</div>
 <div class="line"><span class="lineno"> 1114</span> </div>
 <div class="line"><span class="lineno"> 1115</span>              <span class="keywordflow">for</span> (Index d = start_depth; d &lt; max_depth; d += packet_size)</div>
 <div class="line"><span class="lineno"> 1116</span>              {</div>
@@ -328,14 +328,14 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1143</span>              <span class="keyword">const</span> <span class="keywordtype">bool</span> pad2 = pad_col2 || dm2.padRow(r);</div>
 <div class="line"><span class="lineno"> 1144</span>              <span class="keyword">const</span> <span class="keywordtype">bool</span> pad3 = pad_col3 || dm3.padRow(r);</div>
 <div class="line"><span class="lineno"> 1145</span> </div>
-<div class="line"><span class="lineno"> 1146</span>              <span class="keyword">const</span> Index idx0 = dm0.baseIndex(r, c);</div>
-<div class="line"><span class="lineno"> 1147</span>              <span class="keyword">const</span> Index idx1 = dm1.baseIndex(r, c);</div>
-<div class="line"><span class="lineno"> 1148</span>              <span class="keyword">const</span> Index idx2 = dm2.baseIndex(r, c);</div>
-<div class="line"><span class="lineno"> 1149</span>              <span class="keyword">const</span> Index idx3 = dm3.baseIndex(r, c);</div>
+<div class="line"><span class="lineno"> 1146</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx0 = dm0.baseIndex(r, c);</div>
+<div class="line"><span class="lineno"> 1147</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx1 = dm1.baseIndex(r, c);</div>
+<div class="line"><span class="lineno"> 1148</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx2 = dm2.baseIndex(r, c);</div>
+<div class="line"><span class="lineno"> 1149</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> idx3 = dm3.baseIndex(r, c);</div>
 <div class="line"><span class="lineno"> 1150</span> </div>
-<div class="line"><span class="lineno"> 1151</span>              <span class="keyword">const</span> Index start_depth =</div>
+<div class="line"><span class="lineno"> 1151</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> start_depth =</div>
 <div class="line"><span class="lineno"> 1152</span>                ((c == start_col) &amp;&amp; (r == start_row)) ? rhs.depthOffset() : 0;</div>
-<div class="line"><span class="lineno"> 1153</span>              <span class="keyword">const</span> Index max_depth = rhs.maxDepth(peeled_k - k, start_depth);</div>
+<div class="line"><span class="lineno"> 1153</span>              <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_depth = rhs.maxDepth(peeled_k - k, start_depth);</div>
 <div class="line"><span class="lineno"> 1154</span>              eigen_assert((max_depth - start_depth) % packet_size == 0);</div>
 <div class="line"><span class="lineno"> 1155</span> </div>
 <div class="line"><span class="lineno"> 1156</span>              <span class="keywordflow">for</span> (Index d = start_depth; d &lt; max_depth; d += packet_size)</div>
@@ -417,6 +417,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno"> 1232</span>  }</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00062">training_ops.h:62</a></div></div>
 <div class="ttc" id="astruct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52_html_ade9c17a43e0920b3d8341f65958a1649"><div class="ttname"><a href="struct_eigen_1_1internal_1_1gemm__pack__rhs_3_01_scalar_00_01_index_00_01_tensor_contraction_subd1dba4e0a9a1b5408e755809176fec52.html#ade9c17a43e0920b3d8341f65958a1649">Eigen::internal::gemm_pack_rhs&lt; Scalar, Index, TensorContractionSubMapper&lt; Scalar, Index, Rhs, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;, nr, ColMajor, false, false &gt;::SubMapper</a></div><div class="ttdeci">TensorContractionSubMapper&lt; Scalar, Index, Rhs, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment &gt; SubMapper</div><div class="ttdef"><b>Definition:</b> <a href="eigen__spatial__convolutions-inl_8h_source.html#l01042">eigen_spatial_convolutions-inl.h:1042</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>

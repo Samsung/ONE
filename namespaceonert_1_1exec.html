@@ -143,6 +143,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_o_min_max_hash.html">IOMinMaxHash</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html">IPermuteFunction</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_job.html">Job</a></td></tr>
@@ -157,6 +159,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_nop_function.html">NopFunction</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A derivative of IFunction tha does nothing.  <a href="classonert_1_1exec_1_1_nop_function.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_op_min_max_hash.html">OpMinMaxHash</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_output_desc.html">OutputDesc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_parallel_executor.html">ParallelExecutor</a></td></tr>
@@ -169,8 +173,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_single_model_executors.html">SingleModelExecutors</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to gather executor set for single model NN package.  <a href="classonert_1_1exec_1_1_single_model_executors.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_s_m_hash.html">SMHash</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_thread_pool.html">ThreadPool</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_tracing_observer.html">TracingObserver</a></td></tr>
@@ -180,8 +182,10 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac15108cec4734f494eba843aabf2b4df"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#ac15108cec4734f494eba843aabf2b4df">SMMinMaxMap</a> = <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt; std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &gt;, <a class="el" href="structonert_1_1exec_1_1_s_m_hash.html">SMHash</a> &gt;</td></tr>
-<tr class="separator:ac15108cec4734f494eba843aabf2b4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bb7d7fe29fa6d0b1f9e712de6abda82"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a9bb7d7fe29fa6d0b1f9e712de6abda82">OpMinMaxMap</a> = <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt; std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &gt;, <a class="el" href="structonert_1_1exec_1_1_op_min_max_hash.html">OpMinMaxHash</a> &gt;</td></tr>
+<tr class="separator:a9bb7d7fe29fa6d0b1f9e712de6abda82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7361aeb3bf6ccd17ff69925972b8d7ee"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a7361aeb3bf6ccd17ff69925972b8d7ee">IOMinMaxMap</a> = <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt; std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &gt;, <a class="el" href="structonert_1_1exec_1_1_i_o_min_max_hash.html">IOMinMaxHash</a> &gt;</td></tr>
+<tr class="separator:a7361aeb3bf6ccd17ff69925972b8d7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54edf28856f9caa5c269b5004cd0ae82"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a54edf28856f9caa5c269b5004cd0ae82">BackendSet</a> = <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> * &gt;</td></tr>
 <tr class="separator:a54edf28856f9caa5c269b5004cd0ae82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a893a10751ea3505eaad6ffe3da376aef"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef">MeasurementData</a> = std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *, std::unordered_map&lt; std::string, std::unordered_map&lt; bool, std::map&lt; uint32_t, int64_t &gt; &gt; &gt; &gt;</td></tr>
@@ -206,6 +210,8 @@ Functions</h2></td></tr>
 <tr class="separator:a14a655293f9accc0f0966ab888a92cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161536c9b334322ad15b54644f18fd23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a161536c9b334322ad15b54644f18fd23">printBool</a> (bool quant, std::ofstream &amp;stream)</td></tr>
 <tr class="separator:a161536c9b334322ad15b54644f18fd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066a36efca45963d0e0d80fadace30e2"><td class="memItemLeft" align="right" valign="top">std::pair&lt; float, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a> (const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *tensor)</td></tr>
+<tr class="separator:a066a36efca45963d0e0d80fadace30e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a039cac362aced788260e0f8249f78c79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a039cac362aced788260e0f8249f78c79">convertShape</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;shape, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> src_layout, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> dst_layout)</td></tr>
 <tr class="memdesc:a039cac362aced788260e0f8249f78c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts shape when its rank is 4.  <a href="namespaceonert_1_1exec.html#a039cac362aced788260e0f8249f78c79">More...</a><br /></td></tr>
 <tr class="separator:a039cac362aced788260e0f8249f78c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,6 +230,22 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_backend_set_8h_source.html#l00035">35</a> of file <a class="el" href="_backend_set_8h_source.html">BackendSet.h</a>.</p>
+
+</div>
+</div>
+<a id="a7361aeb3bf6ccd17ff69925972b8d7ee" name="a7361aeb3bf6ccd17ff69925972b8d7ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7361aeb3bf6ccd17ff69925972b8d7ee">&#9670;&#160;</a></span>IOMinMaxMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1exec.html#a7361aeb3bf6ccd17ff69925972b8d7ee">onert::exec::IOMinMaxMap</a> = typedef <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt;std::pair&lt;<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>&gt;, <a class="el" href="structonert_1_1exec_1_1_i_o_min_max_hash.html">IOMinMaxHash</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00056">56</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 
 </div>
 </div>
@@ -247,19 +269,19 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac15108cec4734f494eba843aabf2b4df" name="ac15108cec4734f494eba843aabf2b4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac15108cec4734f494eba843aabf2b4df">&#9670;&#160;</a></span>SMMinMaxMap</h2>
+<a id="a9bb7d7fe29fa6d0b1f9e712de6abda82" name="a9bb7d7fe29fa6d0b1f9e712de6abda82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bb7d7fe29fa6d0b1f9e712de6abda82">&#9670;&#160;</a></span>OpMinMaxMap</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceonert_1_1exec.html#ac15108cec4734f494eba843aabf2b4df">onert::exec::SMMinMaxMap</a> = typedef <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt;std::pair&lt;<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&gt;, <a class="el" href="structonert_1_1exec_1_1_s_m_hash.html">SMHash</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1exec.html#a9bb7d7fe29fa6d0b1f9e712de6abda82">onert::exec::OpMinMaxMap</a> = typedef <a class="el" href="classonert_1_1util_1_1_min_max_map.html">util::MinMaxMap</a>&lt;std::pair&lt;<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>&gt;, <a class="el" href="structonert_1_1exec_1_1_op_min_max_hash.html">OpMinMaxHash</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00035">35</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00047">47</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 
 </div>
 </div>
@@ -471,6 +493,59 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>  }</div>
 <div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a066a36efca45963d0e0d80fadace30e2" name="a066a36efca45963d0e0d80fadace30e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a066a36efca45963d0e0d80fadace30e2">&#9670;&#160;</a></span>minmaxFrom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; float, float &gt; onert::exec::minmaxFrom </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_min_max_recorder_8cc_source.html#l00035">35</a> of file <a class="el" href="_min_max_recorder_8cc_source.html">MinMaxRecorder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_elements = tensor-&gt;total_size() / <span class="keyword">sizeof</span>(float);</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordtype">bool</span> all_nan = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_elements; ++i)</div>
+<div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> number = data[i];</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (std::isnan(number))</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (number == std::numeric_limits&lt;float&gt;::lowest())</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    all_nan = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (number &gt; max)</div>
+<div class="line"><span class="lineno">   56</span>      max = number;</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (number &lt; min)</div>
+<div class="line"><span class="lineno">   59</span>      min = number;</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (all_nan)</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;All values are NaN(Not a Number)&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">return</span> {min, max};</div>
+<div class="line"><span class="lineno">   66</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00068">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00110">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
+
 </div>
 </div>
 <a id="a161536c9b334322ad15b54644f18fd23" name="a161536c9b334322ad15b54644f18fd23"></a>

@@ -339,8 +339,8 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00094">94</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   99</span>    : m_impl(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.impl().impl())</div>
 <div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    Index patch_rows;</div>
-<div class="line"><span class="lineno">  102</span>    Index patch_depth;</div>
+<div class="line"><span class="lineno">  101</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> patch_rows;</div>
+<div class="line"><span class="lineno">  102</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> patch_depth;</div>
 <div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (internal::traits&lt;ArgType&gt;::Layout == ColMajor)</div>
 <div class="line"><span class="lineno">  104</span>    {</div>
 <div class="line"><span class="lineno">  105</span>      patch_depth = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.impl().dimensions()[0];</div>
@@ -403,6 +403,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno">  162</span>    m_fastDimZero = internal::TensorIntDivisor&lt;Index&gt;(patch_depth);</div>
 <div class="line"><span class="lineno">  163</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00062">training_ops.h:62</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -623,7 +624,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00251">251</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  252</span>  {</div>
-<div class="line"><span class="lineno">  253</span>    Index rowIndex, colIndex, otherIndex;</div>
+<div class="line"><span class="lineno">  253</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> rowIndex, colIndex, otherIndex;</div>
 <div class="line"><span class="lineno">  254</span>    computeBaseIndices(0, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  255</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_input_mapper_3_01_scalar___00_01_index_00_01_side440aa9ca37f1696441a14a50080939ba.html#a9014b395b32380be9743f7871732cea5">loadPacket</a>(row, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  256</span>  }</div>
@@ -669,7 +670,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00261">261</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  262</span>  {</div>
-<div class="line"><span class="lineno">  263</span>    Index rowIndex, colIndex, otherIndex;</div>
+<div class="line"><span class="lineno">  263</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> rowIndex, colIndex, otherIndex;</div>
 <div class="line"><span class="lineno">  264</span>    computeBaseIndices(patchIndex, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  265</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_input_mapper_3_01_scalar___00_01_index_00_01_side440aa9ca37f1696441a14a50080939ba.html#a9014b395b32380be9743f7871732cea5">loadPacket</a>(row, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  266</span>  }</div>
@@ -737,7 +738,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00231">231</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  232</span>  {</div>
-<div class="line"><span class="lineno">  233</span>    Index rowIndex, colIndex, otherIndex;</div>
+<div class="line"><span class="lineno">  233</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> rowIndex, colIndex, otherIndex;</div>
 <div class="line"><span class="lineno">  234</span>    computeBaseIndices(0, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  235</span>    <span class="keywordflow">return</span> loadCoeff(row, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  236</span>  }</div>
@@ -782,7 +783,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00243">243</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  244</span>  {</div>
-<div class="line"><span class="lineno">  245</span>    Index rowIndex, colIndex, otherIndex;</div>
+<div class="line"><span class="lineno">  245</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> rowIndex, colIndex, otherIndex;</div>
 <div class="line"><span class="lineno">  246</span>    computeBaseIndices(patchIndex, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  247</span>    <span class="keywordflow">return</span> loadCoeff(row, rowIndex, colIndex, otherIndex);</div>
 <div class="line"><span class="lineno">  248</span>  }</div>

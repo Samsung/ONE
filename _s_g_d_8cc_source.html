@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/core/src/exec/train/optimizer/SGD.cc Source File</title>
+<title>ONE - On-device Neural Engine: runtime/onert/backend/train/optimizer/SGD.cc Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,28 +108,28 @@ $(document).ready(function(){initNavTree('_s_g_d_8cc_source.html',''); initResiz
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;<a class="code" href="_s_g_d_8h.html">exec/train/optimizer/SGD.h</a>&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_s_g_d_8h.html">SGD.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_optimizer_helpers_8h.html">OptimizerHelpers.h</a>&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span>exec</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span>backend</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>train</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>optimizer</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a0bc254fda5c4689b611a42db0bac9d4b">   30</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a0bc254fda5c4689b611a42db0bac9d4b">SGD::getLearningRate</a>(uint32_t)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">   30</a></span><span class="keywordtype">double</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">SGD::getLearningRate</a>(uint32_t)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// TODO Use iteration, momentum, and nesterov</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">return</span> _learning_rate;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a47a0d4c547552be16d7a4d58509f0ee1">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a47a0d4c547552be16d7a4d58509f0ee1">SGD::applyGradient</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a9d8456813e1ba2e25e1f82c09c7fc109">UpdateFactors</a> &amp;factors)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#aac090b1462d6590496fc66bc71a5a4ac">   36</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#aac090b1462d6590496fc66bc71a5a4ac">SGD::applyGradient</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a3b8eefc21ad45d9e99213645a7fef961">UpdateFactors</a> &amp;factors)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lr = <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a0bc254fda5c4689b611a42db0bac9d4b">getLearningRate</a>(std::get&lt;size_t&gt;(factors));</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lr = <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">getLearningRate</a>(std::get&lt;size_t&gt;(factors));</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;grad_tensor = std::get&lt;const backend::IPortableTensor &amp;&gt;(factors);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">auto</span> &amp;trainable_tensor = std::get&lt;backend::train::ITrainableTensor &amp;&gt;(factors);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  assert(trainable_tensor.data_type() == grad_tensor.data_type());</div>
@@ -137,39 +137,38 @@ $(document).ready(function(){initNavTree('_s_g_d_8cc_source.html',''); initResiz
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shape = trainable_tensor.getShape();</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;grad_shape = grad_tensor.get_info().shape();</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// TODO Support for different shapes</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">if</span> (shape != grad_shape)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Invalid gradient tensor&quot;</span>);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      elementwise&lt;float&gt;(shape, grad_tensor, trainable_tensor,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                         [&amp;](<span class="keywordtype">float</span> src, <span class="keywordtype">float</span> dst) -&gt; <span class="keywordtype">float</span> { <span class="keywordflow">return</span> dst - src * lr; });</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Not supported data type&quot;</span>);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace optimizer</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace exec</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">if</span> (shape != grad_shape)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Invalid gradient tensor&quot;</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      elementwise&lt;float&gt;(shape, grad_tensor, trainable_tensor,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                         [&amp;](<span class="keywordtype">float</span> src, <span class="keywordtype">float</span> dst) -&gt; <span class="keywordtype">float</span> { <span class="keywordflow">return</span> dst - src * lr; });</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Not supported data type&quot;</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>} <span class="comment">// namespace optimizer</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_optimizer_helpers_8h_html"><div class="ttname"><a href="_optimizer_helpers_8h.html">OptimizerHelpers.h</a></div></div>
 <div class="ttc" id="a_s_g_d_8h_html"><div class="ttname"><a href="_s_g_d_8h.html">SGD.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d_html_a0bc254fda5c4689b611a42db0bac9d4b"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a0bc254fda5c4689b611a42db0bac9d4b">onert::exec::train::optimizer::SGD::getLearningRate</a></div><div class="ttdeci">double getLearningRate(uint32_t iteration=0) const override</div><div class="ttdoc">Get the Learning Rate.</div><div class="ttdef"><b>Definition:</b> <a href="_s_g_d_8cc_source.html#l00030">SGD.cc:30</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d_html_a47a0d4c547552be16d7a4d58509f0ee1"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_s_g_d.html#a47a0d4c547552be16d7a4d58509f0ee1">onert::exec::train::optimizer::SGD::applyGradient</a></div><div class="ttdeci">void applyGradient(const UpdateFactors &amp;factors) const override</div><div class="ttdoc">Apply gradient to a trainable tensor.</div><div class="ttdef"><b>Definition:</b> <a href="_s_g_d_8cc_source.html#l00036">SGD.cc:36</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1exec_1_1train_1_1optimizer_html_a9d8456813e1ba2e25e1f82c09c7fc109"><div class="ttname"><a href="namespaceonert_1_1exec_1_1train_1_1optimizer.html#a9d8456813e1ba2e25e1f82c09c7fc109">onert::exec::train::optimizer::UpdateFactors</a></div><div class="ttdeci">std::tuple&lt; const backend::IPortableTensor &amp;, backend::train::ITrainableTensor &amp;, size_t &gt; UpdateFactors</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2exec_2train_2optimizer_2_optimizer_8h_source.html#l00035">Optimizer.h:36</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d_html_a3b8eefc21ad45d9e99213645a7fef961"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a3b8eefc21ad45d9e99213645a7fef961">onert::backend::train::optimizer::SGD::UpdateFactors</a></div><div class="ttdeci">exec::train::optimizer::UpdateFactors UpdateFactors</div><div class="ttdef"><b>Definition:</b> <a href="_s_g_d_8h_source.html#l00038">SGD.h:38</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d_html_a64821688ea953ef9f632c4f24892a4eb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">onert::backend::train::optimizer::SGD::getLearningRate</a></div><div class="ttdeci">double getLearningRate(uint32_t iteration=0) const override</div><div class="ttdoc">Get the Learning Rate.</div><div class="ttdef"><b>Definition:</b> <a href="_s_g_d_8cc_source.html#l00030">SGD.cc:30</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d_html_aac090b1462d6590496fc66bc71a5a4ac"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#aac090b1462d6590496fc66bc71a5a4ac">onert::backend::train::optimizer::SGD::applyGradient</a></div><div class="ttdeci">void applyGradient(const UpdateFactors &amp;factors) const override</div><div class="ttdoc">Apply gradient to a trainable tensor.</div><div class="ttdef"><b>Definition:</b> <a href="_s_g_d_8cc_source.html#l00036">SGD.cc:36</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition:</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_8ea121fb9ddeebd13575ba6eec205704.html">src</a></li><li class="navelem"><a class="el" href="dir_1a57c43998dad7c420bf3ee2c51b13d1.html">exec</a></li><li class="navelem"><a class="el" href="dir_00ee29fd2d6a3d105eb471cbb78a0176.html">train</a></li><li class="navelem"><a class="el" href="dir_669af8b133491301a30b48da207864c2.html">optimizer</a></li><li class="navelem"><a class="el" href="_s_g_d_8cc.html">SGD.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3c1c6f396287f59b9861978effe28d3.html">backend</a></li><li class="navelem"><a class="el" href="dir_860f072ac8a2e43fe3b8432afdc5d5b6.html">train</a></li><li class="navelem"><a class="el" href="dir_eb6ad3838343469704c9bbe5c021feff.html">optimizer</a></li><li class="navelem"><a class="el" href="_s_g_d_8cc.html">SGD.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

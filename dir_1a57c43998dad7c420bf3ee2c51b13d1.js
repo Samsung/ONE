@@ -26,7 +26,7 @@ var dir_1a57c43998dad7c420bf3ee2c51b13d1 =
     [ "JSONExecTime.h", "_j_s_o_n_exec_time_8h.html", "_j_s_o_n_exec_time_8h" ],
     [ "LinearExecutor.cc", "_linear_executor_8cc.html", null ],
     [ "LinearExecutor.h", "_linear_executor_8h.html", "_linear_executor_8h" ],
-    [ "MinMaxRecorder.cc", "_min_max_recorder_8cc.html", null ],
+    [ "MinMaxRecorder.cc", "_min_max_recorder_8cc.html", "_min_max_recorder_8cc" ],
     [ "MinMaxRecorder.h", "_min_max_recorder_8h.html", "_min_max_recorder_8h" ],
     [ "ParallelExecutor.cc", "_parallel_executor_8cc.html", "_parallel_executor_8cc" ],
     [ "ParallelExecutor.h", "_parallel_executor_8h.html", "_parallel_executor_8h" ],

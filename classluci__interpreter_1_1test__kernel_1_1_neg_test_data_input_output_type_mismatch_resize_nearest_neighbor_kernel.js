@@ -1,0 +1,7 @@
+var classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_resize_nearest_neighbor_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchResizeNearestNeighborKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_resize_nearest_neighbor_kernel.html#a444a992b998daf3e751c185be367864b", null ],
+    [ "~NegTestDataInputOutputTypeMismatchResizeNearestNeighborKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_resize_nearest_neighbor_kernel.html#a3e1ca75d746164ac2b424909e0eca654", null ],
+    [ "get_model_ptr", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_resize_nearest_neighbor_kernel.html#a59376aa356c703428f0f584e2c001a72", null ],
+    [ "_test_kernel_model_circle", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_resize_nearest_neighbor_kernel.html#afcdddabf66ce3b2a52479f19d82844d0", null ]
+];

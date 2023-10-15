@@ -1,7 +1,7 @@
 var searchData=
 [
   ['cfgkeyvalues_0',['CfgKeyValues',['../namespaceonert_1_1util.html#a16a30753c508a1c04fe3d98d3081a378',1,'onert::util']]],
-  ['cir_1',['CIR',['../structtflite2circle_1_1_sub_graph_link.html#a31f18ccadcf329e4e1c04eabdab1c87c',1,'tflite2circle::SubGraphLink::CIR()'],['../structtflite2circle_1_1_buffer_link.html#a77d7dc9bf9bea48053717a6bf48f7724',1,'tflite2circle::BufferLink::CIR()'],['../structtflite2circle_1_1_meta_data_buffer_link.html#af77fba2fdc34df523a2d33f85c51887a',1,'tflite2circle::MetaDataBufferLink::CIR()'],['../structtflite2circle_1_1_operator_code_link.html#a62147d5683a7440c2b7fcbeb74f4a86f',1,'tflite2circle::OperatorCodeLink::CIR()']]],
+  ['cir_1',['CIR',['../structtflite2circle_1_1_sub_graph_link.html#a31f18ccadcf329e4e1c04eabdab1c87c',1,'tflite2circle::SubGraphLink::CIR()'],['../structtflite2circle_1_1_operator_code_link.html#a62147d5683a7440c2b7fcbeb74f4a86f',1,'tflite2circle::OperatorCodeLink::CIR()'],['../structtflite2circle_1_1_meta_data_buffer_link.html#af77fba2fdc34df523a2d33f85c51887a',1,'tflite2circle::MetaDataBufferLink::CIR()'],['../structtflite2circle_1_1_buffer_link.html#a77d7dc9bf9bea48053717a6bf48f7724',1,'tflite2circle::BufferLink::CIR()']]],
   ['circlebuffers_2',['CircleBuffers',['../classluci__interpreter_1_1_circle_reader.html#abdb3b3b6ee2a903e2babe8e32da2b914',1,'luci_interpreter::CircleReader']]],
   ['circlebuffers_5ft_3',['CircleBuffers_t',['../namespacecirclechef.html#a2b5bdf073de4fcdab40b023dfe72908c',1,'circlechef']]],
   ['circlemetadataset_4',['CircleMetadataSet',['../classluci__interpreter_1_1_circle_reader.html#abc6adf6d6bed0b6aee662582c9fe9a11',1,'luci_interpreter::CircleReader']]],
@@ -16,10 +16,10 @@ var searchData=
   ['codemap_13',['CodeMap',['../namespaceonert_1_1compiler.html#aaf581e48fee004c58d11ca806b3495d5',1,'onert::compiler']]],
   ['colvectormap_14',['ColVectorMap',['../structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html#acada6548fb456a9b81d66b1c9eb6a55e',1,'nnfw::cker::optimized::GemmlowpOutputPipeline']]],
   ['comparisonfn_15',['ComparisonFn',['../namespacennfw_1_1cker.html#a32d7bbc3821ab0c58af23c7355f92695',1,'nnfw::cker']]],
-  ['const_5fiterator_16',['const_iterator',['../classadt_1_1small__vector.html#aae3e06841c7ee3c344c9eba9259d4de9',1,'adt::small_vector::const_iterator()'],['../classflatbuffers_1_1_vector.html#a66212ee5146550ed418a358a8b756dc6',1,'flatbuffers::Vector::const_iterator()'],['../classflatbuffers_1_1_array.html#a375d371770bbb4ad94311b8f65974ec4',1,'flatbuffers::Array::const_iterator()']]],
+  ['const_5fiterator_16',['const_iterator',['../classadt_1_1small__vector.html#aae3e06841c7ee3c344c9eba9259d4de9',1,'adt::small_vector::const_iterator()'],['../classflatbuffers_1_1_array.html#a375d371770bbb4ad94311b8f65974ec4',1,'flatbuffers::Array::const_iterator()'],['../classflatbuffers_1_1_vector.html#a66212ee5146550ed418a358a8b756dc6',1,'flatbuffers::Vector::const_iterator()']]],
   ['const_5fpointer_17',['const_pointer',['../classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ac2238713cfb387a30ecd27767344eeb8',1,'flatbuffers::FLATBUFFERS_FINAL_CLASS']]],
   ['const_5freference_18',['const_reference',['../classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#adc196b77e116b2894d3918220b8d40fd',1,'flatbuffers::FLATBUFFERS_FINAL_CLASS']]],
-  ['const_5freverse_5fiterator_19',['const_reverse_iterator',['../classflatbuffers_1_1_array.html#adbd9cf3b6515d4eb6af29d493ac4e4be',1,'flatbuffers::Array::const_reverse_iterator()'],['../classadt_1_1small__vector.html#ae4c197ec4a32aa5a972b5e6a6b8eba79',1,'adt::small_vector::const_reverse_iterator()'],['../classflatbuffers_1_1_vector.html#aff94a022cb6a11c6704e6a624f2c285a',1,'flatbuffers::Vector::const_reverse_iterator()']]],
+  ['const_5freverse_5fiterator_19',['const_reverse_iterator',['../classflatbuffers_1_1_array.html#adbd9cf3b6515d4eb6af29d493ac4e4be',1,'flatbuffers::Array::const_reverse_iterator()'],['../classflatbuffers_1_1_vector.html#aff94a022cb6a11c6704e6a624f2c285a',1,'flatbuffers::Vector::const_reverse_iterator()'],['../classadt_1_1small__vector.html#ae4c197ec4a32aa5a972b5e6a6b8eba79',1,'adt::small_vector::const_reverse_iterator()']]],
   ['constantinitializer_20',['ConstantInitializer',['../namespaceonert_1_1backend_1_1builtin.html#aa5e244df38722bafe4798a5c381be721',1,'onert::backend::builtin']]],
   ['consteigenmatrix_21',['ConstEigenMatrix',['../namespacennfw_1_1cker_1_1eigen__support.html#a47d5fc0e946a35bb5a67b2ecb86f52f3',1,'nnfw::cker::eigen_support']]],
   ['consteigentensor_22',['ConstEigenTensor',['../namespacennfw_1_1cker_1_1eigen__support.html#adef6074f5f6bd57fd4a603a41790ddc1',1,'nnfw::cker::eigen_support']]],
@@ -31,6 +31,6 @@ var searchData=
   ['consumerset_28',['ConsumerSet',['../classcoco_1_1_object.html#a60c6335673ed9c9f9bd912b361171c3e',1,'coco::Object']]],
   ['contextid_29',['ContextID',['../namespacenpud_1_1core.html#a84d2910055c8dff564140b2f5bfc9b50',1,'npud::core']]],
   ['converterfunc_30',['ConverterFunc',['../classmir__onnx_1_1_node_converter_registry.html#abe63d6844673750e09acc6e115edc8ff',1,'mir_onnx::NodeConverterRegistry']]],
-  ['cpudevice_31',['CPUDevice',['../namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929',1,'nnfw::cker::functor::CPUDevice()'],['../namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1',1,'nnfw::cker::CPUDevice()']]],
+  ['cpudevice_31',['CPUDevice',['../namespacennfw_1_1cker_1_1training__ops.html#a667a5d591e975225bf026521f5af79d0',1,'nnfw::cker::training_ops::CPUDevice()'],['../namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929',1,'nnfw::cker::functor::CPUDevice()'],['../namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1',1,'nnfw::cker::CPUDevice()']]],
   ['customoptionsformat_32',['CustomOptionsFormat',['../classonert_1_1base__loader_1_1_base_loader.html#ab53006661ffb84bec2cf3d1e36098181',1,'onert::base_loader::BaseLoader']]]
 ];

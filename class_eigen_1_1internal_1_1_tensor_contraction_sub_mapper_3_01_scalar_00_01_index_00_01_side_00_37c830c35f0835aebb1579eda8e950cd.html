@@ -504,11 +504,12 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00935">935</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  936</span>  {</div>
-<div class="line"><span class="lineno">  937</span>    <span class="keyword">const</span> Index <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> = m_rowIndex + row;</div>
-<div class="line"><span class="lineno">  938</span>    <span class="keyword">const</span> Index c = m_colIndex + col;</div>
+<div class="line"><span class="lineno">  937</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> = m_rowIndex + row;</div>
+<div class="line"><span class="lineno">  938</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> c = m_colIndex + col;</div>
 <div class="line"><span class="lineno">  939</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> * m_base_mapper.m_rowInputStride + c * m_base_mapper.m_colInputStride + m_otherIndex;</div>
 <div class="line"><span class="lineno">  940</span>  }</div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00062">training_ops.h:62</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -550,7 +551,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00851">851</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  852</span>  {</div>
-<div class="line"><span class="lineno">  853</span>    <span class="keyword">const</span> Index inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
+<div class="line"><span class="lineno">  853</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
 <div class="line"><span class="lineno">  854</span>    <span class="keywordflow">return</span> m_base_mapper.m_impl.coeff(inputIndex);</div>
 <div class="line"><span class="lineno">  855</span>  }</div>
 <div class="ttc" id="aclass_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd_html_a74ce7bfc8d5762db76551e665b80ff9c"><div class="ttname"><a href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">Eigen::internal::TensorContractionSubMapper&lt; Scalar, Index, Side, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;::baseIndex</a></div><div class="ttdeci">EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE Index baseIndex(const Index row, const Index col) const</div><div class="ttdef"><b>Definition:</b> <a href="eigen__spatial__convolutions-inl_8h_source.html#l00935">eigen_spatial_convolutions-inl.h:935</a></div></div>
@@ -584,8 +585,8 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00964">964</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  965</span>  {</div>
-<div class="line"><span class="lineno">  966</span>    <span class="keyword">const</span> Index patchOffset = m_depth_offset / m_base_mapper.m_fastDimZero;</div>
-<div class="line"><span class="lineno">  967</span>    <span class="keyword">const</span> Index <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a> = patchOffset / m_base_mapper.m_fastColStride;</div>
+<div class="line"><span class="lineno">  966</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> patchOffset = m_depth_offset / m_base_mapper.m_fastDimZero;</div>
+<div class="line"><span class="lineno">  967</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a> = patchOffset / m_base_mapper.m_fastColStride;</div>
 <div class="line"><span class="lineno">  968</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a>;</div>
 <div class="line"><span class="lineno">  969</span>  }</div>
 <div class="ttc" id="aclass_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd_html_abd530276a48c9c6cab8d3bbd203b4eb2"><div class="ttname"><a href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">Eigen::internal::TensorContractionSubMapper&lt; Scalar, Index, Side, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;::colOffset</a></div><div class="ttdeci">EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE Index colOffset() const</div><div class="ttdef"><b>Definition:</b> <a href="eigen__spatial__convolutions-inl_8h_source.html#l00964">eigen_spatial_convolutions-inl.h:964</a></div></div>
@@ -802,12 +803,12 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="line"><span class="lineno">  877</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  878</span> </div>
 <div class="line"><span class="lineno">  879</span>    <span class="comment">// Non zero padding after in rows.</span></div>
-<div class="line"><span class="lineno">  880</span>    <span class="keyword">const</span> Index last_row = (m_base_mapper.m_outputRows - 1) * m_base_mapper.m_row_strides;</div>
+<div class="line"><span class="lineno">  880</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> last_row = (m_base_mapper.m_outputRows - 1) * m_base_mapper.m_row_strides;</div>
 <div class="line"><span class="lineno">  881</span>    if (last_row + (<a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a2208d743dbfbbb1e078c574c45c8e12b">patchRows</a>() - 1) &gt;= m_base_mapper.m_inputRows)</div>
 <div class="line"><span class="lineno">  882</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  883</span> </div>
 <div class="line"><span class="lineno">  884</span>    <span class="comment">// Non zero padding after in cols.</span></div>
-<div class="line"><span class="lineno">  885</span>    <span class="keyword">const</span> Index last_col = (m_base_mapper.m_outputCols - 1) * m_base_mapper.m_col_strides;</div>
+<div class="line"><span class="lineno">  885</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> last_col = (m_base_mapper.m_outputCols - 1) * m_base_mapper.m_col_strides;</div>
 <div class="line"><span class="lineno">  886</span>    if (last_col + (<a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a86ac9b367be44ae2b7b8d13caa106b7a">patchCols</a>() - 1) &gt;= m_base_mapper.m_inputCols)</div>
 <div class="line"><span class="lineno">  887</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  888</span> </div>
@@ -1026,7 +1027,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00774">774</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  775</span>  {</div>
-<div class="line"><span class="lineno">  776</span>    <span class="keyword">const</span> Index max_col =</div>
+<div class="line"><span class="lineno">  776</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_col =</div>
 <div class="line"><span class="lineno">  777</span>      (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1)) / <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a56f23911ae0468e91fa589e3e827fab0">fastPatchColStride</a>();</div>
 <div class="line"><span class="lineno">  778</span>    <span class="keywordflow">return</span> std::min&lt;Index&gt;(1 + max_col, <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a86ac9b367be44ae2b7b8d13caa106b7a">patchCols</a>());</div>
 <div class="line"><span class="lineno">  779</span>  }</div>
@@ -1121,7 +1122,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00791">791</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  792</span>  {</div>
-<div class="line"><span class="lineno">  793</span>    <span class="keyword">const</span> Index max_depth = m_depth_offset + peeled_k - <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  793</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_depth = m_depth_offset + peeled_k - <span class="comment">//</span></div>
 <div class="line"><span class="lineno">  794</span>                            col * <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a4461c0466bd8c12f331275c189a0d922">patchColStride</a>() -    <span class="comment">//</span></div>
 <div class="line"><span class="lineno">  795</span>                            row * <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#aa8590d1d42e180b5fe783d571733d627">patchRowStride</a>();</div>
 <div class="line"><span class="lineno">  796</span>    <span class="keywordflow">return</span> std::min&lt;Index&gt;(max_depth, <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a4ec6e1ba1c2aabea768d686b9e7eb7d6">patchDepth</a>());</div>
@@ -1169,7 +1170,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00782">782</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  783</span>  {</div>
-<div class="line"><span class="lineno">  784</span>    <span class="keyword">const</span> Index max_row =</div>
+<div class="line"><span class="lineno">  784</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> max_row =</div>
 <div class="line"><span class="lineno">  785</span>      (m_depth_offset + (peeled_k == 0 ? 0 : peeled_k - 1) - col * <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a4461c0466bd8c12f331275c189a0d922">patchColStride</a>()) /</div>
 <div class="line"><span class="lineno">  786</span>      <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#ab71dd613d065c563eef9ea34c9570af8">fastPatchRowStride</a>();</div>
 <div class="line"><span class="lineno">  787</span>    <span class="keywordflow">return</span> std::min&lt;Index&gt;(1 + max_row, <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a2208d743dbfbbb1e078c574c45c8e12b">patchRows</a>());</div>
@@ -1366,7 +1367,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00845">845</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  846</span>  {</div>
-<div class="line"><span class="lineno">  847</span>    <span class="keyword">const</span> Index inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
+<div class="line"><span class="lineno">  847</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
 <div class="line"><span class="lineno">  848</span>    <span class="keywordflow">return</span> m_base_mapper.m_impl.template packet&lt;Unaligned&gt;(inputIndex);</div>
 <div class="line"><span class="lineno">  849</span>  }</div>
 </div><!-- fragment -->
@@ -1443,7 +1444,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00916">916</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  917</span>  {</div>
-<div class="line"><span class="lineno">  918</span>    <span class="keyword">const</span> Index c = m_colIndex + col;</div>
+<div class="line"><span class="lineno">  918</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> c = m_colIndex + col;</div>
 <div class="line"><span class="lineno">  919</span>    <span class="keywordflow">return</span> c &lt; 0 || c &gt;= m_base_mapper.m_inputCols;</div>
 <div class="line"><span class="lineno">  920</span>  }</div>
 </div><!-- fragment -->
@@ -1489,7 +1490,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="fragment"><div class="line"><span class="lineno">  923</span>  {</div>
 <div class="line"><span class="lineno">  924</span>    eigen_assert(<a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a3a6fea90a9a7651d946450eb16dbb4da">nonStandardPatches</a>());</div>
 <div class="line"><span class="lineno">  925</span> </div>
-<div class="line"><span class="lineno">  926</span>    <span class="keyword">const</span> Index input_col = m_colIndex + col * m_base_mapper.m_in_col_strides;</div>
+<div class="line"><span class="lineno">  926</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> input_col = m_colIndex + col * m_base_mapper.m_in_col_strides;</div>
 <div class="line"><span class="lineno">  927</span>    *orig_col = (m_base_mapper.m_patch_col_inflate_strides == 1)</div>
 <div class="line"><span class="lineno">  928</span>                  ? input_col</div>
 <div class="line"><span class="lineno">  929</span>                  : ((input_col &gt;= 0) ? (input_col / m_base_mapper.m_fastInputColStride) : 0);</div>
@@ -1540,7 +1541,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 <div class="fragment"><div class="line"><span class="lineno">  904</span>  {</div>
 <div class="line"><span class="lineno">  905</span>    eigen_assert(<a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a3a6fea90a9a7651d946450eb16dbb4da">nonStandardPatches</a>());</div>
 <div class="line"><span class="lineno">  906</span> </div>
-<div class="line"><span class="lineno">  907</span>    <span class="keyword">const</span> Index input_row = m_rowIndex + row * m_base_mapper.m_in_row_strides;</div>
+<div class="line"><span class="lineno">  907</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> input_row = m_rowIndex + row * m_base_mapper.m_in_row_strides;</div>
 <div class="line"><span class="lineno">  908</span>    *orig_row = (m_base_mapper.m_patch_row_inflate_strides == 1)</div>
 <div class="line"><span class="lineno">  909</span>                  ? input_row</div>
 <div class="line"><span class="lineno">  910</span>                  : ((input_row &gt;= 0) ? (input_row / m_base_mapper.m_fastInputRowStride) : 0);</div>
@@ -1579,7 +1580,7 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00892">892</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  893</span>  {</div>
-<div class="line"><span class="lineno">  894</span>    <span class="keyword">const</span> Index <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> = m_rowIndex + row;</div>
+<div class="line"><span class="lineno">  894</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> = m_rowIndex + row;</div>
 <div class="line"><span class="lineno">  895</span>    <span class="keywordflow">return</span> r &lt; 0 || r &gt;= m_base_mapper.m_inputRows;</div>
 <div class="line"><span class="lineno">  896</span>  }</div>
 </div><!-- fragment -->
@@ -1631,7 +1632,7 @@ template&lt;typename PacketT  = Packet&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00859">859</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  860</span>  {</div>
-<div class="line"><span class="lineno">  861</span>    <span class="keyword">const</span> Index inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
+<div class="line"><span class="lineno">  861</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> inputIndex = depth + <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a74ce7bfc8d5762db76551e665b80ff9c">baseIndex</a>;</div>
 <div class="line"><span class="lineno">  862</span>    <span class="keywordflow">return</span> m_base_mapper.m_impl.template partialPacket&lt;PacketT&gt;(inputIndex,</div>
 <div class="line"><span class="lineno">  863</span>                                                                mask&lt;PacketT&gt;(0, num_coeffs));</div>
 <div class="line"><span class="lineno">  864</span>  }</div>
@@ -1819,8 +1820,8 @@ template&lt;typename NewDimension , Index Rows, Index Cols, typename ArgType , t
 
 <p class="definition">Definition at line <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html#l00956">956</a> of file <a class="el" href="eigen__spatial__convolutions-inl_8h_source.html">eigen_spatial_convolutions-inl.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  957</span>  {</div>
-<div class="line"><span class="lineno">  958</span>    <span class="keyword">const</span> Index patchOffset = m_depth_offset / m_base_mapper.m_fastDimZero;</div>
-<div class="line"><span class="lineno">  959</span>    <span class="keyword">const</span> Index <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a> = patchOffset / m_base_mapper.m_fastColStride;</div>
+<div class="line"><span class="lineno">  958</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> patchOffset = m_depth_offset / m_base_mapper.m_fastDimZero;</div>
+<div class="line"><span class="lineno">  959</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a> = patchOffset / m_base_mapper.m_fastColStride;</div>
 <div class="line"><span class="lineno">  960</span>    <span class="keywordflow">return</span> patchOffset - <a class="code hl_function" href="class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#abd530276a48c9c6cab8d3bbd203b4eb2">colOffset</a> * m_base_mapper.m_colStride;</div>
 <div class="line"><span class="lineno">  961</span>  }</div>
 </div><!-- fragment -->

@@ -6,5 +6,6 @@ var dir_2a498922dfc6ace616ed486a6a5bbe00 =
     [ "eigen_spatial_convolutions.h", "eigen__spatial__convolutions_8h.html", "eigen__spatial__convolutions_8h" ],
     [ "eigen_tensor_reduced_instantiations_oss.h", "eigen__tensor__reduced__instantiations__oss_8h.html", "eigen__tensor__reduced__instantiations__oss_8h" ],
     [ "EigenSupport.h", "_eigen_support_8h.html", "_eigen_support_8h" ],
+    [ "training_ops.h", "training__ops_8h.html", "training__ops_8h" ],
     [ "Utils.h", "compute_2cker_2include_2cker_2eigen_2_utils_8h.html", "compute_2cker_2include_2cker_2eigen_2_utils_8h" ]
 ];

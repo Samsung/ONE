@@ -370,7 +370,6 @@ var namespaces_dup =
     [ "Mean_000", "namespace_mean__000.html", "namespace_mean__000" ],
     [ "minimal", "namespaceminimal.html", [
       [ "main", "namespaceminimal.html#a65bb779a0417e64d8694719fc85d8eea", null ],
-      [ "num_elems", "namespaceminimal.html#ae6b9408705915e80f6c3840a3309196c", null ],
       [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]
     ] ],
     [ "mio", "namespacemio.html", "namespacemio" ],
@@ -426,6 +425,7 @@ var namespaces_dup =
     [ "opselector", "namespaceopselector.html", "namespaceopselector" ],
     [ "optimized_ops", "namespaceoptimized__ops.html", "namespaceoptimized__ops" ],
     [ "OptionBuilder", "namespace_option_builder.html", "namespace_option_builder" ],
+    [ "package", "namespacepackage.html", "namespacepackage" ],
     [ "Pad_000", "namespace_pad__000.html", "namespace_pad__000" ],
     [ "Palette", "namespace_palette.html", "namespace_palette" ],
     [ "part_eval_one", "namespacepart__eval__one.html", [

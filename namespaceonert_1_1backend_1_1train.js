@@ -1,6 +1,7 @@
 var namespaceonert_1_1backend_1_1train =
 [
     [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", "namespaceonert_1_1backend_1_1train_1_1ops" ],
+    [ "optimizer", "namespaceonert_1_1backend_1_1train_1_1optimizer.html", "namespaceonert_1_1backend_1_1train_1_1optimizer" ],
     [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
     [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
     [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],
@@ -23,5 +24,6 @@ var namespaceonert_1_1backend_1_1train =
     [ "MemoryManager", "namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0", null ],
     [ "TensorRegistry", "namespaceonert_1_1backend_1_1train.html#a2f0a2dd0270b569e8d2d88b497eb1ad2", null ],
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
-    [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ]
+    [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],
+    [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ]
 ];

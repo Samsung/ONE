@@ -101,7 +101,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "StridedSlice.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_strided_slice_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_strided_slice_8h" ],
     [ "Sub.h", "tflchef_2tflite_2src_2_op_2include_2_sub_8h.html", "tflchef_2tflite_2src_2_op_2include_2_sub_8h" ],
     [ "Sum.h", "tflchef_2tflite_2src_2_op_2include_2_sum_8h.html", "tflchef_2tflite_2src_2_op_2include_2_sum_8h" ],
-    [ "SVDF.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_s_v_d_f_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_s_v_d_f_8h" ],
+    [ "SVDF.h", "tflchef_2tflite_2src_2_op_2include_2_s_v_d_f_8h.html", "tflchef_2tflite_2src_2_op_2include_2_s_v_d_f_8h" ],
     [ "Tanh.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_tanh_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_tanh_8h" ],
     [ "Tile.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_tile_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_tile_8h" ],
     [ "TopKV2.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_top_k_v2_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_top_k_v2_8h" ],

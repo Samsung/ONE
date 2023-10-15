@@ -132,6 +132,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter__pal_1_1_quantization_params.html">QuantizationParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html">ResizeNearestNeighborParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter__pal_1_1_softmax_params.html">SoftmaxParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci__interpreter__pal_1_1_strided_slice_params.html">StridedSliceParams</a></td></tr>
@@ -398,6 +400,11 @@ Functions</h2></td></tr>
 <tr class="separator:a82c89e57f9afe77171177d120c38a79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4c2be4a1bc81196ffc6dcde431b2d59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#aa4c2be4a1bc81196ffc6dcde431b2d59">ComputeInterpolationValues</a> (const float value, const float scale, const bool half_pixel_centers, int32_t input_size, float *scaled_value, int32_t *lower_bound, int32_t *upper_bound)</td></tr>
 <tr class="separator:aa4c2be4a1bc81196ffc6dcde431b2d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f5a39193599fb4d15317f8e2287a7fb"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a8f5a39193599fb4d15317f8e2287a7fb">getNearestNeighbor</a> (const int input_value, const int32_t input_size, const int32_t output_size, const bool align_corners, const bool half_pixel_centers)</td></tr>
+<tr class="separator:a8f5a39193599fb4d15317f8e2287a7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaedc64edf79170e74516a6decb32e65"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:acaedc64edf79170e74516a6decb32e65"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#acaedc64edf79170e74516a6decb32e65">ResizeNearestNeighbor</a> (const <a class="el" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html">ResizeNearestNeighborParams</a> &amp;op_params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;unextended_input_shape, const T *input_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;output_size_shape, const int32_t *output_size_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;unextended_output_shape, T *output_data)</td></tr>
+<tr class="separator:acaedc64edf79170e74516a6decb32e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c1746741db68444740492ffbf673ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ad4c1746741db68444740492ffbf673ef">RoundToNearest</a> (float value)</td></tr>
 <tr class="separator:ad4c1746741db68444740492ffbf673ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ef5e40609481262337f0c5710a91dee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a3ef5e40609481262337f0c5710a91dee">Round</a> (const int32_t flat_size, const float *input_data, float *output_data)</td></tr>
@@ -429,6 +436,8 @@ Functions</h2></td></tr>
 <tr class="memitem:afb21ea495728b40bcacf30ce2ac271ce"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:afb21ea495728b40bcacf30ce2ac271ce"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#afb21ea495728b40bcacf30ce2ac271ce">BroadcastSub4DSlow</a> (const <a class="el" href="structluci__interpreter__pal_1_1_arithmetic_params.html">ArithmeticParams</a> &amp;params, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:afb21ea495728b40bcacf30ce2ac271ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781c0c2006847f7f8fd79f0d65e0c219"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a781c0c2006847f7f8fd79f0d65e0c219">SVDF</a> (const float *input_data, const float *weights_feature_data, const float *weights_time_data, const float *bias_data, float *state_data, float *scratch_data, float *output_data, const int rank, const int input_size, const int batch_size, const int num_filters, const int num_units, const int memory_size, const circle::ActivationFunctionType activation)</td></tr>
+<tr class="separator:a781c0c2006847f7f8fd79f0d65e0c219"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27be310fcbe0e7eec4d5780262289abd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a27be310fcbe0e7eec4d5780262289abd">Tanh</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
 <tr class="separator:a27be310fcbe0e7eec4d5780262289abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5932abd77f2f1ba32e9299abb513d206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a5932abd77f2f1ba32e9299abb513d206">Tanh</a> (int32_t input_multiplier, int32_t input_left_shift, const int flat_size, const int16_t *ptr_input_data, int16_t *ptr_output_data)</td></tr>
@@ -554,16 +563,16 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a" name="a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a"></a>kScalarSecondBroadcast&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00100">100</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
-<div class="line"><span class="lineno">  102</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13">kNone</a>,</div>
-<div class="line"><span class="lineno">  103</span>  kNonBroadcast,              <span class="comment">// Matching input shapes.</span></div>
-<div class="line"><span class="lineno">  104</span>  kFirstInputBroadcastsFast,  <span class="comment">// Fivefold nested loops.</span></div>
-<div class="line"><span class="lineno">  105</span>  kSecondInputBroadcastsFast, <span class="comment">// Fivefold nested loops.</span></div>
-<div class="line"><span class="lineno">  106</span>  kGenericBroadcast,          <span class="comment">// Fall-back.</span></div>
-<div class="line"><span class="lineno">  107</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>,      <span class="comment">// Scalar</span></div>
-<div class="line"><span class="lineno">  108</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>,     <span class="comment">// Scalar</span></div>
-<div class="line"><span class="lineno">  109</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00106">106</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{</div>
+<div class="line"><span class="lineno">  108</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13">kNone</a>,</div>
+<div class="line"><span class="lineno">  109</span>  kNonBroadcast,              <span class="comment">// Matching input shapes.</span></div>
+<div class="line"><span class="lineno">  110</span>  kFirstInputBroadcastsFast,  <span class="comment">// Fivefold nested loops.</span></div>
+<div class="line"><span class="lineno">  111</span>  kSecondInputBroadcastsFast, <span class="comment">// Fivefold nested loops.</span></div>
+<div class="line"><span class="lineno">  112</span>  kGenericBroadcast,          <span class="comment">// Fall-back.</span></div>
+<div class="line"><span class="lineno">  113</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>,      <span class="comment">// Scalar</span></div>
+<div class="line"><span class="lineno">  114</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>,     <span class="comment">// Scalar</span></div>
+<div class="line"><span class="lineno">  115</span>};</div>
 <div class="ttc" id="a_fused_8h_html_a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13"><div class="ttname"><a href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13">FusedActivationFunctionType::kNone</a></div><div class="ttdeci">@ kNone</div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">luci_interpreter_pal::BroadcastableOpCategory::kScalarFirstBroadcast</a></div><div class="ttdeci">@ kScalarFirstBroadcast</div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">luci_interpreter_pal::BroadcastableOpCategory::kScalarSecondBroadcast</a></div><div class="ttdeci">@ kScalarSecondBroadcast</div></div>
@@ -596,13 +605,13 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a7107f7b8e72dcf4463489e14f410fc1da067892a9ea619b2c378e06000c9763af" name="a7107f7b8e72dcf4463489e14f410fc1da067892a9ea619b2c378e06000c9763af"></a>kRelu&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00207">207</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  208</span>{</div>
-<div class="line"><span class="lineno">  209</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13">kNone</a>,</div>
-<div class="line"><span class="lineno">  210</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a4c7f8cb4a4aefd7ac6a89fa1b747233d">kRelu6</a>,</div>
-<div class="line"><span class="lineno">  211</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4ae0a0000573fa134f9ee575b47d839ee4">kRelu1</a>,</div>
-<div class="line"><span class="lineno">  212</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a067892a9ea619b2c378e06000c9763af">kRelu</a></div>
-<div class="line"><span class="lineno">  213</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00213">213</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  214</span>{</div>
+<div class="line"><span class="lineno">  215</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a35c3ace1970663a16e5c65baa5941b13">kNone</a>,</div>
+<div class="line"><span class="lineno">  216</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a4c7f8cb4a4aefd7ac6a89fa1b747233d">kRelu6</a>,</div>
+<div class="line"><span class="lineno">  217</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4ae0a0000573fa134f9ee575b47d839ee4">kRelu1</a>,</div>
+<div class="line"><span class="lineno">  218</span>  <a class="code hl_enumvalue" href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a067892a9ea619b2c378e06000c9763af">kRelu</a></div>
+<div class="line"><span class="lineno">  219</span>};</div>
 <div class="ttc" id="a_fused_8h_html_a1a924a1d956ce15f63c6cc86202b62e4a067892a9ea619b2c378e06000c9763af"><div class="ttname"><a href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a067892a9ea619b2c378e06000c9763af">FusedActivationFunctionType::kRelu</a></div><div class="ttdeci">@ kRelu</div></div>
 <div class="ttc" id="a_fused_8h_html_a1a924a1d956ce15f63c6cc86202b62e4a4c7f8cb4a4aefd7ac6a89fa1b747233d"><div class="ttname"><a href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4a4c7f8cb4a4aefd7ac6a89fa1b747233d">FusedActivationFunctionType::kRelu6</a></div><div class="ttdeci">@ kRelu6</div></div>
 <div class="ttc" id="a_fused_8h_html_a1a924a1d956ce15f63c6cc86202b62e4ae0a0000573fa134f9ee575b47d839ee4"><div class="ttname"><a href="_fused_8h.html#a1a924a1d956ce15f63c6cc86202b62e4ae0a0000573fa134f9ee575b47d839ee4">FusedActivationFunctionType::kRelu1</a></div><div class="ttdeci">@ kRelu1</div></div>
@@ -634,12 +643,12 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a25874b5cd70a892304cc14d13a9e7bcaa3ac705f2acd51a4613f9188c05c91d0d" name="a25874b5cd70a892304cc14d13a9e7bcaa3ac705f2acd51a4613f9188c05c91d0d"></a>Valid&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00056">56</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaa6adf97f83acf6453d4a6a4b1070f3754">None</a>,</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaac90a13d8ec8fe53c6bb33fe10af6f2fe">Same</a>,</div>
-<div class="line"><span class="lineno">   60</span>  Valid</div>
-<div class="line"><span class="lineno">   61</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_params_8h_source.html#l00062">62</a> of file <a class="el" href="_params_8h_source.html">Params.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaa6adf97f83acf6453d4a6a4b1070f3754">None</a>,</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_enumvalue" href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaac90a13d8ec8fe53c6bb33fe10af6f2fe">Same</a>,</div>
+<div class="line"><span class="lineno">   66</span>  Valid</div>
+<div class="line"><span class="lineno">   67</span>};</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a25874b5cd70a892304cc14d13a9e7bcaa6adf97f83acf6453d4a6a4b1070f3754"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaa6adf97f83acf6453d4a6a4b1070f3754">luci_interpreter_pal::PaddingType::None</a></div><div class="ttdeci">@ None</div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a25874b5cd70a892304cc14d13a9e7bcaac90a13d8ec8fe53c6bb33fe10af6f2fe"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a25874b5cd70a892304cc14d13a9e7bcaac90a13d8ec8fe53c6bb33fe10af6f2fe">luci_interpreter_pal::PaddingType::Same</a></div><div class="ttdeci">@ Same</div></div>
 </div><!-- fragment -->
@@ -944,20 +953,20 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   47</span>    params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_arithmetic_params.html#a54d741e3a2cc4ed3abf2fca132002dd7">quantized_activation_min</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_arithmetic_params.html#af06ea01cc146910ab9286b2e8538a2e7">quantized_activation_max</a>, flat_size);</div>
 <div class="line"><span class="lineno">   48</span>  assert(status == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a518ba761adf11b4b8ce0bed8adc95b6b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a518ba761adf11b4b8ce0bed8adc95b6b">luci_interpreter_pal::ArithmeticParams::output_multiplier</a></div><div class="ttdeci">int32_t output_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00177">Params.h:177</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a54d741e3a2cc4ed3abf2fca132002dd7"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a54d741e3a2cc4ed3abf2fca132002dd7">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00186">Params.h:186</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a58a798012068d78c2e0a7c8970d21df4"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a58a798012068d78c2e0a7c8970d21df4">luci_interpreter_pal::ArithmeticParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00180">Params.h:180</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a6c3a2e7207403cebae51174f572b0c3c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a6c3a2e7207403cebae51174f572b0c3c">luci_interpreter_pal::ArithmeticParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00174">Params.h:174</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a6e76e6065730df9e11d90afee4d9deb1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a6e76e6065730df9e11d90afee4d9deb1">luci_interpreter_pal::ArithmeticParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00182">Params.h:182</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a79183b1bad3eb1c930bd95819c663e2f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a79183b1bad3eb1c930bd95819c663e2f">luci_interpreter_pal::ArithmeticParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00184">Params.h:184</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a9dab1ec505405e3130ffb79a38a542cd"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a9dab1ec505405e3130ffb79a38a542cd">luci_interpreter_pal::ArithmeticParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00176">Params.h:176</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_aa51578f8f1548ef6fc8175bdb360fb4d"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#aa51578f8f1548ef6fc8175bdb360fb4d">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a></div><div class="ttdeci">int32_t input2_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00183">Params.h:183</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_ac34cd3bad8645e6e77b005c0907f788c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#ac34cd3bad8645e6e77b005c0907f788c">luci_interpreter_pal::ArithmeticParams::output_shift</a></div><div class="ttdeci">int output_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00178">Params.h:178</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_ac61cec6ae9cc6c116aeb6500a8e75573"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#ac61cec6ae9cc6c116aeb6500a8e75573">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00181">Params.h:181</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_acdc4d72eab84e7ebf232de673101cec6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#acdc4d72eab84e7ebf232de673101cec6">luci_interpreter_pal::ArithmeticParams::input2_offset</a></div><div class="ttdeci">int32_t input2_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00175">Params.h:175</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_af06ea01cc146910ab9286b2e8538a2e7"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#af06ea01cc146910ab9286b2e8538a2e7">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00187">Params.h:187</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a518ba761adf11b4b8ce0bed8adc95b6b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a518ba761adf11b4b8ce0bed8adc95b6b">luci_interpreter_pal::ArithmeticParams::output_multiplier</a></div><div class="ttdeci">int32_t output_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00183">Params.h:183</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a54d741e3a2cc4ed3abf2fca132002dd7"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a54d741e3a2cc4ed3abf2fca132002dd7">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00192">Params.h:192</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a58a798012068d78c2e0a7c8970d21df4"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a58a798012068d78c2e0a7c8970d21df4">luci_interpreter_pal::ArithmeticParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00186">Params.h:186</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a6c3a2e7207403cebae51174f572b0c3c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a6c3a2e7207403cebae51174f572b0c3c">luci_interpreter_pal::ArithmeticParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00180">Params.h:180</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a6e76e6065730df9e11d90afee4d9deb1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a6e76e6065730df9e11d90afee4d9deb1">luci_interpreter_pal::ArithmeticParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00188">Params.h:188</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a79183b1bad3eb1c930bd95819c663e2f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a79183b1bad3eb1c930bd95819c663e2f">luci_interpreter_pal::ArithmeticParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00190">Params.h:190</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a9dab1ec505405e3130ffb79a38a542cd"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a9dab1ec505405e3130ffb79a38a542cd">luci_interpreter_pal::ArithmeticParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00182">Params.h:182</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_aa51578f8f1548ef6fc8175bdb360fb4d"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#aa51578f8f1548ef6fc8175bdb360fb4d">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a></div><div class="ttdeci">int32_t input2_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00189">Params.h:189</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_ac34cd3bad8645e6e77b005c0907f788c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#ac34cd3bad8645e6e77b005c0907f788c">luci_interpreter_pal::ArithmeticParams::output_shift</a></div><div class="ttdeci">int output_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00184">Params.h:184</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_ac61cec6ae9cc6c116aeb6500a8e75573"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#ac61cec6ae9cc6c116aeb6500a8e75573">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00187">Params.h:187</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_acdc4d72eab84e7ebf232de673101cec6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#acdc4d72eab84e7ebf232de673101cec6">luci_interpreter_pal::ArithmeticParams::input2_offset</a></div><div class="ttdeci">int32_t input2_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00181">Params.h:181</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_af06ea01cc146910ab9286b2e8538a2e7"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#af06ea01cc146910ab9286b2e8538a2e7">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00193">Params.h:193</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00174">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00175">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::left_shift</a>, <a class="el" href="_params_8h_source.html#l00177">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00176">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00188">luci_interpreter_pal::ArithmeticParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00189">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00190">luci_interpreter_pal::ArithmeticParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::left_shift</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1095,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   35</span>  assert(status == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00174">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00175">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::left_shift</a>, <a class="el" href="_params_8h_source.html#l00177">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00176">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00188">luci_interpreter_pal::ArithmeticParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00189">luci_interpreter_pal::ArithmeticParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00190">luci_interpreter_pal::ArithmeticParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::left_shift</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
 
 </div>
 </div>
@@ -1370,17 +1379,17 @@ template&lt;typename T1 , typename T2 , typename T3 , typename Cmp &gt; </div>
 <div class="line"><span class="lineno">   89</span>  }</div>
 <div class="line"><span class="lineno">   90</span>}</div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_a506d4fa73c0e7cf5f6c9cfd878815615"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#a506d4fa73c0e7cf5f6c9cfd878815615">luci_interpreter_pal::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00066">Params.h:66</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_aa174dffcd2993e74b47c7a75c7c1bce2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#aa174dffcd2993e74b47c7a75c7c1bce2">luci_interpreter_pal::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00065">Params.h:65</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a65fb5f3717157882123c15e6caf9ccdc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a65fb5f3717157882123c15e6caf9ccdc">luci_interpreter_pal::PoolParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00228">Params.h:228</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a75563e80d8d065c7db0dd6a6249385cc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a75563e80d8d065c7db0dd6a6249385cc">luci_interpreter_pal::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00221">Params.h:221</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7a1f25a36420e89753a6a411514d0435"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7a1f25a36420e89753a6a411514d0435">luci_interpreter_pal::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00223">Params.h:223</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7d87f6be5ae528a474151d3d1be595c5"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7d87f6be5ae528a474151d3d1be595c5">luci_interpreter_pal::PoolParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00229">Params.h:229</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_aa20b83533d1df4a386807e05da3357c8"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#aa20b83533d1df4a386807e05da3357c8">luci_interpreter_pal::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00222">Params.h:222</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad5b0ba9d6a6adca412659e13dec2154a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">luci_interpreter_pal::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00219">Params.h:219</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_af2e87f276f68164725d1478541bf618b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#af2e87f276f68164725d1478541bf618b">luci_interpreter_pal::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00220">Params.h:220</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_a506d4fa73c0e7cf5f6c9cfd878815615"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#a506d4fa73c0e7cf5f6c9cfd878815615">luci_interpreter_pal::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00072">Params.h:72</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_padding_values_html_aa174dffcd2993e74b47c7a75c7c1bce2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_padding_values.html#aa174dffcd2993e74b47c7a75c7c1bce2">luci_interpreter_pal::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00071">Params.h:71</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a65fb5f3717157882123c15e6caf9ccdc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a65fb5f3717157882123c15e6caf9ccdc">luci_interpreter_pal::PoolParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00234">Params.h:234</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a75563e80d8d065c7db0dd6a6249385cc"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a75563e80d8d065c7db0dd6a6249385cc">luci_interpreter_pal::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00227">Params.h:227</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7a1f25a36420e89753a6a411514d0435"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7a1f25a36420e89753a6a411514d0435">luci_interpreter_pal::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00229">Params.h:229</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7d87f6be5ae528a474151d3d1be595c5"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7d87f6be5ae528a474151d3d1be595c5">luci_interpreter_pal::PoolParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00235">Params.h:235</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_aa20b83533d1df4a386807e05da3357c8"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#aa20b83533d1df4a386807e05da3357c8">luci_interpreter_pal::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00228">Params.h:228</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad5b0ba9d6a6adca412659e13dec2154a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad5b0ba9d6a6adca412659e13dec2154a">luci_interpreter_pal::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00225">Params.h:225</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_af2e87f276f68164725d1478541bf618b"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#af2e87f276f68164725d1478541bf618b">luci_interpreter_pal::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00226">Params.h:226</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00222">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00223">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00219">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00220">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00221">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00234">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00227">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -1503,10 +1512,10 @@ template&lt;typename T1 , typename T2 , typename T3 , typename Cmp &gt; </div>
 <div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (buffer_size &gt; 0)</div>
 <div class="line"><span class="lineno">   89</span>    <span class="keyword">delete</span>[] buffer;</div>
 <div class="line"><span class="lineno">   90</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7adbe742b95280b59d8d2b9b6f75aa41"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7adbe742b95280b59d8d2b9b6f75aa41">luci_interpreter_pal::PoolParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00225">Params.h:225</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad00050086f7bcf9faffa3e5ecfb44d42"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad00050086f7bcf9faffa3e5ecfb44d42">luci_interpreter_pal::PoolParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00226">Params.h:226</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_a7adbe742b95280b59d8d2b9b6f75aa41"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#a7adbe742b95280b59d8d2b9b6f75aa41">luci_interpreter_pal::PoolParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00231">Params.h:231</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pool_params_html_ad00050086f7bcf9faffa3e5ecfb44d42"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pool_params.html#ad00050086f7bcf9faffa3e5ecfb44d42">luci_interpreter_pal::PoolParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00232">Params.h:232</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00222">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00223">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00219">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::quantized_activation_min</a>, <a class="el" href="_params_8h_source.html#l00220">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00221">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00232">luci_interpreter_pal::PoolParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00231">luci_interpreter_pal::PoolParams::quantized_activation_min</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00227">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -2320,15 +2329,15 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a3c9ea1f3c2ba5b0bf4c532038944d57b"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a3c9ea1f3c2ba5b0bf4c532038944d57b">luci_interpreter_pal::multiplyByQuantizedMultiplierSmallerThanOneExp</a></div><div class="ttdeci">int32_t multiplyByQuantizedMultiplierSmallerThanOneExp(int32_t x, int32_t quantized_multiplier, int left_shift)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_utils_8h_source.html#l00085">PALUtils.h:85</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a00e017764b424d73050c1690990c5450"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a00e017764b424d73050c1690990c5450">luci_interpreter_pal::ComparisonParams::input2_offset</a></div><div class="ttdeci">int32_t input2_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00145">Params.h:145</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a48fb7fb7cbb8cc77117ada6edce4ec70"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a48fb7fb7cbb8cc77117ada6edce4ec70">luci_interpreter_pal::ComparisonParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00142">Params.h:142</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a53c7b9a96abf5a4ba06cf53e45bd8a35"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a53c7b9a96abf5a4ba06cf53e45bd8a35">luci_interpreter_pal::ComparisonParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00147">Params.h:147</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a6932a37ff1d4179dcf96dc7829c3f9bb"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a6932a37ff1d4179dcf96dc7829c3f9bb">luci_interpreter_pal::ComparisonParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00144">Params.h:144</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_ac979fef30d488e56ecefd24f1c9b54a1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#ac979fef30d488e56ecefd24f1c9b54a1">luci_interpreter_pal::ComparisonParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00141">Params.h:141</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_aed84e0f25c025d5258ba89ed94807fba"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#aed84e0f25c025d5258ba89ed94807fba">luci_interpreter_pal::ComparisonParams::input2_multiplier</a></div><div class="ttdeci">int32_t input2_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00146">Params.h:146</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_aff0df48ad9448299554e1d2ab64b9ca6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#aff0df48ad9448299554e1d2ab64b9ca6">luci_interpreter_pal::ComparisonParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00143">Params.h:143</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a00e017764b424d73050c1690990c5450"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a00e017764b424d73050c1690990c5450">luci_interpreter_pal::ComparisonParams::input2_offset</a></div><div class="ttdeci">int32_t input2_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00151">Params.h:151</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a48fb7fb7cbb8cc77117ada6edce4ec70"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a48fb7fb7cbb8cc77117ada6edce4ec70">luci_interpreter_pal::ComparisonParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00148">Params.h:148</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a53c7b9a96abf5a4ba06cf53e45bd8a35"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a53c7b9a96abf5a4ba06cf53e45bd8a35">luci_interpreter_pal::ComparisonParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00153">Params.h:153</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_a6932a37ff1d4179dcf96dc7829c3f9bb"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#a6932a37ff1d4179dcf96dc7829c3f9bb">luci_interpreter_pal::ComparisonParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00150">Params.h:150</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_ac979fef30d488e56ecefd24f1c9b54a1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#ac979fef30d488e56ecefd24f1c9b54a1">luci_interpreter_pal::ComparisonParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00147">Params.h:147</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_aed84e0f25c025d5258ba89ed94807fba"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#aed84e0f25c025d5258ba89ed94807fba">luci_interpreter_pal::ComparisonParams::input2_multiplier</a></div><div class="ttdeci">int32_t input2_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00152">Params.h:152</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_comparison_params_html_aff0df48ad9448299554e1d2ab64b9ca6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_comparison_params.html#aff0df48ad9448299554e1d2ab64b9ca6">luci_interpreter_pal::ComparisonParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00149">Params.h:149</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00143">luci_interpreter_pal::ComparisonParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00142">luci_interpreter_pal::ComparisonParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00144">luci_interpreter_pal::ComparisonParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00146">luci_interpreter_pal::ComparisonParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00145">luci_interpreter_pal::ComparisonParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00147">luci_interpreter_pal::ComparisonParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00141">luci_interpreter_pal::ComparisonParams::left_shift</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00085">multiplyByQuantizedMultiplierSmallerThanOneExp()</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00149">luci_interpreter_pal::ComparisonParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00148">luci_interpreter_pal::ComparisonParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00150">luci_interpreter_pal::ComparisonParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00152">luci_interpreter_pal::ComparisonParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00151">luci_interpreter_pal::ComparisonParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00153">luci_interpreter_pal::ComparisonParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00147">luci_interpreter_pal::ComparisonParams::left_shift</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00085">multiplyByQuantizedMultiplierSmallerThanOneExp()</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -2458,9 +2467,9 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_a0580e5005fd332b1bcf48f0dcd9baec8"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a0580e5005fd332b1bcf48f0dcd9baec8">luci_interpreter_pal::DivScalar</a></div><div class="ttdeci">void DivScalar(const ArithmeticParams &amp;params, const int flat_size, const T *input_data, const T scalar_value, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_div_8h_source.html#l00040">PALDiv.h:40</a></div></div>
 <div class="ttc" id="astruct_nd_array_desc_html"><div class="ttname"><a href="struct_nd_array_desc.html">NdArrayDesc</a></div><div class="ttdef"><b>Definition:</b> <a href="_n_d_array_8h_source.html#l00037">NDArray.h:38</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a51cb9b8f28b71845ff734baae03263f2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a51cb9b8f28b71845ff734baae03263f2">luci_interpreter_pal::ArithmeticParams::broadcast_category</a></div><div class="ttdeci">BroadcastableOpCategory broadcast_category</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00172">Params.h:172</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_arithmetic_params_html_a51cb9b8f28b71845ff734baae03263f2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_arithmetic_params.html#a51cb9b8f28b71845ff734baae03263f2">luci_interpreter_pal::ArithmeticParams::broadcast_category</a></div><div class="ttdeci">BroadcastableOpCategory broadcast_category</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00178">Params.h:178</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00172">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_p_a_l_div_8h_source.html#l00040">DivScalar()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00093">getActivationParams()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_p_a_l_div_8h_source.html#l00040">DivScalar()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00093">getActivationParams()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -3133,7 +3142,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ab8738ffaf077556034784c12228921b7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ab8738ffaf077556034784c12228921b7">luci_interpreter_pal::MulScalar</a></div><div class="ttdeci">void MulScalar(const ArithmeticParams &amp;params, const int flat_size, const T *input_data, const T scalar_value, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_mul_common_8h_source.html#l00040">PALMulCommon.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00172">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="_p_a_l_mul_common_8h_source.html#l00053">BroadcastMul4DSlow()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00093">getActivationParams()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, <a class="el" href="_p_a_l_mul_common_8h_source.html#l00040">MulScalar()</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="_p_a_l_mul_common_8h_source.html#l00053">BroadcastMul4DSlow()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00093">getActivationParams()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, <a class="el" href="_p_a_l_mul_common_8h_source.html#l00040">MulScalar()</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_p_a_l_mul_common_8h_source.html#l00053">BroadcastMul4DSlow()</a>.</p>
 
@@ -3635,7 +3644,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  140</span>  }</div>
 <div class="line"><span class="lineno">  141</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00143">luci_interpreter_pal::ComparisonParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00142">luci_interpreter_pal::ComparisonParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00144">luci_interpreter_pal::ComparisonParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00146">luci_interpreter_pal::ComparisonParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00145">luci_interpreter_pal::ComparisonParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00147">luci_interpreter_pal::ComparisonParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00141">luci_interpreter_pal::ComparisonParams::left_shift</a>, and <a class="el" href="_p_a_l_utils_8h_source.html#l00085">multiplyByQuantizedMultiplierSmallerThanOneExp()</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00149">luci_interpreter_pal::ComparisonParams::input1_multiplier</a>, <a class="el" href="_params_8h_source.html#l00148">luci_interpreter_pal::ComparisonParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00150">luci_interpreter_pal::ComparisonParams::input1_shift</a>, <a class="el" href="_params_8h_source.html#l00152">luci_interpreter_pal::ComparisonParams::input2_multiplier</a>, <a class="el" href="_params_8h_source.html#l00151">luci_interpreter_pal::ComparisonParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00153">luci_interpreter_pal::ComparisonParams::input2_shift</a>, <a class="el" href="_params_8h_source.html#l00147">luci_interpreter_pal::ComparisonParams::left_shift</a>, and <a class="el" href="_p_a_l_utils_8h_source.html#l00085">multiplyByQuantizedMultiplierSmallerThanOneExp()</a>.</p>
 
 </div>
 </div>
@@ -3811,10 +3820,10 @@ template&lt;typename Scalar &gt; </div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="line"><span class="lineno">   66</span>}</div>
 <div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_a7ab7142cf9b0b6242c21b0d1f14bacde"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#a7ab7142cf9b0b6242c21b0d1f14bacde">luci_interpreter_pal::ConcatenationParams::inputs_count</a></div><div class="ttdeci">uint16_t inputs_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00116">Params.h:116</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_aecdaf0e0b1b2fe1c49c068e7f628b20a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#aecdaf0e0b1b2fe1c49c068e7f628b20a">luci_interpreter_pal::ConcatenationParams::axis</a></div><div class="ttdeci">int8_t axis</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00113">Params.h:113</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_a7ab7142cf9b0b6242c21b0d1f14bacde"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#a7ab7142cf9b0b6242c21b0d1f14bacde">luci_interpreter_pal::ConcatenationParams::inputs_count</a></div><div class="ttdeci">uint16_t inputs_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00122">Params.h:122</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_aecdaf0e0b1b2fe1c49c068e7f628b20a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#aecdaf0e0b1b2fe1c49c068e7f628b20a">luci_interpreter_pal::ConcatenationParams::axis</a></div><div class="ttdeci">int8_t axis</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00119">Params.h:119</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00113">luci_interpreter_pal::ConcatenationParams::axis</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00116">luci_interpreter_pal::ConcatenationParams::inputs_count</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00119">luci_interpreter_pal::ConcatenationParams::axis</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00122">luci_interpreter_pal::ConcatenationParams::inputs_count</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -4491,10 +4500,10 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 <div class="line"><span class="lineno">   37</span>    output_data[i] = result;</div>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_quantization_params_html_a6eb0963a284bdab9d41523a065876eaf"><div class="ttname"><a href="structluci__interpreter__pal_1_1_quantization_params.html#a6eb0963a284bdab9d41523a065876eaf">luci_interpreter_pal::QuantizationParams::zero_point</a></div><div class="ttdeci">int zero_point</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00245">Params.h:245</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_quantization_params_html_abc990adc644516782998a374f822af79"><div class="ttname"><a href="structluci__interpreter__pal_1_1_quantization_params.html#abc990adc644516782998a374f822af79">luci_interpreter_pal::QuantizationParams::scale</a></div><div class="ttdeci">float scale</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00244">Params.h:244</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_quantization_params_html_a6eb0963a284bdab9d41523a065876eaf"><div class="ttname"><a href="structluci__interpreter__pal_1_1_quantization_params.html#a6eb0963a284bdab9d41523a065876eaf">luci_interpreter_pal::QuantizationParams::zero_point</a></div><div class="ttdeci">int zero_point</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00251">Params.h:251</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_quantization_params_html_abc990adc644516782998a374f822af79"><div class="ttname"><a href="structluci__interpreter__pal_1_1_quantization_params.html#abc990adc644516782998a374f822af79">luci_interpreter_pal::QuantizationParams::scale</a></div><div class="ttdeci">float scale</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00250">Params.h:250</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::QuantizationParams::scale</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::QuantizationParams::zero_point</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00250">luci_interpreter_pal::QuantizationParams::scale</a>, and <a class="el" href="_params_8h_source.html#l00251">luci_interpreter_pal::QuantizationParams::zero_point</a>.</p>
 
 </div>
 </div>
@@ -5728,10 +5737,10 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   97</span>    }</div>
 <div class="line"><span class="lineno">   98</span>  }</div>
 <div class="line"><span class="lineno">   99</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a8595c595cee0fd1125fb91707468c924"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a8595c595cee0fd1125fb91707468c924">luci_interpreter_pal::FullyConnectedParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00049">Params.h:49</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_adabe90b963f223493bb91e01275b02a2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#adabe90b963f223493bb91e01275b02a2">luci_interpreter_pal::FullyConnectedParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00050">Params.h:50</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a8595c595cee0fd1125fb91707468c924"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a8595c595cee0fd1125fb91707468c924">luci_interpreter_pal::FullyConnectedParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00055">Params.h:55</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_adabe90b963f223493bb91e01275b02a2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#adabe90b963f223493bb91e01275b02a2">luci_interpreter_pal::FullyConnectedParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00056">Params.h:56</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00050">luci_interpreter_pal::FullyConnectedParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00049">luci_interpreter_pal::FullyConnectedParams::float_activation_min</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00056">luci_interpreter_pal::FullyConnectedParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00055">luci_interpreter_pal::FullyConnectedParams::float_activation_min</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -5845,15 +5854,15 @@ template&lt;typename InputType , typename WeightType , typename OutputType , typ
 <div class="line"><span class="lineno">   66</span>  }</div>
 <div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ac3ee0c8ca70c8d44a56e11122d5834fa"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ac3ee0c8ca70c8d44a56e11122d5834fa">luci_interpreter_pal::multiplyByQuantizedMultiplier</a></div><div class="ttdeci">int32_t multiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_utils_8h_source.html#l00077">PALUtils.h:77</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a1dc579ccdba27634a146c8023652fb9c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a1dc579ccdba27634a146c8023652fb9c">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00047">Params.h:47</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a4a738f44f7517051280e348640988f73"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a4a738f44f7517051280e348640988f73">luci_interpreter_pal::FullyConnectedParams::weights_offset</a></div><div class="ttdeci">int32_t weights_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00041">Params.h:41</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a4cc8cc24d4f6fc11b0a82485af48cedb"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a4cc8cc24d4f6fc11b0a82485af48cedb">luci_interpreter_pal::FullyConnectedParams::output_shift</a></div><div class="ttdeci">int output_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00044">Params.h:44</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a51bf5b4663c35d30e6511ea64328f325"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a51bf5b4663c35d30e6511ea64328f325">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00046">Params.h:46</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a71dadd4c9fd5d191f5f7b196f5baf4ba"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a71dadd4c9fd5d191f5f7b196f5baf4ba">luci_interpreter_pal::FullyConnectedParams::input_offset</a></div><div class="ttdeci">int32_t input_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00040">Params.h:40</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_ad47aa023a4740c06678a3ae7c2eaad84"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#ad47aa023a4740c06678a3ae7c2eaad84">luci_interpreter_pal::FullyConnectedParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00042">Params.h:42</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_aeb9d99860efc13fc3f6e6d1c830b6e3e"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#aeb9d99860efc13fc3f6e6d1c830b6e3e">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a></div><div class="ttdeci">int32_t output_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00043">Params.h:43</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a1dc579ccdba27634a146c8023652fb9c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a1dc579ccdba27634a146c8023652fb9c">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00053">Params.h:53</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a4a738f44f7517051280e348640988f73"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a4a738f44f7517051280e348640988f73">luci_interpreter_pal::FullyConnectedParams::weights_offset</a></div><div class="ttdeci">int32_t weights_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00047">Params.h:47</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a4cc8cc24d4f6fc11b0a82485af48cedb"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a4cc8cc24d4f6fc11b0a82485af48cedb">luci_interpreter_pal::FullyConnectedParams::output_shift</a></div><div class="ttdeci">int output_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00050">Params.h:50</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a51bf5b4663c35d30e6511ea64328f325"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a51bf5b4663c35d30e6511ea64328f325">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00052">Params.h:52</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_a71dadd4c9fd5d191f5f7b196f5baf4ba"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#a71dadd4c9fd5d191f5f7b196f5baf4ba">luci_interpreter_pal::FullyConnectedParams::input_offset</a></div><div class="ttdeci">int32_t input_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00046">Params.h:46</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_ad47aa023a4740c06678a3ae7c2eaad84"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#ad47aa023a4740c06678a3ae7c2eaad84">luci_interpreter_pal::FullyConnectedParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00048">Params.h:48</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_fully_connected_params_html_aeb9d99860efc13fc3f6e6d1c830b6e3e"><div class="ttname"><a href="structluci__interpreter__pal_1_1_fully_connected_params.html#aeb9d99860efc13fc3f6e6d1c830b6e3e">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a></div><div class="ttdeci">int32_t output_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00049">Params.h:49</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00040">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00077">multiplyByQuantizedMultiplier()</a>, <a class="el" href="_params_8h_source.html#l00043">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00042">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00044">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00041">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00077">multiplyByQuantizedMultiplier()</a>, <a class="el" href="_params_8h_source.html#l00049">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00048">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00050">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00053">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00052">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -6064,7 +6073,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  143</span>  assert(res == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">  144</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00040">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_params_8h_source.html#l00043">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00042">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00044">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00041">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_params_8h_source.html#l00049">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00048">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00050">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00053">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00052">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -6285,7 +6294,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   84</span>  assert(res == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00040">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_params_8h_source.html#l00043">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00042">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00044">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00041">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00046">luci_interpreter_pal::FullyConnectedParams::input_offset</a>, <a class="el" href="_params_8h_source.html#l00049">luci_interpreter_pal::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00048">luci_interpreter_pal::FullyConnectedParams::output_offset</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00050">luci_interpreter_pal::FullyConnectedParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00053">luci_interpreter_pal::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00052">luci_interpreter_pal::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_params_8h_source.html#l00047">luci_interpreter_pal::FullyConnectedParams::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -6869,6 +6878,81 @@ template&lt;typename P &gt; </div>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a8f5a39193599fb4d15317f8e2287a7fb" name="a8f5a39193599fb4d15317f8e2287a7fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f5a39193599fb4d15317f8e2287a7fb">&#9670;&#160;</a></span>getNearestNeighbor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t luci_interpreter_pal::getNearestNeighbor </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>input_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>input_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t&#160;</td>
+          <td class="paramname"><em>output_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>align_corners</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>half_pixel_centers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html">PALResizeNearestNeighbor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scale = (align_corners &amp;&amp; output_size &gt; 1)</div>
+<div class="line"><span class="lineno">   31</span>                        ? (input_size - 1) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_size - 1)</div>
+<div class="line"><span class="lineno">   32</span>                        : input_size / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_size);</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = half_pixel_centers ? 0.5f : 0.0f;</div>
+<div class="line"><span class="lineno">   34</span>  int32_t output_value =</div>
+<div class="line"><span class="lineno">   35</span>    std::min(align_corners ? <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round((input_value + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) * scale))</div>
+<div class="line"><span class="lineno">   36</span>                           : <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::floor((input_value + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) * scale)),</div>
+<div class="line"><span class="lineno">   37</span>             input_size - 1);</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (half_pixel_centers)</div>
+<div class="line"><span class="lineno">   39</span>  {</div>
+<div class="line"><span class="lineno">   40</span>    output_value = std::max(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(0), output_value);</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> output_value;</div>
+<div class="line"><span class="lineno">   43</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_p_a_l_utils_8h_source.html#l00193">offset()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00047">ResizeNearestNeighbor()</a>.</p>
+
+</div>
+</div>
 <a id="acaad8a252f04575e711f67bcb005dc16" name="acaad8a252f04575e711f67bcb005dc16"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acaad8a252f04575e711f67bcb005dc16">&#9670;&#160;</a></span>GreaterEqualFn()</h2>
 
@@ -7136,7 +7220,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   77</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_afdecaeb89ff3e89a7c3b8994aab89924"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#afdecaeb89ff3e89a7c3b8994aab89924">luci_interpreter_pal::activationFunctionWithMinMax</a></div><div class="ttdeci">T activationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_utils_8h_source.html#l00204">PALUtils.h:204</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_a_l_utils_8h_source.html#l00204">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_params_8h_source.html#l00222">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00223">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00173">MatchingDim()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00193">offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00219">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00220">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00221">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_utils_8h_source.html#l00204">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00234">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00173">MatchingDim()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00193">offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00227">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>.</p>
 
@@ -7821,7 +7905,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_normalize_8h_source.html#l00027">L2Normalization()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_log_softmax_8h_source.html#l00028">LogSoftmax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_normalize_8h_source.html#l00027">L2Normalization()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_log_softmax_8h_source.html#l00028">LogSoftmax()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00047">ResizeNearestNeighbor()</a>.</p>
 
 </div>
 </div>
@@ -7990,7 +8074,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   81</span>  }</div>
 <div class="line"><span class="lineno">   82</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00222">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00223">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00219">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00220">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00221">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::PoolParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00234">luci_interpreter_pal::PoolParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00227">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -8099,7 +8183,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   74</span>  }</div>
 <div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00222">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00223">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00219">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::quantized_activation_min</a>, <a class="el" href="_params_8h_source.html#l00220">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00221">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_params_8h_source.html#l00228">luci_interpreter_pal::PoolParams::filter_height</a>, <a class="el" href="_params_8h_source.html#l00229">luci_interpreter_pal::PoolParams::filter_width</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00225">luci_interpreter_pal::PoolParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00232">luci_interpreter_pal::PoolParams::quantized_activation_max</a>, <a class="el" href="_params_8h_source.html#l00231">luci_interpreter_pal::PoolParams::quantized_activation_min</a>, <a class="el" href="_params_8h_source.html#l00226">luci_interpreter_pal::PoolParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00227">luci_interpreter_pal::PoolParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
 
@@ -8769,7 +8853,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   46</span>  assert(status == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00174">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00175">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00177">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00176">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
 
 </div>
 </div>
@@ -8897,7 +8981,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   34</span>  assert(status == ARM_CMSIS_NN_SUCCESS);</div>
 <div class="line"><span class="lineno">   35</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00174">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00175">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00177">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00176">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00187">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00186">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00180">luci_interpreter_pal::ArithmeticParams::input1_offset</a>, <a class="el" href="_params_8h_source.html#l00181">luci_interpreter_pal::ArithmeticParams::input2_offset</a>, <a class="el" href="_params_8h_source.html#l00183">luci_interpreter_pal::ArithmeticParams::output_multiplier</a>, <a class="el" href="_params_8h_source.html#l00182">luci_interpreter_pal::ArithmeticParams::output_offset</a>, <a class="el" href="_params_8h_source.html#l00184">luci_interpreter_pal::ArithmeticParams::output_shift</a>, <a class="el" href="_params_8h_source.html#l00193">luci_interpreter_pal::ArithmeticParams::quantized_activation_max</a>, and <a class="el" href="_params_8h_source.html#l00192">luci_interpreter_pal::ArithmeticParams::quantized_activation_min</a>.</p>
 
 </div>
 </div>
@@ -9538,7 +9622,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  195</span>  <span class="keywordflow">return</span> ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;</div>
 <div class="line"><span class="lineno">  196</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_batch_to_space_n_d_8h_source.html#l00046">BatchToSpaceND()</a>, <a class="el" href="_p_a_l_prelu_common_8h_source.html#l00028">BroadcastPrelu4DSlowFloat()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_depth_to_space_8h_source.html#l00029">DepthToSpace()</a>, <a class="el" href="_p_a_l_floor_common_8h_source.html#l00025">Floor()</a>, <a class="el" href="_p_a_l_gather_n_d_8h_source.html#l00030">GatherND()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, <a class="el" href="_p_a_l_mean_8h_source.html#l00167">Mean()</a>, <a class="el" href="_p_a_l_mirror_pad_8h_source.html#l00095">MirrorPad()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00116">reducedOutputOffset()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_batch_n_d_8h_source.html#l00046">SpaceToBatchND()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_depth_8h_source.html#l00029">SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_8h_source.html#l00026">TransposeConv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_batch_to_space_n_d_8h_source.html#l00046">BatchToSpaceND()</a>, <a class="el" href="_p_a_l_prelu_common_8h_source.html#l00028">BroadcastPrelu4DSlowFloat()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_depth_to_space_8h_source.html#l00029">DepthToSpace()</a>, <a class="el" href="_p_a_l_floor_common_8h_source.html#l00025">Floor()</a>, <a class="el" href="_p_a_l_gather_n_d_8h_source.html#l00030">GatherND()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00026">getNearestNeighbor()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_l2_pool2_d_8h_source.html#l00027">L2Pool()</a>, <a class="el" href="_p_a_l_mean_8h_source.html#l00167">Mean()</a>, <a class="el" href="_p_a_l_mirror_pad_8h_source.html#l00095">MirrorPad()</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00116">reducedOutputOffset()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_batch_n_d_8h_source.html#l00046">SpaceToBatchND()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_depth_8h_source.html#l00029">SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_8h_source.html#l00026">TransposeConv()</a>.</p>
 
 </div>
 </div>
@@ -9802,12 +9886,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  104</span>  }</div>
 <div class="line"><span class="lineno">  105</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_ade7e465493338c56ffe9f4570f26e8ab"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ade7e465493338c56ffe9f4570f26e8ab">luci_interpreter_pal::PadKernelMaxDimensionCount</a></div><div class="ttdeci">constexpr int PadKernelMaxDimensionCount()</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_pad_8h_source.html#l00026">PALPad.h:26</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_a2b8ab7ecdb2c1ca4364390dfdf0c3a8f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#a2b8ab7ecdb2c1ca4364390dfdf0c3a8f">luci_interpreter_pal::PadParams::right_padding</a></div><div class="ttdeci">int32_t right_padding[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00035">Params.h:35</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_a72b6fbbd3233453136fe4dca8b014bb9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#a72b6fbbd3233453136fe4dca8b014bb9">luci_interpreter_pal::PadParams::left_padding</a></div><div class="ttdeci">int32_t left_padding[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00033">Params.h:33</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_abe5b593c8b94c70ff061df9d013080c9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#abe5b593c8b94c70ff061df9d013080c9">luci_interpreter_pal::PadParams::right_padding_count</a></div><div class="ttdeci">int8_t right_padding_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00034">Params.h:34</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_ae0584e42000b82721310f5defa19e105"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#ae0584e42000b82721310f5defa19e105">luci_interpreter_pal::PadParams::left_padding_count</a></div><div class="ttdeci">int8_t left_padding_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00032">Params.h:32</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_a2b8ab7ecdb2c1ca4364390dfdf0c3a8f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#a2b8ab7ecdb2c1ca4364390dfdf0c3a8f">luci_interpreter_pal::PadParams::right_padding</a></div><div class="ttdeci">int32_t right_padding[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00041">Params.h:41</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_a72b6fbbd3233453136fe4dca8b014bb9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#a72b6fbbd3233453136fe4dca8b014bb9">luci_interpreter_pal::PadParams::left_padding</a></div><div class="ttdeci">int32_t left_padding[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00039">Params.h:39</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_abe5b593c8b94c70ff061df9d013080c9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#abe5b593c8b94c70ff061df9d013080c9">luci_interpreter_pal::PadParams::right_padding_count</a></div><div class="ttdeci">int8_t right_padding_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00040">Params.h:40</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_pad_params_html_ae0584e42000b82721310f5defa19e105"><div class="ttname"><a href="structluci__interpreter__pal_1_1_pad_params.html#ae0584e42000b82721310f5defa19e105">luci_interpreter_pal::PadParams::left_padding_count</a></div><div class="ttdeci">int8_t left_padding_count</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00038">Params.h:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="_params_8h_source.html#l00033">luci_interpreter_pal::PadParams::left_padding</a>, <a class="el" href="_params_8h_source.html#l00032">luci_interpreter_pal::PadParams::left_padding_count</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_p_a_l_pad_8h_source.html#l00026">PadKernelMaxDimensionCount()</a>, <a class="el" href="_params_8h_source.html#l00035">luci_interpreter_pal::PadParams::right_padding</a>, and <a class="el" href="_params_8h_source.html#l00034">luci_interpreter_pal::PadParams::right_padding_count</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="_params_8h_source.html#l00039">luci_interpreter_pal::PadParams::left_padding</a>, <a class="el" href="_params_8h_source.html#l00038">luci_interpreter_pal::PadParams::left_padding_count</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_p_a_l_pad_8h_source.html#l00026">PadKernelMaxDimensionCount()</a>, <a class="el" href="_params_8h_source.html#l00041">luci_interpreter_pal::PadParams::right_padding</a>, and <a class="el" href="_params_8h_source.html#l00040">luci_interpreter_pal::PadParams::right_padding_count</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_pad_common_8cpp_source.html#l00074">luci_interpreter::execute_kernel_CirclePadCommon()</a>.</p>
 
@@ -9938,7 +10022,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  204</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  205</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00172">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2acbb6717a21700840a8cc79eb660284d5">kFirstInputBroadcastsFast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a2b25dfc070122a240f4d1155b9cc6d55">kGenericBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a474311140849eefcabdcbb172ad82866">kNonBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, and <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a617cfcafa34e51f4c5f637e365f400c3">kSecondInputBroadcastsFast</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00178">luci_interpreter_pal::ArithmeticParams::broadcast_category</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2acbb6717a21700840a8cc79eb660284d5">kFirstInputBroadcastsFast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a2b25dfc070122a240f4d1155b9cc6d55">kGenericBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a474311140849eefcabdcbb172ad82866">kNonBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7">kScalarFirstBroadcast</a>, <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a94201a958513d5921a361b9bfe07603a">kScalarSecondBroadcast</a>, and <a class="el" href="namespaceluci__interpreter__pal.html#a06f2777ae390466061247361a9a416c2a617cfcafa34e51f4c5f637e365f400c3">kSecondInputBroadcastsFast</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">luci_interpreter::kernels::evalTISOKernel()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00120">luci_interpreter::kernels::evalTISOQuantizedKernel()</a>.</p>
 
@@ -10009,7 +10093,7 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 <div class="line"><span class="lineno">   42</span>  }</div>
 <div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::QuantizationParams::scale</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::QuantizationParams::zero_point</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00250">luci_interpreter_pal::QuantizationParams::scale</a>, and <a class="el" href="_params_8h_source.html#l00251">luci_interpreter_pal::QuantizationParams::zero_point</a>.</p>
 
 </div>
 </div>
@@ -10287,6 +10371,122 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_leaky_relu_8cpp_source.html#l00038">luci_interpreter::execute_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleRelu6()</a>.</p>
+
+</div>
+</div>
+<a id="acaedc64edf79170e74516a6decb32e65" name="acaedc64edf79170e74516a6decb32e65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaedc64edf79170e74516a6decb32e65">&#9670;&#160;</a></span>ResizeNearestNeighbor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::ResizeNearestNeighbor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html">ResizeNearestNeighborParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>op_params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>unextended_input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_size_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int32_t *&#160;</td>
+          <td class="paramname"><em>output_size_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>unextended_output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00047">47</a> of file <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html">PALResizeNearestNeighbor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> input_shape =</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#abe0909641358a2944262ae5811516eb0">luci_interpreter::RuntimeShape::extendedShape</a>(4, unextended_input_shape);</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#abe0909641358a2944262ae5811516eb0">luci_interpreter::RuntimeShape::extendedShape</a>(4, unextended_output_shape);</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  int32_t batches = MatchingDim(input_shape, 0, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><span class="lineno">   59</span>  int32_t input_height = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1);</div>
+<div class="line"><span class="lineno">   60</span>  int32_t input_width = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2);</div>
+<div class="line"><span class="lineno">   61</span>  int32_t depth = MatchingDim(input_shape, 3, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  int32_t output_height = output_size_data[0];</div>
+<div class="line"><span class="lineno">   64</span>  int32_t output_width = output_size_data[1];</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> col_offset = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> row_offset = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2) * col_offset;</div>
+<div class="line"><span class="lineno">   68</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batch_offset = input_shape.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1) * row_offset;</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keyword">const</span> T *input_ptr = input_data;</div>
+<div class="line"><span class="lineno">   71</span>  T *output_ptr = output_data;</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batches; ++b)</div>
+<div class="line"><span class="lineno">   73</span>  {</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; output_height; ++y)</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      int32_t in_y = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a8f5a39193599fb4d15317f8e2287a7fb">getNearestNeighbor</a>(y, input_height, output_height, op_params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a43530609b7bc2e888da18e97285081d8">align_corners</a>,</div>
+<div class="line"><span class="lineno">   77</span>                                        op_params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a24012c5d179d5e068e697c0d47985a7a">half_pixel_centers</a>);</div>
+<div class="line"><span class="lineno">   78</span>      <span class="keyword">const</span> T *y_input_ptr = input_ptr + in_y * row_offset;</div>
+<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; output_width; ++x)</div>
+<div class="line"><span class="lineno">   80</span>      {</div>
+<div class="line"><span class="lineno">   81</span>        int32_t in_x = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a8f5a39193599fb4d15317f8e2287a7fb">getNearestNeighbor</a>(x, input_width, output_width, op_params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a43530609b7bc2e888da18e97285081d8">align_corners</a>,</div>
+<div class="line"><span class="lineno">   82</span>                                          op_params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a24012c5d179d5e068e697c0d47985a7a">half_pixel_centers</a>);</div>
+<div class="line"><span class="lineno">   83</span>        <span class="keyword">const</span> T *x_input_ptr = y_input_ptr + in_x * col_offset;</div>
+<div class="line"><span class="lineno">   84</span>        memcpy(output_ptr, x_input_ptr, depth * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">   85</span>        output_ptr += depth;</div>
+<div class="line"><span class="lineno">   86</span>      }</div>
+<div class="line"><span class="lineno">   87</span>    }</div>
+<div class="line"><span class="lineno">   88</span>    input_ptr += batch_offset;</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
+<div class="ttc" id="anamespaceluci__interpreter__pal_html_a8f5a39193599fb4d15317f8e2287a7fb"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a8f5a39193599fb4d15317f8e2287a7fb">luci_interpreter_pal::getNearestNeighbor</a></div><div class="ttdeci">int32_t getNearestNeighbor(const int input_value, const int32_t input_size, const int32_t output_size, const bool align_corners, const bool half_pixel_centers)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00026">PALResizeNearestNeighbor.h:26</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_resize_nearest_neighbor_params_html_a24012c5d179d5e068e697c0d47985a7a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a24012c5d179d5e068e697c0d47985a7a">luci_interpreter_pal::ResizeNearestNeighborParams::half_pixel_centers</a></div><div class="ttdeci">bool half_pixel_centers</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00033">Params.h:33</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_resize_nearest_neighbor_params_html_a43530609b7bc2e888da18e97285081d8"><div class="ttname"><a href="structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html#a43530609b7bc2e888da18e97285081d8">luci_interpreter_pal::ResizeNearestNeighborParams::align_corners</a></div><div class="ttdeci">bool align_corners</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00032">Params.h:32</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00032">luci_interpreter_pal::ResizeNearestNeighborParams::align_corners</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00026">getNearestNeighbor()</a>, <a class="el" href="_params_8h_source.html#l00033">luci_interpreter_pal::ResizeNearestNeighborParams::half_pixel_centers</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00173">MatchingDim()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00047">ResizeNearestNeighbor()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h_source.html#l00047">ResizeNearestNeighbor()</a>.</p>
 
 </div>
 </div>
@@ -10755,11 +10955,11 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno">   56</span>  }</div>
 <div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">mir_caffe2::SupportedCaffe2OpType::sum</a></div><div class="ttdeci">@ sum</div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a48664dfb2268416ce2edbabdff6fa43c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a48664dfb2268416ce2edbabdff6fa43c">luci_interpreter_pal::SoftmaxParams::row_size</a></div><div class="ttdeci">int row_size</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00239">Params.h:239</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a69f855ec7528b5036719db171890aeb6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a69f855ec7528b5036719db171890aeb6">luci_interpreter_pal::SoftmaxParams::num_rows</a></div><div class="ttdeci">int num_rows</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00238">Params.h:238</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_aa77f6ab2f9246ee52e0f483214de58b2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#aa77f6ab2f9246ee52e0f483214de58b2">luci_interpreter_pal::SoftmaxParams::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00234">Params.h:234</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a48664dfb2268416ce2edbabdff6fa43c"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a48664dfb2268416ce2edbabdff6fa43c">luci_interpreter_pal::SoftmaxParams::row_size</a></div><div class="ttdeci">int row_size</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00245">Params.h:245</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a69f855ec7528b5036719db171890aeb6"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a69f855ec7528b5036719db171890aeb6">luci_interpreter_pal::SoftmaxParams::num_rows</a></div><div class="ttdeci">int num_rows</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00244">Params.h:244</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_aa77f6ab2f9246ee52e0f483214de58b2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#aa77f6ab2f9246ee52e0f483214de58b2">luci_interpreter_pal::SoftmaxParams::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00240">Params.h:240</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00234">luci_interpreter_pal::SoftmaxParams::beta</a>, <a class="el" href="_params_8h_source.html#l00238">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00239">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00240">luci_interpreter_pal::SoftmaxParams::beta</a>, <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
 
 </div>
 </div>
@@ -10828,10 +11028,10 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno">  138</span>  arm_softmax_s16(input_data, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a69f855ec7528b5036719db171890aeb6">num_rows</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a48664dfb2268416ce2edbabdff6fa43c">row_size</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a7f6d385e60fd05527d498a1e27d4faab">input_multiplier</a>,</div>
 <div class="line"><span class="lineno">  139</span>                  params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">input_left_shift</a>, &amp;softmax_params, output_data);</div>
 <div class="line"><span class="lineno">  140</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a7f6d385e60fd05527d498a1e27d4faab"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a7f6d385e60fd05527d498a1e27d4faab">luci_interpreter_pal::SoftmaxParams::input_multiplier</a></div><div class="ttdeci">int32_t input_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00235">Params.h:235</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_ab5aca30c84da89273437cb53dc304ad1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">luci_interpreter_pal::SoftmaxParams::input_left_shift</a></div><div class="ttdeci">int32_t input_left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00236">Params.h:236</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a7f6d385e60fd05527d498a1e27d4faab"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a7f6d385e60fd05527d498a1e27d4faab">luci_interpreter_pal::SoftmaxParams::input_multiplier</a></div><div class="ttdeci">int32_t input_multiplier</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00241">Params.h:241</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_ab5aca30c84da89273437cb53dc304ad1"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">luci_interpreter_pal::SoftmaxParams::input_left_shift</a></div><div class="ttdeci">int32_t input_left_shift</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00242">Params.h:242</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00236">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00238">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00239">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00242">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00241">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
 
 </div>
 </div>
@@ -10880,9 +11080,9 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno">  112</span>  arm_softmax_s8_s16(input_data, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a69f855ec7528b5036719db171890aeb6">num_rows</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a48664dfb2268416ce2edbabdff6fa43c">row_size</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a7f6d385e60fd05527d498a1e27d4faab">input_multiplier</a>,</div>
 <div class="line"><span class="lineno">  113</span>                     params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">input_left_shift</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a6f11b5dbf854fad743ae28ce08cbe99f">diff_min</a>, output_data);</div>
 <div class="line"><span class="lineno">  114</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a6f11b5dbf854fad743ae28ce08cbe99f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a6f11b5dbf854fad743ae28ce08cbe99f">luci_interpreter_pal::SoftmaxParams::diff_min</a></div><div class="ttdeci">int diff_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00237">Params.h:237</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_softmax_params_html_a6f11b5dbf854fad743ae28ce08cbe99f"><div class="ttname"><a href="structluci__interpreter__pal_1_1_softmax_params.html#a6f11b5dbf854fad743ae28ce08cbe99f">luci_interpreter_pal::SoftmaxParams::diff_min</a></div><div class="ttdeci">int diff_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00243">Params.h:243</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00237">luci_interpreter_pal::SoftmaxParams::diff_min</a>, <a class="el" href="_params_8h_source.html#l00236">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00238">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00239">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00243">luci_interpreter_pal::SoftmaxParams::diff_min</a>, <a class="el" href="_params_8h_source.html#l00242">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00241">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
 
 </div>
 </div>
@@ -10932,7 +11132,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno">  107</span>                 params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">input_left_shift</a>, params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a6f11b5dbf854fad743ae28ce08cbe99f">diff_min</a>, output_data);</div>
 <div class="line"><span class="lineno">  108</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_params_8h_source.html#l00237">luci_interpreter_pal::SoftmaxParams::diff_min</a>, <a class="el" href="_params_8h_source.html#l00236">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00235">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00238">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00239">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
+<p class="reference">References <a class="el" href="_params_8h_source.html#l00243">luci_interpreter_pal::SoftmaxParams::diff_min</a>, <a class="el" href="_params_8h_source.html#l00242">luci_interpreter_pal::SoftmaxParams::input_left_shift</a>, <a class="el" href="_params_8h_source.html#l00241">luci_interpreter_pal::SoftmaxParams::input_multiplier</a>, <a class="el" href="_params_8h_source.html#l00244">luci_interpreter_pal::SoftmaxParams::num_rows</a>, and <a class="el" href="_params_8h_source.html#l00245">luci_interpreter_pal::SoftmaxParams::row_size</a>.</p>
 
 </div>
 </div>
@@ -11497,9 +11697,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  254</span>    }</div>
 <div class="line"><span class="lineno">  255</span>  }</div>
 <div class="line"><span class="lineno">  256</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_strided_slice_params_html_a14cda27486326f8dc05bda7cafea517d"><div class="ttname"><a href="structluci__interpreter__pal_1_1_strided_slice_params.html#a14cda27486326f8dc05bda7cafea517d">luci_interpreter_pal::StridedSliceParams::strides</a></div><div class="ttdeci">int32_t strides[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00159">Params.h:159</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_strided_slice_params_html_a14cda27486326f8dc05bda7cafea517d"><div class="ttname"><a href="structluci__interpreter__pal_1_1_strided_slice_params.html#a14cda27486326f8dc05bda7cafea517d">luci_interpreter_pal::StridedSliceParams::strides</a></div><div class="ttdeci">int32_t strides[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00165">Params.h:165</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, and <a class="el" href="_params_8h_source.html#l00159">luci_interpreter_pal::StridedSliceParams::strides</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, and <a class="el" href="_params_8h_source.html#l00165">luci_interpreter_pal::StridedSliceParams::strides</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html#l00075">luci_interpreter::execute_kernel_CircleStridedSlice()</a>.</p>
 
@@ -11609,6 +11809,164 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  134</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_process_broadcast_shapes_8h_source.html#l00042">luci_interpreter_pal::NdArrayDesc&lt; N &gt;::strides</a>.</p>
+
+</div>
+</div>
+<a id="a781c0c2006847f7f8fd79f0d65e0c219" name="a781c0c2006847f7f8fd79f0d65e0c219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a781c0c2006847f7f8fd79f0d65e0c219">&#9670;&#160;</a></span>SVDF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci_interpreter_pal::SVDF </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>weights_feature_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>weights_time_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>bias_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>state_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>scratch_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>rank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>input_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>num_filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>num_units</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>memory_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::ActivationFunctionType&#160;</td>
+          <td class="paramname"><em>activation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_s_v_d_f_common_8h_source.html#l00133">133</a> of file <a class="el" href="_p_a_l_s_v_d_f_common_8h_source.html">PALSVDFCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  138</span>{</div>
+<div class="line"><span class="lineno">  139</span>  <span class="comment">// Left shift the activation_state.</span></div>
+<div class="line"><span class="lineno">  140</span>  {</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordtype">float</span> *new_state_start = state_data;</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *old_state_start = state_data + 1;</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *old_state_end = state_data + batch_size * num_filters * memory_size;</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">while</span> (old_state_start != old_state_end)</div>
+<div class="line"><span class="lineno">  145</span>    {</div>
+<div class="line"><span class="lineno">  146</span>      *new_state_start++ = *old_state_start++;</div>
+<div class="line"><span class="lineno">  147</span>    }</div>
+<div class="line"><span class="lineno">  148</span>  }</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>  <span class="comment">// Note: no need to clear the latest activation, matmul is not accumulative.</span></div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>  <span class="comment">// Compute conv1d(inputs, weights_feature).</span></div>
+<div class="line"><span class="lineno">  153</span>  <span class="comment">// The activation_state&#39;s rightmost column is used to save current cycle</span></div>
+<div class="line"><span class="lineno">  154</span>  <span class="comment">// activation. This is achieved by starting at state_ptr[memory_size - 1] and</span></div>
+<div class="line"><span class="lineno">  155</span>  <span class="comment">// having the stride equal to memory_size.</span></div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <span class="comment">// Perform batched matrix vector multiply operation:</span></div>
+<div class="line"><span class="lineno">  158</span>  {</div>
+<div class="line"><span class="lineno">  159</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix = weights_feature_data;</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *vector = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>;</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordtype">float</span> *result = &amp;state_data[memory_size - 1];</div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordtype">float</span> *result_in_batch = result;</div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; batch_size; ++i)</div>
+<div class="line"><span class="lineno">  164</span>    {</div>
+<div class="line"><span class="lineno">  165</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_ptr = matrix;</div>
+<div class="line"><span class="lineno">  166</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; num_filters; ++j)</div>
+<div class="line"><span class="lineno">  167</span>      {</div>
+<div class="line"><span class="lineno">  168</span>        <span class="keywordtype">float</span> dot_prod = 0.0f;</div>
+<div class="line"><span class="lineno">  169</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *vector_in_batch = vector + i * input_size;</div>
+<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; input_size; ++k)</div>
+<div class="line"><span class="lineno">  171</span>        {</div>
+<div class="line"><span class="lineno">  172</span>          dot_prod += *matrix_ptr++ * *vector_in_batch++;</div>
+<div class="line"><span class="lineno">  173</span>        }</div>
+<div class="line"><span class="lineno">  174</span>        *result_in_batch = dot_prod;</div>
+<div class="line"><span class="lineno">  175</span>        result_in_batch += memory_size;</div>
+<div class="line"><span class="lineno">  176</span>      }</div>
+<div class="line"><span class="lineno">  177</span>    }</div>
+<div class="line"><span class="lineno">  178</span>  }</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>  applyTimeWeightsBiasAndActivation(batch_size, memory_size, num_filters, num_units, rank,</div>
+<div class="line"><span class="lineno">  181</span>                                    weights_time_data, bias_data, activation, state_data,</div>
+<div class="line"><span class="lineno">  182</span>                                    scratch_data, output_data);</div>
+<div class="line"><span class="lineno">  183</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp_source.html#l00125">luci_interpreter::execute_kernel_CircleSVDF()</a>.</p>
 
 </div>
 </div>
@@ -12020,13 +12378,13 @@ template&lt;typename T , int N = 5&gt; </div>
 <div class="line"><span class="lineno">  121</span>    }</div>
 <div class="line"><span class="lineno">  122</span>  }</div>
 <div class="line"><span class="lineno">  123</span>}</div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a87209bc56d6d4b0a11f7ce2b57f797a3"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a87209bc56d6d4b0a11f7ce2b57f797a3">luci_interpreter_pal::ConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00078">Params.h:78</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a8d877ce29cf8a04b08872f260aaba32e"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a8d877ce29cf8a04b08872f260aaba32e">luci_interpreter_pal::ConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00080">Params.h:80</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a97caa99f09915a89eeff2f950dfe28a4"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a97caa99f09915a89eeff2f950dfe28a4">luci_interpreter_pal::ConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00079">Params.h:79</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_ad0ad8c2f2ab4d99b3c25d64b4d85f4f2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#ad0ad8c2f2ab4d99b3c25d64b4d85f4f2">luci_interpreter_pal::ConvParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00094">Params.h:94</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_af123c5c19c8c604b1221e36fbbf0b8f9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#af123c5c19c8c604b1221e36fbbf0b8f9">luci_interpreter_pal::ConvParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00093">Params.h:93</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a87209bc56d6d4b0a11f7ce2b57f797a3"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a87209bc56d6d4b0a11f7ce2b57f797a3">luci_interpreter_pal::ConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00084">Params.h:84</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a8d877ce29cf8a04b08872f260aaba32e"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a8d877ce29cf8a04b08872f260aaba32e">luci_interpreter_pal::ConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00086">Params.h:86</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_a97caa99f09915a89eeff2f950dfe28a4"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#a97caa99f09915a89eeff2f950dfe28a4">luci_interpreter_pal::ConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00085">Params.h:85</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_ad0ad8c2f2ab4d99b3c25d64b4d85f4f2"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#ad0ad8c2f2ab4d99b3c25d64b4d85f4f2">luci_interpreter_pal::ConvParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00100">Params.h:100</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_conv_params_html_af123c5c19c8c604b1221e36fbbf0b8f9"><div class="ttname"><a href="structluci__interpreter__pal_1_1_conv_params.html#af123c5c19c8c604b1221e36fbbf0b8f9">luci_interpreter_pal::ConvParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00099">Params.h:99</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_a_l_utils_8h_source.html#l00204">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_params_8h_source.html#l00094">luci_interpreter_pal::ConvParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00093">luci_interpreter_pal::ConvParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00066">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00193">offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00078">luci_interpreter_pal::ConvParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00080">luci_interpreter_pal::ConvParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00079">luci_interpreter_pal::ConvParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00065">luci_interpreter_pal::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_utils_8h_source.html#l00204">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_params_8h_source.html#l00100">luci_interpreter_pal::ConvParams::float_activation_max</a>, <a class="el" href="_params_8h_source.html#l00099">luci_interpreter_pal::ConvParams::float_activation_min</a>, <a class="el" href="_params_8h_source.html#l00072">luci_interpreter_pal::PaddingValues::height</a>, <a class="el" href="_p_a_l_utils_8h_source.html#l00193">offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_params_8h_source.html#l00084">luci_interpreter_pal::ConvParams::padding_values</a>, <a class="el" href="_params_8h_source.html#l00086">luci_interpreter_pal::ConvParams::stride_height</a>, <a class="el" href="_params_8h_source.html#l00085">luci_interpreter_pal::ConvParams::stride_width</a>, and <a class="el" href="_params_8h_source.html#l00071">luci_interpreter_pal::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -12116,9 +12474,9 @@ template&lt;typename T , int N&gt; </div>
 <div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="astruct_nd_array_desc_html_a55e56c8c46e30db6f2836dc7597b77a4"><div class="ttname"><a href="struct_nd_array_desc.html#a55e56c8c46e30db6f2836dc7597b77a4">NdArrayDesc::strides</a></div><div class="ttdeci">int strides[N]</div><div class="ttdef"><b>Definition:</b> <a href="_n_d_array_8h_source.html#l00045">NDArray.h:45</a></div></div>
 <div class="ttc" id="astruct_nd_array_desc_html_aca9e26cbf3c4a80079a52135661da051"><div class="ttname"><a href="struct_nd_array_desc.html#aca9e26cbf3c4a80079a52135661da051">NdArrayDesc::extents</a></div><div class="ttdeci">int extents[N]</div><div class="ttdef"><b>Definition:</b> <a href="_n_d_array_8h_source.html#l00041">NDArray.h:41</a></div></div>
-<div class="ttc" id="astructluci__interpreter__pal_1_1_transpose_params_html_a35de288476da3883ef2e815725104d12"><div class="ttname"><a href="structluci__interpreter__pal_1_1_transpose_params.html#a35de288476da3883ef2e815725104d12">luci_interpreter_pal::TransposeParams::perm</a></div><div class="ttdeci">int32_t perm[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00124">Params.h:124</a></div></div>
+<div class="ttc" id="astructluci__interpreter__pal_1_1_transpose_params_html_a35de288476da3883ef2e815725104d12"><div class="ttname"><a href="structluci__interpreter__pal_1_1_transpose_params.html#a35de288476da3883ef2e815725104d12">luci_interpreter_pal::TransposeParams::perm</a></div><div class="ttdeci">int32_t perm[5]</div><div class="ttdef"><b>Definition:</b> <a href="_params_8h_source.html#l00130">Params.h:130</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_process_broadcast_shapes_8h_source.html#l00047">copyDimsToDesc()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00038">luci_interpreter_pal::NdArrayDesc&lt; N &gt;::extents</a>, <a class="el" href="_params_8h_source.html#l00124">luci_interpreter_pal::TransposeParams::perm</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00042">luci_interpreter_pal::NdArrayDesc&lt; N &gt;::strides</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_process_broadcast_shapes_8h_source.html#l00047">copyDimsToDesc()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00095">luci_interpreter::RuntimeShape::extendedShape()</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00038">luci_interpreter_pal::NdArrayDesc&lt; N &gt;::extents</a>, <a class="el" href="_params_8h_source.html#l00130">luci_interpreter_pal::TransposeParams::perm</a>, <a class="el" href="_process_broadcast_shapes_8h_source.html#l00042">luci_interpreter_pal::NdArrayDesc&lt; N &gt;::strides</a>, and <a class="el" href="_process_broadcast_shapes_8h_source.html#l00125">subscriptToIndex()</a>.</p>
 
 </div>
 </div>

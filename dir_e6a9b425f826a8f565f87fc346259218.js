@@ -8,5 +8,6 @@ var dir_e6a9b425f826a8f565f87fc346259218 =
     [ "PALMul.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_mul_8h.html", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_mul_8h" ],
     [ "PALSoftmax.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_softmax_8h.html", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_softmax_8h" ],
     [ "PALSub.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_sub_8h.html", null ],
+    [ "PALSVDF.h", "onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_s_v_d_f_8h.html", null ],
     [ "PALUnidirectionalSequenceLSTM.h", "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h.html", "cmsisnn_2_p_a_l_unidirectional_sequence_l_s_t_m_8h" ]
 ];

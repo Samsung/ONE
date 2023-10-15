@@ -207,7 +207,7 @@ var dir_00f687595357fd8fb75f6fe0e081c580 =
     [ "Sum.cpp", "compiler_2tflchef_2core_2src_2_op_2_sum_8cpp.html", null ],
     [ "Sum.h", "tflchef_2core_2src_2_op_2_sum_8h.html", "tflchef_2core_2src_2_op_2_sum_8h" ],
     [ "SVDF.cpp", "compiler_2tflchef_2core_2src_2_op_2_s_v_d_f_8cpp.html", null ],
-    [ "SVDF.h", "compiler_2tflchef_2core_2src_2_op_2_s_v_d_f_8h.html", "compiler_2tflchef_2core_2src_2_op_2_s_v_d_f_8h" ],
+    [ "SVDF.h", "tflchef_2core_2src_2_op_2_s_v_d_f_8h.html", "tflchef_2core_2src_2_op_2_s_v_d_f_8h" ],
     [ "Tanh.cpp", "compiler_2tflchef_2core_2src_2_op_2_tanh_8cpp.html", null ],
     [ "Tanh.h", "compiler_2tflchef_2core_2src_2_op_2_tanh_8h.html", "compiler_2tflchef_2core_2src_2_op_2_tanh_8h" ],
     [ "Tile.cpp", "core_2src_2_op_2_tile_8cpp.html", null ],
