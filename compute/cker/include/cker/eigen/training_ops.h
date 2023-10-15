@@ -44,6 +44,15 @@ template <typename Device, typename T> struct ApplyAdam
                   bool use_nesterov);
 };
 
+// Each training algorithm has a ApplyXYZ functor struct declared in
+// this header file. They are specialized for different devices
+// (CPUDevice in training_ops.cc or GPUDevice in training_ops_gpu.cc).
+template <typename Device, typename T> struct ApplyGradientDescent
+{
+  void operator()(const Device &d, typename TTypes<T>::Flat var,
+                  typename TTypes<T>::ConstScalar alpha, typename TTypes<T>::ConstFlat delta);
+};
+
 } // namespace functor
 } // namespace training_ops
 } // namespace cker
@@ -139,6 +148,15 @@ template <typename Device, typename T> struct ApplyAdamNonCuda
 
 template <typename T> struct ApplyAdam<CPUDevice, T> : ApplyAdamNonCuda<CPUDevice, T>
 {
+};
+
+template <typename T> struct ApplyGradientDescent<CPUDevice, T>
+{
+  void operator()(const CPUDevice &d, typename TTypes<T>::Flat var,
+                  typename TTypes<T>::ConstScalar lr, typename TTypes<T>::ConstFlat grad)
+  {
+    var.device(d) -= grad * lr();
+  }
 };
 
 } // namespace functor
