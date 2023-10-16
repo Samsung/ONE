@@ -21,7 +21,7 @@
 
 #include "bisection/BisectionSolver.h"
 #include "pattern/PatternSolver.h"
-#include <core/SolverOutput.h>
+#include "core/SolverOutput.h"
 
 #include <iostream>
 #include <iomanip>
