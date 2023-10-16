@@ -95,7 +95,7 @@ void Embedder::embed(const std::string &output_path, const std::string &input_pa
     for (size_t input_idx = 0; input_idx < n_inputs; ++input_idx)
     {
       const auto *circle_input = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
-      if (not circle_input || circle_input->index() != input_idx)
+      if (circle_input->index() != input_idx)
         throw std::runtime_error("Input order in minmax recording does not match to circle");
 
       auto minmax = mmr.read_input(0, idx, input_idx);
@@ -114,7 +114,7 @@ void Embedder::embed(const std::string &output_path, const std::string &input_pa
     for (uint32_t i = 0; i < n_nodes; ++i)
     {
       auto node = loco::must_cast<luci::CircleNode *>(graph->nodes()->at(i));
-      if (not has_node_id(node)) // Skip non-op nodes (e.g. input/const/output)
+      if (not luci::has_node_id(node)) // Skip non-op nodes (e.g. input/const/output)
         continue;
       auto op_idx = luci::get_node_id(node);
       auto minmax = mmr.read(0, idx, op_idx);

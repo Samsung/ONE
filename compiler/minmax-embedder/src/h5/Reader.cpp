@@ -17,16 +17,18 @@
 #include "Reader.h"
 
 #include <cstdio>
-#include <sstream>
 #include <stdexcept>
+
+namespace
+{
+bool exists(hid_t id, const char *path) { return H5Lexists(id, path, H5P_DEFAULT) > 0; }
+} // namespace
 
 namespace minmax_embedder
 {
 namespace h5
 {
 static const char *h5_value_grpname = "value";
-
-bool exists(hid_t id, const char *path) { return H5Lexists(id, path, H5P_DEFAULT) > 0; }
 
 Reader::Reader(const std::string &filepath) : _file(filepath, H5F_ACC_RDONLY)
 {
