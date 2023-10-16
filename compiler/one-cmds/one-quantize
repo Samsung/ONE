@@ -256,7 +256,7 @@ def _get_parser():
         '--bisection_type', type=str, help="one of 'auto', 'i16_front', 'i16_back'")
 
     ampq_quant_group.add_argument(
-        '--mixed_layernorm',
+        '--u8_layernorm_with_s16_variance',
         action='store_true',
         help='whether to apply LayerNorm pattern in pattern algorithm')
 
@@ -790,7 +790,7 @@ def _ampq_solve(args):
                         ampq_quantize_cmd.extend(['--bisection', 'false'])
             elif algorithm == 'pattern':
                 ampq_quantize_cmd.append('--patterns')
-                if oneutils.is_valid_attr(args, 'mixed_layernorm'):
+                if oneutils.is_valid_attr(args, 'u8_layernorm_with_s16_variance'):
                     ampq_quantize_cmd.append('--u8_layernorm_with_s16_variance')
 
         # recorded model as input
