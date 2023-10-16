@@ -258,7 +258,7 @@ def _get_parser():
     ampq_quant_group.add_argument(
         '--u8_layernorm_with_s16_variance',
         action='store_true',
-        help='whether to apply LayerNorm pattern in pattern algorithm')
+        help='Use int16 for computing variance in uint8 layer normalization')
 
     # ampq_bisection_visq
     ampq_quant_group.add_argument(
