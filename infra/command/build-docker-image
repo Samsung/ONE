@@ -5,7 +5,8 @@ function Usage()
   echo "Usage: $0 $(basename ${BASH_SOURCE[0]}) [OPTIONS]"
   echo ""
   echo "Options:"
-  echo "      --codename                ubuntu codename, default image name is nnfw/one-devtools:[codename]"
+  echo "      --codename    ubuntu codename, default: ${UBUNTU_CODENAME}"
+  echo "                    default image name is nnfw/one-devtools:[codename]"
   echo "Options can use as docker build option:"
   docker build --help
 }
@@ -14,8 +15,7 @@ DOCKER_FILE_RPATH_BASE="infra/docker"
 DOCKER_BUILD_ARGS=()
 
 # Default setting
-UBUNTU_CODENAME="bionic"
-DOCKER_TAG="latest"
+UBUNTU_CODENAME="focal"
 
 while [[ $# -gt 0 ]]
 do
@@ -29,7 +29,6 @@ do
       ;;
     --codename)
       UBUNTU_CODENAME=$2
-      DOCKER_TAG=$2
       shift 2
       ;;
     -t|--tag)
@@ -43,7 +42,7 @@ do
   esac
 done
 
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools:$DOCKER_TAG}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools:$UBUNTU_CODENAME}
 DOCKER_FILE_RPATH=$DOCKER_FILE_RPATH_BASE/$UBUNTU_CODENAME/Dockerfile
 
 HOST_ARCH=$(uname -m)
