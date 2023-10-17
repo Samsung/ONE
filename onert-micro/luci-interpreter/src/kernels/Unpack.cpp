@@ -14,70 +14,131 @@
  * limitations under the License.
  */
 
-#include "kernels/Unpack.h"
-
+#include "Builders.h"
 #include "kernels/Utils.h"
-
-#include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
 
 namespace luci_interpreter
 {
-
-namespace kernels
+namespace
 {
 
-Unpack::Unpack(const Tensor *input, std::vector<Tensor *> outputs, const UnpackParams &params)
-  : KernelWithParams<UnpackParams>({input}, std::move(outputs), params)
-{
-}
+constexpr int kInputTensor = 0;
 
-void Unpack::configure()
+template <typename T>
+void UnpackImpl(const circle::Operator *cur_op, const circle::Tensor *input, int output_count,
+                int axis, RuntimeGraph *runtime_graph)
 {
-  const Shape &input_shape = input()->shape();
+  const auto output0_index = cur_op->outputs()->operator[](0);
+  assert(output0_index != -1);
 
-  int axis = _params.axis;
+  const auto output0 = runtime_graph->getCircleTensorByIndex(output0_index);
+  assert(output0 != nullptr);
+
+  const auto input_dims = Tensor::tensor_shape(input);
+  const auto output_dims = Tensor::tensor_shape(output0);
+  const int dimensions = input_dims.size();
+
   if (axis < 0)
-    axis += input()->shape().num_dims();
-  assert(axis >= 0 && axis < input_shape.num_dims());
-
-  Shape output_shape(input_shape.num_dims() - 1);
-  int out_index = 0;
-  for (int in_index = 0; in_index < input_shape.num_dims(); ++in_index)
   {
-    if (in_index != axis)
-      output_shape.dim(out_index++) = input_shape.dim(in_index);
+    axis += input_dims.size();
   }
 
-  // TODO: enable it only if kernel with dynamic shapes
-  for (Tensor *output : _outputs)
+  int outer_size = 1;
+  for (int i = 0; i < axis; ++i)
   {
-    assert(output->element_type() == input()->element_type());
-    output->resize(output_shape);
+    outer_size *= input_dims[i];
+  }
+  int copy_size = 1;
+  for (int i = axis + 1; i < dimensions; ++i)
+  {
+    copy_size *= input_dims[i];
+  }
+  int output_size = 1;
+  for (int i = 0; i < output_dims.size(); ++i)
+  {
+    output_size *= output_dims[i];
+  }
+
+  const T *input_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(input));
+
+  for (int i = 0; i < output_count; ++i)
+  {
+    const auto output_index = cur_op->outputs()->operator[](i);
+    assert(output_index != -1);
+
+    const auto t = runtime_graph->getCircleTensorByIndex(output_index);
+    assert(output0 != nullptr);
+    T *output_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(t));
+    for (int k = 0; k < outer_size; ++k)
+    {
+      T *output_ptr = output_data + copy_size * k;
+      int loc = k * output_count * copy_size + i * copy_size;
+      const T *input_ptr = input_data + loc;
+      for (int j = 0; j < copy_size; ++j)
+        output_ptr[j] = input_ptr[j];
+    }
+  }
+}
+} // namespace
+
+void configure_kernel_CircleUnpack(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+{
+  const auto input_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  assert(input_index != -1);
+  assert(output_index != -1);
+
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+
+  assert(input != nullptr);
+  assert(output != nullptr);
+
+  const auto *options = cur_op->builtin_options_as_UnpackOptions();
+
+  LUCI_INTERPRETER_CHECK(cur_op->outputs()->size() == options->num());
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+
+  for (int i = 0; i < Tensor::num_dims(input); ++i)
+  {
+    if (i == options->axis())
+      continue;
+
+    if (i < options->axis())
+    {
+      LUCI_INTERPRETER_CHECK(Tensor::dim(input, i) == Tensor::dim(output, i));
+    }
+    else
+    {
+      LUCI_INTERPRETER_CHECK(Tensor::dim(input, i) == Tensor::dim(output, i - 1));
+    }
   }
 }
 
-template <typename T> void Unpack::executeImpl() const
+void execute_kernel_CircleUnpack(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  tflite::UnpackParams params{};
-  params.axis = _params.axis;
-  params.num_split = _outputs.size();
-  VectorOfTensors<T, false> all_outputs(_outputs);
-  tflite::reference_ops::Unpack<T>(params, getTensorShape(input()), getTensorData<T>(input()),
-                                   **all_outputs.shapes(), all_outputs.data());
-}
+  const auto input_index = cur_op->inputs()->operator[](0);
+  assert(input_index != -1);
 
-void Unpack::execute() const
-{
-  switch (input()->element_type())
+  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
+  assert(input != nullptr);
+
+  const auto type = Tensor::element_type(input);
+
+  const auto *options = cur_op->builtin_options_as_UnpackOptions();
+
+  switch (type)
   {
+#ifndef DIS_FLOAT
     case DataType::FLOAT32:
-      return executeImpl<float>();
-    case DataType::U8:
-      return executeImpl<uint8_t>();
+    {
+      UnpackImpl<float>(cur_op, input, options->num(), options->axis(), runtime_graph);
+      break;
+    }
+#endif // DIS_FLOAT
     default:
-      assert(false && "Unsupported type.");
+      assert(false && "Unsupported type");
   }
 }
-
-} // namespace kernels
 } // namespace luci_interpreter

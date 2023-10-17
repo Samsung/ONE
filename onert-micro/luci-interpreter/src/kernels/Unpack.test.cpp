@@ -15,134 +15,86 @@
  * limitations under the License.
  */
 
-#include "kernels/Unpack.h"
 #include "kernels/TestUtils.h"
-#include "luci_interpreter/TestMemoryManager.h"
+#include "luci_interpreter/test_models/unpack/FloatUnpackKernel.h"
+#include "luci_interpreter/test_models/unpack/NegUnpackKernel.h"
+
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
 
 using namespace testing;
 
-template <typename T>
-void Check(int axis, Shape input_shape, std::initializer_list<T> input_data,
-           const std::vector<std::initializer_list<int32_t>> &exp_output_shape,
-           std::vector<std::initializer_list<T>> exp_output_data)
+class UnpackTest : public ::testing::Test
 {
-  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
-  constexpr DataType element_type = getElementType<T>();
-  const int num_outputs = input_shape.dim(axis < 0 ? axis + input_shape.num_dims() : axis);
-
-  Tensor input_tensor =
-    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
-  std::vector<Tensor> output_tensors;
-  output_tensors.reserve(num_outputs);
-  for (int i = 0; i < num_outputs; ++i)
-  {
-    output_tensors.push_back(makeOutputTensor(element_type));
-  }
-
-  std::vector<Tensor *> output_tensor_ptrs(num_outputs);
-  for (int i = 0; i < num_outputs; ++i)
-  {
-    output_tensor_ptrs[i] = &output_tensors[i];
-  }
-
-  UnpackParams params{};
-  params.axis = axis;
-
-  Unpack kernel(&input_tensor, std::move(output_tensor_ptrs), params);
-  kernel.configure();
-  for (int i = 0; i < num_outputs; i++)
-  {
-    memory_manager->allocate_memory(output_tensors[i]);
-  }
-  kernel.execute();
-
-  for (int i = 0; i < num_outputs; ++i)
-  {
-    EXPECT_THAT(extractTensorData<T>(output_tensors[i]),
-                ::testing::ElementsAreArray(exp_output_data[i]));
-  }
-}
-
-template <typename T> class UnpackTest : public ::testing::Test
-{
+  // Do nothing
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
-TYPED_TEST_SUITE(UnpackTest, DataTypes);
-
-TYPED_TEST(UnpackTest, ThreeOutputs)
+template <typename T>
+std::vector<std::vector<T>> checkUnpackKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  Check<TypeParam>(/*axis=*/0, /*input_shape=*/{3, 2},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6},
-                   /*exp_output_shape=*/{{2}, {2}, {2}},
-                   /*exp_output_data=*/{{1, 2}, {3, 4}, {5, 6}});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
+
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 1);
+
+  // set input data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(0));
+    std::copy(test_data_base->get_input_data_by_index(0).begin(),
+              test_data_base->get_input_data_by_index(0).end(), input_tensor_data);
+  }
+
+  runtime_module.execute();
+
+  assert(main_runtime_graph->getNumOfOutputTensors() == 2);
+
+  std::vector<std::vector<T>> res;
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  res.push_back(output_data_vector);
+
+  output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(1));
+  num_elements = (main_runtime_graph->getOutputDataSizeByIndex(1) / sizeof(T));
+  std::vector<T> output_data_vector_1(output_data, output_data + num_elements);
+  res.push_back(output_data_vector_1);
+
+  return res;
 }
 
-TYPED_TEST(UnpackTest, ThreeOutputsAxisOne)
+TEST_F(UnpackTest, Float_P)
 {
-  Check<TypeParam>(/*axis=*/1, /*input_shape=*/{3, 2},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6},
-                   /*exp_output_shape=*/{{3}, {3}},
-                   /*exp_output_data=*/{{1, 3, 5}, {2, 4, 6}});
+  test_kernel::TestDataFloatUnpack test_data_kernel;
+  std::vector<std::vector<float>> output_data_vector = checkUnpackKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector[0], kernels::testing::FloatArrayNear(
+                                       test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  EXPECT_THAT(output_data_vector[1], kernels::testing::FloatArrayNear(
+                                       test_data_kernel.get_output_data_by_index(1), 0.0001f));
 }
 
-TYPED_TEST(UnpackTest, ThreeOutputsNegativeAxisOne)
+TEST_F(UnpackTest, Input_type_mismatch_NEG)
 {
-  Check<TypeParam>(/*axis=*/-1, /*input_shape=*/{3, 2},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6},
-                   /*exp_output_shape=*/{{3}, {3}},
-                   /*exp_output_data=*/{{1, 3, 5}, {2, 4, 6}});
-}
+  test_kernel::NegTestDataInputMismatchUnpackKernel test_data_kernel;
 
-TYPED_TEST(UnpackTest, ThreeOutputsNegativeAxisTwo)
-{
-  Check<TypeParam>(/*axis=*/-2, /*input_shape=*/{3, 2},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6},
-                   /*exp_output_shape=*/{{2}, {2}, {2}},
-                   /*exp_output_data=*/{{1, 2}, {3, 4}, {5, 6}});
-}
-
-TYPED_TEST(UnpackTest, OneOutput)
-{
-  Check<TypeParam>(/*axis=*/0, /*input_shape=*/{1, 6},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6},
-                   /*exp_output_shape=*/{{6}},
-                   /*exp_output_data=*/{{1, 2, 3, 4, 5, 6}});
-}
-
-TYPED_TEST(UnpackTest, ThreeDimensionsTwoOutputs)
-{
-  Check<TypeParam>(/*axis=*/2, /*input_shape=*/{2, 2, 2},
-                   /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8},
-                   /*exp_output_shape=*/{{2, 2}, {2, 2}},
-                   /*exp_output_data=*/{{1, 3, 5, 7}, {2, 4, 6, 8}});
-}
-
-TYPED_TEST(UnpackTest, FiveDimensionsTwoOutputs)
-{
-  Check<TypeParam>(
-    /*axis=*/2, /*input_shape=*/{2, 2, 2, 2, 1},
-    /*input_data=*/{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-    /*exp_output_shape=*/{{2, 2, 2, 1}, {2, 2, 2, 1}},
-    /*exp_output_data=*/
-    {{1, 2, 5, 6, 9, 10, 13, 14}, {3, 4, 7, 8, 11, 12, 15, 16}});
-}
-
-TYPED_TEST(UnpackTest, VectorToScalar)
-{
-  Check<TypeParam>(/*axis=*/0, /*input_shape=*/{5},
-                   /*input_data=*/{1, 2, 3, 4, 5},
-                   /*exp_output_shape=*/{{}, {}, {}, {}, {}},
-                   /*exp_output_data=*/{{1}, {2}, {3}, {4}, {5}});
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter
