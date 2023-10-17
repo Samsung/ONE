@@ -50,11 +50,12 @@ void SoftMaxLayer::forward(bool) { cpu::ops::SoftMaxLayer::run(); }
 void SoftMaxLayer::backward()
 {
   assert(_deriv_output->data_type() == _input->data_type());
-  switch (_input->data_type())
+  switch (_deriv_output->data_type())
   {
     case OperandType::FLOAT32:
     {
-      nnfw::cker::train::SoftMaxGrad(getShape(_deriv_output), getBuffer<float>(_deriv_output), getShape(_deriv_input), getBuffer<float>(_deriv_input));
+      uint32_t input_size = cpu::ops::getNumberOfElements(_deriv_output);
+      nnfw::cker::train::SoftMaxGrad(getBuffer<float>(_deriv_output), input_size, 1, _beta, getBuffer<float>(_deriv_input));
       break;
     }
     default:

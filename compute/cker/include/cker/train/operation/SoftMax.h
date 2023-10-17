@@ -38,13 +38,21 @@ namespace cker
 namespace train
 {
 
-inline void SoftMaxGrad(const Shape &input_shape, const float *input_data,
-                 const Shape &output_shape, float *output_data)
+inline void SoftMaxGrad(const float *input_data, const int input_size, const int batch_size, const float ,
+                        float *output_data)
 {
-  const int flat_size = MatchingFlatSize(input_shape, output_shape);
-  for (int i = 0; i < flat_size; ++i)
+  assert(input_size > 0);
+
+  for (int b = 0; b < batch_size; ++b)
   {
-    output_data[i] = input_data[i]*(1-input_data[i]);
+    for (int i = 0; i < input_size; ++i)
+    {
+      output_data[i] = input_data[i]*(1-input_data[i]);
+    }
+
+    // Advance in and out pointers for the next batch
+    input_data += input_size;
+    output_data += input_size;
   }
 }
 
