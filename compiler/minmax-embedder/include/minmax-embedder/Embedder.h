@@ -24,8 +24,8 @@ namespace minmax_embedder
 
 struct EmbedderOptions
 {
-  float min_percentile;
-  float max_percentile;
+  float min_percentile = 0.0f; // dummy initial value to make SE tool happy
+  float max_percentile = 0.0f; // dummy initial value To make SE tool happy
 };
 
 class Embedder
