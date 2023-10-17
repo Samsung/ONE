@@ -52,6 +52,7 @@ public:
   void visit(const ir::train::operation::Loss &) override;
   void visit(const ir::train::operation::Pool2D &) override;
   void visit(const ir::train::operation::Reshape &node) override;
+  void visit(const ir::train::operation::Softmax &node) override;
 
 private:
   ir::Layout _current_layout;

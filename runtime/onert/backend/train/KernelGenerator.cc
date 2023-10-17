@@ -23,6 +23,7 @@
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
+#include "ops/SoftMaxLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -294,6 +295,27 @@ void KernelGenerator::visit(const ir::train::operation::Reshape &node)
   auto fn = std::make_unique<ops::ReshapeLayer>();
 
   fn->configure(input_tensor, shape_tensor, output_tensor, input_deriv_tensor, output_deriv_tensor);
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Softmax &node)
+{
+  using ir::train::operation::Softmax;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
+
+  const auto beta = node.param().beta;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto output_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto input_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+
+  auto fn = std::make_unique<ops::SoftMaxLayer>();
+
+  fn->configure(input_tensor, beta, output_tensor, input_deriv_tensor, output_deriv_tensor);
   _return_fn = std::move(fn);
 }
 
