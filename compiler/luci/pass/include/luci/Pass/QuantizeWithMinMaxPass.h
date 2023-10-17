@@ -42,6 +42,7 @@ public:
     std::vector<loco::DataType> input_types;
     std::vector<loco::DataType> output_types;
     bool TF_style_maxpool = false;
+    bool save_min_max = false;
     std::vector<LayerInfo> layers_info;
   };
 

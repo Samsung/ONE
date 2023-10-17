@@ -85,6 +85,7 @@ public:
       Quantize_input_type,
       Quantize_output_type,
       Quantize_TF_style_maxpool,
+      Quantize_save_min_max,
     };
 
     virtual ~Options() = default;
