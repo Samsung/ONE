@@ -227,6 +227,48 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   UNUSED_RELEASE(convertPoolType);
 }
 
+void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
+{
+  using ir::train::operation::Pool2D;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  const auto operands = _tgraph.operands();
+  const auto ofm_shape = operands.at(output_index).shape();
+  const auto ifm_shape = operands.at(input_index).shape();
+
+  if (ifm_shape.rank() != 4)
+  {
+    std::runtime_error(node.name() + " only supports 4D tensor as input");
+  }
+
+  // calcualate padding
+  const auto stride = node.param().stride;
+  const auto kh = node.param().kh;
+  const auto kw = node.param().kw;
+  const auto padding =
+    ir::calculatePadding(node.param().padding, ifm_shape.asFeature(_current_layout),
+                         ofm_shape.asFeature(_current_layout), stride, kw, kh);
+
+  auto out_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto in_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto out_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto in_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+
+  const auto activation = node.param().activation;
+  const auto pool_type = convertPoolType(node.param().op_type);
+
+  auto fn = std::make_unique<ops::PoolLayer>();
+
+  fn->configure(in_tensor, padding.left, padding.right, padding.top, padding.bottom,
+                stride.horizontal, stride.vertical, kw, kh, activation, out_tensor, pool_type,
+                in_deriv_tensor, out_deriv_tensor);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::train::operation::Reshape &node)
 {
   using ir::train::operation::Reshape;
