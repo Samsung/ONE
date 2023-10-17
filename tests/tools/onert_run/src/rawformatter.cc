@@ -94,4 +94,29 @@ void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocati
     std::exit(-1);
   }
 }
+
+void RawFormatter::dumpInputs(const std::string &filename, std::vector<Allocation> &inputs)
+{
+  uint32_t num_inputs;
+  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
+  try
+  {
+    for (uint32_t i = 0; i < num_inputs; i++)
+    {
+      nnfw_tensorinfo ti;
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
+      auto bufsz = bufsize_for(&ti);
+
+      std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
+      file.write(reinterpret_cast<const char *>(inputs[i].data()), bufsz);
+      file.close();
+      std::cerr << filename + "." + std::to_string(i) + " is generated.\n";
+    }
+  }
+  catch (const std::runtime_error &e)
+  {
+    std::cerr << "Error during dumpRandomInputs on onert_run : " << e.what() << std::endl;
+    std::exit(-1);
+  }
+}
 } // end of namespace onert_run
