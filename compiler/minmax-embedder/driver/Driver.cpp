@@ -71,7 +71,6 @@ int entry(const int argc, char **argv)
   catch (const std::runtime_error &err)
   {
     std::cout << err.what() << std::endl;
-    std::cout << arser;
     return EXIT_FAILURE;
   }
 
