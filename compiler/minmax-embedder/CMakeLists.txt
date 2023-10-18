@@ -6,7 +6,9 @@ if(NOT HDF5_FOUND)
 endif(NOT HDF5_FOUND)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE DRIVER "driver/*.cpp")
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${DRIVER})
 list(REMOVE_ITEM SOURCES ${TESTS})
 
 #
@@ -39,3 +41,16 @@ nnas_find_package(GTest REQUIRED)
 GTest_AddTest(minmax_embedder_test ${TESTS})
 target_include_directories(minmax_embedder_test PRIVATE include)
 target_link_libraries(minmax_embedder_test minmax_embedder)
+
+#
+# Driver
+#
+add_executable(minmax_embedder_driver "${DRIVER}")
+target_link_libraries(minmax_embedder_driver minmax_embedder)
+target_link_libraries(minmax_embedder_driver arser)
+target_link_libraries(minmax_embedder_driver safemain)
+target_link_libraries(minmax_embedder_driver vconone)
+target_include_directories(minmax_embedder_driver PRIVATE include)
+set_target_properties(minmax_embedder_driver PROPERTIES OUTPUT_NAME minmax_embedder)
+
+install(TARGETS minmax_embedder_driver DESTINATION bin)
