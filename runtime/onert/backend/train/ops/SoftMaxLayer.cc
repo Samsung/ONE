@@ -29,10 +29,34 @@ namespace train
 namespace ops
 {
 
-SoftMaxLayer::SoftMaxLayer() : cpu::ops::SoftMaxLayer(), _deriv_input{nullptr}, _deriv_output{
-                                                                                 nullptr}
+SoftMaxLayer::SoftMaxLayer()
+  : cpu::ops::SoftMaxLayer(), _deriv_input{nullptr}, _deriv_output{nullptr}
 {
   // DO NOTHING
+}
+
+void SoftMaxLayer::softmaxGradFloat32()
+{
+  if (getNumberOfDimensions(_deriv_output) == 1)
+  {
+    uint32_t input_size = getNumberOfElements(_deriv_output);
+    nnfw::cker::train::SoftMaxGrad(getBuffer<float>(_output), getBuffer<float>(_deriv_output),
+                                   input_size, 1, getBuffer<float>(_deriv_input));
+  }
+  else if (getNumberOfDimensions(_deriv_output) == 2)
+  {
+    uint32_t batch_size = getSizeOfDimension(_input, 0);
+    if (batch_size == 0)
+      throw std::runtime_error("train SoftMaxLayer: batch_size should not be 0");
+
+    uint32_t input_size = getNumberOfElements(_input) / batch_size;
+    nnfw::cker::train::SoftMaxGrad(getBuffer<float>(_output), getBuffer<float>(_deriv_output),
+                                   input_size, batch_size, getBuffer<float>(_deriv_input));
+  }
+  else
+  {
+    throw std::runtime_error("train SoftMaxLayer: unsupported dimensions");
+  }
 }
 
 void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
@@ -54,8 +78,10 @@ void SoftMaxLayer::backward()
   {
     case OperandType::FLOAT32:
     {
-      uint32_t input_size = cpu::ops::getNumberOfElements(_deriv_output);
-      nnfw::cker::train::SoftMaxGrad(getBuffer<float>(_deriv_output), input_size, 1, _beta, getBuffer<float>(_deriv_input));
+      // softmaxGradFloat32();
+      nnfw::cker::train::SoftMaxGrad(getShape(_output), getBuffer<float>(_output),
+                                     getShape(_deriv_output), getBuffer<float>(_deriv_output),
+                                     getShape(_deriv_input), getBuffer<float>(_deriv_input));
       break;
     }
     default:

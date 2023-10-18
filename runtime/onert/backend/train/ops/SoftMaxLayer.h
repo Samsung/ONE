@@ -31,16 +31,17 @@ namespace train
 namespace ops
 {
 
-class SoftMaxLayer : public ::onert::exec::train::ITrainableFunction,
-                     public cpu::ops::SoftMaxLayer
+class SoftMaxLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::SoftMaxLayer
 {
 public:
   SoftMaxLayer();
 
+private:
+  void softmaxGradFloat32();
+
 public:
-  void configure(const IPortableTensor *input, const float beta,
-                 IPortableTensor *output, IPortableTensor *deriv_input,
-                 const IPortableTensor *deriv_output);
+  void configure(const IPortableTensor *input, const float beta, IPortableTensor *output,
+                 IPortableTensor *deriv_input, const IPortableTensor *deriv_output);
   void forward(bool training) override;
   void backward() override;
 

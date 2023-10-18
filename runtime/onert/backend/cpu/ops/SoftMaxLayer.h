@@ -48,9 +48,9 @@ protected:
   const IPortableTensor *_input;
   IPortableTensor *_output;
 
+private:
   float _beta;
 
-private:
   float _table[256];
   uint8_t _uint8_table1[256];
   uint8_t _uint8_table2[256];

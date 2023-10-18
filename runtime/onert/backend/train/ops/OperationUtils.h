@@ -31,6 +31,9 @@ namespace ops
 using OperandType = onert::ir::DataType;
 using cpu::ops::getBuffer;
 using cpu::ops::getShape;
+using cpu::ops::getNumberOfDimensions;
+using cpu::ops::getNumberOfElements;
+using cpu::ops::getSizeOfDimension;
 
 } // namespace ops
 } // namespace train
