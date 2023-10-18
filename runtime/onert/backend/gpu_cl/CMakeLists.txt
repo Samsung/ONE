@@ -90,6 +90,9 @@ endif()
 
 add_library(tflite_ignore_warnings INTERFACE)
 target_compile_options(tflite_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10)
+  target_compile_options(tflite_ignore_warnings INTERFACE -Wno-deprecated-copy)
+endif()
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tflite_ignore_warnings)
 
 install(TARGETS ${LIB_ONERT_BACKEND_GPU_CL} DESTINATION lib)
