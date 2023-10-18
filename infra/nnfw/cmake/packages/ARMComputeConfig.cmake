@@ -172,6 +172,10 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
     set(SCONS_CXX "clang++")
   endif(ANDROID)
 
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10)
+    list(APPEND SCONS_OPTIONS "extra_cxx_flags=-Wno-deprecated-copy")
+  endif()
+
   message(STATUS "Build ARMCompute with ${SCONS_PATH} ('${SCONS_OPTIONS}'")
 
   # Build ARMCompute libraries with SCONS
