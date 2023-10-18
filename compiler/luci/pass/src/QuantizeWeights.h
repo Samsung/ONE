@@ -29,16 +29,14 @@ namespace luci
  */
 struct QuantizeWeights final : public luci::CircleNodeMutableVisitor<void>
 {
-  QuantizeWeights(loco::DataType input, loco::DataType output, QuantizationGranularity gr,
-                  bool is_save_min_max)
-    : input_type(input), output_type(output), granularity(gr), save_min_max(is_save_min_max)
+  QuantizeWeights(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
+    : input_type(input), output_type(output), granularity(gr)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
   QuantizationGranularity granularity;
-  bool save_min_max;
 
 private:
   void quantize_weights(luci::CircleConst *weights);

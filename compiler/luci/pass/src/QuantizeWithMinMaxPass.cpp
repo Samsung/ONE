@@ -78,7 +78,7 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   auto qtype = luci::activation_qtype(node);
   if (use_predefined_values(qtype))
   {
-    quantize->quantparam(luci::make_predefined_qparam(qtype, out_type));
+    quantize->quantparam(luci::make_predefined_qparam(qtype, out_type, node->quantparam()));
     return quantize;
   }
 
@@ -577,10 +577,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     return _ctx->granularity;
   };
 
-  // to save min and max values
-  std::unordered_map<luci::CircleNode *, std::vector<float>> node_to_min_values;
-  std::unordered_map<luci::CircleNode *, std::vector<float>> node_to_max_values;
-
   // Quantize activation
   // Why all_nodes?
   // Models can have inactive (unused) inputs.
@@ -588,17 +584,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::all_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-
-    // Save min max values
-    if (_ctx->save_min_max)
-    {
-      const auto quant_param = circle_node->quantparam();
-      if (quant_param != nullptr)
-      {
-        node_to_min_values[circle_node] = quant_param->min;
-        node_to_max_values[circle_node] = quant_param->max;
-      }
-    }
 
     QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
     circle_node->accept(&qa);
@@ -672,7 +657,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     QuantizeWeights qw(_ctx->input_model_dtype, quantize_dtype(circle_node),
-                       quantize_granularity(circle_node), _ctx->save_min_max);
+                       quantize_granularity(circle_node));
     circle_node->accept(&qw);
   }
 
@@ -719,7 +704,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   if (not _ctx->save_min_max)
   {
     // Remove min/max values
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    for (auto node : loco::all_nodes(g))
     {
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       if (auto qparam = circle_node->quantparam())
@@ -727,22 +712,6 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
         warn_accuracy_with_range(circle_node);
         qparam->min.clear();
         qparam->max.clear();
-      }
-    }
-  }
-  else
-  {
-    // Write min/max values
-    for (auto node : loco::all_nodes(g))
-    {
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      const auto quant_param = circle_node->quantparam();
-      if (quant_param != nullptr)
-      {
-        if (node_to_min_values.find(circle_node) != node_to_min_values.end())
-          quant_param->min = node_to_min_values[circle_node];
-        if (node_to_max_values.find(circle_node) != node_to_max_values.end())
-          quant_param->max = node_to_max_values[circle_node];
       }
     }
   }
