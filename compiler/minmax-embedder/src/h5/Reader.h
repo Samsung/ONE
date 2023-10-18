@@ -47,7 +47,6 @@ namespace h5
 //                       ├── ATTRIBUTE op_{idx}
 //                       │      DATATYPE String
 //                       │      DATA { "op/name"}
-
 //                       └── ATTRIBUTE input_{idx}
 //                              DATATYPE String
 //                              DATA { "input/name"}
