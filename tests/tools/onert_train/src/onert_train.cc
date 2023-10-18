@@ -56,13 +56,15 @@ int main(const int argc, char **argv)
 
     // TODO Apply verbose level to phases
     const int verbose = args.getVerboseLevel();
-    benchmark::Phases phases(benchmark::PhaseOption{});
+
+    // prepare measure tool
+    Measure measure(args.getMemoryPoll());
 
     nnfw_session *session = nullptr;
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
-    phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
+    measure.run(PhaseType::MODEL_LOAD, [&]() {
       if (args.useSingleModel())
         NNPR_ENSURE_STATUS(
           nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
@@ -153,9 +155,8 @@ int main(const int argc, char **argv)
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
-    phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
-    });
+    measure.run(PhaseType::PREPARE,
+                [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
 
     // prepare input and expected tensor info lists
     std::vector<nnfw_tensorinfo> input_infos;
@@ -199,9 +200,8 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
-    Measure measure;
     std::vector<float> losses(num_expecteds);
-    phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
+    measure.run(PhaseType::EXECUTE, [&]() {
       const int num_step = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_step);
@@ -242,10 +242,10 @@ int main(const int argc, char **argv)
 
         // print loss
         std::cout << std::fixed;
-        std::cout.precision(3);
-        std::cout << "Epoch " << epoch + 1 << "/" << num_epoch << " - " << measure.timeMs(epoch)
-                  << "ms/step - loss: ";
+        std::cout << "Epoch " << epoch + 1 << "/" << num_epoch;
+        measure.printTimeMs(epoch, AggregateType::AVERAGE);
         std::cout.precision(4);
+        std::cout << " - loss: ";
         for (uint32_t i = 0; i < num_expecteds; ++i)
         {
           std::cout << "[" << i << "] " << losses[i] / num_step;
@@ -256,11 +256,7 @@ int main(const int argc, char **argv)
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
-    // prepare result
-    benchmark::Result result(phases);
-
-    // to stdout
-    benchmark::printResult(result);
+    measure.printResult();
 
     return 0;
   }
