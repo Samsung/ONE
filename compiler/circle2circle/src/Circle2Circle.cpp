@@ -88,6 +88,8 @@ int entry(int argc, char **argv)
              "This will move Transpose Op forward if possible (for further optimization)");
   add_switch(arser, "--fuse_activation_function",
              "This will fuse Activation function to a preceding operator");
+  add_switch(arser, "--fuse_horizontal_fc_layers",
+             "This will fuse horizontal FullyConnected layers");
   add_switch(arser, "--fuse_add_with_fully_connected",
              "This will fuse Add operator to FullyConnected operator");
   add_switch(arser, "--fuse_add_with_tconv",
@@ -257,6 +259,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ForwardTransposeOp);
   if (arser.get<bool>("--fuse_activation_function"))
     options->enable(Algorithms::FuseActivationFunction);
+  if (arser.get<bool>("--fuse_horizontal_fc_layers"))
+    options->enable(Algorithms::FuseHorizontalFullyConnected);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
   if (arser.get<bool>("--fuse_add_with_fully_connected"))
