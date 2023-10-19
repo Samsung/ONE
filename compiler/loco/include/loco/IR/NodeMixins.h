@@ -83,9 +83,22 @@ private:
   std::vector<Dimension> _dims;
 };
 
-template <uint32_t N> struct FixedArity
+// Inheritance type wrapper which provides ability to change inheritance mode
+// (direct or virtual) by specifying one of the types
+struct InheritanceMode
 {
-  template <typename Base> class Mixin : public virtual Base
+  template <typename Base = void> struct Virtual : public virtual Base
+  {
+  };
+  template <typename Base = void> struct Direct : public Base
+  {
+  };
+};
+
+template <uint32_t N, template <class> class InheritanceMode = InheritanceMode::Virtual>
+struct FixedArity
+{
+  template <typename Base> class Mixin : public InheritanceMode<Base>
   {
   public:
     Mixin()
