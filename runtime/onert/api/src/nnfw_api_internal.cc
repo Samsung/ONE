@@ -188,7 +188,15 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   if (model_type == "tflite")
     return onert::tflite_loader::loadModel(filename.c_str());
   if (model_type == "circle")
+  {
+#ifdef ONERT_TRAIN
+    // TODO: How to remove harded codeded string here?
+    std::vector<std::string> loaded_metadata = {"CIRCLE_TRAINING"};
+    return onert::circle_loader::loadModel(filename.c_str(), loaded_metadata);
+#else  // ONERT_TRAIN
     return onert::circle_loader::loadModel(filename.c_str());
+#endif // ONERT_TRAIN
+  }
   if (model_type == "tvn")
     return onert::trix_loader::loadModel(filename.c_str());
 
@@ -1162,6 +1170,22 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 }
 
 #ifdef ONERT_TRAIN
+
+NNFW_STATUS nnfw_session::train_info(nnfw_train_info *info)
+{
+  if (!isStateModelLoaded())
+  {
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  auto model = _nnpkg->primary_model();
+  auto data = model->get_metadata("CIRCLE_TRAINING");
+
+  // TODO
+  ((void *)(info));
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded

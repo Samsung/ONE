@@ -79,6 +79,7 @@ public:
    * @param file_path
    */
   void loadFromFile(const std::string &file_path);
+  void loadFromFile(const std::string &file_path, std::vector<std::string> metadata_names);
   /**
    * @brief Load a model from a buffer
    *
@@ -127,6 +128,7 @@ private:
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
 
+  bool loadMetadata(const std::string &metadata_name);
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
@@ -233,6 +235,50 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_
   munmap(_base, size);
 
   close(_fd);
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path,
+                                                        std::vector<std::string> metadata_names)
+{
+  _fd = open(file_path.c_str(), O_RDONLY);
+  if (_fd < 0)
+  {
+    throw std::runtime_error("Failed to open file " + file_path);
+  }
+
+  struct stat file_stat;
+  if (fstat(_fd, &file_stat) != 0)
+  {
+    throw std::runtime_error("Fstat failed or file " + file_path + " is not a regular file");
+  }
+  int size = file_stat.st_size;
+
+  // Map model file into memory region
+  _base = static_cast<uint8_t *>(mmap(NULL, size, PROT_READ, MAP_PRIVATE, _fd, 0));
+  if (_base == MAP_FAILED)
+  {
+    close(_fd);
+    throw std::runtime_error("mmap failed - " + std::string(strerror(errno)));
+  }
+
+  _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
+
+  loadModel();
+
+  bool read_metadata_result = false;
+  for (auto s : metadata_names)
+  {
+    read_metadata_result = loadMetadata(s);
+  }
+  munmap(_base, size);
+
+  close(_fd);
+
+  if (read_metadata_result == false)
+  {
+    throw std::runtime_error{"Fail to read metdata from file : " + file_path};
+  }
 }
 
 template <typename LoaderDomain>
@@ -784,6 +830,79 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
   {
     weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
   }
+}
+
+template <typename LoaderDomain>
+bool BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const std::string &metadata_name)
+{
+  LoaderDomain::VerifyModelBuffer(*_verifier.get());
+
+  if (_domain_model == nullptr)
+  {
+    throw std::runtime_error("Load circle::Model first using BaseLoader::loadFromFile()");
+  }
+
+  if (_domain_model->metadata() == nullptr)
+  {
+    // Model doesn't have metadata
+    return false;
+  }
+
+  int32_t buffer_idx = -1;
+  for (uint32_t i = 0; i < _domain_model->metadata()->size(); ++i)
+  {
+    const auto metadata = _domain_model->metadata()->Get(i);
+    if (metadata->name() == nullptr)
+    {
+      continue;
+    }
+    if (metadata->name()->str() == metadata_name)
+    {
+      buffer_idx = metadata->buffer();
+      break;
+    }
+  }
+
+  if (buffer_idx == -1)
+  {
+    //'metadata_name' is not matched
+    return false;
+  }
+
+  const auto *data = _domain_model->buffers()->Get(buffer_idx)->data();
+  if (_fd == -1) // model is from memory
+  {
+    _model->add_metadata(metadata_name, ir::ExternalData(data->data(), data->size()));
+    return true;
+  }
+  else // model is from mmaped-file
+  {
+
+    size_t data_size = data->size();
+    ptrdiff_t offset_start = data->data() - _base;
+    ptrdiff_t offset_end = offset_start + data_size;
+
+    ptrdiff_t page_start = (offset_start / _pagesize) * _pagesize;
+    size_t mapping_size = offset_end - page_start;
+
+    auto data_obj = ir::MMapedData(_fd, page_start, mapping_size, offset_start, data_size);
+    _model->add_metadata(metadata_name, data_obj);
+    /*
+    Q: It looks like it always load whole file using mmap,
+       If so, is remappping Necessary?
+
+    uint8_t *mmap_base =
+      static_cast<uint8_t *>(mmap(NULL, mapping_size, PROT_READ, MAP_PRIVATE, _fd, page_start));
+
+    size_t to_offset_start = offset_start - page_start;
+    auto data_obj = ir::CachedData(mmap_base + to_offset_start, data_size);
+    _model->add_metadata(metadata_name, data_obj);
+
+    munmap(mmap_base, mapping_size);
+    */
+    return true;
+  }
+  return false;
 }
 
 template <typename LoaderDomain>

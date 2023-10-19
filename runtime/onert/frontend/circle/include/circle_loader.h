@@ -26,6 +26,8 @@ namespace onert
 namespace circle_loader
 {
 std::unique_ptr<ir::Model> loadModel(const std::string &filename);
+std::unique_ptr<ir::Model> loadModel(const std::string &filename,
+                                     std::vector<std::string> metadata_names);
 std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size);
 } // namespace circle_loader
 } // namespace onert

@@ -204,6 +204,11 @@ typedef struct nnfw_train_info
 } nnfw_train_info;
 
 /**
+ * TODO
+ */
+NNFW_STATUS nnfw_fill_traininfo(nnfw_session *session, nnfw_train_info *info);
+
+/**
  * @brief Prepare session to be ready for training
  * @note  The session will be entered into training mode
  *

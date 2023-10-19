@@ -236,6 +236,15 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename)
   return model;
 }
 
+std::unique_ptr<ir::Model> loadModel(const std::string &filename,
+                                     std::vector<std::string> metadata_names)
+{
+  auto model = std::make_unique<ir::Model>();
+  CircleLoader loader(model);
+  loader.loadFromFile(filename, metadata_names);
+  return model;
+}
+
 std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size)
 {
   auto model = std::make_unique<ir::Model>();

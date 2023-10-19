@@ -175,8 +175,31 @@ public:
 
 private:
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-};
 
+public:
+  void add_metadata(const std::string &name, const ir::ExternalData &data)
+  {
+    // Q: CachedData copy its' buffer
+    //    IS copy is neccessary here?
+    auto data_obj = std::make_shared<ir::CachedData>(data.base(), data.size());
+    _metadatas.emplace(name, data_obj);
+  }
+  /*
+  void add_metadata(const std::string &name, const ir::CachedData &data)
+  {
+    _metadatas.emplace(name, data);
+  }
+  */
+
+  std::shared_ptr<ir::CachedData> get_metadata(const std::string name)
+  {
+    return _metadatas.at(name);
+  }
+
+private:
+  // Q: It is fine to use CachedData here?
+  std::unordered_map<std::string, std::shared_ptr<ir::CachedData>> _metadatas;
+};
 } // namespace ir
 } // namespace onert
 

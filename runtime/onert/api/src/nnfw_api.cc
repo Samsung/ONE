@@ -390,6 +390,12 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 #ifdef ONERT_TRAIN
 
+NNFW_STATUS nnfw_fill_traininfo(nnfw_session *session, nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_info(info);
+}
+
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
