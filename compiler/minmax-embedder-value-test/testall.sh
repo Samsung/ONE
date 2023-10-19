@@ -11,7 +11,6 @@
 #  - MINMAX_DATA_GEN: path to minmax_data_gen
 #  - MINMAX_EMBEDDER: path to minmax_embedder_driver
 #  - CIRCLEDUMP: path to circledump
-#  - (H5DUMP) it is assumed in PATH
 
 # <TEST_N> is the name of model under ARTIFACTS_PATH
 
@@ -42,15 +41,14 @@ for TESTCASE in "$@"; do
     set -ex
 
     # Get model input tensor names
-    #INPUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep -oP '(?<=^I T\()\d+:\d+') )
-    INPUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep '^I T' | grep -oE '[^ ]+$') )
+    INPUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep -aP '^I T' | grep -oE '[^ ]+$') )
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GET MODEL INPUT TENSOR INDEX"
       continue
     fi
 
     # Get op output tensor names
-    OP_OUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep -P ' O T\(\d+:' | grep -oE '[^ ]+$') )
+    OP_OUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep -aP ' O T\(\d+:' | grep -oE '[^ ]+$') )
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GET OP OUTPUT TENSOR INDEX"
       continue
@@ -77,18 +75,18 @@ for TESTCASE in "$@"; do
       continue
     fi
 
-    # rm -f "${TESTCASE}.minmax"
+    rm -f "${TESTCASE}.minmax"
 
     # Read min/max from circle+minmax
     MD_MIN=()
     MD_MAX=()
     for NAME in "${INPUT_NAMES[@]}"; do 
-      MD_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -P "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
+      MD_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE MODEL INPUT MIN FROM CIRCLE"
         continue
       fi
-      MD_MAX+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -P "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=max\()[+-]?[\d]+') )
+      MD_MAX+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=max\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE MODEL INPUT MAX FROM CIRCLE"
         continue
@@ -98,12 +96,12 @@ for TESTCASE in "$@"; do
     OP_MIN=()
     OP_MAX=()
     for NAME in "${OP_OUT_NAMES[@]}"; do 
-      OP_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -P "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
+      OP_MIN+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=min\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE OP MIN FROM CIRCLE"
         continue
       fi
-      OP_MAX+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -P "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=max\()[+-]?[\d]+') )
+      OP_MAX+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -aP "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=max\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE OP MAX FROM CIRCLE"
         continue
