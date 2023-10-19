@@ -44,7 +44,6 @@ for TESTCASE in "$@"; do
     # Get model input tensor names
     #INPUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep -oP '(?<=^I T\()\d+:\d+') )
     INPUT_NAMES=( $("${CIRCLEDUMP}" "${TESTCASE_FILE}.circle" | grep '^I T' | grep -oE '[^ ]+$') )
-    declare -p INPUT_NAMES
     if [[ $? -ne 0 ]]; then
       echo "FAILED TO GET MODEL INPUT TENSOR INDEX"
       continue
@@ -56,7 +55,6 @@ for TESTCASE in "$@"; do
       echo "FAILED TO GET OP OUTPUT TENSOR INDEX"
       continue
     fi
-    declare -p OP_OUT_NAMES
 
     # Run minmax-embedder-data-gen
     RUNS=2
@@ -96,8 +94,6 @@ for TESTCASE in "$@"; do
         continue
       fi
     done
-    declare -p MD_MAX
-    declare -p MD_MIN
 
     OP_MIN=()
     OP_MAX=()
@@ -107,13 +103,11 @@ for TESTCASE in "$@"; do
         echo "FAILED TO PARSE OP MIN FROM CIRCLE"
         continue
       fi
-      declare -p OP_MIN
       OP_MAX+=( $("${CIRCLEDUMP}" "${TESTCASE}.circle+minmax" | grep -P "^T.*${NAME}$" -A 1 | tail -1 | grep -oP '(?<=max\()[+-]?[\d]+') )
       if [[ $? -ne 0 ]]; then
         echo "FAILED TO PARSE OP MAX FROM CIRCLE"
         continue
       fi
-      declare -p OP_MAX
     done
 
     # check model input 
