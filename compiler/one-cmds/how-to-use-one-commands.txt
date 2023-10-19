@@ -166,6 +166,7 @@ Current transformation options are
 - fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
 - fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
 - fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
+- fuse_slice_with_tconv: This fuses Slice with a preceding TConv if possible.
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
 - fuse_instnorm: This will convert instance normalization related operators to
@@ -175,7 +176,7 @@ Current transformation options are
 - fuse_preactivation_batchnorm: This fuses batch normalization operators of pre-activations to Conv operators.
 - fuse_activation_function: This fuses Activation function to a preceding operator.
 - fuse_mean_with_mean: This fuses two consecutive ReduceMean operations into one.
-- fuse_transpose_with_mean: This fuses ReduceMean with a preceding Transpose under certain conditions.
+- fuse_transpose_with_mean: This fuses ReduceMean with a preceding Transpose under certain conditions
 - make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
