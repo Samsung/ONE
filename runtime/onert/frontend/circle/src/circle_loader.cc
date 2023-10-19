@@ -228,11 +228,11 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 
 } // namespace
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
+std::unique_ptr<ir::Model> loadModel(const std::string &filename, bool load_metadata)
 {
   auto model = std::make_unique<ir::Model>();
   CircleLoader loader(model);
-  loader.loadFromFile(filename);
+  loader.loadFromFile(filename, load_metadata);
   return model;
 }
 

@@ -24,9 +24,11 @@
 #include "circle_loader.h"
 #include "tflite_loader.h"
 #include "trix_loader.h"
+#include "traininfo_loader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
+#include "ir/train/TrainingInfo.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 
@@ -189,6 +191,8 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
     return onert::tflite_loader::loadModel(filename.c_str());
   if (model_type == "circle")
     return onert::circle_loader::loadModel(filename.c_str());
+  if (model_type == "circle+")
+    return onert::circle_loader::loadModel(filename.c_str(), /*load metadata*/ true);
   if (model_type == "tvn")
     return onert::trix_loader::loadModel(filename.c_str());
 
@@ -1162,6 +1166,61 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 }
 
 #ifdef ONERT_TRAIN
+
+NNFW_STATUS nnfw_session::train_load_traininfo(nnfw_train_info *tinfo)
+{
+  if (!isStateModelLoaded())
+  {
+    return NNFW_STATUS_INVALID_STATE;
+  }
+  if (_nnpkg == nullptr)
+  {
+    std::cerr << "Error while reading traininfo from model";
+    return NNFW_STATUS_ERROR;
+  }
+
+  const auto metadata_name = std::string(traininfo_metadata_name);
+
+  auto model = _nnpkg->primary_model();
+  if (not model->is_metadata_exist(metadata_name))
+  {
+    std::cerr << "Error during nnfw_session_train_load_traininfo";
+    std::cerr << "Model doesn' have metadata named " + metadata_name;
+    return NNFW_STATUS_NO_ERROR;
+  }
+
+  auto const data = model->get_metadata(metadata_name);
+
+  std::unique_ptr<onert::ir::train::TrainingInfo> ir_tinfo =
+    onert::traininfo_loader::loadTrainingInfo(data);
+  {
+    tinfo->learning_rate = ir_tinfo->optimizerInfo().learning_rate;
+    tinfo->batch_size = ir_tinfo->batchSize();
+
+    auto convertLossType = [](const onert::ir::operation::Loss::Type &type) {
+      if (type == onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR)
+        return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+      else if (type == onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY)
+        return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
+      else
+        throw std::runtime_error{"Unsupported loss in nnfw_train_info"};
+    };
+    tinfo->loss = convertLossType(ir_tinfo->lossInfo().type);
+
+    auto convertOptType = [](const onert::ir::train::OptimizerCode &code) {
+      if (code == onert::ir::train::OptimizerCode::SGD)
+        return NNFW_TRAIN_OPTIMIZER_SGD;
+      else if (code == onert::ir::train::OptimizerCode::Adam)
+        return NNFW_TRAIN_OPTIMIZER_ADAM;
+      else
+        throw std::runtime_error{"Unsupported optimizer in nnfw_train_info"};
+    };
+    tinfo->opt = convertOptType(ir_tinfo->optimizerInfo().optim_code);
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded

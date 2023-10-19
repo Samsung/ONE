@@ -390,6 +390,18 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 #ifdef ONERT_TRAIN
 
+NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const char *file_path,
+                                                    nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  auto res = session->load_model_from_modelfile(file_path);
+
+  if (res == NNFW_STATUS_NO_ERROR)
+    res = session->train_load_traininfo(info);
+
+  return res;
+}
+
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
@@ -443,6 +455,13 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 }
 
 #else // ONERT_TRAIN
+
+NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const char *file_name,
+                                                    nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
 
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *)
 {

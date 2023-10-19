@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_CIRCLE_LOADER_H__
-#define __CIRCLE_CIRCLE_LOADER_H__
+#ifndef __CIRCLE_TRAININFO_LOADER_H__
+#define __CIRCLE_TRAININFO_LOADER_H__
 
-#include "ir/Graph.h"
-
-#include <memory>
+#include "ir/train/TrainingInfo.h"
+#include "ir/Data.h"
 
 namespace onert
 {
-namespace circle_loader
+namespace traininfo_loader
 {
-std::unique_ptr<ir::Model> loadModel(const std::string &filename, bool load_metadata = false);
-std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size);
-} // namespace circle_loader
+
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(std::shared_ptr<const ir::Data> data);
+
+} // namespace traininfo_loader
 } // namespace onert
 
-#endif // __CIRCLE_CIRCLE_LOADER_H__
+#endif // __CIRCLE_TRAININFO_LOADER_H__

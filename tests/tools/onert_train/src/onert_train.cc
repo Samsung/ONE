@@ -59,18 +59,95 @@ int main(const int argc, char **argv)
 
     // prepare measure tool
     Measure measure(args.getMemoryPoll());
+    nnfw_train_info tri;
 
     nnfw_session *session = nullptr;
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
+    bool tinfo_loaded = false;
+    auto model_file = args.getModelFilename();
+    auto model_extension = model_file.substr((model_file.find_last_of(".") + 1));
+
     measure.run(PhaseType::MODEL_LOAD, [&]() {
-      if (args.useSingleModel())
-        NNPR_ENSURE_STATUS(
-          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+      if (args.useSingleModel() && model_extension == "circle+")
+        nnfw_load_training_model_from_modelfile(session, model_file.c_str(), &tri);
+      else if (args.useSingleModel())
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, model_file.c_str()));
       else
-        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, model_file.c_str()));
     });
+
+    // If failed to load train_info from model file,
+    // or train_info is given through arugment
+    if (tinfo_loaded == false || args.isTrainingInfo())
+    {
+      auto convertLossType = [](int type) {
+        switch (type)
+        {
+          case 0:
+            return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+          case 1:
+            return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
+          default:
+            std::cerr << "E: not supported loss type" << std::endl;
+            exit(-1);
+        }
+      };
+
+      auto convertOptType = [](int type) {
+        switch (type)
+        {
+          case 0:
+            return NNFW_TRAIN_OPTIMIZER_SGD;
+          case 1:
+            return NNFW_TRAIN_OPTIMIZER_ADAM;
+          default:
+            std::cerr << "E: not supported optimizer type" << std::endl;
+            exit(-1);
+        }
+      };
+
+      tri.batch_size = args.getBatchSize();
+      tri.learning_rate = args.getLearningRate();
+      tri.loss = convertLossType(args.getLossType());
+      tri.opt = convertOptType(args.getOptimizerType());
+    }
+
+    // print training parameter
+    {
+      auto lossToStr = [](NNFW_TRAIN_LOSS &loss) {
+        switch (loss)
+        {
+          case NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR:
+            return "mean_squared_error";
+          case NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY:
+            return "cateogiral_crossentropy";
+          default:
+            return "unknown";
+        }
+      };
+
+      auto optimizerToStr = [](NNFW_TRAIN_OPTIMIZER &opt) {
+        switch (opt)
+        {
+          case NNFW_TRAIN_OPTIMIZER_ADAM:
+            return "adam";
+          case NNFW_TRAIN_OPTIMIZER_SGD:
+            return "sgd";
+          default:
+            return "unkwown";
+        }
+      };
+
+      std::cout << "==== Training Paramter ====";
+      std::cout << "batch size    : " << tri.batch_size << std::endl;
+      std::cout << "learning rate : " << tri.learning_rate << std::endl;
+      std::cout << "loss func     : " << tri.loss << "(" << lossToStr(tri.loss) << ")" << std::endl;
+      std::cout << "optimizer     : " << tri.opt << "(" << optimizerToStr(tri.opt) << ")"
+                << std::endl;
+      std::cout << "============================" << std::endl;
+    }
 
     // Set training backend
     NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, default_backend_cand));
@@ -119,42 +196,6 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    auto convertLossType = [](int type) {
-      switch (type)
-      {
-        case 0:
-          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
-        case 1:
-          return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
-        default:
-          std::cerr << "E: not supported loss type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    auto convertOptType = [](int type) {
-      switch (type)
-      {
-        case 0:
-          return NNFW_TRAIN_OPTIMIZER_SGD;
-        case 1:
-          return NNFW_TRAIN_OPTIMIZER_ADAM;
-        default:
-          std::cerr << "E: not supported optimizer type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    // prepare training info
-    nnfw_train_info tri;
-    tri.batch_size = args.getBatchSize();
-    tri.learning_rate = args.getLearningRate();
-    tri.loss = convertLossType(args.getLossType());
-    tri.opt = convertOptType(args.getOptimizerType());
-
-    // prepare execution
-
-    // TODO When nnfw_{prepare|run} are failed, can't catch the time
     measure.run(PhaseType::PREPARE,
                 [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
 

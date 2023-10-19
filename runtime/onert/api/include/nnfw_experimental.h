@@ -203,6 +203,22 @@ typedef struct nnfw_train_info
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 } nnfw_train_info;
 
+constexpr char traininfo_metadata_name[] = "CIRCLE_TRAINING";
+
+/**
+ * @brief Load training model and training info from model file
+ * @note This function assumes that model file has metadata for traininfo,
+ *       If model doesn't have a traininfo, use 'nnfw_load_model_from_modelfile' instead.
+ *
+ * @param[in]   session   The session to be loaded a model
+ * @param[in]   file_path Path to model file
+ * @param[out]  info      Training information loaded from modelfile
+ *
+ * @return @c   NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const char *file_path,
+                                                    nnfw_train_info *info);
+
 /**
  * @brief Prepare session to be ready for training
  * @note  The session will be entered into training mode

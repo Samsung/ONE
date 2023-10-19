@@ -57,6 +57,7 @@ public:
   const float getLearningRate(void) const { return _learning_rate; }
   const int getLossType(void) const { return _loss_type; }
   const int getOptimizerType(void) const { return _optimizer_type; }
+  const bool isTrainingInfo(void) const { return _is_training_info; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
@@ -80,6 +81,7 @@ private:
   float _learning_rate;
   int _loss_type;
   int _optimizer_type;
+  bool _is_training_info = false;
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

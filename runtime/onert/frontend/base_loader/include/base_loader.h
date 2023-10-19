@@ -77,8 +77,9 @@ public:
    * @brief Load a model from file
    *
    * @param file_path
+   * @param load_metadata if true, load metadata
    */
-  void loadFromFile(const std::string &file_path);
+  void loadFromFile(const std::string &file_path, bool load_metadata = false);
   /**
    * @brief Load a model from a buffer
    *
@@ -127,6 +128,7 @@ private:
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
 
+  bool loadMetadata();
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
@@ -204,7 +206,8 @@ protected:
 };
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
+void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path,
+                                                        bool load_metadata)
 {
   _fd = open(file_path.c_str(), O_RDONLY);
   if (_fd < 0)
@@ -230,6 +233,11 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
   loadModel();
+
+  if (load_metadata)
+  {
+    loadMetadata();
+  }
   munmap(_base, size);
 
   close(_fd);
@@ -784,6 +792,63 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
   {
     weights_operand.type(ir::DataType::QUANT_INT8_SYMM);
   }
+}
+
+template <typename LoaderDomain> bool BaseLoader<LoaderDomain>::BaseLoader::loadMetadata()
+{
+  /* bool verified = LoaderDomain::VerifyModelBuffer(*_verifier.get());
+  if (not verified)
+  {
+    throw std::runtime_error{"Fail to access buffer"};
+  }*/
+
+  if (_domain_model == nullptr)
+  {
+    throw std::runtime_error{"Load circle::Model first using BaseLoader::loadFromFile()"};
+  }
+
+  if (_domain_model->metadata() == nullptr)
+  {
+    // Model doesn't have metadata
+    return false;
+  }
+
+  auto get_data_from_idx = [&](uint32_t buffer_idx) -> std::shared_ptr<ir::Data> {
+    const auto *data = _domain_model->buffers()->Get(buffer_idx)->data();
+    if (_fd == -1) // Model is from memory
+    {
+      return std::make_shared<ir::ExternalData>(data->data(), data->size());
+    }
+    else // Model is loaded(mmap'd) from a file
+    {
+      size_t data_size = data->size();
+      ptrdiff_t offset_start = data->data() - _base;
+      ptrdiff_t offset_end = offset_start + data_size;
+
+      ptrdiff_t page_start = (offset_start / _pagesize) * _pagesize;
+      size_t mapping_size = offset_end - page_start;
+
+      // Since metadata is not accessed in inferece, always use mmaped-data
+      // Ref : https://github.com/Samsung/ONE/issues/3961#issuecomment-681750231
+      return std::make_shared<ir::MMapedData>(_fd, page_start, mapping_size, offset_start,
+                                              data_size);
+    }
+  };
+
+  for (uint32_t i = 0; i < _domain_model->metadata()->size(); ++i)
+  {
+    const auto metadata = _domain_model->metadata()->Get(i);
+    if (metadata->name() == nullptr)
+      continue;
+
+    std::string name = metadata->name()->str();
+    uint32_t buffer_idx = metadata->buffer();
+    auto data = get_data_from_idx(buffer_idx);
+
+    _model->add_metadata(name, data);
+  }
+
+  return true;
 }
 
 template <typename LoaderDomain>
