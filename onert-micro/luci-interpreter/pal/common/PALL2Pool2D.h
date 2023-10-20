@@ -66,6 +66,7 @@ inline void L2Pool(const PoolParams &params, const luci_interpreter::RuntimeShap
               filter_count++;
             }
           }
+          assert(filter_count != 0);
           const float l2pool_result = std::sqrt(sum_squares / filter_count);
           output_data[offset(output_shape.dimsData(), batch, out_y, out_x, channel)] =
             activationFunctionWithMinMax(l2pool_result, params.float_activation_min,
