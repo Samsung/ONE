@@ -36,9 +36,6 @@ class SoftMaxLayer : public ::onert::exec::train::ITrainableFunction, public cpu
 public:
   SoftMaxLayer();
 
-private:
-  void softmaxGradFloat32();
-
 public:
   void configure(const IPortableTensor *input, const float beta, IPortableTensor *output,
                  IPortableTensor *deriv_input, const IPortableTensor *deriv_output);
