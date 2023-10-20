@@ -27,6 +27,10 @@
 #include <thread>
 #include <vector>
 
+#ifdef ONERT_TRAIN
+#include "ir/train/TrainingInfo.h"
+#endif // ONERT_TRAIN
+
 namespace onert
 {
 namespace api
@@ -167,7 +171,7 @@ public:
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
 #ifdef ONERT_TRAIN
-  NNFW_STATUS train_info(nnfw_train_info *info);
+  NNFW_STATUS load_traininfo();
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
@@ -211,6 +215,7 @@ private:
   std::vector<std::thread> _threads;
 #ifdef ONERT_TRAIN
   uint32_t _training_step{0};
+  std::unique_ptr<onert::ir::train::TrainingInfo> _traininfo;
 #endif // ONERT_TRAIN
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
 };

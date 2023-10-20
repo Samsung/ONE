@@ -145,7 +145,7 @@ int main(const int argc, char **argv)
 
     // prepare training info
     nnfw_train_info tri;
-    NNPR_ENSURE_STATUS(nnfw_fill_traininfo(session, &tri));
+    // NNPR_ENSURE_STATUS(nnfw_fill_traininfo(session, &tri));
 
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();

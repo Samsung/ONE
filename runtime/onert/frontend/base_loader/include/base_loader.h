@@ -835,7 +835,8 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 bool BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const std::string &metadata_name)
 {
-  LoaderDomain::VerifyModelBuffer(*_verifier.get());
+  // TODO use VerifyMetadataBuffer()
+  // LoaderDomain::VerifyModelBuffer(*_verifier.get());
 
   if (_domain_model == nullptr)
   {
@@ -877,7 +878,6 @@ bool BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const std::string &metad
   }
   else // model is from mmaped-file
   {
-
     size_t data_size = data->size();
     ptrdiff_t offset_start = data->data() - _base;
     ptrdiff_t offset_end = offset_start + data_size;

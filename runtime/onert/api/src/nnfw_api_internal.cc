@@ -24,6 +24,7 @@
 #include "circle_loader.h"
 #include "tflite_loader.h"
 #include "trix_loader.h"
+#include "traininfo_loader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -1171,18 +1172,23 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
 #ifdef ONERT_TRAIN
 
-NNFW_STATUS nnfw_session::train_info(nnfw_train_info *info)
+NNFW_STATUS nnfw_session::load_traininfo()
 {
-  if (!isStateModelLoaded())
+  if (!isStateInitialized())
   {
     return NNFW_STATUS_INVALID_STATE;
   }
+  if (_nnpkg == nullptr)
+  {
+    std::cerr << "Error while reading traininfo from model";
+    return NNFW_STATUS_ERROR;
+  }
 
   auto model = _nnpkg->primary_model();
-  auto data = model->get_metadata("CIRCLE_TRAINING");
+  auto data = model->get_metadata("CIRCLE_TRANING");
 
-  // TODO
-  ((void *)(info));
+  _traininfo = std::move(onert::traininfo_loader::loadTrainInfo(data->base(), data->size()));
+
   return NNFW_STATUS_NO_ERROR;
 }
 

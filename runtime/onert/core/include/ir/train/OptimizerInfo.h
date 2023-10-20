@@ -26,11 +26,56 @@ namespace ir
 namespace train
 {
 
+struct OptimizerOption
+{
+  virtual ~OptimizerOption(){};
+
+  virtual OptimizerOption *clone() const = 0;
+};
+
+struct SGDOption final : public OptimizerOption
+{
+  float learning_rate;
+
+  ~SGDOption(){};
+
+  SGDOption *clone() const { return new SGDOption(*this); }
+};
+
+struct AGDOption final : public OptimizerOption
+{
+  float learning_rate;
+  float beta_1;
+  float beta_2;
+  float epsilon;
+
+  ~AGDOption(){};
+
+  AGDOption *clone() const { return new AGDOption(*this); }
+};
+
 struct OptimizerInfo
 {
   OptimizerCode optim_code;
-  float learning_rate;
+  std::unique_ptr<OptimizerOption> optim_option;
+
+  float learning_rate; // TOBE deprecated
   // TODO Add properties
+
+  OptimizerInfo() : optim_option(nullptr){};
+
+  OptimizerInfo(const OptimizerInfo &another)
+  {
+    optim_code = another.optim_code;
+    optim_option = std::unique_ptr<OptimizerOption>(another.optim_option->clone());
+  }
+
+  OptimizerInfo &operator=(const OptimizerInfo &another)
+  {
+    optim_code = another.optim_code;
+    optim_option = std::unique_ptr<OptimizerOption>(another.optim_option->clone());
+    return *this;
+  }
 };
 
 } // namespace train
