@@ -15,6 +15,7 @@
  */
 
 #include "H5Writer.h"
+#include "Cast.h"
 
 #include <algorithm>
 #include <iostream>
@@ -37,13 +38,6 @@ H5::Group ensureGroup(H5::Group parent, const std::string &child)
   {
     return parent.createGroup(child.c_str());
   }
-}
-
-uint32_t to_u32(uint64_t v)
-{
-  if (v > UINT32_MAX)
-    throw std::overflow_error("to_u32 gets a value bigger than uint32 max.");
-  return static_cast<uint32_t>(v);
 }
 
 static const char *h5_value_grpname = "value";
