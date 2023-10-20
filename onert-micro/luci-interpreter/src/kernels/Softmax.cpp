@@ -86,7 +86,7 @@ void evalQuantize(const circle::Tensor *input, const circle::Tensor *output,
 
   if (Tensor::element_type(input) == DataType::S16)
   {
-    int left_shift = params.input_left_shift;
+    int left_shift = 0;
     double input_scale_beta_rescale =
       static_cast<double>(Tensor::scale(input)) * static_cast<double>(beta) /
       (10.0 / 65535.0); // scale the input_diff such that [-65535, 0]
@@ -99,7 +99,7 @@ void evalQuantize(const circle::Tensor *input, const circle::Tensor *output,
   }
   else
   {
-    int left_shift = params.input_left_shift;
+    int left_shift = 0;
     preprocessSoftmaxScaling(static_cast<double>(params.beta),
                              static_cast<double>(Tensor::scale(input)), kScaledDiffIntegerBits,
                              &params.input_multiplier, &left_shift);

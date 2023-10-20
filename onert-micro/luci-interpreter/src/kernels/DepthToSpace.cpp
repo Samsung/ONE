@@ -65,6 +65,7 @@ void execute_kernel_CircleDepthToSpace(const circle::Operator *cur_op,
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
     {
+      assert(block_size != 0);
       luci_interpreter_pal::DepthToSpace(
         block_size, kernels::getTensorRuntimeShape(kernel.input(), runtime_graph),
         kernels::getTensorData<float>(runtime_graph->getDataByTensor(kernel.input())),
