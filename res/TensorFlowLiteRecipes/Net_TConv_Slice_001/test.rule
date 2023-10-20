@@ -1,0 +1,6 @@
+# To check if TConv->Slice is converted to TConv operation
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "TCONV_EXIST"             $(op_count TRANSPOSE_CONV) '=' 1
+RULE    "SLICE_NOT_EXIST"         $(op_count SLICE) '=' 0
