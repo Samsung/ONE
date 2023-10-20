@@ -1,0 +1,99 @@
+# test for original `same` padding and non-zero offset
+# TConv(pad=same, krnl=(32, 3, 3, 32))->Slice(begin = (0, 1, 1, 0), size = (0, 15, 15, 32))=TConv
+
+operand {
+  name: "tconv_shape"
+  type: INT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "16"
+    arg: "16"
+    arg: "32"
+  }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 32 dim: 3 dim: 3 dim: 32 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 32 }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 32 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_tconv"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 dim: 16 dim: 32 }
+}
+operation {
+  type: "TransposeConv"
+  input: "tconv_shape"
+  input: "filter"
+  input: "ifm"
+  input: "bias"
+  output: "ofm_tconv"
+  transpose_conv_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    activation: RELU
+  }
+}
+operand {
+  name: "offset"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "1"
+    arg: "1"
+    arg: "0"
+  }
+}
+operand {
+  name: "size"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" 
+    arg: "15" 
+    arg: "15"
+    arg: "32"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 15 dim: 15 dim: 32 }
+}
+operation {
+  type: "Slice"
+  input: "ofm_tconv"
+  input: "offset"
+  input: "size"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
