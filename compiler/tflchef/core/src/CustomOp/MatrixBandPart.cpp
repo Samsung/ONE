@@ -16,6 +16,7 @@
  */
 
 #include "MatrixBandPart.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -28,8 +29,7 @@ flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
 MatrixBandPartChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
-
-  assert(operation.type() == "MatrixBandPart");
+  check_custom_op_value(operation, "MatrixBandPart");
 
   /**
    * REGISTER_OP("MatrixBandPart")

@@ -19,6 +19,8 @@ operation {
   input: "bc_input"
   input: "bc_shape"
   output: "bc_ofm"
+  custom_code: "BroadcastTo"
+  extype: "Custom"
 }
 operand {
   name: "reshape_data"
@@ -57,6 +59,8 @@ operation {
   input: "bc_ofm"
   input: "reshape_ofm"
   output: "ofm"
+  custom_code: "AddV2"
+  extype: "Custom"
 }
 input: "bc_input"
 input: "reshape_data"

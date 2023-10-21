@@ -22,6 +22,8 @@ operation {
     transpose_a: true
     transpose_b: false
   }
+  custom_code: "MatMul"
+  extype: "Custom"
 }
 input: "ifm1"
 input: "ifm2"

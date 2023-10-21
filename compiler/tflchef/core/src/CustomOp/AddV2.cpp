@@ -16,6 +16,7 @@
  */
 
 #include "AddV2.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -28,8 +29,7 @@ flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
 AddV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
-
-  assert(operation.type() == "AddV2");
+  check_custom_op_value(operation, "AddV2");
 
   /**
    * REGISTER_OP("AddV2")

@@ -16,6 +16,7 @@
  */
 
 #include "MatMul.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -28,8 +29,7 @@ flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
 MatMulChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
-
-  assert(operation.type() == "MatMul");
+  check_custom_op_value(operation, "MatMul");
 
   /**
    * REGISTER_OP("MatMul")

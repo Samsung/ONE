@@ -16,6 +16,7 @@
  */
 
 #include "BroadcastTo.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -28,8 +29,7 @@ flatbuffers::Offset<flatbuffers::Vector<uint8_t>>
 BroadcastToChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
-
-  assert(operation.type() == "BroadcastTo");
+  check_custom_op_value(operation, "BroadcastTo");
 
   /**
    * REGISTER_OP("BroadcastTo")

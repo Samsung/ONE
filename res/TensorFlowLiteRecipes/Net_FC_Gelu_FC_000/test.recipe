@@ -104,6 +104,8 @@ operation {
   type: "Erf"
   input: "fc2"
   output: "erf"
+  custom_code: "Erf"
+  extype: "Custom"
 }
 operation {
   type: "Add"
