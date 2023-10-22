@@ -1375,6 +1375,7 @@ var annotated_dup =
       [ "FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", "structluci_1_1_fuse_mean_with_mean_pass" ],
       [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
       [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
+      [ "FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", "structluci_1_1_fuse_slice_with_t_conv_pass" ],
       [ "FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", "structluci_1_1_fuse_transpose_with_mean_pass" ],
       [ "GraphBuilder", "classluci_1_1_graph_builder.html", "classluci_1_1_graph_builder" ],
       [ "GraphBuilderBase", "structluci_1_1_graph_builder_base.html", "structluci_1_1_graph_builder_base" ],
@@ -1614,6 +1615,7 @@ var annotated_dup =
         [ "NegTestDataInputMismatchDepthwiseConv2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchSelectV2Kernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_select_v2_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_select_v2_kernel" ],
         [ "NegTestDataInputMismatchTransposeConvKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
+        [ "NegTestDataInputMismatchUnpackKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_unpack_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_unpack_kernel" ],
         [ "NegTestDataInputMismatchZerosLikeKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_zeros_like_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchCeilKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_ceil_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_ceil_kernel" ],
@@ -1800,6 +1802,7 @@ var annotated_dup =
         [ "TestDataFloatTanh", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_tanh.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_tanh" ],
         [ "TestDataFloatTransposeConv", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_transpose_conv.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_transpose_conv" ],
         [ "TestDataFloatUnidirectionalLSTM", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_unidirectional_l_s_t_m.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_unidirectional_l_s_t_m" ],
+        [ "TestDataFloatUnpack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_unpack.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_unpack" ],
         [ "TestDataFloatZerosLike", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_zeros_like.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_zeros_like" ],
         [ "TestDataFloorBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base" ],
         [ "TestDataFloorDivBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_floor_div_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_floor_div_base" ],
@@ -1886,6 +1889,7 @@ var annotated_dup =
         [ "TestDataU8Slice", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_slice.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_u8_slice" ],
         [ "TestDataUint8ResizeBilinear", "classluci__interpreter_1_1test__kernel_1_1_test_data_uint8_resize_bilinear.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_uint8_resize_bilinear" ],
         [ "TestDataUnidirectionalLSTMBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_unidirectional_l_s_t_m_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_unidirectional_l_s_t_m_base" ],
+        [ "TestDataUnpackBase", "classluci__interpreter_1_1test__kernel_1_1_test_data_unpack_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_unpack_base" ],
         [ "TestDataWhileKernel", "classluci__interpreter_1_1test__kernel_1_1_test_data_while_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_while_kernel" ],
         [ "TestDataWrongAxisConcatenation", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_axis_concatenation.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_axis_concatenation" ],
         [ "TestDataWrongBeginTypeSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_begin_type_slice.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_begin_type_slice" ],
@@ -1994,6 +1998,20 @@ var annotated_dup =
     ] ],
     [ "Mean_000", "namespace_mean__000.html", [
       [ "Mean_000_Q8", "class_mean__000_1_1_mean__000___q8.html", "class_mean__000_1_1_mean__000___q8" ]
+    ] ],
+    [ "minmax_embedder", "namespaceminmax__embedder.html", [
+      [ "h5", "namespaceminmax__embedder_1_1h5.html", [
+        [ "MinMaxVectors", "structminmax__embedder_1_1h5_1_1_min_max_vectors.html", "structminmax__embedder_1_1h5_1_1_min_max_vectors" ],
+        [ "Reader", "classminmax__embedder_1_1h5_1_1_reader.html", "classminmax__embedder_1_1h5_1_1_reader" ]
+      ] ],
+      [ "Embedder", "classminmax__embedder_1_1_embedder.html", "classminmax__embedder_1_1_embedder" ],
+      [ "EmbedderOptions", "structminmax__embedder_1_1_embedder_options.html", "structminmax__embedder_1_1_embedder_options" ]
+    ] ],
+    [ "minmax_embedder_test", "namespaceminmax__embedder__test.html", [
+      [ "DataGen", "classminmax__embedder__test_1_1_data_gen.html", "classminmax__embedder__test_1_1_data_gen" ],
+      [ "H5Writer", "classminmax__embedder__test_1_1_h5_writer.html", "classminmax__embedder__test_1_1_h5_writer" ],
+      [ "MinMax", "classminmax__embedder__test_1_1_min_max.html", "classminmax__embedder__test_1_1_min_max" ],
+      [ "ModelSpec", "structminmax__embedder__test_1_1_model_spec.html", "structminmax__embedder__test_1_1_model_spec" ]
     ] ],
     [ "mio", "namespacemio.html", [
       [ "circle", "namespacemio_1_1circle.html", [
@@ -2586,7 +2604,9 @@ var annotated_dup =
           [ "functor", "namespacennfw_1_1cker_1_1training__ops_1_1functor.html", [
             [ "ApplyAdam", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam" ],
             [ "ApplyAdam< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_3_01_c_p_u_device_00_01_t_01_4.html", null ],
-            [ "ApplyAdamNonCuda", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda" ]
+            [ "ApplyAdamNonCuda", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda" ],
+            [ "ApplyGradientDescent", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent" ],
+            [ "ApplyGradientDescent< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4" ]
           ] ]
         ] ],
         [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
@@ -3003,7 +3023,8 @@ var annotated_dup =
             [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
-            [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ]
+            [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ],
+            [ "TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry" ]
           ] ],
           [ "optimizer", "namespaceonert_1_1backend_1_1train_1_1optimizer.html", [
             [ "Adam", "classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html", "classonert_1_1backend_1_1train_1_1optimizer_1_1_adam" ],

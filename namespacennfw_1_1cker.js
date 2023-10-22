@@ -42,6 +42,9 @@ var namespacennfw_1_1cker =
     [ "train", "namespacennfw_1_1cker_1_1train.html", [
       [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
       [ "FullyConnectedBiasGrad", "namespacennfw_1_1cker_1_1train.html#ae451e8541f4091a1c41c54ba240824f4", null ],
+      [ "GradientDescent", "namespacennfw_1_1cker_1_1train.html#a36f9531730e397d0a135dc4881b18fd0", null ],
+      [ "MaxPool2D", "namespacennfw_1_1cker_1_1train.html#a5383dd7006f6272ba54849c0bb709350", null ],
+      [ "MaxPool2DGrad", "namespacennfw_1_1cker_1_1train.html#a67c65963c9903f487865c8ea45695021", null ],
       [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
       [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
       [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ]

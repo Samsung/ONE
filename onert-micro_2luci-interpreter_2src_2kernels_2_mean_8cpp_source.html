@@ -193,21 +193,22 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a10772abc1d43338167b5caa32993b20b">luci_interpreter_pal::Mean</a>(</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>          kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>), <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(input-&gt;shape()).data(),</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>          Tensor::num_dims(input), kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>),</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>          <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(output-&gt;shape()).data(), Tensor::num_dims(output),</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>          kernels::getTensorData&lt;int&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>), num_axis, options-&gt;keep_dims(),</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>          temp_index, resolved_axis, kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      }</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>          kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a4c8fbf44d750af57fc8f6236b02958db">input1_data</a>),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(input-&gt;shape()).data()), Tensor::num_dims(input),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>          kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(output-&gt;shape()).data()), Tensor::num_dims(output),</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>          kernels::getTensorData&lt;int&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#a380e12262c1d184e0607f0ab8f515c61">input2_data</a>), num_axis, options-&gt;keep_dims(),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>          temp_index, resolved_axis, kernels::getTensorData&lt;float&gt;(tiso_data.<a class="code hl_variable" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html#ae5e44a7bd8a6b6887cef37464e8d0f08">output_data</a>));</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="a_p_a_l_mean_8h_html"><div class="ttname"><a href="_p_a_l_mean_8h.html">PALMean.h</a></div></div>
 <div class="ttc" id="a_t_i_s_o_kernel_8h_html"><div class="ttname"><a href="_t_i_s_o_kernel_8h.html">TISOKernel.h</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>

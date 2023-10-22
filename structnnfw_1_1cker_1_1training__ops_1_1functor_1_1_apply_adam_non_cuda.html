@@ -105,7 +105,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Device, typename T&gt;<br />
 struct nnfw::cker::training_ops::functor::ApplyAdamNonCuda&lt; Device, T &gt;</div>
-<p class="definition">Definition at line <a class="el" href="training__ops_8h_source.html#l00067">67</a> of file <a class="el" href="training__ops_8h_source.html">training_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="training__ops_8h_source.html#l00076">76</a> of file <a class="el" href="training__ops_8h_source.html">training_ops.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a3bf1e5fa7876e3e4aa2982b3b478a440" name="a3bf1e5fa7876e3e4aa2982b3b478a440"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3bf1e5fa7876e3e4aa2982b3b478a440">&#9670;&#160;</a></span>operator()()</h2>
@@ -203,73 +203,73 @@ template&lt;typename Device , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="training__ops_8h_source.html#l00069">69</a> of file <a class="el" href="training__ops_8h_source.html">training_ops.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="comment">// Get params length and check if they can be vectorized by packet size.</span></div>
-<div class="line"><span class="lineno">   77</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> length = var.size();</div>
-<div class="line"><span class="lineno">   78</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> packet_size = Eigen::internal::packet_traits&lt;T&gt;::size;</div>
-<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (length % packet_size == 0)</div>
-<div class="line"><span class="lineno">   80</span>    {</div>
-<div class="line"><span class="lineno">   81</span>      length = length / packet_size;</div>
-<div class="line"><span class="lineno">   82</span>    }</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   84</span>    {</div>
-<div class="line"><span class="lineno">   85</span>      packet_size = 1;</div>
-<div class="line"><span class="lineno">   86</span>    }</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    T *var_ptr = var.data();</div>
-<div class="line"><span class="lineno">   89</span>    T *m_ptr = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>.data();</div>
-<div class="line"><span class="lineno">   90</span>    T *v_ptr = v.data();</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keyword">const</span> T *g_ptr = grad.data();</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keyword">const</span> T alpha = lr() * Eigen::numext::sqrt(T(1) - beta2_power()) / (T(1) - beta1_power());</div>
-<div class="line"><span class="lineno">   93</span>    <span class="comment">// beta1 == μ</span></div>
-<div class="line"><span class="lineno">   94</span>    <span class="comment">// beta2 == ν</span></div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment">// v     == n</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="comment">// var   == θ</span></div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    <span class="keyword">auto</span> shard = [var_ptr, m_ptr, v_ptr, g_ptr, alpha, beta1, beta2, epsilon, use_nesterov,</div>
-<div class="line"><span class="lineno">   99</span>                  packet_size](<span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, <span class="keywordtype">int</span> end) {</div>
-<div class="line"><span class="lineno">  100</span>      <span class="keywordtype">int</span> t_size = (end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>) * packet_size;</div>
-<div class="line"><span class="lineno">  101</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> * packet_size;</div>
-<div class="line"><span class="lineno">  102</span>      <span class="keyword">auto</span> var = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(var_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
-<div class="line"><span class="lineno">  103</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(m_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
-<div class="line"><span class="lineno">  104</span>      <span class="keyword">auto</span> v = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(v_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
-<div class="line"><span class="lineno">  105</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a222cd3a35afcfe8c6e1fc4734873b3ec">TTypes&lt;T&gt;::UnalignedConstTensor</a>(g_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
+<p class="definition">Definition at line <a class="el" href="training__ops_8h_source.html#l00078">78</a> of file <a class="el" href="training__ops_8h_source.html">training_ops.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    <span class="comment">// Get params length and check if they can be vectorized by packet size.</span></div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> length = var.size();</div>
+<div class="line"><span class="lineno">   87</span>    <a class="code hl_typedef" href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">Index</a> packet_size = Eigen::internal::packet_traits&lt;T&gt;::size;</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">if</span> (length % packet_size == 0)</div>
+<div class="line"><span class="lineno">   89</span>    {</div>
+<div class="line"><span class="lineno">   90</span>      length = length / packet_size;</div>
+<div class="line"><span class="lineno">   91</span>    }</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   93</span>    {</div>
+<div class="line"><span class="lineno">   94</span>      packet_size = 1;</div>
+<div class="line"><span class="lineno">   95</span>    }</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    T *var_ptr = var.data();</div>
+<div class="line"><span class="lineno">   98</span>    T *m_ptr = <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>.data();</div>
+<div class="line"><span class="lineno">   99</span>    T *v_ptr = v.data();</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keyword">const</span> T *g_ptr = grad.data();</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keyword">const</span> T alpha = lr() * Eigen::numext::sqrt(T(1) - beta2_power()) / (T(1) - beta1_power());</div>
+<div class="line"><span class="lineno">  102</span>    <span class="comment">// beta1 == μ</span></div>
+<div class="line"><span class="lineno">  103</span>    <span class="comment">// beta2 == ν</span></div>
+<div class="line"><span class="lineno">  104</span>    <span class="comment">// v     == n</span></div>
+<div class="line"><span class="lineno">  105</span>    <span class="comment">// var   == θ</span></div>
 <div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">if</span> (use_nesterov)</div>
-<div class="line"><span class="lineno">  108</span>      {</div>
-<div class="line"><span class="lineno">  109</span>        <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> - <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * (T(1) - beta1());</div>
-<div class="line"><span class="lineno">  110</span>        v += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>.square() - v) * (T(1) - beta2());</div>
-<div class="line"><span class="lineno">  111</span>        var -= ((<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> * (T(1) - beta1()) + beta1() * <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * alpha) / (v.sqrt() + epsilon());</div>
-<div class="line"><span class="lineno">  112</span>      }</div>
-<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  114</span>      {</div>
-<div class="line"><span class="lineno">  115</span>        <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> - <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * (T(1) - beta1());</div>
-<div class="line"><span class="lineno">  116</span>        v += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>.square() - v) * (T(1) - beta2());</div>
-<div class="line"><span class="lineno">  117</span>        var -= (<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> * alpha) / (v.sqrt() + epsilon());</div>
-<div class="line"><span class="lineno">  118</span>      }</div>
-<div class="line"><span class="lineno">  119</span>    };</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>    <span class="comment">// Input data: var, v, m, grad.</span></div>
-<div class="line"><span class="lineno">  122</span>    <span class="comment">// Output data: var, v, m.</span></div>
-<div class="line"><span class="lineno">  123</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> input_bytes = length * packet_size * <span class="keyword">sizeof</span>(T) * 4;</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_bytes = length * packet_size * <span class="keyword">sizeof</span>(T) * 3;</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> compute_cycles =</div>
-<div class="line"><span class="lineno">  126</span>      <span class="comment">// Consider Sub as Add</span></div>
-<div class="line"><span class="lineno">  127</span>      (Eigen::TensorOpCost::AddCost&lt;int&gt;() * 5 + Eigen::TensorOpCost::MulCost&lt;int&gt;() * 2 +</div>
-<div class="line"><span class="lineno">  128</span>       Eigen::TensorOpCost::AddCost&lt;T&gt;() * 10 + Eigen::TensorOpCost::MulCost&lt;T&gt;() * 6 +</div>
-<div class="line"><span class="lineno">  129</span>       Eigen::TensorOpCost::DivCost&lt;T&gt;()) *</div>
-<div class="line"><span class="lineno">  130</span>      length;</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>    <span class="comment">// Eigen device must update 3 variables with 3 different expressions,</span></div>
-<div class="line"><span class="lineno">  134</span>    <span class="comment">// which is bad for cache locality on CPU. Here use ParallelFor instead of</span></div>
-<div class="line"><span class="lineno">  135</span>    <span class="comment">// &quot;regular&quot; tensor expressions to get better performance.</span></div>
-<div class="line"><span class="lineno">  136</span>    d.parallelFor(length, cost, shard);</div>
-<div class="line"><span class="lineno">  137</span>  }</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keyword">auto</span> shard = [var_ptr, m_ptr, v_ptr, g_ptr, alpha, beta1, beta2, epsilon, use_nesterov,</div>
+<div class="line"><span class="lineno">  108</span>                  packet_size](<span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, <span class="keywordtype">int</span> end) {</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordtype">int</span> t_size = (end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>) * packet_size;</div>
+<div class="line"><span class="lineno">  110</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> * packet_size;</div>
+<div class="line"><span class="lineno">  111</span>      <span class="keyword">auto</span> var = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(var_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
+<div class="line"><span class="lineno">  112</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(m_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
+<div class="line"><span class="lineno">  113</span>      <span class="keyword">auto</span> v = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">TTypes&lt;T&gt;::UnalignedTensor</a>(v_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
+<div class="line"><span class="lineno">  114</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> = <span class="keyword">typename</span> <a class="code hl_typedef" href="structnnfw_1_1cker_1_1_t_types.html#a222cd3a35afcfe8c6e1fc4734873b3ec">TTypes&lt;T&gt;::UnalignedConstTensor</a>(g_ptr + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, t_size);</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">if</span> (use_nesterov)</div>
+<div class="line"><span class="lineno">  117</span>      {</div>
+<div class="line"><span class="lineno">  118</span>        <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> - <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * (T(1) - beta1());</div>
+<div class="line"><span class="lineno">  119</span>        v += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>.square() - v) * (T(1) - beta2());</div>
+<div class="line"><span class="lineno">  120</span>        var -= ((<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> * (T(1) - beta1()) + beta1() * <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * alpha) / (v.sqrt() + epsilon());</div>
+<div class="line"><span class="lineno">  121</span>      }</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  123</span>      {</div>
+<div class="line"><span class="lineno">  124</span>        <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> - <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>) * (T(1) - beta1());</div>
+<div class="line"><span class="lineno">  125</span>        v += (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>.square() - v) * (T(1) - beta2());</div>
+<div class="line"><span class="lineno">  126</span>        var -= (<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a> * alpha) / (v.sqrt() + epsilon());</div>
+<div class="line"><span class="lineno">  127</span>      }</div>
+<div class="line"><span class="lineno">  128</span>    };</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment">// Input data: var, v, m, grad.</span></div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">// Output data: var, v, m.</span></div>
+<div class="line"><span class="lineno">  132</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> input_bytes = length * packet_size * <span class="keyword">sizeof</span>(T) * 4;</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> output_bytes = length * packet_size * <span class="keyword">sizeof</span>(T) * 3;</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> compute_cycles =</div>
+<div class="line"><span class="lineno">  135</span>      <span class="comment">// Consider Sub as Add</span></div>
+<div class="line"><span class="lineno">  136</span>      (Eigen::TensorOpCost::AddCost&lt;int&gt;() * 5 + Eigen::TensorOpCost::MulCost&lt;int&gt;() * 2 +</div>
+<div class="line"><span class="lineno">  137</span>       Eigen::TensorOpCost::AddCost&lt;T&gt;() * 10 + Eigen::TensorOpCost::MulCost&lt;T&gt;() * 6 +</div>
+<div class="line"><span class="lineno">  138</span>       Eigen::TensorOpCost::DivCost&lt;T&gt;()) *</div>
+<div class="line"><span class="lineno">  139</span>      length;</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="comment">// Eigen device must update 3 variables with 3 different expressions,</span></div>
+<div class="line"><span class="lineno">  143</span>    <span class="comment">// which is bad for cache locality on CPU. Here use ParallelFor instead of</span></div>
+<div class="line"><span class="lineno">  144</span>    <span class="comment">// &quot;regular&quot; tensor expressions to get better performance.</span></div>
+<div class="line"><span class="lineno">  145</span>    d.parallelFor(length, cost, shard);</div>
+<div class="line"><span class="lineno">  146</span>  }</div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00062">training_ops.h:62</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00071">training_ops.h:71</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_t_types_html_a222cd3a35afcfe8c6e1fc4734873b3ec"><div class="ttname"><a href="structnnfw_1_1cker_1_1_t_types.html#a222cd3a35afcfe8c6e1fc4734873b3ec">nnfw::cker::TTypes::UnalignedConstTensor</a></div><div class="ttdeci">Eigen::TensorMap&lt; Eigen::Tensor&lt; const T, NDIMS, Eigen::RowMajor, IndexType &gt; &gt; UnalignedConstTensor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00040">Tensor.h:40</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_t_types_html_a49c3abcea79bcb5c43febf150fade536"><div class="ttname"><a href="structnnfw_1_1cker_1_1_t_types.html#a49c3abcea79bcb5c43febf150fade536">nnfw::cker::TTypes::UnalignedTensor</a></div><div class="ttdeci">Eigen::TensorMap&lt; Eigen::Tensor&lt; T, NDIMS, Eigen::RowMajor, IndexType &gt; &gt; UnalignedTensor</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00038">Tensor.h:38</a></div></div>

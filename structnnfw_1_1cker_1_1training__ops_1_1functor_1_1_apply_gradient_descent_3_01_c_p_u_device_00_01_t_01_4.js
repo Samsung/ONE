@@ -1,0 +1,4 @@
+var structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4 =
+[
+    [ "operator()", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4.html#a735886179d5c94070a08155df9b44643", null ]
+];

@@ -372,6 +372,8 @@ var namespaces_dup =
       [ "main", "namespaceminimal.html#a65bb779a0417e64d8694719fc85d8eea", null ],
       [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]
     ] ],
+    [ "minmax_embedder", "namespaceminmax__embedder.html", "namespaceminmax__embedder" ],
+    [ "minmax_embedder_test", "namespaceminmax__embedder__test.html", "namespaceminmax__embedder__test" ],
     [ "mio", "namespacemio.html", "namespacemio" ],
     [ "mir", "namespacemir.html", "namespacemir" ],
     [ "mir2loco", "namespacemir2loco.html", "namespacemir2loco" ],

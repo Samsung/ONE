@@ -90,8 +90,7 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1backend_1_1train_1_1
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::train::optimizer Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -104,72 +103,7 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html">SGD</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SGD optimizer.  <a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a19dc4fb7b8fb5d23c607e5dcf099b477"><td class="memTemplParams" colspan="2">template&lt;typename T , typename L &gt; </td></tr>
-<tr class="memitem:a19dc4fb7b8fb5d23c607e5dcf099b477"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1optimizer.html#a19dc4fb7b8fb5d23c607e5dcf099b477">elementwise</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;shape, const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> &amp;src, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> &amp;dst, const L &amp;f)</td></tr>
-<tr class="separator:a19dc4fb7b8fb5d23c607e5dcf099b477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a19dc4fb7b8fb5d23c607e5dcf099b477" name="a19dc4fb7b8fb5d23c607e5dcf099b477"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19dc4fb7b8fb5d23c607e5dcf099b477">&#9670;&#160;</a></span>elementwise()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename L &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert::backend::train::optimizer::elementwise </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> &amp;&#160;</td>
-          <td class="paramname"><em>dst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const L &amp;&#160;</td>
-          <td class="paramname"><em>f</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_optimizer_helpers_8h_source.html#l00032">32</a> of file <a class="el" href="_optimizer_helpers_8h_source.html">OptimizerHelpers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_function" href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a56ed4f26ee2bec099fcb19740e5be9f7">ShapeLoop</a>(shape, [&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_coordinates.html">ir::Coordinates</a> &amp;<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>) {</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keyword">const</span> T src_val = *<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(src.<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() + src.<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794">calcOffset</a>(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>));</div>
-<div class="line"><span class="lineno">   37</span>    T *dst_data = <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(dst.<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() + dst.<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794">calcOffset</a>(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>));</div>
-<div class="line"><span class="lineno">   38</span>    *dst_data = f(src_val, *dst_data);</div>
-<div class="line"><span class="lineno">   39</span>  });</div>
-<div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition:</b> <a href="_detection_post_process_layer_8cc_source.html#l00054">DetectionPostProcessLayer.cc:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a187884f2d0365b3e5b211f0a8f2fc794"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794">onert::backend::ITensor::calcOffset</a></div><div class="ttdeci">virtual size_t calcOffset(const ir::Coordinates &amp;coords) const =0</div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_ac42a9739e80a0e11be18c0e0a61ccf85"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer</a></div><div class="ttdeci">virtual uint8_t * buffer() const =0</div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_coordinates_html"><div class="ttname"><a href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a></div><div class="ttdoc">Class to represent position(offset) of tensor.  Assume that the front is higher dimensional....</div><div class="ttdef"><b>Definition:</b> <a href="_coordinates_8h_source.html#l00036">Coordinates.h:37</a></div></div>
-<div class="ttc" id="aruntime_2onert_2core_2include_2util_2_utils_8h_html_a56ed4f26ee2bec099fcb19740e5be9f7"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a56ed4f26ee2bec099fcb19740e5be9f7">ShapeLoop</a></div><div class="ttdeci">void ShapeLoop(const onert::ir::Shape &amp;shape, L lambda_function)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00064">Utils.h:64</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794">onert::backend::ITensor::calcOffset()</a>, <a class="el" href="_detection_post_process_layer_8cc_source.html#l00054">coords</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00064">ShapeLoop()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

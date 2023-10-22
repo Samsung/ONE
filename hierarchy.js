@@ -1173,6 +1173,8 @@ var hierarchy =
     [ "nnfw::cker::training_ops::functor::ApplyAdamNonCuda< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda.html", [
       [ "nnfw::cker::training_ops::functor::ApplyAdam< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_3_01_c_p_u_device_00_01_t_01_4.html", null ]
     ] ],
+    [ "nnfw::cker::training_ops::functor::ApplyGradientDescent< Device, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent.html", null ],
+    [ "nnfw::cker::training_ops::functor::ApplyGradientDescent< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4.html", null ],
     [ "coco::Arg", "classcoco_1_1_arg.html", [
       [ "coco::Input", "classcoco_1_1_input.html", null ],
       [ "coco::Output", "classcoco_1_1_output.html", null ]
@@ -1776,6 +1778,7 @@ var hierarchy =
       [ "souschef::GaussianInt8DataChefFactory", "structsouschef_1_1_gaussian_int8_data_chef_factory.html", null ],
       [ "souschef::GaussianUint8DataChefFactory", "structsouschef_1_1_gaussian_uint8_data_chef_factory.html", null ]
     ] ],
+    [ "minmax_embedder_test::DataGen", "classminmax__embedder__test_1_1_data_gen.html", null ],
     [ "DataLocation", "struct_data_location.html", null ],
     [ "onert::backend::cpu::ops::DataPtr", "uniononert_1_1backend_1_1cpu_1_1ops_1_1_data_ptr.html", null ],
     [ "souschef::Dataset< T >", "classsouschef_1_1_dataset.html", null ],
@@ -1910,6 +1913,8 @@ var hierarchy =
     [ "nnfw::cker::Einsum", "classnnfw_1_1cker_1_1_einsum.html", null ],
     [ "coco::ElemID", "classcoco_1_1_elem_i_d.html", null ],
     [ "mir_interpreter::ELUImpl< T >", "structmir__interpreter_1_1_e_l_u_impl.html", null ],
+    [ "minmax_embedder::Embedder", "classminmax__embedder_1_1_embedder.html", null ],
+    [ "minmax_embedder::EmbedderOptions", "structminmax__embedder_1_1_embedder_options.html", null ],
     [ "coco::Entity", "classcoco_1_1_entity.html", [
       [ "coco::Bag", "classcoco_1_1_bag.html", null ],
       [ "coco::Block", "classcoco_1_1_block.html", null ],
@@ -2343,6 +2348,7 @@ var hierarchy =
     [ "GraphTestcase< GraphCode::TransposedConv2D >", "class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html", null ],
     [ "moco::GraphUpdate", "classmoco_1_1_graph_update.html", null ],
     [ "mir_interpreter::GreaterImpl< T >", "structmir__interpreter_1_1_greater_impl.html", null ],
+    [ "minmax_embedder_test::H5Writer", "classminmax__embedder__test_1_1_h5_writer.html", null ],
     [ "mir_interpreter::HardSwishImpl< T >", "structmir__interpreter_1_1_hard_swish_impl.html", null ],
     [ "mir_interpreter::HardSwishImpl< uint8_t >", "structmir__interpreter_1_1_hard_swish_impl_3_01uint8__t_01_4.html", null ],
     [ "std::hash< benchmark::PhaseEnum >", "structstd_1_1hash_3_01benchmark_1_1_phase_enum_01_4.html", null ],
@@ -3025,7 +3031,6 @@ var hierarchy =
         [ "luci_interpreter::kernels::UnidirectionalSequenceLSTM", "classluci__interpreter_1_1kernels_1_1_unidirectional_sequence_l_s_t_m.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< UnpackParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
-        [ "luci_interpreter::kernels::Unpack", "classluci__interpreter_1_1kernels_1_1_unpack.html", null ],
         [ "luci_interpreter::kernels::Unpack", "classluci__interpreter_1_1kernels_1_1_unpack.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< Params >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
@@ -3218,6 +3223,7 @@ var hierarchy =
       [ "circle_eval_diff::TopKMatchPrinter", "classcircle__eval__diff_1_1_top_k_match_printer.html", null ]
     ] ],
     [ "nnfw::cker::MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
+    [ "minmax_embedder_test::MinMax", "classminmax__embedder__test_1_1_min_max.html", null ],
     [ "record_minmax::MinMaxComputer", "classrecord__minmax_1_1_min_max_computer.html", [
       [ "record_minmax::MovingAvgComputer", "classrecord__minmax_1_1_moving_avg_computer.html", null ],
       [ "record_minmax::PercentileComputer", "classrecord__minmax_1_1_percentile_computer.html", null ]
@@ -3226,6 +3232,7 @@ var hierarchy =
     [ "record_minmax::MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", null ],
     [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::IOIndex >, IOMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::OperationIndex >, OpMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
+    [ "minmax_embedder::h5::MinMaxVectors", "structminmax__embedder_1_1h5_1_1_min_max_vectors.html", null ],
     [ "record_minmax::MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", null ],
     [ "luci_interpreter::MirrorPadParams", "structluci__interpreter_1_1_mirror_pad_params.html", null ],
     [ "luci_interpreter::kernels::MISOKernel", "classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html", null ],
@@ -3299,6 +3306,7 @@ var hierarchy =
     [ "onert::ir::ModelEdges", "structonert_1_1ir_1_1_model_edges.html", null ],
     [ "rua::ModelService", "structrua_1_1_model_service.html", null ],
     [ "moco::ModelSignature", "structmoco_1_1_model_signature.html", null ],
+    [ "minmax_embedder_test::ModelSpec", "structminmax__embedder__test_1_1_model_spec.html", null ],
     [ "ann::Module", "classann_1_1_module.html", null ],
     [ "coco::Module", "classcoco_1_1_module.html", null ],
     [ "luci::Module", "classluci_1_1_module.html", null ],
@@ -3345,6 +3353,7 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchDepthwiseConv2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchSelectV2Kernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_select_v2_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchTransposeConvKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", null ],
+      [ "luci_interpreter::test_kernel::NegTestDataInputMismatchUnpackKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_unpack_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputMismatchZerosLikeKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputShapeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInputOutputShapeMismatchCeilKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_ceil_kernel.html", null ],
@@ -4351,6 +4360,7 @@ var hierarchy =
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
+      [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],
       [ "luci::FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", null ],
       [ "luci::MakeBatchNormGammaPositivePass", "structluci_1_1_make_batch_norm_gamma_positive_pass.html", null ],
       [ "luci::Pass", "classluci_1_1_pass.html", [
@@ -4534,6 +4544,7 @@ var hierarchy =
     [ "RawModel", "struct_raw_model.html", null ],
     [ "RawPaddingBuilder", "class_raw_padding_builder.html", null ],
     [ "coco::Read", "classcoco_1_1_read.html", null ],
+    [ "minmax_embedder::h5::Reader", "classminmax__embedder_1_1h5_1_1_reader.html", null ],
     [ "mio::circle::Reader", "classmio_1_1circle_1_1_reader.html", null ],
     [ "nncc::core::ADT::feature::Reader< T >", "structnncc_1_1core_1_1_a_d_t_1_1feature_1_1_reader.html", [
       [ "nncc::core::ADT::feature::View< T >", "classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_view.html", null ]
@@ -5178,6 +5189,9 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataUnidirectionalLSTMBase< int8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_unidirectional_l_s_t_m_base.html", [
         [ "luci_interpreter::test_kernel::TestDataInt8UnidirectionalLSTM", "classluci__interpreter_1_1test__kernel_1_1_test_data_int8_unidirectional_l_s_t_m.html", null ]
       ] ],
+      [ "luci_interpreter::test_kernel::TestDataUnpackBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_unpack_base.html", [
+        [ "luci_interpreter::test_kernel::TestDataFloatUnpack", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_unpack.html", null ]
+      ] ],
       [ "luci_interpreter::test_kernel::TestDataZerosLikeBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_zeros_like_base.html", [
         [ "luci_interpreter::test_kernel::TestDataFloatZerosLike", "classluci__interpreter_1_1test__kernel_1_1_test_data_float_zeros_like.html", null ]
       ] ],
@@ -5252,6 +5266,7 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataTransposeConvBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_transpose_conv_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataTransposeKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_transpose_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataUnidirectionalLSTMBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_unidirectional_l_s_t_m_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataUnpackBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_unpack_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataWhileKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_while_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataZerosLikeBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_zeros_like_base.html", null ]
     ] ],
@@ -5479,6 +5494,7 @@ var hierarchy =
       [ "onert::compiler::train::StaticDerivativeShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_derivative_shape_inferer.html", null ]
     ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
+    [ "onert::backend::train::ops::TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],
     [ "nnfw::cker::TransposeConvParams", "structnnfw_1_1cker_1_1_transpose_conv_params.html", null ],
     [ "TransposedConv2DLayer", "struct_transposed_conv2_d_layer.html", null ],

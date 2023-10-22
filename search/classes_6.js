@@ -305,7 +305,8 @@ var searchData=
   ['fuseprelupass_302',['FusePReluPass',['../structluci_1_1_fuse_p_relu_pass.html',1,'luci']]],
   ['fuserelupass_303',['FuseReluPass',['../structexo_1_1_fuse_relu_pass.html',1,'exo']]],
   ['fusersqrtpass_304',['FuseRsqrtPass',['../structexo_1_1_fuse_rsqrt_pass.html',1,'exo']]],
-  ['fusesquareddifferencepass_305',['FuseSquaredDifferencePass',['../structexo_1_1_fuse_squared_difference_pass.html',1,'exo']]],
-  ['fusetransposewithmeanpass_306',['FuseTransposeWithMeanPass',['../structluci_1_1_fuse_transpose_with_mean_pass.html',1,'luci']]],
-  ['fv_307',['FV',['../structnest_1_1_f_v.html',1,'nest']]]
+  ['fuseslicewithtconvpass_305',['FuseSliceWithTConvPass',['../structluci_1_1_fuse_slice_with_t_conv_pass.html',1,'luci']]],
+  ['fusesquareddifferencepass_306',['FuseSquaredDifferencePass',['../structexo_1_1_fuse_squared_difference_pass.html',1,'exo']]],
+  ['fusetransposewithmeanpass_307',['FuseTransposeWithMeanPass',['../structluci_1_1_fuse_transpose_with_mean_pass.html',1,'luci']]],
+  ['fv_308',['FV',['../structnest_1_1_f_v.html',1,'nest']]]
 ];
