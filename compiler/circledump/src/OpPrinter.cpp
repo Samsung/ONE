@@ -135,7 +135,7 @@ public:
     if (auto conv_params = op->builtin_options_as_Conv2DOptions())
     {
       os << "    ";
-      os << "Padding(" << conv_params->padding() << ") ";
+      os << "Padding(" << EnumNamePadding(conv_params->padding()) << ") ";
       os << "Stride.W(" << conv_params->stride_w() << ") ";
       os << "Stride.H(" << conv_params->stride_h() << ") ";
       os << "Dilation.W(" << conv_params->dilation_w_factor() << ") ";
@@ -184,7 +184,7 @@ public:
     if (auto pool_params = op->builtin_options_as_Pool2DOptions())
     {
       os << "    ";
-      os << "Padding(" << pool_params->padding() << ") ";
+      os << "Padding(" << EnumNamePadding(pool_params->padding()) << ") ";
       os << "Stride.W(" << pool_params->stride_w() << ") ";
       os << "Stride.H(" << pool_params->stride_h() << ") ";
       os << "Filter.W(" << pool_params->filter_width() << ") ";
@@ -298,7 +298,7 @@ public:
     if (auto conv_params = op->builtin_options_as_DepthwiseConv2DOptions())
     {
       os << "    ";
-      os << "Padding(" << conv_params->padding() << ") ";
+      os << "Padding(" << EnumNamePadding(conv_params->padding()) << ") ";
       os << "Stride.W(" << conv_params->stride_w() << ") ";
       os << "Stride.H(" << conv_params->stride_h() << ") ";
       os << "DepthMultiplier(" << conv_params->depth_multiplier() << ") ";
@@ -662,7 +662,7 @@ public:
     if (auto params = op->builtin_options_as_TransposeConvOptions())
     {
       os << "    ";
-      os << "Padding(" << params->padding() << ") ";
+      os << "Padding(" << EnumNamePadding(params->padding()) << ") ";
       os << "Stride.W(" << params->stride_w() << ") ";
       os << "Stride.H(" << params->stride_h() << ") ";
       os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
