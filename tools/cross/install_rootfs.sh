@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
+
+source /etc/lsb-release
+
 usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
     echo "BuildArch can be: arm(default), aarch64"
-    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic, focal(default), jammy"
+    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic, focal, jammy"
+    echo "                          default is host codename: ${DISTRIB_CODENAME} (DISTRIB_CODENAME in /etc/lsb-release)"
     echo "--setproxy=IP - optional, IP is the proxy server IP address or url with portnumber"
     echo "                           default no proxy. Example: --setproxy=127.1.2.3:8080"
     echo "--skipunmount - optional, will skip the unmount of rootfs folder."
@@ -16,7 +20,7 @@ __UbuntuRepo="http://ports.ubuntu.com/"
 
 __BuildArch=arm
 __QemuArch=armhf
-__LinuxCodeName=focal
+__LinuxCodeName=$DISTRIB_CODENAME
 __SkipUnmount=0
 __IsProxySet=0
 __Apt=""
@@ -24,6 +28,8 @@ __Apt=""
 # install cmake to find cmake package configuration for target file system
 __UbuntuPackages="build-essential"
 __UbuntuPackages+=" cmake"
+# install python3-dev for python API
+__UbuntuPackages+=" python3-dev"
 
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
@@ -103,8 +109,10 @@ if [[ -n $__LinuxCodeName ]]; then
     chroot $__RootfsDir apt-get -f -y install
     chroot $__RootfsDir apt-get -y install $__UbuntuPackages
     machine=$(chroot $__RootfsDir gcc -dumpmachine)
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.a /usr/lib/${machine}/libhdf5.a
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.so /usr/lib/${machine}/libhdf5.so
+    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.a /usr/lib/${machine}/libhdf5.a || true
+    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.a /usr/lib/${machine}/libhdf5_cpp.a || true
+    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.so /usr/lib/${machine}/libhdf5.so || true
+    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.so /usr/lib/${machine}/libhdf5_cpp.so || true
     chroot $__RootfsDir symlinks -cr /usr
 
     if [ $__SkipUnmount == 0 ]; then

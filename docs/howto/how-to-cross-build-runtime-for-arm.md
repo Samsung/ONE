@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `focal`(default), `bionic`, and `jammy` release
+- supports `bionic`, `focal`, and `jammy` release
 
 To see the options,
 ```
@@ -34,6 +34,8 @@ DISTRIB_RELEASE=22.04
 DISTRIB_CODENAME=jammy
 DISTRIB_DESCRIPTION="Ubuntu 22.04.3 LTS"
 ```
+
+`install_rootfs.sh` will select development system code name as default.
 
 If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider [cross-build using the docker image](how-to-build-runtime-using-prebuilt-docker-image.md).
 
