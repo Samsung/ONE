@@ -556,6 +556,8 @@ message Operation {
   repeated string input = 2;
   repeated string output = 3;
   optional int32 version = 4 [default = 1];
+  optional string extype = 5;
+  optional string custom_code = 6;
 
   optional Conv2DOptions conv2d_options = 100;
   optional Pool2DOptions averagepool2d_options = 101;
