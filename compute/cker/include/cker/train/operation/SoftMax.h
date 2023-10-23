@@ -55,7 +55,7 @@ inline void SoftMaxGrad(const Shape &output_shape, const float *output_data,
         }
         else
         {
-          val = -1 * output_data[b_offset + w2] * output_data[b_offset + w1];
+          val = -output_data[b_offset + w2] * output_data[b_offset + w1];
         }
         val *= incoming_data[b_offset + w2];
         sum += val;
@@ -64,6 +64,54 @@ inline void SoftMaxGrad(const Shape &output_shape, const float *output_data,
     }
   }
 }
+
+// inline void SoftMaxGrad(const Shape &output_shape, const float *output_data,
+//                         const Shape &incoming_shape, const float *incoming_data,
+//                         const Shape &grad_shape, float *grad_data)
+// {
+//   // TODO Support 4dim softmax gradient
+//   assert(incoming_shape.DimensionsCount() == 2);
+//   MatchingFlatSize(output_shape, incoming_shape, grad_shape);
+
+//   const int batches = incoming_shape.Dims(0);
+//   const int width = incoming_shape.Dims(1);
+
+//   for (int b = 0; b < batches; ++b)
+//   {
+//     int b_offset = b * width;
+//     float sum = 0.0f;
+//     for (int i = 0; i < width; ++i) {
+//       sum += (incoming_data[b_offset + i] * output_data[b_offset + i]);
+//     }
+//     for (int i = 0; i < width; ++i) {
+//       grad_data[b_offset + i] = (incoming_data[b_offset + i] - sum) * output_data[b_offset + i];
+//     }
+//   }
+// }
+
+// inline void SoftMaxGrad(const Shape &output_shape, const float *output_data,
+//                         const Shape &incoming_shape, const float *incoming_data,
+//                         const Shape &grad_shape, float *grad_data)
+// {
+//   // TODO Support 4dim softmax gradient
+//   assert(incoming_shape.DimensionsCount() == 2);
+//   MatchingFlatSize(output_shape, incoming_shape, grad_shape);
+
+//   const auto output_mat = MapAsMatrixWithLastDimAsRows(output_data, output_shape);
+//   const auto incoming_mat = MapAsMatrixWithLastDimAsRows(incoming_data, incoming_shape);
+//   const auto temp_mat = MapAsMatrixWithLastDimAsRows(t.data(), output_shape);
+//   auto grad_mat = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
+
+//   // auto mult_result = incoming_mat.matrix() * output_mat.matrix();
+//   auto sum_channels = temp_mat.sum();
+//   grad_mat = (incoming_mat.array() - sum_channels).matrix() * output_mat;
+//   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> I;
+//   I.resize(output_shape.Dims(1), 1);
+//   I.fill(1.0);
+//   // Eigen::MatrixXd I = Eigen::MatrixXd::Constant(1, 10, 1.0);
+
+//   grad_mat = incoming_mat * (output_mat * (I.diagonal() - output_mat.transpose()));
+// }
 
 } // namespace train
 } // namespace cker
