@@ -59,7 +59,7 @@ do
     shift
 done
 
-__InstallDir=${__InstallDir:-"${__CrossDir}/ndk/${__NDKVersion}"}
+__InstallDir=${__InstallDir:-"${__CrossDir}/ndk"}
 
 NDK_DIR=android-ndk-${__NDKVersion}
 NDK_ZIP=${NDK_DIR}-linux-x86_64.zip
@@ -82,4 +82,3 @@ fi
 echo "Unzipping Android NDK"
 unzip -qq -o $__InstallDir/$NDK_ZIP -d $__InstallDir
 rm $__InstallDir/$NDK_ZIP
-mv  $__InstallDir/${NDK_DIR} "$__InstallDir/ndk" # This is necessary since Tensorflow Lite does include like `#include "ndk/sources/..."`
