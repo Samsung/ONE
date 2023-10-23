@@ -73,10 +73,18 @@ ir::train::OptimizerInfo getOptimizerInfo(const circle::ModelTraining *circle_mo
     case circle::Optimizer_SGD:
       ir_optimizer_info.optim_code = ir::train::OptimizerCode::SGD;
       ir_optimizer_info.optim_option = getOptimizerOption<circle::SGDOptions>(circle_model);
+      // TODO deprecate
+      ir_optimizer_info.learning_rate =
+        dynamic_cast<const ir::train::SGDOption *>(ir_optimizer_info.optim_option.get())
+          ->learning_rate;
       break;
     case circle::Optimizer_ADAM:
       ir_optimizer_info.optim_code = ir::train::OptimizerCode::Adam;
       ir_optimizer_info.optim_option = getOptimizerOption<circle::AdamOptions>(circle_model);
+      // TODO deprecate
+      ir_optimizer_info.learning_rate =
+        dynamic_cast<const ir::train::AGDOption *>(ir_optimizer_info.optim_option.get())
+          ->learning_rate;
       break;
     default:
       throw std::runtime_error("unknown optimzer");
@@ -96,11 +104,12 @@ ir::train::LossInfo getLossInfo(const circle::ModelTraining *circle_model)
     case circle::LossFn::LossFn_CATEGORICAL_CROSSENTROPY:
       ir_loss_info.type = ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY;
       break;
-
     case circle::LossFn::LossFn_SPARSE_CATEGORICAL_CROSSENTROPY:
       // TODO Enable this case after 'sparse_cateogrial_crossentropy' implemented
       throw std::runtime_error{"not supported yet"};
-
+    case circle::LossFn::LossFn_MEAN_SQUARED_ERROR:
+      ir_loss_info.type = ir::operation::Loss::Type::MEAN_SQUARED_ERROR;
+      break;
     default:
       throw std::runtime_error{"unknown loss function"};
   }
@@ -111,13 +120,12 @@ ir::train::LossInfo getLossInfo(const circle::ModelTraining *circle_model)
 std::unique_ptr<ir::train::TrainingInfo> loadTrainInfo(const uint8_t *buffer, const size_t size)
 {
   // verify
-  /*
-  bool verify_result = circle::VerifyModelTrainingBuffer(flatbuffers::Verifier(buffer, size));
-  if(verify_result == false)
+  flatbuffers::Verifier v(buffer, size);
+  bool verify_result = circle::VerifyModelTrainingBuffer(v);
+  if (verify_result == false)
   {
     throw std::runtime_error{"TrainingInfo is something wrong"};
   }
-  */
 
   const circle::ModelTraining *circle_model = circle::GetModelTraining((void *)buffer);
 

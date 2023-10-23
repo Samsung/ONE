@@ -77,11 +77,13 @@ table AdamOptions {
 enum LossFn : byte {
   SPARSE_CATEGORICAL_CROSSENTROPY = 0,
   CATEGORICAL_CROSSENTROPY = 1,
+  MEAN_SQUARED_ERROR = 2,
 }
 
 union LossFnOptions {
   SparseCategoricalCrossentropyOptions,
   CategoricalCrossentropyOptions,
+  MeanSquaredErrorOptions,
 }
 
 table SparseCategoricalCrossentropyOptions {
@@ -90,6 +92,9 @@ table SparseCategoricalCrossentropyOptions {
 
 table CategoricalCrossentropyOptions {
   from_logits: bool;
+}
+
+table MeanSquaredErrorOptions {
 }
 
 // --------

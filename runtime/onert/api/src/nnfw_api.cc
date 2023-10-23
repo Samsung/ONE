@@ -396,9 +396,27 @@ NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const
   auto res = session->load_model_from_modelfile(file_path);
 
   if (res == NNFW_STATUS_NO_ERROR)
-    return session->load_traininfo();
+    return session->train_load_traininfo();
   else
     return res;
+}
+
+NNFW_STATUS nnfw_train_prepare_from_loaded(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_prepare();
+}
+
+NNFW_STATUS nnfw_train_batch(nnfw_session *session, uint32_t *batch)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->batchsize(batch);
+}
+
+NNFW_STATUS nnfw_train_epoch(nnfw_session *session, uint32_t *epoch)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->epoch(epoch);
 }
 
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
@@ -454,6 +472,13 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 }
 
 #else // ONERT_TRAIN
+
+/*
+NNFW_STATUS nnfw_train_prepare_from_loaded(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}*/
 
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *)
 {

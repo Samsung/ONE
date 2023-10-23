@@ -20,6 +20,9 @@ struct SparseCategoricalCrossentropyOptionsBuilder;
 struct CategoricalCrossentropyOptions;
 struct CategoricalCrossentropyOptionsBuilder;
 
+struct MeanSquaredErrorOptions;
+struct MeanSquaredErrorOptionsBuilder;
+
 struct ModelTraining;
 struct ModelTrainingBuilder;
 
@@ -106,28 +109,28 @@ enum LossFn : int8_t
 {
   LossFn_SPARSE_CATEGORICAL_CROSSENTROPY = 0,
   LossFn_CATEGORICAL_CROSSENTROPY = 1,
+  LossFn_MEAN_SQUARED_ERROR = 2,
   LossFn_MIN = LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
-  LossFn_MAX = LossFn_CATEGORICAL_CROSSENTROPY
+  LossFn_MAX = LossFn_MEAN_SQUARED_ERROR
 };
 
-inline const LossFn (&EnumValuesLossFn())[2]
+inline const LossFn (&EnumValuesLossFn())[3]
 {
   static const LossFn values[] = {LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
-                                  LossFn_CATEGORICAL_CROSSENTROPY};
+                                  LossFn_CATEGORICAL_CROSSENTROPY, LossFn_MEAN_SQUARED_ERROR};
   return values;
 }
 
 inline const char *const *EnumNamesLossFn()
 {
-  static const char *const names[3] = {"SPARSE_CATEGORICAL_CROSSENTROPY",
-                                       "CATEGORICAL_CROSSENTROPY", nullptr};
+  static const char *const names[4] = {"SPARSE_CATEGORICAL_CROSSENTROPY",
+                                       "CATEGORICAL_CROSSENTROPY", "MEAN_SQUARED_ERROR", nullptr};
   return names;
 }
 
 inline const char *EnumNameLossFn(LossFn e)
 {
-  if (flatbuffers::IsOutRange(e, LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
-                              LossFn_CATEGORICAL_CROSSENTROPY))
+  if (flatbuffers::IsOutRange(e, LossFn_SPARSE_CATEGORICAL_CROSSENTROPY, LossFn_MEAN_SQUARED_ERROR))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLossFn()[index];
@@ -138,28 +141,30 @@ enum LossFnOptions : uint8_t
   LossFnOptions_NONE = 0,
   LossFnOptions_SparseCategoricalCrossentropyOptions = 1,
   LossFnOptions_CategoricalCrossentropyOptions = 2,
+  LossFnOptions_MeanSquaredErrorOptions = 3,
   LossFnOptions_MIN = LossFnOptions_NONE,
-  LossFnOptions_MAX = LossFnOptions_CategoricalCrossentropyOptions
+  LossFnOptions_MAX = LossFnOptions_MeanSquaredErrorOptions
 };
 
-inline const LossFnOptions (&EnumValuesLossFnOptions())[3]
+inline const LossFnOptions (&EnumValuesLossFnOptions())[4]
 {
-  static const LossFnOptions values[] = {LossFnOptions_NONE,
-                                         LossFnOptions_SparseCategoricalCrossentropyOptions,
-                                         LossFnOptions_CategoricalCrossentropyOptions};
+  static const LossFnOptions values[] = {
+    LossFnOptions_NONE, LossFnOptions_SparseCategoricalCrossentropyOptions,
+    LossFnOptions_CategoricalCrossentropyOptions, LossFnOptions_MeanSquaredErrorOptions};
   return values;
 }
 
 inline const char *const *EnumNamesLossFnOptions()
 {
-  static const char *const names[4] = {"NONE", "SparseCategoricalCrossentropyOptions",
-                                       "CategoricalCrossentropyOptions", nullptr};
+  static const char *const names[5] = {"NONE", "SparseCategoricalCrossentropyOptions",
+                                       "CategoricalCrossentropyOptions", "MeanSquaredErrorOptions",
+                                       nullptr};
   return names;
 }
 
 inline const char *EnumNameLossFnOptions(LossFnOptions e)
 {
-  if (flatbuffers::IsOutRange(e, LossFnOptions_NONE, LossFnOptions_CategoricalCrossentropyOptions))
+  if (flatbuffers::IsOutRange(e, LossFnOptions_NONE, LossFnOptions_MeanSquaredErrorOptions))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLossFnOptions()[index];
@@ -178,6 +183,11 @@ template <> struct LossFnOptionsTraits<circle::SparseCategoricalCrossentropyOpti
 template <> struct LossFnOptionsTraits<circle::CategoricalCrossentropyOptions>
 {
   static const LossFnOptions enum_value = LossFnOptions_CategoricalCrossentropyOptions;
+};
+
+template <> struct LossFnOptionsTraits<circle::MeanSquaredErrorOptions>
+{
+  static const LossFnOptions enum_value = LossFnOptions_MeanSquaredErrorOptions;
 };
 
 bool VerifyLossFnOptions(flatbuffers::Verifier &verifier, const void *obj, LossFnOptions type);
@@ -383,6 +393,39 @@ CreateCategoricalCrossentropyOptions(flatbuffers::FlatBufferBuilder &_fbb, bool 
   return builder_.Finish();
 }
 
+struct MeanSquaredErrorOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
+{
+  typedef MeanSquaredErrorOptionsBuilder Builder;
+  bool Verify(flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && verifier.EndTable();
+  }
+};
+
+struct MeanSquaredErrorOptionsBuilder
+{
+  typedef MeanSquaredErrorOptions Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  explicit MeanSquaredErrorOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<MeanSquaredErrorOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<MeanSquaredErrorOptions>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<MeanSquaredErrorOptions>
+CreateMeanSquaredErrorOptions(flatbuffers::FlatBufferBuilder &_fbb)
+{
+  MeanSquaredErrorOptionsBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
 struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
 {
   typedef ModelTrainingBuilder Builder;
@@ -444,6 +487,12 @@ struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
              ? static_cast<const circle::CategoricalCrossentropyOptions *>(lossfn_opt())
              : nullptr;
   }
+  const circle::MeanSquaredErrorOptions *lossfn_opt_as_MeanSquaredErrorOptions() const
+  {
+    return lossfn_opt_type() == circle::LossFnOptions_MeanSquaredErrorOptions
+             ? static_cast<const circle::MeanSquaredErrorOptions *>(lossfn_opt())
+             : nullptr;
+  }
   int32_t epochs() const { return GetField<int32_t>(VT_EPOCHS, 0); }
   int32_t batch_size() const { return GetField<int32_t>(VT_BATCH_SIZE, 0); }
   bool Verify(flatbuffers::Verifier &verifier) const
@@ -486,6 +535,13 @@ inline const circle::CategoricalCrossentropyOptions *
 ModelTraining::lossfn_opt_as<circle::CategoricalCrossentropyOptions>() const
 {
   return lossfn_opt_as_CategoricalCrossentropyOptions();
+}
+
+template <>
+inline const circle::MeanSquaredErrorOptions *
+ModelTraining::lossfn_opt_as<circle::MeanSquaredErrorOptions>() const
+{
+  return lossfn_opt_as_MeanSquaredErrorOptions();
 }
 
 struct ModelTrainingBuilder
@@ -623,6 +679,11 @@ inline bool VerifyLossFnOptions(flatbuffers::Verifier &verifier, const void *obj
     case LossFnOptions_CategoricalCrossentropyOptions:
     {
       auto ptr = reinterpret_cast<const circle::CategoricalCrossentropyOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case LossFnOptions_MeanSquaredErrorOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::MeanSquaredErrorOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default:

@@ -57,9 +57,12 @@ struct AGDOption final : public OptimizerOption
 struct OptimizerInfo
 {
   OptimizerCode optim_code;
+  // Q: Is this value updatable?
+  // Q: Is it possible to use shared_ptr here?
+  // This is not-yet fully used
   std::unique_ptr<OptimizerOption> optim_option;
 
-  float learning_rate; // TOBE deprecated
+  float learning_rate; // TODO deperecate
   // TODO Add properties
 
   OptimizerInfo() : optim_option(nullptr){};
@@ -68,12 +71,14 @@ struct OptimizerInfo
   {
     optim_code = another.optim_code;
     optim_option = std::unique_ptr<OptimizerOption>(another.optim_option->clone());
+    learning_rate = another.learning_rate;
   }
 
   OptimizerInfo &operator=(const OptimizerInfo &another)
   {
     optim_code = another.optim_code;
     optim_option = std::unique_ptr<OptimizerOption>(another.optim_option->clone());
+    learning_rate = another.learning_rate;
     return *this;
   }
 };

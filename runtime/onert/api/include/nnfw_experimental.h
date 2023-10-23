@@ -201,13 +201,19 @@ typedef struct nnfw_train_info
   NNFW_TRAIN_LOSS loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
+
 } nnfw_train_info;
 
 /**
- * TODO
+ * TODO add some comments
  */
-NNFW_STATUS nnfw_fill_traininfo(nnfw_session *session, nnfw_train_info *info);
+NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const char *file_path);
 
+NNFW_STATUS nnfw_train_prepare_from_loaded(nnfw_session *session);
+
+NNFW_STATUS nnfw_train_batch(nnfw_session *session, uint32_t *);
+
+NNFW_STATUS nnfw_train_epoch(nnfw_session *session, uint32_t *);
 /**
  * @brief Prepare session to be ready for training
  * @note  The session will be entered into training mode

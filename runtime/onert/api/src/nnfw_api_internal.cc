@@ -1172,9 +1172,14 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
 #ifdef ONERT_TRAIN
 
-NNFW_STATUS nnfw_session::load_traininfo()
+/**
+ * After ModelLoaded, Before Prepared
+ *
+ * load metadata(traininginfo) from the model
+ */
+NNFW_STATUS nnfw_session::train_load_traininfo()
 {
-  if (!isStateInitialized())
+  if (!isStateModelLoaded())
   {
     return NNFW_STATUS_INVALID_STATE;
   }
@@ -1184,14 +1189,79 @@ NNFW_STATUS nnfw_session::load_traininfo()
     return NNFW_STATUS_ERROR;
   }
 
-  auto model = _nnpkg->primary_model();
-  auto data = model->get_metadata("CIRCLE_TRANING");
+  try
+  {
+    auto model = _nnpkg->primary_model();
+    auto data = model->get_metadata("CIRCLE_TRAINING");
 
-  _traininfo = std::move(onert::traininfo_loader::loadTrainInfo(data->base(), data->size()));
-
+    _traininfo = std::move(onert::traininfo_loader::loadTrainInfo(data->base(), data->size()));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session_train_load_traininfo " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
   return NNFW_STATUS_NO_ERROR;
 }
 
+// Prepare training from session::trainingInfo (maded by )
+NNFW_STATUS nnfw_session::train_prepare()
+{
+  // We may need different state to represent training model is loaded
+  if (!isStateModelLoaded())
+  {
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  auto convertLoss = [](const onert::ir::train::LossInfo &ir_loss) {
+    return onert::compiler::train::LossInfo{.type = ir_loss.type};
+  };
+
+  try
+  {
+    onert::compiler::train::TrainingInfo training_info;
+
+    training_info.setBatchSize(_traininfo->batchSize());
+    training_info.setLossInfo(convertLoss(_traininfo->lossInfo()));
+    training_info.setOptimizerInfo(_traininfo->optimizerInfo());
+
+    auto compiler =
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
+    _nnpkg.reset();
+    _compiler_artifact = compiler->compile();
+    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_prepare" << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  _state = State::PREPARED_TRAINING;
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::batchsize(uint32_t *batchsize)
+{
+  if (!isStateModelLoaded() || _traininfo == nullptr)
+  {
+    return NNFW_STATUS_ERROR;
+  }
+  *batchsize = _traininfo->batchSize();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::epoch(uint32_t *epoch)
+{
+  if (!isStateModelLoaded() || _traininfo == nullptr)
+  {
+    return NNFW_STATUS_ERROR;
+  }
+  *epoch = _traininfo->epoch();
+  return NNFW_STATUS_NO_ERROR;
+}
+
+// Prepare training from given struct (made by command line arguments)
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded

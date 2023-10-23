@@ -171,7 +171,16 @@ public:
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
 #ifdef ONERT_TRAIN
-  NNFW_STATUS load_traininfo();
+  /**
+   * train info related API
+   */
+  // After 'Loaded', Before 'Prepared', load metadat(traininginfo) from the model
+  NNFW_STATUS train_load_traininfo();
+  // Afeter 'Loadeed', init _traininfo
+  NNFW_STATUS train_prepare();
+  NNFW_STATUS batchsize(uint32_t *batch);
+  NNFW_STATUS epoch(uint32_t *epoch);
+
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);

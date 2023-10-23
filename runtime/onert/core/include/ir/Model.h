@@ -184,12 +184,6 @@ public:
     auto data_obj = std::make_shared<ir::CachedData>(data.base(), data.size());
     _metadatas.emplace(name, data_obj);
   }
-  /*
-  void add_metadata(const std::string &name, const ir::CachedData &data)
-  {
-    _metadatas.emplace(name, data);
-  }
-  */
 
   std::shared_ptr<ir::CachedData> get_metadata(const std::string name)
   {

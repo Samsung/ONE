@@ -65,7 +65,7 @@ int main(const int argc, char **argv)
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
       if (args.useSingleModel())
         NNPR_ENSURE_STATUS(
-          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+          nnfw_load_training_model_from_modelfile(session, args.getModelFilename().c_str()));
       else
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
@@ -144,19 +144,22 @@ int main(const int argc, char **argv)
     };
 
     // prepare training info
+    /*
     nnfw_train_info tri;
-    // NNPR_ENSURE_STATUS(nnfw_fill_traininfo(session, &tri));
 
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();
     tri.loss = convertLossType(args.getLossType());
     tri.opt = convertOptType(args.getOptimizerType());
-
-    // prepare execution
+    */
+    uint32_t batch_size, epoch;
+    nnfw_train_batch(session, &batch_size);
+    nnfw_train_epoch(session, &epoch);
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
     phases.run("PREPARE", [&](const benchmark::Phase &, uint32_t) {
-      NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
+      // NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri));
+      NNPR_ENSURE_STATUS(nnfw_train_prepare_from_loaded(session));
     });
 
     // prepare input and expected tensor info lists
@@ -192,7 +195,7 @@ int main(const int argc, char **argv)
     {
       generator =
         rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
-                               input_infos, expected_infos, data_length, tri.batch_size);
+                               input_infos, expected_infos, data_length, batch_size);
     }
     else
     {
@@ -204,8 +207,10 @@ int main(const int argc, char **argv)
     Measure measure;
     std::vector<float> losses(num_expecteds);
     phases.run("EXECUTE", [&](const benchmark::Phase &, uint32_t) {
-      const int num_step = data_length / tri.batch_size;
-      const int num_epoch = args.getEpoch();
+      // const int num_step = data_length / tri.batch_size;
+      const int num_step = data_length / batch_size;
+      // const int num_epoch = args.getEpoch();
+      const int num_epoch = epoch;
       measure.set(num_epoch, num_step);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
