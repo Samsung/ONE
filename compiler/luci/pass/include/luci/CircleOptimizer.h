@@ -39,6 +39,7 @@ public:
       FuseBatchNormWithConv,
       FuseBatchNormWithDwConv,
       FuseBatchNormWithTConv,
+      FuseSliceWithTConv,
       FuseBCQ,
       FuseInstanceNorm,
       FuseMeanWithMean,
