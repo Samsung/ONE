@@ -109,10 +109,15 @@ public:
     _right_weight->dim(1) = 10;
     _right_weight->shape_status(luci::ShapeStatus::VALID);
 
+    const auto left_output_exclude = g()->nodes()->create<luci::CircleOutputExclude>();
+    const auto right_output_exclude = g()->nodes()->create<luci::CircleOutputExclude>();
+
     _left_fc->input(input());
     _left_fc->weights(_left_weight);
+    _left_fc->bias(left_output_exclude);
     _right_fc->input(input());
     _right_fc->weights(_right_weight);
+    _right_fc->bias(right_output_exclude);
 
     _add = g()->nodes()->create<luci::CircleAdd>();
     _add->dtype(loco::DataType::FLOAT32);
