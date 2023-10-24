@@ -337,8 +337,8 @@ NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index
  *  On-Device Quantization APIs
  *
  * On-Device Quantization APIs are designed to be used in the following order
- * 1. nnfw_set_quantization_type
- * 2. nnfw_set_quantized_model_path
+ * 1. nnfw_quantize_set_qtype
+ * 2. nnfw_quantize_set_qmodel_path
  * 3. nnfw_quantize
  *
  * You should use Quantization APIs after {@link nnfw_load_model_from_file},
@@ -369,7 +369,7 @@ typedef enum
  *            @c NNFW_STATUS_UNEXPECTED_NULL if session is null,
  *            otherwise return @c NNFW_STATUS_ERROR
  */
-NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype);
+NNFW_STATUS nnfw_quantize_set_qtype(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype);
 
 /**
  * @brief Set exported quantized model path
@@ -382,7 +382,7 @@ NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE
  * @param[in] path    Quantized model path
  * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
  */
-NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *path);
+NNFW_STATUS nnfw_quantize_set_qmodel_path(nnfw_session *session, const char *path);
 
 /**
  * @brief Quantize circle model

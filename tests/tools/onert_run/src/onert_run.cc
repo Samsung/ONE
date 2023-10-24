@@ -122,20 +122,20 @@ int main(const int argc, char **argv)
         quantize_type = NNFW_QUANTIZE_TYPE_U8_ASYM;
       if (quantize == "int16")
         quantize_type = NNFW_QUANTIZE_TYPE_I16_SYM;
-      NNPR_ENSURE_STATUS(nnfw_set_quantization_type(session, quantize_type));
+      NNPR_ENSURE_STATUS(nnfw_quantize_set_qtype(session, quantize_type));
 
       if (args.getQuantizedModelPath() != "")
         NNPR_ENSURE_STATUS(
-          nnfw_set_quantized_model_path(session, args.getQuantizedModelPath().c_str()));
+          nnfw_quantize_set_qmodel_path(session, args.getQuantizedModelPath().c_str()));
       else
       {
         if (args.useSingleModel())
-          NNPR_ENSURE_STATUS(nnfw_set_quantized_model_path(
+          NNPR_ENSURE_STATUS(nnfw_quantize_set_qmodel_path(
             session,
             genQuantizedModelPathFromModelPath(args.getModelFilename(), quantize == "int16")
               .c_str()));
         else
-          NNPR_ENSURE_STATUS(nnfw_set_quantized_model_path(
+          NNPR_ENSURE_STATUS(nnfw_quantize_set_qmodel_path(
             session,
             genQuantizedModelPathFromPackagePath(args.getPackageFilename(), quantize == "int16")
               .c_str()));
