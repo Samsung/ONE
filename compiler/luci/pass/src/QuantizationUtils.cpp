@@ -438,8 +438,12 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
   auto quantparam = std::make_unique<luci::CircleQuantParam>();
   quantparam->scale.push_back(scaling_factor);
   quantparam->zerop.push_back(zp);
-  quantparam->min = node->quantparam()->min;
-  quantparam->max = node->quantparam()->max;
+  // Copy min and max values if it exists
+  if (node->quantparam())
+  {
+    quantparam->min = node->quantparam()->min;
+    quantparam->max = node->quantparam()->max;
+  }
   node->quantparam(std::move(quantparam));
 }
 
