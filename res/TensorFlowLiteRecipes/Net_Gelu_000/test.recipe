@@ -68,6 +68,8 @@ operation {
   type: "Erf"
   input: "mul_sqrt"
   output: "erf"
+  custom_code: "Erf"
+  extype: "Custom"
 }
 operation {
   type: "Add"

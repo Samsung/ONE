@@ -19,6 +19,8 @@ operation {
   input: "bc_input"
   input: "bc_shape"
   output: "bc_ofm"
+  custom_code: "BroadcastTo"
+  extype: "Custom"
 }
 input: "bc_input"
 output: "bc_ofm"

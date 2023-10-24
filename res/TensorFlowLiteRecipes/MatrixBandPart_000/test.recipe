@@ -32,6 +32,8 @@ operation {
   input: "MatrixBandPart/num_lower"
   input: "MatrixBandPart/num_upper"
   output: "ofm"
+  custom_code: "MatrixBandPart"
+  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"

@@ -103,6 +103,8 @@ operation {
   input: "ofm_sparse"
   input: "add_v2_2"
   output: "ofm_add_v2"
+  custom_code: "AddV2"
+  extype: "Custom"
 }
 operation {
   type: "Cast"
