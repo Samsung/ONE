@@ -109,6 +109,15 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
       return false;
   }
 
+  if (left_fc_weights->dtype() != loco::DataType::FLOAT32)
+    return false;
+
+  if (left_fc_bias != nullptr)
+  {
+    if (left_fc_bias->dtype() != loco::DataType::FLOAT32)
+      return false;
+  }
+
   // Lets create fused FC weights and bias
   auto fused_fc_weights = luci::clone(left_fc_weights);
   luci::add_origin(fused_fc_weights, luci::composite_origin({luci::get_origin(left_fc_weights),
@@ -122,25 +131,13 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
                                                             luci::get_origin(right_fc_bias)}));
   }
 
-  switch (left_fc_weights->dtype())
-  {
-    case loco::DataType::FLOAT32:
-      sum_const_values<loco::DataType::FLOAT32>(fused_fc_weights, right_fc_weights);
-      break;
-    default:
-      return false;
-  }
+  assert(fused_fc_weights->dtype() == loco::DataType::FLOAT32);
+  sum_const_values<loco::DataType::FLOAT32>(fused_fc_weights, right_fc_weights);
 
   if (fused_fc_bias != nullptr)
   {
-    switch (left_fc_bias->dtype())
-    {
-      case loco::DataType::FLOAT32:
-        sum_const_values<loco::DataType::FLOAT32>(fused_fc_bias, right_fc_bias);
-        break;
-      default:
-        return false;
-    }
+    assert(fused_fc_bias->dtype() == loco::DataType::FLOAT32);
+    sum_const_values<loco::DataType::FLOAT32>(fused_fc_bias, right_fc_bias);
   }
 
   // Create fused FC node
@@ -159,7 +156,7 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
     fused_fc_node->bias(left_fc_node->bias());
   }
 
-  fused_fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+  fused_fc_node->fusedActivationFunction(left_fc_node->fusedActivationFunction());
   fused_fc_node->name(left_fc_node->name() + "_" + right_fc_node->name() + "_fused");
 
   luci::add_origin(fused_fc_node, luci::composite_origin({luci::get_origin(left_fc_node),
