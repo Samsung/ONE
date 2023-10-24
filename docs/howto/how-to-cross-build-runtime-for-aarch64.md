@@ -16,7 +16,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh aarch64
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `bionic`(default) and `focal` release
+- supports `bionic`, `focal`, and `jammy` release
 
 To see the options,
 ```
@@ -27,15 +27,17 @@ RootFS will be prepared at `tools/cross/rootfs/aarch64` folder.
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 18.04 LTS, select `bionic`, if you are using Ubuntu 20.04 LTS, select `focal`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
 DISTRIB_ID=Ubuntu
-DISTRIB_RELEASE=18.04
-DISTRIB_CODENAME=bionic
-DISTRIB_DESCRIPTION="Ubuntu 18.04.4 LTS"
+DISTRIB_RELEASE=22.04
+DISTRIB_CODENAME=jammy
+DISTRIB_DESCRIPTION="Ubuntu 22.04.3 LTS"
 ```
+
+`install_rootfs.sh` will select development system code name as default.
 
 If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider [cross-build using the docker image](how-to-build-runtime-using-prebuilt-docker-image.md).
 
