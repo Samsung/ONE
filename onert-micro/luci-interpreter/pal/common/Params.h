@@ -45,6 +45,7 @@ struct FullyConnectedParams
 {
   int32_t input_offset;
   int32_t weights_offset;
+  const float *weights_scales;
   int32_t output_offset;
   int32_t output_multiplier;
   int output_shift;
