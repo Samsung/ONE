@@ -31,8 +31,8 @@ float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) co
 {
   assert(first.size() == second.size());
 
-  float error = 0.f;
-  size_t output_size = 0;
+  double output_errors = 0.; // mean over mean outputs errors
+  size_t num_output_errors = 0;
 
   for (size_t sample_index = 0; sample_index < first.size(); ++sample_index)
   {
@@ -44,22 +44,28 @@ float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) co
       assert(first_elementary.size() == second_elementary.size());
       size_t cur_size = first_elementary.size() / loco::size(loco::DataType::FLOAT32);
 
+      double output_error = 0.; // mean error oevr current output
+
       const float *first_floats = reinterpret_cast<const float *>(first_elementary.data());
       const float *second_floats = reinterpret_cast<const float *>(second_elementary.data());
       for (size_t index = 0; index < cur_size; index++)
       {
-        float ref_value = *(first_floats + index);
-        float cur_value = *(second_floats + index);
-        error += std::fabs(ref_value - cur_value);
+        double ref_value = static_cast<double>(*(first_floats + index));
+        double cur_value = static_cast<double>(*(second_floats + index));
+        output_error += std::fabs(ref_value - cur_value);
       }
-      output_size += cur_size;
+      if (cur_size != 0)
+      {
+        output_errors += (output_error / cur_size);
+        num_output_errors += 1;
+      }
     }
   }
 
-  if (output_size == 0)
+  if (num_output_errors == 0)
   {
     throw std::runtime_error("nothing to compare");
   }
 
-  return error / output_size;
+  return static_cast<float>(output_errors / num_output_errors);
 }
