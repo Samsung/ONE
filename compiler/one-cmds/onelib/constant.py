@@ -55,6 +55,7 @@ class CONSTANT:
         'remove_unnecessary_slice',
         'remove_unnecessary_strided_slice',
         'remove_unnecessary_split',
+        'common_subexpression_elimination',
 
         # Canonicalization
         # (passes to help further optimization)
@@ -80,6 +81,7 @@ class CONSTANT:
         ('convert_nchw_to_nhwc',
          'Experimental: This will convert NCHW operators to NHWC under the assumption that input model is NCHW.'
          ),
+        ('common_subexpression_elimination', 'perform common subexpression elimination'),
         ('expand_broadcast_const', 'expand broadcastable constant node inputs'),
         ('nchw_to_nhwc_input_shape',
          'convert the input shape of the model (argument for convert_nchw_to_nhwc)'),

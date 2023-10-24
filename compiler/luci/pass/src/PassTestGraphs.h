@@ -20,6 +20,9 @@
 #include <loco.h>
 #include <luci/IR/CircleNodes.h>
 
+#include <luci/test/TestIOGraph.h>
+#include <luci/test/TestShape.h>
+
 namespace luci
 {
 
@@ -135,6 +138,44 @@ protected:
 
 protected:
   luci::CircleAdd *_add = nullptr;
+};
+
+/**
+ *  CommonSubExpressionEliminationTestGraph is a base class for testing
+ *  common subexpression elimination pass. It creates Input and Output
+ *  in the below graph. Child classes must implement Expression.
+ *
+ *           [Input]
+ *           /     \
+ *  [Expression]    [Expression]
+ *         |              |
+ *    [Output 1]      [Output 2]
+ *
+ *    Expression should satisfy the below conditions
+ *    - Input type == Output type
+ *    - Input shape == Output shape
+ *    - Expression 1 and 2 are semantically equal
+ */
+class CommonSubExpressionEliminationTestGraph : public test::TestIsGraphlet<1>,
+                                                public test::TestOsGraphlet<2>
+{
+public:
+  virtual void init(const std::initializer_list<test::ShapeU32> shape_in,
+                    const std::initializer_list<test::ShapeU32> shape_out)
+  {
+    test::TestIsGraphlet<1>::init(g(), shape_in);
+    test::TestOsGraphlet<2>::init(g(), shape_out);
+
+    auto expr1 = createExpression(input(0), "expr1");
+    auto expr2 = createExpression(input(0), "expr2");
+
+    output(0)->from(expr1);
+    output(1)->from(expr2);
+  }
+
+  virtual ~CommonSubExpressionEliminationTestGraph() = default;
+
+  virtual loco::Node *createExpression(luci::CircleNode *ifm, const std::string &name) = 0;
 };
 
 } // namespace luci
