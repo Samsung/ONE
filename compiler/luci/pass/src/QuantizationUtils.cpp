@@ -343,13 +343,16 @@ ActivationQType activation_qtype(const CircleNode *node)
 }
 
 std::unique_ptr<CircleQuantParam> make_predefined_qparam(ActivationQType qtype,
-                                                         loco::DataType dtype)
+                                                         loco::DataType dtype,
+                                                         CircleQuantParam *old_quant_param)
 {
   auto qparam = std::make_unique<CircleQuantParam>();
 
-  auto set_qparam = [&qparam](float scale, int64_t zp) {
+  auto set_qparam = [&qparam, old_quant_param](float scale, int64_t zp) {
     qparam->scale.emplace_back(scale);
     qparam->zerop.emplace_back(zp);
+    qparam->min = old_quant_param->min;
+    qparam->max = old_quant_param->max;
   };
 
   switch (qtype)
@@ -435,6 +438,12 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
   auto quantparam = std::make_unique<luci::CircleQuantParam>();
   quantparam->scale.push_back(scaling_factor);
   quantparam->zerop.push_back(zp);
+  // Copy min and max values if it exists
+  if (node->quantparam())
+  {
+    quantparam->min = node->quantparam()->min;
+    quantparam->max = node->quantparam()->max;
+  }
   node->quantparam(std::move(quantparam));
 }
 

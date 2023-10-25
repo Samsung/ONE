@@ -502,6 +502,9 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     bool TF_style_maxpool =
       _options->param(Options::AlgorithmParameters::Quantize_TF_style_maxpool) == "True";
 
+    bool save_min_max =
+      _options->param(Options::AlgorithmParameters::Quantize_save_min_max) == "True";
+
     auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
     auto layer_params_set = _options->layer_params_set();
 
@@ -576,6 +579,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
       ctx->input_types = input_types;
       ctx->output_types = output_types;
       ctx->TF_style_maxpool = TF_style_maxpool;
+      ctx->save_min_max = save_min_max;
 
       for (auto layer_param : layer_params)
       {

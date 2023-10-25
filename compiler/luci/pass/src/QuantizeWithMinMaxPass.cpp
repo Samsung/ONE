@@ -78,7 +78,7 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node, loco::DataType 
   auto qtype = luci::activation_qtype(node);
   if (use_predefined_values(qtype))
   {
-    quantize->quantparam(luci::make_predefined_qparam(qtype, out_type));
+    quantize->quantparam(luci::make_predefined_qparam(qtype, out_type, node->quantparam()));
     return quantize;
   }
 
@@ -700,15 +700,18 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     phase_runner.run(phase);
   }
 
-  // Remove min/max values
-  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  if (not _ctx->save_min_max)
   {
-    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    if (auto qparam = circle_node->quantparam())
+    // Remove min/max values
+    for (auto node : loco::all_nodes(g))
     {
-      warn_accuracy_with_range(circle_node);
-      qparam->min.clear();
-      qparam->max.clear();
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+      if (auto qparam = circle_node->quantparam())
+      {
+        warn_accuracy_with_range(circle_node);
+        qparam->min.clear();
+        qparam->max.clear();
+      }
     }
   }
 

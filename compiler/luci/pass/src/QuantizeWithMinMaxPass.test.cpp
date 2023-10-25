@@ -51,6 +51,51 @@ public:
   luci::CircleConst *input_2 = nullptr;
 };
 
+class SimpleConcatGraphWithMinMaxValues
+{
+public:
+  SimpleConcatGraphWithMinMaxValues(loco::DataType quant_type)
+  {
+    concat_node = g.nodes()->create<luci::CircleConcatenation>(2);
+    input_1 = g.nodes()->create<luci::CircleInput>();
+    input_2 = g.nodes()->create<luci::CircleInput>();
+
+    concat_node->dtype(quant_type);
+    concat_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+    auto concat_node_quant_params = std::make_unique<luci::CircleQuantParam>();
+    concat_node_quant_params->min = {-1};
+    concat_node_quant_params->max = {1};
+    concat_node->quantparam(std::move(concat_node_quant_params));
+
+    input_1->dtype(quant_type);
+    auto input1_node_quant_params = std::make_unique<luci::CircleQuantParam>();
+    input1_node_quant_params->min = {-1};
+    input1_node_quant_params->max = {1};
+    input_1->quantparam(std::move(input1_node_quant_params));
+
+    input_2->dtype(quant_type);
+    auto input2_node_quant_params = std::make_unique<luci::CircleQuantParam>();
+    input2_node_quant_params->min = {-1};
+    input2_node_quant_params->max = {1};
+    input_2->quantparam(std::move(input2_node_quant_params));
+
+    concat_node->values(0, input_1);
+    concat_node->values(1, input_2);
+  }
+
+  ~SimpleConcatGraphWithMinMaxValues()
+  {
+    concat_node->values(0, nullptr);
+    concat_node->values(1, nullptr);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleConcatenation *concat_node = nullptr;
+  luci::CircleInput *input_1 = nullptr;
+  luci::CircleInput *input_2 = nullptr;
+};
+
 TEST(QuantizeWithMinMaxPassTest, name)
 {
   auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
@@ -104,4 +149,31 @@ TEST(QuantizeWithMinMaxPassTest, inactive_input)
   luci::QuantizeWithMinMaxPass qwmm(std::move(ctx));
 
   EXPECT_NO_THROW(qwmm.run(&g.g));
+}
+
+// Test saving min max
+TEST(QuantizeWithMinMaxPassTest, save_min_max_test)
+{
+  SimpleConcatGraphWithMinMaxValues g(loco::DataType::FLOAT32);
+
+  auto ctx = std::make_unique<luci::QuantizeWithMinMaxPass::Context>();
+  {
+    ctx->input_model_dtype = loco::DataType::FLOAT32;
+    ctx->output_model_dtype = loco::DataType::U8;
+    ctx->granularity = luci::QuantizationGranularity::LayerWise;
+    ctx->save_min_max = true;
+  }
+
+  luci::QuantizeWithMinMaxPass qwmm(std::move(ctx));
+
+  qwmm.run(&g.g);
+
+  EXPECT_NE(0, g.input_1->quantparam()->min.size());
+  EXPECT_NE(0, g.input_1->quantparam()->max.size());
+
+  EXPECT_NE(0, g.input_2->quantparam()->min.size());
+  EXPECT_NE(0, g.input_2->quantparam()->max.size());
+
+  EXPECT_NE(0, g.concat_node->quantparam()->min.size());
+  EXPECT_NE(0, g.concat_node->quantparam()->max.size());
 }
