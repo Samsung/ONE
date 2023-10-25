@@ -26,10 +26,8 @@
 extern "C" onert::odc::IQuantizer *create_quantizer() { return new onert::odc::Quantizer(); }
 extern "C" void destroy_quantizer(onert::odc::IQuantizer *quantizer) { delete quantizer; }
 
-namespace onert
-{
-namespace odc
-{
+namespace onert {
+namespace odc {
 
 int Quantizer::quantize(const char *in, const char *out, bool is_q16)
 {
