@@ -48,6 +48,20 @@ jobs:
           path: format.patch
           retention-days: 3
 
+      # Add PR comment to link patch if failed
+      - name: Add PR comment
+        uses: actions/github-script@v6
+        if: failure() && github.event_name == 'pull_request'
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '**Format check failed**\n\nPlease apply the patch file to fix the format issue.\n\n```\n$ git apply format.patch\n```\n\n[format.patch](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/format-patch)'
+            })
+
+
   check-copyright:
     name: Check copyright
     runs-on: ubuntu-20.04
