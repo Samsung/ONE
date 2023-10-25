@@ -238,9 +238,13 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
   // Type U8
 
   const auto *input_data = kernels::getTensorData<uint8_t>(raw_input_data);
+  assert(input_data != nullptr);
   const auto *filter_data = kernels::getTensorData<uint8_t>(raw_filter_data);
+  assert(filter_data != nullptr);
   const auto *bias_data = kernels::getTensorData<int32_t>(raw_bias_data);
+  assert(bias_data != nullptr);
   auto *output_data = kernels::getTensorData<uint8_t>(raw_output_data);
+  assert(output_data != nullptr);
 
   const std::vector<kernels::ChannelQuantMultipliers> multipliers_raw =
     kernels::quantizeMultipliers(effective_output_scale);
