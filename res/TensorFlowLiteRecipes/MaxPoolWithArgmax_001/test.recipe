@@ -27,6 +27,8 @@ operation {
     output_type: INT32
     include_batch_in_index: false
   }
+  custom_code: "MaxPoolWithArgmax"
+  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"

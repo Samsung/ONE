@@ -18,6 +18,8 @@ operation {
   input: "ifm1"
   input: "ifm2"
   output: "ofm"
+  custom_code: "BatchMatMulV2"
+  extype: "Custom"
 }
 input: "ifm1"
 input: "ifm2"
