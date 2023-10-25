@@ -156,7 +156,7 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
     fused_fc_node->bias(left_fc_node->bias());
   }
 
-  fused_fc_node->fusedActivationFunction(left_fc_node->fusedActivationFunction());
+  fused_fc_node->fusedActivationFunction(add_node->fusedActivationFunction());
   fused_fc_node->name(left_fc_node->name() + "_" + right_fc_node->name() + "_fused");
 
   luci::add_origin(fused_fc_node, luci::composite_origin({luci::get_origin(left_fc_node),
