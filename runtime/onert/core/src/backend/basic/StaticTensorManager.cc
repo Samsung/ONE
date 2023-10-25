@@ -29,8 +29,8 @@ namespace basic
 
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                                          DynamicTensorManager *dynamic_tensor_manager)
-  : _nonconst_mgr{new MemoryManager()}, _tensors{reg}, _dynamic_tensor_manager{
-                                                         dynamic_tensor_manager}
+  : _nonconst_mgr{new MemoryManager()}, _tensors{reg},
+    _dynamic_tensor_manager{dynamic_tensor_manager}
 {
   // DO NOTHING
 }
@@ -38,8 +38,8 @@ StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &
 StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                                          const std::string planner_id,
                                          DynamicTensorManager *dynamic_tensor_manager)
-  : _nonconst_mgr{new MemoryManager(planner_id)}, _tensors{reg}, _dynamic_tensor_manager{
-                                                                   dynamic_tensor_manager}
+  : _nonconst_mgr{new MemoryManager(planner_id)}, _tensors{reg},
+    _dynamic_tensor_manager{dynamic_tensor_manager}
 {
   // DO NOTHING
 }

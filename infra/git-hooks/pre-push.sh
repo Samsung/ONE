@@ -27,6 +27,7 @@ url="$2"
 REPO_PATH=$(git rev-parse --show-toplevel)
 cd $REPO_PATH
 
-./nnas format --diff-only
+./nnas format --diff-only --exclude runtime
+./nnas format --diff-only --clang-format-version 16 runtime
 
 exit $?

@@ -46,7 +46,7 @@ public:
    * @param[in] args Arguments for creating Operand object
    * @return Created index that is associated to the object if successful, Undefined index otherwise
    */
-  template <class... Args> Index emplace(Args &&... args)
+  template <class... Args> Index emplace(Args &&...args)
   {
     auto index = generateIndex();
     if (!index.valid())

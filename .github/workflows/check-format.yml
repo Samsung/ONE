@@ -28,16 +28,22 @@ jobs:
         with:
           python-version: '3.x'
 
-      # C format: clang-format-8
+      # C format: clang-format-8 & clang-format-16
       # Python format: yapf==0.22.0
       - name: Install packages
         run: |
-          sudo apt-get install -y clang-format-8
+          sudo apt-get install -y gnupg2 software-properties-common
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
+          sudo apt-get update
+          sudo apt-get install -y clang-format-8 clang-format-16
           python -m pip install --upgrade pip
           pip install yapf==0.22.0
 
       - name: Check
-        run: ./nnas format
+        run: |
+          ./nnas format --exclude runtime
+          ./nnas format --clang-format-version 16 runtime
 
       # Upload patch file if failed
       - name: Store archive

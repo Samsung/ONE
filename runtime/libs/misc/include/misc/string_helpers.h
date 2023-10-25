@@ -30,7 +30,7 @@ namespace
 
 template <typename Arg> void _str(std::ostream &os, Arg &&arg) { os << std::forward<Arg>(arg); }
 
-template <typename Arg, typename... Args> void _str(std::ostream &os, Arg &&arg, Args &&... args)
+template <typename Arg, typename... Args> void _str(std::ostream &os, Arg &&arg, Args &&...args)
 {
   _str(os, std::forward<Arg>(arg));
   _str(os, std::forward<Args>(args)...);
@@ -55,7 +55,7 @@ inline std::vector<std::string> split(const std::string &s, char delim)
   return elems;
 }
 
-template <typename... Args> std::string str(Args &&... args)
+template <typename... Args> std::string str(Args &&...args)
 {
   std::stringstream ss;
   _str(ss, std::forward<Args>(args)...);

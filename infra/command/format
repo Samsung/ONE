@@ -4,11 +4,12 @@ INVALID_EXIT=0
 FILES_TO_CHECK=()
 DIRECTORIES_TO_BE_TESTED=()
 DIRECTORIES_NOT_TO_BE_TESTED=()
-DEFAULT_CLANG_FORMAT="clang-format-8"
-CLANG_FORMAT_CANDIDATES=()
+DEFAULT_CLANG_VERSION="8"
+CLANG_FORMAT_CANDIDATE=clang-format-$DEFAULT_CLANG_VERSION
 PATCH_FILE=format.patch
 CHECK_DIFF_ONLY="0"
 CHECK_STAGED_ONLY="0"
+CLANG_STYLE_FILE=
 
 function Usage()
 {
@@ -17,9 +18,10 @@ function Usage()
   echo "If <file>s are given, it reformats the files"
   echo ""
   echo "Options:"
-  echo "      --clang-format <TOOL>     clang format bin (default: $DEFAULT_CLANG_FORMAT)"
-  echo "      --diff-only               check diff files with master"
-  echo "      --staged-only             check git staged files"
+  echo "      --clang-format-version <version>  clang format version (default: ${DEFAULT_CLANG_VERSION})"
+  echo "      --diff-only                       check diff files with master"
+  echo "      --staged-only                     check git staged files"
+  echo "      --exclude <path>                  exclude format check"
 }
 
 while [[ $# -gt 0 ]]
@@ -30,13 +32,10 @@ do
       Usage
       exit 0
       ;;
-    --clang-format)
-      CLANG_FORMAT_CANDIDATES=($2)
+    --clang-format-version)
+      CLANG_FORMAT_CANDIDATE=clang-format-$2
+      CLANG_STYLE_FILE=.clang-format.$2
       shift 2
-      ;;
-    --clang-format=*)
-      CLANG_FORMAT_CANDIDATES=(${1#*=})
-      shift
       ;;
     --staged-only)
       CHECK_STAGED_ONLY="1"
@@ -46,6 +45,10 @@ do
     --diff-only)
       CHECK_DIFF_ONLY="1"
       shift
+      ;;
+    --exclude)
+      DIRECTORIES_NOT_TO_BE_TESTED+=($2)
+      shift 2
       ;;
     *)
       DIRECTORIES_TO_BE_TESTED+=($1)
@@ -104,18 +107,19 @@ function check_cpp_files() {
     return
   fi
 
-  CLANG_FORMAT_CANDIDATES+=($DEFAULT_CLANG_FORMAT)
-  for CLANG_FORMAT_CANDIDATE in ${CLANG_FORMAT_CANDIDATES[@]}; do
-    if command_exists ${CLANG_FORMAT_CANDIDATE} ; then
-      CLANG_FORMAT="${CLANG_FORMAT_CANDIDATE}"
-      break
-    fi
-  done
+  if command_exists $CLANG_FORMAT_CANDIDATE ; then
+    CLANG_FORMAT=$CLANG_FORMAT_CANDIDATE
+  fi
 
-  if [[ -z ${CLANG_FORMAT}  ]]; then
-    echo "[ERROR] $CLANG_FORMAT is unavailable"
+  if [[ -z "${CLANG_FORMAT}"  ]]; then
+    echo "[ERROR] $CLANG_FORMAT_CANDIDATE is unavailable"
     echo
-    echo "        Please install $DEFAULT_CLANG_FORMAT before running format check"
+    echo "        Please install $CLANG_FORMAT_CANDIDATE before running format check"
+    exit 1
+  fi
+
+  if  [[ -n "${CLANG_STYLE_FILE}" ]] && [[ ! -e ${CLANG_STYLE_FILE} ]]; then
+    echo "[ERROR] Cannot find clang style file: ${CLANG_STYLE_FILE}"
     exit 1
   fi
 
@@ -128,12 +132,20 @@ function check_cpp_files() {
 
   # Skip by '.FORMATDENY' file
   for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
-    FILES_TO_CHECK_CPP=(${FILES_TO_CHECK_CPP[*]/$s*/})
-    FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8=(${FILES_TO_CHECK_CPP_BY_CLANG_FORMAT_8[*]/$s*/})
+    for i in "${!FILES_TO_CHECK_CPP[@]}"; do
+      if [[ "${FILES_TO_CHECK_CPP[$i]}" == "$s"* ]]; then
+        unset FILES_TO_CHECK_CPP[$i]
+      fi
+    done
   done
 
   if [[ ${#FILES_TO_CHECK_CPP} -ne 0 ]]; then
-    ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
+    if [[ -z "${CLANG_STYLE_FILE}" ]]; then
+      ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
+    else
+      # It support clang-format version 14 and upper
+      ${CLANG_FORMAT} -i --style=file:$CLANG_STYLE_FILE ${FILES_TO_CHECK_CPP[@]}
+    fi
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}
@@ -248,7 +260,7 @@ if [[ -s ${PATCH_FILE} ]]; then
 fi
 
 if [[ ${INVALID_EXIT} -ne 0 ]]; then
-  echo "[[FAILED] Invalid format checker exit."
+  echo "[FAILED] Invalid format checker exit."
 fi
 
 exit 1

@@ -26,8 +26,8 @@ namespace ops
 {
 
 ReshapeLayer::ReshapeLayer()
-  : _input{nullptr}, _shape{nullptr}, _output{nullptr}, _deriv_input{nullptr}, _deriv_output{
-                                                                                 nullptr}
+  : _input{nullptr}, _shape{nullptr}, _output{nullptr}, _deriv_input{nullptr},
+    _deriv_output{nullptr}
 {
   // DO NOTHING
 }

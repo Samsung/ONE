@@ -57,9 +57,8 @@ public:
                  std::unique_ptr<exec::train::optimizer::Optimizer> optimizer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : onert::backend::train::TrainableBackendContext(backend, std::move(tdata), tensor_registry),
-      kernel_gen{kernel_gen},
-      _external_context(new ExternalContext), _tensor_builder{tensor_builder}, _optimizer{std::move(
-                                                                                 optimizer)}
+      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
+      _tensor_builder{tensor_builder}, _optimizer{std::move(optimizer)}
   {
   }
   BackendContext(const BackendContext &) = delete;

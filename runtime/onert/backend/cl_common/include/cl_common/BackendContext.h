@@ -41,8 +41,8 @@ public:
                  std::shared_ptr<T_ConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<T_KernelGenerator> kernel_gen = nullptr)
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, constant_initializer{constant_initializer}, kernel_gen{
-                                                                                    kernel_gen}
+      tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
+      kernel_gen{kernel_gen}
   {
   }
 

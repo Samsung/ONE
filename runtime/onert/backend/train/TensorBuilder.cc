@@ -28,8 +28,8 @@ namespace train
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
                              const exec::train::optimizer::Optimizer *optimizer,
                              const std::string planner_id)
-  : _tensor_reg{tensor_reg}, _tensor_mgr{new TensorManager(tensor_reg, planner_id)}, _optimizer{
-                                                                                       optimizer}
+  : _tensor_reg{tensor_reg}, _tensor_mgr{new TensorManager(tensor_reg, planner_id)},
+    _optimizer{optimizer}
 {
   /* empty */
 }
