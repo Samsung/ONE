@@ -98,6 +98,7 @@ class CONSTANT:
         ('fuse_batchnorm_with_conv', 'fuse BatchNorm op to Convolution op'),
         ('fuse_batchnorm_with_dwconv', 'fuse BatchNorm op to Depthwise Convolution op'),
         ('fuse_batchnorm_with_tconv', 'fuse BatchNorm op to Transposed Convolution op'),
+        ('fuse_slice_with_tconv', 'fuse Slice op to Transposed Convolution op'),
         ('fuse_bcq', 'apply Binary Coded Quantization'),
         ('fuse_preactivation_batchnorm',
          'fuse BatchNorm operators of pre-activations to Convolution op'),
