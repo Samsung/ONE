@@ -25,6 +25,7 @@
 #include <kernels/Cast.h>
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
+#include <kernels/Cos.h>
 #include <kernels/DepthToSpace.h>
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Div.h>
@@ -297,6 +298,20 @@ TEST_F(KernelBuilderTest, Conv2D)
   EXPECT_THAT(kernel->params().dilation_height_factor, Eq(op->dilation()->h()));
   EXPECT_THAT(kernel->params().dilation_width_factor, Eq(op->dilation()->w()));
   EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
+}
+
+TEST_F(KernelBuilderTest, Cos)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleCos>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Cos>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
 }
 
 TEST_F(KernelBuilderTest, DepthToSpace)
