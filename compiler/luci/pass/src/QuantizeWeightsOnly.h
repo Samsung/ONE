@@ -43,6 +43,7 @@ private:
 
   void visit(luci::CircleConv2D *node);
   void visit(luci::CircleDepthwiseConv2D *node);
+  void visit(luci::CircleFullyConnected *node);
   void visit(luci::CircleNode *);
 };
 

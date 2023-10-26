@@ -205,6 +205,20 @@ void QuantizeWeightsOnly::visit(luci::CircleConv2D *node)
   }
 }
 
+void QuantizeWeightsOnly::visit(luci::CircleFullyConnected *node)
+{
+  LOGGER(l);
+  INFO(l) << "QuantizeWeightsOnly visit node: " << node->name() << std::endl;
+
+  auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
+  if (!is_quantized(weights))
+  {
+    auto new_weights = luci::clone(weights);
+    node->weights(new_weights);
+    quantize_weights(new_weights);
+  }
+}
+
 void QuantizeWeightsOnly::visit(luci::CircleDepthwiseConv2D *node)
 {
   LOGGER(l);
