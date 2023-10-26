@@ -187,6 +187,7 @@ Current transformation options are
 - remove_redundant_quantize : This removes redundant quantize operators.
 - remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
+- remove_unnecessary_add : This removes unnecessary add operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.
 - remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
