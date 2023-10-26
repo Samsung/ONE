@@ -1,0 +1,6 @@
+# To check if horizontal FullyConnected and Add kernels are fused
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "ADD_REMOVED"             $(op_count ADD) '=' 0
+RULE    "FC_FUSED"                $(op_count FULLY_CONNECTED) '=' 1
