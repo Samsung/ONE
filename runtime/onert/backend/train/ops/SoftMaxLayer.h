@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
-#define __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPS_SOFTMAXLAYER_H__
+#define __ONERT_BACKEND_TRAIN_OPS_SOFTMAXLAYER_H__
 
-#include <ops/OperationUtils.h>
+#include <ops/SoftMaxLayer.h>
+#include <backend/IPortableTensor.h>
+
+#include <exec/train/ITrainableFunction.h>
 
 namespace onert
 {
@@ -28,16 +31,25 @@ namespace train
 namespace ops
 {
 
-using OperandType = onert::ir::DataType;
-using cpu::ops::getBuffer;
-using cpu::ops::getShape;
-using cpu::ops::getNumberOfDimensions;
-using cpu::ops::getNumberOfElements;
-using cpu::ops::getSizeOfDimension;
+class SoftMaxLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::SoftMaxLayer
+{
+public:
+  SoftMaxLayer();
+
+public:
+  void configure(const IPortableTensor *input, const float beta, IPortableTensor *output,
+                 IPortableTensor *deriv_input, const IPortableTensor *deriv_output);
+  void forward(bool training) override;
+  void backward() override;
+
+private:
+  IPortableTensor *_deriv_input;
+  const IPortableTensor *_deriv_output;
+};
 
 } // namespace ops
 } // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
+#endif // __ONERT_BACKEND_TRAIN_OPS_SOFTMAXLAYER_H__
