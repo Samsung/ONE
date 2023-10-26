@@ -23,6 +23,9 @@
 namespace luci
 {
 
+namespace
+{
+
 bool check_type_and_shape_equality(const CircleNode *left, const CircleNode *right)
 {
   if (left->dtype() != right->dtype())
@@ -165,6 +168,8 @@ bool fuse_horizontal_fc_nodes(CircleAdd *add_node)
 
   return true;
 }
+
+} // namespace
 
 /**
  * @brief  Class to fuse horizontal FC layers
