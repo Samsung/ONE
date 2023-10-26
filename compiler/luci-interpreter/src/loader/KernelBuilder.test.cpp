@@ -68,6 +68,7 @@
 #include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/ReverseV2.h>
 #include <kernels/Rsqrt.h>
+#include <kernels/Sin.h>
 #include <kernels/Slice.h>
 #include <kernels/Softmax.h>
 #include <kernels/SpaceToDepth.h>
@@ -1078,6 +1079,20 @@ TEST_F(KernelBuilderTest, Rsqrt)
   op->x(input);
 
   auto kernel = buildKernel<kernels::Rsqrt>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Sin)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleSin>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Sin>(op);
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
