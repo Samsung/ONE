@@ -407,8 +407,6 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
     {
       sym_wquant_per_channel(weights, scaling_factor, channel_dim_index);
     }
-    quantparam->min.clear();
-    quantparam->max.clear();
     quantparam->quantized_dimension = channel_dim_index;
   }
   // Find min/max per layer-wise
@@ -449,8 +447,6 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
     auto min = quantparam->min[0];
     auto scaling_factor = quantparam->scale[0];
     asym_wquant_per_layer(weights, min, scaling_factor);
-    quantparam->min.clear();
-    quantparam->max.clear();
   }
 }
 void QuantizeWeights::visit(luci::CircleConv2D *node)

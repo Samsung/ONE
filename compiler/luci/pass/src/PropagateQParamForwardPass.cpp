@@ -141,7 +141,7 @@ struct PropagateQParamForward final : public luci::CircleNodeMutableVisitor<bool
       case luci::ActivationQType::PreDefinedLogistic:
       case luci::ActivationQType::PreDefinedTanh:
       case luci::ActivationQType::PreDefinedSoftmax:
-        node->quantparam(luci::make_predefined_qparam(qtype, node->dtype()));
+        node->quantparam(luci::make_predefined_qparam(qtype, node->dtype(), node->quantparam()));
         break;
       case luci::ActivationQType::IntScale:
         luci::set_int_scale(node);

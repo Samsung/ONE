@@ -110,26 +110,30 @@ void QuantizeSpecialActivation::visit(luci::CircleNode *node)
   auto fused_act_node = dynamic_cast<CircleNodeMixin<CircleNodeTrait::FusedActFunc> *>(node);
   if (fused_act_node != nullptr && fused_act_node->fusedActivationFunction() == FusedActFunc::TANH)
   {
-    auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedTanh, output_type);
+    auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedTanh, output_type,
+                                         node->quantparam());
     node->quantparam(std::move(qparam));
   }
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleLogistic *node)
 {
-  auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedLogistic, output_type);
+  auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedLogistic, output_type,
+                                       node->quantparam());
   node->quantparam(std::move(qparam));
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleTanh *node)
 {
-  auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedTanh, output_type);
+  auto qparam =
+    make_predefined_qparam(luci::ActivationQType::PreDefinedTanh, output_type, node->quantparam());
   node->quantparam(std::move(qparam));
 }
 
 void QuantizeSpecialActivation::visit(luci::CircleSoftmax *node)
 {
-  auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedSoftmax, output_type);
+  auto qparam = make_predefined_qparam(luci::ActivationQType::PreDefinedSoftmax, output_type,
+                                       node->quantparam());
   node->quantparam(std::move(qparam));
 }
 
