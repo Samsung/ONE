@@ -201,6 +201,6 @@ addevaltol(SVDF_000 8e-3 8e-3)
 addevaltol(SVDF_001 8e-3 8e-3)
 # TODO fix Conv2D_U8_000 to test without tolerenace
 # refer https://github.com/Samsung/ONE/issues/11255#issuecomment-1685424361
-addeval(Conv2D_U8_000 5 5)
+addevaltol(Conv2D_U8_000 5 5)
 # refer https://github.com/Samsung/ONE/issues/10438
 addevaltol(YUV_TO_RGB_U8_000 1 1)
