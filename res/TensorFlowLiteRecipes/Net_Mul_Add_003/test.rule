@@ -1,0 +1,6 @@
+# To check if unnecessary Add is removed from sample graph
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "MUL_EXIST"             $(op_count MUL) '=' 1
+RULE    "ADD_NOT_EXIST"         $(op_count ADD) '=' 0

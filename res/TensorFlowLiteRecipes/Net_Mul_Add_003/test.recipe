@@ -1,0 +1,52 @@
+# test for Add(zero_broadcasted, Mul) is converted to Mul
+
+operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 1 dim: 15 dim: 16 dim: 17 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 15 dim: 16 dim: 17 }
+}
+operand {
+  name: "mul_ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 15 dim: 16 dim: 17 }
+}
+operation {
+    type: "Mul"
+    input: "ifm1"
+    input: "ifm2"
+    output: "mul_ofm"
+    mul_options {
+      activation: NONE
+    }
+}
+operand {
+  name: "zero_broadcasted"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 16 dim: 17 }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 15 dim: 16 dim: 17 }
+}
+operation {
+    type: "Add"
+    input: "zero_broadcasted"
+    input: "mul_ofm"
+    output: "ofm"
+    add_options {
+      activation: NONE
+    }
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
