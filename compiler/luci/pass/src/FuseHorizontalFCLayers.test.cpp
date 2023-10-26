@@ -171,3 +171,15 @@ TEST(FuseHorizontalFCLayersPassTest, fuse_horizontal_nodes_NEG)
 
   EXPECT_FALSE(pass.run(g.g()));
 }
+
+TEST(FuseHorizontalFCLayersPassTest, wrong_dtype_NEG)
+{
+  FuseHorizontalFCLayersTestGraph g;
+  luci::FuseHorizontalFullyConnectedPass pass;
+
+  g.init();
+
+  g.get_left_fc()->dtype(loco::DataType::S32);
+
+  EXPECT_FALSE(pass.run(g.g()));
+}

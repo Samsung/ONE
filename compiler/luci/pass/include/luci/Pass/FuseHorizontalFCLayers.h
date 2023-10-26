@@ -22,34 +22,6 @@
 namespace luci
 {
 
-/**
- * @brief  Class to fuse horizontal FC layers
- *
- *  Before
- *
- *     +---- [In] ----+
- *     |              |
- *     V              V
- *   fc1 (w1, b1)   fc2 (w2, b2)
- *     |              |
- *     |              |
- *     +---> add <----+
- *            |
- *            V
- *          [Out]
- *
- *  After
- *
- *     [In]
- *      |
- *      V
- *     fc3 (w1+w2, b1+b2)
- *      |
- *      V
- *     [Out]
- *
- *     Shape/dtype of fc1, fc2, and fc3 should be the same.
- */
 struct FuseHorizontalFullyConnectedPass final : public logo::Pass
 {
   const char *name(void) const final { return "luci::FuseHorizontalFullyConnectedPass"; }

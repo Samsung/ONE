@@ -20,9 +20,10 @@
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
-namespace
+namespace luci
 {
-bool check_type_and_shape_equality(const luci::CircleNode *left, const luci::CircleNode *right)
+
+bool check_type_and_shape_equality(const CircleNode *left, const CircleNode *right)
 {
   if (left->dtype() != right->dtype())
     return false;
@@ -40,8 +41,7 @@ bool check_type_and_shape_equality(const luci::CircleNode *left, const luci::Cir
 }
 
 // Add right const to left const (left is updated)
-template <loco::DataType D>
-void sum_const_values(luci::CircleConst *left, const luci::CircleConst *right)
+template <loco::DataType D> void sum_const_values(CircleConst *left, const CircleConst *right)
 {
   assert(check_type_and_shape_equality(left, right)); // FIX CALLER UNLESS
   const auto size = left->template size<D>();
@@ -52,11 +52,11 @@ void sum_const_values(luci::CircleConst *left, const luci::CircleConst *right)
   }
 }
 
-bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
+bool fuse_horizontal_fc_nodes(CircleAdd *add_node)
 {
   // Let's check left and right FC nodes
-  auto left_fc_node = dynamic_cast<luci::CircleFullyConnected *>(add_node->x());
-  auto right_fc_node = dynamic_cast<luci::CircleFullyConnected *>(add_node->y());
+  auto left_fc_node = dynamic_cast<CircleFullyConnected *>(add_node->x());
+  auto right_fc_node = dynamic_cast<CircleFullyConnected *>(add_node->y());
 
   if (left_fc_node == nullptr or right_fc_node == nullptr)
     return false;
@@ -64,10 +64,10 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
   if (not check_type_and_shape_equality(left_fc_node, right_fc_node))
     return false;
 
-  if (left_fc_node->fusedActivationFunction() != luci::FusedActFunc::NONE)
+  if (left_fc_node->fusedActivationFunction() != FusedActFunc::NONE)
     return false;
 
-  if (right_fc_node->fusedActivationFunction() != luci::FusedActFunc::NONE)
+  if (right_fc_node->fusedActivationFunction() != FusedActFunc::NONE)
     return false;
 
   // Let's check that FC nodes have the same input
@@ -75,8 +75,8 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
     return false;
 
   // Lets check left and right FC weights: type and shape
-  auto left_fc_weights = dynamic_cast<luci::CircleConst *>(left_fc_node->weights());
-  auto right_fc_weights = dynamic_cast<luci::CircleConst *>(right_fc_node->weights());
+  auto left_fc_weights = dynamic_cast<CircleConst *>(left_fc_node->weights());
+  auto right_fc_weights = dynamic_cast<CircleConst *>(right_fc_node->weights());
 
   if (left_fc_weights == nullptr or right_fc_weights == nullptr)
     return false;
@@ -85,8 +85,8 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
     return false;
 
   // Lets check left and right FC bias: type and shape
-  auto left_fc_bias = dynamic_cast<luci::CircleConst *>(left_fc_node->bias());
-  auto right_fc_bias = dynamic_cast<luci::CircleConst *>(right_fc_node->bias());
+  auto left_fc_bias = dynamic_cast<CircleConst *>(left_fc_node->bias());
+  auto right_fc_bias = dynamic_cast<CircleConst *>(right_fc_node->bias());
 
   // Support only if both biases are const, or both are non-const
   // TODO Support the case that one FC has a const bias and another FC has no bias.
@@ -103,8 +103,8 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
   // Both left/right bias are non-const. Check left/right fc has no bias.
   if (left_fc_bias == nullptr)
   {
-    auto left_no_bias = dynamic_cast<luci::CircleOutputExclude *>(left_fc_node->bias());
-    auto right_no_bias = dynamic_cast<luci::CircleOutputExclude *>(right_fc_node->bias());
+    auto left_no_bias = dynamic_cast<CircleOutputExclude *>(left_fc_node->bias());
+    auto right_no_bias = dynamic_cast<CircleOutputExclude *>(right_fc_node->bias());
     if (not left_no_bias or not right_no_bias)
       return false;
   }
@@ -119,16 +119,16 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
   }
 
   // Lets create fused FC weights and bias
-  auto fused_fc_weights = luci::clone(left_fc_weights);
-  luci::add_origin(fused_fc_weights, luci::composite_origin({luci::get_origin(left_fc_weights),
-                                                             luci::get_origin(right_fc_weights)}));
+  auto fused_fc_weights = clone(left_fc_weights);
+  add_origin(fused_fc_weights,
+             composite_origin({get_origin(left_fc_weights), get_origin(right_fc_weights)}));
 
-  luci::CircleConst *fused_fc_bias = nullptr;
+  CircleConst *fused_fc_bias = nullptr;
   if (left_fc_bias != nullptr)
   {
-    fused_fc_bias = luci::clone(left_fc_bias);
-    luci::add_origin(fused_fc_bias, luci::composite_origin({luci::get_origin(left_fc_bias),
-                                                            luci::get_origin(right_fc_bias)}));
+    fused_fc_bias = clone(left_fc_bias);
+    add_origin(fused_fc_bias,
+               composite_origin({get_origin(left_fc_bias), get_origin(right_fc_bias)}));
   }
 
   assert(fused_fc_weights->dtype() == loco::DataType::FLOAT32);
@@ -142,7 +142,7 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
 
   // Create fused FC node
   auto graph = left_fc_node->graph();
-  auto fused_fc_node = graph->nodes()->create<luci::CircleFullyConnected>();
+  auto fused_fc_node = graph->nodes()->create<CircleFullyConnected>();
   fused_fc_node->input(left_fc_node->input());
   fused_fc_node->weights(fused_fc_weights);
   if (fused_fc_bias)
@@ -151,34 +151,55 @@ bool fuse_horizontal_fc_nodes(luci::CircleAdd *add_node)
   }
   else
   {
-    assert(nullptr !=
-           dynamic_cast<luci::CircleOutputExclude *>(left_fc_node->bias())); // FIX ME UNLESS
+    assert(nullptr != dynamic_cast<CircleOutputExclude *>(left_fc_node->bias())); // FIX ME UNLESS
     fused_fc_node->bias(left_fc_node->bias());
   }
 
   fused_fc_node->fusedActivationFunction(add_node->fusedActivationFunction());
   fused_fc_node->name(left_fc_node->name() + "_" + right_fc_node->name() + "_fused");
 
-  luci::add_origin(fused_fc_node, luci::composite_origin({luci::get_origin(left_fc_node),
-                                                          luci::get_origin(right_fc_node),
-                                                          luci::get_origin(add_node)}));
+  add_origin(fused_fc_node, composite_origin({get_origin(left_fc_node), get_origin(right_fc_node),
+                                              get_origin(add_node)}));
 
   replace(add_node).with(fused_fc_node);
 
   return true;
 }
 
-} // namespace
-
-namespace luci
-{
-
+/**
+ * @brief  Class to fuse horizontal FC layers
+ *
+ *  Before
+ *
+ *     +---- [In] ----+
+ *     |              |
+ *     V              V
+ *   fc1 (w1, b1)   fc2 (w2, b2)
+ *     |              |
+ *     |              |
+ *     +---> add <----+
+ *            |
+ *            V
+ *          [Out]
+ *
+ *  After
+ *
+ *     [In]
+ *      |
+ *      V
+ *     fc3 (w1+w2, b1+b2)
+ *      |
+ *      V
+ *     [Out]
+ *
+ *     Shape/dtype of fc1, fc2, and fc3 should be the same.
+ */
 bool FuseHorizontalFullyConnectedPass::run(loco::Graph *g)
 {
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto add_node = dynamic_cast<luci::CircleAdd *>(node);
+    auto add_node = dynamic_cast<CircleAdd *>(node);
     if (not add_node)
       continue;
 
