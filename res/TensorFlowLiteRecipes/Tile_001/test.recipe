@@ -1,0 +1,29 @@
+# mulplies 2D, dim(0) and dim(1)
+
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "multiples"
+  type: INT32
+  shape { dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "2" arg: "2"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 6 }
+}
+operation {
+  type: "Tile"
+  input: "ifm"
+  input: "multiples"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
