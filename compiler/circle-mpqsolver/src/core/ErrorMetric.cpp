@@ -64,7 +64,7 @@ float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) co
 
   if (num_output_errors == 0)
   {
-    throw std::runtime_error("nothing to compare");
+    throw std::runtime_error("Nothing to compare");
   }
 
   return static_cast<float>(output_errors / num_output_errors);
