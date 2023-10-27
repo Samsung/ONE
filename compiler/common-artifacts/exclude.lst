@@ -30,7 +30,6 @@ tcgenerate(BatchToSpaceND_000)
 tcgenerate(BroadcastTo_000) # luci-interpreter doesn't support custom operator
 tcgenerate(Ceil_000)
 tcgenerate(Conv2D_003) # runtime doesn't support dilation
-tcgenerate(Cos_000)
 tcgenerate(Densify_000) # luci-interpreter doesn't support
 tcgenerate(DepthwiseConv2D_001) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_003) # runtime doesn't support dilation
@@ -131,7 +130,6 @@ tcgenerate(SelectV2_000)
 tcgenerate(SelectV2_001)
 tcgenerate(SelectV2_002)
 tcgenerate(Shape_000)
-tcgenerate(Sin_000)
 tcgenerate(Slice_001) # luci-interpreter doesn't support Slice with -1
 tcgenerate(SpaceToBatchND_000)
 tcgenerate(SpaceToBatchND_001)
@@ -144,7 +142,6 @@ tcgenerate(Sum_000)
 tcgenerate(Sum_001)
 tcgenerate(Sum_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(Sum_dynamic_001) # TestDataGenerator does not support unknown dimension
-tcgenerate(Tile_000)
 tcgenerate(Tile_U8_000)
 tcgenerate(TopKV2_000)
 tcgenerate(TopKV2_001)
