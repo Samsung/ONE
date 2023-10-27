@@ -80,6 +80,7 @@
 #include <kernels/StridedSlice.h>
 #include <kernels/Sub.h>
 #include <kernels/Tanh.h>
+#include <kernels/Tile.h>
 #include <kernels/Transpose.h>
 #include <kernels/TransposeConv.h>
 #include <kernels/Unpack.h>
@@ -1313,6 +1314,23 @@ TEST_F(KernelBuilderTest, Tanh)
   ASSERT_THAT(kernel, NotNull());
 
   checkTensor(kernel->input(), input);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Tile)
+{
+  auto *input = createInputNode();
+  auto *multiples = createInputNode();
+
+  auto *op = createNode<luci::CircleTile>();
+  op->input(input);
+  op->multiples(multiples);
+
+  auto kernel = buildKernel<kernels::Tile>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->multiples(), multiples);
   checkTensor(kernel->output(), op);
 }
 
