@@ -121,18 +121,44 @@ void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph
   auto *cond_runtime_graph = runtime_module->getRuntimeGraphAt(cond_subgraph_index);
   auto *body_runtime_graph = runtime_module->getRuntimeGraphAt(body_subgraph_index);
 
-  do
+  int32_t repeat_count = 0;
+
+  if (not cond_runtime_graph->isRunnableGraph())
   {
     cond_runtime_graph->selectOwnSubgraph();
 
-    for (int32_t i = 0; i < input_size; ++i)
-      cond_runtime_graph->configureGraphInput(i, operation_inputs_data[i]);
+    const auto cond_op = cond_runtime_graph->getOpAt(0);
+    const auto cond_op_input_index_const = cond_op->inputs()->operator[](1);
+    assert(cond_op_input_index_const != -1);
 
-    cond_runtime_graph->execute();
+    const auto const_input_less =
+      cond_runtime_graph->getCircleTensorByIndex(cond_op_input_index_const);
+    const auto const_input_less_data = cond_runtime_graph->getConstDataByTensor(const_input_less);
 
-    bool cond_value = (cond_runtime_graph->getOutputDataByIndex(0))[0];
-    if (!cond_value)
-      break;
+    repeat_count = reinterpret_cast<int32_t *>(const_input_less_data)[0];
+  }
+
+  do
+  {
+    if (cond_runtime_graph->isRunnableGraph())
+    {
+      cond_runtime_graph->selectOwnSubgraph();
+
+      for (int32_t i = 0; i < input_size; ++i)
+        cond_runtime_graph->configureGraphInput(i, operation_inputs_data[i]);
+
+      cond_runtime_graph->execute();
+
+      bool cond_value = (cond_runtime_graph->getOutputDataByIndex(0))[0];
+      if (!cond_value)
+        break;
+    }
+    else
+    {
+      if (repeat_count == 0)
+        break;
+      repeat_count--;
+    }
 
     body_runtime_graph->selectOwnSubgraph();
     for (int32_t i = 0; i < input_size; ++i)
@@ -149,8 +175,11 @@ void execute_kernel_CircleWhile(const circle::Operator *cur_op, BaseRuntimeGraph
     }
   } while (true);
 
-  cond_runtime_graph->resetOutputTensorsData();
-  cond_runtime_graph->clearTensors();
+  if (cond_runtime_graph->isRunnableGraph())
+  {
+    cond_runtime_graph->resetOutputTensorsData();
+    cond_runtime_graph->clearTensors();
+  }
 
   body_runtime_graph->selectOwnSubgraph();
   body_runtime_graph->resetOutputTensorsData();

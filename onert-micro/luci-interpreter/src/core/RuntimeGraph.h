@@ -135,6 +135,12 @@ public:
   void removeDynamicShapeTensor(const circle::Tensor *tensor);
 #endif // DIS_DYN_SHAPES
 
+  const circle::Operator *getOpAt(uint32_t index);
+
+  bool isRunnableGraph() { return _is_runnable; }
+
+  void setRunnableGraph(bool is_runnable) { _is_runnable = is_runnable; }
+
 private:
   void buildAllocDeallocPlan(bool dealloc_input);
   void allocate(size_t kernel_index);
@@ -149,6 +155,8 @@ private:
   std::unordered_set<const circle::Operator *> _inplace_op_indexes;
 
   bool _is_valid = false;
+
+  bool _is_runnable = true;
 
 #ifdef ENABLE_TRAINING
   uint32_t _number_of_last_trainable_layers = 0; // 0 means there is no training
