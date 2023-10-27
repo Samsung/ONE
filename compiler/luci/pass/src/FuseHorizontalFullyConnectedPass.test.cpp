@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/FuseHorizontalFCLayers.h"
+#include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include <luci/IR/CircleNodes.h>
 
 #include <luci/test/TestIOGraph.h>

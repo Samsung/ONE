@@ -41,7 +41,7 @@
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
 #include "luci/Pass/FuseSliceWithTConvPass.h"
-#include "luci/Pass/FuseHorizontalFCLayers.h"
+#include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/RemoveDuplicateConstPass.h"
