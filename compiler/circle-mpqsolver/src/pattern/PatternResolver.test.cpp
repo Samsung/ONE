@@ -129,6 +129,80 @@ public:
   }
 };
 
+class SoftmaxGraphlet
+{
+public:
+  SoftmaxGraphlet() = default;
+  virtual ~SoftmaxGraphlet() = default;
+
+  void init(loco::Graph *g)
+  {
+    ifm = nullptr;
+
+    ifm = g->nodes()->create<luci::CircleAbs>();
+    max = g->nodes()->create<luci::CircleReduceMax>();
+    sub = g->nodes()->create<luci::CircleSub>();
+    exp = g->nodes()->create<luci::CircleExp>();
+    sum = g->nodes()->create<luci::CircleSum>();
+    div = g->nodes()->create<luci::CircleDiv>();
+    _softmax_indices = g->nodes()->create<luci::CircleConst>();
+
+    ifm->name("ifm");
+    max->name("maximum_of_ifm");
+    sub->name("sub");
+    exp->name("exp");
+    sum->name("sum");
+    div->name("div");
+    _softmax_indices->name("reduction_indices");
+
+    _softmax_indices->dtype(loco::DataType::S32);
+    _softmax_indices->size<loco::DataType::S32>(1);
+    _softmax_indices->shape({1});
+    _softmax_indices->at<loco::DataType::S32>(0) = -1;
+    _softmax_indices->shape_status(luci::ShapeStatus::VALID);
+
+    max->keep_dims(true);
+    sum->keep_dims(true);
+  }
+
+public:
+  luci::CircleAbs *ifm = nullptr;
+  luci::CircleReduceMax *max = nullptr;
+  luci::CircleSub *sub = nullptr;
+  luci::CircleExp *exp = nullptr;
+  luci::CircleSum *sum = nullptr;
+  luci::CircleDiv *div = nullptr;
+
+protected:
+  luci::CircleConst *_softmax_indices = nullptr;
+};
+
+class SoftmaxTestGraph : public TestIOGraph, public SoftmaxGraphlet
+{
+public:
+  SoftmaxTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1, 12, 11, 15}, {1, 12, 11, 15});
+    SoftmaxGraphlet::init(g());
+
+    ifm->x(input());
+    max->input(ifm);
+    max->reduction_indices(_softmax_indices);
+
+    sub->x(ifm);
+    sub->y(max);
+    exp->x(sub);
+    sum->input(exp);
+    sum->reduction_indices(_softmax_indices);
+    div->x(exp);
+    div->y(sum);
+
+    output()->from(div);
+  }
+};
+
 } // namespace
 
 TEST(LayerNormPatternResolverTest, resolve_pattern)
@@ -166,5 +240,42 @@ TEST(LayerNormPatternResolverTest, resolve_pattern_NEG)
 {
   std::map<luci::CircleNode *, LayerParam> params;
   mpqsolver::pattern::Q8LayerNormWithQ16VarianceResolver resolver;
+  EXPECT_ANY_THROW(resolver.resolve(nullptr));
+}
+
+TEST(SoftmaxResolverTest, resolve_pattern)
+{
+  auto m = luci::make_module();
+  SoftmaxTestGraph g;
+  g.init();
+  g.transfer_to(m.get());
+
+  std::map<luci::CircleNode *, LayerParam> params;
+  mpqsolver::pattern::Q8SoftmaxWithQ16SubExpResolver resolver;
+  EXPECT_NO_THROW({ params = resolver.resolve(m.get()); });
+
+  std::set<luci::CircleNode *> q16_nodes = {g.sub, g.exp};
+  std::set<luci::CircleNode *> q8_nodes = {g.ifm, g.max, g.sum, g.div};
+
+  // params of all valid layers are set
+  EXPECT_EQ(params.size(), q16_nodes.size() + q8_nodes.size());
+
+  for (auto param : params)
+  {
+    // params of all layers are set as prescribed
+    if (q16_nodes.find(param.first) != q16_nodes.end())
+    {
+      EXPECT_STREQ(param.second.dtype.c_str(), "int16");
+    }
+    else if (q8_nodes.find(param.first) != q8_nodes.end())
+    {
+      EXPECT_STREQ(param.second.dtype.c_str(), "uint8");
+    }
+  }
+}
+
+TEST(SoftmaxPatternResolverTest, resolve_pattern_NEG)
+{
+  mpqsolver::pattern::Q8SoftmaxWithQ16SubExpResolver resolver;
   EXPECT_ANY_THROW(resolver.resolve(nullptr));
 }
