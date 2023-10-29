@@ -172,7 +172,7 @@ Q8LayerNormWithQ16VarianceResolver::resolve(const luci::Module *module)
 {
   if (!module)
   {
-    throw std::runtime_error("no module for pattern resolving");
+    throw std::runtime_error("No module for pattern resolving");
   }
 
   std::map<luci::CircleNode *, LayerParam> nodes_params;
