@@ -29,7 +29,10 @@ using namespace mpqsolver::core;
  */
 float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) const
 {
-  assert(first.size() == second.size());
+  if (first.size() != second.size())
+  {
+    throw std::runtime_error("Can not compare vectors of different sizes");
+  }
 
   double output_errors = 0.; // mean over mean outputs errors
   size_t num_output_errors = 0;
