@@ -626,7 +626,7 @@ var searchData=
   ['tftanh_623',['TFTanh',['../classmoco_1_1_t_f_tanh.html',1,'moco']]],
   ['tftypeinferencerule_624',['TFTypeInferenceRule',['../structmoco_1_1_t_f_type_inference_rule.html',1,'moco']]],
   ['threadpool_625',['ThreadPool',['../classonert_1_1exec_1_1_thread_pool.html',1,'onert::exec']]],
-  ['tile_626',['Tile',['../classonert_1_1ir_1_1operation_1_1_tile.html',1,'onert::ir::operation']]],
+  ['tile_626',['Tile',['../classluci__interpreter_1_1kernels_1_1_tile.html',1,'luci_interpreter::kernels::Tile'],['../classonert_1_1ir_1_1operation_1_1_tile.html',1,'onert::ir::operation::Tile']]],
   ['tilechef_627',['TileChef',['../class_tile_chef.html',1,'']]],
   ['tilecheffactory_628',['TileChefFactory',['../struct_tile_chef_factory.html',1,'']]],
   ['tilelayer_629',['TileLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_tile_layer.html',1,'onert::backend::cpu::ops']]],

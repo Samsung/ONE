@@ -161,11 +161,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantize_with_min_max_pass_8h_source.html#l00049">49</a> of file <a class="el" href="_quantize_with_min_max_pass_8h_source.html">QuantizeWithMinMaxPass.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>                                                       : _ctx{std::move(ctx)}</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   52</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_quantize_with_min_max_pass_8h_source.html#l00050">50</a> of file <a class="el" href="_quantize_with_min_max_pass_8h_source.html">QuantizeWithMinMaxPass.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                       : _ctx{std::move(ctx)}</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   53</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -196,8 +196,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlogo_1_1_pass.html#a5c40912ff3bad046c4b07ca2b4aadec1">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_quantize_with_min_max_pass_8h_source.html#l00054">54</a> of file <a class="el" href="_quantize_with_min_max_pass_8h_source.html">QuantizeWithMinMaxPass.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;luci::QuantizeWithMinMaxPass&quot;</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_quantize_with_min_max_pass_8h_source.html#l00055">55</a> of file <a class="el" href="_quantize_with_min_max_pass_8h_source.html">QuantizeWithMinMaxPass.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;luci::QuantizeWithMinMaxPass&quot;</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -421,21 +421,24 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  700</span>    phase_runner.run(phase);</div>
 <div class="line"><span class="lineno">  701</span>  }</div>
 <div class="line"><span class="lineno">  702</span> </div>
-<div class="line"><span class="lineno">  703</span>  <span class="comment">// Remove min/max values</span></div>
-<div class="line"><span class="lineno">  704</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  705</span>  {</div>
-<div class="line"><span class="lineno">  706</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  707</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> qparam = circle_node-&gt;quantparam())</div>
-<div class="line"><span class="lineno">  708</span>    {</div>
-<div class="line"><span class="lineno">  709</span>      <a class="code hl_function" href="namespaceluci.html#a1ef77fe953130949713bdae6c170b133">warn_accuracy_with_range</a>(circle_node);</div>
-<div class="line"><span class="lineno">  710</span>      qparam-&gt;min.clear();</div>
-<div class="line"><span class="lineno">  711</span>      qparam-&gt;max.clear();</div>
-<div class="line"><span class="lineno">  712</span>    }</div>
-<div class="line"><span class="lineno">  713</span>  }</div>
-<div class="line"><span class="lineno">  714</span> </div>
-<div class="line"><span class="lineno">  715</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeWithMinMaxPass End&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  716</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
-<div class="line"><span class="lineno">  717</span>}</div>
+<div class="line"><span class="lineno">  703</span>  <span class="keywordflow">if</span> (not _ctx-&gt;save_min_max)</div>
+<div class="line"><span class="lineno">  704</span>  {</div>
+<div class="line"><span class="lineno">  705</span>    <span class="comment">// Remove min/max values</span></div>
+<div class="line"><span class="lineno">  706</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a2316705571d54991d81041a0b9cbc557">loco::all_nodes</a>(g))</div>
+<div class="line"><span class="lineno">  707</span>    {</div>
+<div class="line"><span class="lineno">  708</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  709</span>      <span class="keywordflow">if</span> (<span class="keyword">auto</span> qparam = circle_node-&gt;quantparam())</div>
+<div class="line"><span class="lineno">  710</span>      {</div>
+<div class="line"><span class="lineno">  711</span>        <a class="code hl_function" href="namespaceluci.html#a1ef77fe953130949713bdae6c170b133">warn_accuracy_with_range</a>(circle_node);</div>
+<div class="line"><span class="lineno">  712</span>        qparam-&gt;min.clear();</div>
+<div class="line"><span class="lineno">  713</span>        qparam-&gt;max.clear();</div>
+<div class="line"><span class="lineno">  714</span>      }</div>
+<div class="line"><span class="lineno">  715</span>    }</div>
+<div class="line"><span class="lineno">  716</span>  }</div>
+<div class="line"><span class="lineno">  717</span> </div>
+<div class="line"><span class="lineno">  718</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeWithMinMaxPass End&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  719</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
+<div class="line"><span class="lineno">  720</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition:</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition:</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
@@ -446,7 +449,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition:</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespacelogo_html_a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d"><div class="ttname"><a href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a></div><div class="ttdeci">@ Saturate</div></div>
 <div class="ttc" id="anamespacelogo_html_ad0979fe288c253875f561bc041393cd4"><div class="ttname"><a href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2logo-core_2include_2logo_2_phase_8h_source.html#l00031">Phase.h:31</a></div></div>
-<div class="ttc" id="anamespaceluci_html_a1ef77fe953130949713bdae6c170b133"><div class="ttname"><a href="namespaceluci.html#a1ef77fe953130949713bdae6c170b133">luci::warn_accuracy_with_range</a></div><div class="ttdeci">void warn_accuracy_with_range(luci::CircleNode *n)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00497">QuantizationUtils.cpp:497</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a1ef77fe953130949713bdae6c170b133"><div class="ttname"><a href="namespaceluci.html#a1ef77fe953130949713bdae6c170b133">luci::warn_accuracy_with_range</a></div><div class="ttdeci">void warn_accuracy_with_range(luci::CircleNode *n)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00506">QuantizationUtils.cpp:506</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a22258d95f19cad911e52309c50613e07"><div class="ttname"><a href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">luci::layer_info_map</a></div><div class="ttdeci">LayerInfoMap layer_info_map(loco::Graph *g, std::vector&lt; LayerInfo &gt; &amp;layers_info)</div><div class="ttdef"><b>Definition:</b> <a href="_layer_info_map_8cpp_source.html#l00142">LayerInfoMap.cpp:142</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_propagate_q_param_backward_pass_html"><div class="ttname"><a href="structluci_1_1_propagate_q_param_backward_pass.html">luci::PropagateQParamBackwardPass</a></div><div class="ttdoc">Class to propagate quantization parameters of an operator's output to input.</div><div class="ttdef"><b>Definition:</b> <a href="_propagate_q_param_backward_pass_8h_source.html#l00028">PropagateQParamBackwardPass.h:29</a></div></div>
@@ -456,7 +459,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="astructluci_1_1_quantize_special_activation_html"><div class="ttname"><a href="structluci_1_1_quantize_special_activation.html">luci::QuantizeSpecialActivation</a></div><div class="ttdoc">Quantize non-const activaion using pre-defined scale/zp for special Ops.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_activation_8h_source.html#l00045">QuantizeActivation.h:46</a></div></div>
 <div class="ttc" id="astructluci_1_1_quantize_weights_html"><div class="ttname"><a href="structluci_1_1_quantize_weights.html">luci::QuantizeWeights</a></div><div class="ttdoc">QuantizeWeights quantizes tensors for weights.</div><div class="ttdef"><b>Definition:</b> <a href="_quantize_weights_8h_source.html#l00030">QuantizeWeights.h:31</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00059">loco::all_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="_layer_info_map_8cpp_source.html#l00142">luci::layer_info_map()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00521">luci::PropagateQParamBackwardPass::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00497">luci::warn_accuracy_with_range()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00059">loco::all_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="_layer_info_map_8cpp_source.html#l00142">luci::layer_info_map()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00521">luci::PropagateQParamBackwardPass::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00506">luci::warn_accuracy_with_range()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>, and <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00390">luci::CircleQuantizer::quantize()</a>.</p>
 

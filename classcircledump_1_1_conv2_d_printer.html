@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  135</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> conv_params = op-&gt;builtin_options_as_Conv2DOptions())</div>
 <div class="line"><span class="lineno">  136</span>    {</div>
 <div class="line"><span class="lineno">  137</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  138</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; conv_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  138</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; EnumNamePadding(conv_params-&gt;padding()) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  139</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; conv_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  140</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; conv_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  141</span>      os &lt;&lt; <span class="stringliteral">&quot;Dilation.W(&quot;</span> &lt;&lt; conv_params-&gt;dilation_w_factor() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>

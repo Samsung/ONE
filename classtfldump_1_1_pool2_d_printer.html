@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  152</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> pool_params = op-&gt;builtin_options_as_Pool2DOptions())</div>
 <div class="line"><span class="lineno">  153</span>    {</div>
 <div class="line"><span class="lineno">  154</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  155</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; pool_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  155</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; EnumNamePadding(pool_params-&gt;padding()) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  156</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; pool_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  157</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; pool_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  158</span>      os &lt;&lt; <span class="stringliteral">&quot;Filter.W(&quot;</span> &lt;&lt; pool_params-&gt;filter_width() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>

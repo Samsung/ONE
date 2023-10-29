@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classlogo_1_1_pass.html" title=" " alt="" coords="5,4553,88,4578"/>
+<area shape="rect" id="node1" href="$classlogo_1_1_pass.html" title=" " alt="" coords="5,4581,88,4606"/>
 <area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,5,359,45"/>
 <area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,69,359,109"/>
 <area shape="rect" id="node6" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,133,359,173"/>
@@ -113,47 +113,48 @@
 <area shape="rect" id="node161" href="$structluci_1_1_remove_redundant_quantize_pass.html" title="Class to remove redundant quantize operations." alt="" coords="143,6313,382,6338"/>
 <area shape="rect" id="node162" href="$structluci_1_1_remove_redundant_reshape_pass.html" title="Class to remove redundant Reshape node into 1 Reshape node." alt="" coords="143,6362,382,6387"/>
 <area shape="rect" id="node163" href="$structluci_1_1_remove_redundant_transpose_pass.html" title="fuse or remove subsequent Transpose operators" alt="" coords="138,6411,387,6437"/>
-<area shape="rect" id="node164" href="$structluci_1_1_remove_unnecessary_reshape_net_pass.html" title="Class to remove unnecessary Reshape nodes." alt="" coords="151,6461,374,6501"/>
-<area shape="rect" id="node165" href="$structluci_1_1_remove_unnecessary_reshape_pass.html" title="Class to Remove Unnecessary(input shape and output shape same) Reshape node." alt="" coords="136,6526,389,6551"/>
-<area shape="rect" id="node166" href="$structluci_1_1_remove_unnecessary_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="147,6575,378,6601"/>
-<area shape="rect" id="node167" href="$structluci_1_1_remove_unnecessary_split_pass.html" title="Remove unnecessary Split OP." alt="" coords="149,6625,377,6650"/>
-<area shape="rect" id="node168" href="$structluci_1_1_remove_unnecessary_strided_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) StridedSlice node." alt="" coords="156,6675,369,6715"/>
-<area shape="rect" id="node169" href="$structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="149,6739,376,6779"/>
-<area shape="rect" id="node170" href="$structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="165,6803,361,6843"/>
-<area shape="rect" id="node171" href="$structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="164,6867,361,6893"/>
-<area shape="rect" id="node172" href="$structluci_1_1_replace_with_f_c_gelu_f_c_pass.html" title="Class to generate FC&#45;Gelu&#45;FC from a certain Op pattern." alt="" coords="157,6917,369,6942"/>
-<area shape="rect" id="node173" href="$classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="191,6966,334,6991"/>
-<area shape="rect" id="node174" href="$structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="157,7015,368,7041"/>
-<area shape="rect" id="node175" href="$structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="167,7065,358,7105"/>
-<area shape="rect" id="node176" href="$structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="173,7129,352,7169"/>
-<area shape="rect" id="node177" href="$structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="172,7193,353,7233"/>
-<area shape="rect" id="node178" href="$structluci_1_1_resolve_custom_op_split_v_pass.html" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="171,7257,354,7297"/>
-<area shape="rect" id="node179" href="$structluci_1_1_shuffle_weight_to16x1_float32_pass.html" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="178,7321,347,7361"/>
-<area shape="rect" id="node180" href="$structluci_1_1_sparsify_tensor_pass.html" title="Pass to sparsify tensor." alt="" coords="180,7386,345,7411"/>
-<area shape="rect" id="node181" href="$structluci_1_1_substitute_pack_to_reshape_pass.html" title="Class to Substitute Pack with 1 input to single reshape node." alt="" coords="146,7435,379,7461"/>
-<area shape="rect" id="node182" href="$structluci_1_1_substitute_pad_v2_to_pad_pass.html" title="Class to substitute PadV2 in certain condition to Pad." alt="" coords="155,7485,370,7510"/>
-<area shape="rect" id="node183" href="$structluci_1_1_substitute_split_v_to_split_pass.html" title="Class to substitute certain SplitV to Split." alt="" coords="184,7535,341,7575"/>
-<area shape="rect" id="node184" href="$structluci_1_1_substitute_squeeze_to_reshape_pass.html" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="177,7599,349,7639"/>
-<area shape="rect" id="node185" href="$structluci_1_1_substitute_strided_slice_to_reshape_pass.html" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="174,7663,351,7703"/>
-<area shape="rect" id="node186" href="$structluci_1_1_substitute_transpose_to_reshape_pass.html" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="179,7727,347,7767"/>
-<area shape="rect" id="node187" href="$structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="147,7791,378,7817"/>
-<area shape="rect" id="node188" href="$structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="178,7841,347,7881"/>
-<area shape="rect" id="node189" href="$structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="182,7905,343,7945"/>
-<area shape="rect" id="node190" href="$structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="163,7969,362,8009"/>
-<area shape="rect" id="node191" href="$classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,8034,343,8059"/>
-<area shape="rect" id="node192" href="$classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,8083,342,8109"/>
-<area shape="rect" id="node193" href="$classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,8133,346,8158"/>
-<area shape="rect" id="node194" href="$classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,8183,352,8223"/>
-<area shape="rect" id="node195" href="$classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8247,365,8273"/>
-<area shape="rect" id="node196" href="$structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8297,361,8322"/>
-<area shape="rect" id="node197" href="$classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8346,361,8371"/>
-<area shape="rect" id="node198" href="$classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8395,367,8421"/>
-<area shape="rect" id="node199" href="$classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8445,378,8470"/>
-<area shape="rect" id="node200" href="$classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8494,369,8519"/>
-<area shape="rect" id="node201" href="$classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8543,355,8569"/>
-<area shape="rect" id="node202" href="$classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8593,360,8618"/>
-<area shape="rect" id="node203" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8643,365,8683"/>
-<area shape="rect" id="node204" href="$classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8707,356,8733"/>
+<area shape="rect" id="node164" href="$structluci_1_1_remove_unnecessary_add_pass.html" title="Class to temove unnecessary(input and output are same) Add node." alt="" coords="150,6461,375,6486"/>
+<area shape="rect" id="node165" href="$structluci_1_1_remove_unnecessary_reshape_net_pass.html" title="Class to remove unnecessary Reshape nodes." alt="" coords="151,6511,374,6551"/>
+<area shape="rect" id="node166" href="$structluci_1_1_remove_unnecessary_reshape_pass.html" title="Class to Remove Unnecessary(input shape and output shape same) Reshape node." alt="" coords="136,6575,389,6601"/>
+<area shape="rect" id="node167" href="$structluci_1_1_remove_unnecessary_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="147,6625,378,6650"/>
+<area shape="rect" id="node168" href="$structluci_1_1_remove_unnecessary_split_pass.html" title="Remove unnecessary Split OP." alt="" coords="149,6674,377,6699"/>
+<area shape="rect" id="node169" href="$structluci_1_1_remove_unnecessary_strided_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) StridedSlice node." alt="" coords="156,6724,369,6764"/>
+<area shape="rect" id="node170" href="$structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="149,6788,376,6828"/>
+<area shape="rect" id="node171" href="$structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="165,6852,361,6892"/>
+<area shape="rect" id="node172" href="$structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="164,6917,361,6942"/>
+<area shape="rect" id="node173" href="$structluci_1_1_replace_with_f_c_gelu_f_c_pass.html" title="Class to generate FC&#45;Gelu&#45;FC from a certain Op pattern." alt="" coords="157,6966,369,6991"/>
+<area shape="rect" id="node174" href="$classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="191,7015,334,7041"/>
+<area shape="rect" id="node175" href="$structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="157,7065,368,7090"/>
+<area shape="rect" id="node176" href="$structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="167,7115,358,7155"/>
+<area shape="rect" id="node177" href="$structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="173,7179,352,7219"/>
+<area shape="rect" id="node178" href="$structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="172,7243,353,7283"/>
+<area shape="rect" id="node179" href="$structluci_1_1_resolve_custom_op_split_v_pass.html" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="171,7307,354,7347"/>
+<area shape="rect" id="node180" href="$structluci_1_1_shuffle_weight_to16x1_float32_pass.html" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="178,7371,347,7411"/>
+<area shape="rect" id="node181" href="$structluci_1_1_sparsify_tensor_pass.html" title="Pass to sparsify tensor." alt="" coords="180,7435,345,7461"/>
+<area shape="rect" id="node182" href="$structluci_1_1_substitute_pack_to_reshape_pass.html" title="Class to Substitute Pack with 1 input to single reshape node." alt="" coords="146,7485,379,7510"/>
+<area shape="rect" id="node183" href="$structluci_1_1_substitute_pad_v2_to_pad_pass.html" title="Class to substitute PadV2 in certain condition to Pad." alt="" coords="155,7534,370,7559"/>
+<area shape="rect" id="node184" href="$structluci_1_1_substitute_split_v_to_split_pass.html" title="Class to substitute certain SplitV to Split." alt="" coords="184,7584,341,7624"/>
+<area shape="rect" id="node185" href="$structluci_1_1_substitute_squeeze_to_reshape_pass.html" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="177,7648,349,7688"/>
+<area shape="rect" id="node186" href="$structluci_1_1_substitute_strided_slice_to_reshape_pass.html" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="174,7712,351,7752"/>
+<area shape="rect" id="node187" href="$structluci_1_1_substitute_transpose_to_reshape_pass.html" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="179,7776,347,7816"/>
+<area shape="rect" id="node188" href="$structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="147,7841,378,7866"/>
+<area shape="rect" id="node189" href="$structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="178,7891,347,7931"/>
+<area shape="rect" id="node190" href="$structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="182,7955,343,7995"/>
+<area shape="rect" id="node191" href="$structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="163,8019,362,8059"/>
+<area shape="rect" id="node192" href="$classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,8083,343,8109"/>
+<area shape="rect" id="node193" href="$classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,8133,342,8158"/>
+<area shape="rect" id="node194" href="$classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,8182,346,8207"/>
+<area shape="rect" id="node195" href="$classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,8232,352,8272"/>
+<area shape="rect" id="node196" href="$classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8297,365,8322"/>
+<area shape="rect" id="node197" href="$structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8346,361,8371"/>
+<area shape="rect" id="node198" href="$classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8395,361,8421"/>
+<area shape="rect" id="node199" href="$classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8445,367,8470"/>
+<area shape="rect" id="node200" href="$classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8494,378,8519"/>
+<area shape="rect" id="node201" href="$classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8543,369,8569"/>
+<area shape="rect" id="node202" href="$classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8593,355,8618"/>
+<area shape="rect" id="node203" href="$classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8642,360,8667"/>
+<area shape="rect" id="node204" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8692,365,8732"/>
+<area shape="rect" id="node205" href="$classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8757,356,8782"/>
 <area shape="rect" id="node3" href="$classexo_1_1_avg_pool2_d_converter.html" title="Convert loco::AvgPool2D to locoex::TFLAveragePool2D." alt="" coords="466,13,635,38"/>
 <area shape="rect" id="node5" href="$classexo_1_1_const_gen_converter.html" title=" " alt="" coords="469,77,632,102"/>
 <area shape="rect" id="node7" href="$classexo_1_1_conv2_d_converter.html" title="Convert loco::Conv2D to locoex::TFLConv2D." alt="" coords="475,141,626,166"/>

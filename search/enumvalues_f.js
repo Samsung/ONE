@@ -15,13 +15,14 @@ var searchData=
   ['quantize_5flayer_5fparams_12',['Quantize_layer_params',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ab2d63e4c7b354785303b09d1e840f0c8',1,'luci::CircleQuantizer::Options']]],
   ['quantize_5foutput_5fmodel_5fdtype_13',['Quantize_output_model_dtype',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a0ff557b88b835a0750dd22af2db795b0',1,'luci::CircleQuantizer::Options']]],
   ['quantize_5foutput_5ftype_14',['Quantize_output_type',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a1b9ef5aa79baab3e894781bc13628d71',1,'luci::CircleQuantizer::Options']]],
-  ['quantize_5fscales_15',['Quantize_scales',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aadd86807756614e6e44aca0c5d86aa3f',1,'luci::CircleQuantizer::Options']]],
-  ['quantize_5fsrc_5ftensor_5fnames_16',['Quantize_src_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ab73b05658c14ab749f4f30815d312c08',1,'luci::CircleQuantizer::Options']]],
-  ['quantize_5ftensor_5fnames_17',['Quantize_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a43bffa6d60d6da0b297930372c8b7673',1,'luci::CircleQuantizer::Options']]],
-  ['quantize_5ftf_5fstyle_5fmaxpool_18',['Quantize_TF_style_maxpool',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586',1,'luci::CircleQuantizer::Options']]],
-  ['quantize_5fzero_5fpoints_19',['Quantize_zero_points',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a44a373449817aec06c9d3b3dd69c4a7c',1,'luci::CircleQuantizer::Options']]],
-  ['quantizedequantizeweights_20',['QuantizeDequantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd',1,'luci::CircleQuantizer::Options']]],
-  ['quantizeweights_21',['QuantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c',1,'luci::CircleQuantizer::Options']]],
-  ['quantizewithminmax_22',['QuantizeWithMinMax',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8',1,'luci::CircleQuantizer::Options']]],
-  ['queryable_23',['Queryable',['../namespacepepper.html#a599a9a53b75f33dd09854ff30fabd52fa3deee2078d7dd1672b690c7d17ddb89f',1,'pepper']]]
+  ['quantize_5fsave_5fmin_5fmax_15',['Quantize_save_min_max',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ae1d9f8048770c53c94711db17fca34c0',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fscales_16',['Quantize_scales',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aadd86807756614e6e44aca0c5d86aa3f',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fsrc_5ftensor_5fnames_17',['Quantize_src_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ab73b05658c14ab749f4f30815d312c08',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5ftensor_5fnames_18',['Quantize_tensor_names',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a43bffa6d60d6da0b297930372c8b7673',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5ftf_5fstyle_5fmaxpool_19',['Quantize_TF_style_maxpool',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586',1,'luci::CircleQuantizer::Options']]],
+  ['quantize_5fzero_5fpoints_20',['Quantize_zero_points',['../structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a44a373449817aec06c9d3b3dd69c4a7c',1,'luci::CircleQuantizer::Options']]],
+  ['quantizedequantizeweights_21',['QuantizeDequantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba4010e5a4337957fb11c654a8252083dd',1,'luci::CircleQuantizer::Options']]],
+  ['quantizeweights_22',['QuantizeWeights',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968bae54405145d4a409fb26f6d50935fe29c',1,'luci::CircleQuantizer::Options']]],
+  ['quantizewithminmax_23',['QuantizeWithMinMax',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba2d6d30f0e4823d68cf32cc57781455f8',1,'luci::CircleQuantizer::Options']]],
+  ['queryable_24',['Queryable',['../namespacepepper.html#a599a9a53b75f33dd09854ff30fabd52fa3deee2078d7dd1672b690c7d17ddb89f',1,'pepper']]]
 ];

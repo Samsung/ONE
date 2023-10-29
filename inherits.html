@@ -3258,7 +3258,7 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 </td></tr>
 <tr><td><img src="inherit_graph_424.png" border="0" usemap="#alogo_1_1_pass" alt=""/>
 <map name="alogo_1_1_pass" id="alogo_1_1_pass">
-<area shape="rect" href="classlogo_1_1_pass.html" title=" " alt="" coords="5,4553,88,4578"/>
+<area shape="rect" href="classlogo_1_1_pass.html" title=" " alt="" coords="5,4581,88,4606"/>
 <area shape="rect" href="classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,5,359,45"/>
 <area shape="rect" href="classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,69,359,109"/>
 <area shape="rect" href="classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="167,133,359,173"/>
@@ -3372,47 +3372,48 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="rect" href="structluci_1_1_remove_redundant_quantize_pass.html" title="Class to remove redundant quantize operations." alt="" coords="143,6313,382,6338"/>
 <area shape="rect" href="structluci_1_1_remove_redundant_reshape_pass.html" title="Class to remove redundant Reshape node into 1 Reshape node." alt="" coords="143,6362,382,6387"/>
 <area shape="rect" href="structluci_1_1_remove_redundant_transpose_pass.html" title="fuse or remove subsequent Transpose operators" alt="" coords="138,6411,387,6437"/>
-<area shape="rect" href="structluci_1_1_remove_unnecessary_reshape_net_pass.html" title="Class to remove unnecessary Reshape nodes." alt="" coords="151,6461,374,6501"/>
-<area shape="rect" href="structluci_1_1_remove_unnecessary_reshape_pass.html" title="Class to Remove Unnecessary(input shape and output shape same) Reshape node." alt="" coords="136,6526,389,6551"/>
-<area shape="rect" href="structluci_1_1_remove_unnecessary_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="147,6575,378,6601"/>
-<area shape="rect" href="structluci_1_1_remove_unnecessary_split_pass.html" title="Remove unnecessary Split OP." alt="" coords="149,6625,377,6650"/>
-<area shape="rect" href="structluci_1_1_remove_unnecessary_strided_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) StridedSlice node." alt="" coords="156,6675,369,6715"/>
-<area shape="rect" href="structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="149,6739,376,6779"/>
-<area shape="rect" href="structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="165,6803,361,6843"/>
-<area shape="rect" href="structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="164,6867,361,6893"/>
-<area shape="rect" href="structluci_1_1_replace_with_f_c_gelu_f_c_pass.html" title="Class to generate FC&#45;Gelu&#45;FC from a certain Op pattern." alt="" coords="157,6917,369,6942"/>
-<area shape="rect" href="classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="191,6966,334,6991"/>
-<area shape="rect" href="structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="157,7015,368,7041"/>
-<area shape="rect" href="structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="167,7065,358,7105"/>
-<area shape="rect" href="structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="173,7129,352,7169"/>
-<area shape="rect" href="structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="172,7193,353,7233"/>
-<area shape="rect" href="structluci_1_1_resolve_custom_op_split_v_pass.html" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="171,7257,354,7297"/>
-<area shape="rect" href="structluci_1_1_shuffle_weight_to16x1_float32_pass.html" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="178,7321,347,7361"/>
-<area shape="rect" href="structluci_1_1_sparsify_tensor_pass.html" title="Pass to sparsify tensor." alt="" coords="180,7386,345,7411"/>
-<area shape="rect" href="structluci_1_1_substitute_pack_to_reshape_pass.html" title="Class to Substitute Pack with 1 input to single reshape node." alt="" coords="146,7435,379,7461"/>
-<area shape="rect" href="structluci_1_1_substitute_pad_v2_to_pad_pass.html" title="Class to substitute PadV2 in certain condition to Pad." alt="" coords="155,7485,370,7510"/>
-<area shape="rect" href="structluci_1_1_substitute_split_v_to_split_pass.html" title="Class to substitute certain SplitV to Split." alt="" coords="184,7535,341,7575"/>
-<area shape="rect" href="structluci_1_1_substitute_squeeze_to_reshape_pass.html" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="177,7599,349,7639"/>
-<area shape="rect" href="structluci_1_1_substitute_strided_slice_to_reshape_pass.html" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="174,7663,351,7703"/>
-<area shape="rect" href="structluci_1_1_substitute_transpose_to_reshape_pass.html" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="179,7727,347,7767"/>
-<area shape="rect" href="structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="147,7791,378,7817"/>
-<area shape="rect" href="structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="178,7841,347,7881"/>
-<area shape="rect" href="structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="182,7905,343,7945"/>
-<area shape="rect" href="structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="163,7969,362,8009"/>
-<area shape="rect" href="classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,8034,343,8059"/>
-<area shape="rect" href="classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,8083,342,8109"/>
-<area shape="rect" href="classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,8133,346,8158"/>
-<area shape="rect" href="classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,8183,352,8223"/>
-<area shape="rect" href="classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8247,365,8273"/>
-<area shape="rect" href="structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8297,361,8322"/>
-<area shape="rect" href="classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8346,361,8371"/>
-<area shape="rect" href="classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8395,367,8421"/>
-<area shape="rect" href="classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8445,378,8470"/>
-<area shape="rect" href="classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8494,369,8519"/>
-<area shape="rect" href="classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8543,355,8569"/>
-<area shape="rect" href="classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8593,360,8618"/>
-<area shape="rect" href="structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8643,365,8683"/>
-<area shape="rect" href="classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8707,356,8733"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_add_pass.html" title="Class to temove unnecessary(input and output are same) Add node." alt="" coords="150,6461,375,6486"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_reshape_net_pass.html" title="Class to remove unnecessary Reshape nodes." alt="" coords="151,6511,374,6551"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_reshape_pass.html" title="Class to Remove Unnecessary(input shape and output shape same) Reshape node." alt="" coords="136,6575,389,6601"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="147,6625,378,6650"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_split_pass.html" title="Remove unnecessary Split OP." alt="" coords="149,6674,377,6699"/>
+<area shape="rect" href="structluci_1_1_remove_unnecessary_strided_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) StridedSlice node." alt="" coords="156,6724,369,6764"/>
+<area shape="rect" href="structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="149,6788,376,6828"/>
+<area shape="rect" href="structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="165,6852,361,6892"/>
+<area shape="rect" href="structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="164,6917,361,6942"/>
+<area shape="rect" href="structluci_1_1_replace_with_f_c_gelu_f_c_pass.html" title="Class to generate FC&#45;Gelu&#45;FC from a certain Op pattern." alt="" coords="157,6966,369,6991"/>
+<area shape="rect" href="classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="191,7015,334,7041"/>
+<area shape="rect" href="structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="157,7065,368,7090"/>
+<area shape="rect" href="structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="167,7115,358,7155"/>
+<area shape="rect" href="structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="173,7179,352,7219"/>
+<area shape="rect" href="structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="172,7243,353,7283"/>
+<area shape="rect" href="structluci_1_1_resolve_custom_op_split_v_pass.html" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="171,7307,354,7347"/>
+<area shape="rect" href="structluci_1_1_shuffle_weight_to16x1_float32_pass.html" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="178,7371,347,7411"/>
+<area shape="rect" href="structluci_1_1_sparsify_tensor_pass.html" title="Pass to sparsify tensor." alt="" coords="180,7435,345,7461"/>
+<area shape="rect" href="structluci_1_1_substitute_pack_to_reshape_pass.html" title="Class to Substitute Pack with 1 input to single reshape node." alt="" coords="146,7485,379,7510"/>
+<area shape="rect" href="structluci_1_1_substitute_pad_v2_to_pad_pass.html" title="Class to substitute PadV2 in certain condition to Pad." alt="" coords="155,7534,370,7559"/>
+<area shape="rect" href="structluci_1_1_substitute_split_v_to_split_pass.html" title="Class to substitute certain SplitV to Split." alt="" coords="184,7584,341,7624"/>
+<area shape="rect" href="structluci_1_1_substitute_squeeze_to_reshape_pass.html" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="177,7648,349,7688"/>
+<area shape="rect" href="structluci_1_1_substitute_strided_slice_to_reshape_pass.html" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="174,7712,351,7752"/>
+<area shape="rect" href="structluci_1_1_substitute_transpose_to_reshape_pass.html" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="179,7776,347,7816"/>
+<area shape="rect" href="structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="147,7841,378,7866"/>
+<area shape="rect" href="structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="178,7891,347,7931"/>
+<area shape="rect" href="structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="182,7955,343,7995"/>
+<area shape="rect" href="structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="163,8019,362,8059"/>
+<area shape="rect" href="classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="183,8083,343,8109"/>
+<area shape="rect" href="classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="183,8133,342,8158"/>
+<area shape="rect" href="classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="179,8182,346,8207"/>
+<area shape="rect" href="classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="173,8232,352,8272"/>
+<area shape="rect" href="classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="160,8297,365,8322"/>
+<area shape="rect" href="structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="164,8346,361,8371"/>
+<area shape="rect" href="classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="165,8395,361,8421"/>
+<area shape="rect" href="classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="158,8445,367,8470"/>
+<area shape="rect" href="classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="147,8494,378,8519"/>
+<area shape="rect" href="classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="156,8543,369,8569"/>
+<area shape="rect" href="classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="170,8593,355,8618"/>
+<area shape="rect" href="classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="165,8642,360,8667"/>
+<area shape="rect" href="structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="161,8692,365,8732"/>
+<area shape="rect" href="classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="169,8757,356,8782"/>
 <area shape="rect" href="classexo_1_1_avg_pool2_d_converter.html" title="Convert loco::AvgPool2D to locoex::TFLAveragePool2D." alt="" coords="466,13,635,38"/>
 <area shape="rect" href="classexo_1_1_const_gen_converter.html" title=" " alt="" coords="469,77,632,102"/>
 <area shape="rect" href="classexo_1_1_conv2_d_converter.html" title="Convert loco::Conv2D to locoex::TFLConv2D." alt="" coords="475,141,626,166"/>
@@ -4454,7 +4455,7 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 </td></tr>
 <tr><td><img src="inherit_graph_555.png" border="0" usemap="#aluci__interpreter_1_1_kernel" alt=""/>
 <map name="aluci__interpreter_1_1_kernel" id="aluci__interpreter_1_1_kernel">
-<area shape="rect" href="classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,2849,156,2875"/>
+<area shape="rect" href="classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,2932,156,2957"/>
 <area shape="rect" href="classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="249,29,432,69"/>
 <area shape="rect" href="classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="239,123,443,163"/>
 <area shape="rect" href="classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="239,247,442,287"/>
@@ -4492,52 +4493,55 @@ $(document).ready(function(){initNavTree('hierarchy.html',''); initResizable(); 
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_abs.html" title=" " alt="" coords="249,2435,433,2460"/>
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d.html" title=" " alt="" coords="263,2485,418,2525"/>
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_cast.html" title=" " alt="" coords="263,2549,418,2589"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_dequantize.html" title=" " alt="" coords="263,2613,418,2653"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_elu.html" title=" " alt="" coords="251,2677,430,2703"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_equal.html" title=" " alt="" coords="263,2727,418,2767"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_exp.html" title=" " alt="" coords="249,2792,432,2817"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_expand_dims.html" title=" " alt="" coords="263,2842,418,2882"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_fill.html" title=" " alt="" coords="263,2906,418,2946"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor.html" title=" " alt="" coords="263,2970,418,3010"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor_div.html" title=" " alt="" coords="263,3034,418,3074"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor_mod.html" title=" " alt="" coords="263,3098,418,3138"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_greater.html" title=" " alt="" coords="263,3162,418,3202"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_greater_equal.html" title=" " alt="" coords="263,3226,418,3266"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_hard_swish.html" title=" " alt="" coords="263,3290,418,3330"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_if.html" title=" " alt="" coords="256,3355,425,3380"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_less.html" title=" " alt="" coords="263,3405,418,3445"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_less_equal.html" title=" " alt="" coords="263,3469,418,3509"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_log.html" title=" " alt="" coords="249,3533,432,3559"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_log_softmax.html" title=" " alt="" coords="263,3583,418,3623"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_and.html" title=" " alt="" coords="263,3647,418,3687"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_not.html" title=" " alt="" coords="263,3711,418,3751"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_or.html" title=" " alt="" coords="263,3775,418,3815"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logistic.html" title=" " alt="" coords="263,3839,418,3879"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_maximum.html" title=" " alt="" coords="263,3903,418,3943"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_minimum.html" title=" " alt="" coords="263,3967,418,4007"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_neg.html" title=" " alt="" coords="248,4032,433,4057"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_not_equal.html" title=" " alt="" coords="263,4082,418,4122"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_p_relu.html" title=" " alt="" coords="263,4146,418,4186"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pad.html" title=" " alt="" coords="249,4211,433,4236"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pad_v2.html" title=" " alt="" coords="263,4261,418,4301"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pow.html" title=" " alt="" coords="247,4325,434,4351"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_quantize.html" title=" " alt="" coords="263,4375,418,4415"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_relu.html" title=" " alt="" coords="263,4439,418,4479"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_relu6.html" title=" " alt="" coords="263,4503,418,4543"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_reshape.html" title=" " alt="" coords="263,4567,418,4607"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_reverse_v2.html" title=" " alt="" coords="263,4631,418,4671"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_rsqrt.html" title=" " alt="" coords="263,4695,418,4735"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_select.html" title=" " alt="" coords="263,4759,418,4799"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_slice.html" title=" " alt="" coords="263,4823,418,4863"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html" title=" " alt="" coords="263,4887,418,4927"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_split.html" title=" " alt="" coords="263,4951,418,4991"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_split_v.html" title=" " alt="" coords="263,5015,418,5055"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_sqrt.html" title=" " alt="" coords="263,5079,418,5119"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_square.html" title=" " alt="" coords="263,5143,418,5183"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_squared_difference.html" title=" " alt="" coords="263,5207,418,5247"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_tanh.html" title=" " alt="" coords="263,5271,418,5311"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_transpose.html" title=" " alt="" coords="263,5335,418,5375"/>
-<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_while.html" title=" " alt="" coords="263,5399,418,5439"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_cos.html" title=" " alt="" coords="249,2613,433,2639"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_dequantize.html" title=" " alt="" coords="263,2663,418,2703"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_elu.html" title=" " alt="" coords="251,2728,430,2753"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_equal.html" title=" " alt="" coords="263,2778,418,2818"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_exp.html" title=" " alt="" coords="249,2843,432,2868"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_expand_dims.html" title=" " alt="" coords="263,2893,418,2933"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_fill.html" title=" " alt="" coords="263,2957,418,2997"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor.html" title=" " alt="" coords="263,3021,418,3061"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor_div.html" title=" " alt="" coords="263,3085,418,3125"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_floor_mod.html" title=" " alt="" coords="263,3149,418,3189"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_greater.html" title=" " alt="" coords="263,3213,418,3253"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_greater_equal.html" title=" " alt="" coords="263,3277,418,3317"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_hard_swish.html" title=" " alt="" coords="263,3341,418,3381"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_if.html" title=" " alt="" coords="256,3405,425,3431"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_less.html" title=" " alt="" coords="263,3455,418,3495"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_less_equal.html" title=" " alt="" coords="263,3519,418,3559"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_log.html" title=" " alt="" coords="249,3584,432,3609"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_log_softmax.html" title=" " alt="" coords="263,3634,418,3674"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_and.html" title=" " alt="" coords="263,3698,418,3738"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_not.html" title=" " alt="" coords="263,3762,418,3802"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logical_or.html" title=" " alt="" coords="263,3826,418,3866"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_logistic.html" title=" " alt="" coords="263,3890,418,3930"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_maximum.html" title=" " alt="" coords="263,3954,418,3994"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_minimum.html" title=" " alt="" coords="263,4018,418,4058"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_neg.html" title=" " alt="" coords="248,4083,433,4108"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_not_equal.html" title=" " alt="" coords="263,4133,418,4173"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_p_relu.html" title=" " alt="" coords="263,4197,418,4237"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pad.html" title=" " alt="" coords="249,4261,433,4287"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pad_v2.html" title=" " alt="" coords="263,4311,418,4351"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_pow.html" title=" " alt="" coords="247,4376,434,4401"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_quantize.html" title=" " alt="" coords="263,4426,418,4466"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_relu.html" title=" " alt="" coords="263,4490,418,4530"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_relu6.html" title=" " alt="" coords="263,4554,418,4594"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_reshape.html" title=" " alt="" coords="263,4618,418,4658"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_reverse_v2.html" title=" " alt="" coords="263,4682,418,4722"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_rsqrt.html" title=" " alt="" coords="263,4746,418,4786"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_select.html" title=" " alt="" coords="263,4810,418,4850"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_sin.html" title=" " alt="" coords="251,4875,431,4900"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_slice.html" title=" " alt="" coords="263,4925,418,4965"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html" title=" " alt="" coords="263,4989,418,5029"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_split.html" title=" " alt="" coords="263,5053,418,5093"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_split_v.html" title=" " alt="" coords="263,5117,418,5157"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_sqrt.html" title=" " alt="" coords="263,5181,418,5221"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_square.html" title=" " alt="" coords="263,5245,418,5285"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_squared_difference.html" title=" " alt="" coords="263,5309,418,5349"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_tanh.html" title=" " alt="" coords="263,5373,418,5413"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_tile.html" title=" " alt="" coords="263,5437,418,5477"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_transpose.html" title=" " alt="" coords="263,5501,418,5541"/>
+<area shape="rect" href="classluci__interpreter_1_1kernels_1_1_while.html" title=" " alt="" coords="263,5565,418,5605"/>
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_add.html" title=" " alt="" coords="534,5,718,31"/>
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_arg_max.html" title=" " alt="" coords="549,55,703,95"/>
 <area shape="rect" href="classluci__interpreter_1_1kernels_1_1_average_pool2_d.html" title=" " alt="" coords="549,119,703,159"/>

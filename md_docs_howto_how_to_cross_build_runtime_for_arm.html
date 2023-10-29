@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_cross_build_runti
 <div class="fragment"><div class="line">$ sudo ./tools/cross/install_rootfs.sh arm</div>
 </div><!-- fragment --><ul>
 <li>supports <code>arm</code>(default) and <code>aarch64</code> architecutre for now</li>
-<li>supports <code>focal</code>(default), <code>bionic</code>, and <code>jammy</code> release</li>
+<li>supports <code>bionic</code>, <code>focal</code>, and <code>jammy</code> release</li>
 </ul>
 <p >To see the options, </p><div class="fragment"><div class="line">$ ./tools/cross/install_rootfs.sh -h</div>
 </div><!-- fragment --><p >RootFS will be prepared at <code>tools/cross/rootfs/arm</code> or <code>tools/cross/rootfs/aarch64</code> folder.</p>
@@ -110,7 +110,8 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_cross_build_runti
 <div class="line">DISTRIB_RELEASE=22.04</div>
 <div class="line">DISTRIB_CODENAME=jammy</div>
 <div class="line">DISTRIB_DESCRIPTION=&quot;Ubuntu 22.04.3 LTS&quot;</div>
-</div><!-- fragment --><p >If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider <a class="el" href="md_docs_howto_how_to_build_runtime_using_prebuilt_docker_image.html">cross-build using the docker image</a>.</p>
+</div><!-- fragment --><p ><code>install_rootfs.sh</code> will select development system code name as default.</p>
+<p >If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider <a class="el" href="md_docs_howto_how_to_build_runtime_using_prebuilt_docker_image.html">cross-build using the docker image</a>.</p>
 <h2>Prepare RootFS at alternative folder</h2>
 <p >Use <code>ROOTFS_DIR</code> to a full path to prepare at alternative path.</p>
 <div class="fragment"><div class="line">$ ROOTFS_DIR=/home/user/rootfs/arm-bionic sudo -E ./tools/cross/install_rootfs.sh arm</div>

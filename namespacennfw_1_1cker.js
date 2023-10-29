@@ -47,7 +47,8 @@ var namespacennfw_1_1cker =
       [ "MaxPool2DGrad", "namespacennfw_1_1cker_1_1train.html#a67c65963c9903f487865c8ea45695021", null ],
       [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
       [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
-      [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ]
+      [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ],
+      [ "SoftMaxGrad", "namespacennfw_1_1cker_1_1train.html#a8b6afe0db84836d197f52230d77b913f", null ]
     ] ],
     [ "training_ops", "namespacennfw_1_1cker_1_1training__ops.html", "namespacennfw_1_1cker_1_1training__ops" ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],

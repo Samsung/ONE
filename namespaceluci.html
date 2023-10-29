@@ -1383,6 +1383,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_remove_redundant_transpose_pass.html">RemoveRedundantTransposePass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">fuse or remove subsequent Transpose operators  <a href="structluci_1_1_remove_redundant_transpose_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_remove_unnecessary_add_pass.html">RemoveUnnecessaryAddPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to temove unnecessary(input and output are same) Add node.  <a href="structluci_1_1_remove_unnecessary_add_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_remove_unnecessary_reshape_net_pass.html">RemoveUnnecessaryReshapeNetPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to remove unnecessary Reshape nodes.  <a href="structluci_1_1_remove_unnecessary_reshape_net_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1934,8 +1937,8 @@ Functions</h2></td></tr>
 <tr class="separator:abbde06f4d0bf6ed2a3c9438df8eed7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a93288835d5987bf66c18340aa2498d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28e">ActivationQType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a> (const <a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *node)</td></tr>
 <tr class="separator:a3a93288835d5987bf66c18340aa2498d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae94e3afe22962fdd9d6195ee60b930ce"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structluci_1_1_circle_quant_param.html">CircleQuantParam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#ae94e3afe22962fdd9d6195ee60b930ce">make_predefined_qparam</a> (<a class="el" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28e">ActivationQType</a> qtype, <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> dtype)</td></tr>
-<tr class="separator:ae94e3afe22962fdd9d6195ee60b930ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f4594820696716f29dade1d31a7bb93"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structluci_1_1_circle_quant_param.html">CircleQuantParam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a7f4594820696716f29dade1d31a7bb93">make_predefined_qparam</a> (<a class="el" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28e">ActivationQType</a> qtype, <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> dtype, <a class="el" href="structluci_1_1_circle_quant_param.html">CircleQuantParam</a> *old_quant_param)</td></tr>
+<tr class="separator:a7f4594820696716f29dade1d31a7bb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a778ba1acea30cadd3985b4023df5b2f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">set_int_scale</a> (<a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</td></tr>
 <tr class="separator:a778ba1acea30cadd3985b4023df5b2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45fe577e9e1a457fe33918624cd4a9a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">quant_const</a> (<a class="el" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a> quant_type)</td></tr>
@@ -2760,7 +2763,7 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantization_utils_8h_source.html#l00072">IntScale</a>, <a class="el" href="_quantization_utils_8h_source.html#l00068">MinMax</a>, <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00069">PreDefinedLogistic</a>, <a class="el" href="_quantization_utils_8h_source.html#l00071">PreDefinedSoftmax</a>, <a class="el" href="_quantization_utils_8h_source.html#l00070">PreDefinedTanh</a>, <a class="el" href="_quantization_utils_8cpp.html#a8c085354bd57f56d300a969556f07257">RETURN_INPUT_ACTIVATION_QTYPE</a>, and <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a143c8c6f51b9bb893ce71e38702e3cc1">TANH</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_activation_8cpp_source.html#l00136">luci::QuantizeSpecialActivation::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_activation_8cpp_source.html#l00140">luci::QuantizeSpecialActivation::visit()</a>.</p>
 
 </div>
 </div>
@@ -3006,7 +3009,7 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00138">compute_asym_scale_zp()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00406">quant_const()</a>.</p>
 
 </div>
 </div>
@@ -7189,8 +7192,8 @@ template&lt;typename Permutation &gt; </div>
 
 </div>
 </div>
-<a id="ae94e3afe22962fdd9d6195ee60b930ce" name="ae94e3afe22962fdd9d6195ee60b930ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae94e3afe22962fdd9d6195ee60b930ce">&#9670;&#160;</a></span>make_predefined_qparam() <span class="overload">[1/2]</span></h2>
+<a id="a7f4594820696716f29dade1d31a7bb93" name="a7f4594820696716f29dade1d31a7bb93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f4594820696716f29dade1d31a7bb93">&#9670;&#160;</a></span>make_predefined_qparam() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7205,7 +7208,13 @@ template&lt;typename Permutation &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td>
-          <td class="paramname"><em>dtype</em>&#160;</td>
+          <td class="paramname"><em>dtype</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structluci_1_1_circle_quant_param.html">CircleQuantParam</a> *&#160;</td>
+          <td class="paramname"><em>old_quant_param</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -7216,50 +7225,54 @@ template&lt;typename Permutation &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00345">345</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  347</span>{</div>
-<div class="line"><span class="lineno">  348</span>  <span class="keyword">auto</span> qparam = std::make_unique&lt;CircleQuantParam&gt;();</div>
-<div class="line"><span class="lineno">  349</span> </div>
-<div class="line"><span class="lineno">  350</span>  <span class="keyword">auto</span> set_qparam = [&amp;qparam](<span class="keywordtype">float</span> scale, int64_t zp) {</div>
-<div class="line"><span class="lineno">  351</span>    qparam-&gt;scale.emplace_back(scale);</div>
-<div class="line"><span class="lineno">  352</span>    qparam-&gt;zerop.emplace_back(zp);</div>
-<div class="line"><span class="lineno">  353</span>  };</div>
-<div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span>  <span class="keywordflow">switch</span> (qtype)</div>
-<div class="line"><span class="lineno">  356</span>  {</div>
-<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedLogistic:</div>
-<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  359</span>        set_qparam(1.0f / 256.0f, 0);</div>
-<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  361</span>      {</div>
-<div class="line"><span class="lineno">  362</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  363</span>        set_qparam(1.0f / 32768.0f, 0);</div>
-<div class="line"><span class="lineno">  364</span>      }</div>
-<div class="line"><span class="lineno">  365</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedTanh:</div>
-<div class="line"><span class="lineno">  367</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  368</span>        set_qparam(2.0f / 256.0f, 128);</div>
-<div class="line"><span class="lineno">  369</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  370</span>      {</div>
-<div class="line"><span class="lineno">  371</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  372</span>        set_qparam(1.0f / 32768.0f, 0);</div>
-<div class="line"><span class="lineno">  373</span>      }</div>
-<div class="line"><span class="lineno">  374</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedSoftmax:</div>
-<div class="line"><span class="lineno">  376</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
-<div class="line"><span class="lineno">  377</span>        set_qparam(1.0f / 255.0f, 0);</div>
-<div class="line"><span class="lineno">  378</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  379</span>      {</div>
-<div class="line"><span class="lineno">  380</span>        assert(dtype == loco::DataType::S16);</div>
-<div class="line"><span class="lineno">  381</span>        set_qparam(1.0f / 32767.0f, 0);</div>
-<div class="line"><span class="lineno">  382</span>      }</div>
-<div class="line"><span class="lineno">  383</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  384</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  385</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported opcode with pre-defined qparam&quot;</span>);</div>
-<div class="line"><span class="lineno">  386</span>  }</div>
-<div class="line"><span class="lineno">  387</span>  <span class="keywordflow">return</span> qparam;</div>
-<div class="line"><span class="lineno">  388</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  348</span>{</div>
+<div class="line"><span class="lineno">  349</span>  <span class="keyword">auto</span> qparam = std::make_unique&lt;CircleQuantParam&gt;();</div>
+<div class="line"><span class="lineno">  350</span> </div>
+<div class="line"><span class="lineno">  351</span>  <span class="keyword">auto</span> set_qparam = [&amp;qparam, old_quant_param](<span class="keywordtype">float</span> scale, int64_t zp) {</div>
+<div class="line"><span class="lineno">  352</span>    qparam-&gt;scale.emplace_back(scale);</div>
+<div class="line"><span class="lineno">  353</span>    qparam-&gt;zerop.emplace_back(zp);</div>
+<div class="line"><span class="lineno">  354</span>    qparam-&gt;min = old_quant_param-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#a269600d9f7b4540d2455a77f8d058efd">min</a>;</div>
+<div class="line"><span class="lineno">  355</span>    qparam-&gt;max = old_quant_param-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#ad75c4e344ee9e0490380ae180e276a20">max</a>;</div>
+<div class="line"><span class="lineno">  356</span>  };</div>
+<div class="line"><span class="lineno">  357</span> </div>
+<div class="line"><span class="lineno">  358</span>  <span class="keywordflow">switch</span> (qtype)</div>
+<div class="line"><span class="lineno">  359</span>  {</div>
+<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedLogistic:</div>
+<div class="line"><span class="lineno">  361</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  362</span>        set_qparam(1.0f / 256.0f, 0);</div>
+<div class="line"><span class="lineno">  363</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  364</span>      {</div>
+<div class="line"><span class="lineno">  365</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  366</span>        set_qparam(1.0f / 32768.0f, 0);</div>
+<div class="line"><span class="lineno">  367</span>      }</div>
+<div class="line"><span class="lineno">  368</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedTanh:</div>
+<div class="line"><span class="lineno">  370</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  371</span>        set_qparam(2.0f / 256.0f, 128);</div>
+<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  373</span>      {</div>
+<div class="line"><span class="lineno">  374</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  375</span>        set_qparam(1.0f / 32768.0f, 0);</div>
+<div class="line"><span class="lineno">  376</span>      }</div>
+<div class="line"><span class="lineno">  377</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">case</span> ActivationQType::PreDefinedSoftmax:</div>
+<div class="line"><span class="lineno">  379</span>      <span class="keywordflow">if</span> (dtype == loco::DataType::U8)</div>
+<div class="line"><span class="lineno">  380</span>        set_qparam(1.0f / 255.0f, 0);</div>
+<div class="line"><span class="lineno">  381</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  382</span>      {</div>
+<div class="line"><span class="lineno">  383</span>        assert(dtype == loco::DataType::S16);</div>
+<div class="line"><span class="lineno">  384</span>        set_qparam(1.0f / 32767.0f, 0);</div>
+<div class="line"><span class="lineno">  385</span>      }</div>
+<div class="line"><span class="lineno">  386</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  388</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported opcode with pre-defined qparam&quot;</span>);</div>
+<div class="line"><span class="lineno">  389</span>  }</div>
+<div class="line"><span class="lineno">  390</span>  <span class="keywordflow">return</span> qparam;</div>
+<div class="line"><span class="lineno">  391</span>}</div>
+<div class="ttc" id="astructluci_1_1_circle_quant_param_html_a269600d9f7b4540d2455a77f8d058efd"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#a269600d9f7b4540d2455a77f8d058efd">luci::CircleQuantParam::min</a></div><div class="ttdeci">std::vector&lt; float &gt; min</div><div class="ttdef"><b>Definition:</b> <a href="_circle_quant_param_8h_source.html#l00028">CircleQuantParam.h:28</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_quant_param_html_ad75c4e344ee9e0490380ae180e276a20"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#ad75c4e344ee9e0490380ae180e276a20">luci::CircleQuantParam::max</a></div><div class="ttdeci">std::vector&lt; float &gt; max</div><div class="ttdef"><b>Definition:</b> <a href="_circle_quant_param_8h_source.html#l00029">CircleQuantParam.h:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8h_source.html#l00069">PreDefinedLogistic</a>, <a class="el" href="_quantization_utils_8h_source.html#l00071">PreDefinedSoftmax</a>, and <a class="el" href="_quantization_utils_8h_source.html#l00070">PreDefinedTanh</a>.</p>
+<p class="reference">References <a class="el" href="_circle_quant_param_8h_source.html#l00029">luci::CircleQuantParam::max</a>, <a class="el" href="_circle_quant_param_8h_source.html#l00028">luci::CircleQuantParam::min</a>, <a class="el" href="_quantization_utils_8h_source.html#l00069">PreDefinedLogistic</a>, <a class="el" href="_quantization_utils_8h_source.html#l00071">PreDefinedSoftmax</a>, and <a class="el" href="_quantization_utils_8h_source.html#l00070">PreDefinedTanh</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_quantize_activation_8cpp_source.html#l00107">luci::QuantizeSpecialActivation::visit()</a>.</p>
 
@@ -7906,12 +7919,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  347</span>  }</div>
 <div class="line"><span class="lineno">  348</span>}</div>
 <div class="ttc" id="anamespaceenco_html_a04382074922db95f73a7e97c25023937"><div class="ttname"><a href="namespaceenco.html#a04382074922db95f73a7e97c25023937">enco::concat</a></div><div class="ttdeci">void concat(std::ostream &amp;os, const std::string &amp;sep, It beg, It end)</div><div class="ttdef"><b>Definition:</b> <a href="_string_8h_source.html#l00031">String.h:31</a></div></div>
-<div class="ttc" id="anamespaceluci_html_a45fe577e9e1a457fe33918624cd4a9a5"><div class="ttname"><a href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">luci::quant_const</a></div><div class="ttdeci">void quant_const(luci::CircleConst *node, loco::DataType quant_type)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00403">QuantizationUtils.cpp:403</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a45fe577e9e1a457fe33918624cd4a9a5"><div class="ttname"><a href="namespaceluci.html#a45fe577e9e1a457fe33918624cd4a9a5">luci::quant_const</a></div><div class="ttdeci">void quant_const(luci::CircleConst *node, loco::DataType quant_type)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00406">QuantizationUtils.cpp:406</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a8984ba83d6f0e6d0dc99b25ee3b5d04b"><div class="ttname"><a href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a></div><div class="ttdeci">luci::CircleConst * clone(luci::CircleConst *node)</div><div class="ttdoc">Return cloned object of CircleConst node.</div><div class="ttdef"><b>Definition:</b> <a href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">CircleConst.cpp:99</a></div></div>
 <div class="ttc" id="anamespacemoco_html_aaa67793b4bf04bb01d7862cfddb898e0"><div class="ttname"><a href="namespacemoco.html#aaa67793b4bf04bb01d7862cfddb898e0">moco::new_const</a></div><div class="ttdeci">TFConst * new_const(loco::Graph *graph, loco::TensorShape &amp;tensor_shape, const loco::DataType &amp;dtype)</div><div class="ttdef"><b>Definition:</b> <a href="_constant_fold_helper_8cpp_source.html#l00045">ConstantFoldHelper.cpp:45</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a96c48226d20da59d2df2f69a93c770cb"><div class="ttname"><a href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">part_eval_one.num_inputs</a></div><div class="ttdeci">num_inputs</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00069">part_eval_one.py:69</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">clone()</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
+<p class="reference">References <a class="el" href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00099">clone()</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00406">quant_const()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
 
 </div>
 </div>
@@ -8053,47 +8066,53 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00403">403</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  404</span>{</div>
-<div class="line"><span class="lineno">  405</span>  assert(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
-<div class="line"><span class="lineno">  408</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><span class="lineno">  409</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(); i++)</div>
-<div class="line"><span class="lineno">  410</span>  {</div>
-<div class="line"><span class="lineno">  411</span>    <span class="keyword">auto</span> data = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(i);</div>
-<div class="line"><span class="lineno">  412</span>    min = data &lt; min ? data : min;</div>
-<div class="line"><span class="lineno">  413</span>    max = data &gt; max ? data : max;</div>
-<div class="line"><span class="lineno">  414</span>  }</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>  <span class="keywordtype">float</span> scaling_factor{0.0};</div>
-<div class="line"><span class="lineno">  417</span>  int64_t zp{0};</div>
-<div class="line"><span class="lineno">  418</span>  <span class="keywordtype">float</span> nudged_min{0.0};</div>
-<div class="line"><span class="lineno">  419</span>  <span class="keywordtype">float</span> nudged_max{0.0};</div>
-<div class="line"><span class="lineno">  420</span> </div>
-<div class="line"><span class="lineno">  421</span>  <span class="keywordflow">switch</span> (quant_type)</div>
-<div class="line"><span class="lineno">  422</span>  {</div>
-<div class="line"><span class="lineno">  423</span>    <span class="keywordflow">case</span> loco::DataType::U8:</div>
-<div class="line"><span class="lineno">  424</span>      <a class="code hl_function" href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">asymmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, zp, nudged_min,</div>
-<div class="line"><span class="lineno">  425</span>                                              nudged_max);</div>
-<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">case</span> loco::DataType::S16:</div>
-<div class="line"><span class="lineno">  428</span>      <a class="code hl_function" href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">symmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, nudged_min,</div>
-<div class="line"><span class="lineno">  429</span>                                             nudged_max);</div>
-<div class="line"><span class="lineno">  430</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  431</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  432</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  433</span>  }</div>
-<div class="line"><span class="lineno">  434</span> </div>
-<div class="line"><span class="lineno">  435</span>  <span class="keyword">auto</span> quantparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
-<div class="line"><span class="lineno">  436</span>  quantparam-&gt;scale.push_back(scaling_factor);</div>
-<div class="line"><span class="lineno">  437</span>  quantparam-&gt;zerop.push_back(zp);</div>
-<div class="line"><span class="lineno">  438</span>  node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(quantparam));</div>
-<div class="line"><span class="lineno">  439</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00406">406</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  407</span>{</div>
+<div class="line"><span class="lineno">  408</span>  assert(node-&gt;dtype() == loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  409</span> </div>
+<div class="line"><span class="lineno">  410</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">  411</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">  412</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(); i++)</div>
+<div class="line"><span class="lineno">  413</span>  {</div>
+<div class="line"><span class="lineno">  414</span>    <span class="keyword">auto</span> data = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(i);</div>
+<div class="line"><span class="lineno">  415</span>    min = data &lt; min ? data : min;</div>
+<div class="line"><span class="lineno">  416</span>    max = data &gt; max ? data : max;</div>
+<div class="line"><span class="lineno">  417</span>  }</div>
+<div class="line"><span class="lineno">  418</span> </div>
+<div class="line"><span class="lineno">  419</span>  <span class="keywordtype">float</span> scaling_factor{0.0};</div>
+<div class="line"><span class="lineno">  420</span>  int64_t zp{0};</div>
+<div class="line"><span class="lineno">  421</span>  <span class="keywordtype">float</span> nudged_min{0.0};</div>
+<div class="line"><span class="lineno">  422</span>  <span class="keywordtype">float</span> nudged_max{0.0};</div>
+<div class="line"><span class="lineno">  423</span> </div>
+<div class="line"><span class="lineno">  424</span>  <span class="keywordflow">switch</span> (quant_type)</div>
+<div class="line"><span class="lineno">  425</span>  {</div>
+<div class="line"><span class="lineno">  426</span>    <span class="keywordflow">case</span> loco::DataType::U8:</div>
+<div class="line"><span class="lineno">  427</span>      <a class="code hl_function" href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">asymmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, zp, nudged_min,</div>
+<div class="line"><span class="lineno">  428</span>                                              nudged_max);</div>
+<div class="line"><span class="lineno">  429</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  430</span>    <span class="keywordflow">case</span> loco::DataType::S16:</div>
+<div class="line"><span class="lineno">  431</span>      <a class="code hl_function" href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">symmetric_wquant_with_minmax_per_layer</a>(node, min, max, scaling_factor, nudged_min,</div>
+<div class="line"><span class="lineno">  432</span>                                             nudged_max);</div>
+<div class="line"><span class="lineno">  433</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  434</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  435</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  436</span>  }</div>
+<div class="line"><span class="lineno">  437</span> </div>
+<div class="line"><span class="lineno">  438</span>  <span class="keyword">auto</span> quantparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
+<div class="line"><span class="lineno">  439</span>  quantparam-&gt;scale.push_back(scaling_factor);</div>
+<div class="line"><span class="lineno">  440</span>  quantparam-&gt;zerop.push_back(zp);</div>
+<div class="line"><span class="lineno">  441</span>  <span class="comment">// Copy min and max values if it exists</span></div>
+<div class="line"><span class="lineno">  442</span>  <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>())</div>
+<div class="line"><span class="lineno">  443</span>  {</div>
+<div class="line"><span class="lineno">  444</span>    quantparam-&gt;min = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>()-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#a269600d9f7b4540d2455a77f8d058efd">min</a>;</div>
+<div class="line"><span class="lineno">  445</span>    quantparam-&gt;max = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>()-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#ad75c4e344ee9e0490380ae180e276a20">max</a>;</div>
+<div class="line"><span class="lineno">  446</span>  }</div>
+<div class="line"><span class="lineno">  447</span>  node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(quantparam));</div>
+<div class="line"><span class="lineno">  448</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a2794836a87d2212005d9ef7b7ef3498a"><div class="ttname"><a href="namespaceluci.html#a2794836a87d2212005d9ef7b7ef3498a">luci::asymmetric_wquant_with_minmax_per_layer</a></div><div class="ttdeci">void asymmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &amp;scaling_factor, int64_t &amp;zp, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00046">QuantizationUtils.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceluci_html_aad736abc0d7bd9388d42e5d4a25b80c4"><div class="ttname"><a href="namespaceluci.html#aad736abc0d7bd9388d42e5d4a25b80c4">luci::symmetric_wquant_with_minmax_per_layer</a></div><div class="ttdeci">void symmetric_wquant_with_minmax_per_layer(CircleConst *node, float min, float max, float &amp;scaling_factor, float &amp;nudged_min, float &amp;nudged_max)</div><div class="ttdef"><b>Definition:</b> <a href="_quantization_utils_8cpp_source.html#l00075">QuantizationUtils.cpp:75</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00046">asymmetric_wquant_with_minmax_per_layer()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00075">symmetric_wquant_with_minmax_per_layer()</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00046">asymmetric_wquant_with_minmax_per_layer()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="_circle_quant_param_8h_source.html#l00029">luci::CircleQuantParam::max</a>, <a class="el" href="_circle_quant_param_8h_source.html#l00028">luci::CircleQuantParam::min</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00075">symmetric_wquant_with_minmax_per_layer()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00295">propagate_concat_quantparam()</a>.</p>
 
@@ -8363,21 +8382,21 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00391">391</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  392</span>{</div>
-<div class="line"><span class="lineno">  393</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>  <span class="keyword">auto</span> qparam = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
-<div class="line"><span class="lineno">  396</span>  assert(qparam);                    <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  397</span>  assert(qparam-&gt;scale.size() == 1); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  398</span> </div>
-<div class="line"><span class="lineno">  399</span>  <span class="keyword">auto</span> fp_scale = qparam-&gt;scale[0];</div>
-<div class="line"><span class="lineno">  400</span>  qparam-&gt;scale[0] = fp_scale &lt; 1 ? 1.0f : std::round(fp_scale);</div>
-<div class="line"><span class="lineno">  401</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00394">394</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  395</span>{</div>
+<div class="line"><span class="lineno">  396</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  397</span> </div>
+<div class="line"><span class="lineno">  398</span>  <span class="keyword">auto</span> qparam = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
+<div class="line"><span class="lineno">  399</span>  assert(qparam);                    <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  400</span>  assert(qparam-&gt;scale.size() == 1); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  401</span> </div>
+<div class="line"><span class="lineno">  402</span>  <span class="keyword">auto</span> fp_scale = qparam-&gt;scale[0];</div>
+<div class="line"><span class="lineno">  403</span>  qparam-&gt;scale[0] = fp_scale &lt; 1 ? 1.0f : std::round(fp_scale);</div>
+<div class="line"><span class="lineno">  404</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_activation_8cpp_source.html#l00136">luci::QuantizeSpecialActivation::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_activation_8cpp_source.html#l00140">luci::QuantizeSpecialActivation::visit()</a>.</p>
 
 </div>
 </div>
@@ -8927,7 +8946,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">luci::CircleConst::at()</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00104">compute_sym_scale()</a>, <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">luci::CircleConst::size()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00403">quant_const()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantization_utils_8cpp_source.html#l00406">quant_const()</a>.</p>
 
 </div>
 </div>
@@ -8957,7 +8976,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00485">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00495">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>
@@ -9713,7 +9732,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_partition_8h_source.html#l00047">luci::PartitionTable::byopcodes</a>, <a class="el" href="_partition_8h_source.html#l00050">luci::PartitionTable::byopnames</a>, <a class="el" href="_partition_8h_source.html#l00043">luci::PartitionTable::default_group</a>, and <a class="el" href="_partition_8h_source.html#l00042">luci::PartitionTable::groups</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_embedder_8cpp_source.html#l00077">minmax_embedder::Embedder::embed()</a>, <a class="el" href="_circle_partitioner_8cpp_source.html#l00077">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00034">onert::odc::Quantizer::quantize()</a>, <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>, and <a class="el" href="_read_module_8cpp_source.html#l00029">ReadModule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_embedder_8cpp_source.html#l00077">minmax_embedder::Embedder::embed()</a>, <a class="el" href="compiler_2q-implant_2driver_2_driver_8cpp_source.html#l00033">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00034">onert::odc::Quantizer::quantize()</a>, <a class="el" href="_quantizer_8cpp_source.html#l00063">mpqsolver::core::Quantizer::quantize()</a>, and <a class="el" href="_read_module_8cpp_source.html#l00029">ReadModule()</a>.</p>
 
 </div>
 </div>
@@ -10086,19 +10105,19 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00497">497</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  498</span>{</div>
-<div class="line"><span class="lineno">  499</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  500</span>  <span class="keyword">auto</span> qp = n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
-<div class="line"><span class="lineno">  501</span>  <span class="keyword">auto</span> k = qp-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size();</div>
-<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; k; i++)</div>
-<div class="line"><span class="lineno">  503</span>  {</div>
-<div class="line"><span class="lineno">  504</span>    <span class="keywordflow">if</span> (warn_scale_zp(qp-&gt;scale[i], qp-&gt;zerop[i], n))</div>
-<div class="line"><span class="lineno">  505</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;Quantization of &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;-th channel of &quot;</span> &lt;&lt; n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
-<div class="line"><span class="lineno">  506</span>              &lt;&lt; <span class="stringliteral">&quot;&#39;s quantization may cause accuracy issues&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  507</span>    ;</div>
-<div class="line"><span class="lineno">  508</span>  }</div>
-<div class="line"><span class="lineno">  509</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantization_utils_8cpp_source.html#l00506">506</a> of file <a class="el" href="_quantization_utils_8cpp_source.html">QuantizationUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  507</span>{</div>
+<div class="line"><span class="lineno">  508</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  509</span>  <span class="keyword">auto</span> qp = n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
+<div class="line"><span class="lineno">  510</span>  <span class="keyword">auto</span> k = qp-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size();</div>
+<div class="line"><span class="lineno">  511</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; k; i++)</div>
+<div class="line"><span class="lineno">  512</span>  {</div>
+<div class="line"><span class="lineno">  513</span>    <span class="keywordflow">if</span> (warn_scale_zp(qp-&gt;scale[i], qp-&gt;zerop[i], n))</div>
+<div class="line"><span class="lineno">  514</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;Quantization of &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;-th channel of &quot;</span> &lt;&lt; n-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
+<div class="line"><span class="lineno">  515</span>              &lt;&lt; <span class="stringliteral">&quot;&#39;s quantization may cause accuracy issues&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  516</span>    ;</div>
+<div class="line"><span class="lineno">  517</span>  }</div>
+<div class="line"><span class="lineno">  518</span>}</div>
 <div class="ttc" id="astructluci_1_1_circle_quant_param_html_adfd73367574e4ad12da0b59a7915ec09"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">luci::CircleQuantParam::zerop</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; zerop</div><div class="ttdef"><b>Definition:</b> <a href="_circle_quant_param_8h_source.html#l00031">CircleQuantParam.h:31</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>, <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>, and <a class="el" href="_circle_quant_param_8h_source.html#l00031">luci::CircleQuantParam::zerop</a>.</p>

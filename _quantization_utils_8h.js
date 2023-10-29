@@ -15,7 +15,7 @@ var _quantization_utils_8h =
     [ "get_channel_dim_index", "_quantization_utils_8h.html#a4f572f265dd92ec416a29e155f3e60c6", null ],
     [ "is_fp32", "_quantization_utils_8h.html#af8c3d8539c31e704fa69644422109306", null ],
     [ "is_quantized", "_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8", null ],
-    [ "make_predefined_qparam", "_quantization_utils_8h.html#ae94e3afe22962fdd9d6195ee60b930ce", null ],
+    [ "make_predefined_qparam", "_quantization_utils_8h.html#a7f4594820696716f29dade1d31a7bb93", null ],
     [ "make_predefined_qparam", "_quantization_utils_8h.html#abc664d29f6593ae697b90928e3a5a2c3", null ],
     [ "propagate_concat_quantparam", "_quantization_utils_8h.html#a08927f7d3d5ed8512d8958335add0378", null ],
     [ "propagate_pad_v2_quantparam", "_quantization_utils_8h.html#a0157f75d4d983ccb4e0a520d16d277e7", null ],

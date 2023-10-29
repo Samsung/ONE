@@ -164,8 +164,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
 <div class="line"><span class="lineno">   32</span>  assert(first.size() == second.size());</div>
 <div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordtype">float</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> = 0.f;</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> output_size = 0;</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordtype">double</span> output_errors = 0.; <span class="comment">// mean over mean outputs errors</span></div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> num_output_errors = 0;</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample_index = 0; sample_index &lt; first.size(); ++sample_index)</div>
 <div class="line"><span class="lineno">   38</span>  {</div>
@@ -177,26 +177,31 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   44</span>      assert(first_elementary.size() == second_elementary.size());</div>
 <div class="line"><span class="lineno">   45</span>      <span class="keywordtype">size_t</span> cur_size = first_elementary.size() / <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a>(loco::DataType::FLOAT32);</div>
 <div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *first_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(first_elementary.data());</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *second_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(second_elementary.data());</div>
-<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; cur_size; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>++)</div>
-<div class="line"><span class="lineno">   50</span>      {</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordtype">float</span> ref_value = *(first_floats + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordtype">float</span> cur_value = *(second_floats + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
-<div class="line"><span class="lineno">   53</span>        <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> += std::fabs(ref_value - cur_value);</div>
-<div class="line"><span class="lineno">   54</span>      }</div>
-<div class="line"><span class="lineno">   55</span>      output_size += cur_size;</div>
-<div class="line"><span class="lineno">   56</span>    }</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (output_size == 0)</div>
-<div class="line"><span class="lineno">   60</span>  {</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> / output_size;</div>
-<div class="line"><span class="lineno">   65</span>}</div>
-<div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition:</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordtype">double</span> output_error = 0.; <span class="comment">// mean error oevr current output</span></div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *first_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(first_elementary.data());</div>
+<div class="line"><span class="lineno">   50</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *second_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(second_elementary.data());</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; cur_size; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>++)</div>
+<div class="line"><span class="lineno">   52</span>      {</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordtype">double</span> ref_value = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(*(first_floats + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>));</div>
+<div class="line"><span class="lineno">   54</span>        <span class="keywordtype">double</span> cur_value = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(*(second_floats + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>));</div>
+<div class="line"><span class="lineno">   55</span>        output_error += std::fabs(ref_value - cur_value);</div>
+<div class="line"><span class="lineno">   56</span>      }</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">if</span> (cur_size != 0)</div>
+<div class="line"><span class="lineno">   58</span>      {</div>
+<div class="line"><span class="lineno">   59</span>        output_errors += (output_error / cur_size);</div>
+<div class="line"><span class="lineno">   60</span>        num_output_errors += 1;</div>
+<div class="line"><span class="lineno">   61</span>      }</div>
+<div class="line"><span class="lineno">   62</span>    }</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (num_output_errors == 0)</div>
+<div class="line"><span class="lineno">   66</span>  {</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_errors / num_output_errors);</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition:</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1core_html_ad8d2a28d403e2d2ee492235eed91fc7c"><div class="ttname"><a href="namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c">mpqsolver::core::Buffer</a></div><div class="ttdeci">std::vector&lt; char &gt; Buffer</div><div class="ttdef"><b>Definition:</b> <a href="_error_metric_8h_source.html#l00027">ErrorMetric.h:27</a></div></div>

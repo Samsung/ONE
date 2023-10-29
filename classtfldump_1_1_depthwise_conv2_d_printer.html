@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> conv_params = op-&gt;builtin_options_as_DepthwiseConv2DOptions())</div>
 <div class="line"><span class="lineno">  295</span>    {</div>
 <div class="line"><span class="lineno">  296</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  297</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; conv_params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  297</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; EnumNamePadding(conv_params-&gt;padding()) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  298</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; conv_params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  299</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; conv_params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  300</span>      os &lt;&lt; <span class="stringliteral">&quot;DepthMultiplier(&quot;</span> &lt;&lt; conv_params-&gt;depth_multiplier() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>

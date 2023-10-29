@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">if</span> (Tensor::element_type(input) == DataType::S16)</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">int</span> left_shift = params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">input_left_shift</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">int</span> left_shift = 0;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">double</span> input_scale_beta_rescale =</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input)) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(beta) /</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      (10.0 / 65535.0); <span class="comment">// scale the input_diff such that [-65535, 0]</span></div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">int</span> left_shift = params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#ab5aca30c84da89273437cb53dc304ad1">input_left_shift</a>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">int</span> left_shift = 0;</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    preprocessSoftmaxScaling(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#aa77f6ab2f9246ee52e0f483214de58b2">beta</a>),</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                             <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(Tensor::scale(input)), kScaledDiffIntegerBits,</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                             &amp;params.<a class="code hl_variable" href="structluci__interpreter__pal_1_1_softmax_params.html#a7f6d385e60fd05527d498a1e27d4faab">input_multiplier</a>, &amp;left_shift);</div>

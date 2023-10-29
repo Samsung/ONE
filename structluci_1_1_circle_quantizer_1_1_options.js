@@ -24,7 +24,8 @@ var structluci_1_1_circle_quantizer_1_1_options =
       [ "Quantize_dst_tensor_names", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a778dbd5896ca41e96870481d4b24921e", null ],
       [ "Quantize_input_type", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a8fbbb2c10149eee7761eda063810be0a", null ],
       [ "Quantize_output_type", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164a1b9ef5aa79baab3e894781bc13628d71", null ],
-      [ "Quantize_TF_style_maxpool", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586", null ]
+      [ "Quantize_TF_style_maxpool", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164aa50cd038f21fb4050449db1d3db90586", null ],
+      [ "Quantize_save_min_max", "structluci_1_1_circle_quantizer_1_1_options.html#a0d56cbbe739da2d3915dd16553cb7164ae1d9f8048770c53c94711db17fca34c0", null ]
     ] ],
     [ "~Options", "structluci_1_1_circle_quantizer_1_1_options.html#ae659e52c9265a3e672ec2c190c6bea66", null ],
     [ "enable", "structluci_1_1_circle_quantizer_1_1_options.html#a1d4e2e9a64707b4283fffc79bfd6473f", null ],

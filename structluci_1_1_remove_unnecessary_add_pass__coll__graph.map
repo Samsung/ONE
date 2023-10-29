@@ -1,0 +1,4 @@
+<map id="luci::RemoveUnnecessaryAddPass" name="luci::RemoveUnnecessaryAddPass">
+<area shape="rect" id="node1" title="Class to temove unnecessary(input and output are same) Add node." alt="" coords="5,79,231,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="77,5,159,31"/>
+</map>

@@ -122,8 +122,8 @@ $(document).ready(function(){initNavTree('_error_metric_8cpp_source.html',''); i
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  assert(first.size() == second.size());</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">float</span> error = 0.f;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> output_size = 0;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">double</span> output_errors = 0.; <span class="comment">// mean over mean outputs errors</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> num_output_errors = 0;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> sample_index = 0; sample_index &lt; first.size(); ++sample_index)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
@@ -135,25 +135,31 @@ $(document).ready(function(){initNavTree('_error_metric_8cpp_source.html',''); i
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      assert(first_elementary.size() == second_elementary.size());</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      <span class="keywordtype">size_t</span> cur_size = first_elementary.size() / <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a>(loco::DataType::FLOAT32);</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *first_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(first_elementary.data());</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *second_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(second_elementary.data());</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; index &lt; cur_size; index++)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordtype">float</span> ref_value = *(first_floats + index);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordtype">float</span> cur_value = *(second_floats + index);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        error += std::fabs(ref_value - cur_value);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      output_size += cur_size;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (output_size == 0)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> error / output_size;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordtype">double</span> output_error = 0.; <span class="comment">// mean error oevr current output</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *first_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(first_elementary.data());</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *second_floats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(second_elementary.data());</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; index &lt; cur_size; index++)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordtype">double</span> ref_value = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(*(first_floats + index));</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordtype">double</span> cur_value = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(*(second_floats + index));</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        output_error += std::fabs(ref_value - cur_value);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">if</span> (cur_size != 0)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        output_errors += (output_error / cur_size);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        num_output_errors += 1;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordflow">if</span> (num_output_errors == 0)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;nothing to compare&quot;</span>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_errors / num_output_errors);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
 <div class="ttc" id="a_data_type_traits_8h_html"><div class="ttname"><a href="_data_type_traits_8h.html">DataTypeTraits.h</a></div></div>
 <div class="ttc" id="a_error_metric_8h_html"><div class="ttname"><a href="_error_metric_8h.html">ErrorMetric.h</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_m_a_e_metric_html_a1b08cfd5f8a144599fb2a04c99c6468b"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_m_a_e_metric.html#a1b08cfd5f8a144599fb2a04c99c6468b">mpqsolver::core::MAEMetric::compute</a></div><div class="ttdeci">float compute(const WholeOutput &amp;first, const WholeOutput &amp;second) const</div><div class="ttdoc">compare first and second operands in MAE (Mean Average Error metric)</div><div class="ttdef"><b>Definition:</b> <a href="_error_metric_8cpp_source.html#l00030">ErrorMetric.cpp:30</a></div></div>

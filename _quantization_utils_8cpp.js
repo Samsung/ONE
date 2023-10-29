@@ -10,7 +10,7 @@ var _quantization_utils_8cpp =
     [ "get_channel_dim_index", "_quantization_utils_8cpp.html#a4f572f265dd92ec416a29e155f3e60c6", null ],
     [ "is_fp32", "_quantization_utils_8cpp.html#af8c3d8539c31e704fa69644422109306", null ],
     [ "is_quantized", "_quantization_utils_8cpp.html#a92c776392acf3d65c602775dcf6078e8", null ],
-    [ "make_predefined_qparam", "_quantization_utils_8cpp.html#ae94e3afe22962fdd9d6195ee60b930ce", null ],
+    [ "make_predefined_qparam", "_quantization_utils_8cpp.html#a7f4594820696716f29dade1d31a7bb93", null ],
     [ "quant_const", "_quantization_utils_8cpp.html#a45fe577e9e1a457fe33918624cd4a9a5", null ],
     [ "set_int_scale", "_quantization_utils_8cpp.html#a778ba1acea30cadd3985b4023df5b2f2", null ],
     [ "symmetric_wquant_with_minmax_per_layer", "_quantization_utils_8cpp.html#aad736abc0d7bd9388d42e5d4a25b80c4", null ],

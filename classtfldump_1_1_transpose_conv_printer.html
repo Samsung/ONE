@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  640</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_TransposeConvOptions())</div>
 <div class="line"><span class="lineno">  641</span>    {</div>
 <div class="line"><span class="lineno">  642</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  643</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; params-&gt;padding() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  643</span>      os &lt;&lt; <span class="stringliteral">&quot;Padding(&quot;</span> &lt;&lt; EnumNamePadding(params-&gt;padding()) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  644</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.W(&quot;</span> &lt;&lt; params-&gt;stride_w() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  645</span>      os &lt;&lt; <span class="stringliteral">&quot;Stride.H(&quot;</span> &lt;&lt; params-&gt;stride_h() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  646</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
