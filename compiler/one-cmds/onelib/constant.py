@@ -50,6 +50,7 @@ class CONSTANT:
         # Remove redundant operators
         'remove_redundant_reshape',
         'remove_redundant_transpose',
+        'remove_unnecessary_add',
         'remove_unnecessary_reshape',
         'remove_unnecessary_slice',
         'remove_unnecessary_strided_slice',
@@ -121,6 +122,7 @@ class CONSTANT:
         ('remove_redundant_quantize', 'remove redundant Quantize ops'),
         ('remove_redundant_reshape', 'fuse or remove subsequent Reshape ops'),
         ('remove_redundant_transpose', 'fuse or remove subsequent Transpose ops'),
+        ('remove_unnecessary_add', 'remove unnecessary add ops'),
         ('remove_unnecessary_reshape', 'remove unnecessary reshape ops'),
         ('remove_unnecessary_slice', 'remove unnecessary slice ops'),
         ('remove_unnecessary_strided_slice', 'remove unnecessary strided slice ops'),
