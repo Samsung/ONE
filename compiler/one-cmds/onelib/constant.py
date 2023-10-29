@@ -43,6 +43,7 @@ class CONSTANT:
         'fuse_gelu',
         'fuse_mean_with_mean',
         'fuse_transpose_with_mean',
+        'fuse_slice_with_tconv',
         'transform_min_max_to_relu6',
         'transform_min_relu_to_relu6',
 
