@@ -49,10 +49,10 @@ public:
   void backward() override;
 
 private:
-  IPortableTensor *_deriv_input;
-  const IPortableTensor *_deriv_output;
+  IPortableTensor *_deriv_input = nullptr;
+  const IPortableTensor *_deriv_output = nullptr;
 
-  ElementwiseActivationType _op_type;
+  ElementwiseActivationType _op_type = ElementwiseActivationType::kReLU;
   std::function<void(const IPortableTensor *output, const IPortableTensor *incoming,
                      IPortableTensor *outgoing)>
     _backward_kernel;
