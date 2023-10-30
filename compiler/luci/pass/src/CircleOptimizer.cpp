@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/FuseUnrolledGRUAsCustomGRU.h"
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "luci/Pass/FoldAddV2Pass.h"
@@ -301,6 +302,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FusePRelu))
   {
     phase.emplace_back(std::make_unique<FusePReluPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseUnrolledGRUAsCustomGRU))
+  {
+    phase.emplace_back(std::make_unique<FuseUnrolledGRUAsCustomGRUPass>());
   }
   if (_options->query(Options::Algorithm::FuseGelu))
   {
