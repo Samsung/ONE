@@ -34,6 +34,7 @@ public:
   {
     enum Algorithm
     {
+      FuseUnrolledGRUAsCustomGRU,
       FuseAddWithFullyConnected,
       FuseAddWithTConv,
       FuseBatchNormWithConv,
