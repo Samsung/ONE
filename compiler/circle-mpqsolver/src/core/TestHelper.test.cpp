@@ -99,6 +99,76 @@ loco::Node *AddGraph::insertGraphBody(loco::Node *input)
   return _add;
 }
 
+void SoftmaxGraphlet::initMinMax(luci::CircleNode *node, float min, float max)
+{
+  auto qparam = std::make_unique<luci::CircleQuantParam>();
+  qparam->min.assign(1, min);
+  qparam->max.assign(1, max);
+  node->quantparam(std::move(qparam));
+}
+
+void SoftmaxGraphlet::init(loco::Graph *g)
+{
+  _ifm = nullptr;
+
+  _ifm = g->nodes()->create<luci::CircleAbs>();
+  _max = g->nodes()->create<luci::CircleReduceMax>();
+  _sub = g->nodes()->create<luci::CircleSub>();
+  _exp = g->nodes()->create<luci::CircleExp>();
+  _sum = g->nodes()->create<luci::CircleSum>();
+  _div = g->nodes()->create<luci::CircleDiv>();
+  _softmax_indices = g->nodes()->create<luci::CircleConst>();
+
+  _ifm->name("ifm");
+  _max->name("maximum_of_ifm");
+  _sub->name("sub");
+  _exp->name("exp");
+  _sum->name("sum");
+  _div->name("div");
+  _softmax_indices->name("reduction_indices");
+
+  initMinMax(_ifm, 0, 1);
+  initMinMax(_max, 0, 1);
+  initMinMax(_sub, 0, 1);
+  initMinMax(_exp, 0, 1);
+  initMinMax(_sum, 0, 1);
+  initMinMax(_div, 0, 1);
+
+  _softmax_indices->dtype(loco::DataType::S32);
+  _softmax_indices->size<loco::DataType::S32>(1);
+  _softmax_indices->shape({1});
+  _softmax_indices->at<loco::DataType::S32>(0) = -1;
+  _softmax_indices->shape_status(luci::ShapeStatus::VALID);
+
+  _max->keep_dims(true);
+  _sum->keep_dims(true);
+}
+
+void SoftmaxTestGraph::init(void)
+{
+  TestIOGraph::init({1, 12, 11, 15}, {1, 12, 11, 15});
+  SoftmaxGraphlet::init(g());
+
+  _ifm->x(input());
+  _max->input(_ifm);
+  _max->reduction_indices(_softmax_indices);
+
+  _sub->x(_ifm);
+  _sub->y(_max);
+  _sub->fusedActivationFunction(luci::FusedActFunc::NONE);
+  _exp->x(_sub);
+  _sum->input(_exp);
+  _sum->reduction_indices(_softmax_indices);
+  _div->x(_exp);
+  _div->y(_sum);
+  _div->fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  output()->from(_div);
+
+  initMinMax(input(), 0, 1);
+  initMinMax(output(), 0, 1);
+}
+
 } // namespace models
 
 namespace io_utils

@@ -38,6 +38,7 @@ set(TEST_SOURCES
     "src/bisection/VISQErrorApproximator.cpp"
     "src/core/ErrorMetric.cpp"
     "src/pattern/PatternResolver.cpp"
+    "src/pattern/PatternSolver.cpp"
     "src/core/Dumper.cpp"
     "src/core/DumpingHooks.cpp"
     "src/core/Evaluator.cpp"
