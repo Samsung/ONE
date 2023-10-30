@@ -16,6 +16,7 @@
  */
 
 #include "Erf.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -29,7 +30,7 @@ ErfChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "Erf");
+  check_custom_op_value(operation, "Erf");
 
   /**
    * REGISTER_OP("Erf")
