@@ -41,6 +41,7 @@ public:
       FuseBatchNormWithTConv,
       FuseSliceWithTConv,
       FuseBCQ,
+      FuseHorizontalFullyConnected,
       FuseInstanceNorm,
       FuseMeanWithMean,
       FuseTransposeWithMean,
