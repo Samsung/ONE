@@ -22,6 +22,5 @@ TEST(CircleMPQSolverBisectionSolverTest, empty_path_NEG)
 {
   mpqsolver::bisection::BisectionSolver solver("", 0.0, "uint8", "uint8");
   solver.algorithm(mpqsolver::bisection::BisectionSolver::Algorithm::ForceQ16Back);
-  auto const res = solver.run("");
-  EXPECT_TRUE(res.get() == nullptr);
+  EXPECT_ANY_THROW(solver.run(""));
 }

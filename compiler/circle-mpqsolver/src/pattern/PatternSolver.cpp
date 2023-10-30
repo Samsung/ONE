@@ -37,10 +37,7 @@ PatternSolver::PatternSolver(const std::string &input_quantization,
 std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 {
   auto module = read_module(module_path);
-  if (!module)
-  {
-    throw std::runtime_error("Failed to load model");
-  }
+  assert(module != nullptr);
 
   resolve_patterns(module.get());
 

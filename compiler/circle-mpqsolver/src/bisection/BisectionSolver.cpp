@@ -86,6 +86,8 @@ float BisectionSolver::evaluate(const core::DatasetEvaluator &evaluator,
                                 core::LayerParams &layers)
 {
   auto model = read_module(flt_path);
+  assert(model != nullptr);
+
   // get fake quantized model for evaluation
   if (!_quantizer->fake_quantize(model.get(), def_quant, layers))
   {
@@ -102,6 +104,7 @@ void BisectionSolver::setVisqPath(const std::string &visq_path) { _visq_data_pat
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
   auto module = read_module(module_path);
+  assert(module != nullptr);
 
   float min_depth = 0.f;
   float max_depth = 0.f;
