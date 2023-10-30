@@ -16,6 +16,7 @@
  */
 
 #include "MaxPoolWithArgmax.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -29,7 +30,7 @@ MaxPoolWithArgmaxChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "MaxPoolWithArgmax");
+  check_custom_op_value(operation, "MaxPoolWithArgmax");
 
   /**
    * REGISTER_OP("MaxPoolWithArgmax")

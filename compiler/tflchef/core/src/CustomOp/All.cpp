@@ -16,6 +16,7 @@
  */
 
 #include "All.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -29,7 +30,7 @@ AllChef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "All");
+  check_custom_op_value(operation, "All");
 
   /**
    * REGISTER_OP("All")

@@ -16,6 +16,7 @@
  */
 
 #include "BatchMatMulV2.h"
+#include "OpUtils.h"
 
 #include <flatbuffers/flexbuffers.h>
 
@@ -29,7 +30,7 @@ BatchMatMulV2Chef::custom_value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
-  assert(operation.type() == "BatchMatMulV2");
+  check_custom_op_value(operation, "BatchMatMulV2");
 
   /**
    * REGISTER_OP("BatchMatMulV2")
