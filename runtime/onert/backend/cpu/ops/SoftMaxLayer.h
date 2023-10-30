@@ -44,10 +44,11 @@ public:
 
   void run() override;
 
-private:
+protected:
   const IPortableTensor *_input;
   IPortableTensor *_output;
 
+private:
   float _beta;
 
   float _table[256];
