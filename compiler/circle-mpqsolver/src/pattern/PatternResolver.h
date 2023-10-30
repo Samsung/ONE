@@ -46,6 +46,16 @@ public:
   resolve(const luci::Module *module) override;
 };
 
+class Q8SoftmaxWithQ16SubExpResolver : public PatternResolver
+{
+public:
+  /**
+   * @brief resolve all nodes of Softmax pattern as prescribed
+   */
+  std::map<luci::CircleNode *, luci::CircleQuantizer::Options::LayerParam>
+  resolve(const luci::Module *module) override;
+};
+
 } // namespace pattern
 } // namespace mpqsolver
 

@@ -163,6 +163,105 @@ bool LayerNormPattern::matched()
   return true;
 }
 
+/**
+ * SUBGRAPH PATTERN
+ *  SoftmaxPattern := (exp(ifm - max(ifm))) / sum(exp(ifm - max(ifm)))
+ *    - Below diagram shows Softmax pattern to quantize.
+ *
+ *         [In]    [CircleConst(=-1)]
+ *          | \          /
+ *          |  \        /
+ *          | [CircleReduceMax]
+ *          |    /
+ *          |   /
+ *          |  /
+ *        [Sub]               [CircleConst(=-1)]
+ *          |                        |
+ *          |                        |
+ *        [Exp]                      |
+ *          | \                      |
+ *          |  \                     |
+ *          |  [CircleSum]-----------+
+ *          |  /
+ *          | /
+ *        [Div]
+ *          |
+ *          |
+ *      [CircleNode]
+ */
+class SoftmaxPattern final
+{
+public:
+  SoftmaxPattern(luci::CircleDiv *candidate)
+  {
+    assert(candidate);
+    _div_as_terminal = candidate;
+  }
+
+public:
+  bool matched();
+
+  std::vector<luci::CircleNode *> get_q16_nodes() { return {_sub, _exp}; }
+
+  std::vector<luci::CircleNode *> get_q8_nodes() { return {_ifm, _max, _sum, _div_as_terminal}; }
+
+public:
+  luci::CircleNode *_ifm = nullptr;            // input feature map
+  luci::CircleReduceMax *_max = nullptr;       // = max(_ifm)
+  luci::CircleSub *_sub = nullptr;             // = _ifm - max(_ifm)
+  luci::CircleExp *_exp = nullptr;             // = exp(_ifm - max(_ifm))
+  luci::CircleSum *_sum = nullptr;             // = sum(exp(_ifm - max(_ifm)))
+  luci::CircleDiv *_div_as_terminal = nullptr; // = exp(_ifm - max(_ifm))/sum(exp(_ifm - max(_ifm)))
+};
+
+bool SoftmaxPattern::matched()
+{
+  _exp = dynamic_cast<luci::CircleExp *>(_div_as_terminal->x());
+  _sum = dynamic_cast<luci::CircleSum *>(_div_as_terminal->y());
+  CHECK_OR_FALSE(_exp != nullptr && _sum != nullptr);
+
+  CHECK_OR_FALSE(_sum->input() == _exp);
+  CHECK_OR_FALSE(_sum->keep_dims() == true);
+
+  auto const sum_indices = dynamic_cast<luci::CircleConst *>(_sum->reduction_indices());
+  CHECK_OR_FALSE(sum_indices != nullptr);
+
+  _sub = dynamic_cast<luci::CircleSub *>(_exp->x());
+  CHECK_OR_FALSE(_sub != nullptr);
+
+  _ifm = loco::must_cast<luci::CircleNode *>(_sub->x());
+
+  _max = dynamic_cast<luci::CircleReduceMax *>(_sub->y());
+  CHECK_OR_FALSE(_max != nullptr);
+
+  CHECK_OR_FALSE(_max->input() == _ifm);
+  CHECK_OR_FALSE(_max->keep_dims() == true);
+
+  auto const max_indices = dynamic_cast<luci::CircleConst *>(_max->reduction_indices());
+  CHECK_OR_FALSE(max_indices != nullptr);
+
+  // check dtype of reduction indices
+  CHECK_OR_FALSE(max_indices->dtype() == loco::DataType::S32 &&
+                 sum_indices->dtype() == loco::DataType::S32);
+
+  // reduction of max and sum must be done over the last (channel) dimension
+  {
+    CHECK_OR_FALSE(max_indices->size<loco::DataType::S32>() == 1 &&
+                   sum_indices->size<loco::DataType::S32>() == 1);
+
+    auto const rank = _ifm->rank();
+    int32_t last_dim = (rank == 0) ? 0 : rank - 1;
+
+    CHECK_OR_FALSE(max_indices->at<loco::DataType::S32>(0) == -1 ||
+                   max_indices->at<loco::DataType::S32>(0) == last_dim);
+
+    CHECK_OR_FALSE(sum_indices->at<loco::DataType::S32>(0) == -1 ||
+                   sum_indices->at<loco::DataType::S32>(0) == last_dim);
+  }
+
+  return true;
+}
+
 #undef CHECK_OR_FALSE
 
 } // namespace
@@ -187,6 +286,47 @@ Q8LayerNormWithQ16VarianceResolver::resolve(const luci::Module *module)
         continue;
 
       LayerNormPattern pattern(mul);
+      if (!pattern.matched())
+        continue;
+
+      // set quantization parameters of recognized pattern
+      for (auto q16_node : pattern.get_q16_nodes())
+      {
+        LayerParam param = {q16_node->name(), "int16", "channel"};
+        nodes_params[q16_node] = param;
+      }
+
+      for (auto q8_node : pattern.get_q8_nodes())
+      {
+        LayerParam param = {q8_node->name(), "uint8", "channel"};
+        nodes_params[q8_node] = param;
+      }
+    }
+  }
+
+  return nodes_params;
+}
+
+std::map<luci::CircleNode *, LayerParam>
+Q8SoftmaxWithQ16SubExpResolver::resolve(const luci::Module *module)
+{
+  if (!module)
+  {
+    throw std::runtime_error("No module for pattern resolving");
+  }
+
+  std::map<luci::CircleNode *, LayerParam> nodes_params;
+  for (size_t idx = 0; idx < module->size(); ++idx)
+  {
+    auto graph = module->graph(idx);
+
+    for (auto node : loco::active_nodes(loco::output_nodes(graph)))
+    {
+      auto const div = dynamic_cast<luci::CircleDiv *>(node);
+      if (!div)
+        continue;
+
+      SoftmaxPattern pattern(div);
       if (!pattern.matched())
         continue;
 
