@@ -31,7 +31,8 @@ namespace pattern
 
 enum class QuantizationPattern
 {
-  Q8LayerNormWithQ16Variance
+  Q8LayerNormWithQ16Variance,
+  Q8SoftmaxWithQ16SubExp,
 };
 
 struct MPQOptions

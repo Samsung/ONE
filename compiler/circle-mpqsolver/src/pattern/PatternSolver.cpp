@@ -79,6 +79,9 @@ void PatternSolver::resolve_patterns(luci::Module *module)
       case QuantizationPattern::Q8LayerNormWithQ16Variance:
         resolver = std::make_unique<pattern::Q8LayerNormWithQ16VarianceResolver>();
         break;
+      case QuantizationPattern::Q8SoftmaxWithQ16SubExp:
+        resolver = std::make_unique<pattern::Q8SoftmaxWithQ16SubExpResolver>();
+        break;
       default:
         throw std::runtime_error("Unsupported pattern to resolve");
     }
