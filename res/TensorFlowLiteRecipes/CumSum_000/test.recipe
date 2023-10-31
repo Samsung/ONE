@@ -1,0 +1,45 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operand {
+  name: "axis"
+  type: INT32
+  shape {}
+  filler {
+    tag: "explicit"
+    arg: "2"
+  }
+}
+
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operation {
+  type: "CumSum"
+  input: "ifm"
+  input: "axis"
+  output: "ofm"
+  cumsum_options {
+    exclusive: false
+    reverse: false
+  }
+}
+
+input: "ifm"
+output: "ofm"
