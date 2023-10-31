@@ -22,7 +22,7 @@
 #include <vector>
 
 // TODO Add tests that verifies result values
-TEST(CKer_Optimizer, SoftMaxGrad)
+TEST(CKer_Operation, SoftMaxGrad)
 {
   // Unmatched shape
   {
