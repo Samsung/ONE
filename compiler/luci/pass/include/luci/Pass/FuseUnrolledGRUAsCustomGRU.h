@@ -22,9 +22,6 @@
 namespace luci
 {
 
-/**
- * @brief  Class to fuse Mean operation with a preceding Transpose
- */
 struct FuseUnrolledGRUAsCustomGRUPass final : public logo::Pass
 {
   const char *name(void) const final { return "luci::FuseUnrolledGRUAsCustomGRUPass"; }

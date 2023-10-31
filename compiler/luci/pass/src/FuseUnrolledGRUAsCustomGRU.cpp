@@ -90,65 +90,6 @@ luci::CircleConst *clone_circleconst(luci::CircleConst *node, loco::Graph *graph
 namespace
 {
 
-/**
- *  Fuse Transpose with Mean if possible
- *
- *  BEFORE
- *                  |
- *          [CircleTranspose, perm<0, 2, 3, 1>]
- *                  |
- *          [CircleMean, axis<3>]
- *                  |
- *
- *  AFTER
- *                  |                            |
- *          [CircleMean, axis<1>]       [CircleTranspose, perm<0, 2, 3, 1>]
- *                  |                            |
- *                                      [CircleMean, axis<3>]
- *
- */
-
-/**
- * @brief Create a const for fused reduction indices
- */
-luci::CircleConst *create_fused_indices(luci::CircleConst *rindices,
-                                        const std::vector<uint32_t> &fused_rindices)
-{
-  assert(rindices != nullptr); // FIX_CALLER_UNLESS
-
-  if (rindices->dtype() != loco::DataType::S32)
-    return nullptr;
-
-  assert(fused_rindices.size() == rindices->size<loco::DataType::S32>());
-
-  auto fused_rindices_const = luci::clone(rindices);
-  auto name = rindices->name();
-  assert(name.length() > 0); // FIX_CALLER_UNLESS
-  fused_rindices_const->name(name + "_fused");
-
-  for (uint32_t i = 0; i < fused_rindices.size(); ++i)
-  {
-    fused_rindices_const->at<loco::DataType::S32>(i) = fused_rindices.at(i);
-  }
-
-  return fused_rindices_const;
-}
-
-bool const_has_value_s32(const luci::CircleConst *circle_const, int32_t value)
-{
-  if (circle_const->dtype() != loco::DataType::S32)
-    return false;
-
-  uint32_t size = circle_const->size<loco::DataType::S32>();
-  for (uint32_t i = 0; i < size; ++i)
-  {
-    if (circle_const->at<loco::DataType::S32>(i) == value)
-      return true;
-  }
-
-  return false;
-}
-
 bool create_custom_op(luci::CircleStridedSlice *strided_slice_node)
 {
   auto while_out_node = dynamic_cast<luci::CircleWhileOut *>(strided_slice_node->input());
@@ -254,6 +195,8 @@ bool FuseUnrolledGRUAsCustomGRUPass::run(loco::Graph *g)
     auto strided_slice = dynamic_cast<luci::CircleStridedSlice *>(node);
     if (not strided_slice)
       continue;
+
+    // TODO: add pattern checks
 
     if (create_custom_op(strided_slice))
       changed = true;

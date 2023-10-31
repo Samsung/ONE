@@ -481,7 +481,8 @@ int entry(int argc, char **argv)
 
   // Export to output Circle file
   luci::CircleExporter exporter;
-
+  module->remove(1);
+  module->remove(1);
   luci::CircleFileExpContract contract(module.get(), output_path);
 
   if (!exporter.invoke(&contract))

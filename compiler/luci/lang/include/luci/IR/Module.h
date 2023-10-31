@@ -46,6 +46,8 @@ public:
 public:
   void add(std::unique_ptr<loco::Graph> &&g);
 
+  void remove(size_t idx);
+
   /**
    * @brief provide main graph
    */

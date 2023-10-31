@@ -77,22 +77,21 @@ void calculateGRU(const float *input_data, const float *weight_input_data,
     first_part[i] = 1.0f - first_part[i];
   }
 
-
-  // Clalc third part
-  float *third_part = third_hidden_part;
+  // Clalc second part
+  float *second_part = second_hidden_part;
   for (int i = 0; i < num_elements; ++i)
   {
-    third_part[i] += third_input_part[i];
+    second_part[i] += second_input_part[i];
   }
-  Logistic(num_elements, third_part, third_part);
+  Logistic(num_elements, second_part, second_part);
 
   for (int i = 0; i < num_elements; ++i)
   {
-    third_part[i] *= second_hidden_part[i];
-    third_part[i] += second_input_part[i];
-    third_part[i] = std::tanh(third_part[i]);
-    third_part[i] *= first_part[i];
-    output_data[i] += third_part[i];
+    second_part[i] *= third_hidden_part[i];
+    second_part[i] += third_input_part[i];
+    second_part[i] = std::tanh(second_part[i]);
+    second_part[i] *= first_part[i];
+    output_data[i] += second_part[i];
   }
 }
 
@@ -110,18 +109,16 @@ void GRU(float *input_data, const float *weight_input_data,
   auto output_input_data = std::make_unique<float []>(weight_hidden_shape[0]);
   auto output_hidden_data = std::make_unique<float []>(weight_hidden_shape[0]);
 
-  int32_t output_shape_fc[] = {1, 96};
+  int32_t output_shape_fc[] = {output_shape[0], weight_input_shape[0]};
 
-  std::memcpy(output_data, hidden_state_data, output_shape[1]);
+  std::memcpy(output_data, hidden_state_data, output_shape[1] * sizeof(float));
 
   for (int i = 0; i < time; ++i)
   {
-    // input_shape should be (1, 6)
     calculateGRU(input_data, weight_input_data, weight_hidden_data,
                  bias_input_data, bias_hidden_data, output_data, input_shape,
                  output_shape, weight_input_shape, weight_hidden_shape, output_input_data.get(),
                  output_hidden_data.get(), output_shape_fc);
-    auto tmp = input_shape[1];
     input_data += input_shape[1];
   }
 }
