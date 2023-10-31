@@ -40,8 +40,7 @@ std::unique_ptr<luci::Module> MPQSolver::read_module(const std::string &path)
   auto module = importerex.importVerifyModule(path);
   if (module.get() == nullptr)
   {
-    std::cerr << "ERROR: Failed to load " << path << std::endl;
-    return nullptr;
+    throw std::runtime_error("Failed to load model");
   }
 
   return module;
