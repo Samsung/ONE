@@ -141,7 +141,7 @@ gather_builtincode_map(const ::tflchef::ModelRecipe &model_recipe)
 
   for (const auto &operation : model_recipe.operation())
   {
-    if ((operation.has_extype() && operation.extype() == "Custom") || operation.type() == "Custom")
+    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
       continue;
 
     auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
@@ -157,8 +157,8 @@ gather_builtincode_map(const ::tflchef::ModelRecipe &model_recipe)
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      if ((operation.has_extype() && operation.extype() == "Custom") ||
-          operation.type() == "Custom")
+      if (operation.type() == "Custom" ||
+          (operation.has_extype() && operation.extype() == "Custom"))
         continue;
 
       auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
@@ -178,9 +178,9 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
   std::set<std::string> customcode_set;
   for (const auto &operation : model_recipe.operation())
   {
-    if ((operation.has_extype() && operation.extype() == "Custom") || operation.type() == "Custom")
+    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
     {
-      assert(operation.has_custom_code());
+      assert(not operation.custom_code().empty());
       customcode_set.insert(operation.custom_code());
     }
   }
@@ -191,10 +191,10 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      if ((operation.has_extype() && operation.extype() == "Custom") ||
-          operation.type() == "Custom")
+      if (operation.type() == "Custom" ||
+          (operation.has_extype() && operation.extype() == "Custom"))
       {
-        assert(operation.has_custom_code());
+        assert(not operation.custom_code().empty());
         customcode_set.insert(operation.custom_code());
       }
     }
@@ -626,7 +626,7 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
     assert(operation.has_type());
 
     std::string op_type = operation.type();
-    if (operation.has_custom_code())
+    if (not operation.custom_code().empty())
       op_type = operation.custom_code();
 
     auto op_chef = op_chef_registry().lookup(op_type).create(&operation);
@@ -660,9 +660,9 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
     // custom operator
     else
     {
-      assert(operation.has_custom_code());
-      auto op_it =
-        std::find(custom_code_vec.begin(), custom_code_vec.end(), operation.custom_code());
+      assert(not operation.custom_code().empty());
+      auto custom_code = operation.custom_code();
+      auto op_it = std::find(custom_code_vec.begin(), custom_code_vec.end(), custom_code);
       assert(op_it != custom_code_vec.end());
       opcode_index = builtin_code_map.size();
       opcode_index += std::distance(custom_code_vec.begin(), op_it);
