@@ -19,6 +19,7 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/Module.h>
+#include <luci/test/TestIOGraph.h>
 
 namespace mpqsolver
 {
@@ -70,6 +71,37 @@ public:
   float _a_max = 1.f;
   luci::CircleAdd *_add = nullptr;
   luci::CircleConst *_beta = nullptr;
+};
+
+class SoftmaxGraphlet
+{
+public:
+  SoftmaxGraphlet() = default;
+  virtual ~SoftmaxGraphlet() = default;
+
+  void init(loco::Graph *g);
+
+protected:
+  void initMinMax(luci::CircleNode *node, float min, float max);
+
+public:
+  luci::CircleAbs *_ifm = nullptr;
+  luci::CircleReduceMax *_max = nullptr;
+  luci::CircleSub *_sub = nullptr;
+  luci::CircleExp *_exp = nullptr;
+  luci::CircleSum *_sum = nullptr;
+  luci::CircleDiv *_div = nullptr;
+
+protected:
+  luci::CircleConst *_softmax_indices = nullptr;
+};
+
+class SoftmaxTestGraph : public luci::test::TestIOGraph, public SoftmaxGraphlet
+{
+public:
+  SoftmaxTestGraph() = default;
+
+  void init(void);
 };
 
 } // namespace models
