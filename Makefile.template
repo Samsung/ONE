@@ -104,10 +104,10 @@ export NNCC_WORKSPACE=$(NNCC_FOLDER)
 ###
 ### Default target
 ###
-all: install
+all: prepare-nncc configure build install
 
 ###
-### Command (public)
+### Command (build step)
 ###
 prepare-nncc: prepare_nncc_internal
 
@@ -117,13 +117,16 @@ build: build_internal
 
 install: install_all_internal
 
-create-package: runtime_tar_internal
+###
+### Command (public)
+###
+create-package: all runtime_tar_internal
 
-create-aclpack: acl_tar_internal
+create-aclpack: configure acl_tar_internal
 
-create-testsuite: test_suite_internal
+create-testsuite: all test_suite_internal
 
-create-covsuite: coverage_suite_internal
+create-covsuite: all coverage_suite_internal
 
 clean:
 	rm -rf $(WORKSPACE)
@@ -132,10 +135,6 @@ distclean:
 	rm -rf Product
 	rm -rf externals
 	rm -rf tests/nnapi/src/generated/
-
-# create_package, create_acl_tar: to be removed
-create_package: runtime_tar_internal
-create_acl_tar: acl_tar_internal
 
 ###
 ### Command (internal)
@@ -169,21 +168,21 @@ endif
 		-DEXTERNALS_BUILD_THREADS=$(NPROCS) \
 		$(OPTIONS)
 
-build_internal: configure_internal
+build_internal:
 	./nnfw build -j $(NPROCS)
 
-install_internal: build_internal
+install_internal:
 	./nnfw install
 	rm -rf $(INSTALL_ALIAS)
 	ln -s $(INSTALL_PATH) $(INSTALL_ALIAS)
 
-runtime_tar_internal: build_internal install_internal
+runtime_tar_internal:
 	tar -zcf $(WORKSPACE)/onert-package.tar.gz -C $(INSTALL_PATH) lib
 	tar -zcf $(WORKSPACE)/onert-devel-package.tar.gz -C $(INSTALL_PATH) include/nnfw
 	tar -zcf $(WORKSPACE)/onert-plugin-devel-package.tar.gz -C $(INSTALL_PATH) include/onert
 	tar -zcf $(WORKSPACE)/onert-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
-acl_tar_internal: configure_internal
+acl_tar_internal:
 	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_core.so lib/libarm_compute_graph.so
 
 install_acl_internal:
