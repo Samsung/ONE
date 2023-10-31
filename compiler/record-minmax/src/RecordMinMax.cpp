@@ -39,6 +39,36 @@ using DataType = loco::DataType;
 namespace
 {
 
+// Return a string with no whitespace from both ends
+std::string trim(std::string s)
+{
+  // Trim left side
+  s.erase(s.begin(),
+          std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+
+  // Trim right side
+  s.erase(
+    std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(),
+    s.end());
+
+  return s;
+}
+
+std::vector<std::string> parse_line(const std::string &line)
+{
+  auto trimmed = trim(line);
+  std::stringstream ss(trimmed);
+
+  std::vector<std::string> res;
+
+  std::string filename;
+  while (getline(ss, filename, ' '))
+  {
+    res.emplace_back(filename);
+  }
+  return res;
+}
+
 // Max h5 file size for parallel recording in bytes = 1 GB
 const long h5_max_size_bytes = 1000000000;
 
@@ -294,6 +324,40 @@ void RecordMinMax::profileRawData(const std::string &input_data_path)
   {
     std::cout << "Recording " << num_records << "'th data" << std::endl;
 
+    auto file_names = parse_line(record);
+
+    // Have multiple files in one line
+    if (file_names.size() == input_nodes.size())
+    {
+      std::vector<std::vector<char>> input_data;
+      for (uint32_t i = 0; i < file_names.size(); i++)
+      {
+        const auto file_name = file_names[i];
+        const auto input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[i]);
+        const auto input_size = getTensorSize(input_node);
+
+        input_data.emplace_back(input_size);
+
+        // Read data from file
+        readDataFromFile(file_name, input_data[i], input_size);
+
+        // Write data from buffer to interpreter
+        getInterpreter()->writeInputTensor(input_node, input_data.data(), input_size);
+      }
+
+      getInterpreter()->interpret();
+
+      num_records++;
+    }
+    else
+    {
+      // Must have a single file in one line (inputs are concatenated)
+      if (file_names.size() != 1)
+        throw std::runtime_error(
+          "Wrong number of inputs are given. Model has " + std::to_string(input_nodes.size()) +
+          " inputs, but list file gives " + std::to_string(file_names.size()) + " inputs.");
+
+      // clang-format off
     // Read data from file to buffer
     // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
     // same order with the input index.
@@ -314,6 +378,8 @@ void RecordMinMax::profileRawData(const std::string &input_data_path)
     getInterpreter()->interpret();
 
     num_records++;
+      // clang-format on
+    }
   }
 
   if (num_records == 0)
