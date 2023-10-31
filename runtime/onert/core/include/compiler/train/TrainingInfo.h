@@ -56,9 +56,9 @@ public:
   }
 
 private:
-  LossInfo _loss_info;
-  ir::train::OptimizerInfo _optimizer_info;
-  uint32_t _batch_size;
+  LossInfo _loss_info{ir::operation::Loss::Type::MEAN_SQUARED_ERROR};
+  ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
+  uint32_t _batch_size = 0;
 };
 
 } // namespace train
