@@ -260,6 +260,11 @@ def _get_parser():
         action='store_true',
         help='Use int16 for computing variance in uint8 layer normalization')
 
+    ampq_quant_group.add_argument(
+        '--u8_softmax_with_s16_sub_exp',
+        action='store_true',
+        help='Use int16 for computing Sub and Exp nodes in uint8 Softmax')
+
     # ampq_bisection_visq
     ampq_quant_group.add_argument(
         '--ampq_bisection_visq',
@@ -792,6 +797,8 @@ def _ampq_solve(args):
                 ampq_quantize_cmd.append('--patterns')
                 if oneutils.is_valid_attr(args, 'u8_layernorm_with_s16_variance'):
                     ampq_quantize_cmd.append('--u8_layernorm_with_s16_variance')
+                if oneutils.is_valid_attr(args, 'u8_softmax_with_s16_sub_exp'):
+                    ampq_quantize_cmd.append('--u8_softmax_with_s16_sub_exp')
 
         # recorded model as input
         ampq_quantize_cmd.extend(['--input_model', tmp_minmax_recorded_path])
