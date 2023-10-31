@@ -31,6 +31,7 @@
 #include "Nodes/CircleConcatenation.h"
 #include "Nodes/CircleConv2D.h"
 #include "Nodes/CircleCos.h"
+#include "Nodes/CircleCumSum.h"
 #include "Nodes/CircleCustom.h"
 #include "Nodes/CircleDensify.h"
 #include "Nodes/CircleDepthToSpace.h"
