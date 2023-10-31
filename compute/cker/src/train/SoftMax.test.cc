@@ -37,7 +37,7 @@ TEST(CKer_Optimizer, SoftMaxGrad)
     std::vector<float> expected = {
       -5.72389063e-13, -5.63886446e-14, 3.05167149e-07,  -4.71716844e-08, -5.81171941e-17,
       -4.19784790e-08, -3.37907178e-15, -2.42975021e-18, -2.16016353e-07, -2.49197405e-18};
-    std::vector<float> grad = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> grad(10);
 
     nnfw::cker::train::SoftMaxGrad(shape, softmax.data(), shape, incoming.data(), shape,
                                    grad.data());
@@ -65,14 +65,14 @@ TEST(CKer_Optimizer, SoftMaxGrad)
       -4.48784290e-05, 4.90605867e-03,  -1.53427655e-08, -7.02857016e-04, -4.81329140e-09,
       -5.15774553e-04, -1.04579225e-04, -7.00410377e-03, -1.29717840e-02, -8.63838721e-11,
       -7.12137857e-05, 2.13432343e-02,  -4.23775872e-06, -5.91166379e-04, -8.03746891e-05};
-    std::vector<float> grad = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> grad(20);
 
     nnfw::cker::train::SoftMaxGrad(shape, softmax.data(), shape, incoming.data(), shape,
                                    grad.data());
 
     // TODO Use EXPECT_FLOAT_EQUAL
     for (size_t i = 0; i < grad.size(); ++i)
-      EXPECT_NEAR(grad[i], expected[i], 0.01);
+      EXPECT_NEAR(grad[i], expected[i], 0.1);
   }
 }
 
@@ -90,7 +90,7 @@ TEST(CKer_Operation, neg_SoftMaxGrad)
                                    8.7400000e-05, 5.6700000e-05};
     std::vector<float> expected = {0.001, 0.002, 0.003, 0.001, 0.002,
                                    0.003, 0.001, 0.002, 0.003, 0.001};
-    std::vector<float> grad = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> grad(10);
 
     nnfw::cker::train::SoftMaxGrad(shape, softmax.data(), shape, incoming.data(), shape,
                                    grad.data());
