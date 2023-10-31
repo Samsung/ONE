@@ -1,0 +1,6 @@
+# To check if unnecessary Transposes are removed in Transpose-Reshape-Transpose
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "TRANSPOSE_NOT_EXIST"         $(op_count TRANSPOSE) '=' 0
+RULE    "RESHAPE_EXIST"               $(op_count RESHAPE) '=' 1
