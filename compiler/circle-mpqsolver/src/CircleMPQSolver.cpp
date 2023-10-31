@@ -50,6 +50,7 @@ int entry(int argc, char **argv)
   const std::string bisection_str = "--bisection";
   const std::string patterns_str = "--patterns";
   const std::string layernorm_str = "--u8_layernorm_with_s16_variance";
+  const std::string softmax_str = "--u8_softmax_with_s16_sub_exp";
   const std::string save_intermediate_str = "--save_intermediate";
 
   arser::Arser arser("circle-mpqsolver provides light-weight methods for finding a high-quality "
@@ -83,6 +84,11 @@ int entry(int argc, char **argv)
     .nargs(0)
     .required(false)
     .help("Use int16 for computing variance in uint8 layer normalization");
+
+  arser.add_argument(softmax_str)
+    .nargs(0)
+    .required(false)
+    .help("Use int16 for computing sub and exp in uint8 softmax");
 
   arser.add_argument("--input_model")
     .required(true)
@@ -215,6 +221,10 @@ int entry(int argc, char **argv)
     if (arser[layernorm_str])
     {
       patterns.push_back(mpqsolver::pattern::QuantizationPattern::Q8LayerNormWithQ16Variance);
+    }
+    if (arser[softmax_str])
+    {
+      patterns.push_back(mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp);
     }
     solver =
       std::make_unique<mpqsolver::pattern::PatternSolver>(input_dtype, output_dtype, patterns);
