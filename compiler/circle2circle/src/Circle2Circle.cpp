@@ -133,6 +133,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--remove_unnecessary_strided_slice",
              "This will remove unnecessary strided slice operators");
   add_switch(arser, "--remove_unnecessary_split", "This will remove unnecessary split operators");
+  add_switch(arser, "--remove_unnecessary_transpose",
+             "This will remove unnecessary transpose operators");
   add_switch(arser, "--replace_cw_mul_add_with_depthwise_conv",
              "This will replace channel-wise mul/add with DepthwiseConv2D operator");
   add_switch(arser, "--replace_sub_with_add", "This will replace sub with add operator");
@@ -315,6 +317,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveUnnecessaryStridedSlice);
   if (arser.get<bool>("--remove_unnecessary_split"))
     options->enable(Algorithms::RemoveUnnecessarySplit);
+  if (arser.get<bool>("--remove_unnecessary_transpose"))
+    options->enable(Algorithms::RemoveUnnecessaryTranspose);
   if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
     options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
   if (arser.get<bool>("--replace_sub_with_add"))

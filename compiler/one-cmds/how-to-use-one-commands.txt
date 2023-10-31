@@ -194,6 +194,7 @@ Current transformation options are
 - remove_unnecessary_slice : This removes unnecessary slice operators.
 - remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
 - remove_unnecessary_split : This removes unnecessary split operators.
+- remove_unnecessary_transpose: This removes unnecessary trasnpsoe operators.
 - replace_cw_mul_add_with_depthwise_conv: This will replace channel-wise Mul/Add with DepthwiseConv2D.
 - resolve_customop_add: This will convert Custom(Add) to normal Add operator
 - resolve_customop_batchmatmul: This will convert Custom(BatchMatMul) to
