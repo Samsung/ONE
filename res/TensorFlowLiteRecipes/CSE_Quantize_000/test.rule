@@ -1,0 +1,5 @@
+# To check if common Quantize Op is eliminated
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "DUP_QUANTIZE_REMOVED"    $(op_count QUANTIZE) '=' 1
