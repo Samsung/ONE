@@ -84,8 +84,12 @@ table QuantizationParameters {
   // Given a quantized value q, the corresponding float value f should be:
   //   f = scale * (q - zero_point)
   // For other quantization types, the QuantizationDetails below is used.
-  min:[float];  // For importing back into tensorflow.
-  max:[float];  // For importing back into tensorflow.
+  // NOTE min/max values are valid if
+  // 1. length of min/max == 0 or
+  // 2. length of min/max == length of scale/zero_point
+  // Otherwise, min/max are not valid (undefined behavior).
+  min:[float];
+  max:[float];
   scale:[float];  // For dequantizing the tensor's values.
   zero_point:[long];
 
