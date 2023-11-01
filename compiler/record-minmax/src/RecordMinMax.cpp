@@ -342,7 +342,7 @@ void RecordMinMax::profileRawData(const std::string &input_data_path)
         readDataFromFile(file_name, input_data[i], input_size);
 
         // Write data from buffer to interpreter
-        getInterpreter()->writeInputTensor(input_node, input_data.data(), input_size);
+        getInterpreter()->writeInputTensor(input_node, input_data[i].data(), input_size);
       }
 
       getInterpreter()->interpret();
