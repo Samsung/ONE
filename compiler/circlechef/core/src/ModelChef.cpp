@@ -135,10 +135,10 @@ gather_builtincode_map(const ::circlechef::ModelRecipe &model_recipe)
 
   for (const auto &operation : model_recipe.operation())
   {
-    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-    if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
+    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
       continue;
 
+    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
     // Various operation version is unified as the highest version among them
     if (builtin_map.find(op_chef->code()) == builtin_map.end() ||
         builtin_map[op_chef->code()] < operation.version())
@@ -151,10 +151,11 @@ gather_builtincode_map(const ::circlechef::ModelRecipe &model_recipe)
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-      if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
+      if (operation.type() == "Custom" ||
+          (operation.has_extype() && operation.extype() == "Custom"))
         continue;
 
+      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
       // Various operation version is unified as the highest version among them
       if (builtin_map.find(op_chef->code()) == builtin_map.end() ||
           builtin_map[op_chef->code()] < operation.version())
@@ -171,9 +172,11 @@ std::set<std::string> gather_customcode_set(const ::circlechef::ModelRecipe &mod
   std::set<std::string> customcode_set;
   for (const auto &operation : model_recipe.operation())
   {
-    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-    if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
-      customcode_set.insert(operation.type());
+    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
+    {
+      assert(not operation.custom_code().empty());
+      customcode_set.insert(operation.custom_code());
+    }
   }
 
   // Add ops used in Graphs(subgraphs)
@@ -182,9 +185,12 @@ std::set<std::string> gather_customcode_set(const ::circlechef::ModelRecipe &mod
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
-      if (op_chef->code() == circle::BuiltinOperator_CUSTOM)
-        customcode_set.insert(operation.type());
+      if (operation.type() == "Custom" ||
+          (operation.has_extype() && operation.extype() == "Custom"))
+      {
+        assert(not operation.custom_code().empty());
+        customcode_set.insert(operation.custom_code());
+      }
     }
   }
 
@@ -418,7 +424,11 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
   {
     assert(operation.has_type());
 
-    auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
+    std::string op_type = operation.type();
+    if (not operation.custom_code().empty())
+      op_type = operation.custom_code();
+
+    auto op_chef = op_chef_registry().lookup(op_type).create(&operation);
 
     // Create 'inputs'
     std::vector<int32_t> input_vec = as_dataset(operation.input()).map(lookup).vectorize();
