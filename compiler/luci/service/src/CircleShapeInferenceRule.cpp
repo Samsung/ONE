@@ -1078,6 +1078,7 @@ loco::NodeShape infer_reshape(const luci::CircleReshape *node)
   LOGGER(l);
 
   const loco::DataType S32 = loco::DataType::S32;
+  const loco::DataType S64 = loco::DataType::S64;
 
   loco::TensorShape shape_by_input;
   {
@@ -1089,12 +1090,24 @@ loco::NodeShape infer_reshape(const luci::CircleReshape *node)
     if (const_shape_node != nullptr)
     {
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
-
-      shape_by_input.rank(const_shape_node->size<S32>());
-
-      for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+      if (const_shape_node->dtype() == S32)
       {
-        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+        shape_by_input.rank(const_shape_node->size<S32>());
+
+        for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+        {
+          shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+        }
+      }
+      else
+      {
+        LUCI_ASSERT(const_shape_node->dtype() != S64, "Only support int32/int64 CircleConst");
+        shape_by_input.rank(const_shape_node->size<S64>());
+
+        for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+        {
+          shape_by_input.dim(axis) = static_cast<int32_t>(const_shape_node->at<S64>(axis));
+        }
       }
     }
     else
