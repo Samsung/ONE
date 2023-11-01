@@ -1,0 +1,5 @@
+# To check if different Quantize Ops remain
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "QUANTIZE_NOT_REMOVED"    $(op_count QUANTIZE) '=' 2

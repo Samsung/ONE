@@ -1,0 +1,31 @@
+operand {
+  name: "ifm"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm1"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+  quant { min: 0 max: 510 scale: 2.0 zero_point: 0 }
+}
+operand {
+  name: "ofm2"
+  type: UINT8
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+  quant { min: 0 max: 765 scale: 3.0 zero_point: 0 }
+}
+operation {
+  type: "Quantize"
+  input: "ifm"
+  output: "ofm1"
+}
+operation {
+  type: "Quantize"
+  input: "ifm"
+  output: "ofm2"
+}
+input: "ifm"
+output: "ofm1"
+output: "ofm2"
