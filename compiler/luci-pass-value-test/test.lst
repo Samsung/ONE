@@ -61,3 +61,6 @@ addeval(Net_Densify_Dequantize_Add_000 fold_dequantize fold_densify)
 # test SignatureDef, with any optimization
 #addeval(SignatureDef_MultiOut_000 fuse_instnorm)
 #addeval(SignatureDef_MultiOut_001 fuse_instnorm)
+
+# test for common subexpression elimination
+addeval(CSE_Quantize_000 common_subexpression_elimination)
