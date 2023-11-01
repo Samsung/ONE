@@ -79,23 +79,24 @@ def create_hdf5(data_list, output_path):
         lines = f.readlines()
         for line in lines:
             if line.strip():
-                filename = line.rstrip()
-                if os.path.isfile(filename):
-                    datalist.append(filename)
-                else:
-                    raise FileNotFoundError("No such file. " + filename)
+                filenames = line.rstrip().split(' ')
+                # A single line can indicate multiple files (multi-input)
+                for filename in filenames:
+                    if not os.path.isfile(filename):
+                        raise FileNotFoundError("No such file. " + filename)
+                datalist.append(filenames)
 
     # Input files
     num_converted = 0
-    for rawdata in datalist:
-        with open(rawdata, 'rb') as f:
-            sample = group.create_group(str(num_converted))
-            num_converted += 1
-            filename = os.path.basename(rawdata)
-            sample.attrs['desc'] = filename
-            raw_data = bytearray(f.read())
-            # The target model is DNN with one input data
-            sample.create_dataset('0', data=raw_data)
+    for input_files in datalist:
+        sample = group.create_group(str(num_converted))
+        for idx, input_file in enumerate(input_files):
+            with open(input_file, 'rb') as f:
+                raw_data = bytearray(f.read())
+                sample.create_dataset(str(idx), data=raw_data)
+        sample.attrs['desc'] = ','.join(
+            list(map(lambda x: os.path.basename(x), input_files)))
+        num_converted += 1
 
     h5_file.close()
 
