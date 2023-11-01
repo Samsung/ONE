@@ -107,6 +107,8 @@ class CONSTANT:
         ('fuse_mean_with_mean', 'fuse two consecutive Mean ops'),
         ('fuse_transpose_with_mean',
          'fuse Mean with a preceding Transpose under certain conditions'),
+        ('fuse_horizontal_fc_layers',
+         'fuse horizontal FullyConnected layers under certain conditions'),
         ('make_batchnorm_gamma_positive',
          'make negative gamma of BatchNorm to a small positive value (1e-10).'
          ' Note that this pass can change the execution result of the model.'
