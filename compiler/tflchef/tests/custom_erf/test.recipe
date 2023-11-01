@@ -12,6 +12,8 @@ operation {
   type: "Erf"
   input: "ifm"
   output: "ofm"
+  custom_code: "Erf"
+  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"
