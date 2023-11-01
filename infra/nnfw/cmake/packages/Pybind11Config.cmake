@@ -7,7 +7,7 @@ function(_Pybind11_Build)
   endif(NOT Pybind11Source_FOUND)
 
   if(NOT TARGET pybind11)
-    nnas_include(ExternalBuildTools)
+    nnas_include(ExternalProjectTools)
     add_extdirectory(${Pybind11Source_DIR} pybind11 EXCLUDE_FROM_ALL)
   endif(NOT TARGET pybind11)
 
