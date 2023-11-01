@@ -20,9 +20,8 @@
 
 void check_custom_op_value(const tflchef::Operation operation, std::string op_type)
 {
-  if ((operation.has_extype() && operation.extype() == "Custom") || operation.type() == "Custom")
+  if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
   {
-    assert(operation.has_custom_code());
     assert(operation.custom_code() == op_type);
   }
 }
