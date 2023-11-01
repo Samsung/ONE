@@ -24,4 +24,3 @@ option(BUILD_NPUD "Build NPU daemon" ON)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
-option(ENABLE_ONERT_TRAIN "Enable onert training feature" OFF)
