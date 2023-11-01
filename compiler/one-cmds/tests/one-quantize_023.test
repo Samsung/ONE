@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+inputfile="./Add_000.circle"
+outputfile="./Add_000.one-quantize_023.circle"
+
+rm -f ${filename}.log
+rm -rf ${outputfile}
+
+# Test space-delimitered list format (Add_000.inputs.txt)
+# Content of Add_000.inputs.txt is as follows.
+# Add_000.circle.input0 Add_000.circle.input1
+one-quantize \
+--input_dtype float32 \
+--quantized_dtype uint8 \
+--input_path ${inputfile} \
+--input_data ./Add_000.inputs.txt \
+--input_data_format list \
+--output_path ${outputfile} > ${filename}.log 2>&1
+
+if [[ ! -s "${outputfile}" ]]; then
+  trap_err_onexit
+fi
+
+echo "${filename_ext} SUCCESS"
