@@ -78,6 +78,7 @@ public:
       SubstituteSqueezeToReshape,
       ExpandBroadcastConst,
       ConvertNCHWToNHWC,
+      CommonSubExpressionElimination,
       RemoveUnnecessaryAdd,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,
