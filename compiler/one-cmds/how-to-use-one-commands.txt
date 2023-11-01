@@ -149,6 +149,7 @@ one-optimize
 one-optimize provides network or operator transformation shown below.
 
 Current transformation options are
+- common_subexpression_elimination : This will perform common subexpression elimination.
 - decompose_hardswish : This will decompose hardswish operator to Add, Mul and Relu6 operators.
 - decompose_softmax : This will decompose softmax into multiple operators for special backends.
 - disable_validation : This will turn off operator validations.
