@@ -274,6 +274,11 @@ message CosOptions {
   // None
 }
 
+message CumSumOptions {
+  optional bool exclusive = 1;
+  optional bool reverse = 2;
+}
+
 message EqualOptions {
   // None
 }
@@ -671,6 +676,7 @@ message Operation {
   optional MaxPoolWithArgmaxOptions max_pool_with_argmax_options = 209;
   optional DensifyOptions densify_options = 210;
   optional GeluOptions gelu_options = 211;
+  optional CumSumOptions cumsum_options = 212;
   // NOTE if there are more than two options with same type of Options
   // use the number not listed in the above reserve list
 }
