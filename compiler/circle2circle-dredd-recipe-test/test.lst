@@ -70,6 +70,11 @@ Add(HardSwish_001 PASS decompose_hardswish)
 Add(Softmax_001 PASS decompose_softmax)
 Add(Softmax_002 PASS decompose_softmax)
 
+# CSE test
+
+Add(CSE_Quantize_000 PASS common_subexpression_elimination)
+Add(CSE_Quantize_001 PASS common_subexpression_elimination)
+
 ## CIRCLE RECIPE
 
 Add(CircleBatchMatMul_000)
