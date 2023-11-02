@@ -31,6 +31,7 @@
 #include "Op/Concatenation.h"
 #include "Op/Conv2D.h"
 #include "Op/Cos.h"
+#include "Op/CumSum.h"
 #include "Op/Densify.h"
 #include "Op/DepthToSpace.h"
 #include "Op/DepthwiseConv2D.h"
