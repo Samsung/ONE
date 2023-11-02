@@ -65,11 +65,10 @@ operation {
   }
 }
 operation {
-  type: "Erf"
+  type: "Custom"
   input: "mul_sqrt"
   output: "erf"
   custom_code: "Erf"
-  extype: "Custom"
 }
 operation {
   type: "Add"

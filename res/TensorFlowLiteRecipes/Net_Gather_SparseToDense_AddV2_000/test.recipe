@@ -99,12 +99,11 @@ operation {
   output: "ofm_sparse"
 }
 operation {
-  type: "AddV2"
+  type: "Custom"
   input: "ofm_sparse"
   input: "add_v2_2"
   output: "ofm_add_v2"
   custom_code: "AddV2"
-  extype: "Custom"
 }
 operation {
   type: "Cast"

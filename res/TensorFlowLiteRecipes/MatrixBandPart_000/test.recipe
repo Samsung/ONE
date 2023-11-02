@@ -27,13 +27,12 @@ operand {
   shape { dim: 4 dim: 4 }
 }
 operation {
-  type: "MatrixBandPart"
+  type: "Custom"
   input: "ifm"
   input: "MatrixBandPart/num_lower"
   input: "MatrixBandPart/num_upper"
   output: "ofm"
   custom_code: "MatrixBandPart"
-  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"

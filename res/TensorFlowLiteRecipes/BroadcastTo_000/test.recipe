@@ -15,12 +15,11 @@ operand {
   shape { dim: 1 dim: 2 dim: 3 }
 }
 operation {
-  type: "BroadcastTo"
+  type: "Custom"
   input: "bc_input"
   input: "bc_shape"
   output: "bc_ofm"
   custom_code: "BroadcastTo"
-  extype: "Custom"
 }
 input: "bc_input"
 output: "bc_ofm"

@@ -18,7 +18,7 @@ operand {
   }
 }
 operation {
-  type: "All"
+  type: "Custom"
   all_options {
     keep_dims: false
   }
@@ -26,7 +26,6 @@ operation {
   input: "All/reduction_indices"
   output: "ofm"
   custom_code: "All"
-  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"
