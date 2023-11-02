@@ -558,7 +558,6 @@ message Operation {
   optional int32 version = 4 [default = 1];
   optional string custom_code = 5;
 
-  optional string extype = 99;
   optional Conv2DOptions conv2d_options = 100;
   optional Pool2DOptions averagepool2d_options = 101;
   optional ConcatenationOptions concatenation_options = 102;

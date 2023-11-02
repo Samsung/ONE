@@ -9,11 +9,10 @@ operand {
   shape { dim: 1 dim: 3 dim: 3 dim: 2 }
 }
 operation {
-  type: "Erf"
+  type: "Custom"
   input: "ifm"
   output: "ofm"
   custom_code: "Erf"
-  extype: "Custom"
 }
 input: "ifm"
 output: "ofm"
