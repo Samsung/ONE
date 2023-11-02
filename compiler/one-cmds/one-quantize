@@ -145,6 +145,12 @@ def _get_parser():
         "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
     )
     quantization_group.add_argument(
+        '--save_min_max',
+        action='store_true',
+        help=
+        "Save min/max of each tensor. NOTE: Min/max valuse are clipped according to calibration algorithms, such as percentile or moving average. Nudge adjustment is not applied."
+    )
+    quantization_group.add_argument(
         '--quant_config', type=str, help="Path to the quantization configuration file.")
     quantization_group.add_argument(
         '--evaluate_result',
@@ -518,6 +524,8 @@ def _quantize(args):
             circle_quantizer_cmd.append(getattr(args, 'granularity'))
         if oneutils.is_valid_attr(args, 'TF-style_maxpool'):
             circle_quantizer_cmd.append('--TF-style_maxpool')
+        if oneutils.is_valid_attr(args, 'save_min_max'):
+            circle_quantizer_cmd.append('--save_min_max')
         if oneutils.is_valid_attr(args, 'input_type'):
             circle_quantizer_cmd.append('--input_type')
             circle_quantizer_cmd.append(getattr(args, 'input_type'))
