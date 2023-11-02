@@ -14,7 +14,7 @@ operand {
   shape { dim: 3 dim: 3 }
 }
 operation {
-  type: "MatMul"
+  type: "Custom"
   input: "ifm1"
   input: "ifm2"
   output: "ofm"
@@ -23,7 +23,6 @@ operation {
     transpose_b: false
   }
   custom_code: "MatMul"
-  extype: "Custom"
 }
 input: "ifm1"
 input: "ifm2"

@@ -15,12 +15,11 @@ operand {
   shape { dim: 1 dim: 2 dim: 3 }
 }
 operation {
-  type: "BroadcastTo"
+  type: "Custom"
   input: "bc_input"
   input: "bc_shape"
   output: "bc_ofm"
   custom_code: "BroadcastTo"
-  extype: "Custom"
 }
 operand {
   name: "reshape_data"
@@ -55,12 +54,11 @@ operand {
   shape { dim: 1 dim: 2 dim: 3 }
 }
 operation {
-  type: "AddV2"
+  type: "Custom"
   input: "bc_ofm"
   input: "reshape_ofm"
   output: "ofm"
   custom_code: "AddV2"
-  extype: "Custom"
 }
 input: "bc_input"
 input: "reshape_data"
