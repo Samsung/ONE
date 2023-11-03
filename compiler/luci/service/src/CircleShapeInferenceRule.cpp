@@ -2030,6 +2030,8 @@ public:
 
   loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
+  loco::NodeShape visit(const luci::CircleCumSum *node) final { return use_input(node); }
+
   loco::NodeShape visit(const luci::CircleCustom *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleDensify *node) final { return use_input(node); }
