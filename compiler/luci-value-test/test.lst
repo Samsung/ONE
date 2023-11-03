@@ -36,6 +36,7 @@ addeval(Conv2D_003)
 #addeval(Conv2D_U8_000) --> test with tolerance
 addeval(Conv2D_U8_001)
 addeval(Cos_000)
+addeval(CumSum_000)
 addeval(DepthToSpace_000)
 addeval(DepthwiseConv2D_000)
 addeval(DepthwiseConv2D_U8_000)
