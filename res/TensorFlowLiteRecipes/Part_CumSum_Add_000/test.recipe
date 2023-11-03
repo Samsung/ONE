@@ -1,0 +1,78 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operand {
+  name: "axis"
+  type: INT32
+  shape {}
+  filler {
+    tag: "explicit"
+    arg: "2"
+  }
+}
+
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 10
+    dim: 10
+  }
+}
+
+operation {
+  type: "CumSum"
+  input: "ifm1"
+  input: "axis"
+  output: "ofm1"
+  cumsum_options {
+    exclusive: false
+    reverse: false
+  }
+}
+
+operation {
+  type: "Add"
+  add_options {
+    activation: NONE
+  }
+  input: "ofm1"
+  input: "ifm2"
+  output: "ofm2"
+}
+
+input: "ifm1"
+input: "ifm2"
+output: "ofm2"
