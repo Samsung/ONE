@@ -68,6 +68,10 @@ bool CommonSubExpressionEliminationPass::run(loco::Graph *g)
     // Build expression
     auto expr = Expression::build(cnode);
 
+    // Invalid (NYI) expression
+    if (expr.op == nullptr)
+      continue;
+
     // Cache hit
     if (auto saved_node = cache.get(expr))
     {

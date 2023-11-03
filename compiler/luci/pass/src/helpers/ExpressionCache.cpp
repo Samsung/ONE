@@ -118,8 +118,17 @@ Expression Expression::build(luci::CircleNode *node)
 
   Expression key;
   {
-    for (uint32_t i = 0; i < node->arity(); i++)
-      key.inputs.emplace_back(node->arg(i));
+    switch (node->opcode())
+    {
+      case luci::CircleOpcode::QUANTIZE:
+        key.inputs.emplace_back(node->arg(0));
+        break;
+      // TODO Add more Ops
+      default:
+        // NYI. Return invalid expression
+        key.op = nullptr;
+        return key;
+    }
 
     key.op = node;
   }
