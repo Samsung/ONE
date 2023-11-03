@@ -5,6 +5,7 @@
 #     EXPECTED_OUTPUT_COUNT: 0 for skip expected count test
 
 add(Part_Add_Sub_000 Part_Add_Sub_000 2)
+add(Part_CumSum_Add_000 Part_CumSum_Add_000 1)
 add(Part_Sqrt_Rsqrt_000 Part_Sqrt_Rsqrt_000 2)
 add(Part_Sqrt_Rsqrt_001 Part_Sqrt_Rsqrt_001 2)
 add(Part_Sqrt_Rsqrt_002 Part_Sqrt_Rsqrt_002 4)
