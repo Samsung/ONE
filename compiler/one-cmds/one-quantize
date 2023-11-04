@@ -45,16 +45,16 @@ def _get_parser():
         '-d',
         '--input_data',
         type=str,
-        help=
-        'full filepath of the input data used for post-training quantization. if not specified, run with random input data.'
-    )
+        help="""full filepath of the input data used for post-training quantization. if not
+        specified, run with random input data.""")
     parser.add_argument(
         '-f',
         '--input_data_format',
         type=str,
         help=
-        'file format of input data. h5/hdf5 (default), list/filelist (a text file where a file path of input data is written in each line), or dir/directory (a directory where input data are saved)'
-    )
+        """file format of input data. h5/hdf5 (default), list/filelist (a text file where
+        a file path of input data is written in each line), or dir/directory (a directory
+        where input data are saved)""")
     parser.add_argument(
         '-o',
         '--output_path',
@@ -80,9 +80,8 @@ def _get_parser():
     quantization_group.add_argument(
         '--input_dtype',
         type=str,
-        help=
-        'input model data type (supported: float32, default=float32). Deprecated (Use input_model_dtype)'
-    )
+        help="""input model data type (supported: float32, default=float32).
+        Deprecated (Use input_model_dtype)""")
     quantization_group.add_argument(
         '--input_model_dtype',
         type=str,
@@ -99,85 +98,86 @@ def _get_parser():
     quantization_group.add_argument(
         '--input_type',
         type=str,
-        help=
-        'data type of inputs of quantized model (supported: uint8, int16, float32, default=quantized_dtype). QUANTIZE Op will be inserted at the beginning of the quantized model if input_type is different from quantized_dtype.'
-    )
+        help="""data type of inputs of quantized model (supported: uint8, int16, float32,
+        default=quantized_dtype). QUANTIZE Op will be inserted at the beginning of
+        the quantized model if input_type is different from quantized_dtype.""")
     quantization_group.add_argument(
         '--output_type',
         type=str,
-        help=
-        'data type of outputs of quantized model (supported: uint8, int16, float32, default=quantized_dtype). QUANTIZE Op will be inserted at the end of the quantized model if output_type is different from quantized_dtype.'
-    )
+        help="""data type of outputs of quantized model (supported: uint8, int16, float32,
+        default=quantized_dtype). QUANTIZE Op will be inserted at the end of the
+        quantized model if output_type is different from quantized_dtype.""")
     quantization_group.add_argument(
         '--min_percentile',
         type=str,
         help=
-        'minimum percentile (0.0~100.0, default=1.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
-    )
+        """minimum percentile (0.0~100.0, default=1.0). Algorithm parameter for calibration.
+        This is valid when calibration algorithm is percentile.""")
     quantization_group.add_argument(
         '--max_percentile',
         type=str,
         help=
-        'maximum percentile (0.0~100.0, default=99.0). Algorithm parameter for calibration. This is valid when calibration algorithm is percentile.'
-    )
+        """maximum percentile (0.0~100.0, default=99.0). Algorithm parameter for calibration.
+        This is valid when calibration algorithm is percentile.""")
     quantization_group.add_argument(
         '--moving_avg_batch',
         type=str,
         help=
-        'batch size of moving average (default=16). This is valid when calibration algorithm is moving_average.'
-    )
+        """batch size of moving average (default=16). This is valid when calibration algorithm
+        is moving_average.""")
     quantization_group.add_argument(
         '--moving_avg_const',
         type=str,
-        help=
-        'hyperparameter (C) to compute moving average (default=0.1). Update equation: avg <- avg + C * (curr_batch_avg - avg). This is valid when calibration algorithm is moving_average.'
-    )
+        help="""hyperparameter (C) to compute moving average (default=0.1).
+        Update equation: avg <- avg + C * (curr_batch_avg - avg).
+        This is valid when calibration algorithm is moving_average.""")
     quantization_group.add_argument(
         '--mode',
         type=str,
-        help=
-        "calibration algorithm for post-training quantization (supported: percentile/moving_average, default=percentile). 'percentile' mode uses the n-th percentiles as min/max values. 'moving_average' mode records the moving average of min/max."
-    )
+        help="""calibration algorithm for post-training quantization (supported:
+        percentile/moving_average, default=percentile). 'percentile' mode uses the n-th
+        percentiles as min/max values. 'moving_average' mode records the moving average
+        of min/max.""")
     quantization_group.add_argument(
         '--TF-style_maxpool',
         action='store_true',
         help=
-        "Force MaxPool Op to have the same input/output quantparams. NOTE: This option can degrade accuracy of some models.)"
-    )
+        """Force MaxPool Op to have the same input/output quantparams. NOTE: This option can
+        degrade accuracy of some models.)""")
     quantization_group.add_argument(
         '--save_min_max',
         action='store_true',
-        help=
-        "Save min/max of each tensor. NOTE: Min/max valuse are clipped according to calibration algorithms, such as percentile or moving average. Nudge adjustment is not applied."
-    )
+        help="""Save min/max of each tensor. NOTE: Min/max valuse are clipped according to
+        calibration algorithms, such as percentile or moving average. Nudge adjustment is
+        not applied.""")
     quantization_group.add_argument(
         '--quant_config', type=str, help="Path to the quantization configuration file.")
     quantization_group.add_argument(
         '--evaluate_result',
         action='store_true',
         help=
-        "Evaluate accuracy of quantized model. Run inference for both fp32 model and the quantized model, and compare the inference results."
-    )
+        """Evaluate accuracy of quantized model. Run inference for both fp32 model and the
+        quantized model, and compare the inference results.""")
     quantization_group.add_argument(
         '--test_data', type=str, help="Path to the test data used for evaluation.")
     quantization_group.add_argument(
         '--print_mae',
         action='store_true',
         help=
-        "Print MAE (Mean Absolute Error) of inference results between quantized model and fp32 model."
-    )
+        """Print MAE (Mean Absolute Error) of inference results between quantized model and
+        fp32 model.""")
     quantization_group.add_argument(
         '--print_mape',
         action='store_true',
         help=
-        "Print MAPE (Mean Absolute Percentage Error) of inference results between quantized model and fp32 model."
-    )
+        """Print MAPE (Mean Absolute Percentage Error) of inference results between quantized
+        model and fp32 model.""")
     quantization_group.add_argument(
         '--print_mpeir',
         action='store_true',
         help=
-        "Print MPEIR (Mean Peak Error to Interval Ratio) of inference results between quantized model and fp32 model."
-    )
+        """Print MPEIR (Mean Peak Error to Interval Ratio) of inference results between quantized
+        model and fp32 model.""")
     quantization_group.add_argument(
         '--print_top1_match',
         action='store_true',
