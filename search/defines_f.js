@@ -8,5 +8,6 @@ var searchData=
   ['pooling_5fparameters_5',['POOLING_PARAMETERS',['../cpu_2ops_2_pool_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2',1,'PoolLayer.cc']]],
   ['post_5foperator_5fhook_5fprologue_6',['POST_OPERATOR_HOOK_PROLOGUE',['../_post_operator_hook_8h.html#ab407d20f0083f71e177b635488f54cd5',1,'PostOperatorHook.h']]],
   ['post_5foperator_5fhook_5fprologue_5fmulti_5fouts_7',['POST_OPERATOR_HOOK_PROLOGUE_MULTI_OUTS',['../_post_operator_hook_8h.html#a9c5698e46b02b428a0b5ec4749aeae3c',1,'PostOperatorHook.h']]],
-  ['pre_5foperator_5fhook_5fprologue_8',['PRE_OPERATOR_HOOK_PROLOGUE',['../_pre_operator_hook_8h.html#aa683676eb073d8a348e5051b43228cf0',1,'PreOperatorHook.h']]]
+  ['ppp_5fdebug_8',['PPP_DEBUG',['../mbed__config_8h.html#a171a601fe1dedb676b3e7b11fb05ec72',1,'mbed_config.h']]],
+  ['pre_5foperator_5fhook_5fprologue_9',['PRE_OPERATOR_HOOK_PROLOGUE',['../_pre_operator_hook_8h.html#aa683676eb073d8a348e5051b43228cf0',1,'PreOperatorHook.h']]]
 ];

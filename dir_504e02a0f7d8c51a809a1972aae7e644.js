@@ -14,5 +14,7 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
     [ "PoolLayer.cc", "train_2ops_2_pool_layer_8cc.html", null ],
     [ "PoolLayer.h", "train_2ops_2_pool_layer_8h.html", "train_2ops_2_pool_layer_8h" ],
     [ "ReshapeLayer.cc", "train_2ops_2_reshape_layer_8cc.html", null ],
-    [ "ReshapeLayer.h", "train_2ops_2_reshape_layer_8h.html", "train_2ops_2_reshape_layer_8h" ]
+    [ "ReshapeLayer.h", "train_2ops_2_reshape_layer_8h.html", "train_2ops_2_reshape_layer_8h" ],
+    [ "SoftMaxLayer.cc", "train_2ops_2_soft_max_layer_8cc.html", null ],
+    [ "SoftMaxLayer.h", "train_2ops_2_soft_max_layer_8h.html", "train_2ops_2_soft_max_layer_8h" ]
 ];

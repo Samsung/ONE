@@ -7,5 +7,6 @@ var classonert_1_1backend_1_1train_1_1_kernel_generator =
     [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a06fd7bc4ffdc501885ef5ba7d0559c22", null ],
     [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a75d84ae748baa4acf0dd57eef58bdb38", null ],
     [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a2a9ab8908aff6861d3b86c916541ebe6", null ],
-    [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a64d0d776d7bbb2d6fcae732af110ab42", null ]
+    [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a64d0d776d7bbb2d6fcae732af110ab42", null ],
+    [ "visit", "classonert_1_1backend_1_1train_1_1_kernel_generator.html#a75366957140c024c64e3ff6527ebe48b", null ]
 ];

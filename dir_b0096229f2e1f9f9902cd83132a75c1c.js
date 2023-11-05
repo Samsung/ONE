@@ -18,6 +18,7 @@ var dir_b0096229f2e1f9f9902cd83132a75c1c =
     [ "CircleConst.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h" ],
     [ "CircleConv2D.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_conv2_d_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_conv2_d_8h" ],
     [ "CircleCos.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_cos_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_cos_8h" ],
+    [ "CircleCumSum.h", "_circle_cum_sum_8h.html", "_circle_cum_sum_8h" ],
     [ "CircleCustom.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_custom_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_custom_8h" ],
     [ "CircleCustomOut.h", "_circle_custom_out_8h.html", "_circle_custom_out_8h" ],
     [ "CircleDensify.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_densify_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_densify_8h" ],

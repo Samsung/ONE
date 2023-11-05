@@ -4,5 +4,7 @@ var classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer =
     [ "configure", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a3242d1d64e43d3a5e2bbfd3c79718fd3", null ],
     [ "run", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a0b1a04cb424ddfc3753ec48546753f2c", null ],
     [ "softmaxFloat32", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a31c434be38e7793223a533d33c8bb2f6", null ],
-    [ "softmaxQuant8", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a545638c9c1171875d52d452814f65494", null ]
+    [ "softmaxQuant8", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a545638c9c1171875d52d452814f65494", null ],
+    [ "_input", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a4802d70ed88b717831ce710988935af8", null ],
+    [ "_output", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html#a89d6ac82fbfd3246410c65ac414df311", null ]
 ];

@@ -411,126 +411,126 @@ template&lt;typename T &gt; </div>
 
 <p>Generate a (in-memory) TensorFlow Lite model from a given model recipe. </p>
 
-<p class="definition">Definition at line <a class="el" href="circlechef_2core_2src_2_model_chef_8cpp_source.html#l00487">487</a> of file <a class="el" href="circlechef_2core_2src_2_model_chef_8cpp_source.html">ModelChef.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  488</span>{</div>
-<div class="line"><span class="lineno">  489</span><span class="comment">// Initialize Op Chef Registry</span></div>
-<div class="line"><span class="lineno">  490</span><span class="preprocessor">#define OP_CHEF(NAME, FACTORY_CLASS) \</span></div>
-<div class="line"><span class="lineno">  491</span><span class="preprocessor">  op_chef_registry().add(#NAME, std::unique_ptr&lt;FACTORY_CLASS&gt;(new FACTORY_CLASS()));</span></div>
-<div class="line"><span class="lineno">  492</span><span class="preprocessor">#include &quot;OpChef.def&quot;</span></div>
-<div class="line"><span class="lineno">  493</span><span class="preprocessor">#undef OP_CHEF</span></div>
-<div class="line"><span class="lineno">  494</span> </div>
-<div class="line"><span class="lineno">  495</span><span class="comment">// Initialize Data Chef Registry</span></div>
-<div class="line"><span class="lineno">  496</span><span class="preprocessor">#define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \</span></div>
-<div class="line"><span class="lineno">  497</span><span class="preprocessor">  data_chef_registry(::circlechef::TYPE)     \</span></div>
-<div class="line"><span class="lineno">  498</span><span class="preprocessor">    .add(#NAME, std::unique_ptr&lt;FACTORY_CLASS&gt;(new FACTORY_CLASS()));</span></div>
-<div class="line"><span class="lineno">  499</span><span class="preprocessor">#include &quot;DataChef.def&quot;</span></div>
-<div class="line"><span class="lineno">  500</span><span class="preprocessor">#undef DATA_CHEF</span></div>
-<div class="line"><span class="lineno">  501</span> </div>
-<div class="line"><span class="lineno">  502</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  503</span>  <span class="comment">// Create FlatBufferBuilder</span></div>
-<div class="line"><span class="lineno">  504</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  505</span>  <span class="keyword">auto</span> flatbuffer_builder =</div>
-<div class="line"><span class="lineno">  506</span>    std::unique_ptr&lt;flatbuffers::FlatBufferBuilder&gt;(<span class="keyword">new</span> <a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a>(1024));</div>
-<div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>  <span class="comment">// Operand-related</span></div>
-<div class="line"><span class="lineno">  509</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::Buffer&gt;&gt; buffer_vec;</div>
-<div class="line"><span class="lineno">  510</span> </div>
-<div class="line"><span class="lineno">  511</span>  <span class="comment">// Operation-related</span></div>
-<div class="line"><span class="lineno">  512</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::OperatorCode&gt;&gt; code_vec;</div>
-<div class="line"><span class="lineno">  513</span> </div>
-<div class="line"><span class="lineno">  514</span>  <span class="comment">// Graphs-related</span></div>
-<div class="line"><span class="lineno">  515</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::SubGraph&gt;&gt; subgraph_vec;</div>
-<div class="line"><span class="lineno">  516</span> </div>
-<div class="line"><span class="lineno">  517</span>  <span class="comment">// Create OperatorCode with Builtin Operator</span></div>
-<div class="line"><span class="lineno">  518</span>  std::map&lt;circle::BuiltinOperator, int32_t&gt; builtin_code_map =</div>
-<div class="line"><span class="lineno">  519</span>    gather_builtincode_map(model_recipe);</div>
-<div class="line"><span class="lineno">  520</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;opcode : builtin_code_map)</div>
-<div class="line"><span class="lineno">  521</span>  {</div>
-<div class="line"><span class="lineno">  522</span>    circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};</div>
-<div class="line"><span class="lineno">  523</span>    int8_t dep_code = 127; <span class="comment">// BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES</span></div>
-<div class="line"><span class="lineno">  524</span>    <span class="keywordflow">if</span> (opcode.first &lt; circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)</div>
-<div class="line"><span class="lineno">  525</span>      dep_code = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(opcode.first);</div>
-<div class="line"><span class="lineno">  526</span>    code_builder.add_deprecated_builtin_code(dep_code);</div>
-<div class="line"><span class="lineno">  527</span>    code_builder.add_builtin_code(opcode.first);</div>
-<div class="line"><span class="lineno">  528</span>    code_builder.add_version(opcode.second);</div>
-<div class="line"><span class="lineno">  529</span>    <span class="keyword">auto</span> code = code_builder.Finish();</div>
-<div class="line"><span class="lineno">  530</span>    <span class="comment">// Update OperatorCode vector</span></div>
-<div class="line"><span class="lineno">  531</span>    code_vec.emplace_back(code);</div>
-<div class="line"><span class="lineno">  532</span>  }</div>
-<div class="line"><span class="lineno">  533</span> </div>
-<div class="line"><span class="lineno">  534</span>  <span class="comment">// Create OperatorCode with Custom Operator</span></div>
-<div class="line"><span class="lineno">  535</span>  std::set&lt;std::string&gt; custom_code_set = gather_customcode_set(model_recipe);</div>
-<div class="line"><span class="lineno">  536</span>  <span class="keywordflow">if</span> (custom_code_set.size() &amp;&amp;</div>
-<div class="line"><span class="lineno">  537</span>      builtin_code_map.find(circle::BuiltinOperator_CUSTOM) == builtin_code_map.end())</div>
-<div class="line"><span class="lineno">  538</span>    builtin_code_map[circle::BuiltinOperator_CUSTOM] = 1;</div>
-<div class="line"><span class="lineno">  539</span> </div>
-<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> opcode : custom_code_set)</div>
-<div class="line"><span class="lineno">  541</span>  {</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keyword">auto</span> custom_code = flatbuffer_builder-&gt;CreateString(opcode);</div>
-<div class="line"><span class="lineno">  543</span>    circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};</div>
-<div class="line"><span class="lineno">  544</span>    code_builder.add_builtin_code(circle::BuiltinOperator_CUSTOM);</div>
-<div class="line"><span class="lineno">  545</span>    code_builder.add_custom_code(custom_code);</div>
-<div class="line"><span class="lineno">  546</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = code_builder.Finish();</div>
-<div class="line"><span class="lineno">  547</span>    <span class="comment">// Update OperatorCode vector</span></div>
-<div class="line"><span class="lineno">  548</span>    code_vec.emplace_back(code);</div>
-<div class="line"><span class="lineno">  549</span>  }</div>
-<div class="line"><span class="lineno">  550</span> </div>
-<div class="line"><span class="lineno">  551</span>  <span class="comment">// Create an Empty Buffer</span></div>
-<div class="line"><span class="lineno">  552</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  553</span>  <span class="comment">// Buffer 0 SHOULD be an empty buffer in TensorFlow Lite model file</span></div>
-<div class="line"><span class="lineno">  554</span>  <span class="comment">// (Please refer to the comment for Tensor.buffer field in schema)</span></div>
-<div class="line"><span class="lineno">  555</span>  {</div>
-<div class="line"><span class="lineno">  556</span>    circle::BufferBuilder buffer_builder{*flatbuffer_builder};</div>
-<div class="line"><span class="lineno">  557</span>    buffer_vec.emplace_back(buffer_builder.Finish());</div>
-<div class="line"><span class="lineno">  558</span>  }</div>
-<div class="line"><span class="lineno">  559</span> </div>
+<p class="definition">Definition at line <a class="el" href="circlechef_2core_2src_2_model_chef_8cpp_source.html#l00495">495</a> of file <a class="el" href="circlechef_2core_2src_2_model_chef_8cpp_source.html">ModelChef.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  496</span>{</div>
+<div class="line"><span class="lineno">  497</span><span class="comment">// Initialize Op Chef Registry</span></div>
+<div class="line"><span class="lineno">  498</span><span class="preprocessor">#define OP_CHEF(NAME, FACTORY_CLASS) \</span></div>
+<div class="line"><span class="lineno">  499</span><span class="preprocessor">  op_chef_registry().add(#NAME, std::unique_ptr&lt;FACTORY_CLASS&gt;(new FACTORY_CLASS()));</span></div>
+<div class="line"><span class="lineno">  500</span><span class="preprocessor">#include &quot;OpChef.def&quot;</span></div>
+<div class="line"><span class="lineno">  501</span><span class="preprocessor">#undef OP_CHEF</span></div>
+<div class="line"><span class="lineno">  502</span> </div>
+<div class="line"><span class="lineno">  503</span><span class="comment">// Initialize Data Chef Registry</span></div>
+<div class="line"><span class="lineno">  504</span><span class="preprocessor">#define DATA_CHEF(TYPE, NAME, FACTORY_CLASS) \</span></div>
+<div class="line"><span class="lineno">  505</span><span class="preprocessor">  data_chef_registry(::circlechef::TYPE)     \</span></div>
+<div class="line"><span class="lineno">  506</span><span class="preprocessor">    .add(#NAME, std::unique_ptr&lt;FACTORY_CLASS&gt;(new FACTORY_CLASS()));</span></div>
+<div class="line"><span class="lineno">  507</span><span class="preprocessor">#include &quot;DataChef.def&quot;</span></div>
+<div class="line"><span class="lineno">  508</span><span class="preprocessor">#undef DATA_CHEF</span></div>
+<div class="line"><span class="lineno">  509</span> </div>
+<div class="line"><span class="lineno">  510</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  511</span>  <span class="comment">// Create FlatBufferBuilder</span></div>
+<div class="line"><span class="lineno">  512</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  513</span>  <span class="keyword">auto</span> flatbuffer_builder =</div>
+<div class="line"><span class="lineno">  514</span>    std::unique_ptr&lt;flatbuffers::FlatBufferBuilder&gt;(<span class="keyword">new</span> <a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a>(1024));</div>
+<div class="line"><span class="lineno">  515</span> </div>
+<div class="line"><span class="lineno">  516</span>  <span class="comment">// Operand-related</span></div>
+<div class="line"><span class="lineno">  517</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::Buffer&gt;&gt; buffer_vec;</div>
+<div class="line"><span class="lineno">  518</span> </div>
+<div class="line"><span class="lineno">  519</span>  <span class="comment">// Operation-related</span></div>
+<div class="line"><span class="lineno">  520</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::OperatorCode&gt;&gt; code_vec;</div>
+<div class="line"><span class="lineno">  521</span> </div>
+<div class="line"><span class="lineno">  522</span>  <span class="comment">// Graphs-related</span></div>
+<div class="line"><span class="lineno">  523</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::SubGraph&gt;&gt; subgraph_vec;</div>
+<div class="line"><span class="lineno">  524</span> </div>
+<div class="line"><span class="lineno">  525</span>  <span class="comment">// Create OperatorCode with Builtin Operator</span></div>
+<div class="line"><span class="lineno">  526</span>  std::map&lt;circle::BuiltinOperator, int32_t&gt; builtin_code_map =</div>
+<div class="line"><span class="lineno">  527</span>    gather_builtincode_map(model_recipe);</div>
+<div class="line"><span class="lineno">  528</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;opcode : builtin_code_map)</div>
+<div class="line"><span class="lineno">  529</span>  {</div>
+<div class="line"><span class="lineno">  530</span>    circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};</div>
+<div class="line"><span class="lineno">  531</span>    int8_t dep_code = 127; <span class="comment">// BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES</span></div>
+<div class="line"><span class="lineno">  532</span>    <span class="keywordflow">if</span> (opcode.first &lt; circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)</div>
+<div class="line"><span class="lineno">  533</span>      dep_code = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(opcode.first);</div>
+<div class="line"><span class="lineno">  534</span>    code_builder.add_deprecated_builtin_code(dep_code);</div>
+<div class="line"><span class="lineno">  535</span>    code_builder.add_builtin_code(opcode.first);</div>
+<div class="line"><span class="lineno">  536</span>    code_builder.add_version(opcode.second);</div>
+<div class="line"><span class="lineno">  537</span>    <span class="keyword">auto</span> code = code_builder.Finish();</div>
+<div class="line"><span class="lineno">  538</span>    <span class="comment">// Update OperatorCode vector</span></div>
+<div class="line"><span class="lineno">  539</span>    code_vec.emplace_back(code);</div>
+<div class="line"><span class="lineno">  540</span>  }</div>
+<div class="line"><span class="lineno">  541</span> </div>
+<div class="line"><span class="lineno">  542</span>  <span class="comment">// Create OperatorCode with Custom Operator</span></div>
+<div class="line"><span class="lineno">  543</span>  std::set&lt;std::string&gt; custom_code_set = gather_customcode_set(model_recipe);</div>
+<div class="line"><span class="lineno">  544</span>  <span class="keywordflow">if</span> (custom_code_set.size() &amp;&amp;</div>
+<div class="line"><span class="lineno">  545</span>      builtin_code_map.find(circle::BuiltinOperator_CUSTOM) == builtin_code_map.end())</div>
+<div class="line"><span class="lineno">  546</span>    builtin_code_map[circle::BuiltinOperator_CUSTOM] = 1;</div>
+<div class="line"><span class="lineno">  547</span> </div>
+<div class="line"><span class="lineno">  548</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> opcode : custom_code_set)</div>
+<div class="line"><span class="lineno">  549</span>  {</div>
+<div class="line"><span class="lineno">  550</span>    <span class="keyword">auto</span> custom_code = flatbuffer_builder-&gt;CreateString(opcode);</div>
+<div class="line"><span class="lineno">  551</span>    circle::OperatorCodeBuilder code_builder{*flatbuffer_builder};</div>
+<div class="line"><span class="lineno">  552</span>    code_builder.add_builtin_code(circle::BuiltinOperator_CUSTOM);</div>
+<div class="line"><span class="lineno">  553</span>    code_builder.add_custom_code(custom_code);</div>
+<div class="line"><span class="lineno">  554</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = code_builder.Finish();</div>
+<div class="line"><span class="lineno">  555</span>    <span class="comment">// Update OperatorCode vector</span></div>
+<div class="line"><span class="lineno">  556</span>    code_vec.emplace_back(code);</div>
+<div class="line"><span class="lineno">  557</span>  }</div>
+<div class="line"><span class="lineno">  558</span> </div>
+<div class="line"><span class="lineno">  559</span>  <span class="comment">// Create an Empty Buffer</span></div>
 <div class="line"><span class="lineno">  560</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  561</span>  <span class="comment">// Create Main graph</span></div>
-<div class="line"><span class="lineno">  562</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  563</span>  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_map, <span class="stringliteral">&quot;main&quot;</span>};</div>
-<div class="line"><span class="lineno">  564</span> </div>
-<div class="line"><span class="lineno">  565</span>  cook_graph&lt;::circlechef::ModelRecipe&gt;(model_recipe, cp);</div>
-<div class="line"><span class="lineno">  566</span> </div>
-<div class="line"><span class="lineno">  567</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  568</span>  <span class="comment">// Create subgraphs if exist</span></div>
-<div class="line"><span class="lineno">  569</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno">  570</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> g = 0; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> &lt; model_recipe.graph_size(); ++<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)</div>
-<div class="line"><span class="lineno">  571</span>  {</div>
-<div class="line"><span class="lineno">  572</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = model_recipe.graph(g);</div>
-<div class="line"><span class="lineno">  573</span> </div>
-<div class="line"><span class="lineno">  574</span>    std::ostringstream stringStream;</div>
-<div class="line"><span class="lineno">  575</span>    stringStream &lt;&lt; <span class="stringliteral">&quot;sub_&quot;</span> &lt;&lt; (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> + 1);</div>
-<div class="line"><span class="lineno">  576</span> </div>
-<div class="line"><span class="lineno">  577</span>    CookParams cp{buffer_vec,         code_vec,         subgraph_vec,</div>
-<div class="line"><span class="lineno">  578</span>                  flatbuffer_builder, builtin_code_map, stringStream.str()};</div>
-<div class="line"><span class="lineno">  579</span> </div>
-<div class="line"><span class="lineno">  580</span>    cook_graph&lt;::circlechef::Graph&gt;(graph, cp);</div>
-<div class="line"><span class="lineno">  581</span>  }</div>
-<div class="line"><span class="lineno">  582</span> </div>
-<div class="line"><span class="lineno">  583</span>  <span class="comment">// Create &quot;Model&quot; arguments</span></div>
-<div class="line"><span class="lineno">  584</span>  <span class="keyword">auto</span> buffers = flatbuffer_builder-&gt;CreateVector(buffer_vec);</div>
-<div class="line"><span class="lineno">  585</span>  <span class="keyword">auto</span> operator_codes = flatbuffer_builder-&gt;CreateVector(code_vec);</div>
-<div class="line"><span class="lineno">  586</span>  <span class="keyword">auto</span> subgraphs = flatbuffer_builder-&gt;CreateVector(subgraph_vec);</div>
-<div class="line"><span class="lineno">  587</span>  <span class="keyword">auto</span> description = flatbuffer_builder-&gt;CreateString(<span class="stringliteral">&quot;Generated by circlechef&quot;</span>);</div>
-<div class="line"><span class="lineno">  588</span> </div>
-<div class="line"><span class="lineno">  589</span>  <span class="comment">// Create &quot;Model&quot;</span></div>
-<div class="line"><span class="lineno">  590</span>  circle::ModelBuilder model_builder{*flatbuffer_builder};</div>
-<div class="line"><span class="lineno">  591</span> </div>
-<div class="line"><span class="lineno">  592</span>  model_builder.add_version(3);</div>
-<div class="line"><span class="lineno">  593</span>  model_builder.add_operator_codes(operator_codes);</div>
-<div class="line"><span class="lineno">  594</span>  model_builder.add_subgraphs(subgraphs);</div>
-<div class="line"><span class="lineno">  595</span>  model_builder.add_description(description);</div>
-<div class="line"><span class="lineno">  596</span>  model_builder.add_buffers(buffers);</div>
-<div class="line"><span class="lineno">  597</span> </div>
-<div class="line"><span class="lineno">  598</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = model_builder.Finish();</div>
+<div class="line"><span class="lineno">  561</span>  <span class="comment">// Buffer 0 SHOULD be an empty buffer in TensorFlow Lite model file</span></div>
+<div class="line"><span class="lineno">  562</span>  <span class="comment">// (Please refer to the comment for Tensor.buffer field in schema)</span></div>
+<div class="line"><span class="lineno">  563</span>  {</div>
+<div class="line"><span class="lineno">  564</span>    circle::BufferBuilder buffer_builder{*flatbuffer_builder};</div>
+<div class="line"><span class="lineno">  565</span>    buffer_vec.emplace_back(buffer_builder.Finish());</div>
+<div class="line"><span class="lineno">  566</span>  }</div>
+<div class="line"><span class="lineno">  567</span> </div>
+<div class="line"><span class="lineno">  568</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  569</span>  <span class="comment">// Create Main graph</span></div>
+<div class="line"><span class="lineno">  570</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  571</span>  CookParams cp{buffer_vec, code_vec, subgraph_vec, flatbuffer_builder, builtin_code_map, <span class="stringliteral">&quot;main&quot;</span>};</div>
+<div class="line"><span class="lineno">  572</span> </div>
+<div class="line"><span class="lineno">  573</span>  cook_graph&lt;::circlechef::ModelRecipe&gt;(model_recipe, cp);</div>
+<div class="line"><span class="lineno">  574</span> </div>
+<div class="line"><span class="lineno">  575</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  576</span>  <span class="comment">// Create subgraphs if exist</span></div>
+<div class="line"><span class="lineno">  577</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">  578</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> g = 0; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> &lt; model_recipe.graph_size(); ++<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)</div>
+<div class="line"><span class="lineno">  579</span>  {</div>
+<div class="line"><span class="lineno">  580</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = model_recipe.graph(g);</div>
+<div class="line"><span class="lineno">  581</span> </div>
+<div class="line"><span class="lineno">  582</span>    std::ostringstream stringStream;</div>
+<div class="line"><span class="lineno">  583</span>    stringStream &lt;&lt; <span class="stringliteral">&quot;sub_&quot;</span> &lt;&lt; (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> + 1);</div>
+<div class="line"><span class="lineno">  584</span> </div>
+<div class="line"><span class="lineno">  585</span>    CookParams cp{buffer_vec,         code_vec,         subgraph_vec,</div>
+<div class="line"><span class="lineno">  586</span>                  flatbuffer_builder, builtin_code_map, stringStream.str()};</div>
+<div class="line"><span class="lineno">  587</span> </div>
+<div class="line"><span class="lineno">  588</span>    cook_graph&lt;::circlechef::Graph&gt;(graph, cp);</div>
+<div class="line"><span class="lineno">  589</span>  }</div>
+<div class="line"><span class="lineno">  590</span> </div>
+<div class="line"><span class="lineno">  591</span>  <span class="comment">// Create &quot;Model&quot; arguments</span></div>
+<div class="line"><span class="lineno">  592</span>  <span class="keyword">auto</span> buffers = flatbuffer_builder-&gt;CreateVector(buffer_vec);</div>
+<div class="line"><span class="lineno">  593</span>  <span class="keyword">auto</span> operator_codes = flatbuffer_builder-&gt;CreateVector(code_vec);</div>
+<div class="line"><span class="lineno">  594</span>  <span class="keyword">auto</span> subgraphs = flatbuffer_builder-&gt;CreateVector(subgraph_vec);</div>
+<div class="line"><span class="lineno">  595</span>  <span class="keyword">auto</span> description = flatbuffer_builder-&gt;CreateString(<span class="stringliteral">&quot;Generated by circlechef&quot;</span>);</div>
+<div class="line"><span class="lineno">  596</span> </div>
+<div class="line"><span class="lineno">  597</span>  <span class="comment">// Create &quot;Model&quot;</span></div>
+<div class="line"><span class="lineno">  598</span>  circle::ModelBuilder model_builder{*flatbuffer_builder};</div>
 <div class="line"><span class="lineno">  599</span> </div>
-<div class="line"><span class="lineno">  600</span>  <span class="comment">// Finalize</span></div>
-<div class="line"><span class="lineno">  601</span>  ::circle::FinishModelBuffer(*flatbuffer_builder, model);</div>
-<div class="line"><span class="lineno">  602</span> </div>
-<div class="line"><span class="lineno">  603</span>  <span class="comment">// Return &quot;GenerateModel&quot;</span></div>
-<div class="line"><span class="lineno">  604</span>  <span class="keywordflow">return</span> GeneratedModel{</div>
-<div class="line"><span class="lineno">  605</span>    std::unique_ptr&lt;GeneratedModelImpl&gt;(<span class="keyword">new</span> GeneratedModelImpl(std::move(flatbuffer_builder)))};</div>
-<div class="line"><span class="lineno">  606</span>}</div>
+<div class="line"><span class="lineno">  600</span>  model_builder.add_version(3);</div>
+<div class="line"><span class="lineno">  601</span>  model_builder.add_operator_codes(operator_codes);</div>
+<div class="line"><span class="lineno">  602</span>  model_builder.add_subgraphs(subgraphs);</div>
+<div class="line"><span class="lineno">  603</span>  model_builder.add_description(description);</div>
+<div class="line"><span class="lineno">  604</span>  model_builder.add_buffers(buffers);</div>
+<div class="line"><span class="lineno">  605</span> </div>
+<div class="line"><span class="lineno">  606</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = model_builder.Finish();</div>
+<div class="line"><span class="lineno">  607</span> </div>
+<div class="line"><span class="lineno">  608</span>  <span class="comment">// Finalize</span></div>
+<div class="line"><span class="lineno">  609</span>  ::circle::FinishModelBuffer(*flatbuffer_builder, model);</div>
+<div class="line"><span class="lineno">  610</span> </div>
+<div class="line"><span class="lineno">  611</span>  <span class="comment">// Return &quot;GenerateModel&quot;</span></div>
+<div class="line"><span class="lineno">  612</span>  <span class="keywordflow">return</span> GeneratedModel{</div>
+<div class="line"><span class="lineno">  613</span>    std::unique_ptr&lt;GeneratedModelImpl&gt;(<span class="keyword">new</span> GeneratedModelImpl(std::move(flatbuffer_builder)))};</div>
+<div class="line"><span class="lineno">  614</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a></div><div class="ttdoc">Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o...</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l01171">flatbuffers.h:1172</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>

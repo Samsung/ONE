@@ -887,6 +887,10 @@ var annotated_dup =
       [ "SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", "structlogo_1_1_simplify_domain_conversion_pass" ]
     ] ],
     [ "luci", "namespaceluci.html", [
+      [ "pass", "namespaceluci_1_1pass.html", [
+        [ "Expression", "structluci_1_1pass_1_1_expression.html", "structluci_1_1pass_1_1_expression" ],
+        [ "ExpressionCache", "classluci_1_1pass_1_1_expression_cache.html", "classluci_1_1pass_1_1_expression_cache" ]
+      ] ],
       [ "sinf", "namespaceluci_1_1sinf.html", [
         [ "Algorithm", "classluci_1_1sinf_1_1_algorithm.html", "classluci_1_1sinf_1_1_algorithm" ],
         [ "Rule", "structluci_1_1sinf_1_1_rule.html", "structluci_1_1sinf_1_1_rule" ]
@@ -956,6 +960,7 @@ var annotated_dup =
       [ "CircleCos", "classluci_1_1_circle_cos.html", "classluci_1_1_circle_cos" ],
       [ "CircleCosGraphBuilder", "classluci_1_1_circle_cos_graph_builder.html", "classluci_1_1_circle_cos_graph_builder" ],
       [ "CircleCosSummaryBuilder", "classluci_1_1_circle_cos_summary_builder.html", null ],
+      [ "CircleCumSum", "classluci_1_1_circle_cum_sum.html", "classluci_1_1_circle_cum_sum" ],
       [ "CircleCustom", "classluci_1_1_circle_custom.html", "classluci_1_1_circle_custom" ],
       [ "CircleCustomGraphBuilder", "classluci_1_1_circle_custom_graph_builder.html", "classluci_1_1_circle_custom_graph_builder" ],
       [ "CircleCustomOut", "classluci_1_1_circle_custom_out.html", "classluci_1_1_circle_custom_out" ],
@@ -1336,6 +1341,8 @@ var annotated_dup =
       [ "CloneNodeLet< CN::OPQR >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4" ],
       [ "CloneNodeLet< CN::STUV >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_s_t_u_v_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_s_t_u_v_01_4" ],
       [ "CloneNodeLet< CN::WXYZ >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_w_x_y_z_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_w_x_y_z_01_4" ],
+      [ "CommonSubExpressionEliminationPass", "classluci_1_1_common_sub_expression_elimination_pass.html", "classluci_1_1_common_sub_expression_elimination_pass" ],
+      [ "CommonSubExpressionEliminationTestGraph", "classluci_1_1_common_sub_expression_elimination_test_graph.html", "classluci_1_1_common_sub_expression_elimination_test_graph" ],
       [ "ConnectNode", "classluci_1_1_connect_node.html", "classluci_1_1_connect_node" ],
       [ "ConstantFoldingAddTestGraph", "classluci_1_1_constant_folding_add_test_graph.html", "classluci_1_1_constant_folding_add_test_graph" ],
       [ "ConstantFoldingTestGraph", "classluci_1_1_constant_folding_test_graph.html", "classluci_1_1_constant_folding_test_graph" ],
@@ -1371,6 +1378,7 @@ var annotated_dup =
       [ "FuseBatchNormWithTConvPass", "structluci_1_1_fuse_batch_norm_with_t_conv_pass.html", "structluci_1_1_fuse_batch_norm_with_t_conv_pass" ],
       [ "FuseBCQPass", "structluci_1_1_fuse_b_c_q_pass.html", "structluci_1_1_fuse_b_c_q_pass" ],
       [ "FuseGeluPass", "structluci_1_1_fuse_gelu_pass.html", "structluci_1_1_fuse_gelu_pass" ],
+      [ "FuseHorizontalFullyConnectedPass", "structluci_1_1_fuse_horizontal_fully_connected_pass.html", "structluci_1_1_fuse_horizontal_fully_connected_pass" ],
       [ "FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", "structluci_1_1_fuse_instance_norm_pass" ],
       [ "FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", "structluci_1_1_fuse_mean_with_mean_pass" ],
       [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
@@ -2359,12 +2367,15 @@ var annotated_dup =
         [ "MPQOptions", "structmpqsolver_1_1pattern_1_1_m_p_q_options.html", "structmpqsolver_1_1pattern_1_1_m_p_q_options" ],
         [ "PatternResolver", "classmpqsolver_1_1pattern_1_1_pattern_resolver.html", "classmpqsolver_1_1pattern_1_1_pattern_resolver" ],
         [ "PatternSolver", "classmpqsolver_1_1pattern_1_1_pattern_solver.html", "classmpqsolver_1_1pattern_1_1_pattern_solver" ],
-        [ "Q8LayerNormWithQ16VarianceResolver", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver.html", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver" ]
+        [ "Q8LayerNormWithQ16VarianceResolver", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver.html", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver" ],
+        [ "Q8SoftmaxWithQ16SubExpResolver", "classmpqsolver_1_1pattern_1_1_q8_softmax_with_q16_sub_exp_resolver.html", "classmpqsolver_1_1pattern_1_1_q8_softmax_with_q16_sub_exp_resolver" ]
       ] ],
       [ "test", "namespacempqsolver_1_1test.html", [
         [ "models", "namespacempqsolver_1_1test_1_1models.html", [
           [ "AddGraph", "classmpqsolver_1_1test_1_1models_1_1_add_graph.html", "classmpqsolver_1_1test_1_1models_1_1_add_graph" ],
-          [ "SimpleGraph", "classmpqsolver_1_1test_1_1models_1_1_simple_graph.html", "classmpqsolver_1_1test_1_1models_1_1_simple_graph" ]
+          [ "SimpleGraph", "classmpqsolver_1_1test_1_1models_1_1_simple_graph.html", "classmpqsolver_1_1test_1_1models_1_1_simple_graph" ],
+          [ "SoftmaxGraphlet", "classmpqsolver_1_1test_1_1models_1_1_softmax_graphlet.html", "classmpqsolver_1_1test_1_1models_1_1_softmax_graphlet" ],
+          [ "SoftmaxTestGraph", "classmpqsolver_1_1test_1_1models_1_1_softmax_test_graph.html", "classmpqsolver_1_1test_1_1models_1_1_softmax_test_graph" ]
         ] ]
       ] ],
       [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html", "classmpqsolver_1_1_m_p_q_solver" ]
@@ -3028,6 +3039,7 @@ var annotated_dup =
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
             [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ],
+            [ "SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer" ],
             [ "TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry" ]
           ] ],
           [ "optimizer", "namespaceonert_1_1backend_1_1train_1_1optimizer.html", [
@@ -3988,8 +4000,8 @@ var annotated_dup =
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

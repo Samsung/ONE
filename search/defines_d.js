@@ -17,5 +17,8 @@ var searchData=
   ['nnfw_5fversion_14',['NNFW_VERSION',['../nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a',1,'nnfw_version.h']]],
   ['node_15',['NODE',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE():&#160;NodeExecution.h']]],
   ['npu_5ftensor_5fmax_16',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
-  ['nyi_17',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
+  ['ns_5fuse_5fexternal_5fmbed_5ftls_17',['NS_USE_EXTERNAL_MBED_TLS',['../mbed__config_8h.html#aa473adf10afc075ab78ac24a71e985ae',1,'mbed_config.h']]],
+  ['nsapi_5fppp_5favailable_18',['NSAPI_PPP_AVAILABLE',['../mbed__config_8h.html#a12421040b4bedcb3cd0f16b7eaa379c4',1,'mbed_config.h']]],
+  ['nsdynmem_5ftracker_5fenabled_19',['NSDYNMEM_TRACKER_ENABLED',['../mbed__config_8h.html#a1e0dc3dce4184ab88245c656ec897386',1,'mbed_config.h']]],
+  ['nyi_20',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
 ];

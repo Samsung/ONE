@@ -1,4 +1,7 @@
 <map id="onert::backend::cpu::ops::SoftMaxLayer" name="onert::backend::cpu::ops::SoftMaxLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="10,79,145,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,5,149,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="31,211,166,251"/>
+<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,101,149,126"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="174,93,338,133"/>
+<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="91,5,247,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="272,5,413,31"/>
 </map>

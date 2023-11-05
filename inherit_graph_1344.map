@@ -1,3 +1,25 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classtfinfo_1_1v2_1_1_tensor_signature.html" title="Class to store input and output tensor information." alt="" coords="5,5,176,31"/>
+<area shape="rect" id="node1" href="$classtest__utils_1_1_test_case.html" title=" " alt="" coords="5,559,140,584"/>
+<area shape="rect" id="node2" href="$class_add__000_1_1_add__000___q8.html" title=" " alt="" coords="223,5,374,31"/>
+<area shape="rect" id="node3" href="$class_add__001_1_1_add__001___q8.html" title=" " alt="" coords="223,55,374,80"/>
+<area shape="rect" id="node4" href="$class_add__002_1_1_add__002___q8.html" title=" " alt="" coords="223,104,374,129"/>
+<area shape="rect" id="node5" href="$class_average_pool2_d__000_1_1_average_pool2_d__000___q8.html" title=" " alt="" coords="203,154,394,194"/>
+<area shape="rect" id="node6" href="$class_concatenation__000_1_1_concatenation__000___q8.html" title=" " alt="" coords="189,218,408,258"/>
+<area shape="rect" id="node7" href="$class_conv2_d__000_1_1_conv2_d__000___q8.html" title=" " alt="" coords="200,283,397,308"/>
+<area shape="rect" id="node8" href="$class_conv2_d__001_1_1_conv2_d__001___q8.html" title=" " alt="" coords="200,332,397,357"/>
+<area shape="rect" id="node9" href="$class_conv2_d__002_1_1_conv2_d__002___q8.html" title=" " alt="" coords="200,381,397,407"/>
+<area shape="rect" id="node10" href="$class_conv2_d__003_1_1_conv2_d__003___q8.html" title=" " alt="" coords="200,431,397,456"/>
+<area shape="rect" id="node11" href="$class_conv2_d__004_1_1_conv2_d__004___q8.html" title=" " alt="" coords="200,480,397,505"/>
+<area shape="rect" id="node12" href="$class_conv2_d__005_1_1_conv2_d__005___q8.html" title=" " alt="" coords="200,529,397,555"/>
+<area shape="rect" id="node13" href="$class_depthwise_conv2_d__000_1_1_depthwise_conv2_d__000___q8.html" title=" " alt="" coords="188,579,409,619"/>
+<area shape="rect" id="node14" href="$class_depthwise_conv2_d__001_1_1_depthwise_conv2_d__001___q8.html" title=" " alt="" coords="188,643,409,683"/>
+<area shape="rect" id="node15" href="$class_depthwise_conv2_d__002_1_1_depthwise_conv2_d__002___q8.html" title=" " alt="" coords="188,707,409,747"/>
+<area shape="rect" id="node16" href="$class_depthwise_conv2_d__003_1_1_depthwise_conv2_d__003___q8.html" title=" " alt="" coords="188,771,409,811"/>
+<area shape="rect" id="node17" href="$class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html" title=" " alt="" coords="206,835,391,875"/>
+<area shape="rect" id="node18" href="$class_mean__000_1_1_mean__000___q8.html" title=" " alt="" coords="214,900,383,925"/>
+<area shape="rect" id="node19" href="$class_mul__000_1_1_mul__000___q8.html" title=" " alt="" coords="225,949,372,975"/>
+<area shape="rect" id="node20" href="$class_mul__001_1_1_mul__001___q8.html" title=" " alt="" coords="225,999,372,1024"/>
+<area shape="rect" id="node21" href="$class_pad__000_1_1_pad__000___q8.html" title=" " alt="" coords="223,1048,374,1073"/>
+<area shape="rect" id="node22" href="$class_reshape__000_1_1_reshape__000___q8.html" title=" " alt="" coords="221,1098,376,1138"/>
+<area shape="rect" id="node23" href="$class_softmax__000_1_1_softmax__000___q8.html" title=" " alt="" coords="224,1162,373,1202"/>
 </map>

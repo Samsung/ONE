@@ -99,8 +99,10 @@ var searchData=
   ['explicitfloat16datacheffactory_96',['ExplicitFloat16DataChefFactory',['../structsouschef_1_1_explicit_float16_data_chef_factory.html',1,'souschef']]],
   ['explicitpadding_97',['ExplicitPadding',['../structonert_1_1ir_1_1_explicit_padding.html',1,'onert::ir']]],
   ['exportcontext_98',['ExportContext',['../structluci_1_1_export_context.html',1,'luci']]],
-  ['externalcontext_99',['ExternalContext',['../classonert_1_1backend_1_1builtin_1_1_external_context.html',1,'onert::backend::builtin::ExternalContext'],['../classonert_1_1backend_1_1cpu_1_1_external_context.html',1,'onert::backend::cpu::ExternalContext'],['../classonert_1_1backend_1_1ruy_1_1_external_context.html',1,'onert::backend::ruy::ExternalContext'],['../classonert_1_1backend_1_1xnnpack_1_1_external_context.html',1,'onert::backend::xnnpack::ExternalContext']]],
-  ['externaldata_100',['ExternalData',['../classonert_1_1ir_1_1_external_data.html',1,'onert::ir']]],
-  ['externalregion_101',['ExternalRegion',['../classmir_1_1_external_region.html',1,'mir']]],
-  ['externaltensor_102',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]]
+  ['expression_99',['Expression',['../structluci_1_1pass_1_1_expression.html',1,'luci::pass']]],
+  ['expressioncache_100',['ExpressionCache',['../classluci_1_1pass_1_1_expression_cache.html',1,'luci::pass']]],
+  ['externalcontext_101',['ExternalContext',['../classonert_1_1backend_1_1builtin_1_1_external_context.html',1,'onert::backend::builtin::ExternalContext'],['../classonert_1_1backend_1_1cpu_1_1_external_context.html',1,'onert::backend::cpu::ExternalContext'],['../classonert_1_1backend_1_1ruy_1_1_external_context.html',1,'onert::backend::ruy::ExternalContext'],['../classonert_1_1backend_1_1xnnpack_1_1_external_context.html',1,'onert::backend::xnnpack::ExternalContext']]],
+  ['externaldata_102',['ExternalData',['../classonert_1_1ir_1_1_external_data.html',1,'onert::ir']]],
+  ['externalregion_103',['ExternalRegion',['../classmir_1_1_external_region.html',1,'mir']]],
+  ['externaltensor_104',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]]
 ];

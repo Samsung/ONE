@@ -134,12 +134,11 @@ $(document).ready(function(){initNavTree('_m_p_q_solver_8cpp_source.html',''); i
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">auto</span> module = importerex.<a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(path);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (module.get() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to load &quot;</span> &lt;&lt; path &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">return</span> module;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load model&quot;</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">return</span> module;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
 <div class="ttc" id="a_importer_ex_8h_html"><div class="ttname"><a href="_importer_ex_8h.html">ImporterEx.h</a></div></div>
 <div class="ttc" id="a_m_p_q_solver_8h_html"><div class="ttname"><a href="_m_p_q_solver_8h.html">MPQSolver.h</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition:</b> <a href="_importer_ex_8h_source.html#l00028">ImporterEx.h:29</a></div></div>

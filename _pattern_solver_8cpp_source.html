@@ -131,47 +131,47 @@ $(document).ready(function(){initNavTree('_pattern_solver_8cpp_source.html','');
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classmpqsolver_1_1pattern_1_1_pattern_solver.html#a237090ac92d64a4aca2936655dfa3990">   37</a></span>std::unique_ptr&lt;luci::Module&gt; <a class="code hl_function" href="classmpqsolver_1_1pattern_1_1_pattern_solver.html#a237090ac92d64a4aca2936655dfa3990">PatternSolver::run</a>(<span class="keyword">const</span> std::string &amp;module_path)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">auto</span> module = <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a2aee85b7d04584ab3416799bb577580f">read_module</a>(module_path);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (!module)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load model&quot;</span>);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  resolve_patterns(module.get());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">auto</span> layer_params = get_frozen_params();</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(module.get(), <span class="stringliteral">&quot;uint8&quot;</span>, layer_params))</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  assert(module != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  resolve_patterns(module.get());</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">auto</span> layer_params = get_frozen_params();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(module.get(), <span class="stringliteral">&quot;uint8&quot;</span>, layer_params))</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">return</span> module;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> module;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">void</span> PatternSolver::set_mpq_options(<a class="code hl_struct" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">MPQOptions</a> &amp;options) { _options = options; }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> PatternSolver::get_frozen_params()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> params;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node_to_param : _frozen.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">_node_to_param</a>)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    params.push_back(std::make_shared&lt;LayerParam&gt;(node_to_param.second));</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keywordtype">void</span> PatternSolver::set_mpq_options(<a class="code hl_struct" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">MPQOptions</a> &amp;options) { _options = options; }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> PatternSolver::get_frozen_params()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> params;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node_to_param : _frozen.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">_node_to_param</a>)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    params.push_back(std::make_shared&lt;LayerParam&gt;(node_to_param.second));</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> params;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> params;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keywordtype">void</span> PatternSolver::resolve_patterns(<a class="code hl_class" href="classluci_1_1_module.html">luci::Module</a> *module)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  _frozen.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">_node_to_param</a>.clear();</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> pattern : _options.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html#acdf8bbdc6d9b13dd88c5bf868b0f90b0">_patterns</a>)</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    std::unique_ptr&lt;pattern::PatternResolver&gt; resolver;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">switch</span> (pattern)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    {</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d">QuantizationPattern::Q8LayerNormWithQ16Variance</a>:</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        resolver = std::make_unique&lt;pattern::Q8LayerNormWithQ16VarianceResolver&gt;();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keywordtype">void</span> PatternSolver::resolve_patterns(<a class="code hl_class" href="classluci_1_1_module.html">luci::Module</a> *module)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  _frozen.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">_node_to_param</a>.clear();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> pattern : _options.<a class="code hl_variable" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html#acdf8bbdc6d9b13dd88c5bf868b0f90b0">_patterns</a>)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    std::unique_ptr&lt;pattern::PatternResolver&gt; resolver;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">switch</span> (pattern)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d">QuantizationPattern::Q8LayerNormWithQ16Variance</a>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        resolver = std::make_unique&lt;pattern::Q8LayerNormWithQ16VarianceResolver&gt;();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2">QuantizationPattern::Q8SoftmaxWithQ16SubExp</a>:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        resolver = std::make_unique&lt;pattern::Q8SoftmaxWithQ16SubExpResolver&gt;();</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported pattern to resolve&quot;</span>);</div>
@@ -204,12 +204,13 @@ $(document).ready(function(){initNavTree('_pattern_solver_8cpp_source.html','');
 <div class="ttc" id="aclassmpqsolver_1_1pattern_1_1_pattern_solver_html_a237090ac92d64a4aca2936655dfa3990"><div class="ttname"><a href="classmpqsolver_1_1pattern_1_1_pattern_solver.html#a237090ac92d64a4aca2936655dfa3990">mpqsolver::pattern::PatternSolver::run</a></div><div class="ttdeci">std::unique_ptr&lt; luci::Module &gt; run(const std::string &amp;module_path) override</div><div class="ttdoc">run solver for recorded float module at module_path</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00037">PatternSolver.cpp:37</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1pattern_1_1_pattern_solver_html_abe4a755d2e0db0ca87d1548d505e2d89"><div class="ttname"><a href="classmpqsolver_1_1pattern_1_1_pattern_solver.html#abe4a755d2e0db0ca87d1548d505e2d89">mpqsolver::pattern::PatternSolver::PatternSolver</a></div><div class="ttdeci">PatternSolver(const std::string &amp;input_quantization, const std::string &amp;output_quantization, const std::vector&lt; QuantizationPattern &gt; &amp;patterns)</div><div class="ttdoc">construct PatternSolver using input_quantization/output_quantization to set quantization type at inpu...</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00028">PatternSolver.cpp:28</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1pattern_html"><div class="ttname"><a href="namespacempqsolver_1_1pattern.html">mpqsolver::pattern</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_resolver_8h_source.html#l00028">PatternResolver.h:29</a></div></div>
+<div class="ttc" id="anamespacempqsolver_1_1pattern_html_ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2"><div class="ttname"><a href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2">mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp</a></div><div class="ttdeci">@ Q8SoftmaxWithQ16SubExp</div></div>
 <div class="ttc" id="anamespacempqsolver_1_1pattern_html_ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d"><div class="ttname"><a href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d">mpqsolver::pattern::QuantizationPattern::Q8LayerNormWithQ16Variance</a></div><div class="ttdeci">@ Q8LayerNormWithQ16Variance</div></div>
 <div class="ttc" id="astructluci_1_1_circle_quantizer_1_1_options_1_1_layer_param_html"><div class="ttname"><a href="structluci_1_1_circle_quantizer_1_1_options_1_1_layer_param.html">luci::CircleQuantizer::Options::LayerParam</a></div><div class="ttdef"><b>Definition:</b> <a href="_circle_quantizer_8h_source.html#l00034">CircleQuantizer.h:35</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_quantizer_1_1_options_html_ac6d2d3003d39e5d31359a5a237a72b04"><div class="ttname"><a href="structluci_1_1_circle_quantizer_1_1_options.html#ac6d2d3003d39e5d31359a5a237a72b04">luci::CircleQuantizer::Options::LayerParams</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; LayerParam &gt; &gt; LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_circle_quantizer_8h_source.html#l00041">CircleQuantizer.h:41</a></div></div>
-<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_frozen_nodes_html_a887f6f84e772a1d85fce7f47472ffc7e"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">mpqsolver::pattern::FrozenNodes::_node_to_param</a></div><div class="ttdeci">std::map&lt; luci::CircleNode *, luci::CircleQuantizer::Options::LayerParam &gt; _node_to_param</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00044">PatternSolver.h:44</a></div></div>
-<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">mpqsolver::pattern::MPQOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00037">PatternSolver.h:38</a></div></div>
-<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html_acdf8bbdc6d9b13dd88c5bf868b0f90b0"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html#acdf8bbdc6d9b13dd88c5bf868b0f90b0">mpqsolver::pattern::MPQOptions::_patterns</a></div><div class="ttdeci">std::vector&lt; QuantizationPattern &gt; _patterns</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00039">PatternSolver.h:39</a></div></div>
+<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_frozen_nodes_html_a887f6f84e772a1d85fce7f47472ffc7e"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_frozen_nodes.html#a887f6f84e772a1d85fce7f47472ffc7e">mpqsolver::pattern::FrozenNodes::_node_to_param</a></div><div class="ttdeci">std::map&lt; luci::CircleNode *, luci::CircleQuantizer::Options::LayerParam &gt; _node_to_param</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00045">PatternSolver.h:45</a></div></div>
+<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">mpqsolver::pattern::MPQOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00038">PatternSolver.h:39</a></div></div>
+<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html_acdf8bbdc6d9b13dd88c5bf868b0f90b0"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html#acdf8bbdc6d9b13dd88c5bf868b0f90b0">mpqsolver::pattern::MPQOptions::_patterns</a></div><div class="ttdeci">std::vector&lt; QuantizationPattern &gt; _patterns</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00040">PatternSolver.h:40</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

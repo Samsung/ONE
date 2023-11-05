@@ -148,7 +148,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_pattern_solver_8h_source.html#l00047">47</a> of file <a class="el" href="_pattern_solver_8h_source.html">PatternSolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pattern_solver_8h_source.html#l00048">48</a> of file <a class="el" href="_pattern_solver_8h_source.html">PatternSolver.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abe4a755d2e0db0ca87d1548d505e2d89" name="abe4a755d2e0db0ca87d1548d505e2d89"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe4a755d2e0db0ca87d1548d505e2d89">&#9670;&#160;</a></span>PatternSolver()</h2>
@@ -192,7 +192,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a4dc867455554baf2ee26d56ac5bb3f0e"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a4dc867455554baf2ee26d56ac5bb3f0e">mpqsolver::MPQSolver::MPQSolver</a></div><div class="ttdeci">MPQSolver(const std::string &amp;input_data_path, float qerror_ratio, const std::string &amp;input_quantization, const std::string &amp;output_quantization)</div><div class="ttdoc">construct Solver using input_data_path for .h5 file, qerror_ratio to set target qerror,...</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8cpp_source.html#l00024">MPQSolver.cpp:24</a></div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition:</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
-<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">mpqsolver::pattern::MPQOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00037">PatternSolver.h:38</a></div></div>
+<div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">mpqsolver::pattern::MPQOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00038">PatternSolver.h:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -228,22 +228,19 @@ Additional Inherited Members</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_pattern_solver_8cpp_source.html#l00037">37</a> of file <a class="el" href="_pattern_solver_8cpp_source.html">PatternSolver.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a> = <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a2aee85b7d04584ab3416799bb577580f">read_module</a>(module_path);</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (!module)</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load model&quot;</span>);</div>
-<div class="line"><span class="lineno">   43</span>  }</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  resolve_patterns(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get());</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> layer_params = get_frozen_params();</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), <span class="stringliteral">&quot;uint8&quot;</span>, layer_params))</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
-<div class="line"><span class="lineno">   55</span>}</div>
+<div class="line"><span class="lineno">   40</span>  assert(module != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  resolve_patterns(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get());</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> layer_params = get_frozen_params();</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), <span class="stringliteral">&quot;uint8&quot;</span>, layer_params))</div>
+<div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a2aee85b7d04584ab3416799bb577580f"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a2aee85b7d04584ab3416799bb577580f">mpqsolver::MPQSolver::read_module</a></div><div class="ttdeci">std::unique_ptr&lt; luci::Module &gt; read_module(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8cpp_source.html#l00037">MPQSolver.cpp:37</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a85c835b7c8d1b1f5bc378a0c46d994d7"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">mpqsolver::MPQSolver::_quantizer</a></div><div class="ttdeci">std::unique_ptr&lt; core::Quantizer &gt; _quantizer</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00060">MPQSolver.h:60</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition:</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>

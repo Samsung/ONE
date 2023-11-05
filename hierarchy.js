@@ -409,6 +409,11 @@ var hierarchy =
               [ "luci::CircleCos", "classluci_1_1_circle_cos.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::CUMSUM >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 2, CircleNodeImpl< CircleOpcode::CUMSUM > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleCumSum", "classluci_1_1_circle_cum_sum.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::CUSTOM >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::VariadicArityNode< CircleNodeImpl< CircleOpcode::CUSTOM > >", "classluci_1_1_variadic_arity_node.html", [
               [ "luci::CircleCustom", "classluci_1_1_circle_custom.html", null ]
@@ -2019,6 +2024,8 @@ var hierarchy =
     [ "onert::compiler::ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", null ],
     [ "onert::ir::ExplicitPadding", "structonert_1_1ir_1_1_explicit_padding.html", null ],
     [ "luci::ExportContext", "structluci_1_1_export_context.html", null ],
+    [ "luci::pass::Expression", "structluci_1_1pass_1_1_expression.html", null ],
+    [ "luci::pass::ExpressionCache", "classluci_1_1pass_1_1_expression_cache.html", null ],
     [ "onert::backend::builtin::ExternalContext", "classonert_1_1backend_1_1builtin_1_1_external_context.html", null ],
     [ "onert::backend::cpu::ExternalContext", "classonert_1_1backend_1_1cpu_1_1_external_context.html", null ],
     [ "onert::backend::ruy::ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", null ],
@@ -2351,6 +2358,7 @@ var hierarchy =
     [ "minmax_embedder_test::H5Writer", "classminmax__embedder__test_1_1_h5_writer.html", null ],
     [ "mir_interpreter::HardSwishImpl< T >", "structmir__interpreter_1_1_hard_swish_impl.html", null ],
     [ "mir_interpreter::HardSwishImpl< uint8_t >", "structmir__interpreter_1_1_hard_swish_impl_3_01uint8__t_01_4.html", null ],
+    [ "luci::pass::Expression::Hash", "structluci_1_1pass_1_1_expression_1_1_hash.html", null ],
     [ "std::hash< benchmark::PhaseEnum >", "structstd_1_1hash_3_01benchmark_1_1_phase_enum_01_4.html", null ],
     [ "std::hash< exo::circle_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1circle__detail_1_1_op_code_01_4.html", null ],
     [ "std::hash< exo::tflite_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4.html", null ],
@@ -2523,7 +2531,9 @@ var hierarchy =
       [ "onert::backend::cpu::ops::SelectLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_select_layer.html", null ],
       [ "onert::backend::cpu::ops::ShapeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_shape_layer.html", null ],
       [ "onert::backend::cpu::ops::SliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_slice_layer.html", null ],
-      [ "onert::backend::cpu::ops::SoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html", null ],
+      [ "onert::backend::cpu::ops::SoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_soft_max_layer.html", [
+        [ "onert::backend::train::ops::SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", null ]
+      ] ],
       [ "onert::backend::cpu::ops::SpaceToBatchNDLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_space_to_batch_n_d_layer.html", null ],
       [ "onert::backend::cpu::ops::SpaceToDepthLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_space_to_depth_layer.html", null ],
       [ "onert::backend::cpu::ops::SplitLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_split_layer.html", null ],
@@ -2883,7 +2893,8 @@ var hierarchy =
       [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
-      [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ]
+      [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ],
+      [ "onert::backend::train::ops::SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", null ]
     ] ],
     [ "ITransformWeights", null, [
       [ "arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", null ]
@@ -3460,8 +3471,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4334,6 +4345,7 @@ var hierarchy =
       [ "logo::ResolveDuplicateReshapePass", "classlogo_1_1_resolve_duplicate_reshape_pass.html", null ],
       [ "logo::ResolveRedundantReshapePass", "classlogo_1_1_resolve_redundant_reshape_pass.html", null ],
       [ "logo::SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", null ],
+      [ "luci::CommonSubExpressionEliminationPass", "classluci_1_1_common_sub_expression_elimination_pass.html", null ],
       [ "luci::ConvertNCHWToNHWCPass", "structluci_1_1_convert_n_c_h_w_to_n_h_w_c_pass.html", null ],
       [ "luci::ConvertToFakeQuantizedModelPass", "structluci_1_1_convert_to_fake_quantized_model_pass.html", null ],
       [ "luci::CopyQuantParamPass", "classluci_1_1_copy_quant_param_pass.html", null ],
@@ -4359,6 +4371,7 @@ var hierarchy =
       [ "luci::FuseBatchNormWithDwConvPass", "structluci_1_1_fuse_batch_norm_with_dw_conv_pass.html", null ],
       [ "luci::FuseBatchNormWithTConvPass", "structluci_1_1_fuse_batch_norm_with_t_conv_pass.html", null ],
       [ "luci::FuseGeluPass", "structluci_1_1_fuse_gelu_pass.html", null ],
+      [ "luci::FuseHorizontalFullyConnectedPass", "structluci_1_1_fuse_horizontal_fully_connected_pass.html", null ],
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
@@ -4444,7 +4457,8 @@ var hierarchy =
     [ "nnc::PassManager", "classnnc_1_1_pass_manager.html", null ],
     [ "onert::compiler::pass::PassRunner", "classonert_1_1compiler_1_1pass_1_1_pass_runner.html", null ],
     [ "mpqsolver::pattern::PatternResolver", "classmpqsolver_1_1pattern_1_1_pattern_resolver.html", [
-      [ "mpqsolver::pattern::Q8LayerNormWithQ16VarianceResolver", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver.html", null ]
+      [ "mpqsolver::pattern::Q8LayerNormWithQ16VarianceResolver", "classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver.html", null ],
+      [ "mpqsolver::pattern::Q8SoftmaxWithQ16SubExpResolver", "classmpqsolver_1_1pattern_1_1_q8_softmax_with_q16_sub_exp_resolver.html", null ]
     ] ],
     [ "crew::PConfig", "structcrew_1_1_p_config.html", null ],
     [ "loco::TensorTranspose::Perm", "classloco_1_1_tensor_transpose_1_1_perm.html", null ],
@@ -4720,6 +4734,9 @@ var hierarchy =
     [ "adt::small_vector< int32_t, MAX_DIMENSION_COUNT >", "classadt_1_1small__vector.html", null ],
     [ "adt::small_vector< int_fast32_t, MAX_DIMENSION_COUNT >", "classadt_1_1small__vector.html", null ],
     [ "loco::Softmax< D >", "classloco_1_1_softmax.html", null ],
+    [ "mpqsolver::test::models::SoftmaxGraphlet", "classmpqsolver_1_1test_1_1models_1_1_softmax_graphlet.html", [
+      [ "mpqsolver::test::models::SoftmaxTestGraph", "classmpqsolver_1_1test_1_1models_1_1_softmax_test_graph.html", null ]
+    ] ],
     [ "mir_interpreter::SoftmaxImpl< T >", "structmir__interpreter_1_1_softmax_impl.html", null ],
     [ "mir_interpreter::SoftmaxImpl< uint8_t >", "structmir__interpreter_1_1_softmax_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::SoftmaxParams", "structluci__interpreter_1_1_softmax_params.html", null ],
@@ -5313,6 +5330,15 @@ var hierarchy =
     ] ],
     [ "luci::test::TestGraph", "classluci_1_1test_1_1_test_graph.html", [
       [ "luci::test::ExampleGraph< ExampleGraphType::CircleTranspose >", "classluci_1_1test_1_1_example_graph_3_01_example_graph_type_1_1_circle_transpose_01_4.html", null ]
+    ] ],
+    [ "luci::test::TestIOGraph", null, [
+      [ "mpqsolver::test::models::SoftmaxTestGraph", "classmpqsolver_1_1test_1_1models_1_1_softmax_test_graph.html", null ]
+    ] ],
+    [ "test::TestIsGraphlet", null, [
+      [ "luci::CommonSubExpressionEliminationTestGraph", "classluci_1_1_common_sub_expression_elimination_test_graph.html", null ]
+    ] ],
+    [ "test::TestOsGraphlet", null, [
+      [ "luci::CommonSubExpressionEliminationTestGraph", "classluci_1_1_common_sub_expression_elimination_test_graph.html", null ]
     ] ],
     [ "test_utils.TestRunner", "classtest__utils_1_1_test_runner.html", null ],
     [ "nnfw::misc::feature::TextFormatter< T >", "classnnfw_1_1misc_1_1feature_1_1_text_formatter.html", null ],

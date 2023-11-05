@@ -97,6 +97,7 @@ $(document).ready(function(){initNavTree('_p_a_l_fully_connected_common_8h.html'
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_p_a_l_utils_8h_source.html">PALUtils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_params_8h_source.html">Params.h</a>&quot;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="_p_a_l_fully_connected_common_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -110,9 +111,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3b564158b3484e61edf2cada7f5e7d35"><td class="memTemplParams" colspan="2">template&lt;typename InputType , typename WeightType , typename OutputType , typename BiasType &gt; </td></tr>
 <tr class="memitem:a3b564158b3484e61edf2cada7f5e7d35"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a3b564158b3484e61edf2cada7f5e7d35">luci_interpreter_pal::FullyConnected</a> (const FullyConnectedParams &amp;params, const int32_t *input_shape, const InputType *input_data, const int32_t *filter_shape, const WeightType *filter_data, const BiasType *bias_data, const int32_t *<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, OutputType *output_data)</td></tr>
 <tr class="separator:a3b564158b3484e61edf2cada7f5e7d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2035e5e2e1c746faf3b9cc78fed274d0"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a2035e5e2e1c746faf3b9cc78fed274d0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#a2035e5e2e1c746faf3b9cc78fed274d0">luci_interpreter_pal::FullyConnected</a> (const FullyConnectedParams &amp;params, const int32_t *input_shape, const float *input_data, const int32_t *filter_shape, const float *filter_data, const float *bias_data, const int32_t *<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
-<tr class="separator:a2035e5e2e1c746faf3b9cc78fed274d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab899661f21a4515aee48a547fd45d83b"><td class="memTemplParams" colspan="2">template&lt;typename WeightType &gt; </td></tr>
+<tr class="memitem:ab899661f21a4515aee48a547fd45d83b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter__pal.html#ab899661f21a4515aee48a547fd45d83b">luci_interpreter_pal::FullyConnected</a> (const FullyConnectedParams &amp;params, const int32_t *input_shape, const float *input_data, const int32_t *filter_shape, const WeightType *filter_data, const float *bias_data, const int32_t *<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
+<tr class="separator:ab899661f21a4515aee48a547fd45d83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

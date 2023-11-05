@@ -6,5 +6,7 @@ var dir_5cc61e5cd6b3423cf97a28c7d7949f3d =
     [ "Convert.h", "compiler_2tflchef_2core_2src_2_convert_8h.html", "compiler_2tflchef_2core_2src_2_convert_8h" ],
     [ "ModelChef.cpp", "tflchef_2core_2src_2_model_chef_8cpp.html", "tflchef_2core_2src_2_model_chef_8cpp" ],
     [ "OpChef.h", "tflchef_2core_2src_2_op_chef_8h.html", "tflchef_2core_2src_2_op_chef_8h" ],
-    [ "OpChefs.h", "tflchef_2core_2src_2_op_chefs_8h.html", null ]
+    [ "OpChefs.h", "tflchef_2core_2src_2_op_chefs_8h.html", null ],
+    [ "OpUtils.cpp", "_op_utils_8cpp.html", "_op_utils_8cpp" ],
+    [ "OpUtils.h", "_op_utils_8h.html", "_op_utils_8h" ]
 ];

@@ -1,5 +1,6 @@
 var namespaceluci =
 [
+    [ "pass", "namespaceluci_1_1pass.html", "namespaceluci_1_1pass" ],
     [ "sinf", "namespaceluci_1_1sinf.html", "namespaceluci_1_1sinf" ],
     [ "test", "namespaceluci_1_1test.html", "namespaceluci_1_1test" ],
     [ "tinf", "namespaceluci_1_1tinf.html", "namespaceluci_1_1tinf" ],
@@ -59,6 +60,7 @@ var namespaceluci =
     [ "CircleCos", "classluci_1_1_circle_cos.html", "classluci_1_1_circle_cos" ],
     [ "CircleCosGraphBuilder", "classluci_1_1_circle_cos_graph_builder.html", "classluci_1_1_circle_cos_graph_builder" ],
     [ "CircleCosSummaryBuilder", "classluci_1_1_circle_cos_summary_builder.html", null ],
+    [ "CircleCumSum", "classluci_1_1_circle_cum_sum.html", "classluci_1_1_circle_cum_sum" ],
     [ "CircleCustom", "classluci_1_1_circle_custom.html", "classluci_1_1_circle_custom" ],
     [ "CircleCustomGraphBuilder", "classluci_1_1_circle_custom_graph_builder.html", "classluci_1_1_circle_custom_graph_builder" ],
     [ "CircleCustomOut", "classluci_1_1_circle_custom_out.html", "classluci_1_1_circle_custom_out" ],
@@ -439,6 +441,8 @@ var namespaceluci =
     [ "CloneNodeLet< CN::OPQR >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4" ],
     [ "CloneNodeLet< CN::STUV >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_s_t_u_v_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_s_t_u_v_01_4" ],
     [ "CloneNodeLet< CN::WXYZ >", "classluci_1_1_clone_node_let_3_01_c_n_1_1_w_x_y_z_01_4.html", "classluci_1_1_clone_node_let_3_01_c_n_1_1_w_x_y_z_01_4" ],
+    [ "CommonSubExpressionEliminationPass", "classluci_1_1_common_sub_expression_elimination_pass.html", "classluci_1_1_common_sub_expression_elimination_pass" ],
+    [ "CommonSubExpressionEliminationTestGraph", "classluci_1_1_common_sub_expression_elimination_test_graph.html", "classluci_1_1_common_sub_expression_elimination_test_graph" ],
     [ "ConnectNode", "classluci_1_1_connect_node.html", "classluci_1_1_connect_node" ],
     [ "ConstantFoldingAddTestGraph", "classluci_1_1_constant_folding_add_test_graph.html", "classluci_1_1_constant_folding_add_test_graph" ],
     [ "ConstantFoldingTestGraph", "classluci_1_1_constant_folding_test_graph.html", "classluci_1_1_constant_folding_test_graph" ],
@@ -474,6 +478,7 @@ var namespaceluci =
     [ "FuseBatchNormWithTConvPass", "structluci_1_1_fuse_batch_norm_with_t_conv_pass.html", "structluci_1_1_fuse_batch_norm_with_t_conv_pass" ],
     [ "FuseBCQPass", "structluci_1_1_fuse_b_c_q_pass.html", "structluci_1_1_fuse_b_c_q_pass" ],
     [ "FuseGeluPass", "structluci_1_1_fuse_gelu_pass.html", "structluci_1_1_fuse_gelu_pass" ],
+    [ "FuseHorizontalFullyConnectedPass", "structluci_1_1_fuse_horizontal_fully_connected_pass.html", "structluci_1_1_fuse_horizontal_fully_connected_pass" ],
     [ "FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", "structluci_1_1_fuse_instance_norm_pass" ],
     [ "FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", "structluci_1_1_fuse_mean_with_mean_pass" ],
     [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],

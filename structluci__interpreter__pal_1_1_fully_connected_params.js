@@ -10,5 +10,6 @@ var structluci__interpreter__pal_1_1_fully_connected_params =
     [ "quantized_activation_max", "structluci__interpreter__pal_1_1_fully_connected_params.html#a1dc579ccdba27634a146c8023652fb9c", null ],
     [ "quantized_activation_min", "structluci__interpreter__pal_1_1_fully_connected_params.html#a51bf5b4663c35d30e6511ea64328f325", null ],
     [ "rhs_cacheable", "structluci__interpreter__pal_1_1_fully_connected_params.html#a757938b28d73b22ad1ec8b70c201a407", null ],
-    [ "weights_offset", "structluci__interpreter__pal_1_1_fully_connected_params.html#a4a738f44f7517051280e348640988f73", null ]
+    [ "weights_offset", "structluci__interpreter__pal_1_1_fully_connected_params.html#a4a738f44f7517051280e348640988f73", null ],
+    [ "weights_scales", "structluci__interpreter__pal_1_1_fully_connected_params.html#a33e212443f1948da0b2115f4e40e1fb0", null ]
 ];
