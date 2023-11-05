@@ -141,7 +141,7 @@ gather_builtincode_map(const ::tflchef::ModelRecipe &model_recipe)
 
   for (const auto &operation : model_recipe.operation())
   {
-    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
+    if (operation.type() == "Custom")
       continue;
 
     auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
@@ -157,8 +157,7 @@ gather_builtincode_map(const ::tflchef::ModelRecipe &model_recipe)
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      if (operation.type() == "Custom" ||
-          (operation.has_extype() && operation.extype() == "Custom"))
+      if (operation.type() == "Custom")
         continue;
 
       auto op_chef = op_chef_registry().lookup(operation.type()).create(&operation);
@@ -178,7 +177,7 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
   std::set<std::string> customcode_set;
   for (const auto &operation : model_recipe.operation())
   {
-    if (operation.type() == "Custom" || (operation.has_extype() && operation.extype() == "Custom"))
+    if (operation.type() == "Custom")
     {
       assert(not operation.custom_code().empty());
       customcode_set.insert(operation.custom_code());
@@ -191,8 +190,7 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
     const auto &graph = model_recipe.graph(g);
     for (const auto &operation : graph.operation())
     {
-      if (operation.type() == "Custom" ||
-          (operation.has_extype() && operation.extype() == "Custom"))
+      if (operation.type() == "Custom")
       {
         assert(not operation.custom_code().empty());
         customcode_set.insert(operation.custom_code());
