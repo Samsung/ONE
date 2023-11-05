@@ -38,3 +38,13 @@ TEST(ExpressionCacheTest, simple_test)
 }
 
 TEST(ExpressionCacheTest, null_expr_NEG) { EXPECT_ANY_THROW(Expression::build(nullptr)); }
+
+TEST(ExpressionCacheTest, invalid_expr_NEG)
+{
+  luci::CircleInput in;
+
+  auto expr = Expression::build(&in);
+
+  // Input is a virtual Op, thus return invalid expr
+  EXPECT_EQ(nullptr, expr.op);
+}

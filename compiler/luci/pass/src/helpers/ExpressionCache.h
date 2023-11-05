@@ -27,7 +27,7 @@ namespace luci
 namespace pass
 {
 
-// Expression is defined as a circle node (operator) and its inputs
+// Expression is defined as a circle node (operator) and its input feature maps
 struct Expression final
 {
 private:
@@ -35,6 +35,7 @@ private:
   Expression() = default;
 
 public:
+  // Input feature maps
   std::vector<loco::Node *> inputs;
   luci::CircleNode *op = nullptr;
 
@@ -46,6 +47,7 @@ public:
   };
 
   // Build expression from a circle node
+  // Returned Expression.op == nullptr if Expression is invalid
   static Expression build(luci::CircleNode *node);
 };
 
