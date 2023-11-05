@@ -31,6 +31,7 @@
 #include "BuildBuiltinOptions/ConcatenationOptions.h"
 #include "BuildBuiltinOptions/Conv2DOptions.h"
 #include "BuildBuiltinOptions/CosOptions.h"
+#include "BuildBuiltinOptions/CumSumOptions.h"
 #include "BuildBuiltinOptions/DensifyOptions.h"
 #include "BuildBuiltinOptions/DepthToSpaceOptions.h"
 #include "BuildBuiltinOptions/DepthwiseConv2DOptions.h"
