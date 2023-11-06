@@ -57,3 +57,7 @@ option(NNCC_LIBRARY_NO_PIC "Disable PIC option for libraries" OFF)
 # This option enables installation of one-import-pytorch utility and
 # generation of related testsuite.
 option(ENABLE_ONE_IMPORT_PYTORCH "Enable deploy of one-cmds pytoch importer and related tests" OFF)
+
+# Enable exclusion of a module in compiler with exclude.me file
+# This option is ignored when BUILD_WHITELIST is given
+option(ENABLE_EXCLUDE_ME "Exclude compiler module with exclude.me" ON)
