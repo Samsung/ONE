@@ -5,6 +5,7 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(CumSum_000)
 
 ## CircleRecipes
 
@@ -30,6 +31,7 @@ tcgenerate(BatchToSpaceND_000)
 tcgenerate(BroadcastTo_000) # luci-interpreter doesn't support custom operator
 tcgenerate(Ceil_000)
 tcgenerate(Conv2D_003) # runtime doesn't support dilation
+tcgenerate(CumSum_000)
 tcgenerate(Densify_000) # luci-interpreter doesn't support
 tcgenerate(DepthwiseConv2D_001) # runtime doesn't support dilation
 tcgenerate(DepthwiseConv2D_003) # runtime doesn't support dilation
