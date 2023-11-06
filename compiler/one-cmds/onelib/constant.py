@@ -44,7 +44,7 @@ class CONSTANT:
         'fuse_mean_with_mean',
         'fuse_transpose_with_mean',
         'fuse_slice_with_tconv',
-        'fuse_horizontal_fc_layers'
+        'fuse_horizontal_fc_layers',
         'transform_min_max_to_relu6',
         'transform_min_relu_to_relu6',
 
