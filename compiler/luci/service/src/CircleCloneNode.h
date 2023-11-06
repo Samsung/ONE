@@ -58,6 +58,7 @@ public:
   luci::CircleNode *visit(const luci::CircleConst *) final;
   luci::CircleNode *visit(const luci::CircleConv2D *) final;
   luci::CircleNode *visit(const luci::CircleCos *) final;
+  luci::CircleNode *visit(const luci::CircleCumSum *) final;
   luci::CircleNode *visit(const luci::CircleCustom *) final;
 
   luci::CircleNode *visit(const luci::CircleNode *) final { return nullptr; }

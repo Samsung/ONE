@@ -93,6 +93,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleCos *node) final { return luci::dtype_get(node->x()); }
 
+  loco::DataType visit(const luci::CircleCumSum *node) final
+  {
+    return luci::dtype_get(node->input());
+  }
+
   loco::DataType visit(const luci::CircleCustom *node) final
   {
     if (node->custom_code() == "BatchMatMulV2")
