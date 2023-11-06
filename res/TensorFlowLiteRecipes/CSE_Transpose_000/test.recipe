@@ -1,0 +1,42 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+}
+operand {
+  name: "perm1"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "0" arg: "3" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 3 dim: 3 }
+}
+operand {
+  name: "perm2"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "0" arg: "3" arg: "1" arg: "2" }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 3 dim: 3 }
+}
+operation {
+  type: "Transpose"
+  input: "ifm"
+  input: "perm1"
+  output: "ofm1"
+}
+operation {
+  type: "Transpose"
+  input: "ifm"
+  input: "perm2"
+  output: "ofm2"
+}
+input: "ifm"
+output: "ofm1"
+output: "ofm2"

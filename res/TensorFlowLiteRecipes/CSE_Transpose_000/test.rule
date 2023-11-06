@@ -1,0 +1,5 @@
+# To check if common Transpose Op is eliminated
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "DUP_TRANSPOSE_REMOVED"    $(op_count TRANSPOSE) '=' 1
