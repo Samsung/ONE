@@ -26,8 +26,8 @@ namespace ops
 {
 
 ReshapeLayer::ReshapeLayer()
-  : _input{nullptr}, _shape{nullptr}, _output{nullptr}, _deriv_input{nullptr}, _deriv_output{
-                                                                                 nullptr}
+  : _input{nullptr}, _shape{nullptr}, _output{nullptr}, _back_prop_input{nullptr},
+    _back_prop_output{nullptr}
 {
   // DO NOTHING
 }
@@ -39,21 +39,21 @@ void ReshapeLayer::reshapeGeneric(const IPortableTensor *input, IPortableTensor 
 }
 
 void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
-                             IPortableTensor *output, IPortableTensor *deriv_input,
-                             const IPortableTensor *deriv_output)
+                             IPortableTensor *output, IPortableTensor *back_prop_input,
+                             const IPortableTensor *back_prop_output)
 {
   _input = input;
   /* note : shape is optional. If not provided from model, _shape is nullptr. */
   _shape = shape;
   _output = output;
 
-  _deriv_input = deriv_input;
-  _deriv_output = deriv_output;
+  _back_prop_input = back_prop_input;
+  _back_prop_output = back_prop_output;
 }
 
 void ReshapeLayer::forward(bool) { reshapeGeneric(_input, _output); }
 
-void ReshapeLayer::backward() { reshapeGeneric(_deriv_output, _deriv_input); }
+void ReshapeLayer::backward() { reshapeGeneric(_back_prop_output, _back_prop_input); }
 
 } // namespace ops
 } // namespace train

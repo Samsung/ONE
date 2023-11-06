@@ -44,7 +44,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // TODO Different shape of deriv tensor
+    // TODO Different shape of back propagation tensor
     ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
                                  obj.isConstant()};
     tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);

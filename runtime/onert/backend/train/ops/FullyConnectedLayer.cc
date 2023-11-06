@@ -54,8 +54,9 @@ namespace ops
 
 FullyConnectedLayer::FullyConnectedLayer()
   : cpu::ops::FullyConnectedLayer{}, _grad_weights{nullptr}, _grad_bias{nullptr},
-    _deriv_input{nullptr}, _deriv_output{nullptr}, _transposed_weights{nullptr},
-    _transposed_input{nullptr}, _transposed_deriv_output{nullptr}, _act_deriv_output{nullptr}
+    _back_prop_input{nullptr}, _back_prop_output{nullptr}, _transposed_weights{nullptr},
+    _transposed_input{nullptr}, _transposed_back_prop_output{nullptr}, _act_back_prop_output{
+                                                                         nullptr}
 {
   // DO NOTHING
 }
@@ -64,8 +65,9 @@ FullyConnectedLayer::~FullyConnectedLayer() = default;
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, IPortableTensor *output,
-                                    IPortableTensor *deriv_input, IPortableTensor *grad_weights,
-                                    IPortableTensor *grad_bias, const IPortableTensor *deriv_output,
+                                    IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
+                                    IPortableTensor *grad_bias,
+                                    const IPortableTensor *back_prop_output,
                                     ir::Activation activation,
                                     ir::FullyConnectedWeightsFormat weights_format,
                                     const std::shared_ptr<train::ExternalContext> &external_context)
@@ -73,18 +75,19 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   cpu::ops::FullyConnectedLayer::configure(input, weights, bias, activation, weights_format, output,
                                            external_context);
 
-  _deriv_input = deriv_input;
+  _back_prop_input = back_prop_input;
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
-  _deriv_output = deriv_output;
+  _back_prop_output = back_prop_output;
 
   if (weights_format != ir::FullyConnectedWeightsFormat::Default)
     throw std::runtime_error{
       "train FullyConnectedLayer: Weight formats other than default are not supported."};
 
   if (input->get_info().shape().rank() != 2 || weights->get_info().shape().rank() != 2 ||
-      output->get_info().shape().rank() != 2 || deriv_input->get_info().shape().rank() != 2 ||
-      grad_weights->get_info().shape().rank() != 2 || deriv_output->get_info().shape().rank() != 2)
+      output->get_info().shape().rank() != 2 || back_prop_input->get_info().shape().rank() != 2 ||
+      grad_weights->get_info().shape().rank() != 2 ||
+      back_prop_output->get_info().shape().rank() != 2)
     throw std::runtime_error{
       "train FullyConnectedLayer: Input other ranks than 2 are not supported."};
 
@@ -94,15 +97,16 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _transposed_input = createTransposedTensor(input);
   _transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
 
-  _transposed_deriv_output = createTransposedTensor(deriv_output);
-  _transposed_deriv_output->setBuffer(
-    std::make_shared<basic::Allocator>(deriv_output->total_size()));
+  _transposed_back_prop_output = createTransposedTensor(back_prop_output);
+  _transposed_back_prop_output->setBuffer(
+    std::make_shared<basic::Allocator>(back_prop_output->total_size()));
 
   if (activation != ir::Activation::NONE)
   {
-    _act_deriv_output =
-      std::make_unique<Tensor>(_deriv_output->get_info(), _deriv_output->layout());
-    _act_deriv_output->setBuffer(std::make_shared<basic::Allocator>(_deriv_output->total_size()));
+    _act_back_prop_output =
+      std::make_unique<Tensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output->setBuffer(
+      std::make_shared<basic::Allocator>(_back_prop_output->total_size()));
   }
 }
 
@@ -110,7 +114,7 @@ void FullyConnectedLayer::forward(bool) { cpu::ops::FullyConnectedLayer::run(); 
 
 void FullyConnectedLayer::backward()
 {
-  const auto data_type = _deriv_output->data_type();
+  const auto data_type = _back_prop_output->data_type();
   assert(data_type == _input->data_type());
   switch (data_type)
   {
@@ -133,14 +137,14 @@ void FullyConnectedLayer::backwardFloat32()
   switch (_activation)
   {
     case ir::Activation::NONE:
-      backprop_act = _deriv_output;
+      backprop_act = _back_prop_output;
       break;
     case ir::Activation::RELU:
       nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-                                  getShape(_deriv_output), getBuffer<float>(_deriv_output),
-                                  getShape(_act_deriv_output.get()),
-                                  getBuffer<float>(_act_deriv_output.get()));
-      backprop_act = _act_deriv_output.get();
+                                  getShape(_back_prop_output), getBuffer<float>(_back_prop_output),
+                                  getShape(_act_back_prop_output.get()),
+                                  getBuffer<float>(_act_back_prop_output.get()));
+      backprop_act = _act_back_prop_output.get();
       break;
     default:
       throw std::runtime_error("train FullyConnectedLayer: Unsupported activation type yet");
@@ -172,8 +176,8 @@ void FullyConnectedLayer::backwardFloat32()
 
   nnfw::cker::FullyConnected(op_params, getShape(backprop_act), getBuffer<float>(backprop_act),
                              getShape(transposed_weights), getBuffer<float>(transposed_weights),
-                             getShape(nullptr), nullptr, getShape(_deriv_input),
-                             getBuffer<float>(_deriv_input));
+                             getShape(nullptr), nullptr, getShape(_back_prop_input),
+                             getBuffer<float>(_back_prop_input));
 
   // Transpose and compute gradient for weights
   // ∂L/∂W = fc(transposed incomming gradient, transposed X)
@@ -182,16 +186,16 @@ void FullyConnectedLayer::backwardFloat32()
   nnfw::cker::Transpose(transpose_param, getShape(_input), getBuffer<float>(_input),
                         getShape(transposed_input), getBuffer<float>(transposed_input));
 
-  auto transposed_deriv_output = _transposed_deriv_output.get();
-  assert(transposed_deriv_output->getShape().rank() == 2);
+  auto transposed_back_prop_output = _transposed_back_prop_output.get();
+  assert(transposed_back_prop_output->getShape().rank() == 2);
   nnfw::cker::Transpose(transpose_param, getShape(backprop_act), getBuffer<float>(backprop_act),
-                        getShape(transposed_deriv_output),
-                        getBuffer<float>(transposed_deriv_output));
+                        getShape(transposed_back_prop_output),
+                        getBuffer<float>(transposed_back_prop_output));
 
-  nnfw::cker::FullyConnected(op_params, getShape(transposed_deriv_output),
-                             getBuffer<float>(transposed_deriv_output), getShape(transposed_input),
-                             getBuffer<float>(transposed_input), getShape(nullptr), nullptr,
-                             getShape(_grad_weights), getBuffer<float>(_grad_weights));
+  nnfw::cker::FullyConnected(
+    op_params, getShape(transposed_back_prop_output), getBuffer<float>(transposed_back_prop_output),
+    getShape(transposed_input), getBuffer<float>(transposed_input), getShape(nullptr), nullptr,
+    getShape(_grad_weights), getBuffer<float>(_grad_weights));
 
   // Compute gradient for bias
   if (_bias)

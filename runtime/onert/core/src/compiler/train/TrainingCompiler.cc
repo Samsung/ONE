@@ -16,7 +16,7 @@
 
 #include "TrainingCompiler.h"
 
-#include "StaticDerivativeShapeInferer.h"
+#include "StaticBackPropShapeInferer.h"
 #include "TrainableOperationConverter.h"
 #include "pass/LossInsertionPass.h"
 #include "../CompilerHelpers.h"
@@ -198,7 +198,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
-  // Set derivatives as default tensor info
+  // Set operands' info for back propagation as default tensor info
   for (const auto &pair : lowered_subgs)
   {
     auto lowered_subg = pair.second.get();
@@ -206,8 +206,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
       if (!obj.isConstant())
       {
-        auto deriv = std::make_unique<ir::Operand>(obj);
-        const auto gen_index = tgraph.addDerivative(index, std::move(deriv));
+        auto back_prop = std::make_unique<ir::Operand>(obj);
+        const auto gen_index = tgraph.addBackProp(index, std::move(back_prop));
         assert(gen_index == index);
         UNUSED_RELEASE(gen_index);
       }
@@ -230,12 +230,12 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       inferer->dump();
     }
 
-    // NOTE StaticDerivativeShapeInferer is allocated for each subgraph,
+    // NOTE StaticBackPropShapeInferer is allocated for each subgraph,
     //      so it does not support models that have controlflow operations yet.
     for (auto &&pair : lowered_subgs)
     {
       auto &lowered_subg = pair.second;
-      auto inferer = std::make_unique<StaticDerivativeShapeInferer>(lowered_subg.get());
+      auto inferer = std::make_unique<StaticBackPropShapeInferer>(lowered_subg.get());
       inferer->infer();
       inferer->dump();
     }
@@ -248,7 +248,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     compiler::ShapeValidator{lowered_subg->graph()}();
   }
 
-  // TODO Validate shapes of derivative tensors
+  // TODO Validate shapes of the tensors for back propagation
 
   /*************************************************************
    *  Backend independent analysis & optimization phase finished

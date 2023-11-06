@@ -59,20 +59,20 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  std::vector<ITensor *> output_deriv_tensors;
-  std::vector<ITensor *> input_deriv_tensors;
+  std::vector<ITensor *> output_back_prop_tensors;
+  std::vector<ITensor *> input_back_prop_tensors;
 
-  auto input_deriv_tensor = getDerivativeTensor(input_index);
-  auto output_deriv_tensor = getDerivativeTensor(output_index);
-  output_deriv_tensors.emplace_back(output_deriv_tensor);
-  input_deriv_tensors.emplace_back(input_deriv_tensor);
+  auto input_back_prop_tensor = getBackPropTensor(input_index);
+  auto output_back_prop_tensor = getBackPropTensor(output_index);
+  output_back_prop_tensors.emplace_back(output_back_prop_tensor);
+  input_back_prop_tensors.emplace_back(input_back_prop_tensor);
 
   // NOTE IOTensors of graph outputs for passing data to users must be ignored in training
   //      because the buffers of those IOTensors are unnecessary and nullptr
   bool ignore_forward_in_training = _whole_graph_outputs.contains(output_index);
-  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors,
-                                                   input_deriv_tensors, output_deriv_tensors,
-                                                   ignore_forward_in_training, _external_context);
+  auto fn = std::make_unique<kernel::PermuteLayer>(
+    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,
+    ignore_forward_in_training, _external_context);
 
   _return_fn = std::move(fn);
 }
@@ -85,10 +85,10 @@ backend::ITensor *KernelGenerator::getTensor(const ir::OperandIndex &index)
   return ret;
 }
 
-backend::ITensor *KernelGenerator::getDerivativeTensor(const ir::OperandIndex &index)
+backend::ITensor *KernelGenerator::getBackPropTensor(const ir::OperandIndex &index)
 {
-  // Get derivative Tensor from all tensor registries (for Permute op)
-  auto ret = _tensor_registries.getDerivativeITensor(index);
+  // Get back propagation Tensor from all tensor registries (for Permute op)
+  auto ret = _tensor_registries.getBackPropITensor(index);
   return ret;
 }
 

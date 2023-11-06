@@ -35,17 +35,17 @@ ElementwiseActivationLayer::ElementwiseActivationLayer() : cpu::ops::Elementwise
 }
 
 void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                                           IPortableTensor *deriv_input,
-                                           const IPortableTensor *deriv_output, float alpha,
+                                           IPortableTensor *back_prop_input,
+                                           const IPortableTensor *back_prop_output, float alpha,
                                            float beta, ElementwiseActivationType op_type)
 {
   assert(input != nullptr);
   assert(output != nullptr);
-  assert(deriv_input != nullptr);
-  assert(deriv_output != nullptr);
+  assert(back_prop_input != nullptr);
+  assert(back_prop_output != nullptr);
 
-  _deriv_input = deriv_input;
-  _deriv_output = deriv_output;
+  _back_prop_input = back_prop_input;
+  _back_prop_output = back_prop_output;
 
   _op_type = op_type;
 
@@ -86,7 +86,7 @@ void ElementwiseActivationLayer::forward(bool) { cpu::ops::ElementwiseActivation
 
 void ElementwiseActivationLayer::backward()
 {
-  _backward_kernel(_output, _deriv_output, _deriv_input);
+  _backward_kernel(_output, _back_prop_output, _back_prop_input);
 }
 
 } // namespace ops

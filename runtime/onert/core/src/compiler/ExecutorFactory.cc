@@ -697,11 +697,11 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       });
     data.graph->operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
       const auto &orig_tgraph = lowered_graph->trainable_graph();
-      if (orig_tgraph.derivatives().exist(index))
+      if (orig_tgraph.back_props().exist(index))
       {
-        const auto &deriv = orig_tgraph.derivatives().at(index);
-        auto new_deriv = std::make_unique<ir::Operand>(deriv);
-        auto gen_index = tgraph->addDerivative(index, std::move(new_deriv));
+        const auto &back_prop = orig_tgraph.back_props().at(index);
+        auto new_back_prop = std::make_unique<ir::Operand>(back_prop);
+        auto gen_index = tgraph->addBackProp(index, std::move(new_back_prop));
         UNUSED_RELEASE(gen_index);
         assert(gen_index == index);
       }
@@ -835,23 +835,23 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                   [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
   }
 
-  // Check derivative tensors
+  // Check back propagation tensors
   {
     // TODO Support multiple subgraphs
-    // Check if the derivative tensors corresponding to inputs of model are nullptr
-    // NOTE The derivative tensors corresponding to inputs of model are for inputs of PermuteLayers
+    // Check if the back propagation tensors corresponding to inputs of model are nullptr
+    // NOTE The back propagation tensors corresponding to inputs of model are for inputs of
+    // PermuteLayers
     //      and they are nullptr and because they are meaningless.
-    assert(std::all_of(lowered_graph->trainable_graph().getInputs().begin(),
-                       lowered_graph->trainable_graph().getInputs().end(),
-                       [&](const auto &input_idx) {
-                         return tensor_regs.getDerivativeITensor(input_idx) == nullptr;
-                       }));
+    assert(std::all_of(
+      lowered_graph->trainable_graph().getInputs().begin(),
+      lowered_graph->trainable_graph().getInputs().end(),
+      [&](const auto &input_idx) { return tensor_regs.getBackPropITensor(input_idx) == nullptr; }));
 
-    // Check if the derivative tensors corresponding to outputs of model exist
+    // Check if the back propagation tensors corresponding to outputs of model exist
     assert(std::all_of(lowered_graph->trainable_graph().getOutputs().begin(),
                        lowered_graph->trainable_graph().getOutputs().end(),
                        [&](const auto &output_idx) {
-                         return tensor_regs.getDerivativeITensor(output_idx) == nullptr;
+                         return tensor_regs.getBackPropITensor(output_idx) == nullptr;
                        }));
   }
 

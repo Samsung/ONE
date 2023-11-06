@@ -58,7 +58,7 @@ private:
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);
-  backend::ITensor *getDerivativeTensor(const ir::OperandIndex &index);
+  backend::ITensor *getBackPropTensor(const ir::OperandIndex &index);
 
 private:
   std::shared_ptr<TensorRegistry> _tensor_reg;

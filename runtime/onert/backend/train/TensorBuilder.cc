@@ -86,8 +86,8 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
   }
   else
   {
-    auto tensor = std::make_unique<DerivativeTensor>(info, layout);
-    _tensor_reg->setDerivativeTensor(index, std::move(tensor));
+    auto tensor = std::make_unique<BackPropTensor>(info, layout);
+    _tensor_reg->setBackPropTensor(index, std::move(tensor));
   }
 }
 
@@ -118,7 +118,7 @@ void TensorBuilder::notifyBackwardFirstUse(const ir::OperandIndex &index)
   }
   else
   {
-    _tensor_mgr->claimDerivativePlan(index);
+    _tensor_mgr->claimBackPropPlan(index);
   }
 }
 
@@ -140,7 +140,7 @@ void TensorBuilder::allocate(void)
 
 void TensorBuilder::allocateBackward(void)
 {
-  _tensor_mgr->allocateDerivativeTensors();
+  _tensor_mgr->allocateBackPropTensors();
   _tensor_mgr->allocateGradientTensors();
 }
 

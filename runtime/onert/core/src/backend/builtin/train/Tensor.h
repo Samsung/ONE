@@ -29,7 +29,7 @@ namespace train
 {
 
 using TrainableTensor = basic::train::TrainableTensor;
-using DerivativeTensor = basic::Tensor;
+using BackPropTensor = basic::Tensor;
 using GradientTensor = basic::Tensor;
 
 } // namespace train

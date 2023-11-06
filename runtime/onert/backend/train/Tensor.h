@@ -45,7 +45,7 @@ public:
 };
 
 using TrainableTensor = basic::train::TrainableTensor;
-using DerivativeTensor = Tensor;
+using BackPropTensor = Tensor;
 using GradientTensor = Tensor;
 
 } // namespace train

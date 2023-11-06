@@ -38,10 +38,10 @@ namespace train
  *        - if calculation cannot be done at compile time, mark the outputs to be dynamic, meaning
  *          shapes of outputs will be calculated during running kernels
  */
-class StaticDerivativeShapeInferer : public ir::train::TrainableOperationVisitor
+class StaticBackPropShapeInferer : public ir::train::TrainableOperationVisitor
 {
 public:
-  StaticDerivativeShapeInferer(compiler::train::LoweredTrainableGraph *lowered_subg)
+  StaticBackPropShapeInferer(compiler::train::LoweredTrainableGraph *lowered_subg)
     : _lowered_subg{lowered_subg}
   {
   }

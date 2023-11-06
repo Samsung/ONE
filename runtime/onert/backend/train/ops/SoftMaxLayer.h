@@ -38,13 +38,13 @@ public:
 
 public:
   void configure(const IPortableTensor *input, const float beta, IPortableTensor *output,
-                 IPortableTensor *deriv_input, const IPortableTensor *deriv_output);
+                 IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
   void forward(bool training) override;
   void backward() override;
 
 private:
-  IPortableTensor *_deriv_input;
-  const IPortableTensor *_deriv_output;
+  IPortableTensor *_back_prop_input;
+  const IPortableTensor *_back_prop_output;
 };
 
 } // namespace ops

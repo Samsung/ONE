@@ -155,12 +155,12 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto deriv_input_tensor = _tensor_reg->getDerivativeTensor(input_index);
-  auto deriv_output_tensor = _tensor_reg->getDerivativeTensor(output_index);
+  auto back_prop_input_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto back_prop_output_tensor = _tensor_reg->getBackPropTensor(output_index);
 
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
-  fn->configure(input_tensor, output_tensor, deriv_input_tensor, deriv_output_tensor,
+  fn->configure(input_tensor, output_tensor, back_prop_input_tensor, back_prop_output_tensor,
                 node.param().alpha, node.param().beta,
                 convertElementwiseActivationType(node.param().op_type));
 
@@ -181,8 +181,8 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
   auto weights_tensor = _tensor_reg->getTrainableTensor(weights_index);
   auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
 
-  auto out_deriv_tensor = _tensor_reg->getDerivativeTensor(out_index);
-  auto in_deriv_tensor = _tensor_reg->getDerivativeTensor(in_index);
+  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(out_index);
+  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(in_index);
   auto weights_grad_tensor = _tensor_reg->getGradientTensor(weights_index);
   auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
 
@@ -192,9 +192,9 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
-  fn->configure(in_tensor, weights_tensor, bias_tensor, out_tensor, in_deriv_tensor,
-                weights_grad_tensor, bias_grad_tensor, out_deriv_tensor, activation, weights_format,
-                _external_context);
+  fn->configure(in_tensor, weights_tensor, bias_tensor, out_tensor, in_back_prop_tensor,
+                weights_grad_tensor, bias_grad_tensor, out_back_prop_tensor, activation,
+                weights_format, _external_context);
 
   _return_fn = std::move(fn);
 
@@ -217,10 +217,10 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto y_pred_tensor = _tensor_reg->getPortableTensor(y_pred_index);
   auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
 
-  auto deriv_y_pred_tensor = _tensor_reg->getDerivativeTensor(y_pred_index);
+  auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
   auto fn = std::make_unique<ops::LossLayer>();
 
-  fn->configure(y_pred_tensor, y_true_tensor, output_tensor, deriv_y_pred_tensor,
+  fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
                 convertLossType(node.param().op_type));
 
   _return_fn = std::move(fn);
@@ -255,8 +255,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   auto out_tensor = _tensor_reg->getPortableTensor(output_index);
   auto in_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto out_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
-  auto in_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
 
   const auto activation = node.param().activation;
   const auto pool_type = convertPoolType(node.param().op_type);
@@ -265,7 +265,7 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
 
   fn->configure(in_tensor, padding.left, padding.right, padding.top, padding.bottom,
                 stride.horizontal, stride.vertical, kw, kh, activation, out_tensor, pool_type,
-                in_deriv_tensor, out_deriv_tensor);
+                in_back_prop_tensor, out_back_prop_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -280,8 +280,8 @@ void KernelGenerator::visit(const ir::train::operation::Reshape &node)
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto output_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
-  auto input_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+  auto output_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto input_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
 
   // optional 2nd input
   IPortableTensor *shape_tensor = nullptr;
@@ -294,7 +294,8 @@ void KernelGenerator::visit(const ir::train::operation::Reshape &node)
 
   auto fn = std::make_unique<ops::ReshapeLayer>();
 
-  fn->configure(input_tensor, shape_tensor, output_tensor, input_deriv_tensor, output_deriv_tensor);
+  fn->configure(input_tensor, shape_tensor, output_tensor, input_back_prop_tensor,
+                output_back_prop_tensor);
   _return_fn = std::move(fn);
 }
 
@@ -310,12 +311,12 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto output_deriv_tensor = _tensor_reg->getDerivativeTensor(output_index);
-  auto input_deriv_tensor = _tensor_reg->getDerivativeTensor(input_index);
+  auto output_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto input_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
 
   auto fn = std::make_unique<ops::SoftMaxLayer>();
 
-  fn->configure(input_tensor, beta, output_tensor, input_deriv_tensor, output_deriv_tensor);
+  fn->configure(input_tensor, beta, output_tensor, input_back_prop_tensor, output_back_prop_tensor);
   _return_fn = std::move(fn);
 }
 
