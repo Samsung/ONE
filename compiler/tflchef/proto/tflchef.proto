@@ -275,8 +275,8 @@ message CosOptions {
 }
 
 message CumSumOptions {
-  optional bool exclusive = 1;
-  optional bool reverse = 2;
+  optional bool exclusive = 1 [ default = false ];
+  optional bool reverse = 2 [ default = false ];
 }
 
 message EqualOptions {
