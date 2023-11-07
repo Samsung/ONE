@@ -1,0 +1,11 @@
+# To check mixed quantization. Mul's inputs are the same node.
+# Default dtype: S16, Target Op dtype: U8
+# Quantize Ops are inserted at the beginning/end of the model.
+
+RULE    "VERIFY_FILE_FORMAT"     $(verify_file_format) '=' 1
+
+RULE    "IFM_S16"                $(tensor_dtype ifm) '=' INT16
+RULE    "IFM_QUANTIZE_U8"        $(tensor_dtype ifm_Quantize) '=' UINT8
+RULE    "TARGET_U8"              $(tensor_dtype ofm) '=' UINT8
+RULE    "OUTPUT_S16"             $(tensor_dtype ofm_Quantize) '=' INT16
+RULE    "QUANTIZE_OP"            $(op_count QUANTIZE) '=' 2
