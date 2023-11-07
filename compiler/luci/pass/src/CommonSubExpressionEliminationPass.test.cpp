@@ -149,7 +149,7 @@ TEST(CommonSubExpressionEliminationTest, Quantize_NEG)
   g.init();
 
   // Different pattern
-  g.ops[0]->input(g.ops[2]);
+  g.ops.at(0)->input(g.ops.at(1));
 
   EXPECT_FALSE(pass.run(g.g()));
 }
