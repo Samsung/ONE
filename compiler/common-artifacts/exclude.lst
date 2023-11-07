@@ -5,6 +5,8 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(BroadcastTo_000)
+optimize(BroadcastTo_001)
 optimize(CumSum_000)
 
 ## CircleRecipes
