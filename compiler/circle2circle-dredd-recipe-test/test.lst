@@ -74,6 +74,8 @@ Add(Softmax_002 PASS decompose_softmax)
 
 Add(CSE_Quantize_000 PASS common_subexpression_elimination)
 Add(CSE_Quantize_001 PASS common_subexpression_elimination)
+Add(CSE_Transpose_000 PASS common_subexpression_elimination)
+Add(CSE_Transpose_001 PASS common_subexpression_elimination)
 
 ## CIRCLE RECIPE
 
