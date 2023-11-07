@@ -71,6 +71,14 @@ function(add_compiler_directory DIR)
     endforeach(ACCEPTED_DIR)
   else()
     set(ENABLE ${BUILD_COMPILER_${PREFIX}})
+    if(ENABLE_EXCLUDE_ME)
+      # skip if "exclude.me" file exist
+      set(EXCLUDE_ME_FILE "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}/exclude.me")
+      if(EXISTS ${EXCLUDE_ME_FILE})
+        message(STATUS "Exclude ${PREFIX}")
+        set(ENABLE OFF)
+      endif()
+    endif()
   endif()
 
   # This line prevents some errors in this CMakeLists.txt
