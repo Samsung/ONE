@@ -64,3 +64,4 @@ addeval(Net_Densify_Dequantize_Add_000 fold_dequantize fold_densify)
 
 # test for common subexpression elimination
 addeval(CSE_Quantize_000 common_subexpression_elimination)
+addeval(CSE_Transpose_000 common_subexpression_elimination)
