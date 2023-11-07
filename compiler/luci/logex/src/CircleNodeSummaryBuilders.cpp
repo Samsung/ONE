@@ -425,6 +425,19 @@ void CircleConv2DSummaryBuilder::build_attributes(const luci::CircleNode *node,
   s.args().append("fused_activation_function", to_str(conv2d->fusedActivationFunction()));
 }
 
+std::vector<std::string> CircleCumsumSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "axis"};
+}
+
+void CircleCumsumSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
+{
+  auto cumsum = loco::must_cast<const luci::CircleCumSum *>(node);
+  s.args().append("exclusive", to_str(cumsum->exclusive()));
+  s.args().append("reverse", to_str(cumsum->reverse()));
+}
+
 std::vector<std::string> CircleCustomSummaryBuilder::get_input_names(const luci::CircleNode *node)
 {
   auto input_names = std::vector<std::string>();
