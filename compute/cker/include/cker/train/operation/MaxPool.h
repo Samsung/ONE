@@ -126,22 +126,21 @@ inline void MaxPool2D(const PoolParams &params, const Shape &input_shape, const 
   out_mat.cwiseMin(params.float_activation_min).cwiseMax(params.float_activation_max);
 }
 
-inline void MaxPool2DGrad(const Shape &deriv_output_shape, const float *deriv_output_data,
-                          const int *arg_max_index, const Shape &deriv_input_shape,
-                          float *deriv_input_data)
+inline void MaxPool2DGrad(const Shape &incoming_shape, const float *incoming_data,
+                          const int *arg_max_index, const Shape &grad_shape, float *grad_data)
 {
-  assert(deriv_input_shape.DimensionsCount() == 4);
-  assert(deriv_output_shape.DimensionsCount() == 4);
+  assert(grad_shape.DimensionsCount() == 4);
+  assert(incoming_shape.DimensionsCount() == 4);
 
-  // initialize deriv_input_data
-  std::fill(deriv_input_data, deriv_input_data + deriv_input_shape.FlatSize(), 0.0);
+  // initialize grad_data
+  std::fill(grad_data, grad_data + grad_shape.FlatSize(), 0.0);
 
-  const int depth = MatchingDim(deriv_input_shape, 3, deriv_output_shape, 3);
-  const auto deriv_out_mat = MapAsMatrixWithLastDimAsRows(deriv_output_data, deriv_output_shape);
-  auto arg_max_index_mat = MapAsMatrixWithLastDimAsRows(arg_max_index, deriv_output_shape);
-  auto deriv_in_mat = MapAsMatrixWithLastDimAsRows(deriv_input_data, deriv_input_shape);
+  const int depth = MatchingDim(grad_shape, 3, incoming_shape, 3);
+  const auto incoming_mat = MapAsMatrixWithLastDimAsRows(incoming_data, incoming_shape);
+  auto arg_max_index_mat = MapAsMatrixWithLastDimAsRows(arg_max_index, incoming_shape);
+  auto grad_mat = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
 
-  for (int col_index = 0; col_index < deriv_out_mat.cols(); col_index++)
+  for (int col_index = 0; col_index < incoming_mat.cols(); col_index++)
   {
     auto arg_indices = arg_max_index_mat.col(col_index);
     for (int d = 0; d < depth; d++)
@@ -150,7 +149,7 @@ inline void MaxPool2DGrad(const Shape &deriv_output_shape, const float *deriv_ou
       if (arg_indices(d) == -1)
         continue;
 
-      deriv_in_mat(d, arg_indices(d)) += deriv_out_mat(d, col_index);
+      grad_mat(d, arg_indices(d)) += incoming_mat(d, col_index);
     }
   }
 }
