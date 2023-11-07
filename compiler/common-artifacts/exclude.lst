@@ -29,6 +29,7 @@ tcgenerate(BatchMatMulV2_000)
 tcgenerate(BatchMatMulV2_001)
 tcgenerate(BatchToSpaceND_000)
 tcgenerate(BroadcastTo_000) # luci-interpreter doesn't support custom operator
+tcgenerate(BroadcastTo_001)
 tcgenerate(Ceil_000)
 tcgenerate(Conv2D_003) # runtime doesn't support dilation
 tcgenerate(CumSum_000)
