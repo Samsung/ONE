@@ -173,7 +173,7 @@ TEST(CommonSubExpressionEliminationTest, Transpose_NEG)
   g.init();
 
   // Different pattern
-  g.ops[0]->a(g.ops[2]);
+  g.ops.at(0)->a(g.ops.at(1));
 
   EXPECT_FALSE(pass.run(g.g()));
 }
