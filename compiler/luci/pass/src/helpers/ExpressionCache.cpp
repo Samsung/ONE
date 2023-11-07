@@ -19,6 +19,10 @@
 namespace
 {
 
+#define RETURN_FALSE_UNLESS(cond) \
+  if (not(cond))                  \
+    return false;
+
 // Check common (non-op-specific) attributes of lhs and rhs
 bool same_common_attributes(const luci::CircleNode *lhs, const luci::CircleNode *rhs)
 {
@@ -77,6 +81,57 @@ bool same_common_attributes(const luci::CircleNode *lhs, const luci::CircleNode 
   return true;
 }
 
+// Return true if two constants are the same
+bool same_const(const luci::CircleConst *x, const luci::CircleConst *y)
+{
+  assert(x != nullptr); // FIX_CALLER_UNLESS
+  assert(y != nullptr); // FIX_CALLER_UNLESS
+
+  RETURN_FALSE_UNLESS(same_common_attributes(x, y));
+
+  switch (x->dtype())
+  {
+    case loco::DataType::S32:
+    {
+      const auto size_x = x->size<loco::DataType::S32>();
+      const auto size_y = y->size<loco::DataType::S32>();
+      RETURN_FALSE_UNLESS(size_x == size_y);
+
+      for (uint32_t i = 0; i < size_x; i++)
+      {
+        RETURN_FALSE_UNLESS(x->at<loco::DataType::S32>(i) == y->at<loco::DataType::S32>(i));
+      }
+      return true;
+    }
+    // TODO Support more dtypes
+    default:
+      // Simply return false
+      return false;
+  }
+
+  return true;
+}
+
+// Return true if x and y are semantically equal
+bool same_attributes(const luci::CircleTranspose *x, luci::CircleTranspose *y)
+{
+  assert(x != nullptr); // FIX_CALLER_UNLESS
+  assert(y != nullptr); // FIX_CALLER_UNLESS
+
+  assert(same_common_attributes(x, y)); // FIX_CALLER_UNLESS
+
+  const auto perm_x = dynamic_cast<luci::CircleConst *>(x->perm());
+  const auto perm_y = dynamic_cast<luci::CircleConst *>(y->perm());
+
+  RETURN_FALSE_UNLESS(perm_x);
+  RETURN_FALSE_UNLESS(perm_y);
+
+  // Check perm_x and perm_y are the same
+  RETURN_FALSE_UNLESS(same_const(perm_x, perm_y));
+
+  return true;
+}
+
 // Use a similar approach as boost's hash_combine
 template <class T> inline void hash_combine(std::size_t &s, const T v)
 {
@@ -121,6 +176,7 @@ Expression Expression::build(luci::CircleNode *node)
     switch (node->opcode())
     {
       case luci::CircleOpcode::QUANTIZE:
+      case luci::CircleOpcode::TRANSPOSE:
         key.inputs.emplace_back(node->arg(0));
         break;
       // TODO Add more Ops
@@ -155,6 +211,13 @@ bool operator==(const Expression &x, const Expression &y)
       // This Op has no op-specific attribute.
       // same_common_attributes is enough.
       return true;
+    }
+    case luci::CircleOpcode::TRANSPOSE:
+    {
+      const auto trans_x = loco::must_cast<luci::CircleTranspose *>(x.op);
+      const auto trans_y = loco::must_cast<luci::CircleTranspose *>(y.op);
+
+      return same_attributes(trans_x, trans_y);
     }
     // TODO Implement more operators
     default:
