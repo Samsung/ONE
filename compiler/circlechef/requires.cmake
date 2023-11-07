@@ -1,5 +1,4 @@
 require("arser")
-require("nnkit")
 require("cwrap")
 require("mio-circle06")
 require("safemain")
