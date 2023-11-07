@@ -1,0 +1,21 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "ifm"
+  output: "ofm"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"

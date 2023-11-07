@@ -232,16 +232,25 @@ private:
   }
 
 // INPUT_NAME1 and INPUT_NAME2 are the only activations of NODE
-#define INSERT_QUANTIZE_TO_BINARY_OP(NODE, INPUT_NAME1, INPUT_NAME2)       \
-  void visit(NODE *node)                                                   \
-  {                                                                        \
-    if (auto input1_quant = create_in_quantize(node->INPUT_NAME1(), node)) \
-      node->INPUT_NAME1(input1_quant);                                     \
-                                                                           \
-    if (auto input2_quant = create_in_quantize(node->INPUT_NAME2(), node)) \
-      node->INPUT_NAME2(input2_quant);                                     \
-                                                                           \
-    insert_out_quantize(node);                                             \
+#define INSERT_QUANTIZE_TO_BINARY_OP(NODE, INPUT_NAME1, INPUT_NAME2)         \
+  void visit(NODE *node)                                                     \
+  {                                                                          \
+    if (node->INPUT_NAME1() == node->INPUT_NAME2())                          \
+    {                                                                        \
+      if (auto input1_quant = create_in_quantize(node->INPUT_NAME1(), node)) \
+      {                                                                      \
+        node->INPUT_NAME1(input1_quant);                                     \
+        node->INPUT_NAME2(input1_quant);                                     \
+      }                                                                      \
+      return;                                                                \
+    }                                                                        \
+    if (auto input1_quant = create_in_quantize(node->INPUT_NAME1(), node))   \
+      node->INPUT_NAME1(input1_quant);                                       \
+                                                                             \
+    if (auto input2_quant = create_in_quantize(node->INPUT_NAME2(), node))   \
+      node->INPUT_NAME2(input2_quant);                                       \
+                                                                             \
+    insert_out_quantize(node);                                               \
   }
 
   // Default behavior (NYI)
