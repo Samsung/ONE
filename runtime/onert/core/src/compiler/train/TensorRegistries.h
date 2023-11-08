@@ -82,11 +82,11 @@ public:
     return nullptr;
   }
 
-  backend::ITensor *getDerivativeITensor(ir::OperandIndex index) const
+  backend::ITensor *getBackPropITensor(ir::OperandIndex index) const
   {
     for (auto &&tensor_reg : _tensor_regs)
     {
-      auto tensor = tensor_reg->getDerivativeITensor(index);
+      auto tensor = tensor_reg->getBackPropITensor(index);
       if (tensor)
         return tensor;
     }

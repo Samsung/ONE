@@ -29,7 +29,7 @@ namespace train
 {
 
 using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor, GradientTensor>;
+  PortableTensorRegistryTemplate<Tensor, TrainableTensor, BackPropTensor, GradientTensor>;
 
 } // namespace train
 } // namespace backend

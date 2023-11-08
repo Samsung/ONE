@@ -41,10 +41,10 @@ public:
 
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *weights,
-                 const IPortableTensor *bias, IPortableTensor *output, IPortableTensor *deriv_input,
-                 IPortableTensor *grad_weights, IPortableTensor *grad_bias,
-                 const IPortableTensor *deriv_output, ir::Activation activation,
-                 ir::FullyConnectedWeightsFormat weights_format,
+                 const IPortableTensor *bias, IPortableTensor *output,
+                 IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
+                 IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
+                 ir::Activation activation, ir::FullyConnectedWeightsFormat weights_format,
                  const std::shared_ptr<train::ExternalContext> &external_context);
 
   void forward(bool training) override;
@@ -56,14 +56,14 @@ private:
 private:
   IPortableTensor *_grad_weights;
   IPortableTensor *_grad_bias;
-  IPortableTensor *_deriv_input;
-  const IPortableTensor *_deriv_output;
+  IPortableTensor *_back_prop_input;
+  const IPortableTensor *_back_prop_output;
 
   // TODO Optimize memory
   std::unique_ptr<Tensor> _transposed_weights;
   std::unique_ptr<Tensor> _transposed_input;
-  std::unique_ptr<Tensor> _transposed_deriv_output;
-  std::unique_ptr<Tensor> _act_deriv_output;
+  std::unique_ptr<Tensor> _transposed_back_prop_output;
+  std::unique_ptr<Tensor> _act_back_prop_output;
 };
 
 } // namespace ops

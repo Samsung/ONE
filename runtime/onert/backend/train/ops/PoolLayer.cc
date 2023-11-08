@@ -52,7 +52,7 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
-  std::unique_ptr<Tensor> _act_deriv_output;
+  std::unique_ptr<Tensor> _act_back_prop_output;
   std::unique_ptr<Tensor> _arg_max_index;
 
 public:
@@ -78,8 +78,8 @@ public:
 
     if (activation != ir::Activation::NONE)
     {
-      _act_deriv_output = std::make_unique<Tensor>(_output->get_info(), _output->layout());
-      _act_deriv_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+      _act_back_prop_output = std::make_unique<Tensor>(_output->get_info(), _output->layout());
+      _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
     }
   };
 
@@ -99,9 +99,9 @@ public:
                                  out_data, getBuffer<int>(arg_max_index));
   }
 
-  void backward(const IPortableTensor *deriv_out, IPortableTensor *deriv_in)
+  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
   {
-    assert(deriv_out->layout() == ir::Layout::NHWC);
+    assert(back_prop_out->layout() == ir::Layout::NHWC);
 
     // activation bacward
     switch (_activation)
@@ -110,10 +110,10 @@ public:
         break;
       case ir::Activation::RELU:
         nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-                                    getShape(deriv_out), getBuffer<float>(deriv_out),
-                                    getShape(_act_deriv_output.get()),
-                                    getBuffer<float>(_act_deriv_output.get()));
-        deriv_out = _act_deriv_output.get();
+                                    getShape(back_prop_out), getBuffer<float>(back_prop_out),
+                                    getShape(_act_back_prop_output.get()),
+                                    getBuffer<float>(_act_back_prop_output.get()));
+        back_prop_out = _act_back_prop_output.get();
         break;
       default:
         throw std::runtime_error("PoolLayer: Unsupported activation type yet");
@@ -121,16 +121,16 @@ public:
 
     // maxpool baackward
     auto arg_max_index = _arg_max_index.get();
-    nnfw::cker::train::MaxPool2DGrad(getShape(deriv_out), getBuffer<float>(deriv_out),
-                                     getBuffer<int>(arg_max_index), getShape(deriv_in),
-                                     getBuffer<float>(deriv_in));
+    nnfw::cker::train::MaxPool2DGrad(getShape(back_prop_out), getBuffer<float>(back_prop_out),
+                                     getBuffer<int>(arg_max_index), getShape(back_prop_in),
+                                     getBuffer<float>(back_prop_in));
   }
 };
 
 } // namespace
 
 PoolLayer::PoolLayer()
-  : cpu::ops::PoolLayer(), _deriv_input(nullptr), _deriv_output(nullptr), _kernel(nullptr)
+  : cpu::ops::PoolLayer(), _back_prop_input(nullptr), _back_prop_output(nullptr), _kernel(nullptr)
 {
   // DO NOTHING
 }
@@ -141,13 +141,13 @@ void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLe
                           const uint32_t strideHeight, const uint32_t kernelWidth,
                           const uint32_t kernelHeight, const ir::Activation activation,
                           IPortableTensor *output, const PoolType op_type,
-                          IPortableTensor *deriv_input, const IPortableTensor *deriv_output)
+                          IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
 {
   _input = input;
   _output = output;
 
-  _deriv_output = deriv_output;
-  _deriv_input = deriv_input;
+  _back_prop_output = back_prop_output;
+  _back_prop_input = back_prop_input;
 
   // ready inference kernel
   cpu::ops::PoolLayer::configure(input, paddingLeft, paddingRight, paddingTop, paddingBottom,
@@ -184,7 +184,7 @@ void PoolLayer::forward(bool training)
   }
 }
 
-void PoolLayer::backward() { _kernel->backward(_deriv_output, _deriv_input); }
+void PoolLayer::backward() { _kernel->backward(_back_prop_output, _back_prop_input); }
 
 } // namespace ops
 } // namespace train

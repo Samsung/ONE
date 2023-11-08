@@ -37,7 +37,7 @@ class TrainingKernelRegistry
 {
 public:
   virtual void forward(const IPortableTensor *in, IPortableTensor *out) = 0;
-  virtual void backward(const IPortableTensor *deriv_out, IPortableTensor *deriv_in) = 0;
+  virtual void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) = 0;
   TrainingKernelRegistry() = default;
   virtual ~TrainingKernelRegistry() = default;
 };
@@ -58,15 +58,15 @@ public:
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t kernelWidth,
                  const uint32_t kernelHeight, const ir::Activation activation,
-                 IPortableTensor *output, const PoolType op_type, IPortableTensor *deriv_input,
-                 const IPortableTensor *deriv_output);
+                 IPortableTensor *output, const PoolType op_type, IPortableTensor *back_prop_input,
+                 const IPortableTensor *back_prop_output);
 
   void forward(bool training) override;
   void backward() override;
 
 private:
-  IPortableTensor *_deriv_input;
-  const IPortableTensor *_deriv_output;
+  IPortableTensor *_back_prop_input;
+  const IPortableTensor *_back_prop_output;
 
   std::unique_ptr<TrainingKernelRegistry> _kernel;
 };

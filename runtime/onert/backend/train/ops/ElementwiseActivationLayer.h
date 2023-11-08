@@ -43,14 +43,14 @@ public:
   ElementwiseActivationLayer();
 
   void configure(const IPortableTensor *input, IPortableTensor *output,
-                 IPortableTensor *deriv_input, const IPortableTensor *deriv_output, float alpha,
-                 float beta, ElementwiseActivationType op_type);
+                 IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output,
+                 float alpha, float beta, ElementwiseActivationType op_type);
   void forward(bool training) override;
   void backward() override;
 
 private:
-  IPortableTensor *_deriv_input = nullptr;
-  const IPortableTensor *_deriv_output = nullptr;
+  IPortableTensor *_back_prop_input = nullptr;
+  const IPortableTensor *_back_prop_output = nullptr;
 
   ElementwiseActivationType _op_type = ElementwiseActivationType::kReLU;
   std::function<void(const IPortableTensor *output, const IPortableTensor *incoming,

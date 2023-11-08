@@ -30,7 +30,7 @@ namespace train
 TrainableGraph::TrainableGraph() : _graph{} {}
 
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
-  : _graph{tgraph._graph}, _derivatives{tgraph._derivatives}, _losses{tgraph._losses}
+  : _graph{tgraph._graph}, _back_props{tgraph._back_props}, _losses{tgraph._losses}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
@@ -61,10 +61,9 @@ OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
   return _graph.replaceOperation(index, std::move(operation));
 }
 
-OperandIndex TrainableGraph::addDerivative(OperandIndex index,
-                                           std::unique_ptr<Operand> &&derivative)
+OperandIndex TrainableGraph::addBackProp(OperandIndex index, std::unique_ptr<Operand> &&back_prop)
 {
-  return _derivatives.push(std::move(derivative), index);
+  return _back_props.push(std::move(back_prop), index);
 }
 
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
@@ -82,10 +81,10 @@ void TrainableGraph::changeShape(const OperandIndex &index, const ir::Shape &new
   _graph.changeShape(index, new_shape);
 }
 
-void TrainableGraph::changeDerivativeShape(const OperandIndex &index, const ir::Shape &new_shape)
+void TrainableGraph::changeBackPropShape(const OperandIndex &index, const ir::Shape &new_shape)
 {
-  assert(_derivatives.exist(index));
-  _derivatives.at(index).info().shape(new_shape);
+  assert(_back_props.exist(index));
+  _back_props.at(index).info().shape(new_shape);
 }
 
 void TrainableGraph::addInput(const OperandIndex &ind, const std::string &name)

@@ -33,7 +33,7 @@ namespace train
 {
 
 using BaseTensorRegistry =
-  backend::train::PortableTensorRegistryTemplate<Tensor, TrainableTensor, DerivativeTensor,
+  backend::train::PortableTensorRegistryTemplate<Tensor, TrainableTensor, BackPropTensor,
                                                  GradientTensor>;
 
 class TensorRegistry : public backend::train::ITensorRegistry
@@ -73,9 +73,9 @@ public:
     return nullptr;
   }
 
-  ITensor *getDerivativeITensor(const ir::OperandIndex &index) override
+  ITensor *getBackPropITensor(const ir::OperandIndex &index) override
   {
-    return _base_reg->getDerivativeTensor(index);
+    return _base_reg->getBackPropTensor(index);
   }
 
   ITensor *getGradientITensor(const ir::OperandIndex &index) override
@@ -83,9 +83,9 @@ public:
     return _base_reg->getGradientTensor(index);
   }
 
-  DerivativeTensor *getDerivativeTensor(const ir::OperandIndex &index)
+  BackPropTensor *getBackPropTensor(const ir::OperandIndex &index)
   {
-    return _base_reg->getDerivativeTensor(index);
+    return _base_reg->getBackPropTensor(index);
   }
 
   bool setMigrantTensor(const ir::OperandIndex &index, IPortableTensor *tensor) override
@@ -96,9 +96,9 @@ public:
     return true;
   }
 
-  void setDerivativeTensor(const ir::OperandIndex &index, std::unique_ptr<DerivativeTensor> tensor)
+  void setBackPropTensor(const ir::OperandIndex &index, std::unique_ptr<BackPropTensor> tensor)
   {
-    _base_reg->setDerivativeTensor(index, std::move(tensor));
+    _base_reg->setBackPropTensor(index, std::move(tensor));
   }
 
   void setGradientTensor(const ir::OperandIndex &index, std::unique_ptr<GradientTensor> tensor)

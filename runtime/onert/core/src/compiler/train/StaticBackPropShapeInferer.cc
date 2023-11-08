@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "StaticDerivativeShapeInferer.h"
+#include "StaticBackPropShapeInferer.h"
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
@@ -30,7 +30,7 @@ namespace compiler
 namespace train
 {
 
-void StaticDerivativeShapeInferer::infer()
+void StaticBackPropShapeInferer::infer()
 {
   // It is not determined to iterate in reverse order.
   auto sorted_ops = _lowered_subg->graph().topolSortOperations();
@@ -41,7 +41,7 @@ void StaticDerivativeShapeInferer::infer()
     if (checkDynamicInput(op))
     {
       std::stringstream msg;
-      msg << "StaticDerivativeShapeInferer does not support dynamic shape yet, ";
+      msg << "StaticBackPropShapeInferer does not support dynamic shape yet, ";
       msg << op.name() << "(op index: " << op_idx << ") has dynamic shape.";
       throw std::runtime_error(msg.str());
     }
@@ -52,12 +52,12 @@ void StaticDerivativeShapeInferer::infer()
   }
 }
 
-void StaticDerivativeShapeInferer::dump()
+void StaticBackPropShapeInferer::dump()
 {
   // TODO dump
 }
 
-bool StaticDerivativeShapeInferer::checkDynamicInput(const ir::IOperation &op)
+bool StaticBackPropShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
   for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
@@ -71,76 +71,76 @@ bool StaticDerivativeShapeInferer::checkDynamicInput(const ir::IOperation &op)
   return false;
 }
 
-void StaticDerivativeShapeInferer::checkOutput(const ir::IOperation &op)
+void StaticBackPropShapeInferer::checkOutput(const ir::IOperation &op)
 {
-  const auto &derivatives = _lowered_subg->trainable_graph().derivatives();
+  const auto &back_props = _lowered_subg->trainable_graph().back_props();
   for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
-    if (!derivatives.exist(output_idx))
+    if (!back_props.exist(output_idx))
     {
       std::stringstream msg;
-      msg << "StaticDerivativeShapeInferer : Invalid output, ";
-      msg << op.name() << "'s derivative output(index: " << output_idx << ") does not exist.";
+      msg << "StaticBackPropShapeInferer : Invalid output, ";
+      msg << op.name() << "'s back propagation output(index: " << output_idx << ") does not exist.";
       throw std::runtime_error(msg.str());
     }
   }
 }
 
-void StaticDerivativeShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
+void StaticBackPropShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
 {
   auto &tgraph = _lowered_subg->trainable_graph();
 
-  if (tgraph.derivatives().exist(index))
-    tgraph.changeDerivativeShape(index, shape);
+  if (tgraph.back_props().exist(index))
+    tgraph.changeBackPropShape(index, shape);
   else
   {
     // NOTE This code assumes the types are always the same, but I'm not sure.
     const auto &type = tgraph.operands().at(index).typeInfo();
-    const auto new_index = tgraph.addDerivative(index, std::make_unique<ir::Operand>(shape, type));
+    const auto new_index = tgraph.addBackProp(index, std::make_unique<ir::Operand>(shape, type));
     assert(new_index == index);
     UNUSED_RELEASE(new_index);
   }
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Conv2D &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Conv2D &)
 {
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
 {
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Loss &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Loss &)
 {
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Permute &op)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Permute &op)
 {
-  const auto &derivatives = _lowered_subg->trainable_graph().derivatives();
+  const auto &back_props = _lowered_subg->trainable_graph().back_props();
 
   const auto &output_idx = op.getOutputs().at(0);
-  const auto &output = derivatives.at(output_idx);
+  const auto &output = back_props.at(output_idx);
 
-  // re-sizing input derivative shape
+  // re-sizing shape of back propagatation input
   const auto &input_idx = op.getInputs().at(0);
   const auto &new_shape = output.info().shape();
   setShape(input_idx, new_shape);
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Pool2D &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Pool2D &)
 {
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Reshape &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Reshape &)
 {
   // NYI
 }
 
-void StaticDerivativeShapeInferer::visit(const ir::train::operation::Softmax &)
+void StaticBackPropShapeInferer::visit(const ir::train::operation::Softmax &)
 {
   // NYI
 }

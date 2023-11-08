@@ -30,23 +30,24 @@ class ITensorRegistry : public backend::ITensorRegistry
 {
 public:
   /**
-   * @brief Returns pointer of ITensor among native and migrant tensors, not derivative and gradient
+   * @brief Returns pointer of ITensor among native and migrant tensors, not back propatation and
+   * gradient
    *
    */
   using backend::ITensorRegistry::getITensor;
 
   /**
-   * @brief Returns pointer of ITensor among native tensors, not derivative and gradient
+   * @brief Returns pointer of ITensor among native tensors, not back propatation and gradient
    *
    */
   using backend::ITensorRegistry::getNativeITensor;
 
   /**
-   * @brief Returns pointer of ITensor for derivative
+   * @brief Returns pointer of ITensor for back propatation
    *
    * @note  Return tensor cannot be used longer than dynamic tensor manager
    */
-  virtual ITensor *getDerivativeITensor(const ir::OperandIndex &) = 0;
+  virtual ITensor *getBackPropITensor(const ir::OperandIndex &) = 0;
 
   /**
    * @brief Returns pointer of ITensor for gradient
@@ -67,7 +68,7 @@ namespace backend
 namespace train
 {
 
-template <typename Tensor, typename TrainableTensor, typename DerivativeTensor,
+template <typename Tensor, typename TrainableTensor, typename BackPropTensor,
           typename GradientTensor>
 class PortableTensorRegistryTemplate : public backend::train::ITensorRegistry
 {
@@ -91,9 +92,9 @@ public:
     return tensor;
   }
 
-  ITensor *getDerivativeITensor(const ir::OperandIndex &index) override
+  ITensor *getBackPropITensor(const ir::OperandIndex &index) override
   {
-    return getDerivativeTensor(index);
+    return getBackPropTensor(index);
   }
 
   ITensor *getGradientITensor(const ir::OperandIndex &index) override
@@ -129,10 +130,10 @@ public:
     return nullptr;
   }
 
-  DerivativeTensor *getDerivativeTensor(const ir::OperandIndex &index)
+  BackPropTensor *getBackPropTensor(const ir::OperandIndex &index)
   {
-    auto tensor = _derivative.find(index);
-    if (tensor != _derivative.end())
+    auto tensor = _back_prop.find(index);
+    if (tensor != _back_prop.end())
       return tensor->second.get();
     return nullptr;
   }
@@ -191,15 +192,15 @@ public:
     _trainable[index] = std::move(tensor);
   }
 
-  void setDerivativeTensor(const ir::OperandIndex &index, std::unique_ptr<DerivativeTensor> tensor)
+  void setBackPropTensor(const ir::OperandIndex &index, std::unique_ptr<BackPropTensor> tensor)
   {
     assert(tensor != nullptr);
-    auto itr = _derivative.find(index);
-    if (itr != _derivative.end())
-      throw std::runtime_error{
-        "Tried to set a derivative tensor but another derivative tensor already exists."};
+    auto itr = _back_prop.find(index);
+    if (itr != _back_prop.end())
+      throw std::runtime_error{"Tried to set a back propagation tensor but another back "
+                               "propagation tensor already exists."};
 
-    _derivative[index] = std::move(tensor);
+    _back_prop[index] = std::move(tensor);
   }
 
   void setGradientTensor(const ir::OperandIndex &index, std::unique_ptr<GradientTensor> tensor)
@@ -218,7 +219,7 @@ public:
     return _trainable;
   }
   const ir::OperandIndexMap<std::unique_ptr<Tensor>> &nonconst_tensors() { return _non_const; }
-  const ir::OperandIndexMap<std::unique_ptr<Tensor>> &derivative_tensors() { return _derivative; }
+  const ir::OperandIndexMap<std::unique_ptr<Tensor>> &back_prop_tensors() { return _back_prop; }
   const ir::OperandIndexMap<std::unique_ptr<GradientTensor>> &gradient_tensors()
   {
     return _gradient;
@@ -233,7 +234,7 @@ private:
   ir::OperandIndexMap<IPortableTensor *> _migrant;
 
   // Tensors for backpropagation
-  ir::OperandIndexMap<std::unique_ptr<DerivativeTensor>> _derivative;
+  ir::OperandIndexMap<std::unique_ptr<BackPropTensor>> _back_prop;
 
   // Tensors for updating trainable tensors
   ir::OperandIndexMap<std::unique_ptr<GradientTensor>> _gradient;
