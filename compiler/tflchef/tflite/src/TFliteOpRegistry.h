@@ -64,6 +64,7 @@ private:
     REG_TFL_OP(BATCH_MATMUL, TFliteOpBatchMatMul);
     REG_TFL_OP(BATCH_TO_SPACE_ND, TFliteOpBatchToSpaceND);
     REG_TFL_OP(BIDIRECTIONAL_SEQUENCE_LSTM, TFliteOpBidirectionalSequenceLSTM);
+    REG_TFL_OP(BROADCAST_TO, TFliteOpBroadcastTo);
     REG_TFL_OP(CAST, TFliteOpCast);
     REG_TFL_OP(CEIL, TFliteOpCeil);
     REG_TFL_OP(CONCATENATION, TFliteOpConcatenation);

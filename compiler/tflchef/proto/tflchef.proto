@@ -291,6 +291,10 @@ message BatchToSpaceNDOptions {
   // None
 }
 
+message BroadcastToOptions {
+  // None
+}
+
 message SpaceToBatchNDOptions {
   // None
 }

@@ -27,6 +27,7 @@
 #include "Op/include/BatchMatMul.h"
 #include "Op/include/BatchToSpaceND.h"
 #include "Op/include/BidirectionalSequenceLSTM.h"
+#include "Op/include/BroadcastTo.h"
 #include "Op/include/Cast.h"
 #include "Op/include/Ceil.h"
 #include "Op/include/Concatenation.h"
