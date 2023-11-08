@@ -42,7 +42,7 @@ def _create_parser():
         type=int,
         default=100,
         metavar='N',
-        help='Number of data for training (default: 100)')
+        help='Number of data for test (default: 100)')
 
     return parser
 
