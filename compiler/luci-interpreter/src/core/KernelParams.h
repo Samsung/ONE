@@ -65,6 +65,12 @@ struct Conv2DParams
   Activation activation;
 };
 
+struct CumSumParams
+{
+  bool exclusive;
+  bool reverse;
+};
+
 struct DepthToSpaceParams
 {
   int block_size;

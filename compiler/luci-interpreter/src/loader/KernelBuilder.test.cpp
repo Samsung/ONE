@@ -26,6 +26,7 @@
 #include <kernels/Concatenation.h>
 #include <kernels/Conv2D.h>
 #include <kernels/Cos.h>
+#include <kernels/CumSum.h>
 #include <kernels/DepthToSpace.h>
 #include <kernels/DepthwiseConv2D.h>
 #include <kernels/Div.h>
@@ -314,6 +315,28 @@ TEST_F(KernelBuilderTest, Cos)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, CumSum)
+{
+  auto *input = createInputNode();
+  auto *axis = createInputNode();
+
+  auto *op = createNode<luci::CircleCumSum>();
+  op->input(input);
+  op->axis(axis);
+
+  op->exclusive(false);
+  op->reverse(false);
+
+  auto kernel = buildKernel<kernels::CumSum>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->axis(), axis);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().exclusive, Eq(op->exclusive()));
+  EXPECT_THAT(kernel->params().reverse, Eq(op->reverse()));
 }
 
 TEST_F(KernelBuilderTest, DepthToSpace)
