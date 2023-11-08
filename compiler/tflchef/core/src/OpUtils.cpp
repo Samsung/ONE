@@ -18,7 +18,7 @@
 
 #include <stdexcept>
 
-void check_custom_op_value(const tflchef::Operation operation, std::string op_type)
+void check_custom_op_value(const tflchef::Operation &operation, const std::string &op_type)
 {
   if (operation.type() == "Custom")
   {
