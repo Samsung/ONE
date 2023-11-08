@@ -1,19 +1,15 @@
 #!/bin/bash
 
 import "docker.configuration"
-USER_MODE=0
 
+# Use host user ID if --user option is given
+# It is useful if host userID is different from docker userID 1000
 if [[ $1 == '--user' ]]; then
   DOCKER_RUN_OPTS+=" -u $(stat -c "%u" $NNAS_PROJECT_PATH):$(stat -c "%g" $NNAS_PROJECT_PATH)"
-  USER_MODE=1
   shift
 fi
 
 docker run ${DOCKER_RUN_OPTS} ${DOCKER_ENV_VARS} ${DOCKER_VOLUMES} ${DOCKER_IMAGE_NAME} "$@"
 EXITCODE=$?
-
-if [ $USER_MODE -eq 0 ]; then
-  docker_cleanup
-fi
 
 exit ${EXITCODE}

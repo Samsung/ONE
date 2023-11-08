@@ -3,7 +3,7 @@
 # Don't run this script
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && echo "Please don't execute ${BASH_SOURCE[0]}" && exit 1
 
-DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools}
+DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-nnfw/one-devtools:focal}
 echo "Using docker image ${DOCKER_IMAGE_NAME}"
 
 if [ -z "`docker images ${DOCKER_IMAGE_NAME}`" ]; then
@@ -32,21 +32,10 @@ DOCKER_ENV_VARS+=" -e GIT_SSL_NO_VERIFY"
 DOCKER_ENV_VARS+=" -e NNAS_WORKSPACE"
 DOCKER_ENV_VARS+=" -e NNCC_WORKSPACE"
 DOCKER_ENV_VARS+=" -e NNFW_WORKSPACE"
+DOCKER_ENV_VARS+=" -e EXTERNAL_DOWNLOAD_SERVER"
+DOCKER_ENV_VARS+=" -e EXTERNAL_SERVER_USERPWD"
+DOCKER_ENV_VARS+=" -e MODELFILE_SERVER"
 
 DOCKER_RUN_OPTS="${DOCKER_OPTS}"
 DOCKER_RUN_OPTS+=" --rm"
 DOCKER_RUN_OPTS+=" -w ${DOCKER_PATH}"
-
-function docker_cleanup()
-{
-  # Newly created files during during docker run can have different ownership.
-  # This may cause some problems, for example, some jenkins slaves or developers
-  # can't remove built files due to lack of permission.
-  # To address this issue, let's change owner of all files
-  # in nncc to owner of nncc.
-  NNFW_OWNER_UID=$(stat -c "%u" ${HOST_PATH})
-  NNFW_OWNER_GID=$(stat -c "%g" ${HOST_PATH})
-
-  CMD="chown -R ${NNFW_OWNER_UID}:${NNFW_OWNER_GID} ${DOCKER_PATH}"
-  docker run ${DOCKER_RUN_OPTS} ${DOCKER_ENV_VARS} ${DOCKER_VOLUMES} ${DOCKER_IMAGE_NAME} ${CMD}
-}
