@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,13 @@
  * limitations under the License.
  */
 
-#include "core/RuntimeModule.h"
-#include "kernels/Add.h"
-#include "kernels/If.h"
-#include "kernels/Mul.h"
 #include "kernels/TestUtils.h"
+#include "luci_interpreter/test_models/if/IfKernel.h"
+#include "luci_interpreter/test_models/if/NegIfKernel.h"
 
-#include "luci_interpreter/TestMemoryManager.h"
+#include "loader/ModuleLoader.h"
 
 namespace luci_interpreter
-{
-namespace kernels
 {
 namespace
 {
@@ -34,128 +30,69 @@ using namespace testing;
 
 class IfTest : public ::testing::Test
 {
-protected:
-  void SetUp() override { _memory_manager = std::make_unique<TestMemoryManager>(); }
-
-  std::unique_ptr<IMemoryManager> _memory_manager;
+  // Do nothing
 };
 
-RuntimeGraph *buildAddSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
+template <typename T> std::vector<T> checkIfKernel(test_kernel::TestDataBase<T> *test_data_base)
 {
-  RuntimeGraph *graph = module->addGraph(memory_manager);
-  Tensor *input1 = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-  Tensor *input2 = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-  Tensor *output = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
 
-  memory_manager->allocate_memory(*input1);
-  memory_manager->allocate_memory(*input2);
-  memory_manager->allocate_memory(*output);
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_base->get_model_ptr());
+  ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input);
 
-  graph->setInputTensors({input1, input2});
-  graph->setOutputTensors({output});
+  auto *main_runtime_graph = runtime_module.getMainGraph();
+  assert(main_runtime_graph->getNumOfInputTensors() == 3);
 
-  AddParams params{};
-  params.activation = Activation::NONE;
-  graph->addKernel(std::make_unique<Add>(input1, input2, output, params));
+  // Set cond input data
+  {
+    // assume that tensor is bool of size 1
+    bool *input_tensor_data = reinterpret_cast<bool *>(main_runtime_graph->configureGraphInput(0));
+    *input_tensor_data = static_cast<bool>(test_data_base->get_input_data_by_index(0)[0]);
+  }
+  // Set input1 data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(1));
+    std::copy(test_data_base->get_input_data_by_index(1).begin(),
+              test_data_base->get_input_data_by_index(1).end(), input_tensor_data);
+  }
+  // Set input2 data
+  {
+    auto *input_tensor_data = reinterpret_cast<T *>(main_runtime_graph->configureGraphInput(2));
+    std::copy(test_data_base->get_input_data_by_index(2).begin(),
+              test_data_base->get_input_data_by_index(2).end(), input_tensor_data);
+  }
+  runtime_module.execute();
 
-  return graph;
+  assert(main_runtime_graph->getNumOfOutputTensors() == 1);
+
+  T *output_data = reinterpret_cast<T *>(main_runtime_graph->getOutputDataByIndex(0));
+  const size_t num_elements = (main_runtime_graph->getOutputDataSizeByIndex(0) / sizeof(T));
+  std::vector<T> output_data_vector(output_data, output_data + num_elements);
+  return output_data_vector;
 }
 
-RuntimeGraph *buildMulSubgraph(RuntimeModule *module, IMemoryManager *memory_manager)
+TEST_F(IfTest, MainTest_P)
 {
-  RuntimeGraph *graph = module->addGraph(memory_manager);
-  Tensor *input1 = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-  Tensor *input2 = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-  Tensor *output = graph->addTensor(
-    std::make_unique<Tensor>(DataType::FLOAT32, Shape{}, AffineQuantization{}, ""));
-
-  memory_manager->allocate_memory(*input1);
-  memory_manager->allocate_memory(*input2);
-  memory_manager->allocate_memory(*output);
-
-  graph->setInputTensors({input1, input2});
-  graph->setOutputTensors({output});
-
-  MulParams params{};
-  params.activation = Activation::NONE;
-  graph->addKernel(std::make_unique<Mul>(input1, input2, output, params));
-
-  return graph;
+  test_kernel::TestDataIfKernel<float> test_data_kernel;
+  std::vector<float> output_data_vector = checkIfKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(IfTest, CondTrue)
+TEST_F(IfTest, MainTest_NEG)
 {
-  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {true}, _memory_manager.get());
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
-  Tensor output = makeOutputTensor(DataType::FLOAT32);
+  test_kernel::NegTestDataIfKernel test_data_kernel;
 
-  RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
-  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
-
-  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
-  kernel.configure();
-  _memory_manager->allocate_memory(output);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({6, 9}));
-}
-
-TEST_F(IfTest, CondFalse)
-{
-  Tensor cond = makeInputTensor<DataType::BOOL>({1}, {false}, _memory_manager.get());
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
-  Tensor output = makeOutputTensor(DataType::FLOAT32);
-
-  RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
-  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
-
-  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
-  kernel.configure();
-  _memory_manager->allocate_memory(output);
-  kernel.execute();
-
-  EXPECT_THAT(extractTensorData<float>(output), FloatArrayNear({5, 14}));
-}
-
-TEST_F(IfTest, InvalidCondType_NEG)
-{
-  Tensor cond = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
-  Tensor output = makeOutputTensor(DataType::FLOAT32);
-
-  RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
-  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
-
-  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(IfTest, InvalidCondElementNum_NEG)
-{
-  Tensor cond = makeInputTensor<DataType::BOOL>({2}, {false, true}, _memory_manager.get());
-  Tensor input1 = makeInputTensor<DataType::FLOAT32>({2}, {5, 7}, _memory_manager.get());
-  Tensor input2 = makeInputTensor<DataType::FLOAT32>({1, 2}, {1, 2}, _memory_manager.get());
-  Tensor output = makeOutputTensor(DataType::FLOAT32);
-
-  RuntimeModule module(nullptr);
-  RuntimeGraph *then_graph = buildAddSubgraph(&module, _memory_manager.get());
-  RuntimeGraph *else_graph = buildMulSubgraph(&module, _memory_manager.get());
-
-  If kernel(&cond, {&input1, &input2}, {&output}, then_graph, else_graph);
-  EXPECT_ANY_THROW(kernel.configure());
+  MemoryManager memory_manager{};
+  RuntimeModule runtime_module{};
+  bool dealloc_input = true;
+  // Load model with single op
+  auto *model_data_raw = reinterpret_cast<const char *>(test_data_kernel.get_model_ptr());
+  EXPECT_DEATH(ModuleLoader::load(&runtime_module, &memory_manager, model_data_raw, dealloc_input),
+               "");
 }
 
 } // namespace
-} // namespace kernels
 } // namespace luci_interpreter

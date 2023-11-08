@@ -13,82 +13,135 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "kernels/If.h"
+#include "Builders.h"
 #include "kernels/Utils.h"
 
 #include <cstring>
 
 namespace luci_interpreter
 {
-namespace kernels
-{
 
-static std::vector<const Tensor *> joinInputs(const Tensor *cond,
-                                              const std::vector<const Tensor *> &inputs)
+void configure_kernel_CircleIf(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  std::vector<const Tensor *> result{cond};
-  result.insert(result.cend(), inputs.cbegin(), inputs.cend());
-  return result;
-}
+  auto *main_runtime_graph = runtime_graph;
 
-If::If(const Tensor *cond, const std::vector<const Tensor *> &inputs, std::vector<Tensor *> outputs,
-       RuntimeGraph *then_graph, RuntimeGraph *else_graph)
-  : Kernel(joinInputs(cond, inputs), std::move(outputs)), _then_graph(then_graph),
-    _else_graph(else_graph)
-{
-}
+  auto *runtime_module = runtime_graph->getRuntimeModule();
 
-void If::configure()
-{
-  LUCI_INTERPRETER_CHECK(cond()->element_type() == DataType::BOOL);
-  LUCI_INTERPRETER_CHECK(cond()->shape().num_elements() == 1);
+  const auto *options = cur_op->builtin_options_as_IfOptions();
 
-  for (RuntimeGraph *graph : {_then_graph, _else_graph})
+  const auto cond_index = cur_op->inputs()->operator[](0);
+  const auto output_index = cur_op->outputs()->operator[](0);
+
+  const auto then_subgraph_index = options->then_subgraph_index();
+  const auto else_subgraph_index = options->else_subgraph_index();
+
+  assert(cond_index != -1);
+  assert(output_index != -1);
+
+  assert(then_subgraph_index != -1);
+  assert(else_subgraph_index != -1);
+
+  const auto cond = runtime_graph->getCircleTensorByIndex(cond_index);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(cond) == DataType::BOOL);
+  LUCI_INTERPRETER_CHECK(Tensor::num_elements(cond) == 1);
+
+  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
+  auto *then_subgraph = runtime_module->getRuntimeGraphAt(then_subgraph_index);
+  auto *else_subgraph = runtime_module->getRuntimeGraphAt(else_subgraph_index);
+  for (RuntimeGraph *graph : {then_subgraph, else_subgraph})
   {
-    (void)graph;
-    LUCI_INTERPRETER_CHECK(graph->getInputTensors().size() == getInputTensors().size() - 1);
-    LUCI_INTERPRETER_CHECK(graph->getOutputTensors().size() == getOutputTensors().size());
+    graph->selectOwnSubgraph();
+    const auto graph_input_size = graph->getNumOfInputTensors();
+    const auto graph_output_size = graph->getNumOfOutputTensors();
+    LUCI_INTERPRETER_CHECK(graph_input_size == cur_op->inputs()->size() - 1);
+    LUCI_INTERPRETER_CHECK(graph_output_size == cur_op->outputs()->size());
+    graph->invalidate();
+    graph->configure(false);
   }
+  main_runtime_graph->selectOwnSubgraph();
 }
 
-void If::execute() const
+void execute_kernel_CircleIf(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const bool cond_value = cond()->data<bool>()[0];
+  auto *main_runtime_graph = runtime_graph;
+  auto *runtime_module = runtime_graph->getRuntimeModule();
 
-  RuntimeGraph *active_graph = cond_value ? _then_graph : _else_graph;
-  const auto &graph_inputs = active_graph->getInputTensors();
-  const auto &graph_outputs = active_graph->getOutputTensors();
+  const auto input_size = cur_op->inputs()->size() - 1;
+  const auto output_size = cur_op->outputs()->size();
 
-  // Copy kernel inputs to active graph inputs.
-  for (size_t i = 0; i < getInputTensors().size() - 1; ++i)
+  std::vector<uint8_t *> operation_inputs_data(input_size);
+  std::vector<uint8_t *> operation_outputs_data(output_size);
+
+  std::vector<int32_t> input_sizes(input_size);
+  std::vector<int32_t> output_sizes(output_size);
+
+  const auto *options = cur_op->builtin_options_as_IfOptions();
+  const auto cond_index = cur_op->inputs()->operator[](0);
+
+  const auto then_subgraph_index = options->then_subgraph_index();
+  const auto else_subgraph_index = options->else_subgraph_index();
+
+  auto *then_subgraph = runtime_module->getRuntimeGraphAt(then_subgraph_index);
+  auto *else_subgraph = runtime_module->getRuntimeGraphAt(else_subgraph_index);
+
+  const auto cond = runtime_graph->getCircleTensorByIndex(cond_index);
+
+  const uint8_t *cond_data = runtime_graph->getDataByTensor(cond);
+  const bool cond_value = kernels::getTensorData<bool>(cond_data)[0];
+
+  RuntimeGraph *active_graph = cond_value ? then_subgraph : else_subgraph;
+
+  for (int32_t i = 0; i < input_size; ++i)
   {
-    LUCI_INTERPRETER_CHECK(graph_inputs[i]->element_type() == input(i)->element_type());
-    graph_inputs[i]->resize(input(i)->shape());
+    const auto op_input_index = cur_op->inputs()->operator[](i + 1);
+    assert(op_input_index != -1);
+    const auto input = main_runtime_graph->getCircleTensorByIndex(op_input_index);
+    input_sizes[i] = Tensor::num_elements(input) * size(Tensor::element_type(input));
 
-    const int32_t num_elements = input(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(input(i)->element_type());
-    // TODO: Think about how allocate memory for output in main graph
-    active_graph->configureAllocations(graph_inputs[i]);
-    std::memcpy(graph_inputs[i]->data<void>(), input(i)->data<void>(), num_elements * element_size);
+    auto *input_data = main_runtime_graph->getDataByTensor(input);
+
+    uint8_t *tensor_data = nullptr;
+    if (input_data == nullptr)
+      input_data = main_runtime_graph->getConstDataByTensor(input);
+    assert(input_data != nullptr);
+    tensor_data = main_runtime_graph->getDataByTensor(input);
+    assert(tensor_data != nullptr);
+
+    operation_inputs_data[i] = tensor_data;
   }
+  for (int32_t i = 0; i < output_size; ++i)
+  {
+    const auto op_output_index = cur_op->outputs()->operator[](i);
+    assert(op_output_index != -1);
+    const auto output = main_runtime_graph->getCircleTensorByIndex(op_output_index);
+    output_sizes[i] = Tensor::num_elements(output) * size(Tensor::element_type(output));
 
+    auto *output_data = main_runtime_graph->getDataByTensor(output);
+
+    uint8_t *tensor_data = nullptr;
+    if (output_data == nullptr)
+      output_data = main_runtime_graph->getConstDataByTensor(output);
+    assert(output_data != nullptr);
+    tensor_data = main_runtime_graph->getDataByTensor(output);
+    assert(tensor_data != nullptr);
+
+    operation_outputs_data[i] = tensor_data;
+  }
+  active_graph->selectOwnSubgraph();
+  for (int32_t i = 0; i < input_size; ++i)
+    active_graph->configureGraphInput(i, operation_inputs_data[i]);
   active_graph->execute();
 
-  // Copy graph outputs to kernel outputs.
-  for (size_t i = 0; i < getOutputTensors().size(); ++i)
+  for (int32_t i = 0; i < output_size; ++i)
   {
-    LUCI_INTERPRETER_CHECK(graph_outputs[i]->element_type() == output(i)->element_type());
-    output(i)->resize(graph_outputs[i]->shape());
-    // TODO: Think about how allocate memory for output in main graph
-    active_graph->configureAllocations(output(i));
-
-    const int32_t num_elements = output(i)->shape().num_elements();
-    const std::size_t element_size = getDataTypeSize(output(i)->element_type());
-    std::memcpy(output(i)->data<void>(), graph_outputs[i]->data<void>(),
-                num_elements * element_size);
+    auto cur_output_active_data = active_graph->getOutputDataByIndex(i);
+    if (cur_output_active_data == nullptr)
+      continue;
+    std::memcpy(operation_outputs_data[i], cur_output_active_data, output_sizes[i]);
   }
+  active_graph->resetOutputTensorsData();
+  active_graph->clearTensors();
+  main_runtime_graph->selectOwnSubgraph();
 }
 
-} // namespace kernels
 } // namespace luci_interpreter
