@@ -7,7 +7,6 @@
 ## TensorFlowLiteRecipes
 optimize(BroadcastTo_000)
 optimize(BroadcastTo_001)
-optimize(CumSum_000)
 
 ## CircleRecipes
 
