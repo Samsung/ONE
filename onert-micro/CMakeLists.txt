@@ -204,7 +204,8 @@ add_subdirectory(eval-driver)
 # Should be after add_subdirectory
 unset(ENABLE_ONERT_MICRO_TRAINING CACHE)
 
-if (NOT DEFINED BUILD_TEST)
+# Example build
+if (NOT DEFINED BUILD_EXAMPLE)
     return()
 endif ()
 
@@ -216,7 +217,7 @@ if (NOT MbedOSSource_FOUND)
     return()
 endif ()
 
-set(MBED_OS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/tests/mbed-os")
+set(MBED_OS_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/examples/speech_recognition/DISCO_F746/mbed-os")
 file(MAKE_DIRECTORY "${MBED_OS_BUILD_DIR}")
 
 set(MBED_OS_BUILD_DEPENDENCY "${MBED_OS_BUILD_DIR}/CMakeCache.txt")
@@ -225,13 +226,13 @@ set(ONERTMICRO_SRC_DIR "${NNAS_PROJECT_SOURCE_DIR}/onert-micro")
 
 add_custom_command(
         OUTPUT "${MBED_OS_BUILD_DEPENDENCY}"
-        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/mbed-os"
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/examples/speech_recognition/DISCO_F746/mbed-os"
         -DMICRO_ARM_BUILD_DIR=${MICRO_ARM_BUILD_DIR}
         -DMbedOSSource_DIR=${MbedOSSource_DIR}
         -DFlatBuffersSource_DIR=${FlatBuffersSource_DIR}
         -DONERTMICRO_SRC_DIR=${ONERTMICRO_SRC_DIR}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/mbed-os/CMakeLists.txt"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/examples/speech_recognition/DISCO_F746/mbed-os/CMakeLists.txt"
         VERBATIM
 )
 
@@ -249,13 +250,13 @@ add_custom_command(
 
 add_custom_target(mbed_os_arm DEPENDS "${MBED_OS_BINARY}")
 
-set(BUILD_TEST_BINARY "${MBED_OS_BUILD_DIR}/build_test.bin")
+set(BUILD_EXAMPLE_BINARY "${MBED_OS_BUILD_DIR}/example_speech_recognition.bin")
 
 add_custom_command(
-        OUTPUT "${BUILD_TEST_BINARY}"
-        COMMAND "${CMAKE_MAKE_PROGRAM}" build_test -j ${CPU_COUNT}
+        OUTPUT "${BUILD_EXAMPLE_BINARY}"
+        COMMAND "${CMAKE_MAKE_PROGRAM}" example_speech_recognition -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MBED_OS_BUILD_DIR}"
-        DEPENDS mbed_os_arm "${CMAKE_CURRENT_SOURCE_DIR}/tests/mbed-os/main.cpp" ${MICRO_ARM_BINARY}
+        DEPENDS mbed_os_arm "${CMAKE_CURRENT_SOURCE_DIR}/examples/speech_recognition/DISCO_F746/mbed-os/main.cpp" ${MICRO_ARM_BINARY}
         VERBATIM
 )
-add_custom_target(onert_micro_build_test_arm DEPENDS "${BUILD_TEST_BINARY}")
+add_custom_target(onert_micro_build_example_arm DEPENDS "${BUILD_EXAMPLE_BINARY}")

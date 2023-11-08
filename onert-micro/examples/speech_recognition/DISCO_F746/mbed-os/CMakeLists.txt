@@ -125,11 +125,12 @@ target_link_libraries(example_speech_recognition PUBLIC "${MICRO_ARM_BUILD_DIR}/
 target_link_libraries(example_speech_recognition PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/core/reader/libluci_micro_circle_reader.a")
 target_link_libraries(example_speech_recognition PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/memory_managers/libluci_interpreter_micro_memory_manager.a")
 target_link_libraries(example_speech_recognition PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_kernels_micro.a")
-target_link_libraries(example_speech_recognition PUBLIC "${MICRO_ARM_BUILD_DIR}/luci-interpreter/src/kernels/libluci_interpreter_mcu_pal.a")
 
 target_include_directories(example_speech_recognition PUBLIC
         ${ONERTMICRO_SRC_DIR}/luci-interpreter/include
         ${ONERTMICRO_SRC_DIR}/luci-interpreter/src
+        ${ONERTMICRO_SRC_DIR}/externals
+        ${ONERTMICRO_SRC_DIR}/externals/gen
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${FlatBuffersSource_DIR}/include
 )
