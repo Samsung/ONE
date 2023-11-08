@@ -2,25 +2,5 @@
 
 import "build.configuration"
 
-INSTALL_PATH="${NNFW_INSTALL_PREFIX:-${WORKSPACE_PATH}/out}"
-# Normalize to absolute path
-if [[ "${INSTALL_PATH}" != /*  ]]; then
-    INSTALL_PATH=${NNFW_PROJECT_PATH}/${INSTALL_PATH}
-fi
-
-# Create "BUILD_PATH"
-mkdir -p "${BUILD_PATH}"
-
-if [ ! -d "${INSTALL_PATH}" ]; then
-  echo "[WARNING] Cannot find install directory '${INSTALL_PATH}'"
-  echo "          Try to make install directory"
-  mkdir -p "${INSTALL_PATH}"
-  if [ ! -d "${INSTALL_PATH}" ]; then
-    echo "[ERROR] Fail to make install directory '${INSTALL_PATH}'"
-    echo "        Please make '${INSTALL_PATH}' directory first"
-    exit 255
-  fi
-fi
-
-cd "${BUILD_PATH}"
-cmake "${NNFW_PROJECT_PATH}"/infra/nnfw -DCMAKE_INSTALL_PREFIX="${INSTALL_PATH}" "$@"
+# Require cmake version >= 3.13 to use '-S' & '-B' option
+cmake -S "${NNFW_PROJECT_PATH}"/infra/nnfw -B ${BUILD_PATH} "$@"

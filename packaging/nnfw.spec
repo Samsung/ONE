@@ -227,7 +227,7 @@ cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 %{build_env} ./nnfw build %{build_jobs}
 # install in workspace
 # TODO Set install path
-%{build_env} ./nnfw install
+%{build_env} ./nnfw install --prefix %{nnfw_workspace}/out
 
 %if %{test_build} == 1
 %if %{coverage_build} == 1
