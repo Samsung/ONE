@@ -31,6 +31,10 @@ namespace mpqsolver
 class MPQSolver
 {
 public:
+  MPQSolver(const core::Quantizer::Context &ctx, const std::string &input_data_path,
+            float qerror_ratio);
+
+public:
   /**
    * @brief construct Solver using input_data_path for .h5 file,
    * qerror_ratio to set target qerror, and input_quantization/output_quantization to set
