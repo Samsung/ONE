@@ -9,6 +9,10 @@ if (NOT Protobuf_FOUND)
     return()
 endif ()
 
+if (NOT TARGET mir_interpreter)
+    return()
+endif ()
+
 Protobuf_Generate(MIR_ONNX_PROTO
         ${CMAKE_CURRENT_BINARY_DIR}/generated
         ${ONNXSource_DIR}
