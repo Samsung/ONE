@@ -48,6 +48,10 @@ struct FrozenNodes
 class PatternSolver final : public MPQSolver
 {
 public:
+  PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
+                const std::vector<QuantizationPattern> &patterns);
+  // TODO Remove this
+public:
   /**
    * @brief construct PatternSolver using input_quantization/output_quantization to set
    * quantization type at input/output respectively and patterns to apply

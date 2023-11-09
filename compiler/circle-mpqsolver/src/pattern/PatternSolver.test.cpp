@@ -58,10 +58,20 @@ TEST_F(CircleMPQSolverPatternSolverTest, verify_results)
   luci::CircleFileExpContract contract(m.get(), _module_path);
   EXPECT_TRUE(exporter.invoke(&contract));
 
+  // Create quantizer parameters
+  mpqsolver::core::Quantizer::Context ctx;
+  {
+    ctx.output_model_dtype = "uint8";
+    ctx.granularity = "channel";
+    ctx.input_type = "uint8";
+    ctx.output_type = "uint8";
+    ctx.save_min_max = false;
+    ctx.TF_style_maxpool = false;
+  }
+
   // create solver
   mpqsolver::pattern::PatternSolver solver(
-    "uint8", "uint8",
-    std::vector<QuantizationPattern>(1, QuantizationPattern::Q8SoftmaxWithQ16SubExp));
+    ctx, std::vector<QuantizationPattern>(1, QuantizationPattern::Q8SoftmaxWithQ16SubExp));
 
   // run solver
   auto const res = solver.run(_module_path);
@@ -99,8 +109,19 @@ TEST_F(CircleMPQSolverPatternSolverTest, empty_patterns_NEG)
   luci::CircleFileExpContract contract(m.get(), _module_path);
   EXPECT_TRUE(exporter.invoke(&contract));
 
+  // Create quantizer parameters
+  mpqsolver::core::Quantizer::Context ctx;
+  {
+    ctx.output_model_dtype = "uint8";
+    ctx.granularity = "channel";
+    ctx.input_type = "uint8";
+    ctx.output_type = "uint8";
+    ctx.save_min_max = false;
+    ctx.TF_style_maxpool = false;
+  }
+
   // create solver
-  mpqsolver::pattern::PatternSolver solver("uint8", "uint8", std::vector<QuantizationPattern>());
+  mpqsolver::pattern::PatternSolver solver(ctx, std::vector<QuantizationPattern>());
 
   // run solver
   auto const res = solver.run(_module_path);
@@ -129,9 +150,20 @@ TEST_F(CircleMPQSolverPatternSolverTest, empty_patterns_NEG)
 
 TEST_F(CircleMPQSolverPatternSolverTest, empty_path_NEG)
 {
+  // Create quantizer parameters
+  mpqsolver::core::Quantizer::Context ctx;
+  {
+    ctx.output_model_dtype = "uint8";
+    ctx.granularity = "channel";
+    ctx.input_type = "uint8";
+    ctx.output_type = "uint8";
+    ctx.save_min_max = false;
+    ctx.TF_style_maxpool = false;
+  }
+
+  // create solver
   mpqsolver::pattern::PatternSolver solver(
-    "uint8", "uint8",
-    std::vector<QuantizationPattern>(1, QuantizationPattern::Q8LayerNormWithQ16Variance));
+    ctx, std::vector<QuantizationPattern>(1, QuantizationPattern::Q8LayerNormWithQ16Variance));
 
   EXPECT_ANY_THROW(solver.run(""));
 }

@@ -22,6 +22,7 @@
 #include "bisection/BisectionSolver.h"
 #include "pattern/PatternSolver.h"
 #include "core/SolverOutput.h"
+#include "core/Quantizer.h"
 
 #include <iostream>
 #include <iomanip>
@@ -104,6 +105,29 @@ int entry(int argc, char **argv)
     .default_value("uint8")
     .help("Data type of quantized model's outputs (default: uint8)");
 
+  arser.add_argument("--quantized_dtype")
+    .type(arser::DataType::STR)
+    .default_value("uint8")
+    .help("Data type of quantized model (supported: uint8 (default), int16)");
+
+  arser.add_argument("--granularity")
+    .type(arser::DataType::STR)
+    .default_value("channel")
+    .help("Granularity of quantization scheme (supported: layer, channel (default))");
+
+  arser.add_argument("--TF-style_maxpool")
+    .nargs(0)
+    .default_value(false)
+    .help("Force MaxPool Op to have the same input/output quantparams. NOTE: This feature can "
+          "degrade accuracy of some models");
+
+  arser.add_argument("--save_min_max")
+    .nargs(0)
+    .default_value(false)
+    .help("Save recorded min/max values.");
+
+  // TODO Support --config
+
   arser.add_argument("--output_model").required(true).help("Output quantized model");
 
   arser.add_argument("--visq_file")
@@ -140,6 +164,10 @@ int entry(int argc, char **argv)
   auto output_model_path = arser.get<std::string>("--output_model");
   auto input_dtype = arser.get<std::string>("--input_dtype");
   auto output_dtype = arser.get<std::string>("--output_dtype");
+  auto quantized_dtype = arser.get<std::string>("--quantized_dtype");
+  auto granularity = arser.get<std::string>("--granularity");
+  auto TF_style_maxpool = arser["--TF-style_maxpool"] and arser.get<bool>("--TF-style_maxpool");
+  auto save_min_max = arser["--save_min_max"] and arser.get<bool>("--save_min_max");
 
   float qerror_ratio = arser.get<float>("--qerror_ratio");
   if (qerror_ratio < 0.0 || qerror_ratio > 1.f)
@@ -158,8 +186,12 @@ int entry(int argc, char **argv)
   SolverOutput::get() << ">> Searching mixed precision configuration \n"
                       << "model:" << input_model_path << "\n"
                       << "dataset: " << data_path << "\n"
+                      << "quantized dtype: " << quantized_dtype << "\n"
+                      << "granularity: " << granularity << "\n"
                       << "input dtype: " << input_dtype << "\n"
-                      << "output dtype: " << output_dtype << "\n";
+                      << "output dtype: " << output_dtype << "\n"
+                      << "TF_style_maxpool: " << (TF_style_maxpool ? "True" : "False") << "\n"
+                      << "save_min_max: " << (save_min_max ? "True" : "False") << "\n";
 
   std::unique_ptr<mpqsolver::MPQSolver> solver;
   if (arser[bisection_str])
@@ -226,8 +258,19 @@ int entry(int argc, char **argv)
     {
       patterns.push_back(mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp);
     }
-    solver =
-      std::make_unique<mpqsolver::pattern::PatternSolver>(input_dtype, output_dtype, patterns);
+
+    // Create quantizer parameters
+    mpqsolver::core::Quantizer::Context ctx;
+    {
+      ctx.output_model_dtype = quantized_dtype;
+      ctx.granularity = granularity;
+      ctx.input_type = input_dtype;
+      ctx.output_type = output_dtype;
+      ctx.save_min_max = save_min_max;
+      ctx.TF_style_maxpool = TF_style_maxpool;
+    }
+
+    solver = std::make_unique<mpqsolver::pattern::PatternSolver>(ctx, patterns);
   }
   else
   {

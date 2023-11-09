@@ -25,6 +25,14 @@ using namespace mpqsolver::pattern;
 using LayerParam = luci::CircleQuantizer::Options::LayerParam;
 using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 
+PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
+                             const std::vector<QuantizationPattern> &patterns)
+  : MPQSolver(ctx, "", 1.f)
+{
+  MPQOptions options{patterns};
+  set_mpq_options(options);
+}
+
 PatternSolver::PatternSolver(const std::string &input_quantization,
                              const std::string &output_quantization,
                              const std::vector<QuantizationPattern> &patterns)
@@ -43,7 +51,7 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 
   auto layer_params = get_frozen_params();
 
-  if (!_quantizer->quantize(module.get(), "uint8", layer_params))
+  if (!_quantizer->quantize(module.get(), layer_params))
   {
     throw std::runtime_error("Failed to quantize model");
   }

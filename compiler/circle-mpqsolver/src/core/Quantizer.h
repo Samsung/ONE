@@ -44,6 +44,22 @@ struct QuantizerHook
 class Quantizer
 {
 public:
+  struct Context
+  {
+    std::string output_model_dtype;
+    std::string granularity;
+    std::string input_type;
+    std::string output_type;
+    bool TF_style_maxpool = false;
+    bool save_min_max = false;
+    // TODO Support layer info
+  };
+
+public:
+  Quantizer(const Context &ctx) : _ctx(ctx) {}
+
+  // TODO Remove this
+public:
   Quantizer(const std::string &input_dtype, const std::string &output_type);
 
   /**
@@ -58,6 +74,12 @@ public:
   bool quantize(luci::Module *module, const std::string &quant_dtype, LayerParams &layer_params);
 
   /**
+   * @brief quantize recorded module (min/max initialized) with specified parameters
+   * returns true on success
+   */
+  bool quantize(luci::Module *module, LayerParams &layer_params);
+
+  /**
    * @brief fake_quantize recorded module (min/max initialized) with specified parameters
    * returns true on success
    */
@@ -65,6 +87,8 @@ public:
                      LayerParams &layer_params);
 
 private:
+  Context _ctx;
+  // TODO Remove _input_dtype and output_dtype
   std::string _input_dtype = "uint8";
   std::string _output_dtype = "uint8";
   const QuantizerHook *_hook = nullptr;
