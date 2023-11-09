@@ -23,6 +23,6 @@
 
 #include <tflchef.pb.h>
 
-void check_custom_op_value(const tflchef::Operation operation, std::string op_type);
+void check_custom_op_value(const tflchef::Operation &operation, const std::string &op_type);
 
 #endif // __OPUTILS_H__
