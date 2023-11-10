@@ -123,7 +123,8 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
   OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
 
   // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
-  OP_REQUIRES(isValidType(lhs_index, {DataType::FLOAT32, DataType::QUANT_INT8_ASYMM}));
+  OP_REQUIRES(isValidType(
+    lhs_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
   OP_REQUIRES(isSameType(lhs_index, rhs_index) ||
               ((operandType(lhs_index) == DataType::FLOAT32) &&
                (operandType(rhs_index) == DataType::QUANT_INT8_ASYMM)));
