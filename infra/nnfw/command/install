@@ -7,5 +7,5 @@ if [[ ! -d "${BUILD_PATH}" ]]; then
   exit 255
 fi
 
-cd ${BUILD_PATH}
-make install
+# Require cmake version >= 3.15
+cmake --install ${BUILD_PATH} "$@"

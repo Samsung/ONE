@@ -162,7 +162,7 @@ ifneq ($(DEBIAN_BUILD),)
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
 endif
-	NNFW_INSTALL_PREFIX=$(INSTALL_PATH) ./nnfw configure \
+	./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
 		-DEXTERNALS_BUILD_THREADS=$(NPROCS) \
@@ -172,7 +172,7 @@ build_internal:
 	./nnfw build -j $(NPROCS)
 
 install_internal:
-	./nnfw install
+	./nnfw install --prefix $(INSTALL_PATH)
 	rm -rf $(INSTALL_ALIAS)
 	ln -s $(INSTALL_PATH) $(INSTALL_ALIAS)
 

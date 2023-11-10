@@ -7,5 +7,4 @@ if [[ ! -d "${BUILD_PATH}" ]]; then
   exit 255
 fi
 
-cd ${BUILD_PATH}
-cmake --build . -- "$@"
+cmake --build ${BUILD_PATH} -- "$@"

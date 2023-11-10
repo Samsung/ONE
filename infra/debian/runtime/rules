@@ -21,7 +21,7 @@ override_dh_auto_build:
 		-DBUILD_TENSORFLOW_LITE=OFF -DBUILD_PYTHON_BINDING=OFF -DBUILD_MINMAX_H5DUMPER=OFF
 	./nnfw build -j$(NPROC)
 override_dh_auto_install:
-	./nnfw install
+	./nnfw install --prefix $(NNFW_INSTALL_PREFIX)
 override_dh_install:
 	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
 	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
