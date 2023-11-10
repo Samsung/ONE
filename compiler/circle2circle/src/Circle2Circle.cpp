@@ -116,6 +116,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fuse_preactivation_batchnorm",
              "This will fuse BatchNorm operators of pre-activations to Convolution operator");
   add_switch(arser, "--fuse_prelu", "This will fuse operators to PReLU operator");
+  add_switch(arser, "--fuse_reshape_mean_mul_reshape_div_pattern",
+             "This will fuse reshape mean mul reshape div pattern");
   add_switch(arser, "--fuse_gelu", "This will fuse operators to GeLU operator");
   add_switch(arser, "--remove_duplicate_const", "This will remove all duplicate constant nodes");
   add_switch(arser, "--remove_fakequant", "This will remove FakeQuant operators");
@@ -289,6 +291,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FusePreActivationBatchNorm);
   if (arser.get<bool>("--fuse_prelu"))
     options->enable(Algorithms::FusePRelu);
+  if (arser.get<bool>("--fuse_reshape_mean_mul_reshape_div_pattern"))
+    options->enable(Algorithms::FuseReshapeMeanMulReshapeDivPattern);
   if (arser.get<bool>("--fuse_gelu"))
     options->enable(Algorithms::FuseGelu);
   if (arser.get<bool>("--fuse_transpose_with_mean"))

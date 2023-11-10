@@ -120,6 +120,8 @@ class CONSTANT:
         ('fuse_instnorm', 'fuse ops to InstanceNorm operator'),
         ('fuse_prelu', 'fuse ops to PReLU operator'),
         ('fuse_gelu', 'fuse ops to GeLU operator'),
+        ('fuse_reshape_mean_mul_reshape_div_pattern',
+         'fuse reshape mean mul reshape div pattern'),
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
         ('remove_fakequant', 'remove FakeQuant ops'),

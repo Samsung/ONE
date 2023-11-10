@@ -65,6 +65,7 @@ public:
       MakeBatchNormGammaPositive,
       FuseActivationFunction,
       FusePRelu,
+      FuseReshapeMeanMulReshapeDivPattern,
       FuseGelu,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,

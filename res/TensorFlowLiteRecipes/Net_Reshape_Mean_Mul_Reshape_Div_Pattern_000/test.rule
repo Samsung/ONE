@@ -1,0 +1,6 @@
+# To check if Reshape_Mean_Mul_Reshape_Div pattern are fused
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "MUL_FUSED"               $(op_count MUL) '=' 0
+RULE    "RESHAPE_FUSED"           $(op_count RESHAPE) '=' 1

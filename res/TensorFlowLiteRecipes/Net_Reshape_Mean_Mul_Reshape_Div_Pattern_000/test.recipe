@@ -1,0 +1,101 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 197 dim: 197 }
+}
+operand {
+  name: "shape1"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "-1" arg: "197"}
+}
+operand {
+  name: "reshape_1_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 591 dim:197 }
+}
+operation {
+  type: "Reshape"
+  input: "ifm"
+  input: "shape1"
+  output: "reshape_1_out"
+}
+operand {
+  name: "mean_const"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "-1" }
+}
+operand {
+  name: "mean_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 591 dim: 1 }
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "reshape_1_out"
+  input: "mean_const"
+  output: "mean_out"
+}
+operand {
+  name: "mul_const"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1.1" }
+}
+operand {
+  name: "mul_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 591 dim: 1 }
+}
+operation {
+  type: "Mul"
+  input: "mean_out"
+  input: "mul_const"
+  output: "mul_out"
+  mul_options {
+    activation: NONE
+  }
+}
+operand {
+  name: "shape2"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "1" arg: "-1" arg: "197" arg: "1"}
+}
+operand {
+  name: "reshape_2_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 197 dim: 1 }
+}
+operation {
+  type: "Reshape"
+  input: "mul_out"
+  input: "shape2"
+  output: "reshape_2_out"
+}
+operand {
+  name: "div_const"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "2.2" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 197 dim: 1 }
+}
+operation {
+  type: "Div"
+  input: "div_const"
+  input: "reshape_2_out"
+  output: "ofm"
+  div_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
