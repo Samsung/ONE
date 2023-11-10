@@ -40,9 +40,11 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
                                  const uint32_t dilationHeightFactor,
                                  const ir::Activation activation, IPortableTensor *output)
 {
-  cpu::ops::ConvolutionLayer::configure(
-    input, kernel, bias, paddingType, paddingLeft, paddingRight, paddingTop, paddingBottom,
-    strideWidth, strideHeight, dilationWidthFactor, dilationHeightFactor, activation, output);
+  const bool is_cacheable_weights = false;
+  cpu::ops::ConvolutionLayer::configure(input, kernel, bias, paddingType, paddingLeft, paddingRight,
+                                        paddingTop, paddingBottom, strideWidth, strideHeight,
+                                        dilationWidthFactor, dilationHeightFactor, activation,
+                                        output, is_cacheable_weights);
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
