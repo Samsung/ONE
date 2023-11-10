@@ -168,7 +168,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(Logistic): unsupported data type"};
+        throw std::runtime_error{"ElementwiseActivationLayer(Tanh): unsupported data type"};
       }
       break;
     case ElementwiseActivationType::kLeakyReLU:
