@@ -1,0 +1,67 @@
+operand 
+{
+  name : "ifm"
+  type : FLOAT32
+  shape {dim: 1, dim: 7, dim: 7, dim : 20}
+}
+operand 
+{
+  name : "front_perm"
+  type : INT32
+  shape {dim : 4}
+  filler {tag: "explicit" arg: "0", arg: "3", arg:"1", arg: "2"}
+}
+operand
+{
+  name : "front_transpose_out"
+  type : FLOAT32
+  shape {dim: 1, dim: 20, dim:7, dim:7} 
+}
+operand
+{
+  name : "shape"
+  type : INT32
+  shape {dim: 3}
+  filler {tag: "explicit", arg: "1", arg: "20", arg: "49"}
+}
+operand
+{
+  name : "reshape_out"
+  type : FLOAT32
+  shape : {dim: 1, dim:20, dim:49}
+}
+operand 
+{
+  name : "back_perm"
+  type : INT32
+  shape {dim : 3}
+  filler {tag: "explicit" arg: "0", arg: "2", arg:"1"}
+}
+operand
+{
+  name : "ofm"
+  type : FLOAT32
+  shape {dim: 1, dim: 49, dim:20} 
+}
+operation {
+  type: "Transpose"
+  input: "ifm"
+  input: "front_perm"
+  output: "front_transpose_out"
+}
+operation {
+  type: "Reshape"
+  input: "front_transpose_out"
+  input: "shape"
+  output: "reshape_out"
+}
+operation
+{
+  type: "Transpose"
+  input: "reshape_out"
+  input: "back_perm"
+  output: "ofm"
+} 
+
+input: "ifm"
+output: "ofm"
