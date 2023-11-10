@@ -1,10 +1,5 @@
 #!/bin/bash
 
-function join_by
-{
-  local IFS="$1"; shift; echo "$*"
-}
-
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && echo "Please don't source ${BASH_SOURCE[0]}, execute it" && return
 
 CURRENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -81,9 +76,7 @@ REQUIRED_UNITS+=("souschef" "tflchef" "circlechef" "circle-verify")
 REQUIRED_UNITS+=("common-artifacts")
 
 # Reset whitelist to build all
-./nnas docker-run ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=release \
-  -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
-  $CONFIG_OPTIONS
+./nnas docker-run ./infra/scripts/configure_collect_nnpkgs.sh -DEXTERNALS_BUILD_THREADS=4
 ./nnas docker-run ./nncc build -j4
 
 mkdir -p ${ARCHIVE_PATH}
