@@ -823,6 +823,26 @@ def _ampq_solve(args):
         if oneutils.is_valid_attr(args, 'output_path'):
             ampq_quantize_cmd.extend(['--output_model', getattr(args, 'output_path')])
 
+        # quantized model dtype
+        if oneutils.is_valid_attr(args, 'quantized_dtype'):
+            ampq_quantize_cmd.extend(
+                ['--quantized_dtype',
+                 getattr(args, 'quantized_dtype')])
+
+        # granularity
+        if oneutils.is_valid_attr(args, 'granularity'):
+            ampq_quantize_cmd.extend(['--granularity', getattr(args, 'granularity')])
+
+        # TF-style_maxpool
+        if oneutils.is_valid_attr(args, 'TF-style_maxpool'):
+            ampq_quantize_cmd.append('--TF-style_maxpool')
+
+        # save_min_max
+        if oneutils.is_valid_attr(args, 'save_min_max'):
+            ampq_quantize_cmd.append('--save_min_max')
+
+        # TODO Add config
+
         # visq_file
         if not (visq_file is None):
             ampq_quantize_cmd.extend(['--visq_file', visq_file])
