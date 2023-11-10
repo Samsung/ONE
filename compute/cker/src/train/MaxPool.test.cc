@@ -59,20 +59,20 @@ public:
       EXPECT_NE(expected_output, cacluated_output);
   }
 
-  void verifyBackward(const std::vector<T> deriv_output, const std::vector<T> expected_deriv_input,
+  void verifyBackward(const std::vector<T> incoming_data, const std::vector<T> expected_grad_data,
                       bool expect_eq = true)
   {
-    assert(deriv_output.size() == _out_shape.FlatSize());
-    assert(expected_deriv_input.size() == _in_shape.FlatSize());
+    assert(incoming_data.size() == _out_shape.FlatSize());
+    assert(expected_grad_data.size() == _in_shape.FlatSize());
 
-    std::vector<T> calcuated_deriv(_in_shape.FlatSize());
-    nnfw::cker::train::MaxPool2DGrad(_out_shape, deriv_output.data(), _arg_max_index.data(),
-                                     _in_shape, calcuated_deriv.data());
+    std::vector<T> calcuated_grad(_in_shape.FlatSize());
+    nnfw::cker::train::MaxPool2DGrad(_out_shape, incoming_data.data(), _arg_max_index.data(),
+                                     _in_shape, calcuated_grad.data());
 
     if (expect_eq)
-      EXPECT_EQ(expected_deriv_input, calcuated_deriv);
+      EXPECT_EQ(expected_grad_data, calcuated_grad);
     else
-      EXPECT_NE(expected_deriv_input, calcuated_deriv);
+      EXPECT_NE(expected_grad_data, calcuated_grad);
   }
 };
 
