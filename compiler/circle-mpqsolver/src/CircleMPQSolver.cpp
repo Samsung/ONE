@@ -197,7 +197,7 @@ int entry(int argc, char **argv)
   if (arser[bisection_str])
   {
     // optimize
-    SolverOutput::get() << "using bisection\n";
+    SolverOutput::get() << "Automatic mixed quantization using bisection\n";
 
     using namespace mpqsolver::bisection;
     auto bi_solver =
@@ -247,7 +247,7 @@ int entry(int argc, char **argv)
   }
   else if (arser[patterns_str])
   {
-    SolverOutput::get() << "using patterns\n";
+    SolverOutput::get() << "Automatic mixed quantization using patterns\n";
 
     std::vector<mpqsolver::pattern::QuantizationPattern> patterns;
     if (arser[layernorm_str])
