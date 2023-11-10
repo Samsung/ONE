@@ -84,6 +84,7 @@ public:
       RemoveUnnecessaryStridedSlice,
       RemoveUnnecessarySplit,
       RemoveUnnecessaryReshape,
+      RemoveUnnecessaryTranspose,
       TransformMinMaxToRelu6Pass,
       TransformMinReluToRelu6Pass,
       DecomposeHardSwishPass,
