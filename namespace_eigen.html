@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('namespace_eigen.html',''); initResizab
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">Eigen Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -99,7 +100,55 @@ $(document).ready(function(){initNavTree('namespace_eigen.html',''); initResizab
 Namespaces</h2></td></tr>
 <tr class="memitem:namespace_eigen_1_1internal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_eigen_1_1internal.html">internal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a0dd91a59cfba5ff8dbab8efd81d8c400"><td class="memItemLeft" align="right" valign="top">typedef IndexList&lt; type2index&lt; 0 &gt;, type2index&lt; 0 &gt;, type2index&lt; 1 &gt;, type2index&lt; 1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_eigen.html#a0dd91a59cfba5ff8dbab8efd81d8c400">ReverseColMajor</a></td></tr>
+<tr class="memdesc:a0dd91a59cfba5ff8dbab8efd81d8c400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the backprop for the input of a 2D convolution.  <a href="namespace_eigen.html#a0dd91a59cfba5ff8dbab8efd81d8c400">More...</a><br /></td></tr>
+<tr class="separator:a0dd91a59cfba5ff8dbab8efd81d8c400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55f0834dedb7d40f73de46d9df8203db"><td class="memItemLeft" align="right" valign="top">typedef IndexList&lt; type2index&lt; 1 &gt;, type2index&lt; 1 &gt;, type2index&lt; 0 &gt;, type2index&lt; 0 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_eigen.html#a55f0834dedb7d40f73de46d9df8203db">ReverseRowMajor</a></td></tr>
+<tr class="separator:a55f0834dedb7d40f73de46d9df8203db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a0dd91a59cfba5ff8dbab8efd81d8c400" name="a0dd91a59cfba5ff8dbab8efd81d8c400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dd91a59cfba5ff8dbab8efd81d8c400">&#9670;&#160;</a></span>ReverseColMajor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef IndexList&lt;type2index&lt;0&gt;, type2index&lt;0&gt;, type2index&lt;1&gt;, type2index&lt;1&gt; &gt; <a class="el" href="namespace_eigen.html#a0dd91a59cfba5ff8dbab8efd81d8c400">Eigen::ReverseColMajor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes the backprop for the input of a 2D convolution. </p>
+<p >SpatialConvolutionBackwardInput</p>
+<p >The output_backward parameter is expected to be a tensor with a rank of 3 or more (channels, height, width, and optionally others) The kernel parameter is expected to be a 4D tensor (filters, channels, kernel_height, kernel_width) The output_backward and the kernel must both be in col-major layout. The result will also be in col-major layout.</p>
+<p >If row_in_stride, col_in_stride &gt; 1, then applies convolution with holes (aka atrous convolution), sampling every row_in_stride, col_in_stride input pixels.</p>
+<p >The result can be assigned to a tensor of rank equal to the rank of the output_backward. The dimensions of the result will be filters, height, width (and others if applicable).</p>
+<p >It is possible to swap the order of the width and height dimensions provided that the same order is used in the input, the kernel, and the output. </p>
+
+<p class="definition">Definition at line <a class="el" href="eigen__backward__spatial__convolutions_8h_source.html#l00051">51</a> of file <a class="el" href="eigen__backward__spatial__convolutions_8h_source.html">eigen_backward_spatial_convolutions.h</a>.</p>
+
+</div>
+</div>
+<a id="a55f0834dedb7d40f73de46d9df8203db" name="a55f0834dedb7d40f73de46d9df8203db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55f0834dedb7d40f73de46d9df8203db">&#9670;&#160;</a></span>ReverseRowMajor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef IndexList&lt;type2index&lt;1&gt;, type2index&lt;1&gt;, type2index&lt;0&gt;, type2index&lt;0&gt; &gt; <a class="el" href="namespace_eigen.html#a55f0834dedb7d40f73de46d9df8203db">Eigen::ReverseRowMajor</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="eigen__backward__spatial__convolutions_8h_source.html#l00052">52</a> of file <a class="el" href="eigen__backward__spatial__convolutions_8h_source.html">eigen_backward_spatial_convolutions.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

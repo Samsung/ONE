@@ -110,8 +110,8 @@ Collaboration diagram for onert::backend::train::ops::LossLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1588480cc65b7d8aebd7fe05ea88c365"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a1588480cc65b7d8aebd7fe05ea88c365">LossLayer</a> ()</td></tr>
 <tr class="separator:a1588480cc65b7d8aebd7fe05ea88c365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad68670900baf739b5d1c099f58054508"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ad68670900baf739b5d1c099f58054508">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_pred, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_true, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_y_pred, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a> loss_type)</td></tr>
-<tr class="separator:ad68670900baf739b5d1c099f58054508"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8fc34c42194ff5d6b1f0ac5f3b10102"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#af8fc34c42194ff5d6b1f0ac5f3b10102">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_pred, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *y_true, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_y_pred, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720">LossType</a> loss_type)</td></tr>
+<tr class="separator:af8fc34c42194ff5d6b1f0ac5f3b10102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cfe2fc6d80d3240333982a9cd99c5ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a5cfe2fc6d80d3240333982a9cd99c5ee">forward</a> (bool training) override</td></tr>
 <tr class="separator:a5cfe2fc6d80d3240333982a9cd99c5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a846f8a3738f0fb9b3e0035cd16f5e048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a846f8a3738f0fb9b3e0035cd16f5e048">backward</a> () override</td></tr>
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>  : _y_pred(<span class="keyword">nullptr</span>), _y_true(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _deriv_y_pred(<span class="keyword">nullptr</span>),</div>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>  : _y_pred(<span class="keyword">nullptr</span>), _y_true(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _back_prop_y_pred(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">   33</span>    _loss_type(<a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>)</div>
 <div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
@@ -187,8 +187,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span>      <span class="keywordflow">if</span> (_y_pred-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">   85</span>      {</div>
 <div class="line"><span class="lineno">   86</span>        <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">nnfw::cker::train::MSEGrad</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_pred), getBuffer&lt;float&gt;(_y_pred), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_y_true),</div>
-<div class="line"><span class="lineno">   87</span>                                   getBuffer&lt;float&gt;(_y_true), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_deriv_y_pred),</div>
-<div class="line"><span class="lineno">   88</span>                                   getBuffer&lt;float&gt;(_deriv_y_pred));</div>
+<div class="line"><span class="lineno">   87</span>                                   getBuffer&lt;float&gt;(_y_true), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_back_prop_y_pred),</div>
+<div class="line"><span class="lineno">   88</span>                                   getBuffer&lt;float&gt;(_back_prop_y_pred));</div>
 <div class="line"><span class="lineno">   89</span>      }</div>
 <div class="line"><span class="lineno">   90</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   91</span>    <span class="keywordflow">default</span>:</div>
@@ -203,8 +203,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad68670900baf739b5d1c099f58054508" name="ad68670900baf739b5d1c099f58054508"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad68670900baf739b5d1c099f58054508">&#9670;&#160;</a></span>configure()</h2>
+<a id="af8fc34c42194ff5d6b1f0ac5f3b10102" name="af8fc34c42194ff5d6b1f0ac5f3b10102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8fc34c42194ff5d6b1f0ac5f3b10102">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +231,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_y_pred</em>, </td>
+          <td class="paramname"><em>back_prop_y_pred</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -252,7 +252,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   42</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   43</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   44</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   45</span>  assert(deriv_y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(back_prop_y_pred != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">switch</span> (loss_type)</div>
 <div class="line"><span class="lineno">   47</span>  {</div>
 <div class="line"><span class="lineno">   48</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">LossType::kMSE</a>:</div>
@@ -264,7 +264,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>  _y_pred = y_pred;</div>
 <div class="line"><span class="lineno">   55</span>  _y_true = y_true;</div>
 <div class="line"><span class="lineno">   56</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
-<div class="line"><span class="lineno">   57</span>  _deriv_y_pred = deriv_y_pred;</div>
+<div class="line"><span class="lineno">   57</span>  _back_prop_y_pred = back_prop_y_pred;</div>
 <div class="line"><span class="lineno">   58</span>  _loss_type = loss_type;</div>
 <div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>

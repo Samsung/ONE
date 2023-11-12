@@ -11,6 +11,7 @@ var dir_1c77137021fcde78e70d9b6fbaf58548 =
     [ "Concatenation.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_concatenation_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_concatenation_8cpp" ],
     [ "Conv2D.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_conv2_d_8cpp" ],
     [ "Cos.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_cos_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_cos_8cpp" ],
+    [ "CumSum.cpp", "luci-interpreter_2src_2loader_2nodes_2_cum_sum_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_cum_sum_8cpp" ],
     [ "DepthToSpace.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_depth_to_space_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_depth_to_space_8cpp" ],
     [ "DepthwiseConv2D.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_depthwise_conv2_d_8cpp" ],
     [ "Dequantize.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_dequantize_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_dequantize_8cpp" ],

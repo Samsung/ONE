@@ -5,6 +5,7 @@ var _kernel_params_8h =
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", "structluci__interpreter_1_1_batch_mat_mul_params" ],
     [ "luci_interpreter::ConcatenationParams", "structluci__interpreter_1_1_concatenation_params.html", "structluci__interpreter_1_1_concatenation_params" ],
     [ "luci_interpreter::Conv2DParams", "structluci__interpreter_1_1_conv2_d_params.html", "structluci__interpreter_1_1_conv2_d_params" ],
+    [ "luci_interpreter::CumSumParams", "structluci__interpreter_1_1_cum_sum_params.html", "structluci__interpreter_1_1_cum_sum_params" ],
     [ "luci_interpreter::DepthToSpaceParams", "structluci__interpreter_1_1_depth_to_space_params.html", "structluci__interpreter_1_1_depth_to_space_params" ],
     [ "luci_interpreter::DepthwiseConv2DParams", "structluci__interpreter_1_1_depthwise_conv2_d_params.html", "structluci__interpreter_1_1_depthwise_conv2_d_params" ],
     [ "luci_interpreter::DivParams", "structluci__interpreter_1_1_div_params.html", "structluci__interpreter_1_1_div_params" ],

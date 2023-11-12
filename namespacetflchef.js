@@ -20,6 +20,7 @@ var namespacetflchef =
     [ "TFliteOpConcatenation", "classtflchef_1_1_t_flite_op_concatenation.html", "classtflchef_1_1_t_flite_op_concatenation" ],
     [ "TFliteOpConv2D", "classtflchef_1_1_t_flite_op_conv2_d.html", "classtflchef_1_1_t_flite_op_conv2_d" ],
     [ "TFliteOpCos", "classtflchef_1_1_t_flite_op_cos.html", "classtflchef_1_1_t_flite_op_cos" ],
+    [ "TFliteOpCumsum", "classtflchef_1_1_t_flite_op_cumsum.html", "classtflchef_1_1_t_flite_op_cumsum" ],
     [ "TFliteOpDepthToSpace", "classtflchef_1_1_t_flite_op_depth_to_space.html", "classtflchef_1_1_t_flite_op_depth_to_space" ],
     [ "TFliteOpDepthwiseConv2D", "classtflchef_1_1_t_flite_op_depthwise_conv2_d.html", "classtflchef_1_1_t_flite_op_depthwise_conv2_d" ],
     [ "TFliteOpDequantize", "classtflchef_1_1_t_flite_op_dequantize.html", "classtflchef_1_1_t_flite_op_dequantize" ],

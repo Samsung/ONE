@@ -14,6 +14,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "Concatenation.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_concatenation_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_concatenation_8h" ],
     [ "Conv2D.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_conv2_d_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_conv2_d_8h" ],
     [ "Cos.h", "tflchef_2tflite_2src_2_op_2include_2_cos_8h.html", "tflchef_2tflite_2src_2_op_2include_2_cos_8h" ],
+    [ "CumSum.h", "tflchef_2tflite_2src_2_op_2include_2_cum_sum_8h.html", "tflchef_2tflite_2src_2_op_2include_2_cum_sum_8h" ],
     [ "DepthToSpace.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_depth_to_space_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_depth_to_space_8h" ],
     [ "DepthwiseConv2D.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_depthwise_conv2_d_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_depthwise_conv2_d_8h" ],
     [ "Dequantize.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h" ],

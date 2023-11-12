@@ -16,6 +16,7 @@ var dir_4ffe03c4bb4bd776ecd51522c511d706 =
     [ "CircleConst.cpp", "partition_2src_2_nodes_2_circle_const_8cpp.html", null ],
     [ "CircleConv2D.cpp", "partition_2src_2_nodes_2_circle_conv2_d_8cpp.html", null ],
     [ "CircleCos.cpp", "partition_2src_2_nodes_2_circle_cos_8cpp.html", null ],
+    [ "CircleCumSum.cpp", "partition_2src_2_nodes_2_circle_cum_sum_8cpp.html", null ],
     [ "CircleCustom.cpp", "partition_2src_2_nodes_2_circle_custom_8cpp.html", null ],
     [ "CircleCustomOut.cpp", "partition_2src_2_nodes_2_circle_custom_out_8cpp.html", null ],
     [ "CircleDensify.cpp", "partition_2src_2_nodes_2_circle_densify_8cpp.html", null ],

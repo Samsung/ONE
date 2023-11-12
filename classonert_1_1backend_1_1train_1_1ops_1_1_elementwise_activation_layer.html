@@ -115,8 +115,8 @@ Collaboration diagram for onert::backend::train::ops::ElementwiseActivationLayer
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae82c69f6f54cb712b1720c5f29c1b0d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#ae82c69f6f54cb712b1720c5f29c1b0d3">ElementwiseActivationLayer</a> ()</td></tr>
 <tr class="separator:ae82c69f6f54cb712b1720c5f29c1b0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8f1dda9efaecb3267145d1e0f5bcbbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#ab8f1dda9efaecb3267145d1e0f5bcbbd">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_output, float alpha, float beta, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25">ElementwiseActivationType</a> op_type)</td></tr>
-<tr class="separator:ab8f1dda9efaecb3267145d1e0f5bcbbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bcd3996597ddb8e685b2f28c27fe1c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#a3bcd3996597ddb8e685b2f28c27fe1c5">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output, float alpha, float beta, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25">ElementwiseActivationType</a> op_type)</td></tr>
+<tr class="separator:a3bcd3996597ddb8e685b2f28c27fe1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78220270bf4bec4768954bb5091f7854"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#a78220270bf4bec4768954bb5091f7854">forward</a> (bool training) override</td></tr>
 <tr class="separator:a78220270bf4bec4768954bb5091f7854"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e408795d141f9b93f965fdefa9d65bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#a4e408795d141f9b93f965fdefa9d65bc">backward</a> () override</td></tr>
@@ -214,7 +214,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  _backward_kernel(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>, _deriv_output, _deriv_input);</div>
+<div class="line"><span class="lineno">   89</span>  _backward_kernel(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>, _back_prop_output, _back_prop_input);</div>
 <div class="line"><span class="lineno">   90</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adc2658e4b0528bc6b7ce4071276bdcde"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">ElementwiseActivationLayer.h:59</a></div></div>
 </div><!-- fragment -->
@@ -222,8 +222,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ab8f1dda9efaecb3267145d1e0f5bcbbd" name="ab8f1dda9efaecb3267145d1e0f5bcbbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8f1dda9efaecb3267145d1e0f5bcbbd">&#9670;&#160;</a></span>configure()</h2>
+<a id="a3bcd3996597ddb8e685b2f28c27fe1c5" name="a3bcd3996597ddb8e685b2f28c27fe1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bcd3996597ddb8e685b2f28c27fe1c5">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,13 +244,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_input</em>, </td>
+          <td class="paramname"><em>back_prop_input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_output</em>, </td>
+          <td class="paramname"><em>back_prop_output</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -282,11 +282,11 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
 <div class="line"><span class="lineno">   42</span>  assert(input != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   43</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   44</span>  assert(deriv_input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   45</span>  assert(deriv_output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span>  assert(back_prop_input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(back_prop_output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  _deriv_input = deriv_input;</div>
-<div class="line"><span class="lineno">   48</span>  _deriv_output = deriv_output;</div>
+<div class="line"><span class="lineno">   47</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   48</span>  _back_prop_output = back_prop_output;</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  _op_type = op_type;</div>
 <div class="line"><span class="lineno">   51</span> </div>

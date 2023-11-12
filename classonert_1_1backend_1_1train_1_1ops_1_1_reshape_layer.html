@@ -110,8 +110,8 @@ Collaboration diagram for onert::backend::train::ops::ReshapeLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abf480975e701ce32c7d770620602ffeb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#abf480975e701ce32c7d770620602ffeb">ReshapeLayer</a> ()</td></tr>
 <tr class="separator:abf480975e701ce32c7d770620602ffeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05a32669e82c533eb78bb41f4803d6ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#a05a32669e82c533eb78bb41f4803d6ea">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *shape, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_output)</td></tr>
-<tr class="separator:a05a32669e82c533eb78bb41f4803d6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc1d09a1e4fa0b80f424d22fd42c255c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#adc1d09a1e4fa0b80f424d22fd42c255c">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *shape, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
+<tr class="separator:adc1d09a1e4fa0b80f424d22fd42c255c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefde44be2f1b6bf6b51dc0c0c76b144f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#aefde44be2f1b6bf6b51dc0c0c76b144f">forward</a> (bool training) override</td></tr>
 <tr class="separator:aefde44be2f1b6bf6b51dc0c0c76b144f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b120682c68368f4749c1ac10463588c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#a9b120682c68368f4749c1ac10463588c">backward</a> () override</td></tr>
@@ -144,8 +144,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>  : _input{<span class="keyword">nullptr</span>}, _shape{<span class="keyword">nullptr</span>}, _output{<span class="keyword">nullptr</span>}, _deriv_input{<span class="keyword">nullptr</span>}, _deriv_output{</div>
-<div class="line"><span class="lineno">   30</span>                                                                                 <span class="keyword">nullptr</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>  : _input{<span class="keyword">nullptr</span>}, _shape{<span class="keyword">nullptr</span>}, _output{<span class="keyword">nullptr</span>}, _back_prop_input{<span class="keyword">nullptr</span>},</div>
+<div class="line"><span class="lineno">   30</span>    _back_prop_output{<span class="keyword">nullptr</span>}</div>
 <div class="line"><span class="lineno">   31</span>{</div>
 <div class="line"><span class="lineno">   32</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   33</span>}</div>
@@ -179,12 +179,12 @@ Public Member Functions</h2></td></tr>
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00056">56</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ reshapeGeneric(_deriv_output, _deriv_input); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ reshapeGeneric(_back_prop_output, _back_prop_input); }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a05a32669e82c533eb78bb41f4803d6ea" name="a05a32669e82c533eb78bb41f4803d6ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05a32669e82c533eb78bb41f4803d6ea">&#9670;&#160;</a></span>configure()</h2>
+<a id="adc1d09a1e4fa0b80f424d22fd42c255c" name="adc1d09a1e4fa0b80f424d22fd42c255c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc1d09a1e4fa0b80f424d22fd42c255c">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,13 +211,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_input</em>, </td>
+          <td class="paramname"><em>back_prop_input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_output</em>&#160;</td>
+          <td class="paramname"><em>back_prop_output</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -234,8 +234,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   47</span>  _shape = shape;</div>
 <div class="line"><span class="lineno">   48</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  _deriv_input = deriv_input;</div>
-<div class="line"><span class="lineno">   51</span>  _deriv_output = deriv_output;</div>
+<div class="line"><span class="lineno">   50</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   51</span>  _back_prop_output = back_prop_output;</div>
 <div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>

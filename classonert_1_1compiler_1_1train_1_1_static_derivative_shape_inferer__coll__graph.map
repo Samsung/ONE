@@ -1,4 +1,0 @@
-<map id="onert::compiler::train::StaticDerivativeShapeInferer" name="onert::compiler::train::StaticDerivativeShapeInferer">
-<area shape="rect" id="node1" title="Class to infer shape before running kernels. It does the following:" alt="" coords="5,93,200,133"/>
-<area shape="rect" id="node2" href="$structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html" title=" " alt="" coords="25,5,180,45"/>
-</map>

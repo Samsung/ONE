@@ -39,17 +39,7 @@ var namespacennfw_1_1cker =
       [ "MakeRuyMulParams", "namespacennfw_1_1cker_1_1ruy__support.html#abf95251ac2116038612ba0d1c82960d7", null ],
       [ "ToRuyCachePolicy", "namespacennfw_1_1cker_1_1ruy__support.html#a608f87d002e314885c6c0adb6bf228e8", null ]
     ] ],
-    [ "train", "namespacennfw_1_1cker_1_1train.html", [
-      [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
-      [ "FullyConnectedBiasGrad", "namespacennfw_1_1cker_1_1train.html#ae451e8541f4091a1c41c54ba240824f4", null ],
-      [ "GradientDescent", "namespacennfw_1_1cker_1_1train.html#a36f9531730e397d0a135dc4881b18fd0", null ],
-      [ "MaxPool2D", "namespacennfw_1_1cker_1_1train.html#a5383dd7006f6272ba54849c0bb709350", null ],
-      [ "MaxPool2DGrad", "namespacennfw_1_1cker_1_1train.html#a67c65963c9903f487865c8ea45695021", null ],
-      [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
-      [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
-      [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ],
-      [ "SoftMaxGrad", "namespacennfw_1_1cker_1_1train.html#a8b6afe0db84836d197f52230d77b913f", null ]
-    ] ],
+    [ "train", "namespacennfw_1_1cker_1_1train.html", "namespacennfw_1_1cker_1_1train" ],
     [ "training_ops", "namespacennfw_1_1cker_1_1training__ops.html", "namespacennfw_1_1cker_1_1training__ops" ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],

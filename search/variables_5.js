@@ -23,12 +23,13 @@ var searchData=
   ['eval_5ffunction_20',['eval_function',['../structcustom__kernel__registration__info.html#a5b8d7e090ee70314e2836330e2ba8d24',1,'custom_kernel_registration_info']]],
   ['event_5fmetadata_21',['event_metadata',['../structtflite_1_1profiling_1_1_profile_event.html#a7d0566138b5cebf002498f6b35b498fc',1,'tflite::profiling::ProfileEvent']]],
   ['event_5ftype_22',['event_type',['../structtflite_1_1profiling_1_1_profile_event.html#a3929851513b499db0d58626a24cb00a6',1,'tflite::profiling::ProfileEvent']]],
-  ['executor_23',['executor',['../classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792',1,'onert::compiler::CompilerOptions']]],
-  ['expect_5fdir_24',['expect_dir',['../namespacecompare__tensors.html#a0c8ad03ef93aecb5cbd488c901ac1945',1,'compare_tensors']]],
-  ['expected_25',['expected',['../structnnfw_1_1misc_1_1tensor_1_1_diff.html#aeafb26eb3accb85bcd95b8e764e06ee2',1,'nnfw::misc::tensor::Diff']]],
-  ['expected_5fcount_26',['expected_count',['../namespacepart__eval__one.html#a4fa2492500ba3826c0a4efde62510655',1,'part_eval_one']]],
-  ['expected_5fcount_5fline_27',['expected_count_line',['../namespacepart__eval__one.html#a85c76bd03f1fdc0645d45f727d21b96d',1,'part_eval_one']]],
-  ['extent_28',['extent',['../classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a167a0e601298ae29b3f1ae1e65a1a68b',1,'flatbuffers::FLATBUFFERS_FINAL_CLASS']]],
-  ['extents_29',['extents',['../structluci__interpreter__pal_1_1_nd_array_desc.html#a61326d13f04bc5056d575ae2a58e76f8',1,'luci_interpreter_pal::NdArrayDesc::extents()'],['../struct_nd_array_desc.html#aca9e26cbf3c4a80079a52135661da051',1,'NdArrayDesc::extents()'],['../structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a',1,'nnfw::cker::NdArrayDesc::extents()']]],
-  ['external_5foperands_30',['external_operands',['../structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493',1,'onert::backend::ContextData::external_operands()'],['../structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a6cfb741cc9568d1aea65ea6d73d9ba72',1,'onert::backend::train::TrainableContextData::external_operands()']]]
+  ['exclusive_23',['exclusive',['../structluci__interpreter_1_1_cum_sum_params.html#a2f94dee7182aeeb31cd8d3e08c400d35',1,'luci_interpreter::CumSumParams']]],
+  ['executor_24',['executor',['../classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792',1,'onert::compiler::CompilerOptions']]],
+  ['expect_5fdir_25',['expect_dir',['../namespacecompare__tensors.html#a0c8ad03ef93aecb5cbd488c901ac1945',1,'compare_tensors']]],
+  ['expected_26',['expected',['../structnnfw_1_1misc_1_1tensor_1_1_diff.html#aeafb26eb3accb85bcd95b8e764e06ee2',1,'nnfw::misc::tensor::Diff']]],
+  ['expected_5fcount_27',['expected_count',['../namespacepart__eval__one.html#a4fa2492500ba3826c0a4efde62510655',1,'part_eval_one']]],
+  ['expected_5fcount_5fline_28',['expected_count_line',['../namespacepart__eval__one.html#a85c76bd03f1fdc0645d45f727d21b96d',1,'part_eval_one']]],
+  ['extent_29',['extent',['../classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a167a0e601298ae29b3f1ae1e65a1a68b',1,'flatbuffers::FLATBUFFERS_FINAL_CLASS']]],
+  ['extents_30',['extents',['../structluci__interpreter__pal_1_1_nd_array_desc.html#a61326d13f04bc5056d575ae2a58e76f8',1,'luci_interpreter_pal::NdArrayDesc::extents()'],['../struct_nd_array_desc.html#aca9e26cbf3c4a80079a52135661da051',1,'NdArrayDesc::extents()'],['../structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a',1,'nnfw::cker::NdArrayDesc::extents()']]],
+  ['external_5foperands_31',['external_operands',['../structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493',1,'onert::backend::ContextData::external_operands()'],['../structonert_1_1backend_1_1train_1_1_trainable_context_data.html#a6cfb741cc9568d1aea65ea6d73d9ba72',1,'onert::backend::train::TrainableContextData::external_operands()']]]
 ];

@@ -1,5 +1,6 @@
 var classmpqsolver_1_1_m_p_q_solver =
 [
+    [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html#a51f962d03cf518d428b69acfbac5b566", null ],
     [ "MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html#a4dc867455554baf2ee26d56ac5bb3f0e", null ],
     [ "~MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html#a8b4a0bf080a0bd771f78c82ca2459ea1", null ],
     [ "read_module", "classmpqsolver_1_1_m_p_q_solver.html#a2aee85b7d04584ab3416799bb577580f", null ],

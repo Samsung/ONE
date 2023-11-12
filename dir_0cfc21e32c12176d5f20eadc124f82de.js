@@ -57,6 +57,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "RemoveUnnecessarySlicePass.h", "_remove_unnecessary_slice_pass_8h.html", "_remove_unnecessary_slice_pass_8h" ],
     [ "RemoveUnnecessarySplitPass.h", "_remove_unnecessary_split_pass_8h.html", "_remove_unnecessary_split_pass_8h" ],
     [ "RemoveUnnecessaryStridedSlicePass.h", "_remove_unnecessary_strided_slice_pass_8h.html", "_remove_unnecessary_strided_slice_pass_8h" ],
+    [ "RemoveUnnecessaryTransposeNetPass.h", "_remove_unnecessary_transpose_net_pass_8h.html", "_remove_unnecessary_transpose_net_pass_8h" ],
     [ "ReplaceMulAddWithDepthwiseConvPass.h", "_replace_mul_add_with_depthwise_conv_pass_8h.html", "_replace_mul_add_with_depthwise_conv_pass_8h" ],
     [ "ReplaceNonConstFCWithBatchMatMulPass.h", "_replace_non_const_f_c_with_batch_mat_mul_pass_8h.html", "_replace_non_const_f_c_with_batch_mat_mul_pass_8h" ],
     [ "ReplaceSubWithAddPass.h", "_replace_sub_with_add_pass_8h.html", "_replace_sub_with_add_pass_8h" ],

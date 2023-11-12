@@ -425,7 +425,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  198</span>    dot_dumper.dump(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_subg-&quot;</span>, subg_index.value()));</div>
 <div class="line"><span class="lineno">  199</span>  }</div>
 <div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>  <span class="comment">// Set derivatives as default tensor info</span></div>
+<div class="line"><span class="lineno">  201</span>  <span class="comment">// Set operands&#39; info for back propagation as default tensor info</span></div>
 <div class="line"><span class="lineno">  202</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
 <div class="line"><span class="lineno">  203</span>  {</div>
 <div class="line"><span class="lineno">  204</span>    <span class="keyword">auto</span> lowered_subg = pair.second.get();</div>
@@ -433,8 +433,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  206</span>    tgraph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index, <span class="keyword">const</span> ir::Operand &amp;obj) {</div>
 <div class="line"><span class="lineno">  207</span>      <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.isConstant())</div>
 <div class="line"><span class="lineno">  208</span>      {</div>
-<div class="line"><span class="lineno">  209</span>        auto deriv = std::make_unique&lt;ir::Operand&gt;(obj);</div>
-<div class="line"><span class="lineno">  210</span>        const auto gen_index = tgraph.addDerivative(index, std::move(deriv));</div>
+<div class="line"><span class="lineno">  209</span>        auto back_prop = std::make_unique&lt;ir::Operand&gt;(obj);</div>
+<div class="line"><span class="lineno">  210</span>        const auto gen_index = tgraph.addBackProp(index, std::move(back_prop));</div>
 <div class="line"><span class="lineno">  211</span>        assert(gen_index == index);</div>
 <div class="line"><span class="lineno">  212</span>        UNUSED_RELEASE(gen_index);</div>
 <div class="line"><span class="lineno">  213</span>      }</div>
@@ -457,12 +457,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  230</span>      inferer-&gt;dump();</div>
 <div class="line"><span class="lineno">  231</span>    }</div>
 <div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    <span class="comment">// NOTE StaticDerivativeShapeInferer is allocated for each subgraph,</span></div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment">// NOTE StaticBackPropShapeInferer is allocated for each subgraph,</span></div>
 <div class="line"><span class="lineno">  234</span>    <span class="comment">//      so it does not support models that have controlflow operations yet.</span></div>
 <div class="line"><span class="lineno">  235</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><span class="lineno">  236</span>    {</div>
 <div class="line"><span class="lineno">  237</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>
-<div class="line"><span class="lineno">  238</span>      <span class="keyword">auto</span> inferer = std::make_unique&lt;StaticDerivativeShapeInferer&gt;(lowered_subg.get());</div>
+<div class="line"><span class="lineno">  238</span>      <span class="keyword">auto</span> inferer = std::make_unique&lt;StaticBackPropShapeInferer&gt;(lowered_subg.get());</div>
 <div class="line"><span class="lineno">  239</span>      inferer-&gt;infer();</div>
 <div class="line"><span class="lineno">  240</span>      inferer-&gt;dump();</div>
 <div class="line"><span class="lineno">  241</span>    }</div>
@@ -475,7 +475,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  248</span>    compiler::ShapeValidator{lowered_subg-&gt;graph()}();</div>
 <div class="line"><span class="lineno">  249</span>  }</div>
 <div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>  <span class="comment">// TODO Validate shapes of derivative tensors</span></div>
+<div class="line"><span class="lineno">  251</span>  <span class="comment">// TODO Validate shapes of the tensors for back propagation</span></div>
 <div class="line"><span class="lineno">  252</span> </div>
 <div class="line"><span class="lineno">  253</span><span class="comment">  /*************************************************************</span></div>
 <div class="line"><span class="lineno">  254</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>

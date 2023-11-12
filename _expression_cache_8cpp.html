@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('_expression_cache_8cpp.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">ExpressionCache.cpp File Reference</div></div>
 </div><!--header-->
@@ -106,11 +107,39 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci_1_1pass"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html">luci::pass</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:afeefeb03342f01cad24a8985936fc3ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_expression_cache_8cpp.html#afeefeb03342f01cad24a8985936fc3ff">RETURN_FALSE_UNLESS</a>(cond)</td></tr>
+<tr class="separator:afeefeb03342f01cad24a8985936fc3ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a6a4db0511a56c7eb9bbb47196348fba7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">luci::pass::operator==</a> (const Expression &amp;x, const Expression &amp;y)</td></tr>
 <tr class="separator:a6a4db0511a56c7eb9bbb47196348fba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="afeefeb03342f01cad24a8985936fc3ff" name="afeefeb03342f01cad24a8985936fc3ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afeefeb03342f01cad24a8985936fc3ff">&#9670;&#160;</a></span>RETURN_FALSE_UNLESS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RETURN_FALSE_UNLESS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">cond</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (not(cond))                  \</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="_expression_cache_8cpp_source.html#l00022">22</a> of file <a class="el" href="_expression_cache_8cpp_source.html">ExpressionCache.cpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

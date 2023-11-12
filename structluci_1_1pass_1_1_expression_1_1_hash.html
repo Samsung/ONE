@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_expression_cache_8h_source.html#l00042">42</a> of file <a class="el" href="_expression_cache_8h_source.html">ExpressionCache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_expression_cache_8h_source.html#l00043">43</a> of file <a class="el" href="_expression_cache_8h_source.html">ExpressionCache.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9a56383a944e0a9203902785eea092a4" name="a9a56383a944e0a9203902785eea092a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a56383a944e0a9203902785eea092a4">&#9670;&#160;</a></span>call()</h2>
@@ -132,18 +132,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_expression_cache_8cpp_source.html#l00159">159</a> of file <a class="el" href="_expression_cache_8cpp_source.html">ExpressionCache.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  160</span>{</div>
-<div class="line"><span class="lineno">  161</span>  std::size_t res = 0;</div>
-<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : k.inputs)</div>
-<div class="line"><span class="lineno">  163</span>    hash_combine(res, input);</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  hash_combine(res, k.op);</div>
-<div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  168</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_expression_cache_8cpp_source.html#l00231">231</a> of file <a class="el" href="_expression_cache_8cpp_source.html">ExpressionCache.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>  std::size_t res = 0;</div>
+<div class="line"><span class="lineno">  234</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : k.inputs)</div>
+<div class="line"><span class="lineno">  235</span>    hash_combine(res, input);</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>  hash_combine(res, k.op);</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  240</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_expression_cache_8h_source.html#l00045">operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_expression_cache_8h_source.html#l00046">operator()()</a>.</p>
 
 </div>
 </div>
@@ -171,11 +171,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_expression_cache_8h_source.html#l00045">45</a> of file <a class="el" href="_expression_cache_8h_source.html">ExpressionCache.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structluci_1_1pass_1_1_expression_1_1_hash.html#a9a56383a944e0a9203902785eea092a4">call</a>(k); }</div>
-<div class="ttc" id="astructluci_1_1pass_1_1_expression_1_1_hash_html_a9a56383a944e0a9203902785eea092a4"><div class="ttname"><a href="structluci_1_1pass_1_1_expression_1_1_hash.html#a9a56383a944e0a9203902785eea092a4">luci::pass::Expression::Hash::call</a></div><div class="ttdeci">std::size_t call(const Expression &amp;k) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="_expression_cache_8cpp_source.html#l00159">ExpressionCache.cpp:159</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_expression_cache_8h_source.html#l00046">46</a> of file <a class="el" href="_expression_cache_8h_source.html">ExpressionCache.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structluci_1_1pass_1_1_expression_1_1_hash.html#a9a56383a944e0a9203902785eea092a4">call</a>(k); }</div>
+<div class="ttc" id="astructluci_1_1pass_1_1_expression_1_1_hash_html_a9a56383a944e0a9203902785eea092a4"><div class="ttname"><a href="structluci_1_1pass_1_1_expression_1_1_hash.html#a9a56383a944e0a9203902785eea092a4">luci::pass::Expression::Hash::call</a></div><div class="ttdeci">std::size_t call(const Expression &amp;k) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="_expression_cache_8cpp_source.html#l00231">ExpressionCache.cpp:231</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_expression_cache_8cpp_source.html#l00159">call()</a>.</p>
+<p class="reference">References <a class="el" href="_expression_cache_8cpp_source.html#l00231">call()</a>.</p>
 
 </div>
 </div>

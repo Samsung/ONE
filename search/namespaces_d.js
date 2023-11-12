@@ -16,7 +16,7 @@ var searchData=
   ['expr_13',['expr',['../namespacenest_1_1expr.html',1,'nest']]],
   ['feature_14',['feature',['../namespacenncc_1_1core_1_1_a_d_t_1_1feature.html',1,'nncc::core::ADT::feature'],['../namespacennfw_1_1misc_1_1feature.html',1,'nnfw::misc::feature']]],
   ['fp32_15',['fp32',['../namespacennfw_1_1misc_1_1fp32.html',1,'nnfw::misc']]],
-  ['functor_16',['functor',['../namespacennfw_1_1cker_1_1functor.html',1,'nnfw::cker::functor'],['../namespacennfw_1_1cker_1_1training__ops_1_1functor.html',1,'nnfw::cker::training_ops::functor']]],
+  ['functor_16',['functor',['../namespacennfw_1_1cker_1_1functor.html',1,'nnfw::cker::functor'],['../namespacennfw_1_1cker_1_1train_1_1functor.html',1,'nnfw::cker::train::functor'],['../namespacennfw_1_1cker_1_1training__ops_1_1functor.html',1,'nnfw::cker::training_ops::functor']]],
   ['gemm_5fsupport_17',['gemm_support',['../namespacennfw_1_1cker_1_1gemm__support.html',1,'nnfw::cker']]],
   ['ir_18',['ir',['../namespacenpud_1_1core_1_1ir.html',1,'npud::core']]],
   ['kernel_19',['kernel',['../namespacenncc_1_1core_1_1_a_d_t_1_1kernel.html',1,'nncc::core::ADT::kernel'],['../namespacennfw_1_1misc_1_1kernel.html',1,'nnfw::misc::kernel']]],

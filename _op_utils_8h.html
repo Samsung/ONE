@@ -103,16 +103,16 @@ $(document).ready(function(){initNavTree('_op_utils_8h.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af40915185df67c14a65cfcf6d5806b6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_op_utils_8h.html#af40915185df67c14a65cfcf6d5806b6d">check_custom_op_value</a> (const tflchef::Operation operation, std::string op_type)</td></tr>
-<tr class="separator:af40915185df67c14a65cfcf6d5806b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a683d557e2c66a54261c2e3a9d5791d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_op_utils_8h.html#a683d557e2c66a54261c2e3a9d5791d7b">check_custom_op_value</a> (const tflchef::Operation &amp;operation, const std::string &amp;op_type)</td></tr>
+<tr class="separator:a683d557e2c66a54261c2e3a9d5791d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This header declares various op_utils functions. </p>
 
 <p class="definition">Definition in file <a class="el" href="_op_utils_8h_source.html">OpUtils.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="af40915185df67c14a65cfcf6d5806b6d" name="af40915185df67c14a65cfcf6d5806b6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af40915185df67c14a65cfcf6d5806b6d">&#9670;&#160;</a></span>check_custom_op_value()</h2>
+<a id="a683d557e2c66a54261c2e3a9d5791d7b" name="a683d557e2c66a54261c2e3a9d5791d7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a683d557e2c66a54261c2e3a9d5791d7b">&#9670;&#160;</a></span>check_custom_op_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,13 +120,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void check_custom_op_value </td>
           <td>(</td>
-          <td class="paramtype">const tflchef::Operation&#160;</td>
+          <td class="paramtype">const tflchef::Operation &amp;&#160;</td>
           <td class="paramname"><em>operation</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>op_type</em>&#160;</td>
         </tr>
         <tr>
@@ -139,7 +139,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_op_utils_8cpp_source.html#l00021">21</a> of file <a class="el" href="_op_utils_8cpp_source.html">OpUtils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
-<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">if</span> (operation.type() == <span class="stringliteral">&quot;Custom&quot;</span> || (operation.has_extype() &amp;&amp; operation.extype() == <span class="stringliteral">&quot;Custom&quot;</span>))</div>
+<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">if</span> (operation.type() == <span class="stringliteral">&quot;Custom&quot;</span>)</div>
 <div class="line"><span class="lineno">   24</span>  {</div>
 <div class="line"><span class="lineno">   25</span>    assert(operation.custom_code() == op_type);</div>
 <div class="line"><span class="lineno">   26</span>  }</div>

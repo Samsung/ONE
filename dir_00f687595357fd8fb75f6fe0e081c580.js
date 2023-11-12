@@ -28,6 +28,8 @@ var dir_00f687595357fd8fb75f6fe0e081c580 =
     [ "Conv2D.h", "compiler_2tflchef_2core_2src_2_op_2_conv2_d_8h.html", "compiler_2tflchef_2core_2src_2_op_2_conv2_d_8h" ],
     [ "Cos.cpp", "compiler_2tflchef_2core_2src_2_op_2_cos_8cpp.html", null ],
     [ "Cos.h", "tflchef_2core_2src_2_op_2_cos_8h.html", "tflchef_2core_2src_2_op_2_cos_8h" ],
+    [ "CumSum.cpp", "tflchef_2core_2src_2_op_2_cum_sum_8cpp.html", null ],
+    [ "CumSum.h", "tflchef_2core_2src_2_op_2_cum_sum_8h.html", "tflchef_2core_2src_2_op_2_cum_sum_8h" ],
     [ "Densify.cpp", "_densify_8cpp.html", null ],
     [ "Densify.h", "_densify_8h.html", "_densify_8h" ],
     [ "DepthToSpace.cpp", "compiler_2tflchef_2core_2src_2_op_2_depth_to_space_8cpp.html", null ],

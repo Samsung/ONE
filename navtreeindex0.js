@@ -1,5 +1,6 @@
 var NAVTREEINDEX0 =
 {
+"_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html":[37,0],
 "_a_neural_networks_compilation_8cc.html":[36,0,4,2,3,2,0,0],
 "_a_neural_networks_compilation_8cc_source.html":[36,0,4,2,3,2,0,0],
 "_a_neural_networks_compilation_8h.html":[36,0,4,2,3,2,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "_attr_filter_8cpp_source.html":[36,0,0,51,3,1,2],
 "_attr_filter_8h.html":[36,0,0,51,3,0,0,0,2],
 "_attr_filter_8h_source.html":[36,0,0,51,3,0,0,0,2],
-"_attr_fused_act_func_8h.html":[36,0,0,51,3,0,0,0,3],
-"_attr_fused_act_func_8h.html#aadc51aac82492942392bd3e255b4c945":[36,0,0,51,3,0,0,0,3,0]
+"_attr_fused_act_func_8h.html":[36,0,0,51,3,0,0,0,3]
 };

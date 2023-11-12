@@ -83,6 +83,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "RemoveUnnecessarySlicePass.cpp", "_remove_unnecessary_slice_pass_8cpp.html", null ],
     [ "RemoveUnnecessarySplitPass.cpp", "_remove_unnecessary_split_pass_8cpp.html", null ],
     [ "RemoveUnnecessaryStridedSlicePass.cpp", "_remove_unnecessary_strided_slice_pass_8cpp.html", null ],
+    [ "RemoveUnnecessaryTransposeNetPass.cpp", "_remove_unnecessary_transpose_net_pass_8cpp.html", null ],
     [ "ReplaceMulAddWithDepthwiseConvPass.cpp", "_replace_mul_add_with_depthwise_conv_pass_8cpp.html", null ],
     [ "ReplaceNonConstFCWithBatchMatMulPass.cpp", "_replace_non_const_f_c_with_batch_mat_mul_pass_8cpp.html", null ],
     [ "ReplaceSubWithAddPass.cpp", "_replace_sub_with_add_pass_8cpp.html", null ],

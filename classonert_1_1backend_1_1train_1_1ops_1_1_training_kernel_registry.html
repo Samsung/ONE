@@ -101,8 +101,8 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1train_1_1ops_
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1da0c65512741aee2c3bdcd1c7d39255"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html#a1da0c65512741aee2c3bdcd1c7d39255">forward</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *in, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *out)=0</td></tr>
 <tr class="separator:a1da0c65512741aee2c3bdcd1c7d39255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a420ebb10f0637a2d0c0c2bf9991fadc4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html#a420ebb10f0637a2d0c0c2bf9991fadc4">backward</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_out, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *deriv_in)=0</td></tr>
-<tr class="separator:a420ebb10f0637a2d0c0c2bf9991fadc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b4bbcd34c7706fe21713f7a1a885b0a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html#a4b4bbcd34c7706fe21713f7a1a885b0a">backward</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_out, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_in)=0</td></tr>
+<tr class="separator:a4b4bbcd34c7706fe21713f7a1a885b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87380a177b680f30f7924f9d17d9d5c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html#a87380a177b680f30f7924f9d17d9d5c2">TrainingKernelRegistry</a> ()=default</td></tr>
 <tr class="separator:a87380a177b680f30f7924f9d17d9d5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7cc7a4d45061e736aa0d0f1adec505d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html#af7cc7a4d45061e736aa0d0f1adec505d">~TrainingKernelRegistry</a> ()=default</td></tr>
@@ -164,8 +164,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a420ebb10f0637a2d0c0c2bf9991fadc4" name="a420ebb10f0637a2d0c0c2bf9991fadc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a420ebb10f0637a2d0c0c2bf9991fadc4">&#9670;&#160;</a></span>backward()</h2>
+<a id="a4b4bbcd34c7706fe21713f7a1a885b0a" name="a4b4bbcd34c7706fe21713f7a1a885b0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b4bbcd34c7706fe21713f7a1a885b0a">&#9670;&#160;</a></span>backward()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,13 +177,13 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void onert::backend::train::ops::TrainingKernelRegistry::backward </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_out</em>, </td>
+          <td class="paramname"><em>back_prop_out</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>deriv_in</em>&#160;</td>
+          <td class="paramname"><em>back_prop_in</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

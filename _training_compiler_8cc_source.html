@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_training_compiler_8h.html">TrainingCompiler.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_static_derivative_shape_inferer_8h.html">StaticDerivativeShapeInferer.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_static_back_prop_shape_inferer_8h.html">StaticBackPropShapeInferer.h</a>&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_trainable_operation_converter_8h.html">TrainableOperationConverter.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_loss_insertion_pass_8h.html">pass/LossInsertionPass.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;../CompilerHelpers.h&quot;</span></div>
@@ -292,7 +292,7 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    dot_dumper.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_subg-&quot;</span>, subg_index.value()));</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  }</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// Set derivatives as default tensor info</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="comment">// Set operands&#39; info for back propagation as default tensor info</span></div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  {</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keyword">auto</span> lowered_subg = pair.second.get();</div>
@@ -300,8 +300,8 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    tgraph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;index, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;obj) {</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      <span class="keywordflow">if</span> (!obj.isConstant())</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      {</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        auto deriv = std::make_unique&lt;ir::Operand&gt;(obj);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        const auto gen_index = tgraph.addDerivative(index, std::move(deriv));</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        auto back_prop = std::make_unique&lt;ir::Operand&gt;(obj);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        const auto gen_index = tgraph.addBackProp(index, std::move(back_prop));</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        assert(gen_index == index);</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        UNUSED_RELEASE(gen_index);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      }</div>
@@ -324,12 +324,12 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>      inferer-&gt;dump();</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="comment">// NOTE StaticDerivativeShapeInferer is allocated for each subgraph,</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="comment">// NOTE StaticBackPropShapeInferer is allocated for each subgraph,</span></div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="comment">//      so it does not support models that have controlflow operations yet.</span></div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    {</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair.second;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      <span class="keyword">auto</span> inferer = std::make_unique&lt;StaticDerivativeShapeInferer&gt;(lowered_subg.get());</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      <span class="keyword">auto</span> inferer = std::make_unique&lt;StaticBackPropShapeInferer&gt;(lowered_subg.get());</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      inferer-&gt;infer();</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      inferer-&gt;dump();</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    }</div>
@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <a class="code hl_class" href="classonert_1_1compiler_1_1_shape_validator.html">compiler::ShapeValidator</a>{lowered_subg-&gt;graph()}();</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  }</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="comment">// TODO Validate shapes of derivative tensors</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="comment">// TODO Validate shapes of the tensors for back propagation</span></div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">  /*************************************************************</span></div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
@@ -382,7 +382,7 @@ $(document).ready(function(){initNavTree('_training_compiler_8cc_source.html',''
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_loss_insertion_pass_8h_html"><div class="ttname"><a href="_loss_insertion_pass_8h.html">LossInsertionPass.h</a></div></div>
 <div class="ttc" id="a_lowered_trainable_graph_8h_html"><div class="ttname"><a href="_lowered_trainable_graph_8h.html">LoweredTrainableGraph.h</a></div></div>
-<div class="ttc" id="a_static_derivative_shape_inferer_8h_html"><div class="ttname"><a href="_static_derivative_shape_inferer_8h.html">StaticDerivativeShapeInferer.h</a></div></div>
+<div class="ttc" id="a_static_back_prop_shape_inferer_8h_html"><div class="ttname"><a href="_static_back_prop_shape_inferer_8h.html">StaticBackPropShapeInferer.h</a></div></div>
 <div class="ttc" id="a_static_shape_inferer_8h_html"><div class="ttname"><a href="_static_shape_inferer_8h.html">StaticShapeInferer.h</a></div></div>
 <div class="ttc" id="a_trainable_graph_8h_html"><div class="ttname"><a href="_trainable_graph_8h.html">TrainableGraph.h</a></div></div>
 <div class="ttc" id="a_trainable_operation_converter_8h_html"><div class="ttname"><a href="_trainable_operation_converter_8h.html">TrainableOperationConverter.h</a></div></div>

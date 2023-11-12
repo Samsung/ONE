@@ -162,15 +162,24 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordtype">void</span> visit(<a class="code hl_define" href="_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56">NODE</a> *node)                                                   \</div>
-<div class="line">  {                                                                        \</div>
-<div class="line">    if (<span class="keyword">auto</span> input1_quant = create_in_quantize(node-&gt;INPUT_NAME1(), node)) \</div>
-<div class="line">      node-&gt;INPUT_NAME1(input1_quant);                                     \</div>
-<div class="line">                                                                           \</div>
-<div class="line">    if (<span class="keyword">auto</span> input2_quant = create_in_quantize(node-&gt;INPUT_NAME2(), node)) \</div>
-<div class="line">      node-&gt;INPUT_NAME2(input2_quant);                                     \</div>
-<div class="line">                                                                           \</div>
-<div class="line">    insert_out_quantize(node);                                             \</div>
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordtype">void</span> visit(<a class="code hl_define" href="_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56">NODE</a> *node)                                                     \</div>
+<div class="line">  {                                                                          \</div>
+<div class="line">    if (node-&gt;INPUT_NAME1() == node-&gt;INPUT_NAME2())                          \</div>
+<div class="line">    {                                                                        \</div>
+<div class="line">      if (<span class="keyword">auto</span> input1_quant = create_in_quantize(node-&gt;INPUT_NAME1(), node)) \</div>
+<div class="line">      {                                                                      \</div>
+<div class="line">        node-&gt;INPUT_NAME1(input1_quant);                                     \</div>
+<div class="line">        node-&gt;INPUT_NAME2(input1_quant);                                     \</div>
+<div class="line">      }                                                                      \</div>
+<div class="line">      <span class="keywordflow">return</span>;                                                                \</div>
+<div class="line">    }                                                                        \</div>
+<div class="line">    if (<span class="keyword">auto</span> input1_quant = create_in_quantize(node-&gt;INPUT_NAME1(), node))   \</div>
+<div class="line">      node-&gt;INPUT_NAME1(input1_quant);                                       \</div>
+<div class="line">                                                                             \</div>
+<div class="line">    if (<span class="keyword">auto</span> input2_quant = create_in_quantize(node-&gt;INPUT_NAME2(), node))   \</div>
+<div class="line">      node-&gt;INPUT_NAME2(input2_quant);                                       \</div>
+<div class="line">                                                                             \</div>
+<div class="line">    insert_out_quantize(node);                                               \</div>
 <div class="line">  }</div>
 <div class="ttc" id="a_node_execution_8cpp_html_ae8470b23f89c23e56817daed65182e56"><div class="ttname"><a href="_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56">NODE</a></div><div class="ttdeci">#define NODE(Name)</div></div>
 </div><!-- fragment -->

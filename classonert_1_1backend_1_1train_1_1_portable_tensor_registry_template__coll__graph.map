@@ -1,5 +1,5 @@
-<map id="onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;" name="onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,167,244,236"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="56,79,193,119"/>
-<area shape="rect" id="node3" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="23,5,226,31"/>
+<map id="onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, BackPropTensor, GradientTensor &gt;" name="onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, BackPropTensor, GradientTensor &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="5,167,287,236"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="77,79,215,119"/>
+<area shape="rect" id="node3" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="45,5,247,31"/>
 </map>

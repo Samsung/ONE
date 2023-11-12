@@ -31,6 +31,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "Concatenation", "classluci__interpreter_1_1kernels_1_1_concatenation.html", "classluci__interpreter_1_1kernels_1_1_concatenation" ],
     [ "Conv2D", "classluci__interpreter_1_1kernels_1_1_conv2_d.html", "classluci__interpreter_1_1kernels_1_1_conv2_d" ],
     [ "Cos", "classluci__interpreter_1_1kernels_1_1_cos.html", "classluci__interpreter_1_1kernels_1_1_cos" ],
+    [ "CumSum", "classluci__interpreter_1_1kernels_1_1_cum_sum.html", "classluci__interpreter_1_1kernels_1_1_cum_sum" ],
     [ "DepthToSpace", "classluci__interpreter_1_1kernels_1_1_depth_to_space.html", "classluci__interpreter_1_1kernels_1_1_depth_to_space" ],
     [ "DepthwiseConv2D", "classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html", "classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d" ],
     [ "Dequantize", "classluci__interpreter_1_1kernels_1_1_dequantize.html", "classluci__interpreter_1_1kernels_1_1_dequantize" ],

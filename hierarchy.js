@@ -1446,6 +1446,7 @@ var hierarchy =
       [ "luci::CircleConcatenationSummaryBuilder", "classluci_1_1_circle_concatenation_summary_builder.html", null ],
       [ "luci::CircleConstSummaryBuilder", "classluci_1_1_circle_const_summary_builder.html", null ],
       [ "luci::CircleConv2DSummaryBuilder", "classluci_1_1_circle_conv2_d_summary_builder.html", null ],
+      [ "luci::CircleCumsumSummaryBuilder", "classluci_1_1_circle_cumsum_summary_builder.html", null ],
       [ "luci::CircleCustomSummaryBuilder", "classluci_1_1_circle_custom_summary_builder.html", null ],
       [ "luci::CircleDepthwiseConv2DSummaryBuilder", "classluci_1_1_circle_depthwise_conv2_d_summary_builder.html", null ],
       [ "luci::CircleExpandDimsSummaryBuilder", "classluci_1_1_circle_expand_dims_summary_builder.html", null ],
@@ -1712,6 +1713,7 @@ var hierarchy =
     [ "luci::QuantizedModelVerifier::Context", "structluci_1_1_quantized_model_verifier_1_1_context.html", null ],
     [ "luci::QuantizeWeightsPass::Context", "structluci_1_1_quantize_weights_pass_1_1_context.html", null ],
     [ "luci::QuantizeWithMinMaxPass::Context", "structluci_1_1_quantize_with_min_max_pass_1_1_context.html", null ],
+    [ "mpqsolver::core::Quantizer::Context", "structmpqsolver_1_1core_1_1_quantizer_1_1_context.html", null ],
     [ "npud::core::Context", "structnpud_1_1core_1_1_context.html", null ],
     [ "npud::util::logging::Context", "classnpud_1_1util_1_1logging_1_1_context.html", null ],
     [ "onert::util::logging::Context", "classonert_1_1util_1_1logging_1_1_context.html", null ],
@@ -1749,6 +1751,7 @@ var hierarchy =
       [ "arm_compute::NEBinaryLogicalOperationKernel", "classarm__compute_1_1_n_e_binary_logical_operation_kernel.html", null ]
     ] ],
     [ "benchmark::CsvWriter", "classbenchmark_1_1_csv_writer.html", null ],
+    [ "luci_interpreter::CumSumParams", "structluci__interpreter_1_1_cum_sum_params.html", null ],
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", null ],
     [ "onert::backend::custom::CustomKernelConfigParams", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html", null ],
     [ "onert::api::CustomKernelRegistry", "classonert_1_1api_1_1_custom_kernel_registry.html", null ],
@@ -2216,6 +2219,7 @@ var hierarchy =
         [ "luci::CircleConcatenationGraphBuilder", "classluci_1_1_circle_concatenation_graph_builder.html", null ],
         [ "luci::CircleConv2DGraphBuilder", "classluci_1_1_circle_conv2_d_graph_builder.html", null ],
         [ "luci::CircleCosGraphBuilder", "classluci_1_1_circle_cos_graph_builder.html", null ],
+        [ "luci::CircleCumSumGraphBuilder", "classluci_1_1_circle_cum_sum_graph_builder.html", null ],
         [ "luci::CircleDensifyGraphBuilder", "classluci_1_1_circle_densify_graph_builder.html", null ],
         [ "luci::CircleDepthToSpaceGraphBuilder", "classluci_1_1_circle_depth_to_space_graph_builder.html", null ],
         [ "luci::CircleDepthwiseConv2DGraphBuilder", "classluci_1_1_circle_depthwise_conv2_d_graph_builder.html", null ],
@@ -2870,7 +2874,7 @@ var hierarchy =
       [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ],
       [ "onert::backend::train::ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", [
         [ "onert::backend::builtin::train::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html", null ],
-        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, DerivativeTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", null ]
+        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, BackPropTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", null ]
       ] ]
     ] ],
     [ "flatbuffers::IterationVisitor", "structflatbuffers_1_1_iteration_visitor.html", [
@@ -2955,6 +2959,9 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::KernelWithParams< Conv2DParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::Conv2D", "classluci__interpreter_1_1kernels_1_1_conv2_d.html", null ]
+      ] ],
+      [ "luci_interpreter::KernelWithParams< CumSumParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::CumSum", "classluci__interpreter_1_1kernels_1_1_cum_sum.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< DepthToSpaceParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::DepthToSpace", "classluci__interpreter_1_1kernels_1_1_depth_to_space.html", null ]
@@ -3120,6 +3127,9 @@ var hierarchy =
     ] ],
     [ "luci_interpreter::L2NormParams", "structluci__interpreter_1_1_l2_norm_params.html", null ],
     [ "nnfw::cker::L2NormParams", "structnnfw_1_1cker_1_1_l2_norm_params.html", null ],
+    [ "nnfw::cker::train::LaunchConv2DBackpropFilterOp< T >", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html", null ],
+    [ "nnfw::cker::train::LaunchConv2DBackpropInputOp< T >", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html", null ],
+    [ "nnfw::cker::train::LaunchConv2DBackpropInputOpImpl< Device, T >", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl.html", null ],
     [ "luci::LayerInfo", "structluci_1_1_layer_info.html", null ],
     [ "luci::CircleQuantizer::Options::LayerParam", "structluci_1_1_circle_quantizer_1_1_options_1_1_layer_param.html", null ],
     [ "luci::CircleQuantizer::Options::LayerParamsSet", "classluci_1_1_circle_quantizer_1_1_options_1_1_layer_params_set.html", null ],
@@ -3471,8 +3481,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -3627,6 +3637,7 @@ var hierarchy =
       [ "ConcatenationChef", "class_concatenation_chef.html", null ],
       [ "Conv2DChef", "class_conv2_d_chef.html", null ],
       [ "CosChef", "class_cos_chef.html", null ],
+      [ "CumSumChef", "class_cum_sum_chef.html", null ],
       [ "DensifyChef", "class_densify_chef.html", null ],
       [ "DepthToSpaceChef", "class_depth_to_space_chef.html", null ],
       [ "DepthwiseConv2DChef", "class_depthwise_conv2_d_chef.html", null ],
@@ -3756,6 +3767,7 @@ var hierarchy =
       [ "ConcatenationChefFactory", "struct_concatenation_chef_factory.html", null ],
       [ "Conv2DChefFactory", "struct_conv2_d_chef_factory.html", null ],
       [ "CosChefFactory", "struct_cos_chef_factory.html", null ],
+      [ "CumSumChefFactory", "struct_cum_sum_chef_factory.html", null ],
       [ "DensifyChefFactory", "struct_densify_chef_factory.html", null ],
       [ "DepthToSpaceChefFactory", "struct_depth_to_space_chef_factory.html", null ],
       [ "DepthwiseConv2DChefFactory", "struct_depthwise_conv2_d_chef_factory.html", null ],
@@ -4403,6 +4415,7 @@ var hierarchy =
       [ "luci::RemoveUnnecessarySlicePass", "structluci_1_1_remove_unnecessary_slice_pass.html", null ],
       [ "luci::RemoveUnnecessarySplitPass", "structluci_1_1_remove_unnecessary_split_pass.html", null ],
       [ "luci::RemoveUnnecessaryStridedSlicePass", "structluci_1_1_remove_unnecessary_strided_slice_pass.html", null ],
+      [ "luci::RemoveUnnecessaryTransposeNetPass", "structluci_1_1_remove_unnecessary_transpose_net_pass.html", null ],
       [ "luci::ReplaceMulAddWithDepthwiseConvPass", "structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html", null ],
       [ "luci::ReplaceNonConstFCWithBatchMatMulPass", "structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html", null ],
       [ "luci::ReplaceSubWithAddPass", "structluci_1_1_replace_sub_with_add_pass.html", null ],
@@ -4763,6 +4776,8 @@ var hierarchy =
     [ "luci::Sparsifier< T >", "classluci_1_1_sparsifier.html", null ],
     [ "onert::ir::Sparsity", "structonert_1_1ir_1_1_sparsity.html", null ],
     [ "luci::SparsityParam", "structluci_1_1_sparsity_param.html", null ],
+    [ "nnfw::cker::train::functor::SpatialConvolutionBackwardInputFunc< Device, T >", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func.html", null ],
+    [ "nnfw::cker::train::functor::SpatialConvolutionBackwardInputWithExplicitPaddingFunc< Device, T >", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func.html", null ],
     [ "SpatialPaddingBuilder", "class_spatial_padding_builder.html", null ],
     [ "locop::Spec< I >", "structlocop_1_1_spec.html", null ],
     [ "locop::Spec< Interface::Formatted >", "structlocop_1_1_spec_3_01_interface_1_1_formatted_01_4.html", [
@@ -5363,6 +5378,7 @@ var hierarchy =
       [ "tflchef::TFliteOpConcatenation", "classtflchef_1_1_t_flite_op_concatenation.html", null ],
       [ "tflchef::TFliteOpConv2D", "classtflchef_1_1_t_flite_op_conv2_d.html", null ],
       [ "tflchef::TFliteOpCos", "classtflchef_1_1_t_flite_op_cos.html", null ],
+      [ "tflchef::TFliteOpCumsum", "classtflchef_1_1_t_flite_op_cumsum.html", null ],
       [ "tflchef::TFliteOpDepthToSpace", "classtflchef_1_1_t_flite_op_depth_to_space.html", null ],
       [ "tflchef::TFliteOpDepthwiseConv2D", "classtflchef_1_1_t_flite_op_depthwise_conv2_d.html", null ],
       [ "tflchef::TFliteOpDequantize", "classtflchef_1_1_t_flite_op_dequantize.html", null ],
@@ -5521,7 +5537,7 @@ var hierarchy =
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],
         [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ]
       ] ],
-      [ "onert::compiler::train::StaticDerivativeShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_derivative_shape_inferer.html", null ]
+      [ "onert::compiler::train::StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", null ]
     ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
     [ "onert::backend::train::ops::TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", null ],

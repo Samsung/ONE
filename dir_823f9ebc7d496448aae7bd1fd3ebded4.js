@@ -17,6 +17,7 @@ var dir_823f9ebc7d496448aae7bd1fd3ebded4 =
     [ "CircleConst.cpp", "import_2src_2_nodes_2_circle_const_8cpp.html", null ],
     [ "CircleConv2D.cpp", "import_2src_2_nodes_2_circle_conv2_d_8cpp.html", null ],
     [ "CircleCos.cpp", "import_2src_2_nodes_2_circle_cos_8cpp.html", null ],
+    [ "CircleCumSum.cpp", "import_2src_2_nodes_2_circle_cum_sum_8cpp.html", null ],
     [ "CircleCustom.cpp", "import_2src_2_nodes_2_circle_custom_8cpp.html", null ],
     [ "CircleDensify.cpp", "import_2src_2_nodes_2_circle_densify_8cpp.html", null ],
     [ "CircleDepthToSpace.cpp", "import_2src_2_nodes_2_circle_depth_to_space_8cpp.html", null ],

@@ -111,7 +111,7 @@ var searchData=
   ['poolingspec_108',['PoolingSpec',['../class_pooling_spec.html',1,'']]],
   ['poollayer_109',['PoolLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html',1,'onert::backend::cpu::ops::PoolLayer'],['../classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html',1,'onert::backend::train::ops::PoolLayer']]],
   ['poolparams_110',['PoolParams',['../structluci__interpreter__pal_1_1_pool_params.html',1,'luci_interpreter_pal::PoolParams'],['../structnnfw_1_1cker_1_1_pool_params.html',1,'nnfw::cker::PoolParams']]],
-  ['portabletensorregistrytemplate_111',['PortableTensorRegistryTemplate',['../classonert_1_1backend_1_1_portable_tensor_registry_template.html',1,'onert::backend::PortableTensorRegistryTemplate&lt; T_Tensor &gt;'],['../classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html',1,'onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;']]],
+  ['portabletensorregistrytemplate_111',['PortableTensorRegistryTemplate',['../classonert_1_1backend_1_1_portable_tensor_registry_template.html',1,'onert::backend::PortableTensorRegistryTemplate&lt; T_Tensor &gt;'],['../classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html',1,'onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, BackPropTensor, GradientTensor &gt;']]],
   ['postoperatorhook_112',['PostOperatorHook',['../classdalgona_1_1_post_operator_hook.html',1,'dalgona']]],
   ['pow_113',['Pow',['../classluci__interpreter_1_1kernels_1_1_pow.html',1,'luci_interpreter::kernels::Pow'],['../classonert_1_1ir_1_1operation_1_1_pow.html',1,'onert::ir::operation::Pow']]],
   ['powchef_114',['PowChef',['../class_pow_chef.html',1,'']]],

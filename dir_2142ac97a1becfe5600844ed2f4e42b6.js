@@ -16,6 +16,7 @@ var dir_2142ac97a1becfe5600844ed2f4e42b6 =
     [ "CircleConst.cpp", "service_2src_2_nodes_2_circle_const_8cpp.html", "service_2src_2_nodes_2_circle_const_8cpp" ],
     [ "CircleConv2D.cpp", "service_2src_2_nodes_2_circle_conv2_d_8cpp.html", null ],
     [ "CircleCos.cpp", "service_2src_2_nodes_2_circle_cos_8cpp.html", null ],
+    [ "CircleCumSum.cpp", "service_2src_2_nodes_2_circle_cum_sum_8cpp.html", null ],
     [ "CircleCustom.cpp", "service_2src_2_nodes_2_circle_custom_8cpp.html", null ],
     [ "CircleCustomOut.cpp", "service_2src_2_nodes_2_circle_custom_out_8cpp.html", null ],
     [ "CircleDensify.cpp", "service_2src_2_nodes_2_circle_densify_8cpp.html", null ],

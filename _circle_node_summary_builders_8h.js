@@ -22,6 +22,7 @@ var _circle_node_summary_builders_8h =
     [ "luci::CircleConstSummaryBuilder", "classluci_1_1_circle_const_summary_builder.html", null ],
     [ "luci::CircleConv2DSummaryBuilder", "classluci_1_1_circle_conv2_d_summary_builder.html", null ],
     [ "luci::CircleCosSummaryBuilder", "classluci_1_1_circle_cos_summary_builder.html", null ],
+    [ "luci::CircleCumsumSummaryBuilder", "classluci_1_1_circle_cumsum_summary_builder.html", null ],
     [ "luci::CircleCustomSummaryBuilder", "classluci_1_1_circle_custom_summary_builder.html", null ],
     [ "luci::CircleDensifySummaryBuilder", "classluci_1_1_circle_densify_summary_builder.html", null ],
     [ "luci::CircleDepthToSpaceSummaryBuilder", "classluci_1_1_circle_depth_to_space_summary_builder.html", null ],

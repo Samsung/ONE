@@ -245,6 +245,10 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_cum_sum.html">CircleCumSum</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_cum_sum_graph_builder.html">CircleCumSumGraphBuilder</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_cumsum_summary_builder.html">CircleCumsumSummaryBuilder</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_custom.html">CircleCustom</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUSTOM in Circle.  <a href="classluci_1_1_circle_custom.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1411,6 +1415,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_remove_unnecessary_strided_slice_pass.html">RemoveUnnecessaryStridedSlicePass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to Remove Unnecessary(input and output are same) StridedSlice node.  <a href="structluci_1_1_remove_unnecessary_strided_slice_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_remove_unnecessary_transpose_net_pass.html">RemoveUnnecessaryTransposeNetPass</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html">ReplaceMulAddWithDepthwiseConvPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to replace channel-wise mul/add with CircleDepthwiseConv2D.  <a href="structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html#details">More...</a><br /></td></tr>
@@ -2845,6 +2851,8 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 
 <p>'origin' is added to the existing origin of circle_node. </p>
 <dl class="section note"><dt>Note</dt><dd>If 'origin' is nullptr, nothing is changed. For more detail, please refer to CompositeOrigin constructor. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html#a17">/github/workspace/compiler/luci/pass/src/RemoveUnnecessaryTransposeNetPass.cpp</a>.</dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="_circle_node_origin_8cpp_source.html#l00169">169</a> of file <a class="el" href="_circle_node_origin_8cpp_source.html">CircleNodeOrigin.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  170</span>{</div>
@@ -3571,7 +3579,7 @@ Each visit implementation must copy node specific attributes. </dd></dl>
 <div class="line"><span class="lineno">   78</span>    <a class="code hl_function" href="namespaceluci.html#a39c0495a5c15d159b7a1943fda9f01e0">copy_common_attributes</a>(node, cloned);</div>
 <div class="line"><span class="lineno">   79</span>  <span class="keywordflow">return</span> cloned;</div>
 <div class="line"><span class="lineno">   80</span>}</div>
-<div class="ttc" id="aclassluci_1_1_clone_node_html"><div class="ttname"><a href="classluci_1_1_clone_node.html">luci::CloneNode</a></div><div class="ttdef"><b>Definition:</b> <a href="_circle_clone_node_8h_source.html#l00248">CircleCloneNode.h:249</a></div></div>
+<div class="ttc" id="aclassluci_1_1_clone_node_html"><div class="ttname"><a href="classluci_1_1_clone_node.html">luci::CloneNode</a></div><div class="ttdef"><b>Definition:</b> <a href="_circle_clone_node_8h_source.html#l00249">CircleCloneNode.h:250</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_impl_8h_source.html#l00029">luci::CircleNode::accept()</a>, and <a class="el" href="_circle_node_clone_8cpp_source.html#l00033">copy_common_attributes()</a>.</p>
 
@@ -3592,6 +3600,8 @@ Each visit implementation must copy node specific attributes. </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html#a14">/github/workspace/compiler/luci/pass/src/RemoveUnnecessaryTransposeNetPass.cpp</a>.</dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="_circle_node_origin_8cpp_source.html#l00126">126</a> of file <a class="el" href="_circle_node_origin_8cpp_source.html">CircleNodeOrigin.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  127</span>{</div>
@@ -5552,6 +5562,8 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html#a13">/github/workspace/compiler/luci/pass/src/RemoveUnnecessaryTransposeNetPass.cpp</a>.</dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="_circle_node_origin_8cpp_source.html#l00180">180</a> of file <a class="el" href="_circle_node_origin_8cpp_source.html">CircleNodeOrigin.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
@@ -6661,7 +6673,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00551">luci::QuantizeWithMinMaxPass::run()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00560">luci::QuantizeWithMinMaxPass::run()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
 
 </div>
 </div>
@@ -8987,7 +8999,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00505">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00510">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>
@@ -9122,7 +9134,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_internal_exn_8h_source.html#l00027">INTERNAL_EXN_V</a>, <a class="el" href="namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22eae4f6a05f82ed398f984f4bc1a55838df">REFLECT</a>, <a class="el" href="namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22ea161b3d9016563aba9ac190fc02ada9bb">SYMMETRIC</a>, and <a class="el" href="_internal_exn_8h_source.html#l00032">oops::to_uint32()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_circle_builtin_types_extractor_8h_source.html#l00284">luci::BuiltinOptionsExtractor::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_builtin_types_extractor_8h_source.html#l00288">luci::BuiltinOptionsExtractor::visit()</a>.</p>
 
 </div>
 </div>
@@ -9312,7 +9324,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classluci_1_1_circle_fully_connected.html#acbd46b1b1c24273c2327cbd741ccb7dba5b39c8b553c821e7cddc6da64b5bd2ee">luci::CircleFullyConnected::DEFAULT</a>, <a class="el" href="_internal_exn_8h_source.html#l00027">INTERNAL_EXN_V</a>, <a class="el" href="classluci_1_1_circle_fully_connected.html#acbd46b1b1c24273c2327cbd741ccb7dba74eb055cd6d8ca4a306399624815b12c">luci::CircleFullyConnected::SHUFFLED16x1FLOAT32</a>, <a class="el" href="classluci_1_1_circle_fully_connected.html#acbd46b1b1c24273c2327cbd741ccb7dba9f441ce29ab7503449953ca5e16302d4">luci::CircleFullyConnected::SHUFFLED4x16INT8</a>, and <a class="el" href="_internal_exn_8h_source.html#l00032">oops::to_uint32()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_circle_builtin_types_extractor_8h_source.html#l00175">luci::BuiltinOptionsExtractor::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_builtin_types_extractor_8h_source.html#l00179">luci::BuiltinOptionsExtractor::visit()</a>.</p>
 
 </div>
 </div>
@@ -10133,7 +10145,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>, <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">WARN</a>, and <a class="el" href="_circle_quant_param_8h_source.html#l00031">luci::CircleQuantParam::zerop</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00551">luci::QuantizeWithMinMaxPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00560">luci::QuantizeWithMinMaxPass::run()</a>.</p>
 
 </div>
 </div>

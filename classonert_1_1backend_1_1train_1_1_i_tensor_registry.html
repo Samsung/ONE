@@ -108,9 +108,9 @@ Collaboration diagram for onert::backend::train::ITensorRegistry:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0b56569aa67bab20cd01a73b4cd1e150"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a0b56569aa67bab20cd01a73b4cd1e150">getDerivativeITensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)=0</td></tr>
-<tr class="memdesc:a0b56569aa67bab20cd01a73b4cd1e150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer of ITensor for derivative.  <a href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a0b56569aa67bab20cd01a73b4cd1e150">More...</a><br /></td></tr>
-<tr class="separator:a0b56569aa67bab20cd01a73b4cd1e150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6be99a22c279204de451ef4213eb06fa"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a6be99a22c279204de451ef4213eb06fa">getBackPropITensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)=0</td></tr>
+<tr class="memdesc:a6be99a22c279204de451ef4213eb06fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer of ITensor for back propatation.  <a href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#a6be99a22c279204de451ef4213eb06fa">More...</a><br /></td></tr>
+<tr class="separator:a6be99a22c279204de451ef4213eb06fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3569c493168dd23cea987db8498073d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#ab3569c493168dd23cea987db8498073d">getGradientITensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)=0</td></tr>
 <tr class="memdesc:ab3569c493168dd23cea987db8498073d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns pointer of ITensor for gradient.  <a href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html#ab3569c493168dd23cea987db8498073d">More...</a><br /></td></tr>
 <tr class="separator:ab3569c493168dd23cea987db8498073d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,8 +132,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="train_2_i_tensor_registry_8h_source.html#l00029">29</a> of file <a class="el" href="train_2_i_tensor_registry_8h_source.html">ITensorRegistry.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0b56569aa67bab20cd01a73b4cd1e150" name="a0b56569aa67bab20cd01a73b4cd1e150"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b56569aa67bab20cd01a73b4cd1e150">&#9670;&#160;</a></span>getDerivativeITensor()</h2>
+<a id="a6be99a22c279204de451ef4213eb06fa" name="a6be99a22c279204de451ef4213eb06fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6be99a22c279204de451ef4213eb06fa">&#9670;&#160;</a></span>getBackPropITensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +142,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * onert::backend::train::ITensorRegistry::getDerivativeITensor </td>
+          <td class="memname">virtual <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> * onert::backend::train::ITensorRegistry::getBackPropITensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -156,10 +156,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns pointer of ITensor for derivative. </p>
+<p>Returns pointer of ITensor for back propatation. </p>
 <dl class="section note"><dt>Note</dt><dd>Return tensor cannot be used longer than dynamic tensor manager </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#ad000a17486dc58e7a0f172cc7b2c2e64">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a3a8e030ff7da13365ea254300f341cbc">onert::backend::builtin::train::TensorRegistry</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a47c72b20f6a97e6275c404fe9cce60ff">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, BackPropTensor, GradientTensor &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a1423b0a04487f44d7e1798285c5e7d1c">onert::backend::builtin::train::TensorRegistry</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns pointer of ITensor for gradient. </p>
 <dl class="section note"><dt>Note</dt><dd>Returned tensor cannot be used longer than dynamic tensor manager </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#ab04cb98050ee04563649e0533c8a400d">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, DerivativeTensor, GradientTensor &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a5fea9dc8b50ae14a9c2388f7398d8eee">onert::backend::builtin::train::TensorRegistry</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html#a0457f9817f0fd3fea924180a5bafb458">onert::backend::train::PortableTensorRegistryTemplate&lt; Tensor, TrainableTensor, BackPropTensor, GradientTensor &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a5fea9dc8b50ae14a9c2388f7398d8eee">onert::backend::builtin::train::TensorRegistry</a>.</p>
 
 </div>
 </div>

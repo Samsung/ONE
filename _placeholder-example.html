@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('_placeholder-example.html',''); initRe
 <dl class="section note"><dt>Note</dt><dd>In each build for a TF node, four things happen 1) create corresponding moco::TFNode(s) 2) read and set the attributes to created moco::TFNode(s) 3) register name-mocoTFNode(last one of Nodes) that will be used as the output 4) queue a task to set the input of the moco::TFNode(first one of the Nodes) this is done only for required nodes depending on the operator</dd></dl>
 <p>("in") - Identity("out") %1 = Placeholder --&gt; 0x1001 (moco::TFNode* object address) (symboltable: register %1, after the registeration table will contain as below; "in" : 0x1001 ) (queue: this will be empty as Pull does not queue a task to set input; )</p>
 <p >%2 = Forward --&gt; 0x1002 (symboltable: register %2 and table will look like below; "in" : 0x1001 "out" : 0x1002 ) (queue: Forward will queue a task with input "in"; 0x1002: {"in"} )</p>
-<div class="fragment"> </div><!-- fragment --> </div><!-- contents -->
+<div class="fragment"></div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
