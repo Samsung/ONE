@@ -104,6 +104,9 @@ public:
     return std::vector<T>(base, base + size);
   }
 
+  void setOriginIndex(OriginIndex origin) { _info.setOriginIndex(origin); }
+  OriginIndex originIndex() const { return _info.originIndex(); }
+
 private:
   OperandInfo _info;
   std::shared_ptr<Data> _data;

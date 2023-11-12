@@ -21,9 +21,10 @@
 #ifndef __ONERT_IR_OPERAND_INFO_H__
 #define __ONERT_IR_OPERAND_INFO_H__
 
+#include "ir/Index.h"
+#include "ir/Layout.h"
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
-#include "ir/Layout.h"
 
 namespace onert
 {
@@ -66,9 +67,9 @@ public:
    * @param[in] alloc_type  When the thesor needs memory allocation
    */
   OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
-              bool is_const = false, bool is_variable = false)
+              bool is_const = false, bool is_variable = false, OriginIndex origin = OriginIndex())
     : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
-      _variable(is_variable)
+      _variable(is_variable), _origin(origin)
   {
     // DO NOTHING
   }
@@ -135,14 +136,16 @@ public:
   bool isVariable() const { return _variable; }
   bool isDynamic() const { return _alloc_type == MemAllocType::DYNAMIC; }
   void setDynamic() { _alloc_type = MemAllocType::DYNAMIC; }
+  OriginIndex originIndex() const { return _origin; }
+  void setOriginIndex(OriginIndex origin) { _origin = origin; }
 
 private:
   Shape _shape;
   TypeInfo _typeInfo;
-
   MemAllocType _alloc_type;
   bool _const;
   bool _variable;
+  OriginIndex _origin;
 };
 
 } // namespace ir
