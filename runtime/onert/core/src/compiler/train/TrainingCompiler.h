@@ -41,18 +41,17 @@ class TrainingCompiler : public ICompiler
 {
 public:
   /**
-   * @brief     Construct a new TrainingCompiler object for single model
-   * @param[in] model     model to compile
-   * @param[in] inference_compiler Compiler for inference
-   * @param[in] coptions           Compiler Options
-   * @param[in] training_info      Training information
+   * @brief     Construct a new TrainingCompiler object for an nnpkg
+   * @param[in] nnpkg         nnpkg to compile
+   * @param[in] copts         compiler options
+   * @param[in] training_info training information
    */
   explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                             std::vector<std::unique_ptr<CompilerOptions>> &copts,
                             const TrainingInfo &training_info);
 
   /**
-   * @brief Default Construct
+   * @brief Construct a TrainingCompiler object
    *
    */
   TrainingCompiler(void) = delete;
