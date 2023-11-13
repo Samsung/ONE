@@ -94,6 +94,7 @@ private:
     for (flatbuffers::uoffset_t i = 0; i < circle_subg->tensors()->size(); ++i)
     {
       _tensor_to_operand[i] = loadOperand(circle_subg->tensors()->Get(i), *subg);
+      subg->operands().at(_tensor_to_operand[i]).setOriginIndex(ir::OriginIndex(i));
     }
     // Set inputs
     for (const std::int32_t input_ind : *circle_subg->inputs())
