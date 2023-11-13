@@ -343,6 +343,11 @@ void CircleBidirectionalSequenceLSTMSummaryBuilder::build_attributes(const luci:
   s.args().append("asymmetric_quantize_inputs", to_str(lstm->asymmetric_quantize_inputs()));
 }
 
+std::vector<std::string> CircleBroadcastToSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "shape"};
+}
+
 std::vector<std::string> CircleCastSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"x"};
