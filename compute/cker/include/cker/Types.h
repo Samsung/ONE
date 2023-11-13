@@ -91,6 +91,19 @@ struct PoolParams
   // float activation params.
   float float_activation_min;
   float float_activation_max;
+
+  // Default constructor with initial values
+  PoolParams()
+    : padding_values{0, 0},
+      stride_height(0),
+      stride_width(0),
+      filter_height(0),
+      filter_width(0),
+      quantized_activation_min(0),
+      quantized_activation_max(0),
+      float_activation_min(0.0f),
+      float_activation_max(0.0f)
+  {}
 };
 
 struct SoftmaxParams

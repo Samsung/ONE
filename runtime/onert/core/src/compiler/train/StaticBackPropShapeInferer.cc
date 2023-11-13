@@ -60,7 +60,7 @@ void StaticBackPropShapeInferer::dump()
 bool StaticBackPropShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (auto input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (auto &input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     if (operands.at(input_idx).info().isDynamic())
     {
@@ -74,7 +74,7 @@ bool StaticBackPropShapeInferer::checkDynamicInput(const ir::IOperation &op)
 void StaticBackPropShapeInferer::checkOutput(const ir::IOperation &op)
 {
   const auto &back_props = _lowered_subg->trainable_graph().back_props();
-  for (auto output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     if (!back_props.exist(output_idx))
     {
