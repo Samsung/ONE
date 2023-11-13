@@ -1,0 +1,29 @@
+# BroadcastTo Op supports op version 2 and 3.
+# BroadcastTo of Float type is version 2 and Quantized BroadcastTo is version 3.
+# We are using tflite kernels for float values. so, the version should be 2.
+# refer https://github.com/tensorflow/tensorflow/pull/46224/files
+operand {
+  name: "bc_input"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 }
+}
+operand {
+  name: "bc_shape"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "2" arg: "3" }
+}
+operand {
+  name: "bc_ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 3 }
+}
+operation {
+  type: "BroadcastTo"
+  input: "bc_input"
+  input: "bc_shape"
+  output: "bc_ofm"
+  version: 2
+}
+input: "bc_input"
+output: "bc_ofm"
