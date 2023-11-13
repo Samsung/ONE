@@ -42,7 +42,7 @@ TrainableExecutor::TrainableExecutor(
     assert(tensors.empty());
     for (auto &&ind : ind_seq)
     {
-      backend::ITensor *tensor = tensor_regs.getITensor(ind);
+      backend::ITensor *tensor = _tensor_regs.getITensor(ind);
       assert(tensor != nullptr);
       auto io_tensor = nnfw::misc::polymorphic_downcast<backend::builtin::IOTensor *>(tensor);
       tensors.push_back(io_tensor);
