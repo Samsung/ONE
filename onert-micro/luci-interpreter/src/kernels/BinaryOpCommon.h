@@ -19,6 +19,7 @@
 #define LUCI_INTERPRETER_KERNELS_BINARYOPUTILS_H
 
 #include "TISOKernel.h"
+#include "PALComparisons.h"
 #include "ProcessBroadcastShapes.h"
 
 #include "Utils.h"
@@ -110,6 +111,14 @@ void evalTISOInplaceKernel(TISOFunc tiso_func, TISOBroadcastFunc tiso_broadcast_
   {
     runtime_graph->makeInplaceOperation(kernel->input1(), nullptr);
   }
+}
+
+inline void CheckBinaryOpDataTypesEqual(const kernels::TISOKernel &kernel)
+{
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.input2()));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
+                         Tensor::element_type(kernel.output()));
 }
 
 #ifndef DIS_QUANT

@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-#include "Builders.h"
+#include "Pool2DCommon.h"
 #include "SISOKernel.h"
-#include "kernels/Utils.h"
+#include "Utils.h"
+
 #include "PALL2Pool2D.h"
 
 namespace luci_interpreter
@@ -43,41 +44,12 @@ void execute_kernel_CircleL2Pool2D(const circle::Operator *cur_op, BaseRuntimeGr
   const auto input = siso_kernel.input();
   const auto output = siso_kernel.output();
 
-  const int32_t input_height = Tensor::dim(input, 1);
-  const int32_t input_width = Tensor::dim(input, 2);
-
-  const int32_t output_height = kernels::computeOutputSize(
-    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
-  const int32_t output_width = kernels::computeOutputSize(
-    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
-
-  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
-                                                      options->filter_height(), output_height);
-  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
-                                                     options->filter_width(), output_width);
-
   const auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
   const DataType input_type = Tensor::element_type(input);
 
-  float activation_min{};
-  float activation_max{};
-
-#ifndef DIS_FLOAT
-  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
-                                    &activation_min, &activation_max);
-#endif // DIS_FLOAT
-
-  luci_interpreter_pal::PoolParams params{};
-  params.padding_values.height = padding_height;
-  params.padding_values.width = padding_width;
-  params.stride_height = options->stride_h();
-  params.stride_width = options->stride_w();
-  params.filter_height = options->filter_height();
-  params.filter_width = options->filter_width();
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  const auto params = createPoolParams(cur_op, runtime_graph);
 
   switch (input_type)
   {

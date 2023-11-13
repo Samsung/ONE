@@ -50,18 +50,7 @@ void execute_kernel_CircleSplit(const circle::Operator *cur_op, BaseRuntimeGraph
   assert(input != nullptr);
   assert(axis != nullptr);
 
-  const auto *axis_data = runtime_graph->getDataByTensor(axis);
-  if (axis_data == nullptr)
-    axis_data = runtime_graph->getConstDataByTensor(axis);
-
-  assert(axis_data);
-
-  int32_t axis_value = (kernels::getTensorData<int32_t>(axis_data))[0];
-  if (axis_value < 0)
-    axis_value += Tensor::num_dims(input);
-
-  assert(axis_value >= 0);
-  assert(axis_value < Tensor::num_dims(input));
+  const auto axis_value = getAxisValue(axis, input, runtime_graph);
 
   switch (Tensor::element_type(input))
   {

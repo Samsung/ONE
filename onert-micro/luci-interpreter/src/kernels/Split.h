@@ -76,6 +76,25 @@ void splitImpl(const circle::Operator *cur_op, const circle::Tensor *input, int 
   }
 }
 
+inline int getAxisValue(const circle::Tensor *axis, const circle::Tensor *input,
+                        BaseRuntimeGraph *runtime_graph)
+{
+  const auto *axis_data = runtime_graph->getDataByTensor(axis);
+  if (axis_data == nullptr)
+    axis_data = runtime_graph->getConstDataByTensor(axis);
+
+  assert(axis_data);
+
+  int axis_value = (kernels::getTensorData<int>(axis_data))[0];
+  if (axis_value < 0)
+    axis_value += Tensor::num_dims(input);
+
+  assert(axis_value >= 0);
+  assert(axis_value < Tensor::num_dims(input));
+
+  return axis_value;
+}
+
 } // namespace luci_interpreter
 
 #endif // LUCI_INTERPRETER_KERNELS_SPLIT_IMPL_H

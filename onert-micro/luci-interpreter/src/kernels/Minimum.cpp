@@ -27,11 +27,7 @@ namespace luci_interpreter
 void configure_kernel_CircleMinimum(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
   kernels::TISOKernel kernel(cur_op, runtime_graph);
-
-  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
-                         Tensor::element_type(kernel.input2()));
-  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input1()) ==
-                         Tensor::element_type(kernel.output()));
+  kernels::CheckBinaryOpDataTypesEqual(kernel);
 }
 
 void execute_kernel_CircleMinimum(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
@@ -58,21 +54,7 @@ void execute_kernel_CircleMinimum(const circle::Operator *cur_op, BaseRuntimeGra
     case DataType::FLOAT32:
     {
       // check that input and output dimensions are equal
-      auto AreShapesEqual = [](const luci_interpreter::RuntimeShape &input_shape1,
-                               const luci_interpreter::RuntimeShape &input_shape2) -> bool {
-        if (input_shape1.dimensionsCount() == input_shape2.dimensionsCount())
-        {
-          int N = input_shape1.dimensionsCount();
-          for (int i = 0; i < N; ++i)
-          {
-            if (input_shape1.dims(i) != input_shape2.dims(i))
-              return false;
-          }
-          return true;
-        }
-        return false;
-      };
-      if (AreShapesEqual(input_shape1, input_shape2))
+      if (kernels::areShapesEqual(input_shape1, input_shape2))
       {
         const int flat_size = input_shape1.flatSize();
         luci_interpreter_pal::Minimum(flat_size, kernels::getTensorData<float>(input_data1),

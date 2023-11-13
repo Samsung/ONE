@@ -18,20 +18,14 @@
 #ifndef LUCI_INTERPRETER_PAL_MINIMUM_COMMON_H
 #define LUCI_INTERPRETER_PAL_MINIMUM_COMMON_H
 
-#include "Params.h"
-#include "PALUtils.h"
-#include "ProcessBroadcastShapes.h"
-#include "Broadcast.h"
+#include "PALBinaryOpCommon.h"
 
 namespace luci_interpreter_pal
 {
 inline void Minimum(const int flat_size, const float *input1_data, const float *input2_data,
                     float *output_data)
 {
-  for (int i = 0; i < flat_size; ++i)
-  {
-    output_data[i] = std::min(input1_data[i], input2_data[i]);
-  }
+  BinaryOp<float, MinimumFn<float>>(flat_size, input1_data, input2_data, output_data);
 }
 
 template <typename T>
@@ -40,9 +34,8 @@ BroadcastMinimum4DSlow(const luci_interpreter::RuntimeShape &input1_shape, const
                        const luci_interpreter::RuntimeShape &input2_shape, const T *input2_data,
                        const luci_interpreter::RuntimeShape &output_shape, T *output_data)
 {
-  auto func = [](const T &a, const T &b) -> const T & { return std::min(a, b); };
-  BroadcastTISO4DSlow<float>(input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                             output_data, func);
+  BroadcastBinaryOp4DSlow<float, MinimumFn<float>>(input1_shape, input1_data, input2_shape,
+                                                   input2_data, output_shape, output_data);
 }
 } // namespace luci_interpreter_pal
 

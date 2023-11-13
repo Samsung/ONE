@@ -228,6 +228,10 @@ template <typename T, typename U, typename... Other> constexpr bool one_of_types
 void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_t n_row,
                                     int32_t n_col, int32_t *output);
 
+// Checks if input and output dimensions are equal
+bool areShapesEqual(const luci_interpreter::RuntimeShape &input_shape1,
+                    const luci_interpreter::RuntimeShape &input_shape2);
+
 #ifndef DIS_QUANT
 bool checkedLog2(const float x, int *log2_result);
 

@@ -32,6 +32,59 @@ const int kSvdfBiasTensor = 3;
 const int kSvdfInputActivationStateTensor =
   4; // This is a variable tensor, and will be modified by this op.
 const int kSvdfOutputTensor = 0;
+class SVDFKernel
+{
+public:
+  SVDFKernel() = delete;
+
+  explicit SVDFKernel(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
+    : _runtime_graph(runtime_graph)
+  {
+    const auto input_index = cur_op->inputs()->operator[](kSvdfInputTensor);
+    const auto weights_feature_index = cur_op->inputs()->operator[](kSvdfWeightsFeatureTensor);
+    const auto weights_time_index = cur_op->inputs()->operator[](kSvdfWeightsTimeTensor);
+    const auto bias_index = cur_op->inputs()->operator[](kSvdfBiasTensor);
+    const auto activation_state_index =
+      cur_op->inputs()->operator[](kSvdfInputActivationStateTensor);
+    const auto output_index = cur_op->outputs()->operator[](kSvdfOutputTensor);
+
+    assert(input_index != -1);
+    assert(weights_feature_index != -1);
+    assert(weights_time_index != -1);
+    assert(activation_state_index != -1);
+    assert(output_index != -1);
+
+    _input_tensor = _runtime_graph->getCircleTensorByIndex(input_index);
+    _weights_feature_tensor = _runtime_graph->getCircleTensorByIndex(weights_feature_index);
+    _weights_time_tensor = _runtime_graph->getCircleTensorByIndex(weights_time_index);
+    _bias_tensor = _runtime_graph->getCircleTensorByIndex(bias_index);
+    _activation_state_tensor = _runtime_graph->getCircleTensorByIndex(activation_state_index);
+    _output_tensor = _runtime_graph->getCircleTensorByIndex(output_index);
+
+    assert(_input_tensor != nullptr);
+    assert(_weights_feature_tensor != nullptr);
+    assert(_weights_time_tensor != nullptr);
+    assert(_activation_state_tensor != nullptr);
+    assert(_output_tensor != nullptr);
+  }
+
+  const circle::Tensor *input() const { return _input_tensor; }
+  const circle::Tensor *weights_feature() const { return _weights_feature_tensor; }
+  const circle::Tensor *weights_time() const { return _weights_time_tensor; }
+  const circle::Tensor *bias() const { return _bias_tensor; }
+  const circle::Tensor *activation_state() const { return _activation_state_tensor; }
+  const circle::Tensor *output() const { return _output_tensor; }
+
+private:
+  const circle::Tensor *_input_tensor;
+  const circle::Tensor *_weights_feature_tensor;
+  const circle::Tensor *_weights_time_tensor;
+  const circle::Tensor *_bias_tensor;
+  const circle::Tensor *_activation_state_tensor;
+  const circle::Tensor *_output_tensor;
+
+  BaseRuntimeGraph *_runtime_graph;
+};
 } // namespace
 
 void configure_kernel_CircleSVDF(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
@@ -43,140 +96,93 @@ void configure_kernel_CircleSVDF(const circle::Operator *cur_op, BaseRuntimeGrap
   // [3] = Bias (optional), {1, num_units}
   // [4] = Activation State (variable),
   //         {2, batch_size, memory_size * num_filters}
-  const auto input_index = cur_op->inputs()->operator[](kSvdfInputTensor);
-  const auto weights_feature_index = cur_op->inputs()->operator[](kSvdfWeightsFeatureTensor);
-  const auto weights_time_index = cur_op->inputs()->operator[](kSvdfWeightsTimeTensor);
-  const auto bias_index = cur_op->inputs()->operator[](kSvdfBiasTensor);
-  const auto activation_state_index = cur_op->inputs()->operator[](kSvdfInputActivationStateTensor);
-  const auto output_index = cur_op->outputs()->operator[](kSvdfOutputTensor);
-
-  assert(input_index != -1);
-  assert(weights_feature_index != -1);
-  assert(weights_time_index != -1);
-  assert(activation_state_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  const auto weights_feature = runtime_graph->getCircleTensorByIndex(weights_feature_index);
-  const auto weights_time = runtime_graph->getCircleTensorByIndex(weights_time_index);
-  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
-  const auto activation_state = runtime_graph->getCircleTensorByIndex(activation_state_index);
-  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(weights_feature != nullptr);
-  assert(weights_time != nullptr);
-  assert(activation_state != nullptr);
-  assert(output != nullptr);
+  SVDFKernel kernel(cur_op, runtime_graph);
 
   const auto *options = cur_op->builtin_options_as_SVDFOptions();
 
   // Define input constants based on input tensor definition above:
   const int rank = options->rank();
-  const int input_size = Tensor::dim(input, 1);
-  const int batch_size = Tensor::dim(input, 0);
-  const int num_filters = Tensor::dim(weights_feature, 0);
+  const int input_size = Tensor::dim(kernel.input(), 1);
+  const int batch_size = Tensor::dim(kernel.input(), 0);
+  const int num_filters = Tensor::dim(kernel.weights_feature(), 0);
   LUCI_INTERPRETER_CHECK(num_filters % rank == 0);
 
   const int num_units = num_filters / rank;
-  const int memory_size = Tensor::dim(weights_time, 1);
+  const int memory_size = Tensor::dim(kernel.weights_time(), 1);
 
-  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::FLOAT32 or
-                         Tensor::element_type(input) == DataType::S8);
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(input) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) == DataType::FLOAT32 or
+                         Tensor::element_type(kernel.input()) == DataType::S8);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == 2);
 
   // Validate Tensor Output:
   // [0] = float/int8_t, {2, batch_size, num_units}
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(output) == 2);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(output, 0) == batch_size);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(output, 1) == num_units);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.output()) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.output(), 0) == batch_size);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.output(), 1) == num_units);
 
   // Validate Weights Feature Input Tensor
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights_feature) == 2);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_feature, 1) == input_size);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.weights_feature()) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.weights_feature(), 1) == input_size);
 
   // Validate Weights Time Input Tensor:
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(weights_time) == 2);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_time, 0) == num_filters);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(weights_time, 1) == memory_size);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.weights_time()) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.weights_time(), 0) == num_filters);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.weights_time(), 1) == memory_size);
 
   // Validate Optional Bias Input Tensor:
-  if (bias != nullptr)
+  if (kernel.bias() != nullptr)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::dim(bias, 0) == num_units);
+    LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.bias(), 0) == num_units);
   }
 
   // Validate Activation State Input Tensor:
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(activation_state) == 2);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(activation_state, 0) == batch_size);
-  LUCI_INTERPRETER_CHECK(Tensor::dim(activation_state, 1) == memory_size * num_filters);
+  LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.activation_state()) == 2);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.activation_state(), 0) == batch_size);
+  LUCI_INTERPRETER_CHECK(Tensor::dim(kernel.activation_state(), 1) == memory_size * num_filters);
 
-  if (Tensor::element_type(input) == DataType::FLOAT32)
+  if (Tensor::element_type(kernel.input()) == DataType::FLOAT32)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(weights_feature) == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(weights_time) == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(activation_state) == DataType::FLOAT32);
-    if (bias)
-      LUCI_INTERPRETER_CHECK(Tensor::element_type(bias) == DataType::FLOAT32);
-    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.weights_feature()) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.weights_time()) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.activation_state()) == DataType::FLOAT32);
+    if (kernel.bias())
+      LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.bias()) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.output()) == DataType::FLOAT32);
   }
 }
 
 void execute_kernel_CircleSVDF(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](kSvdfInputTensor);
-  const auto weights_feature_index = cur_op->inputs()->operator[](kSvdfWeightsFeatureTensor);
-  const auto weights_time_index = cur_op->inputs()->operator[](kSvdfWeightsTimeTensor);
-  const auto bias_index = cur_op->inputs()->operator[](kSvdfBiasTensor);
-  const auto activation_state_index = cur_op->inputs()->operator[](kSvdfInputActivationStateTensor);
-  const auto output_index = cur_op->outputs()->operator[](kSvdfOutputTensor);
-
-  assert(input_index != -1);
-  assert(weights_feature_index != -1);
-  assert(weights_time_index != -1);
-  assert(activation_state_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  const auto weights_feature = runtime_graph->getCircleTensorByIndex(weights_feature_index);
-  const auto weights_time = runtime_graph->getCircleTensorByIndex(weights_time_index);
-  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
-  const auto activation_state = runtime_graph->getCircleTensorByIndex(activation_state_index);
-  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(weights_feature != nullptr);
-  assert(weights_time != nullptr);
-  assert(activation_state != nullptr);
-  assert(output != nullptr);
+  SVDFKernel kernel(cur_op, runtime_graph);
 
   const auto *options = cur_op->builtin_options_as_SVDFOptions();
 
   // Define input constants based on input tensor definition above:
   const int rank = options->rank();
-  const int input_size = Tensor::dim(input, 1);
-  const int batch_size = Tensor::dim(input, 0);
-  const int num_filters = Tensor::dim(weights_feature, 0);
+  const int input_size = Tensor::dim(kernel.input(), 1);
+  const int batch_size = Tensor::dim(kernel.input(), 0);
+  const int num_filters = Tensor::dim(kernel.weights_feature(), 0);
   LUCI_INTERPRETER_CHECK(num_filters % rank == 0);
 
   const int num_units = num_filters / rank;
-  const int memory_size = Tensor::dim(weights_time, 1);
+  const int memory_size = Tensor::dim(kernel.weights_time(), 1);
 
-  const uint8_t *input_data = runtime_graph->getDataByTensor(input);
-  const uint8_t *weights_feature_data = runtime_graph->getConstDataByTensor(weights_feature);
-  const uint8_t *weights_time_data = runtime_graph->getConstDataByTensor(weights_time);
-  const uint8_t *bias_data = runtime_graph->getConstDataByTensor(bias);
-  uint8_t *output_data = runtime_graph->getDataByTensor(output);
+  const uint8_t *input_data = runtime_graph->getDataByTensor(kernel.input());
+  const uint8_t *weights_feature_data =
+    runtime_graph->getConstDataByTensor(kernel.weights_feature());
+  const uint8_t *weights_time_data = runtime_graph->getConstDataByTensor(kernel.weights_time());
+  const uint8_t *bias_data = runtime_graph->getConstDataByTensor(kernel.bias());
+  uint8_t *output_data = runtime_graph->getDataByTensor(kernel.output());
 
-  const auto type = Tensor::element_type(input);
+  const auto type = Tensor::element_type(kernel.input());
   switch (type)
   {
 #ifndef DIS_FLOAT
     case DataType::FLOAT32:
     {
       // Create and fill with 0 state tensor
-      auto state_data = std::make_unique<float[]>(Tensor::num_elements(activation_state));
-      std::fill_n(state_data.get(), Tensor::num_elements(activation_state), 0);
+      auto state_data = std::make_unique<float[]>(Tensor::num_elements(kernel.activation_state()));
+      std::fill_n(state_data.get(), Tensor::num_elements(kernel.activation_state()), 0);
 
       auto scratch_data = std::make_unique<uint8_t[]>(batch_size * num_filters * sizeof(float));
 
