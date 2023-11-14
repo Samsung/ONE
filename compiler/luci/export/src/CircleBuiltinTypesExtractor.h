@@ -87,6 +87,7 @@ public:
              node->asymmetric_quantize_inputs())
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleBroadcastTo *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleCast *node)
   {
     if (node->out_data_type() == loco::DataType::Unknown)
