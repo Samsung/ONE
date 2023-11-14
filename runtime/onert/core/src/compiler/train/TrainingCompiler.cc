@@ -134,6 +134,17 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   // operation
   _model.reset();
 
+  // TODO Handle dump level for each model
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
+  onert::dumper::dot::DotDumper dot_dumper(dump_level);
+
+  for (const auto &pair : trainable_subgraphs)
+  {
+    const auto &subg_index = pair.first;
+    const auto &subg = pair.second;
+    dot_dumper.dump(*subg, nnfw::misc::str("before_loss_insertion-", subg_index.value()));
+  }
+
   // Apply pass for trainable subgraphs
   for (auto &&pair : trainable_subgraphs)
   {
@@ -144,6 +155,13 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       .append(std::make_unique<train::pass::LossInsertionPass>(*trainable_subg, &_training_info,
                                                                subg_index))
       .run();
+  }
+
+  for (const auto &pair : trainable_subgraphs)
+  {
+    const auto &subg_index = pair.first;
+    const auto &subg = pair.second;
+    dot_dumper.dump(*subg, nnfw::misc::str("after_loss_insertion-", subg_index.value()));
   }
 
   // Change input shape according to batch_size
@@ -166,10 +184,6 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   /***************************************************
    * Backend independent analysis & optimization phase
    ***************************************************/
-  // TODO Handle dump level for each model
-  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
-  onert::dumper::dot::DotDumper dot_dumper(dump_level);
-
   // Tracing context
   auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
