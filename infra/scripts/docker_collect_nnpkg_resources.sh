@@ -81,10 +81,10 @@ REQUIRED_UNITS+=("souschef" "tflchef" "circlechef" "circle-verify")
 REQUIRED_UNITS+=("common-artifacts")
 
 # Reset whitelist to build all
-./nncc docker-run ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=release \
+./nnas docker-run ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=release \
   -DBUILD_WHITELIST=$(join_by ";" "${REQUIRED_UNITS[@]}") \
   $CONFIG_OPTIONS
-./nncc docker-run ./nncc build -j4
+./nnas docker-run ./nncc build -j4
 
 mkdir -p ${ARCHIVE_PATH}
 TEMP_DIR=$(mktemp -d -t resXXXX)
