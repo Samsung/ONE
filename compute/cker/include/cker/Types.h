@@ -80,17 +80,17 @@ enum class BroadcastableOpCategory : uint8_t
 
 struct PoolParams
 {
-  PaddingValues padding_values;
-  int stride_height;
-  int stride_width;
-  int filter_height;
-  int filter_width;
+  PaddingValues padding_values{0, 0};
+  int stride_height{0};
+  int stride_width{0};
+  int filter_height{0};
+  int filter_width{0};
   // uint8, etc, activation params.
-  int32_t quantized_activation_min;
-  int32_t quantized_activation_max;
+  int32_t quantized_activation_min{0};
+  int32_t quantized_activation_max{0};
   // float activation params.
-  float float_activation_min;
-  float float_activation_max;
+  float float_activation_min{0.0f};
+  float float_activation_max{0.0f};
 };
 
 struct SoftmaxParams
