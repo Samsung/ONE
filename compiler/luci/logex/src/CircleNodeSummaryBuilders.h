@@ -145,6 +145,12 @@ private:
   void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
 };
 
+class CircleBroadcastToSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
 class CircleCastSummaryBuilder final : public CircleNodeSummaryBuilder
 {
 private:
