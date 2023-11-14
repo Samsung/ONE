@@ -52,8 +52,8 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
-  std::unique_ptr<Tensor> _act_back_prop_output;
-  std::unique_ptr<Tensor> _arg_max_index;
+  std::unique_ptr<Tensor> _act_back_prop_output = nullptr;
+  std::unique_ptr<Tensor> _arg_max_index = nullptr;
 
 public:
   MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t, const uint32_t paddingTop,
@@ -71,6 +71,8 @@ public:
       _op_params.padding_values.width = (int8_t)paddingLeft;
       CalculateActivationRange<float>(activation, &_op_params.float_activation_min,
                                       &_op_params.float_activation_max);
+      _op_params.quantized_activation_min = 0; // not used in training
+      _op_params.quantized_activation_max = 0; // not used in training
     }
 
     _arg_max_index = std::make_unique<Tensor>(_output->get_info(), _output->layout());
