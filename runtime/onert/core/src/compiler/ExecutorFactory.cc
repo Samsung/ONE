@@ -805,7 +805,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       uses_map[ind]++;
     }
 
-    for (const auto op_ind : order)
+    for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
       auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
