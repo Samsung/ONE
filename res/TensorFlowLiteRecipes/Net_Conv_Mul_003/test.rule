@@ -1,0 +1,6 @@
+# To check if Mul is fused to Conv
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"            $(op_count CONV_2D) '=' 1
+RULE    "MUL_NOT_EXIST"         $(op_count MUL) '=' 0
