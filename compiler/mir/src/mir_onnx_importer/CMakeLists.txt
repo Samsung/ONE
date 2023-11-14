@@ -9,8 +9,10 @@ if (NOT Protobuf_FOUND)
     return()
 endif ()
 
-if (NOT TARGET mir_interpreter)
-    return()
+if (ENABLE_EXCLUDE_ME)
+    if (NOT TARGET mir_interpreter)
+        return()
+    endif ()
 endif ()
 
 Protobuf_Generate(MIR_ONNX_PROTO
