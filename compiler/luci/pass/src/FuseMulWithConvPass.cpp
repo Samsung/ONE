@@ -90,23 +90,17 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
     RETURN_FALSE_UNLESS(const_mul_operand->dim(0).value() == 1 &&
                         const_mul_operand->dim(1).value() == 1 &&
                         const_mul_operand->dim(2).value() == 1);
-
-    mul_values.resize(const_mul_operand->size<loco::DataType::FLOAT32>());
-    for (uint32_t idx = 0; idx < mul_values.size(); idx++)
-    {
-      mul_values[idx] = const_mul_operand->at<loco::DataType::FLOAT32>(idx);
-    }
   }
   else if (const_mul_operand->rank() == 1 || const_mul_operand->rank() == 0)
   {
     // sanity check
     RETURN_FALSE_UNLESS(const_mul_operand->size<loco::DataType::FLOAT32>() != 0);
+  }
 
-    mul_values.resize(const_mul_operand->size<loco::DataType::FLOAT32>());
-    for (uint32_t idx = 0; idx < mul_values.size(); idx++)
-    {
-      mul_values[idx] = const_mul_operand->at<loco::DataType::FLOAT32>(idx);
-    }
+  mul_values.resize(const_mul_operand->size<loco::DataType::FLOAT32>());
+  for (uint32_t idx = 0; idx < mul_values.size(); idx++)
+  {
+    mul_values[idx] = const_mul_operand->at<loco::DataType::FLOAT32>(idx);
   }
 
   // filter
@@ -124,14 +118,14 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
   // bias
   auto const conv_bias = dynamic_cast<luci::CircleConst *>(conv->bias());
 
-  RETURN_FALSE_UNLESS(conv_bias != nullptr && conv_bias->rank() == 1 &&
-                      conv_bias->dtype() == loco::DataType::FLOAT32);
+  RETURN_FALSE_UNLESS(conv_bias == nullptr ||
+                      (conv_bias->rank() == 1 && conv_bias->dim(0) == out_channels &&
+                       conv_bias->dtype() == loco::DataType::FLOAT32));
 
   luci::CircleConst *fused_conv_filter = nullptr;
   {
     // fused filter
     fused_conv_filter = luci::clone(conv_filter);
-
     // set values of conv filter multiplied by constant channel-wise
     for (uint32_t out_chan = 0; out_chan < out_channels; out_chan++)
     {
@@ -157,11 +151,12 @@ bool fuse_mul_with_conv(luci::CircleMul *mul)
   }
 
   luci::CircleConst *fused_conv_bias = nullptr;
+  if (conv_bias != nullptr)
   {
     // fused bias
     fused_conv_bias = luci::clone(conv_bias);
     // update bias values
-    for (uint32_t c = 0; c < out_channels; c++)
+    for (uint32_t c = 0; c < conv_bias->size<loco::DataType::FLOAT32>(); c++)
     {
       // for scalar - first element, otherwise - channelwise
       float mult = mul_values[c % mul_values.size()];
