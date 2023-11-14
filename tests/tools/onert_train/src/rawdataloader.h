@@ -23,6 +23,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <tuple>
 #include <fstream>
 
 namespace onert_train
@@ -36,10 +37,11 @@ class RawDataLoader
 {
 public:
   RawDataLoader() = default;
-  Generator loadData(const std::string &input_file, const std::string &expected_file,
-                     const std::vector<nnfw_tensorinfo> &input_infos,
-                     const std::vector<nnfw_tensorinfo> &output_infos, const uint32_t data_length,
-                     const uint32_t batch_size);
+  std::tuple<Generator, uint32_t> loadData(const std::string &input_file,
+                                           const std::string &expected_file,
+                                           const std::vector<nnfw_tensorinfo> &input_infos,
+                                           const std::vector<nnfw_tensorinfo> &expected_infos,
+                                           const uint32_t batch_size);
 
 private:
   std::ifstream _input_file;

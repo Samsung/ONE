@@ -198,7 +198,6 @@ void Args::Initialize(void)
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
     ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
     ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
-    ("data_length", po::value<int>()->notifier([&](const auto &v) { _data_length = v; }), "Data length number")
     ("load_input:raw", po::value<std::string>()->notifier(process_load_raw_inputfile),
          "NN Model Raw Input data file\n"
          "The datafile must have data for each input number.\n"
@@ -275,9 +274,6 @@ void Args::Parse(const int argc, char **argv)
     if (!vm.count("modelfile") && !vm.count("nnpackage") && !vm.count("path"))
       throw boost::program_options::error(
         std::string("Require one of options modelfile, nnpackage, or path."));
-
-    if (!vm.count("data_length"))
-      throw boost::program_options::error(std::string("data_length option is mandatory."));
   }
 
   try

@@ -182,16 +182,16 @@ int main(const int argc, char **argv)
       expected_infos.emplace_back(std::move(ti));
     }
 
-    auto data_length = args.getDataLength();
+    uint32_t data_length;
 
     Generator generator;
     RawDataLoader rawDataLoader;
 
     if (!args.getLoadRawInputFilename().empty() && !args.getLoadRawExpectedFilename().empty())
     {
-      generator =
+      std::tie(generator, data_length) =
         rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
-                               input_infos, expected_infos, data_length, tri.batch_size);
+                               input_infos, expected_infos, tri.batch_size);
     }
     else
     {
