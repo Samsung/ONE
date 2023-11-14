@@ -6,13 +6,16 @@
 #
 
 # addeval(Net_Preactivation_BN_000 fuse_preactivation_batchnorm) : value diff exist
-# --> https://github.com/Samsung/ONE/issues/5782
 addeval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
 addeval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
 addeval(Net_Conv_Add_Mul_001 fuse_batchnorm_with_conv)
 addeval(Net_Conv_Add_Mul_002 fuse_batchnorm_with_conv)
 addeval(Net_Conv_Min_Max_000 transform_min_max_to_relu6)
 addeval(Net_Conv_Min_Relu_000 transform_min_relu_to_relu6)
+addeval(Net_Conv_Mul_000 fuse_mul_with_conv)
+addeval(Net_Conv_Mul_001 fuse_mul_with_conv)
+addeval(Net_Conv_Mul_002 fuse_mul_with_conv)
+addeval(Net_Conv_Mul_003 fuse_mul_with_conv)
 addeval(HardSwish_001 decompose_hardswish)
 addeval(Net_Conv_PReluGraph_000 fuse_prelu)
 addeval(Net_Conv_Relu6_000 fuse_activation_function)
