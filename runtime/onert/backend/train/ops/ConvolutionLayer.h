@@ -19,6 +19,7 @@
 
 #include <ops/ConvolutionLayer.h>
 
+#include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
 
 namespace onert
@@ -37,15 +38,32 @@ public:
   ConvolutionLayer();
   ~ConvolutionLayer();
 
-  void configure(const IPortableTensor *input, const IPortableTensor *kernel,
-                 const IPortableTensor *bias, ir::PaddingType _paddingType,
-                 const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
+  void configure(const IPortableTensor *input, const IPortableTensor *weights,
+                 const IPortableTensor *bias, IPortableTensor *output,
+                 IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
+                 IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
+                 ir::PaddingType paddingType, const uint32_t paddingLeft,
+                 const uint32_t paddingRight, const uint32_t paddingTop,
                  const uint32_t paddingBottom, const uint32_t strideWidth,
                  const uint32_t strideHeight, const uint32_t dilationWidthFactor,
-                 const uint32_t dilationHeightFactor, const ir::Activation activation,
-                 IPortableTensor *output);
+                 const uint32_t dilationHeightFactor, const ir::Activation activation);
   void forward(bool training) override;
   void backward() override;
+
+private:
+  void backwardFloat32();
+
+private:
+  IPortableTensor *_grad_weights;
+  IPortableTensor *_grad_bias;
+  IPortableTensor *_back_prop_input;
+  const IPortableTensor *_back_prop_output;
+
+  // TODO Consider if these tensors should be built in TensorBuilder
+  std::unique_ptr<Tensor> _transposed_weights;
+  std::unique_ptr<BackPropTensor> _conv_back_prop_output;
+  std::unique_ptr<BackPropTensor> _act_back_prop_output;
+  std::unique_ptr<GradientTensor> _transposed_grad_weights;
 };
 
 } // namespace ops
