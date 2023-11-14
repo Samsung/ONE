@@ -56,6 +56,7 @@ class CONSTANT:
         'remove_unnecessary_slice',
         'remove_unnecessary_strided_slice',
         'remove_unnecessary_split',
+        'remove_unnecessary_transpose',
         'common_subexpression_elimination',
 
         # Canonicalization
