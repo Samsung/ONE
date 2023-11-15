@@ -228,6 +228,11 @@ void DotDumper::dump(const compiler::ILoweredGraph &lowered_graph, const std::st
   dump_to_file(dot_operands, dot_operations, tag);
 }
 
+void DotDumper::dump(const ir::train::TrainableGraph &graph, const std::string &tag)
+{
+  dump(graph.graph(), tag);
+}
+
 } // namespace dot
 } // namespace dumper
 } // namespace onert

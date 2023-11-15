@@ -15,6 +15,7 @@
  */
 
 #include "ir/Graph.h"
+#include "ir/train/TrainableGraph.h"
 #include "compiler/ILoweredGraph.h"
 
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
@@ -58,6 +59,15 @@ public:
    * @return N/A
    */
   void dump(const compiler::ILoweredGraph &lowered_graph, const std::string &tag);
+
+  /**
+   * @brief Dump graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set
+   *
+   * @param[in] graph  TrainableGraph to be dumped
+   * @param[in] tag    The name of dot file to be dumped
+   * @return N/A
+   */
+  void dump(const ir::train::TrainableGraph &graph, const std::string &tag);
 
 private:
   Level _level;
