@@ -49,7 +49,6 @@ public:
   const std::string &getPackageFilename(void) const { return _package_filename; }
   const std::string &getModelFilename(void) const { return _model_filename; }
   const bool useSingleModel(void) const { return _use_single_model; }
-  const int getDataLength(void) const { return _data_length; }
   const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
@@ -73,7 +72,6 @@ private:
   std::string _package_filename;
   std::string _model_filename;
   bool _use_single_model = false;
-  int _data_length;
   std::string _load_raw_input_filename;
   std::string _load_raw_expected_filename;
   bool _mem_poll;

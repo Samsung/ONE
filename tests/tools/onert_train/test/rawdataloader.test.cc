@@ -175,8 +175,12 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
 
   // Load test datas
   RawDataLoader loader;
-  Generator generator =
-    loader.loadData(input_file, expected_file, in_infos, expected_infos, data_length, batch_size);
+  Generator generator;
+  uint32_t test_data_length;
+  std::tie(generator, test_data_length) =
+    loader.loadData(input_file, expected_file, in_infos, expected_infos, batch_size);
+
+  EXPECT_EQ(data_length, test_data_length);
 
   // Allocate inputs and expecteds data memory
   std::vector<Allocation> inputs(num_input);
