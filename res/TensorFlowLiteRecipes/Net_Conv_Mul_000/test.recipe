@@ -1,0 +1,71 @@
+# test for Conv(pad=valid, krnl(2, 3, 2, 3), stride=(2, 1))->Mul_with_rank-4_channelwise_constant
+
+operand {
+  name: "ifm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 2 dim: 3 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 2 dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "-1.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 2 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+}
+operand {
+  name: "mul_const"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler {
+    tag: "gaussian"
+    arg: "-1.0"
+    arg: "1.0"
+  }
+}
+operand { 
+  name: "ofm_mul"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_h: 2
+    stride_w: 1
+    activation: NONE
+  }
+  input: "ifm_conv"
+  input: "filter"
+  input: "bias"
+  output: "ofm_conv"
+}
+operation {
+  type: "Mul"
+  input: "ofm_conv"
+  input: "mul_const"
+  output: "ofm_mul"
+  mul_options {
+    activation: RELU
+  }
+}
+input: "ifm_conv"
+output: "ofm_mul"
