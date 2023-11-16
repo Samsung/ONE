@@ -492,6 +492,36 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   return loco::NodeShape{output_shape};
 }
 
+loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
+{
+  const loco::DataType S32 = loco::DataType::S32;
+
+  loco::TensorShape shape_by_input;
+  {
+    LUCI_ASSERT(node->shape(), "2nd input shape() should not be nullptr");
+
+    // Only support node's shape() is CircleConst with S32
+    auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
+    if (const_shape_node != nullptr)
+    {
+      LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
+
+      shape_by_input.rank(const_shape_node->size<S32>());
+      for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
+      {
+        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
+      }
+    }
+    else
+    {
+      // We use shape from the node itself
+      shape_by_input = own_shape(node);
+    }
+  }
+
+  return loco::NodeShape{shape_by_input};
+}
+
 loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
 {
   // TODO Support when CircleConcatenation has 0 input
@@ -2013,6 +2043,11 @@ public:
   loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
   {
     return infer_batch_to_space_nd(node);
+  }
+
+  loco::NodeShape visit(const luci::CircleBroadcastTo *node) final
+  {
+    return infer_broadcast_to(node);
   }
 
   loco::NodeShape visit(const luci::CircleCast *node) final { return use_x(node); }
