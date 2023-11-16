@@ -44,6 +44,7 @@ public:
       FuseHorizontalFullyConnected,
       FuseInstanceNorm,
       FuseMeanWithMean,
+      FuseMulWithConv,
       FuseTransposeWithMean,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
