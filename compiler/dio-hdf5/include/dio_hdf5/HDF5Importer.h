@@ -61,16 +61,16 @@ public:
    * @param buffer_bytes : byte size of the buffer
    */
   void readTensor(int32_t data_idx, int32_t input_idx, loco::DataType *dtype,
-                  std::vector<loco::Dimension> *shape, void *buffer, size_t buffer_bytes);
+                  std::vector<loco::Dimension> *shape, void *buffer, size_t buffer_bytes) const;
 
   // Read a raw tensor (no type/shape is specified)
-  void readTensor(int32_t data_idx, int32_t input_idx, void *buffer, size_t buffer_bytes);
+  void readTensor(int32_t data_idx, int32_t input_idx, void *buffer, size_t buffer_bytes) const;
 
-  bool isRawData() { return _group.attrExists("rawData"); }
+  bool isRawData() const { return _group.attrExists("rawData"); }
 
-  int32_t numData() { return _group.getNumObjs(); }
+  int32_t numData() const { return _group.getNumObjs(); }
 
-  int32_t numInputs(int32_t data_idx);
+  int32_t numInputs(int32_t data_idx) const;
 
 private:
   H5::H5File _file;

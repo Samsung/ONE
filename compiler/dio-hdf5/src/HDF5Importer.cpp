@@ -122,14 +122,14 @@ HDF5Importer::HDF5Importer(const std::string &path)
   _file = H5::H5File(path, H5F_ACC_RDONLY);
 }
 
-int32_t HDF5Importer::numInputs(int32_t record_idx)
+int32_t HDF5Importer::numInputs(int32_t record_idx) const
 {
   auto records = _group.openGroup(std::to_string(record_idx));
   return records.getNumObjs();
 }
 
 void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffer,
-                              size_t buffer_bytes)
+                              size_t buffer_bytes) const
 {
   auto record = _group.openGroup(std::to_string(record_idx));
   auto tensor = record.openDataSet(std::to_string(input_idx));
@@ -141,7 +141,7 @@ void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, void *buffe
 }
 
 void HDF5Importer::readTensor(int32_t record_idx, int32_t input_idx, DataType *dtype, Shape *shape,
-                              void *buffer, size_t buffer_bytes)
+                              void *buffer, size_t buffer_bytes) const
 {
   auto record = _group.openGroup(std::to_string(record_idx));
   auto tensor = record.openDataSet(std::to_string(input_idx));
