@@ -33,6 +33,13 @@ namespace train
 class TensorManager
 {
 public:
+  // Minimum alignment for buffers
+  //
+  // _align is equal to EIGEN_MAX_ALIGN_BYTES, though including Eigen headers
+  // here to get that symbol may not be a good idea.
+  static constexpr uint64_t _align = 16;
+
+public:
   TensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id);
   virtual ~TensorManager() = default;
 

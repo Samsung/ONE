@@ -43,6 +43,11 @@ void allocateMemory(backend::train::MemoryManager *mgr,
   }
 }
 
+inline size_t alignedSize(const size_t size, const uint64_t align)
+{
+  return (((size) + ((align)-1)) & ~((align)-1));
+}
+
 } // namespace
 
 namespace onert
@@ -90,7 +95,7 @@ void TensorManager::claimNonConstPlan(const ir::OperandIndex &index)
   auto tensor = _tensors->getNonConstTensor(index);
   assert(tensor && !tensor->is_dynamic());
 
-  auto size = tensor->total_size();
+  auto size = alignedSize(tensor->total_size(), _align);
   _nonconst_mgr->claimPlan(index, size);
 }
 
@@ -106,7 +111,7 @@ void TensorManager::claimTrainablePlan(const ir::OperandIndex &index)
   auto tensor = _tensors->getTrainableTensor(index);
   assert(tensor && !tensor->is_dynamic());
 
-  auto size = tensor->total_size();
+  auto size = alignedSize(tensor->total_size(), _align);
   _trainable_mgr->claimPlan(index, size);
 }
 
@@ -122,7 +127,7 @@ void TensorManager::claimBackPropPlan(const ir::OperandIndex &index)
   auto tensor = _tensors->getBackPropTensor(index);
   assert(tensor && !tensor->is_dynamic());
 
-  auto size = tensor->total_size();
+  auto size = alignedSize(tensor->total_size(), _align);
   _back_prop_mgr->claimPlan(index, size);
 }
 
@@ -138,7 +143,7 @@ void TensorManager::claimGradientPlan(const ir::OperandIndex &index)
   auto tensor = _tensors->getGradientTensor(index);
   assert(tensor && !tensor->is_dynamic());
 
-  auto size = tensor->total_size();
+  auto size = alignedSize(tensor->total_size(), _align);
   _gradient_mgr->claimPlan(index, size);
 }
 
