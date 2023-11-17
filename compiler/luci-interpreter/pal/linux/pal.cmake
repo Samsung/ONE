@@ -68,7 +68,9 @@ macro(add_pal_to_target TGT)
     # instead add sources with visitors in this library
     set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc
-            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc)
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/kernel_util.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/c/common.c)
 
     if(TARGET_ARCH_BASE STREQUAL "arm")
         # NOTE may need to revise this list for version upgrade
