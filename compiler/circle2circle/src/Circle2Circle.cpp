@@ -105,6 +105,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fuse_mean_with_mean",
              "This will fuse two Mean operations when they follow one by one. This will fold them "
              "into one operation and merge reduction indices.");
+  add_switch(arser, "--fuse_mul_with_conv",
+             "This will fuse Mul operation with a preceding Conv if possible.");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
   add_switch(arser, "--fuse_transpose_with_mean",
@@ -285,6 +287,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseInstanceNorm);
   if (arser.get<bool>("--fuse_mean_with_mean"))
     options->enable(Algorithms::FuseMeanWithMean);
+  if (arser.get<bool>("--fuse_mul_with_conv"))
+    options->enable(Algorithms::FuseMulWithConv);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
   if (arser.get<bool>("--fuse_preactivation_batchnorm"))
