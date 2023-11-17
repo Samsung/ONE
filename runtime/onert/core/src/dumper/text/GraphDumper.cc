@@ -87,8 +87,10 @@ void dumpGraph(const ir::Graph &graph)
     const auto &op = graph.operations().at(op_ind);
     VERBOSE(GraphDumper) << "  " << formatOperation(op, op_ind) << "\n";
   }
+  graph.operands().iterate([&](const ir::OperandIndex &idx, const ir::Operand &oprd) {
+    VERBOSE(GraphDumper) << "  Origin(" << idx << "): " << oprd.originIndex() << std::endl;
+  });
   VERBOSE(GraphDumper) << "}\n";
-  VERBOSE(GraphDumper) << std::endl;
 }
 
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph)
