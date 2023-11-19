@@ -117,8 +117,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a493e5473e5ba18c43b12e0c40d1c286d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac000e872771905eea0b6eff612b38260"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#ac000e872771905eea0b6eff612b38260">~ConvolutionLayer</a> ()</td></tr>
 <tr class="separator:ac000e872771905eea0b6eff612b38260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabdf11516709c95c23d5140170d5bea5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#aabdf11516709c95c23d5140170d5bea5">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *kernel, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *bias, <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693">ir::PaddingType</a> <a class="el" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>, const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t dilationWidthFactor, const uint32_t dilationHeightFactor, const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> activation, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)</td></tr>
-<tr class="separator:aabdf11516709c95c23d5140170d5bea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee548bfce80140d09733209bb395bdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a2ee548bfce80140d09733209bb395bdf">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *weights, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *bias, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *grad_weights, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *grad_bias, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output, <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693">ir::PaddingType</a> paddingType, const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t dilationWidthFactor, const uint32_t dilationHeightFactor, const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> activation)</td></tr>
+<tr class="separator:a2ee548bfce80140d09733209bb395bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9690f1e9536de9fc662af1f195d9b646"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a9690f1e9536de9fc662af1f195d9b646">forward</a> (bool training) override</td></tr>
 <tr class="separator:a9690f1e9536de9fc662af1f195d9b646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5719db1ca23eb8a77d0b9c2e022ab080"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a5719db1ca23eb8a77d0b9c2e022ab080">backward</a> () override</td></tr>
@@ -193,7 +193,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8h_source.html#l00033">33</a> of file <a class="el" href="train_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8h_source.html#l00034">34</a> of file <a class="el" href="train_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a493e5473e5ba18c43b12e0c40d1c286d" name="a493e5473e5ba18c43b12e0c40d1c286d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a493e5473e5ba18c43b12e0c40d1c286d">&#9670;&#160;</a></span>ConvolutionLayer()</h2>
@@ -210,11 +210,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>                                   : cpu::ops::ConvolutionLayer()</div>
-<div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   30</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>  : cpu::ops::ConvolutionLayer(), _grad_weights{<span class="keyword">nullptr</span>}, _grad_bias{<span class="keyword">nullptr</span>},</div>
+<div class="line"><span class="lineno">   62</span>    _back_prop_input{<span class="keyword">nullptr</span>}, _back_prop_output{<span class="keyword">nullptr</span>}, _transposed_weights{<span class="keyword">nullptr</span>}</div>
+<div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   65</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -269,15 +270,31 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00051">51</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <span class="comment">// TODO Implement detail</span></div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00116">116</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>();</div>
+<div class="line"><span class="lineno">  119</span>  assert(data_type == <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">switch</span> (data_type)</div>
+<div class="line"><span class="lineno">  121</span>  {</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">  123</span>    {</div>
+<div class="line"><span class="lineno">  124</span>      assert(data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>());</div>
+<div class="line"><span class="lineno">  125</span>      backwardFloat32();</div>
+<div class="line"><span class="lineno">  126</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  127</span>    }</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;train ConvolutionLayer: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  130</span>  }</div>
+<div class="line"><span class="lineno">  131</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a93aa077293fcd6a20709e0eaa36b0d2a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">onert::backend::cpu::ops::ConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">ConvolutionLayer.h:71</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">onert::backend::cpu::ops::ConvolutionLayer::_input</a>, and <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>.</p>
+
 </div>
 </div>
-<a id="aabdf11516709c95c23d5140170d5bea5" name="aabdf11516709c95c23d5140170d5bea5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabdf11516709c95c23d5140170d5bea5">&#9670;&#160;</a></span>configure()</h2>
+<a id="a2ee548bfce80140d09733209bb395bdf" name="a2ee548bfce80140d09733209bb395bdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee548bfce80140d09733209bb395bdf">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,7 +309,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>kernel</em>, </td>
+          <td class="paramname"><em>weights</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -303,8 +320,38 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>back_prop_input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>grad_weights</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>grad_bias</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>back_prop_output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693">ir::PaddingType</a>&#160;</td>
-          <td class="paramname"><em>_paddingType</em>, </td>
+          <td class="paramname"><em>paddingType</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -358,13 +405,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a>&#160;</td>
-          <td class="paramname"><em>activation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>output</em>&#160;</td>
+          <td class="paramname"><em>activation</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -374,17 +415,52 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00034">34</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_cacheable_weights = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2bfff81c71e5b47294237291b929b949">cpu::ops::ConvolutionLayer::configure</a>(input, kernel, bias, paddingType, paddingLeft, paddingRight,</div>
-<div class="line"><span class="lineno">   45</span>                                        paddingTop, paddingBottom, strideWidth, strideHeight,</div>
-<div class="line"><span class="lineno">   46</span>                                        dilationWidthFactor, dilationHeightFactor, activation,</div>
-<div class="line"><span class="lineno">   47</span>                                        output, is_cacheable_weights);</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_cacheable_weights = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2bfff81c71e5b47294237291b929b949">cpu::ops::ConvolutionLayer::configure</a>(input, weights, bias, paddingType, paddingLeft,</div>
+<div class="line"><span class="lineno">   80</span>                                        paddingRight, paddingTop, paddingBottom, strideWidth,</div>
+<div class="line"><span class="lineno">   81</span>                                        strideHeight, dilationWidthFactor, dilationHeightFactor,</div>
+<div class="line"><span class="lineno">   82</span>                                        activation, output, is_cacheable_weights);</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   85</span>  _grad_weights = grad_weights;</div>
+<div class="line"><span class="lineno">   86</span>  _grad_bias = grad_bias;</div>
+<div class="line"><span class="lineno">   87</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">_dilationHeightFactor</a> != 1 || <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a> != 1)</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ConvolutionLayer: Unsupported dilation yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>  <span class="comment">// TODO Optimize transposed tensors</span></div>
+<div class="line"><span class="lineno">   93</span>  _transposed_weights = createTransposedWeights&lt;Tensor&gt;(weights);</div>
+<div class="line"><span class="lineno">   94</span>  _transposed_weights-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">   95</span>    std::make_shared&lt;basic::Allocator&gt;(_transposed_weights-&gt;total_size()));</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>  _conv_back_prop_output =</div>
+<div class="line"><span class="lineno">   98</span>    std::make_unique&lt;BackPropTensor&gt;(back_prop_output-&gt;get_info(), back_prop_output-&gt;layout());</div>
+<div class="line"><span class="lineno">   99</span>  _conv_back_prop_output-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">  100</span>    std::make_shared&lt;basic::Allocator&gt;(_conv_back_prop_output-&gt;total_size()));</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  _transposed_grad_weights = createTransposedWeights&lt;GradientTensor&gt;(weights);</div>
+<div class="line"><span class="lineno">  103</span>  _transposed_grad_weights-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">  104</span>    std::make_shared&lt;basic::Allocator&gt;(_transposed_grad_weights-&gt;total_size()));</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">if</span> (activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
+<div class="line"><span class="lineno">  107</span>  {</div>
+<div class="line"><span class="lineno">  108</span>    _act_back_prop_output =</div>
+<div class="line"><span class="lineno">  109</span>      std::make_unique&lt;BackPropTensor&gt;(_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">get_info</a>(), _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">layout</a>());</div>
+<div class="line"><span class="lineno">  110</span>    _act_back_prop_output-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">  111</span>      std::make_shared&lt;basic::Allocator&gt;(_act_back_prop_output-&gt;total_size()));</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
+<div class="line"><span class="lineno">  113</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition:</b> <a href="_i_portable_tensor_8h_source.html#l00045">IPortableTensor.h:45</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a9c6b4e796289ace0d82d7e60a5320305"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout</a></div><div class="ttdeci">virtual ir::Layout layout() const =0</div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a2bfff81c71e5b47294237291b929b949"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2bfff81c71e5b47294237291b929b949">onert::backend::cpu::ops::ConvolutionLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, const IPortableTensor *kernel, const IPortableTensor *bias, ir::PaddingType _paddingType, const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t dilationWidthFactor, const uint32_t dilationHeightFactor, const ir::Activation activation, IPortableTensor *output, bool is_cachable_weights)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_convolution_layer_8cc_source.html#l00197">ConvolutionLayer.cc:197</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9ff9c6e3f04abb66c2430dcc31889353"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a></div><div class="ttdeci">uint32_t _dilationWidthFactor</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">ConvolutionLayer.h:84</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ac2e0903949bb566a8ac9d0d91bcd65f5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a></div><div class="ttdeci">uint32_t _dilationHeightFactor</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">ConvolutionLayer.h:85</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00197">onert::backend::cpu::ops::ConvolutionLayer::configure()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00197">onert::backend::cpu::ops::ConvolutionLayer::configure()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00045">onert::backend::IPortableTensor::get_info()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>.</p>
 
 </div>
 </div>
@@ -414,8 +490,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00050">50</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">cpu::ops::ConvolutionLayer::run</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00115">115</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">cpu::ops::ConvolutionLayer::run</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a580c96aa5b1f21c67b46291cb20a6d02"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">onert::backend::cpu::ops::ConvolutionLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_convolution_layer_8cc_source.html#l00226">ConvolutionLayer.cc:226</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00226">onert::backend::cpu::ops::ConvolutionLayer::run()</a>.</p>

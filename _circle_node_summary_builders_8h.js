@@ -16,6 +16,7 @@ var _circle_node_summary_builders_8h =
     [ "luci::CircleBCQFullyConnectedSummaryBuilder", "classluci_1_1_circle_b_c_q_fully_connected_summary_builder.html", null ],
     [ "luci::CircleBCQGatherSummaryBuilder", "classluci_1_1_circle_b_c_q_gather_summary_builder.html", null ],
     [ "luci::CircleBidirectionalSequenceLSTMSummaryBuilder", "classluci_1_1_circle_bidirectional_sequence_l_s_t_m_summary_builder.html", null ],
+    [ "luci::CircleBroadcastToSummaryBuilder", "classluci_1_1_circle_broadcast_to_summary_builder.html", null ],
     [ "luci::CircleCastSummaryBuilder", "classluci_1_1_circle_cast_summary_builder.html", null ],
     [ "luci::CircleCeilSummaryBuilder", "classluci_1_1_circle_ceil_summary_builder.html", null ],
     [ "luci::CircleConcatenationSummaryBuilder", "classluci_1_1_circle_concatenation_summary_builder.html", null ],

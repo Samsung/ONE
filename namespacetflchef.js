@@ -14,6 +14,7 @@ var namespacetflchef =
     [ "TFliteOpBatchMatMul", "classtflchef_1_1_t_flite_op_batch_mat_mul.html", "classtflchef_1_1_t_flite_op_batch_mat_mul" ],
     [ "TFliteOpBatchToSpaceND", "classtflchef_1_1_t_flite_op_batch_to_space_n_d.html", "classtflchef_1_1_t_flite_op_batch_to_space_n_d" ],
     [ "TFliteOpBidirectionalSequenceLSTM", "classtflchef_1_1_t_flite_op_bidirectional_sequence_l_s_t_m.html", "classtflchef_1_1_t_flite_op_bidirectional_sequence_l_s_t_m" ],
+    [ "TFliteOpBroadcastTo", "classtflchef_1_1_t_flite_op_broadcast_to.html", "classtflchef_1_1_t_flite_op_broadcast_to" ],
     [ "TFliteOpCast", "classtflchef_1_1_t_flite_op_cast.html", "classtflchef_1_1_t_flite_op_cast" ],
     [ "TFliteOpCeil", "classtflchef_1_1_t_flite_op_ceil.html", "classtflchef_1_1_t_flite_op_ceil" ],
     [ "TFliteOpChef", "classtflchef_1_1_t_flite_op_chef.html", "classtflchef_1_1_t_flite_op_chef" ],

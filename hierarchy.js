@@ -379,6 +379,11 @@ var hierarchy =
               [ "luci::CircleBidirectionalSequenceLSTMOut", "classluci_1_1_circle_bidirectional_sequence_l_s_t_m_out.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::BROADCAST_TO >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 2, CircleNodeImpl< CircleOpcode::BROADCAST_TO > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleBroadcastTo", "classluci_1_1_circle_broadcast_to.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::CAST >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::CAST > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleCast", "classluci_1_1_circle_cast.html", null ]
@@ -1442,6 +1447,7 @@ var hierarchy =
       [ "luci::CircleBCQGatherSummaryBuilder", "classluci_1_1_circle_b_c_q_gather_summary_builder.html", null ],
       [ "luci::CircleBatchToSpaceNDSummaryBuilder", "classluci_1_1_circle_batch_to_space_n_d_summary_builder.html", null ],
       [ "luci::CircleBidirectionalSequenceLSTMSummaryBuilder", "classluci_1_1_circle_bidirectional_sequence_l_s_t_m_summary_builder.html", null ],
+      [ "luci::CircleBroadcastToSummaryBuilder", "classluci_1_1_circle_broadcast_to_summary_builder.html", null ],
       [ "luci::CircleCastSummaryBuilder", "classluci_1_1_circle_cast_summary_builder.html", null ],
       [ "luci::CircleConcatenationSummaryBuilder", "classluci_1_1_circle_concatenation_summary_builder.html", null ],
       [ "luci::CircleConstSummaryBuilder", "classluci_1_1_circle_const_summary_builder.html", null ],
@@ -2214,6 +2220,7 @@ var hierarchy =
         [ "luci::CircleBCQGatherGraphBuilder", "classluci_1_1_circle_b_c_q_gather_graph_builder.html", null ],
         [ "luci::CircleBatchMatMulGraphBuilder", "classluci_1_1_circle_batch_mat_mul_graph_builder.html", null ],
         [ "luci::CircleBatchToSpaceNDGraphBuilder", "classluci_1_1_circle_batch_to_space_n_d_graph_builder.html", null ],
+        [ "luci::CircleBroadcastToGraphBuilder", "classluci_1_1_circle_broadcast_to_graph_builder.html", null ],
         [ "luci::CircleCastGraphBuilder", "classluci_1_1_circle_cast_graph_builder.html", null ],
         [ "luci::CircleCeilGraphBuilder", "classluci_1_1_circle_ceil_graph_builder.html", null ],
         [ "luci::CircleConcatenationGraphBuilder", "classluci_1_1_circle_concatenation_graph_builder.html", null ],
@@ -3069,7 +3076,6 @@ var hierarchy =
       [ "luci_interpreter::kernels::GreaterEqual", "classluci__interpreter_1_1kernels_1_1_greater_equal.html", null ],
       [ "luci_interpreter::kernels::HardSwish", "classluci__interpreter_1_1kernels_1_1_hard_swish.html", null ],
       [ "luci_interpreter::kernels::If", "classluci__interpreter_1_1kernels_1_1_if.html", null ],
-      [ "luci_interpreter::kernels::If", "classluci__interpreter_1_1kernels_1_1_if.html", null ],
       [ "luci_interpreter::kernels::Less", "classluci__interpreter_1_1kernels_1_1_less.html", null ],
       [ "luci_interpreter::kernels::LessEqual", "classluci__interpreter_1_1kernels_1_1_less_equal.html", null ],
       [ "luci_interpreter::kernels::Log", "classluci__interpreter_1_1kernels_1_1_log.html", null ],
@@ -3360,6 +3366,7 @@ var hierarchy =
     [ "NdArrayDesc< N >", "struct_nd_array_desc.html", null ],
     [ "nnfw::cker::NdArrayDesc< N >", "structnnfw_1_1cker_1_1_nd_array_desc.html", null ],
     [ "luci_interpreter::test_kernel::NegTestDataBase", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html", [
+      [ "luci_interpreter::test_kernel::NegTestDataIfKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_if_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeDiv", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_div.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeFloorDiv", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_floor_div.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeFloorMod", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_floor_mod.html", null ],
@@ -3481,8 +3488,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -3632,6 +3639,7 @@ var hierarchy =
       [ "BatchToSpaceNDChef", "class_batch_to_space_n_d_chef.html", null ],
       [ "BidirectionalSequenceLSTMChef", "class_bidirectional_sequence_l_s_t_m_chef.html", null ],
       [ "BroadcastToChef", "class_broadcast_to_chef.html", null ],
+      [ "BroadcastToChef", "class_broadcast_to_chef.html", null ],
       [ "CastChef", "class_cast_chef.html", null ],
       [ "CeilChef", "class_ceil_chef.html", null ],
       [ "ConcatenationChef", "class_concatenation_chef.html", null ],
@@ -3761,6 +3769,7 @@ var hierarchy =
       [ "BatchMatMulV2ChefFactory", "struct_batch_mat_mul_v2_chef_factory.html", null ],
       [ "BatchToSpaceNDChefFactory", "struct_batch_to_space_n_d_chef_factory.html", null ],
       [ "BidirectionalSequenceLSTMChefFactory", "struct_bidirectional_sequence_l_s_t_m_chef_factory.html", null ],
+      [ "BroadcastToChefFactory", "struct_broadcast_to_chef_factory.html", null ],
       [ "BroadcastToChefFactory", "struct_broadcast_to_chef_factory.html", null ],
       [ "CastChefFactory", "struct_cast_chef_factory.html", null ],
       [ "CeilChefFactory", "struct_ceil_chef_factory.html", null ],
@@ -4386,6 +4395,7 @@ var hierarchy =
       [ "luci::FuseHorizontalFullyConnectedPass", "structluci_1_1_fuse_horizontal_fully_connected_pass.html", null ],
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
+      [ "luci::FuseMulWithConvPass", "structluci_1_1_fuse_mul_with_conv_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
       [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],
@@ -5254,6 +5264,7 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataFullyConnectedBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_fully_connected_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataGatherBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_gather_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataGatherNDBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_gather_n_d_base.html", null ],
+      [ "luci_interpreter::test_kernel::TestDataIfKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_if_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataL2NormalizationBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_l2_normalization_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataL2Pool2DBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_l2_pool2_d_base.html", null ],
       [ "luci_interpreter::test_kernel::TestDataLeakyReLUBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_leaky_re_l_u_base.html", null ],
@@ -5373,6 +5384,7 @@ var hierarchy =
       [ "tflchef::TFliteOpBatchMatMul", "classtflchef_1_1_t_flite_op_batch_mat_mul.html", null ],
       [ "tflchef::TFliteOpBatchToSpaceND", "classtflchef_1_1_t_flite_op_batch_to_space_n_d.html", null ],
       [ "tflchef::TFliteOpBidirectionalSequenceLSTM", "classtflchef_1_1_t_flite_op_bidirectional_sequence_l_s_t_m.html", null ],
+      [ "tflchef::TFliteOpBroadcastTo", "classtflchef_1_1_t_flite_op_broadcast_to.html", null ],
       [ "tflchef::TFliteOpCast", "classtflchef_1_1_t_flite_op_cast.html", null ],
       [ "tflchef::TFliteOpCeil", "classtflchef_1_1_t_flite_op_ceil.html", null ],
       [ "tflchef::TFliteOpConcatenation", "classtflchef_1_1_t_flite_op_concatenation.html", null ],

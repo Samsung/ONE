@@ -174,18 +174,18 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structloco_1_1_type_inference_rule.html#a6bc97eb28b00e5abd5e526dad38627c8">loco::TypeInferenceRule</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html#l00696">696</a> of file <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html">CircleTypeInferenceRule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  697</span>{</div>
-<div class="line"><span class="lineno">  698</span>  assert(node-&gt;dialect() == <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>());</div>
-<div class="line"><span class="lineno">  699</span> </div>
-<div class="line"><span class="lineno">  700</span>  TypeInferenceAlgorithm alg;</div>
-<div class="line"><span class="lineno">  701</span> </div>
-<div class="line"><span class="lineno">  702</span>  <span class="keyword">auto</span> circle_node = loco::must_cast&lt;const CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  703</span>  <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = circle_node-&gt;accept(&amp;alg);</div>
-<div class="line"><span class="lineno">  704</span>  assert(dtype != loco::DataType::Unknown);</div>
-<div class="line"><span class="lineno">  705</span> </div>
-<div class="line"><span class="lineno">  706</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  707</span>}</div>
+<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html#l00701">701</a> of file <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html">CircleTypeInferenceRule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  702</span>{</div>
+<div class="line"><span class="lineno">  703</span>  assert(node-&gt;dialect() == <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>());</div>
+<div class="line"><span class="lineno">  704</span> </div>
+<div class="line"><span class="lineno">  705</span>  TypeInferenceAlgorithm alg;</div>
+<div class="line"><span class="lineno">  706</span> </div>
+<div class="line"><span class="lineno">  707</span>  <span class="keyword">auto</span> circle_node = loco::must_cast&lt;const CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  708</span>  <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = circle_node-&gt;accept(&amp;alg);</div>
+<div class="line"><span class="lineno">  709</span>  assert(dtype != loco::DataType::Unknown);</div>
+<div class="line"><span class="lineno">  710</span> </div>
+<div class="line"><span class="lineno">  711</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  712</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_dialect_html_afb0f4a1160d1f4da59d7a65aee89986d"><div class="ttname"><a href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">luci::CircleDialect::get</a></div><div class="ttdeci">static loco::Dialect * get(void)</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2src_2_circle_dialect_8cpp_source.html#l00082">CircleDialect.cpp:82</a></div></div>
 <div class="ttc" id="anamespaceann_html_aae3a505782b54b21cb1168d3ca12c52f"><div class="ttname"><a href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">ann::dtype</a></div><div class="ttdeci">DType dtype(void)</div></div>
 </div><!-- fragment -->
@@ -223,10 +223,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structloco_1_1_type_inference_rule.html#a1acc8b529ac9f2a1949577b6e791d44e">loco::TypeInferenceRule</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html#l00691">691</a> of file <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html">CircleTypeInferenceRule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  692</span>{</div>
-<div class="line"><span class="lineno">  693</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>() == d;</div>
-<div class="line"><span class="lineno">  694</span>}</div>
+<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html#l00696">696</a> of file <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html">CircleTypeInferenceRule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  697</span>{</div>
+<div class="line"><span class="lineno">  698</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>() == d;</div>
+<div class="line"><span class="lineno">  699</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2src_2_circle_dialect_8cpp_source.html#l00082">luci::CircleDialect::get()</a>.</p>
 

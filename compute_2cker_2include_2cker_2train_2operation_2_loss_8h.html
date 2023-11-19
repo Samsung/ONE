@@ -95,7 +95,8 @@ $(document).ready(function(){initNavTree('compute_2cker_2include_2cker_2train_2o
   <div class="headertitle"><div class="title">Loss.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html">cker/Shape.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;numeric&gt;</code><br />
+<code>#include &quot;<a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html">cker/Shape.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html">cker/eigen/Utils.h</a>&quot;</code><br />
 </div>
 <p><a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Go to the source code of this file.</a></p>
@@ -117,6 +118,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">nnfw::cker::train::MSEGrad</a> (const <a class="el" href="struct_shape.html">Shape</a> &amp;y_pred_shape, const T *y_pred_data, const <a class="el" href="struct_shape.html">Shape</a> &amp;y_true_shape, const T *y_true_data, const <a class="el" href="struct_shape.html">Shape</a> &amp;grad_shape, T *grad_data)</td></tr>
 <tr class="separator:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab195cc845c65800e8d95fbb8502927b9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab195cc845c65800e8d95fbb8502927b9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ab195cc845c65800e8d95fbb8502927b9">nnfw::cker::train::checkValue</a> (const T *data, int <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, T min, T max)</td></tr>
+<tr class="separator:ab195cc845c65800e8d95fbb8502927b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0495315a8841c8dba065433123335c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3d0495315a8841c8dba065433123335c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a3d0495315a8841c8dba065433123335c">nnfw::cker::train::CategoricalCrossEntropy</a> (const T *y_pred_data, const T *y_true_data, T *output_data, const int batch_size, const int input_size)</td></tr>
+<tr class="separator:a3d0495315a8841c8dba065433123335c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a3b0b2b986d5b6294cfb6fcbb98f6948c">nnfw::cker::train::CategoricalCrossEntropyGrad</a> (const T *y_pred_data, const T *y_true_data, T *grad_data, const int batch_size, const int input_size)</td></tr>
+<tr class="separator:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

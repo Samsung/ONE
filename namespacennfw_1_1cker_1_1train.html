@@ -126,6 +126,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936">MSEGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_pred_shape, const T *y_pred_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;y_true_shape, const T *y_true_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, T *grad_data)</td></tr>
 <tr class="separator:a23fc8a7fd2e8068b5bb1b07a581e0936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab195cc845c65800e8d95fbb8502927b9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab195cc845c65800e8d95fbb8502927b9"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ab195cc845c65800e8d95fbb8502927b9">checkValue</a> (const T *data, int <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, T min, T max)</td></tr>
+<tr class="separator:ab195cc845c65800e8d95fbb8502927b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0495315a8841c8dba065433123335c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3d0495315a8841c8dba065433123335c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a3d0495315a8841c8dba065433123335c">CategoricalCrossEntropy</a> (const T *y_pred_data, const T *y_true_data, T *output_data, const int batch_size, const int input_size)</td></tr>
+<tr class="separator:a3d0495315a8841c8dba065433123335c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a3b0b2b986d5b6294cfb6fcbb98f6948c">CategoricalCrossEntropyGrad</a> (const T *y_pred_data, const T *y_true_data, T *grad_data, const int batch_size, const int input_size)</td></tr>
+<tr class="separator:a3b0b2b986d5b6294cfb6fcbb98f6948c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5383dd7006f6272ba54849c0bb709350"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a5383dd7006f6272ba54849c0bb709350">MaxPool2D</a> (const <a class="el" href="structnnfw_1_1cker_1_1_pool_params.html">PoolParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data, int *arg_max_index)</td></tr>
 <tr class="separator:a5383dd7006f6272ba54849c0bb709350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f474cf700e72f893fd4b9470d584db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ab1f474cf700e72f893fd4b9470d584db">MaxPool2DGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const int *arg_max_index, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
@@ -325,6 +334,226 @@ Functions</h2></td></tr>
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00097">nnfw::cker::Tensor::buffer</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00114">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00127">nnfw::cker::Tensor::flat()</a>, <a class="el" href="_eigen_support_8h_source.html#l00110">nnfw::cker::eigen_support::GetThreadPoolDevice()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00132">nnfw::cker::Shape::ReplaceWith()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00156">nnfw::cker::Tensor::scalar()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00096">nnfw::cker::Tensor::shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_adam_8cc_source.html#l00039">onert::backend::train::optimizer::Adam::applyGradient()</a>.</p>
+
+</div>
+</div>
+<a id="a3d0495315a8841c8dba065433123335c" name="a3d0495315a8841c8dba065433123335c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d0495315a8841c8dba065433123335c">&#9670;&#160;</a></span>CategoricalCrossEntropy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::CategoricalCrossEntropy </td>
+          <td>(</td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_pred_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_true_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>input_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00086">86</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keyword">const</span> T *y_prob_data = y_pred_data;</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ab195cc845c65800e8d95fbb8502927b9">checkValue</a>(y_pred_data, input_size * batch_size, <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0), <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(1)))</div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::CategoricalCrossEntropy: y_pred data is not logit data.&quot;</span>);</div>
+<div class="line"><span class="lineno">   94</span>  }</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>  std::vector&lt;T&gt; sum(batch_size, 0.f);</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch_size; ++b)</div>
+<div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordtype">int</span> b_offset = b * input_size;</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; input_size; ++i)</div>
+<div class="line"><span class="lineno">  101</span>    {</div>
+<div class="line"><span class="lineno">  102</span>      <span class="keywordflow">if</span> (y_true_data[b_offset + i] != 0)</div>
+<div class="line"><span class="lineno">  103</span>      {</div>
+<div class="line"><span class="lineno">  104</span>        sum[b] += -std::log(std::max(y_prob_data[b_offset + i], <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(1.0e-20))) *</div>
+<div class="line"><span class="lineno">  105</span>                  y_true_data[b_offset + i];</div>
+<div class="line"><span class="lineno">  106</span>      }</div>
+<div class="line"><span class="lineno">  107</span>    }</div>
+<div class="line"><span class="lineno">  108</span>  }</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[0] = std::accumulate(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a>.begin(), <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a>.end(), 0.f) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(batch_size);</div>
+<div class="line"><span class="lineno">  111</span>}</div>
+<div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">mir_caffe2::SupportedCaffe2OpType::sum</a></div><div class="ttdeci">@ sum</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_ab195cc845c65800e8d95fbb8502927b9"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#ab195cc845c65800e8d95fbb8502927b9">nnfw::cker::train::checkValue</a></div><div class="ttdeci">bool checkValue(const T *data, int size, T min, T max)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00075">Loss.h:75</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00113">part_eval_one.py:113</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00075">checkValue()</a>.</p>
+
+</div>
+</div>
+<a id="a3b0b2b986d5b6294cfb6fcbb98f6948c" name="a3b0b2b986d5b6294cfb6fcbb98f6948c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b0b2b986d5b6294cfb6fcbb98f6948c">&#9670;&#160;</a></span>CategoricalCrossEntropyGrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::CategoricalCrossEntropyGrad </td>
+          <td>(</td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_pred_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>y_true_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>grad_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>input_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00114">114</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ab195cc845c65800e8d95fbb8502927b9">checkValue</a>(y_pred_data, input_size * batch_size, <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0), <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(1)))</div>
+<div class="line"><span class="lineno">  118</span>  {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::CategoricalCrossEntropyGrad: y_pred data is not logit data.&quot;</span>);</div>
+<div class="line"><span class="lineno">  120</span>  }</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch_size; ++b)</div>
+<div class="line"><span class="lineno">  123</span>  {</div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordtype">int</span> b_offset = b * input_size;</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; input_size; ++i)</div>
+<div class="line"><span class="lineno">  126</span>    {</div>
+<div class="line"><span class="lineno">  127</span>      grad_data[b_offset + i] = -(y_true_data[b_offset + i] /</div>
+<div class="line"><span class="lineno">  128</span>                                  std::max(y_pred_data[b_offset + i], <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(1e-20)));</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span>  }</div>
+<div class="line"><span class="lineno">  131</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00075">checkValue()</a>.</p>
+
+</div>
+</div>
+<a id="ab195cc845c65800e8d95fbb8502927b9" name="ab195cc845c65800e8d95fbb8502927b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab195cc845c65800e8d95fbb8502927b9">&#9670;&#160;</a></span>checkValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool nnfw::cker::train::checkValue </td>
+          <td>(</td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00075">75</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (data[i] &gt; max || data[i] &lt; min)</div>
+<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   83</span>}</div>
+<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00086">CategoricalCrossEntropy()</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00114">CategoricalCrossEntropyGrad()</a>.</p>
 
 </div>
 </div>
@@ -1028,32 +1257,31 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00031">31</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// TODO Consider Reduction</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a>{1})</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSE: output_shape != Shape{1}&quot;</span>);</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (y_pred_shape != y_true_shape)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSE: y_pred_shape != y_true_shape&quot;</span>);</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_pred = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(y_pred_data, y_pred_shape);</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_true = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(y_true_data, y_true_shape);</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordtype">double</span> squared_sum = 0.0f;</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> c = 0; c &lt; (size_t)y_pred.cols(); ++c)</div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> r = 0; r &lt; (size_t)y_pred.rows(); ++r)</div>
-<div class="line"><span class="lineno">   47</span>    {</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordtype">double</span> error = y_pred.coeff(r, c) - y_true.coeff(r, c);</div>
-<div class="line"><span class="lineno">   49</span>      squared_sum += (error * error);</div>
-<div class="line"><span class="lineno">   50</span>    }</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = y_pred.cols() * y_pred.rows();</div>
-<div class="line"><span class="lineno">   54</span>  output_data[0] = (T)(squared_sum / <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">   55</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00033">33</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// TODO Consider Reduction</span></div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a>{1})</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSE: output_shape != Shape{1}&quot;</span>);</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (y_pred_shape != y_true_shape)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSE: y_pred_shape != y_true_shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_pred = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(y_pred_data, y_pred_shape);</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_true = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(y_true_data, y_true_shape);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordtype">double</span> squared_sum = 0.0f;</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> c = 0; c &lt; (size_t)y_pred.cols(); ++c)</div>
+<div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> r = 0; r &lt; (size_t)y_pred.rows(); ++r)</div>
+<div class="line"><span class="lineno">   49</span>    {</div>
+<div class="line"><span class="lineno">   50</span>      <span class="keywordtype">double</span> error = y_pred.coeff(r, c) - y_true.coeff(r, c);</div>
+<div class="line"><span class="lineno">   51</span>      squared_sum += (error * error);</div>
+<div class="line"><span class="lineno">   52</span>    }</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = y_pred.cols() * y_pred.rows();</div>
+<div class="line"><span class="lineno">   56</span>  output_data[0] = (T)(squared_sum / <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
-<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -1121,19 +1349,19 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00058">58</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (y_pred_shape != y_true_shape)</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != y_true_shape&quot;</span>);</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (y_pred_shape != grad_shape)</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != grad_shape&quot;</span>);</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
-<div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    grad_data[i] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(-2 * (y_true_data[i] - y_pred_data[i]) / <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">   70</span>  }</div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00060">60</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (y_pred_shape != y_true_shape)</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != y_true_shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (y_pred_shape != grad_shape)</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::MSEGrad: y_pred_shape != grad_shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    grad_data[i] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(-2 * (y_true_data[i] - y_pred_data[i]) / <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
+<div class="line"><span class="lineno">   73</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 

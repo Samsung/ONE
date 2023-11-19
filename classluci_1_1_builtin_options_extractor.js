@@ -12,6 +12,7 @@ var classluci_1_1_builtin_options_extractor =
     [ "visit", "classluci_1_1_builtin_options_extractor.html#a22f770261e1857e3b33d8cd72890a863", null ],
     [ "visit", "classluci_1_1_builtin_options_extractor.html#ad1b3a1aa92e1ac96690465900c0defc7", null ],
     [ "visit", "classluci_1_1_builtin_options_extractor.html#a03bd6fe257ba1f8869c625dcda9385c5", null ],
+    [ "visit", "classluci_1_1_builtin_options_extractor.html#a0be7ba8447c397259fd73fc13dccda94", null ],
     [ "visit", "classluci_1_1_builtin_options_extractor.html#aef6a3cc232e2ae6a3935790fa5b05dea", null ],
     [ "visit", "classluci_1_1_builtin_options_extractor.html#a4dd7d398faf6735aaeb3a2717b366a80", null ],
     [ "visit", "classluci_1_1_builtin_options_extractor.html#a1b3bd4ed8a7edffa5b0463f2cf69728b", null ],

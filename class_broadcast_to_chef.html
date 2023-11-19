@@ -118,6 +118,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6e0392b7c785c5bb5fcfb04e99656a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0ce7ca9c1b37cfe72f068289f6b1585"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; uint8_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_to_chef.html#ad0ce7ca9c1b37cfe72f068289f6b1585">custom_value</a> (<a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;fbb) const override</td></tr>
 <tr class="separator:ad0ce7ca9c1b37cfe72f068289f6b1585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b78261259e1222427a94030ec0c615e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_to_chef.html#a1b78261259e1222427a94030ec0c615e">BroadcastToChef</a> (const tflchef::Operation *operation)</td></tr>
+<tr class="separator:a1b78261259e1222427a94030ec0c615e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a826f7509d7f444aec783eca508ca404e"><td class="memItemLeft" align="right" valign="top">tflite::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_to_chef.html#a826f7509d7f444aec783eca508ca404e">code</a> (void) const override</td></tr>
+<tr class="separator:a826f7509d7f444aec783eca508ca404e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44e7639feab05195424b5affbc9e5ed9"><td class="memItemLeft" align="right" valign="top">tflite::BuiltinOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_to_chef.html#a44e7639feab05195424b5affbc9e5ed9">type</a> (void) const override</td></tr>
+<tr class="separator:a44e7639feab05195424b5affbc9e5ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0392b7c785c5bb5fcfb04e99656a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_broadcast_to_chef.html#a6e0392b7c785c5bb5fcfb04e99656a3b">value</a> (<a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;fbb) const override</td></tr>
+<tr class="separator:a6e0392b7c785c5bb5fcfb04e99656a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_struct_op_chef"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_struct_op_chef')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="struct_op_chef.html">OpChef</a></td></tr>
 <tr class="memitem:aeb92d15a21ac54d4d37d90c1a773ebf2 inherit pub_methods_struct_op_chef"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2">~OpChef</a> ()=default</td></tr>
 <tr class="separator:aeb92d15a21ac54d4d37d90c1a773ebf2 inherit pub_methods_struct_op_chef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8h_source.html#l00022">22</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1b78261259e1222427a94030ec0c615e" name="a1b78261259e1222427a94030ec0c615e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b78261259e1222427a94030ec0c615e">&#9670;&#160;</a></span>BroadcastToChef()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b78261259e1222427a94030ec0c615e">&#9670;&#160;</a></span>BroadcastToChef() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,9 +184,41 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a1b78261259e1222427a94030ec0c615e" name="a1b78261259e1222427a94030ec0c615e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b78261259e1222427a94030ec0c615e">&#9670;&#160;</a></span>BroadcastToChef() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BroadcastToChef::BroadcastToChef </td>
+          <td>(</td>
+          <td class="paramtype">const tflchef::Operation *&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html#l00025">25</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                                                              : _operation{operation}</div>
+<div class="line"><span class="lineno">   26</span>  {</div>
+<div class="line"><span class="lineno">   27</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   28</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a826f7509d7f444aec783eca508ca404e" name="a826f7509d7f444aec783eca508ca404e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a826f7509d7f444aec783eca508ca404e">&#9670;&#160;</a></span>code()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a826f7509d7f444aec783eca508ca404e">&#9670;&#160;</a></span>code() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,6 +245,37 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8h_source.html#l00031">31</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> tflite::BuiltinOperator_CUSTOM; }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a826f7509d7f444aec783eca508ca404e" name="a826f7509d7f444aec783eca508ca404e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a826f7509d7f444aec783eca508ca404e">&#9670;&#160;</a></span>code() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tflite::BuiltinOperator BroadcastToChef::code </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#a826d49bed868605eded3b8474a1d2e16">OpChef</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html#l00031">31</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> tflite::BuiltinOperator_BROADCAST_TO; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -263,7 +334,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a44e7639feab05195424b5affbc9e5ed9" name="a44e7639feab05195424b5affbc9e5ed9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44e7639feab05195424b5affbc9e5ed9">&#9670;&#160;</a></span>type()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e7639feab05195424b5affbc9e5ed9">&#9670;&#160;</a></span>type() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,8 +366,43 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a44e7639feab05195424b5affbc9e5ed9" name="a44e7639feab05195424b5affbc9e5ed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e7639feab05195424b5affbc9e5ed9">&#9670;&#160;</a></span>type() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tflite::BuiltinOptions BroadcastToChef::type </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#aa60293dfb6304252fe3723700739b7e1">OpChef</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html#l00033">33</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> tflite::BuiltinOptions_BroadcastToOptions;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_option_builder_8py_source.html#l00082">OptionBuilder.OptionBuilder::build()</a>.</p>
+
+</div>
+</div>
 <a id="a6e0392b7c785c5bb5fcfb04e99656a3b" name="a6e0392b7c785c5bb5fcfb04e99656a3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e0392b7c785c5bb5fcfb04e99656a3b">&#9670;&#160;</a></span>value()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0392b7c785c5bb5fcfb04e99656a3b">&#9670;&#160;</a></span>value() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,9 +435,39 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a6e0392b7c785c5bb5fcfb04e99656a3b" name="a6e0392b7c785c5bb5fcfb04e99656a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0392b7c785c5bb5fcfb04e99656a3b">&#9670;&#160;</a></span>value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt; BroadcastToChef::value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;&#160;</td>
+          <td class="paramname"><em>fbb</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc">OpChef</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>compiler/tflchef/core/src/CustomOp/<a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a></li>
+<li>compiler/tflchef/core/src/Op/<a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html">BroadcastTo.h</a></li>
 <li>compiler/tflchef/core/src/CustomOp/<a class="el" href="compiler_2tflchef_2core_2src_2_custom_op_2_broadcast_to_8cpp_source.html">BroadcastTo.cpp</a></li>
+<li>compiler/tflchef/core/src/Op/<a class="el" href="compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8cpp_source.html">BroadcastTo.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

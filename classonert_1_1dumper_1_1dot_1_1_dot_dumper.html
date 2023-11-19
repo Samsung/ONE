@@ -116,10 +116,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af5f65109b28c9c9e968d6002f1ebe35f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#af5f65109b28c9c9e968d6002f1ebe35f">dump</a> (const <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html">compiler::ILoweredGraph</a> &amp;lowered_graph, const std::string &amp;tag)</td></tr>
 <tr class="memdesc:af5f65109b28c9c9e968d6002f1ebe35f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump lowered graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set.  <a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#af5f65109b28c9c9e968d6002f1ebe35f">More...</a><br /></td></tr>
 <tr class="separator:af5f65109b28c9c9e968d6002f1ebe35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a92ad5619eb03b837b21dc40519b842"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#a3a92ad5619eb03b837b21dc40519b842">dump</a> (const <a class="el" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html">ir::train::TrainableGraph</a> &amp;graph, const std::string &amp;tag)</td></tr>
+<tr class="memdesc:a3a92ad5619eb03b837b21dc40519b842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set.  <a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#a3a92ad5619eb03b837b21dc40519b842">More...</a><br /></td></tr>
+<tr class="separator:a3a92ad5619eb03b837b21dc40519b842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00030">30</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00031">31</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="aab4b91404d692bd9a81d28accdaa291f" name="aab4b91404d692bd9a81d28accdaa291f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab4b91404d692bd9a81d28accdaa291f">&#9670;&#160;</a></span>Level</h2>
@@ -138,15 +141,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39" name="aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39"></a>ALL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00033">33</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>  {</div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">OFF</a> = 0,               <span class="comment">//&lt; Do not dump</span></div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702">ALL_BUT_CONSTANTS</a> = 1, <span class="comment">//&lt; Emit all operations and operands but constants</span></div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39">ALL</a> = 2                <span class="comment">//&lt; Emit all operations and operands</span></div>
-<div class="line"><span class="lineno">   38</span>  };</div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702">onert::dumper::dot::DotDumper::ALL_BUT_CONSTANTS</a></div><div class="ttdeci">@ ALL_BUT_CONSTANTS</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00036">DotDumper.h:36</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">onert::dumper::dot::DotDumper::OFF</a></div><div class="ttdeci">@ OFF</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00035">DotDumper.h:35</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39">onert::dumper::dot::DotDumper::ALL</a></div><div class="ttdeci">@ ALL</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00038">DotDumper.h:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00034">34</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>  {</div>
+<div class="line"><span class="lineno">   36</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">OFF</a> = 0,               <span class="comment">//&lt; Do not dump</span></div>
+<div class="line"><span class="lineno">   37</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702">ALL_BUT_CONSTANTS</a> = 1, <span class="comment">//&lt; Emit all operations and operands but constants</span></div>
+<div class="line"><span class="lineno">   38</span>    <a class="code hl_enumvalue" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39">ALL</a> = 2                <span class="comment">//&lt; Emit all operations and operands</span></div>
+<div class="line"><span class="lineno">   39</span>  };</div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fa52a1fa32004d379f4d156d902b296702">onert::dumper::dot::DotDumper::ALL_BUT_CONSTANTS</a></div><div class="ttdeci">@ ALL_BUT_CONSTANTS</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00037">DotDumper.h:37</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fae917deceabb6c7a66a65a9c0ce0c429d">onert::dumper::dot::DotDumper::OFF</a></div><div class="ttdeci">@ OFF</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00036">DotDumper.h:36</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291fafe362fc6e0d25c4b10ff581d60cbdb39">onert::dumper::dot::DotDumper::ALL</a></div><div class="ttdeci">@ ALL</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8h_source.html#l00039">DotDumper.h:38</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -175,14 +178,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00041">41</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>: _level{level} {}</div>
+<p class="definition">Definition at line <a class="el" href="_dot_dumper_8h_source.html#l00042">42</a> of file <a class="el" href="_dot_dumper_8h_source.html">DotDumper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>: _level{level} {}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="af5f65109b28c9c9e968d6002f1ebe35f" name="af5f65109b28c9c9e968d6002f1ebe35f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5f65109b28c9c9e968d6002f1ebe35f">&#9670;&#160;</a></span>dump() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f65109b28c9c9e968d6002f1ebe35f">&#9670;&#160;</a></span>dump() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,7 +239,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ad4d636398424bb657b53ec5f9304b7c8" name="ad4d636398424bb657b53ec5f9304b7c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4d636398424bb657b53ec5f9304b7c8">&#9670;&#160;</a></span>dump() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4d636398424bb657b53ec5f9304b7c8">&#9670;&#160;</a></span>dump() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -284,6 +287,53 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  214</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00060">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+
+</div>
+</div>
+<a id="a3a92ad5619eb03b837b21dc40519b842" name="a3a92ad5619eb03b837b21dc40519b842"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a92ad5619eb03b837b21dc40519b842">&#9670;&#160;</a></span>dump() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::dumper::dot::DotDumper::dump </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html">ir::train::TrainableGraph</a> &amp;&#160;</td>
+          <td class="paramname"><em>graph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>tag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dump graph information to dot file as tag name if "GRAPH_DOT_DUMP" is set. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">graph</td><td>TrainableGraph to be dumped </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tag</td><td>The name of dot file to be dumped </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_dot_dumper_8cc_source.html#l00231">231</a> of file <a class="el" href="_dot_dumper_8cc_source.html">DotDumper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>  <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">dump</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.graph(), tag);</div>
+<div class="line"><span class="lineno">  234</span>}</div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html_ad4d636398424bb657b53ec5f9304b7c8"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#ad4d636398424bb657b53ec5f9304b7c8">onert::dumper::dot::DotDumper::dump</a></div><div class="ttdeci">void dump(const ir::Graph &amp;graph, const std::string &amp;tag)</div><div class="ttdoc">Dump graph information to dot file as tag name if &quot;GRAPH_DOT_DUMP&quot; is set.</div><div class="ttdef"><b>Definition:</b> <a href="_dot_dumper_8cc_source.html#l00204">DotDumper.cc:204</a></div></div>
+<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="encodump_2src_2_dump_8cpp_source.html#l00177">dump()</a>.</p>
 
 </div>
 </div>
