@@ -59,7 +59,7 @@ void LessEqual::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp LessEqual Unsupported type.");
   }
 }
 

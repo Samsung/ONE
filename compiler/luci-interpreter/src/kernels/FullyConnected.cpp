@@ -56,7 +56,7 @@ void FullyConnected::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    throw std::runtime_error("luci-intp FullyConnected(1) Unsupported type.");
   }
 
   const Shape &input_shape = input()->shape();
@@ -101,7 +101,7 @@ void FullyConnected::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp FullyConnected(2) Unsupported type.");
   }
 }
 

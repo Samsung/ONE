@@ -115,7 +115,7 @@ void TransposeConv::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp TransposeConv Unsupported type.");
   }
 }
 

@@ -50,7 +50,7 @@ void Pow::execute() const
       eval<int32_t>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Pow Unsupported type.");
   }
 }
 

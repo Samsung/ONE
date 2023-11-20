@@ -40,7 +40,7 @@ void ExpandDims::configure()
       axis_value = static_cast<int32_t>(*getTensorData<int64_t>(axis()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp ExpandDims Unsupported type.");
   }
 
   const auto input_shape = input()->shape();

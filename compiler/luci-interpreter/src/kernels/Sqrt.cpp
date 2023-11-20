@@ -46,7 +46,7 @@ void Sqrt::execute() const
       break;
 
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Sqrt Unsupported type.");
   }
 }
 

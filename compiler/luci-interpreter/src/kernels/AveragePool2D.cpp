@@ -99,7 +99,7 @@ void AveragePool2D::execute() const
       evalSInt8();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp AveragePool2D Unsupported type.");
   }
 }
 

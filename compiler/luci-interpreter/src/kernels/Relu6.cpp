@@ -52,7 +52,7 @@ void Relu6::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Relu6 Unsupported type.");
   }
 }
 

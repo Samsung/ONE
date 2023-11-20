@@ -72,7 +72,7 @@ void Split::execute() const
       TF_LITE_SPLIT(uint8_t);
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Split Unsupported type.");
   }
 #undef TF_LITE_SPLIT
 }

@@ -50,7 +50,7 @@ void ShapeKernel::execute() const
       evalInt<int64_t>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Shape Unsupported type.");
   }
 }
 

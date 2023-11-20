@@ -66,7 +66,7 @@ void ResizeBilinear::execute() const
         getTensorData<int32_t>(size()), getTensorShape(output()), getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp ResizeBilinear Unsupported type.");
   }
 }
 

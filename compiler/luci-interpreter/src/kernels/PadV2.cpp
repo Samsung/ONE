@@ -100,7 +100,7 @@ void PadV2::execute() const
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp PadV2 Unsupported type.");
   }
 }
 

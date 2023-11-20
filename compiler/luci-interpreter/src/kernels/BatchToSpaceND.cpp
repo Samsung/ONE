@@ -96,7 +96,7 @@ void BatchToSpaceND::execute() const
         getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp BatchToSpaceND Unsupported type.");
   }
 }
 
