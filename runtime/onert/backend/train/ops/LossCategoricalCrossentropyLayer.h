@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
-#define __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__
+#define __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include <ops/ElementwiseActivationLayer.h>
-
-#include <exec/train/ITrainableFunction.h>
+#include "LossLayer.h"
+#include "../Tensor.h"
 
 namespace onert
 {
@@ -31,34 +29,24 @@ namespace train
 namespace ops
 {
 
-enum class LossType
-{
-  kMSE,
-  kCategoricalCrossEntropy,
-};
-
-enum class LossReductionType
-{
-  kSumOverBatchSize,
-  kSum,
-  kNone,
-};
-
-class LossLayer : public ::onert::exec::train::ITrainableFunction
+class LossCategoricalCrossentropyLayer : public LossLayer
 {
 public:
-  LossLayer();
+  LossCategoricalCrossentropyLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                  IPortableTensor *output, IPortableTensor *back_prop_y_pred,
-                 LossReductionType reduction_type);
+                 LossReductionType reduction_type, int32_t axis, float label_smoothing);
+  void forward(bool training) override;
+  void backward() override;
 
-protected:
-  const IPortableTensor *_y_pred;
-  const IPortableTensor *_y_true;
-  IPortableTensor *_output;
-  IPortableTensor *_back_prop_y_pred;
-  LossReductionType _reduction_type;
+private:
+  void categoricalCrossEntropyFloat32();
+  void categoricalCrossEntropyGradFloat32();
+
+private:
+  int32_t _axis;
+  float _label_smoothing;
 };
 
 } // namespace ops
@@ -66,4 +54,4 @@ protected:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
+#endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__

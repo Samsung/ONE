@@ -52,10 +52,25 @@ public:
     NONE,
   };
 
+  struct CategoricalCrossentropyParam
+  {
+    int32_t axis;
+    float label_smoothing;
+  };
+
+  struct SparseCrossentropyParam
+  {
+    int32_t igore_class;
+  };
+
   struct Param
   {
     Type op_type;
     ReductionType reduction_type;
+    union TypeParam {
+      CategoricalCrossentropyParam cce;
+      SparseCrossentropyParam sce;
+    } type_param;
     // TODO Add more params if necessary
     Param() : op_type(Type::MEAN_SQUARED_ERROR), reduction_type(ReductionType::SUM_OVER_BATCH_SIZE)
     {
