@@ -55,6 +55,17 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
   }
 }
 
+ops::LossReductionType convertLossReductionType(ir::operation::Loss::ReductionType type_ir)
+{
+  switch (type_ir)
+  {
+    case ir::operation::Loss::ReductionType::SUM_OVER_BATCH_SIZE:
+      return ops::LossReductionType::kSumOverBatchSize;
+    default:
+      throw std::runtime_error("train KernelGenerator : Not supported Loss Reduction type yet");
+  }
+}
+
 ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
 {
   switch (type_ir)
@@ -249,7 +260,8 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
     {
       auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
-      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);
+      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
+                    convertLossReductionType(node.param().reduction_type));
       _return_fn = std::move(fn);
       break;
     }

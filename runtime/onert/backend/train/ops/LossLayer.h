@@ -36,19 +36,28 @@ enum class LossType
   kMSE,
 };
 
+enum class LossReductionType
+{
+  kSumOverBatchSize,
+  kSum,
+  kNone,
+};
+
 class LossLayer : public ::onert::exec::train::ITrainableFunction
 {
 public:
   LossLayer();
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 LossReductionType reduction_type);
 
 protected:
   const IPortableTensor *_y_pred;
   const IPortableTensor *_y_true;
   IPortableTensor *_output;
   IPortableTensor *_back_prop_y_pred;
+  LossReductionType _reduction_type;
 };
 
 } // namespace ops

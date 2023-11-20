@@ -26,13 +26,15 @@ namespace ops
 {
 
 LossLayer::LossLayer()
-  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr)
+  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr),
+    _reduction_type(LossReductionType::kSumOverBatchSize)
 {
   // DO NOTHING
 }
 
 void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                          IPortableTensor *output, IPortableTensor *back_prop_y_pred)
+                          IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                          LossReductionType reduction_type)
 {
   assert(y_pred != nullptr);
   assert(y_true != nullptr);
@@ -43,6 +45,7 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
   _y_true = y_true;
   _output = output;
   _back_prop_y_pred = back_prop_y_pred;
+  _reduction_type = reduction_type;
 }
 
 } // namespace ops

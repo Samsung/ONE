@@ -34,7 +34,8 @@ public:
   LossMeanSquaredErrorLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 LossReductionType reduction_type);
   void forward(bool training) override;
   void backward() override;
 };

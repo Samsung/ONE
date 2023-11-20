@@ -45,11 +45,21 @@ public:
     CATEGORICAL_CROSSENTROPY
   };
 
+  enum class ReductionType
+  {
+    SUM_OVER_BATCH_SIZE,
+    SUM,
+    NONE,
+  };
+
   struct Param
   {
     Type op_type;
+    ReductionType reduction_type;
     // TODO Add more params if necessary
-    Param() : op_type(Type::MEAN_SQUARED_ERROR) {}
+    Param() : op_type(Type::MEAN_SQUARED_ERROR), reduction_type(ReductionType::SUM_OVER_BATCH_SIZE)
+    {
+    }
   };
 
 public:

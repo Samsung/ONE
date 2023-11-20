@@ -30,9 +30,10 @@ namespace ops
 
 void LossMeanSquaredErrorLayer::configure(const IPortableTensor *y_pred,
                                           const IPortableTensor *y_true, IPortableTensor *output,
-                                          IPortableTensor *back_prop_y_pred)
+                                          IPortableTensor *back_prop_y_pred,
+                                          LossReductionType reduction_type)
 {
-  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred);
+  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred, reduction_type);
 }
 
 void LossMeanSquaredErrorLayer::forward(bool)
