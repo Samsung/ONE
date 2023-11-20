@@ -39,56 +39,66 @@ void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
 
   _axis = axis;
   _label_smoothing = label_smoothing;
+
+  // TODO Consider broadcast
+  _scratch = std::make_unique<Tensor>(_y_pred->get_info(), _y_pred->layout());
+  _scratch->setBuffer(std::make_shared<basic::Allocator>(_y_pred->total_size()));
 }
 
 void LossCategoricalCrossentropyLayer::categoricalCrossEntropyFloat32()
 {
-  if (getNumberOfDimensions(_y_pred) == 1)
-  {
-    uint32_t input_size = getNumberOfElements(_y_pred);
-    nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
-                                               getBuffer<float>(_output), 1, input_size);
-  }
-  else if (getNumberOfDimensions(_y_pred) == 2)
-  {
-    uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
-    if (batch_size == 0)
-      throw std::runtime_error("batch_size should not be 0");
+  nnfw::cker::train::CategoricalCrossEntropy(getShape(_y_pred), getBuffer<float>(_y_pred),
+                                             getShape(_y_true), getBuffer<float>(_y_true),
+                                             getShape(_output), getBuffer<float>(_output),
+                                             getShape(_scratch.get()), getBuffer<float>(_scratch.get()),
+                                             getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
+  // if (getNumberOfDimensions(_y_pred) == 1)
+  // {
+  //   uint32_t input_size = getNumberOfElements(_y_pred);
+  //   nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
+  //                                              getBuffer<float>(_output), 1, input_size);
+  // }
+  // else if (getNumberOfDimensions(_y_pred) == 2)
+  // {
+  //   uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
+  //   if (batch_size == 0)
+  //     throw std::runtime_error("batch_size should not be 0");
 
-    uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
-    nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
-                                               getBuffer<float>(_output), batch_size, input_size);
-  }
-  else
-  {
-    throw std::runtime_error("LossLayer: unsupported Dimensions");
-  }
+  //   uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
+  //   nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
+  //                                              getBuffer<float>(_output), batch_size, input_size);
+  // }
+  // else
+  // {
+  //   throw std::runtime_error("LossLayer: unsupported Dimensions");
+  // }
 }
 
 void LossCategoricalCrossentropyLayer::categoricalCrossEntropyGradFloat32()
 {
-  if (getNumberOfDimensions(_y_pred) == 1)
-  {
-    uint32_t input_size = getNumberOfElements(_y_pred);
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred), 1,
-      input_size);
-  }
-  else if (getNumberOfDimensions(_y_pred) == 2)
-  {
-    uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
-    if (batch_size == 0)
-      throw std::runtime_error("batch_size should not be 0");
+  // NOTHING TO DO
+  // if (getNumberOfDimensions(_y_pred) == 1)
+  // {
+  //   uint32_t input_size = getNumberOfElements(_y_pred);
+  //   nnfw::cker::train::CategoricalCrossEntropyGrad(
+  //     getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred), 1,
+  //     input_size);
+  // }
+  // else if (getNumberOfDimensions(_y_pred) == 2)
+  // {
+  //   uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
+  //   if (batch_size == 0)
+  //     throw std::runtime_error("batch_size should not be 0");
 
-    uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred),
-      batch_size, input_size);
-  }
-  else
-  {
-    throw std::runtime_error("LossLayer: unsupported Dimensions");
-  }
+  //   uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
+  //   nnfw::cker::train::CategoricalCrossEntropyGrad(
+  //     getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred),
+  //     batch_size, input_size);
+  // }
+  // else
+  // {
+  //   throw std::runtime_error("LossLayer: unsupported Dimensions");
+  // }
 }
 
 void LossCategoricalCrossentropyLayer::forward(bool)

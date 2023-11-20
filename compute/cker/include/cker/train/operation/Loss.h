@@ -21,6 +21,8 @@
 
 #include "cker/Shape.h"
 #include "cker/eigen/Utils.h"
+#include "cker/eigen/xent_op.h"
+#include "cker/operation/Helper/BCast.h"
 
 namespace nnfw
 {
@@ -83,52 +85,162 @@ template <typename T> bool checkValue(const T *data, int size, T min, T max)
 }
 
 template <typename T>
-inline void CategoricalCrossEntropy(const T *y_pred_data, const T *y_true_data, T *output_data,
-                                    const int batch_size, const int input_size)
+inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_data,
+                                    const Shape &y_true_shape, const T *y_true_data,
+                                    const Shape &output_shape, T *output_data,
+                                    const Shape &, T *scratch_data,
+                                    const Shape &backprop_shape, T *backprop_data)
 {
-  const T *y_prob_data = y_pred_data;
+  Tensor logits;
+  Tensor labels;
+  Tensor scratch;
+  Tensor loss_out;
+  Tensor back_out;
 
-  if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
+  logits.shape.ReplaceWith(y_pred_shape);
+  logits.buffer = const_cast<T*>(y_pred_data);
+  const Tensor& logits_in = logits;
+
+  labels.shape.ReplaceWith(y_true_shape);
+  labels.buffer = const_cast<T*>(y_true_data);
+  const Tensor& labels_in = labels;
+
+  // TODO Support Broadcasting
+  nnfw::cker::BCast bcast(nnfw::cker::BCast::FromShape(y_pred_shape),
+                          nnfw::cker::BCast::FromShape(y_true_shape),
+                          /*fewer_dims_optimization=*/false);
+  // if (y_pred_size != y_true_size)
+  // {
+  //   if (!bcast.IsValid())
+  //   {
+  //     throw std::runtime_error("cker::CategoricalCrossEntropy: logits and labels must be broadcastable: logits_size=" +
+  //                               std::to_string(y_pred_shape.FlatSize()) + " label_size=" + std::to_string(y_true_shape.FlatSize()));
+  //   }
+  //   shape_in = nnfw::cker::BCast::ToShape(bcast.output_shape());
+  // }
+
+  Shape scratch_shape({y_pred_shape.Dims(0), 1});
+  std::vector<T> scratch_vec(scratch_shape.FlatSize());
+  scratch.shape.ReplaceWith(scratch_shape);
+  scratch.buffer = scratch_vec.data();
+
+  // scratch.shape.ReplaceWith(scratch_shape);
+  // scratch.buffer = scratch_data;
+
+  loss_out.shape.ReplaceWith(output_shape);
+  loss_out.buffer = output_data;
+
+  back_out.shape.ReplaceWith(backprop_shape);
+  back_out.buffer = backprop_data;
+
+  // UNUSED_RELEASE(scratch_shape);
+  UNUSED_RELEASE(scratch_data);
+
+  const auto shape_in_batches = y_pred_shape.Dims(0);
+  const auto shape_in_size = FlatSizeSkipDim(y_pred_shape, 0);
+  if (y_pred_shape.Dims(0) > 0)
   {
-    throw std::runtime_error("cker::CategoricalCrossEntropy: y_pred data is not logit data.");
+    const xent_op::CPUDevice &device = *eigen_support::GetThreadPoolDevice();
+    xent_op::functor::XentFunctor<xent_op::CPUDevice, T> functor;
+    functor(device, Eigen::DSizes<Eigen::DenseIndex, 2>(shape_in_batches, shape_in_size),
+          nnfw::cker::BCast::ToIndexArray<2>(bcast.x_bcast()),
+          nnfw::cker::BCast::ToIndexArray<2>(bcast.y_bcast()),
+          logits_in.template shaped<T, 2>(bcast.x_reshape()),
+          labels_in.template shaped<T, 2>(bcast.y_reshape()),
+          scratch.matrix<T>(), loss_out.vec<T>(), back_out.matrix<T>());
   }
 
-  std::vector<T> sum(batch_size, 0.f);
-  for (int b = 0; b < batch_size; ++b)
-  {
-    int b_offset = b * input_size;
-    for (int i = 0; i < input_size; ++i)
-    {
-      if (y_true_data[b_offset + i] != 0)
-      {
-        sum[b] += -std::log(std::max(y_prob_data[b_offset + i], static_cast<float>(1.0e-20))) *
-                  y_true_data[b_offset + i];
-      }
-    }
-  }
+  // const int batches = MatchingDim(y_pred_shape, 0, y_true_shape, 0);
+  // const int y_pred_size = FlatSizeSkipDim(y_pred_shape, 0);
+  // const int y_true_size = FlatSizeSkipDim(y_true_shape, 0);
 
-  output_data[0] = std::accumulate(sum.begin(), sum.end(), 0.f) / static_cast<float>(batch_size);
+  // Shape shape_in = y_pred_shape;
+
+  // nnfw::cker::BCast bcast(nnfw::cker::BCast::FromShape(y_pred_shape),
+  //                         nnfw::cker::BCast::FromShape(y_true_shape),
+  //                         /*fewer_dims_optimization=*/false);
+  // // if (y_pred_size != y_true_size)
+  // // {
+  // //   if (!bcast.IsValid())
+  // //   {
+  // //     throw std::runtime_error("cker::CategoricalCrossEntropy: logits and labels must be broadcastable: logits_size=" +
+  // //                               std::to_string(y_pred_shape.FlatSize()) + " label_size=" + std::to_string(y_true_shape.FlatSize()));
+  // //   }
+  // //   shape_in = nnfw::cker::BCast::ToShape(bcast.output_shape());
+  // // }
+
+  // const auto shape_in_batches = shape_in.Dims(0);
+  // const auto shape_in_size = FlatSizeSkipDim(shape_in, 0);
+
+  // eigen_support::ConstEigenMatrix y_pred_m(y_pred_data, batches, y_pred_size);
+  // eigen_support::ConstEigenMatrix y_true_m(y_true_data, batches, y_true_size);
+
+  // eigen_support::EigenMatrix scratc_m(scratch_data);
+  // eigen_support::
+  // eigen_support::EigenMatrix backp_m(backprop_data);
+
+  // // loss is 1-D (one per example), and size is batch_size
+  // if (batches > 0) {
+  //   functor::XentFunctor<Eigen::ThreadPoolDevice, T> functor;
+  //   functor(*eigen_support::GetThreadPoolDevice(), Eigen::DSizes<Eigen::DenseIndex, 2>(shape_in_batches, shape_in_size),
+  //           nnfw::cker::BCast::ToIndexArray<2>(bcast.x_bcast()),
+  //           nnfw::cker::BCast::ToIndexArray<2>(bcast.y_bcast()),
+  //           y_pred_m, y_true_m, scratch_data, output_data, backprop_data);
+  // }
+  // UNUSED_RELEASE(shape_in_batches);
+  // UNUSED_RELEASE(shape_in_size);
+  // UNUSED_RELEASE(output_data);
+  // UNUSED_RELEASE(scratch_data);
+  // UNUSED_RELEASE(backprop_data);
 }
 
-template <typename T>
-inline void CategoricalCrossEntropyGrad(const T *y_pred_data, const T *y_true_data, T *grad_data,
-                                        const int batch_size, const int input_size)
-{
-  if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
-  {
-    throw std::runtime_error("cker::CategoricalCrossEntropyGrad: y_pred data is not logit data.");
-  }
+// template <typename T>
+// inline void CategoricalCrossEntropy(const T *y_pred_data, const T *y_true_data, T *output_data,
+//                                     const int batch_size, const int input_size)
+// {
+//   const T *y_prob_data = y_pred_data;
 
-  for (int b = 0; b < batch_size; ++b)
-  {
-    int b_offset = b * input_size;
-    for (int i = 0; i < input_size; ++i)
-    {
-      grad_data[b_offset + i] = -(y_true_data[b_offset + i] /
-                                  std::max(y_pred_data[b_offset + i], static_cast<float>(1e-20)));
-    }
-  }
-}
+//   if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
+//   {
+//     throw std::runtime_error("cker::CategoricalCrossEntropy: y_pred data is not logit data.");
+//   }
+
+//   std::vector<T> sum(batch_size, 0.f);
+//   for (int b = 0; b < batch_size; ++b)
+//   {
+//     int b_offset = b * input_size;
+//     for (int i = 0; i < input_size; ++i)
+//     {
+//       if (y_true_data[b_offset + i] != 0)
+//       {
+//         sum[b] += -std::log(std::max(y_prob_data[b_offset + i], static_cast<float>(1.0e-20))) *
+//                   y_true_data[b_offset + i];
+//       }
+//     }
+//   }
+
+//   output_data[0] = std::accumulate(sum.begin(), sum.end(), 0.f) / static_cast<float>(batch_size);
+// }
+
+// template <typename T>
+// inline void CategoricalCrossEntropyGrad(const T *y_pred_data, const T *y_true_data, T *grad_data,
+//                                         const int batch_size, const int input_size)
+// {
+//   if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
+//   {
+//     throw std::runtime_error("cker::CategoricalCrossEntropyGrad: y_pred data is not logit data.");
+//   }
+
+//   for (int b = 0; b < batch_size; ++b)
+//   {
+//     int b_offset = b * input_size;
+//     for (int i = 0; i < input_size; ++i)
+//     {
+//       grad_data[b_offset + i] = -(y_true_data[b_offset + i] /
+//                                   std::max(y_pred_data[b_offset + i], static_cast<float>(1e-20)));
+//     }
+//   }
+// }
 
 } // namespace train
 } // namespace cker
