@@ -82,7 +82,7 @@ void MirrorPad::execute() const
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp MirrorPad Unsupported type.");
   }
 }
 

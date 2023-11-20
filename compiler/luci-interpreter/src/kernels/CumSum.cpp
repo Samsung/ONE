@@ -51,7 +51,7 @@ void CumSum::execute() const
                                     params().reverse, getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp CumSum Unsupported type.");
   }
 }
 

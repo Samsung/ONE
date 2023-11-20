@@ -142,7 +142,7 @@ void StridedSlice::execute() const
                                           getTensorData<int32_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp StridedSlice Unsupported type.");
   }
 }
 

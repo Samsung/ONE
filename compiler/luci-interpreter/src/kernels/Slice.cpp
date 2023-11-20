@@ -90,7 +90,7 @@ void Slice::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    throw std::runtime_error("luci-intp Slice Unsupported type.");
   }
 }
 

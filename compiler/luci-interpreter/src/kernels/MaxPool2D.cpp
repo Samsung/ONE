@@ -81,7 +81,7 @@ void MaxPool2D::execute() const
       evalSInt16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp MaxPool2D Unsupported type.");
   }
 }
 

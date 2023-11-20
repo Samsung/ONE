@@ -44,7 +44,7 @@ void Elu::execute() const
                                 getTensorShape(output()), getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Elu Unsupported type.");
   }
 }
 

@@ -58,7 +58,7 @@ void BatchMatMul::configure()
 
   // TODO Support non-float types
   if (lhs->element_type() != DataType::FLOAT32 || rhs->element_type() != DataType::FLOAT32)
-    throw std::runtime_error("Unsupported type.");
+    throw std::runtime_error("luci-intp BatchMatMul(1) Unsupported type.");
 
   LUCI_INTERPRETER_CHECK(lhs->element_type() == rhs->element_type());
 
@@ -180,7 +180,7 @@ void BatchMatMul::execute() const
                                         getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp BatchMatMul(2) Unsupported type.");
   }
 }
 

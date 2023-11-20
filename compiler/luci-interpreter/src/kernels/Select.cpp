@@ -64,7 +64,7 @@ void Select::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("Select: unsupported type.");
+      throw std::runtime_error("luci-intp Select unsupported type.");
   }
 }
 

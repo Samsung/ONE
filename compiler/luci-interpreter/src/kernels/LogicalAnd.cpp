@@ -46,7 +46,7 @@ void LogicalAnd::execute() const
       evalLogicalAnd();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp LogicalAnd Unsupported type.");
   }
 }
 

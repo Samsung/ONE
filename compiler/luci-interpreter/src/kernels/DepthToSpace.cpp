@@ -72,7 +72,7 @@ void DepthToSpace::execute() const
                                          getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported Type.");
+      throw std::runtime_error("luci-intp DepthToSpace Unsupported Type.");
   }
 }
 

@@ -139,7 +139,7 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
       qmax = std::numeric_limits<int16_t>::max();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp (calculateActivationRangeQuantized) Unsupported type.");
   }
 
   calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output, activation_min,

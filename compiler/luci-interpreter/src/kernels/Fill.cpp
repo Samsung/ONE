@@ -80,7 +80,7 @@ void Fill::configure()
       configureShape<int64_t>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Fill(1) Unsupported type.");
   }
 }
 
@@ -109,7 +109,7 @@ void Fill::execute() const
                                   getTensorShape(output()), getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Fill(2) Unsupported type.");
   }
 }
 

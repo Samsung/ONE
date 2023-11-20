@@ -42,7 +42,7 @@ void Abs::execute() const
       eval<float>();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Abs Unsupported type.");
   }
 }
 

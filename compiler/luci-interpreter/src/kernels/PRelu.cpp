@@ -103,7 +103,7 @@ void PRelu::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp PRelu Unsupported type.");
   }
 }
 

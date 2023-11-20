@@ -75,7 +75,7 @@ void Conv2D::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    throw std::runtime_error("luci-intp Conv2D(1) Unsupported type.");
   }
   LUCI_INTERPRETER_CHECK(output()->element_type() == input()->element_type());
 
@@ -143,7 +143,7 @@ void Conv2D::execute() const
         evalFloat();
         break;
       }
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Conv2D(2) Unsupported type.");
     case DataType::U8:
       if (filter()->scales().size() == 1)
       {
@@ -164,7 +164,7 @@ void Conv2D::execute() const
       evalQuantizedS16();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Conv2D(3) Unsupported type.");
   }
 }
 

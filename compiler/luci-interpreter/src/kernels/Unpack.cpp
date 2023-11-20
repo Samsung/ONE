@@ -76,7 +76,7 @@ void Unpack::execute() const
     case DataType::U8:
       return executeImpl<uint8_t>();
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Unpack Unsupported type.");
   }
 }
 

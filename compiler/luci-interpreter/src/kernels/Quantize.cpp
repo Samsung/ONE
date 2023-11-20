@@ -132,7 +132,7 @@ void Quantize::execute() const
           break;
         }
         default:
-          throw std::runtime_error("Unsupported type.");
+          throw std::runtime_error("luci-intp Quantize(1) Unsupported type.");
       }
       break;
     }
@@ -152,7 +152,7 @@ void Quantize::execute() const
       break;
     }
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Quantize(2) Unsupported type.");
   }
 }
 

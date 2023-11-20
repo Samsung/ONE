@@ -150,7 +150,7 @@ void ReduceProd::execute() const
       break;
     // TODO Support quantized kernels
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp ReduceProd Unsupported type.");
   }
 }
 

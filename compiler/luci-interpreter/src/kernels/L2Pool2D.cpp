@@ -80,7 +80,7 @@ void L2Pool2D::execute() const
                                    getTensorData<float>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp L2Pool2D Unsupported type.");
   }
 }
 

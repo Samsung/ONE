@@ -59,7 +59,7 @@ void Equal::execute() const
       evalQuantized();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Equal Unsupported type.");
   }
 }
 

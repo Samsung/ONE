@@ -95,7 +95,7 @@ void SpaceToBatchND::execute() const
         getTensorData<uint8_t>(output()));
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp ShapeToBatchND Unsupported type.");
   }
 }
 

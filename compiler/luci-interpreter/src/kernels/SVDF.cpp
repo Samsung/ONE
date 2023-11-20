@@ -84,7 +84,7 @@ void SVDF::configure()
   }
   else
   {
-    throw std::runtime_error("Unsupported type.");
+    throw std::runtime_error("luci-intp SVDF Unsupported type.");
   }
 
   // Check all the parameters of tensor match within themselves and match the

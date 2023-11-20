@@ -57,7 +57,7 @@ void Cos::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("Unsupported type.");
+      throw std::runtime_error("luci-intp Cos Unsupported type.");
   }
 }
 
