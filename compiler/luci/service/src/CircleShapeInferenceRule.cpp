@@ -483,7 +483,10 @@ loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
   loco::Dimension y_rhs = adj_y ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
 
   if (x_rhs.known() && y_lhs.known() && not(x_rhs == y_lhs))
-    INTERNAL_EXN("x_rhs and y_lhs should be same");
+  {
+    LOGGER(l);
+    INFO(l) << "x_rhs and y_lhs should be same" << std::endl;
+  }
 
   uint32_t out_rank = output_shape.rank();
   output_shape.dim(out_rank - 2) = x_lhs;
