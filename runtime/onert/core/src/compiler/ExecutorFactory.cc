@@ -258,6 +258,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
         data.graph->addOutput(ind);
     });
+    VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
+                             << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
 
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
