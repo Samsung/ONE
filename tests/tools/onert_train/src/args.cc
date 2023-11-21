@@ -275,9 +275,6 @@ void Args::Parse(const int argc, char **argv)
       throw boost::program_options::error(
         std::string("Require one of options modelfile, nnpackage, or path."));
 
-    if (!vm.count("data_length"))
-      throw boost::program_options::error(std::string("data_length option is mandatory."));
-
     auto is_given = [&vm](const std::string &s) -> bool { return not vm[s].defaulted(); };
 
     if (is_given("batch_size") && is_given("learning_rate") && is_given("loss") &&

@@ -71,7 +71,10 @@ int main(const int argc, char **argv)
 
     measure.run(PhaseType::MODEL_LOAD, [&]() {
       if (args.useSingleModel() && model_extension == "circle+")
+      {
         nnfw_load_training_model_from_modelfile(session, model_file.c_str(), &tri);
+        tinfo_loaded = true;
+      }
       else if (args.useSingleModel())
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, model_file.c_str()));
       else
@@ -140,7 +143,7 @@ int main(const int argc, char **argv)
         }
       };
 
-      std::cout << "==== Training Paramter ====";
+      std::cout << "==== Training Paramter ====" << std::endl;
       std::cout << "batch size    : " << tri.batch_size << std::endl;
       std::cout << "learning rate : " << tri.learning_rate << std::endl;
       std::cout << "loss func     : " << tri.loss << "(" << lossToStr(tri.loss) << ")" << std::endl;
