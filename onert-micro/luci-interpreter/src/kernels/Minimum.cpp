@@ -81,7 +81,7 @@ void execute_kernel_CircleMinimum(const circle::Operator *cur_op, BaseRuntimeGra
       }
       else
       {
-        luci_interpreter_pal::BroadcastMinimum4DSlow(
+        luci_interpreter_pal::BroadcastMinimum4DSlow<float>(
           input_shape1, kernels::getTensorData<float>(input_data1), input_shape2,
           kernels::getTensorData<float>(input_data2), output_shape,
           kernels::getTensorData<float>(output_data));
