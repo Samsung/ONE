@@ -45,24 +45,29 @@ void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
   _back_prop_output = back_prop_output;
 }
 
-void SoftMaxLayer::forward(bool) { cpu::ops::SoftMaxLayer::run(); }
+void SoftMaxLayer::forward(bool)
+{
+  // cpu::ops::SoftMaxLayer::run();
+  memcpy(_output->buffer(), _input->buffer(), _output->total_size());
+}
 
 void SoftMaxLayer::backward()
 {
-  assert(_back_prop_output->data_type() == _input->data_type());
-  switch (_back_prop_output->data_type())
-  {
-    case OperandType::FLOAT32:
-    {
-      nnfw::cker::train::SoftMaxGrad(
-        getShape(_output), getBuffer<float>(_output), getShape(_back_prop_output),
-        getBuffer<float>(_back_prop_output), getShape(_back_prop_input),
-        getBuffer<float>(_back_prop_input));
-      break;
-    }
-    default:
-      throw std::runtime_error("train SoftMaxLayer: unsupported data type");
-  }
+  memcpy(_back_prop_input->buffer(), _back_prop_output->buffer(), _back_prop_input->total_size());
+  // assert(_back_prop_output->data_type() == _input->data_type());
+  // switch (_back_prop_output->data_type())
+  // {
+  //   case OperandType::FLOAT32:
+  //   {
+  //     nnfw::cker::train::SoftMaxGrad(
+  //       getShape(_output), getBuffer<float>(_output), getShape(_back_prop_output),
+  //       getBuffer<float>(_back_prop_output), getShape(_back_prop_input),
+  //       getBuffer<float>(_back_prop_input));
+  //     break;
+  //   }
+  //   default:
+  //     throw std::runtime_error("train SoftMaxLayer: unsupported data type");
+  // }
 }
 
 } // namespace ops

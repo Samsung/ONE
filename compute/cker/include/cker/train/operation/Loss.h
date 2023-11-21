@@ -105,6 +105,8 @@ inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_d
   labels.buffer = const_cast<T*>(y_true_data);
   const Tensor& labels_in = labels;
 
+  Shape shape_in(logits_in.shape);
+
   // TODO Support Broadcasting
   nnfw::cker::BCast bcast(nnfw::cker::BCast::FromShape(y_pred_shape),
                           nnfw::cker::BCast::FromShape(y_true_shape),
@@ -119,13 +121,10 @@ inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_d
   //   shape_in = nnfw::cker::BCast::ToShape(bcast.output_shape());
   // }
 
-  Shape scratch_shape({y_pred_shape.Dims(0), 1});
+  Shape scratch_shape({shape_in.Dims(0), 1});
   std::vector<T> scratch_vec(scratch_shape.FlatSize());
   scratch.shape.ReplaceWith(scratch_shape);
   scratch.buffer = scratch_vec.data();
-
-  // scratch.shape.ReplaceWith(scratch_shape);
-  // scratch.buffer = scratch_data;
 
   loss_out.shape.ReplaceWith(output_shape);
   loss_out.buffer = output_data;
@@ -136,9 +135,9 @@ inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_d
   // UNUSED_RELEASE(scratch_shape);
   UNUSED_RELEASE(scratch_data);
 
-  const auto shape_in_batches = y_pred_shape.Dims(0);
-  const auto shape_in_size = FlatSizeSkipDim(y_pred_shape, 0);
-  if (y_pred_shape.Dims(0) > 0)
+  const auto shape_in_batches = shape_in.Dims(0);
+  const auto shape_in_size = FlatSizeSkipDim(shape_in, 0);
+  if (shape_in.Dims(0) > 0)
   {
     const xent_op::CPUDevice &device = *eigen_support::GetThreadPoolDevice();
     xent_op::functor::XentFunctor<xent_op::CPUDevice, T> functor;
