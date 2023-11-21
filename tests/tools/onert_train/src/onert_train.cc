@@ -199,6 +199,9 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
+    // prepare execution
+
+    // TODO When nnfw_{prepare|run} are failed, can't catch the time
     measure.run(PhaseType::PREPARE,
                 [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
 
