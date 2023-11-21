@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#include "ir/operation/Loss.h"
-#include "ir/OperationVisitor.h"
+#ifndef __ONERT_IR_TRAIN_LOSS_INFO_H__
+#define __ONERT_IR_TRAIN_LOSS_INFO_H__
 
-#include <unordered_map>
+#include "LossCode.h"
 
 namespace onert
 {
 namespace ir
 {
-namespace operation
+namespace train
 {
 
-void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
-
-Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-  : Operation{OperandConstraint::createAtLeast(2u), inputs, outputs}
+struct LossInfo
 {
-  assert(inputs.size() == 2);
-}
+  LossCode loss_code;
+  // TODO Add properties
+};
 
-} // namespace operation
+} // namespace train
 } // namespace ir
 } // namespace onert
+
+#endif // __ONERT_IR_TRAIN_LOSS_INFO_H__

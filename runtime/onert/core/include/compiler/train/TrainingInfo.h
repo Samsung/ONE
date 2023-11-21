@@ -18,7 +18,7 @@
 #define __ONERT_COMPILER_TRAIN_TRAINING_INFO_H__
 
 #include "ir/Index.h"
-#include "ir/operation/Loss.h"
+#include "ir/train/LossInfo.h"
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
 
@@ -28,12 +28,6 @@ namespace compiler
 {
 namespace train
 {
-
-struct LossInfo
-{
-  ir::operation::Loss::Type type;
-  // TODO Add members for loss
-};
 
 class TrainingInfo
 {
@@ -47,8 +41,8 @@ public:
 
   uint32_t batchSize() const { return _batch_size; }
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
-  const LossInfo &lossInfo() const { return _loss_info; }
-  void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
+  const ir::train::LossInfo &lossInfo() const { return _loss_info; }
+  void setLossInfo(const ir::train::LossInfo &loss_info) { _loss_info = loss_info; }
   const ir::train::OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   void setOptimizerInfo(const ir::train::OptimizerInfo &optimizer_info)
   {
@@ -56,7 +50,7 @@ public:
   }
 
 private:
-  LossInfo _loss_info{ir::operation::Loss::Type::MEAN_SQUARED_ERROR};
+  ir::train::LossInfo _loss_info{ir::train::LossCode::Invalid};
   ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
   uint32_t _batch_size = 0;
 };

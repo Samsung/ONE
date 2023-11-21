@@ -14,26 +14,35 @@
  * limitations under the License.
  */
 
-#include "ir/operation/Loss.h"
-#include "ir/OperationVisitor.h"
+#ifndef __ONERT_IR_TRAIN_LOSS_CODE_H__
+#define __ONERT_IR_TRAIN_LOSS_CODE_H__
 
-#include <unordered_map>
+#include <string>
 
 namespace onert
 {
 namespace ir
 {
-namespace operation
+namespace train
 {
 
-void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
-
-Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-  : Operation{OperandConstraint::createAtLeast(2u), inputs, outputs}
+enum class LossCode
 {
-  assert(inputs.size() == 2);
-}
+  Invalid,                //< Invalid
+  MeanSquaredError,       //< MeanSquaredError optimizer
+  CategoricalCrossentropy //< CategoricalCrossentropy optimizer
+};
 
-} // namespace operation
+/**
+ * @brief Convert the optimizer code to the name
+ *
+ * @param opcode The optimizer code
+ * @return The name of the optimizer
+ */
+std::string toString(LossCode opcode);
+
+} // namespace train
 } // namespace ir
 } // namespace onert
+
+#endif // __ONERT_IR_TRAIN_LOSS_CODE_H__

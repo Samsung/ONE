@@ -58,7 +58,7 @@ void TrainableOperationConverter::visit(const ir::operation::FullyConnected &nod
 
 void TrainableOperationConverter::visit(const ir::operation::Loss &node)
 {
-  _return_op = std::make_unique<ir::train::operation::Loss>(node);
+  _return_op = std::make_unique<ir::train::operation::Loss>(node, _training_info->lossInfo());
 }
 
 void TrainableOperationConverter::visit(const ir::operation::Permute &node)

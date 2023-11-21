@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "ir/operation/Loss.h"
-#include "ir/OperationVisitor.h"
+#include "ir/train/LossCode.h"
 
 #include <unordered_map>
 
@@ -23,17 +22,18 @@ namespace onert
 {
 namespace ir
 {
-namespace operation
+namespace train
 {
 
-void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
-
-Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-  : Operation{OperandConstraint::createAtLeast(2u), inputs, outputs}
+std::string toString(LossCode code)
 {
-  assert(inputs.size() == 2);
+  static const std::unordered_map<LossCode, const char *> map{
+    {LossCode::Invalid, "Invalid"},
+    {LossCode::MeanSquaredError, "MeanSquaredError"},
+    {LossCode::CategoricalCrossentropy, "CategoricalCrossentropy"}};
+  return map.at(code);
 }
 
-} // namespace operation
+} // namespace train
 } // namespace ir
 } // namespace onert
