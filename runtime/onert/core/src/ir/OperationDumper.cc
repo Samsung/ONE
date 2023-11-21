@@ -166,10 +166,11 @@ void OperationDumper::visit(const Fill &node)
 
 void OperationDumper::visit(const FullyConnected &node)
 {
-  std::string inputs =
-    "Weight(" + std::to_string(node.getInputs().at(FullyConnected::Input::WEIGHT).value()) +
-    ") Bias(" + std::to_string(node.getInputs().at(FullyConnected::Input::BIAS).value()) + ")";
-  dumpUnaryInputOp(node, inputs);
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(ArgMinMax::INPUT) << ") Weight("
+               << node.getInputs().at(FullyConnected::Input::WEIGHT) << ") Bias("
+               << node.getInputs().at(FullyConnected::Input::BIAS) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
 void OperationDumper::visit(const Gather &node)
