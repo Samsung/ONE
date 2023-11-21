@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
-#define __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPS_LOSS_MEANSQUAREDERROR_LAYER_H__
+#define __ONERT_BACKEND_TRAIN_OPS_LOSS_MEANSQUAREDERROR_LAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include <ops/ElementwiseActivationLayer.h>
-
-#include <exec/train/ITrainableFunction.h>
+#include "LossLayer.h"
 
 namespace onert
 {
@@ -31,24 +28,15 @@ namespace train
 namespace ops
 {
 
-enum class LossType
-{
-  kMSE,
-};
-
-class LossLayer : public ::onert::exec::train::ITrainableFunction
+class LossMeanSquaredErrorLayer : public LossLayer
 {
 public:
-  LossLayer();
+  LossMeanSquaredErrorLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                  IPortableTensor *output, IPortableTensor *back_prop_y_pred);
-
-protected:
-  const IPortableTensor *_y_pred;
-  const IPortableTensor *_y_true;
-  IPortableTensor *_output;
-  IPortableTensor *_back_prop_y_pred;
+  void forward(bool training) override;
+  void backward() override;
 };
 
 } // namespace ops
@@ -56,4 +44,4 @@ protected:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
+#endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_MEANSQUAREDERROR_LAYER_H__

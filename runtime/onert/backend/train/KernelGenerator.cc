@@ -19,7 +19,7 @@
 #include "ops/ConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/FullyConnectedLayer.h"
-#include "ops/LossLayer.h"
+#include "ops/LossMeanSquaredErrorLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
@@ -50,17 +50,6 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
   {
     case ir::operation::ElementwiseActivation::Type::RELU:
       return ops::ElementwiseActivationType::kReLU;
-    default:
-      throw std::runtime_error("train KernelGenerator : Not supported operation yet");
-  }
-}
-
-ops::LossType convertLossType(ir::operation::Loss::Type type_ir)
-{
-  switch (type_ir)
-  {
-    case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
-      return ops::LossType::kMSE;
     default:
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
@@ -252,14 +241,23 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
 
   auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
-  auto fn = std::make_unique<ops::LossLayer>();
 
-  fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                convertLossType(node.param().op_type));
+  auto op_type = node.param().op_type;
 
-  _return_fn = std::move(fn);
-
-  UNUSED_RELEASE(convertPoolType);
+  switch (op_type)
+  {
+    case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
+    {
+      auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
+      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);
+      _return_fn = std::move(fn);
+      break;
+    }
+    case ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY:
+    default:
+      throw std::runtime_error("LossLayer: unsupported loss type");
+      break;
+  }
 }
 
 void KernelGenerator::visit(const ir::train::operation::Pool2D &node)

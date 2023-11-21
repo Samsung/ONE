@@ -15,9 +15,6 @@
  */
 
 #include "LossLayer.h"
-#include "OperationUtils.h"
-
-#include <cker/train/operation/Loss.h>
 
 namespace onert
 {
@@ -29,68 +26,23 @@ namespace ops
 {
 
 LossLayer::LossLayer()
-  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr),
-    _loss_type(LossType::kMSE)
+  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr)
 {
   // DO NOTHING
 }
 
 void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                          IPortableTensor *output, IPortableTensor *back_prop_y_pred,
-                          LossType loss_type)
+                          IPortableTensor *output, IPortableTensor *back_prop_y_pred)
 {
   assert(y_pred != nullptr);
   assert(y_true != nullptr);
   assert(output != nullptr);
   assert(back_prop_y_pred != nullptr);
-  switch (loss_type)
-  {
-    case LossType::kMSE:
-      break;
-    default:
-      throw std::runtime_error("LossLayer: unsupported loss type");
-  }
 
   _y_pred = y_pred;
   _y_true = y_true;
   _output = output;
   _back_prop_y_pred = back_prop_y_pred;
-  _loss_type = loss_type;
-}
-
-void LossLayer::forward(bool)
-{
-  // TODO Implement this
-  switch (_loss_type)
-  {
-    case LossType::kMSE:
-      if (_y_pred->data_type() == OperandType::FLOAT32)
-      {
-        nnfw::cker::train::MSE(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
-                               getBuffer<float>(_y_true), getShape(_output),
-                               getBuffer<float>(_output));
-      }
-      break;
-    default:
-      throw std::runtime_error("LossLayer: unsupported loss type");
-  }
-}
-
-void LossLayer::backward()
-{
-  switch (_loss_type)
-  {
-    case LossType::kMSE:
-      if (_y_pred->data_type() == OperandType::FLOAT32)
-      {
-        nnfw::cker::train::MSEGrad(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
-                                   getBuffer<float>(_y_true), getShape(_back_prop_y_pred),
-                                   getBuffer<float>(_back_prop_y_pred));
-      }
-      break;
-    default:
-      throw std::runtime_error("LossLayer: unsupported loss type");
-  }
 }
 
 } // namespace ops
