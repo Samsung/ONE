@@ -43,7 +43,7 @@ void Linear::dump(const compiler::ILoweredGraph &lowered_graph,
     std::istringstream iss{dumper::text::formatOperation(lowered_graph.graph(), ind)};
     std::string line;
     while (std::getline(iss, line))
-      VERBOSE(GraphDumper) << line << std::endl;
+      VERBOSE(Linearize) << line << std::endl;
   }
 }
 
