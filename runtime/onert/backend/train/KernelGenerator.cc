@@ -255,6 +255,7 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
 
   auto op_type = node.param().op_type;
+  auto reduction_type = node.param().reduction_type;
   auto type_param = node.param().type_param;
 
   switch (op_type)
@@ -263,7 +264,7 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     {
       auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    convertLossReductionType(node.param().reduction_type));
+                    convertLossReductionType(reduction_type));
       _return_fn = std::move(fn);
       break;
     }
@@ -271,7 +272,7 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     {
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    convertLossReductionType(node.param().reduction_type), type_param.cce.axis,
+                    convertLossReductionType(reduction_type), type_param.cce.axis,
                     type_param.cce.label_smoothing);
       _return_fn = std::move(fn);
       break;

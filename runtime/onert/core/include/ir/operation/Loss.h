@@ -49,7 +49,7 @@ public:
   {
     SUM_OVER_BATCH_SIZE,
     SUM,
-    NONE,
+    NONE, // TODO Remove this
   };
 
   struct CategoricalCrossentropyParam

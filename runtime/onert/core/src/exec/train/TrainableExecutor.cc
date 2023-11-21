@@ -19,6 +19,7 @@
 #include "ruy/profiler/instrumentation.h"
 #endif
 
+#include <numeric>
 #include <misc/polymorphic_downcast.h>
 
 namespace onert
@@ -195,8 +196,17 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
   if (loss_ind.undefined())
     throw std::runtime_error{"Loss " + std::to_string(loss_ind.value()) + " is not defined."};
   backend::ITensor *tensor = _tensor_regs.getITensor(loss_ind);
-  auto loss_buf = reinterpret_cast<float *>(tensor->buffer());
-  return *loss_buf;
+  float sum = 0.f;
+  for (uint64_t i = 0; i < tensor->getShape().num_elements(); i++)
+  {
+    sum += reinterpret_cast<float*>(tensor->buffer())[i];
+  }
+  return sum / tensor->getShape().num_elements();
+  // std::vector<float> loss_data(tensor->buffer(), tensor->buffer() + tensor->getShape().num_elements());
+  // auto loss = std::accumulate(loss_data.begin(), loss_data.end(), 0);
+  // return loss;
+  // auto loss_buf = reinterpret_cast<float *>(tensor->buffer());
+  // return *loss_buf;
 }
 
 } // namespace train
