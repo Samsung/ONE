@@ -187,7 +187,7 @@ public:
     return _metadatas.find(name) != _metadatas.end();
   }
 
-  std::shared_ptr<const ir::Data> get_metadata(const std::string name)
+  std::shared_ptr<const ir::Data> get_metadata(const std::string name) const
   {
     return _metadatas.at(name);
   }

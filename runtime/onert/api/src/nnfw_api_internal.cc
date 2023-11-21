@@ -1179,20 +1179,10 @@ NNFW_STATUS nnfw_session::train_load_traininfo(nnfw_train_info *tinfo)
     return NNFW_STATUS_ERROR;
   }
 
-  const auto metadata_name = std::string(traininfo_metadata_name);
-
   auto model = _nnpkg->primary_model();
-  if (not model->is_metadata_exist(metadata_name))
-  {
-    std::cerr << "Error during nnfw_session_train_load_traininfo";
-    std::cerr << "Model doesn' have metadata named " + metadata_name;
-    return NNFW_STATUS_NO_ERROR;
-  }
-
-  auto const data = model->get_metadata(metadata_name);
 
   std::unique_ptr<onert::ir::train::TrainingInfo> ir_tinfo =
-    onert::traininfo_loader::loadTrainingInfo(data);
+    onert::traininfo_loader::loadTrainingInfo(model);
   {
     tinfo->learning_rate = ir_tinfo->optimizerInfo().learning_rate;
     tinfo->batch_size = ir_tinfo->batchSize();

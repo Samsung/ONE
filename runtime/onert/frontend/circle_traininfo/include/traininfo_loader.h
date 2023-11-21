@@ -18,14 +18,14 @@
 #define __CIRCLE_TRAININFO_LOADER_H__
 
 #include "ir/train/TrainingInfo.h"
-#include "ir/Data.h"
+#include "ir/Model.h"
 
 namespace onert
 {
 namespace traininfo_loader
 {
 
-std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(std::shared_ptr<const ir::Data> data);
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(std::shared_ptr<const ir::Model> model);
 
 } // namespace traininfo_loader
 } // namespace onert

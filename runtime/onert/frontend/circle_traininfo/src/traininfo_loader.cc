@@ -26,6 +26,8 @@ namespace traininfo_loader
 namespace
 {
 
+const std::string TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+
 ir::train::OptimizerInfo loadOptimizerInfo(const circle::ModelTraining *circle_model)
 {
 
@@ -72,8 +74,14 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
 }
 } // namespace
 
-std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(std::shared_ptr<const ir::Data> data)
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(std::shared_ptr<const ir::Model> model)
 {
+  if (not model->is_metadata_exist(TRAININFO_METADATA_NAME))
+  {
+    throw std::runtime_error{"model doesn't have a metadata named: " + TRAININFO_METADATA_NAME};
+  }
+
+  auto const data = model->get_metadata(TRAININFO_METADATA_NAME);
   const uint8_t *buffer = data->base();
   const size_t size = data->size();
 

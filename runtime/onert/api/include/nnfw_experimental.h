@@ -203,8 +203,6 @@ typedef struct nnfw_train_info
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 } nnfw_train_info;
 
-constexpr char traininfo_metadata_name[] = "CIRCLE_TRAINING";
-
 /**
  * @brief Load training model and training info from model file
  * @note This function assumes that model file has metadata for traininfo,
