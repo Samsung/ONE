@@ -43,32 +43,40 @@ void LossInsertionPass::run()
   // TODO Consider SparseCategoricalCrossentropy y_true shape
   //      SparseCategoricalCrossentropy loss has a different y_true shape than y_pred.
 
-  // TODO Implement Loop [0, getOutputs().size())
-  //      index: a loop index
-  const auto index = 0;
-  const auto &y_pred_index = _trainable_graph.getOutputs().at(index);
-  const auto &y_pred = _trainable_graph.operands().at(y_pred_index);
-  const auto &shape = y_pred.shape();
-  const auto &type_info = y_pred.typeInfo();
-  auto y_true_index = _trainable_graph.addOperand(shape, type_info);
-  ir::OperandIndexSequence inputs{y_pred_index, y_true_index};
+  ir::OperandIndex input_index;
+
+  _trainable_graph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
+    if (op.opcode() == ir::OpCode::Softmax && param.op_type == ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY)
+    {
+      input_index = op.getInputs().at(0);
+      return;
+    }
+  });
+
+  if (!input_index.valid())
+  {
+    input_index = _trainable_graph.getOutputs().at(0);
+  }
+
+  const auto &input = _trainable_graph.operands().at(input_index);
+  auto y_true_index = _trainable_graph.addOperand(input.shape(), input.typeInfo());
 
   // TODO Consider Reduction
   //      Some types of Reduction have the same shape y_true and output.
 
   const ir::TypeInfo float_op(ir::DataType::FLOAT32);
   auto output_index = _trainable_graph.addOperand(ir::Shape{1}, float_op);
-  ir::OperandIndexSequence outputs{output_index};
 
+  ir::OperandIndexSequence inputs{input_index, y_true_index};
+  ir::OperandIndexSequence outputs{output_index};
   auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs, param);
   auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op);
-
   _trainable_graph.addOperation(std::move(trainable_loss_op));
 
   _trainable_graph.addInput(y_true_index);
 
   // TODO Add loss as many as output size
-  _trainable_graph.addLoss(output_index, ir::IOIndex{index});
+  _trainable_graph.addLoss(output_index, ir::IOIndex{0});
 }
 
 } // namespace pass
