@@ -137,24 +137,28 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
-    auto model_file = args.getModelFilename();
-    auto model_extension = model_file.substr((model_file.find_last_of(".") + 1));
+    measure.run(PhaseType::MODEL_LOAD, [&]() {
+      if (args.useSingleModel())
+        NNPR_ENSURE_STATUS(
+          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+      else
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
+    });
 
+    // TrainInfo Load
     nnfw_train_info tri;
     bool tinfo_loaded = false;
 
-    measure.run(PhaseType::MODEL_LOAD, [&]() {
-      if (args.useSingleModel())
-        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, model_file.c_str()));
-      else
-        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, model_file.c_str()));
-
-      if (args.useSingleModel() && model_extension == "circle+")
+    if (args.useSingleModel())
+    {
+      const auto model_file = args.getModelFilename();
+      const auto model_extension = model_file.substr((model_file.find_last_of(".") + 1));
+      if (model_extension == "circle+")
       {
         tinfo_loaded = true;
-        nnfw_train_get_traininfo(session, &tri);
+        NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
       }
-    });
+    }
 
     // If failed to get train_info from session,
     // or train_info is given through arugment
