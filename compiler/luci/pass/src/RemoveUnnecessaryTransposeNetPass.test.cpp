@@ -136,6 +136,20 @@ private:
   luci::CircleConst *_back_perm = nullptr;
 };
 
+bool is_transpose_removed(loco::Graph *g)
+{
+  bool is_transpose_removed = true;
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    if (dynamic_cast<luci::CircleTranspose *>(node))
+    {
+      is_transpose_removed = false;
+      break;
+    }
+  }
+  return is_transpose_removed;
+}
+
 } // namespace
 
 TEST(RemoveUnnecessaryTransposeNetPass, rank_reduction_pattern1)
@@ -156,6 +170,7 @@ TEST(RemoveUnnecessaryTransposeNetPass, rank_reduction_pattern1)
                      /*perm*/ {0, 2, 1}, /*out*/ {1, 196, 192});
 
   EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
 }
 
 TEST(RemoveUnnecessaryTransposeNetPass, rank_reduction_pattern2)
@@ -177,6 +192,7 @@ TEST(RemoveUnnecessaryTransposeNetPass, rank_reduction_pattern2)
                      /*out*/ {100, 120});
 
   EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
 }
 
 TEST(RemoveUnnecessaryTransposeNetPass, identity_pattern)
@@ -198,6 +214,7 @@ TEST(RemoveUnnecessaryTransposeNetPass, identity_pattern)
                      /*out*/ {1, 2, 3});
 
   EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
 }
 
 TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern1_NEG)
@@ -219,6 +236,7 @@ TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern1_NEG)
                      /*out*/ {1, 4, 12});
 
   EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
 }
 
 TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern2_NEG)
@@ -240,6 +258,7 @@ TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern2_NEG)
                      /*out*/ {1500, 1, 1});
 
   EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
 }
 
 TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern3_NEG)
@@ -262,4 +281,5 @@ TEST(RemoveUnnecessaryTransposeNetPass, basic_pattern3_NEG)
                         /*out*/ {1, 2, 3, 4});
 
   EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
 }
