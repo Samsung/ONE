@@ -328,7 +328,14 @@ int32_t RuntimeGraph::getOutputDataSizeByIndex(int32_t output_index)
   const auto tensor = _reader->tensors()[tensor_index];
   assert(tensor != nullptr);
 
-  return Tensor::num_elements(tensor) * size(Tensor::element_type(tensor));
+  uint32_t num_elements = Tensor::num_elements(tensor);
+  auto it = _dynamic_tensor_shapes.find(tensor);
+  if (it != _dynamic_tensor_shapes.end())
+  {
+    num_elements = it->second.flatSize();
+  }
+
+  return num_elements * size(Tensor::element_type(tensor));
 }
 
 uint8_t *RuntimeGraph::getOutputDataByIndex(int32_t output_index)
