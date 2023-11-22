@@ -204,18 +204,14 @@ typedef struct nnfw_train_info
 } nnfw_train_info;
 
 /**
- * @brief Load training model and training info from model file
- * @note This function assumes that model file has metadata for traininfo,
- *       If model doesn't have a traininfo, use 'nnfw_load_model_from_modelfile' instead.
+ * @brief Get nnfw_train_info from session
  *
- * @param[in]   session   The session to be loaded a model
- * @param[in]   file_path Path to model file
- * @param[out]  info      Training information loaded from modelfile
+ * @param[in]   session   Session to get train_info
+ * @param[out]  info      Training information loaded from session
  *
  * @return @c   NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_load_training_model_from_modelfile(nnfw_session *session, const char *file_path,
-                                                    nnfw_train_info *info);
+NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info);
 
 /**
  * @brief Prepare session to be ready for training

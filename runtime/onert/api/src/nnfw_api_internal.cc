@@ -1167,7 +1167,7 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
 
 #ifdef ONERT_TRAIN
 
-NNFW_STATUS nnfw_session::train_load_traininfo(nnfw_train_info *tinfo)
+NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *tinfo)
 {
   if (!isStateModelLoaded())
   {
@@ -1176,35 +1176,40 @@ NNFW_STATUS nnfw_session::train_load_traininfo(nnfw_train_info *tinfo)
   if (_nnpkg == nullptr)
   {
     std::cerr << "Error while reading traininfo from model";
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+  if (_nnpkg->model_count() > 1)
+  {
+    // TODO support multpile model
+    std::cerr << "Fail to get traininfo from multiple model";
     return NNFW_STATUS_ERROR;
   }
 
-  auto model = _nnpkg->primary_model();
+  auto convertLossType = [](const onert::ir::operation::Loss::Type &type) {
+    if (type == onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR)
+      return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+    else if (type == onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY)
+      return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
+    else
+      throw std::runtime_error{"Unsupported loss in nnfw_train_info"};
+  };
 
+  auto convertOptType = [](const onert::ir::train::OptimizerCode &code) {
+    if (code == onert::ir::train::OptimizerCode::SGD)
+      return NNFW_TRAIN_OPTIMIZER_SGD;
+    else if (code == onert::ir::train::OptimizerCode::Adam)
+      return NNFW_TRAIN_OPTIMIZER_ADAM;
+    else
+      throw std::runtime_error{"Unsupported optimizer in nnfw_train_info"};
+  };
+
+  auto model = _nnpkg->primary_model();
   std::unique_ptr<onert::ir::train::TrainingInfo> ir_tinfo =
     onert::traininfo_loader::loadTrainingInfo(model);
   {
     tinfo->learning_rate = ir_tinfo->optimizerInfo().learning_rate;
     tinfo->batch_size = ir_tinfo->batchSize();
-
-    auto convertLossType = [](const onert::ir::operation::Loss::Type &type) {
-      if (type == onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR)
-        return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
-      else if (type == onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY)
-        return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
-      else
-        throw std::runtime_error{"Unsupported loss in nnfw_train_info"};
-    };
     tinfo->loss = convertLossType(ir_tinfo->lossInfo().type);
-
-    auto convertOptType = [](const onert::ir::train::OptimizerCode &code) {
-      if (code == onert::ir::train::OptimizerCode::SGD)
-        return NNFW_TRAIN_OPTIMIZER_SGD;
-      else if (code == onert::ir::train::OptimizerCode::Adam)
-        return NNFW_TRAIN_OPTIMIZER_ADAM;
-      else
-        throw std::runtime_error{"Unsupported optimizer in nnfw_train_info"};
-    };
     tinfo->opt = convertOptType(ir_tinfo->optimizerInfo().optim_code);
   }
 
