@@ -48,6 +48,9 @@ void execute_kernel_CircleDiv(const circle::Operator *cur_op, BaseRuntimeGraph *
 
   bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
+  luci_interpreter::RuntimeShape output_shape =
+    kernels::getTensorRuntimeShape(kernel.output(), runtime_graph);
+
   switch (Tensor::element_type(kernel.input1()))
   {
 #ifndef DIS_FLOAT
@@ -58,13 +61,15 @@ void execute_kernel_CircleDiv(const circle::Operator *cur_op, BaseRuntimeGraph *
       if (is_inplace)
       {
         kernels::evalTISOInplaceKernel<float>(tiso_func, broadcast_tiso_func, &kernel, options,
-                                              std::move(input_shape1), std::move(input_shape2));
+                                              std::move(input_shape1), std::move(input_shape2),
+                                              std::move(output_shape));
       }
       else
       {
         kernels::TISOData kernel_data = kernel.readData();
         kernels::evalTISOKernel<float>(tiso_func, broadcast_tiso_func, &kernel, &kernel_data,
-                                       options, std::move(input_shape1), std::move(input_shape2));
+                                       options, std::move(input_shape1), std::move(input_shape2),
+                                       std::move(output_shape));
       }
     }
     break;

@@ -57,6 +57,8 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
   assert(input_data != nullptr);
   assert(output_data != nullptr);
 
+  int32_t data_size = Tensor::num_elements(output) * getDataTypeSize(Tensor::element_type(output));
+
 #ifndef DIS_DYN_SHAPES
   if (shape_data == nullptr)
   {
@@ -66,11 +68,11 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
     assert(Tensor::element_type(shape) == DataType::S32);
 
     const int32_t *shape_data_int = kernels::getTensorData<int32_t>(shape_data);
-    const auto num_elements = Tensor::num_elements(shape);
+    const auto num_dims = Tensor::num_dims(output);
 
-    luci_interpreter::RuntimeShape dynamic_shape(num_elements);
-    int32_t data_size = 1;
-    for (int i = 0; i < num_elements; ++i)
+    luci_interpreter::RuntimeShape dynamic_shape(num_dims);
+    data_size = 1;
+    for (int i = 0; i < num_dims; ++i)
     {
       dynamic_shape.setDim(i, shape_data_int[i]);
       data_size *= shape_data_int[i];
@@ -93,9 +95,7 @@ void execute_kernel_CircleReshape(const circle::Operator *cur_op, BaseRuntimeGra
   assert(shape_data != nullptr);
 #endif // DIS_DYN_SHAPES
 
-  const size_t element_size = getDataTypeSize(Tensor::element_type(input));
-  const int32_t num_elements = Tensor::num_elements(input);
-  std::memcpy(output_data, input_data, num_elements * element_size);
+  std::memcpy(output_data, input_data, data_size);
 }
 
 } // namespace luci_interpreter

@@ -55,6 +55,36 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
 
   int32_t output_shape[kMaxSmallSize];
   kernels::getTensorDims(output, runtime_graph, output_shape);
+  // TODO remove code duplication, introduce func
+#ifndef DIS_DYN_SHAPES
+  // Dynamic shape case
+  if (output_shape[0] != input_shape[0] or output_shape[1] != weight_shape[1])
+  {
+    output_shape[0] = input_shape[0];
+    output_shape[1] = weight_shape[0];
+    uint32_t num_dims = Tensor::num_dims(output);
+    luci_interpreter::RuntimeShape dynamic_shape(num_dims);
+    int32_t data_size = 1;
+    for (int i = 0; i < num_dims; ++i)
+    {
+      dynamic_shape.setDim(i, output_shape[i]);
+      data_size *= output_shape[i];
+    }
+    data_size *= size(Tensor::element_type(output));
+
+    runtime_graph->addDynamicShapeTensor(output, std::move(dynamic_shape));
+
+    if (data_size == 0)
+    {
+      runtime_graph->resetTensorData(nullptr, output);
+      return;
+    }
+
+    auto new_output_data = new uint8_t[data_size];
+    output_data = new_output_data;
+    runtime_graph->resetTensorData(new_output_data, output);
+  }
+#endif // DIS_DYN_SHAPES
 
   switch (Tensor::element_type(weights))
   {
