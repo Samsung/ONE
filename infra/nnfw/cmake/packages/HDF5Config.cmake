@@ -38,11 +38,23 @@ else()
   endif()
 
   if(HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_CXX_LIBRARY_hdf5 libhdf5.a)
-    find_library(HDF5_CXX_LIBRARY_hdf5_cpp libhdf5_cpp.a)
+    find_library(HDF5_CXX_LIBRARY_hdf5
+      NAMES libhdf5.a
+      ONLY_CMAKE_FIND_ROOT_PATH
+      PATH_SUFFIXES hdf5/serial)
+    find_library(HDF5_CXX_LIBRARY_hdf5_cpp
+      NAMES libhdf5_cpp.a
+      ONLY_CMAKE_FIND_ROOT_PATH
+      PATH_SUFFIXES hdf5/serial)
   else(HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_CXX_LIBRARY_hdf5 libhdf5.so)
-    find_library(HDF5_CXX_LIBRARY_hdf5_cpp libhdf5_cpp.so)
+    find_library(HDF5_CXX_LIBRARY_hdf5
+      NAMES libhdf5.so
+      ONLY_CMAKE_FIND_ROOT_PATH
+      PATH_SUFFIXES hdf5/serial)
+    find_library(HDF5_CXX_LIBRARY_hdf5_cpp
+      NAMES libhdf5_cpp.so
+      ONLY_CMAKE_FIND_ROOT_PATH
+      PATH_SUFFIXES hdf5/serial)
   endif(HDF5_USE_STATIC_LIBRARIES)
 
   if (NOT (HDF5_CXX_LIBRARY_hdf5 AND HDF5_CXX_LIBRARY_hdf5_cpp))
@@ -51,7 +63,7 @@ else()
   endif()
 
   # We can use "hdf5" and "hdf5_cpp" to use the same file founded with above.
-  list(APPEND HDF5_CXX_LIBRARIES "hdf5" "hdf5_cpp" "sz" "z" "dl" "m")
+  list(APPEND HDF5_CXX_LIBRARIES ${HDF5_CXX_LIBRARY_hdf5} ${HDF5_CXX_LIBRARY_hdf5_cpp} "sz" "z" "dl" "m")
 
   # Append missing libaec which is required by libsz, which is required by libhdf5
   list(APPEND HDF5_CXX_LIBRARIES "aec")
