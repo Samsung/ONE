@@ -796,12 +796,6 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 
 template <typename LoaderDomain> bool BaseLoader<LoaderDomain>::BaseLoader::loadMetadata()
 {
-  /* bool verified = LoaderDomain::VerifyModelBuffer(*_verifier.get());
-  if (not verified)
-  {
-    throw std::runtime_error{"Fail to access buffer"};
-  }*/
-
   if (_domain_model == nullptr)
   {
     throw std::runtime_error{"Load circle::Model first using BaseLoader::loadFromFile()"};
