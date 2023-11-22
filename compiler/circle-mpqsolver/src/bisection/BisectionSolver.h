@@ -75,9 +75,11 @@ private:
                  const std::string &def_quant, core::LayerParams &layers);
 
 private:
-  float _qerror = 0.f; // quantization error
+  const float _qerror_ratio = 0.f; // quantization error ratio
+  float _qerror = 0.f;             // quantization error
   Algorithm _algorithm = Algorithm::ForceQ16Front;
   std::string _visq_data_path;
+  std::string _input_data_path;
 };
 
 } // namespace bisection

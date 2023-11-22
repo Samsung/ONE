@@ -27,7 +27,7 @@ using LayerParams = luci::CircleQuantizer::Options::LayerParams;
 
 PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
                              const std::vector<QuantizationPattern> &patterns)
-  : MPQSolver(ctx, "", 1.f)
+  : MPQSolver(ctx)
 {
   MPQOptions options{patterns};
   set_mpq_options(options);
@@ -36,7 +36,7 @@ PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
 PatternSolver::PatternSolver(const std::string &input_quantization,
                              const std::string &output_quantization,
                              const std::vector<QuantizationPattern> &patterns)
-  : MPQSolver("", 1.f, input_quantization, output_quantization)
+  : MPQSolver(input_quantization, output_quantization)
 {
   MPQOptions options{patterns};
   set_mpq_options(options);
