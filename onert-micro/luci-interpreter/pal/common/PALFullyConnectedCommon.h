@@ -30,7 +30,8 @@ template <typename InputType, typename WeightType, typename OutputType, typename
 inline void FullyConnected(const FullyConnectedParams &params, const int32_t *input_shape,
                            const InputType *input_data, const int32_t *filter_shape,
                            const WeightType *filter_data, const BiasType *bias_data,
-                           const int32_t *output_shape, OutputType *output_data)
+                           const int32_t *output_shape, OutputType *output_data,
+                           uint32_t output_dims_count, uint32_t weights_dims_count)
 {
   const int32_t input_offset = params.input_offset;
   const int32_t filter_offset = params.weights_offset;
@@ -40,9 +41,9 @@ inline void FullyConnected(const FullyConnectedParams &params, const int32_t *in
   const int32_t output_activation_min = params.quantized_activation_min;
   const int32_t output_activation_max = params.quantized_activation_max;
 
-  const int batches = input_shape[0];
-  const int output_depth = output_shape[1];
-  const int accum_depth = filter_shape[1];
+  const int batches = flatSizeSkipDim(output_shape, output_dims_count - 1, output_dims_count);
+  const int output_depth = output_shape[output_dims_count - 1];
+  const int accum_depth = filter_shape[weights_dims_count - 1];
 
   for (int b = 0; b < batches; ++b)
   {
@@ -71,14 +72,15 @@ template <typename WeightType>
 inline void FullyConnected(const FullyConnectedParams &params, const int32_t *input_shape,
                            const float *input_data, const int32_t *filter_shape,
                            const WeightType *filter_data, const float *bias_data,
-                           const int32_t *output_shape, float *output_data)
+                           const int32_t *output_shape, float *output_data,
+                           uint32_t output_dims_count, uint32_t weights_dims_count)
 {
   const float output_activation_min = params.float_activation_min;
   const float output_activation_max = params.float_activation_max;
 
-  const int batches = input_shape[0];
-  const int output_depth = output_shape[1];
-  const int accum_depth = filter_shape[1];
+  const int batches = flatSizeSkipDim(output_shape, output_dims_count - 1, output_dims_count);
+  const int output_depth = output_shape[output_dims_count - 1];
+  const int accum_depth = filter_shape[weights_dims_count - 1];
 
   for (int b = 0; b < batches; ++b)
   {

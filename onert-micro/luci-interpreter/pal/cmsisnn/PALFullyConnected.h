@@ -29,11 +29,12 @@ inline void FullyConnected<int8_t>(const luci_interpreter_pal::FullyConnectedPar
                                    const int32_t *, const int8_t *input_data,
                                    const int32_t *filter_shape, const int8_t *filter_data,
                                    const int32_t *bias_data, const int32_t *output_shape,
-                                   int8_t *output_data)
+                                   int8_t *output_data, uint32_t output_dims_count,
+                                   uint32_t weights_dims_count)
 {
-  const int batches = output_shape[0];
-  const int output_depth = output_shape[1];
-  const int accum_depth = filter_shape[1];
+  const int batches = flatSizeSkipDim(output_shape, output_dims_count - 1, output_dims_count);
+  const int output_depth = output_shape[output_dims_count - 1];
+  const int accum_depth = filter_shape[weights_dims_count - 1];
 
   cmsis_nn_fc_params fc_params;
   fc_params.input_offset = params.input_offset;
@@ -88,11 +89,12 @@ template <>
 inline void FullyConnected(const luci_interpreter_pal::FullyConnectedParams &params,
                            const int32_t *, const int16_t *input_data, const int32_t *filter_shape,
                            const int8_t *filter_data, const int64_t *bias_data,
-                           const int32_t *output_shape, int16_t *output_data)
+                           const int32_t *output_shape, int16_t *output_data,
+                           uint32_t output_dims_count, uint32_t weights_dims_count)
 {
-  const int batches = output_shape[0];
-  const int output_depth = output_shape[1];
-  const int accum_depth = filter_shape[1];
+  const int batches = flatSizeSkipDim(output_shape, output_dims_count - 1, output_dims_count);
+  const int output_depth = output_shape[output_dims_count - 1];
+  const int accum_depth = filter_shape[weights_dims_count - 1];
 
   cmsis_nn_fc_params fc_params;
   fc_params.input_offset = params.input_offset;
