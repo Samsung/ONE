@@ -138,16 +138,16 @@ private:
 
 bool is_transpose_removed(loco::Graph *g)
 {
-  bool is_transpose_removed = true;
+  bool transpose_exist = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     if (dynamic_cast<luci::CircleTranspose *>(node))
     {
-      is_transpose_removed = false;
+      transpose_exist = true;
       break;
     }
   }
-  return is_transpose_removed;
+  return not transpose_exist;
 }
 
 } // namespace
