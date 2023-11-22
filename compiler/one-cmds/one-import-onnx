@@ -70,21 +70,21 @@ class TidyIONames:
         for idx in range(0, len(self.onnx_model.graph.input)):
             name = self.onnx_model.graph.input[idx].name
             if not name in self.initializers:
-                if '.' in name or ':' in name or name[:1].isdigit():
+                if '.' in name or ':' in name or '/' in name:
                     self.input_nodes.append(name)
                     name_alt = name.replace('.', '_')
                     name_alt = name_alt.replace(':', '_')
-                    if name_alt[:1].isdigit():
-                        name_alt = 'a_' + name_alt
+                    name_alt = name_alt.replace('/', '_')
+                    name_alt = 'a_' + name_alt  # prevent start with digit or _
                     self.remap_inputs.append(name_alt)
         for idx in range(0, len(self.onnx_model.graph.output)):
             name = self.onnx_model.graph.output[idx].name
-            if '.' in name or ':' in name or name[:1].isdigit():
+            if '.' in name or ':' in name or '/' in name:
                 self.output_nodes.append(name)
                 name_alt = name.replace('.', '_')
                 name_alt = name_alt.replace(':', '_')
-                if name_alt[:1].isdigit():
-                    name_alt = 'a_' + name_alt
+                name_alt = name_alt.replace('/', '_')
+                name_alt = 'a_' + name_alt
                 self.remap_outputs.append(name_alt)
 
     def update(self):
@@ -218,7 +218,7 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-# TF2.12.1 tries to sanitize special characters, '.:' and maybe others and then fails with
+# TF2.12.1 tries to sanitize special characters, '.:/' and maybe others and then fails with
 # 'IndexError: tuple index out of range' error from somewhere else.
 # This method is to prevent this IndexError.
 def _sanitize_io_names(onnx_model):
