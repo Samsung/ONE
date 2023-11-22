@@ -42,8 +42,8 @@ std::string Loss::name() const
 {
   using LossType = onert::ir::operation::Loss::Type;
   static const std::unordered_map<Type, std::string> name_map{
-    {LossType::MEAN_SQUARED_ERROR, "MeanSquaredError Loss"},
-    {LossType::CATEGORICAL_CROSSENTROPY, "CategoricalCrossentropy Loss"}};
+    {LossType::MEAN_SQUARED_ERROR, "MeanSquaredError"},
+    {LossType::CATEGORICAL_CROSSENTROPY, "CategoricalCrossentropy"}};
   return name_map.at(_param.op_type);
 }
 
