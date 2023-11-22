@@ -62,7 +62,7 @@ private:
   std::vector<loco::Node *> _input_nodes;
   std::unique_ptr<luci::Module> _module;
   dio::hdf5::HDF5Importer _importer;
-  bool _is_raw_data;
+  bool _is_raw_data = false;
 };
 
 } // namespace core
