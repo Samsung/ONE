@@ -208,5 +208,33 @@ bool isFileExists(const std::string &path)
 }
 
 } // namespace io_utils
+
+namespace data_utils
+{
+
+class SingleDataProvider final : public core::DataProvider
+{
+public:
+  SingleDataProvider() = default;
+  size_t numSamples() const override { return 1; }
+  uint32_t numInputs(uint32_t) const override { return 1; }
+  void getSampleInput(uint32_t, uint32_t, core::InputData &data) const
+  {
+    size_t size = data.data().size() / sizeof(float);
+    auto floats = reinterpret_cast<float *>(data.data().data());
+    for (uint32_t idx = 0; idx < size; idx++)
+    {
+      floats[idx] = 0.f; // or any other value
+    }
+  }
+};
+
+std::unique_ptr<mpqsolver::core::DataProvider> getSingleDataProvider()
+{
+  return std::make_unique<SingleDataProvider>();
+}
+
+} // namespace data_utils
+
 } // namespace test
 } // namespace mpqsolver
