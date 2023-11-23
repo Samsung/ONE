@@ -21,17 +21,13 @@
 
 using namespace mpqsolver;
 
-MPQSolver::MPQSolver(const core::Quantizer::Context &ctx, const std::string &input_data_path,
-                     float qerror_ratio)
-  : _input_data_path(input_data_path), _qerror_ratio(qerror_ratio)
+MPQSolver::MPQSolver(const core::Quantizer::Context &ctx)
 {
   _quantizer = std::make_unique<core::Quantizer>(ctx);
 }
 
-MPQSolver::MPQSolver(const std::string &input_data_path, float qerror_ratio,
-                     const std::string &input_quantization, const std::string &output_quantization)
-  : _input_data_path(input_data_path), _qerror_ratio(qerror_ratio),
-    _input_quantization(input_quantization), _output_quantization(output_quantization)
+MPQSolver::MPQSolver(const std::string &input_quantization, const std::string &output_quantization)
+  : _input_quantization(input_quantization), _output_quantization(output_quantization)
 {
   _quantizer = std::make_unique<core::Quantizer>(_input_quantization, _output_quantization);
 }

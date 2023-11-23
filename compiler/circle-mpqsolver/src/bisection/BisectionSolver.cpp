@@ -77,7 +77,8 @@ bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string 
 BisectionSolver::BisectionSolver(const std::string &input_data_path, float qerror_ratio,
                                  const std::string &input_quantization,
                                  const std::string &output_quantization)
-  : MPQSolver(input_data_path, qerror_ratio, input_quantization, output_quantization)
+  : MPQSolver(input_quantization, output_quantization), _qerror_ratio(qerror_ratio),
+    _input_data_path(input_data_path)
 {
 }
 
