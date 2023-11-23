@@ -94,7 +94,7 @@ def _get_parser():
     quantization_group.add_argument(
         '--granularity',
         type=str,
-        help='quantization granularity (supported: layer, channel, default=layer)')
+        help='weight quantization granularity (supported: layer, channel, default=layer)')
     quantization_group.add_argument(
         '--input_type',
         type=str,
