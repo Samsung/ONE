@@ -113,7 +113,8 @@ int entry(int argc, char **argv)
   arser.add_argument("--granularity")
     .type(arser::DataType::STR)
     .default_value("channel")
-    .help("Granularity of quantization scheme (supported: layer, channel (default))");
+    .help("Granularity of quantization scheme on weight (supported: layer, channel (default)). "
+          "Activation is quantized per layer.");
 
   arser.add_argument("--TF-style_maxpool")
     .nargs(0)
