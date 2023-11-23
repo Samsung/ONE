@@ -112,6 +112,14 @@ void OperationDumper::visit(const ConvertFp16ToFp32 &node) { dumpOpGeneric(node)
 
 void OperationDumper::visit(const ConvertFp32ToFp16 &node) { dumpOpGeneric(node); }
 
+void OperationDumper::visit(const CumSum &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << " - Inputs : Input(" << node.getInputs().at(CumSum::Input::INPUT) << ") Axis("
+               << node.getInputs().at(CumSum::Input::AXIS) << ")" << std::endl;
+  VERBOSE(LIR) << " - Outputs : Output(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const DepthToSpace &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const DepthwiseConv2D &node)

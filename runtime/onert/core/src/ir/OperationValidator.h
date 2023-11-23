@@ -53,6 +53,7 @@ public:
   void visit(const operation::Comparison &node) override;
   void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;
+  void visit(const operation::CumSum &node) override;
   void visit(const operation::DepthToSpace &node) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::DetectionPostProcess &node) override;

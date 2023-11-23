@@ -30,6 +30,7 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/ConvertFp16ToFp32.h"
 #include "ir/operation/ConvertFp32ToFp16.h"
+#include "ir/operation/CumSum.h"
 #include "ir/operation/Custom.h"
 #include "ir/operation/DepthToSpace.h"
 #include "ir/operation/DepthwiseConv2D.h"

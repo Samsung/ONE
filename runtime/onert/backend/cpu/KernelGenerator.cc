@@ -23,6 +23,7 @@
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
+#include "ops/CumSumLayer.h"
 #include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/EinsumLayer.h"
@@ -668,6 +669,24 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   params.userdata_size = node.userdata().size;
 
   auto fn = _kernel_builder->buildKernel(node.id(), std::move(params));
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::CumSum &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::CumSum::Input::INPUT)};
+  const auto axis_index{node.getInputs().at(ir::operation::CumSum::Input::AXIS)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto axis_tensor = _tensor_reg->getPortableTensor(axis_index);
+
+  auto fn = std::make_unique<ops::CumSumLayer>();
+
+  fn->configure(input_tensor, axis_tensor, node.param().exclusive, node.param().reverse,
+                output_tensor);
 
   _return_fn = std::move(fn);
 }
