@@ -49,6 +49,7 @@ public:
                     const compiler::train::TensorRegistries &tensor_regs,
                     compiler::train::TrainableCodeMap &&code_map,
                     const std::vector<ir::OperationIndex> &order,
+                    const std::vector<ir::OperationIndex> &border,
                     const util::TracingCtx *tracing_ctx);
 
 public:
@@ -89,7 +90,10 @@ private:
   void backwardImpl(uint32_t training_step);
 
 private:
+  // Forwarding order
   std::vector<compiler::train::TrainableCodeAndInfo> _code;
+  // Backwarding order
+  std::vector<compiler::train::TrainableCodeAndInfo> _bcode;
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;

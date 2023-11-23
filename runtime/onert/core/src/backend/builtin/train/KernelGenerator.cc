@@ -34,7 +34,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
 {
 }
 
-std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex ind)
+std::shared_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex ind)
 {
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
   const auto &op = _tgraph.operation(ind);

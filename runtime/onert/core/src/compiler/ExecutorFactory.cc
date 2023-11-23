@@ -747,9 +747,13 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
-  // linearize
+  // linearize for forwarding
   auto order = Linear::linearize(*lowered_graph);
   Linear::dump(*lowered_graph, order);
+
+  // linearize for backwarding
+  auto border = Linear::blinearize(*lowered_graph);
+  Linear::dump(*lowered_graph, border);
 
   for (auto &&pair : tbackend_contexts)
   {
@@ -883,6 +887,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tensor_regs,
                                                  std::move(code_map),
                                                  order,
+                                                 border,
                                                  tracing_ctx};
 
   if (!options->trace_filepath.empty())

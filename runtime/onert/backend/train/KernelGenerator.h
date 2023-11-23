@@ -44,7 +44,7 @@ public:
                   const std::shared_ptr<ExternalContext> &external_context,
                   const exec::train::optimizer::Optimizer *optimizer);
 
-  std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
+  std::shared_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::train::operation::Conv2D &) override;
   void visit(const ir::train::operation::ElementwiseActivation &) override;

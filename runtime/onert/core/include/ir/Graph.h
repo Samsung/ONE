@@ -119,6 +119,7 @@ public:
   // Topological sort
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
+  std::vector<ir::OperationIndex> btopolSortOperations() const;
 
 private:
   Operations _operations;

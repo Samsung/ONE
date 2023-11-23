@@ -37,7 +37,7 @@ public:
   virtual ~KernelGeneratorBase() = default;
   KernelGeneratorBase(const ir::train::TrainableGraph &tgraph) : _tgraph{tgraph} {}
 
-  virtual std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex ind) = 0;
+  virtual std::shared_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex ind) = 0;
 
 protected:
 #define OP(InternalName)                                                                \

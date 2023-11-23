@@ -35,12 +35,12 @@ struct TrainableCodeAndInfo
   const ir::train::ITrainableOperation *op;
   const OperationLowerInfo *lower_info;
   // TODO Change to TrainableFnSequence
-  std::unique_ptr<exec::train::TrainableFnSequence> tn_seq;
+  std::shared_ptr<exec::train::TrainableFnSequence> tn_seq;
 
   TrainableCodeAndInfo(const ir::OperationIndex op_ind, const ir::train::ITrainableOperation *op,
                        const OperationLowerInfo *lower_info,
-                       std::unique_ptr<exec::train::TrainableFnSequence> &&tn_seq)
-    : op_ind{op_ind}, op{op}, lower_info{lower_info}, tn_seq{std::move(tn_seq)}
+                       std::shared_ptr<exec::train::TrainableFnSequence> &&tn_seq)
+    : op_ind{op_ind}, op{op}, lower_info{lower_info}, tn_seq{tn_seq}
   {
   }
 };

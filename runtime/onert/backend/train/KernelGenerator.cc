@@ -89,9 +89,9 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
 }
 } // namespace
 
-std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
+std::shared_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
-  auto ret = std::make_unique<exec::train::TrainableFnSequence>();
+  auto ret = std::make_shared<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
   op.accept(*this);

@@ -34,6 +34,12 @@ std::vector<ir::OperationIndex> Linear::linearize(const compiler::ILoweredGraph 
 }
 
 // TODO(easy) Change the LoweredGraph param to Graph
+std::vector<ir::OperationIndex> Linear::blinearize(const compiler::ILoweredGraph &lowered_graph)
+{
+  return lowered_graph.graph().btopolSortOperations();
+}
+
+// TODO(easy) Change the LoweredGraph param to Graph
 void Linear::dump(const compiler::ILoweredGraph &lowered_graph,
                   const std::vector<ir::OperationIndex> &order)
 {
