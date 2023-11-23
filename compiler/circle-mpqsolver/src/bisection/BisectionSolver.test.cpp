@@ -20,7 +20,10 @@
 
 TEST(CircleMPQSolverBisectionSolverTest, empty_path_NEG)
 {
-  mpqsolver::bisection::BisectionSolver solver("", 0.0, "uint8", "uint8");
+  mpqsolver::core::Quantizer::Context ctx;
+  ctx.input_type = "uint8";
+  ctx.output_type = "uint8";
+  mpqsolver::bisection::BisectionSolver solver(ctx, "", 0.0);
   solver.algorithm(mpqsolver::bisection::BisectionSolver::Algorithm::ForceQ16Back);
   EXPECT_ANY_THROW(solver.run(""));
 }

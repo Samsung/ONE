@@ -194,15 +194,26 @@ int entry(int argc, char **argv)
                       << "save_min_max: " << (save_min_max ? "True" : "False") << "\n";
 
   std::unique_ptr<mpqsolver::MPQSolver> solver;
+
+  // Create quantizer parameters
+  mpqsolver::core::Quantizer::Context ctx;
+  {
+    ctx.output_model_dtype = quantized_dtype;
+    ctx.granularity = granularity;
+    ctx.input_type = input_dtype;
+    ctx.output_type = output_dtype;
+    ctx.save_min_max = save_min_max;
+    ctx.TF_style_maxpool = TF_style_maxpool;
+  }
+
   if (arser[bisection_str])
   {
     // optimize
     SolverOutput::get() << "Automatic mixed quantization using bisection\n";
 
     using namespace mpqsolver::bisection;
-    auto bi_solver =
-      std::make_unique<BisectionSolver>(data_path, qerror_ratio, input_dtype, output_dtype);
 
+    auto bi_solver = std::make_unique<BisectionSolver>(ctx, data_path, qerror_ratio);
     {
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
@@ -257,17 +268,6 @@ int entry(int argc, char **argv)
     if (arser[softmax_str])
     {
       patterns.push_back(mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp);
-    }
-
-    // Create quantizer parameters
-    mpqsolver::core::Quantizer::Context ctx;
-    {
-      ctx.output_model_dtype = quantized_dtype;
-      ctx.granularity = granularity;
-      ctx.input_type = input_dtype;
-      ctx.output_type = output_dtype;
-      ctx.save_min_max = save_min_max;
-      ctx.TF_style_maxpool = TF_style_maxpool;
     }
 
     solver = std::make_unique<mpqsolver::pattern::PatternSolver>(ctx, patterns);

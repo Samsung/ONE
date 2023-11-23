@@ -45,12 +45,14 @@ public:
 
 public:
   /**
-   * @brief construct Solver using input_data_path for .h5 file,
-   * qerror_ratio to set target qerror, and input_quantization/output_quantization to set
-   * quantization type at input/output respectively
+   * @brief Construct a new Bisection Solver object
+   *
+   * @param ctx - quantizer context
+   * @param input_data_path - input path of h5 file
+   * @param qerror_ratio - target error ratio
    */
-  BisectionSolver(const std::string &input_data_path, float qerror_ratio,
-                  const std::string &input_quantization, const std::string &output_quantization);
+  BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx,
+                  const std::string &input_data_path, float qerror_ratio);
   BisectionSolver() = delete;
 
   /**
