@@ -212,13 +212,13 @@ bool isFileExists(const std::string &path)
 namespace data_utils
 {
 
-class SampleDataInput final : public core::DataProvider
+class SingleDataProvider final : public core::DataProvider
 {
 public:
-  SampleDataInput() : _num_of_samples(1) {}
-  size_t numSamples() const override { return _num_of_samples; }
-  uint32_t numInputs(uint32_t sample) const override { return 1; }
-  void getSampleInput(uint32_t sample, uint32_t input, core::InputData &data) const
+  SingleDataProvider() = default;
+  size_t numSamples() const override { return 1; }
+  uint32_t numInputs(uint32_t) const override { return 1; }
+  void getSampleInput(uint32_t, uint32_t, core::InputData &data) const
   {
     size_t size = data.data().size() / sizeof(float);
     auto floats = reinterpret_cast<float *>(data.data().data());
@@ -227,14 +227,11 @@ public:
       floats[idx] = 0.f; // or any other value
     }
   }
-
-private:
-  uint32_t _num_of_samples;
 };
 
-std::unique_ptr<mpqsolver::core::DataProvider> getSampleInput()
+std::unique_ptr<mpqsolver::core::DataProvider> getSingleDataProvider()
 {
-  return std::make_unique<SampleDataInput>();
+  return std::make_unique<SingleDataProvider>();
 }
 
 } // namespace data_utils
