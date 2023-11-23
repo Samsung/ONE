@@ -44,11 +44,11 @@ namespace exec
 /**
  * @brief Class to gather executors
  */
-class Executors : public IExecutors
+class MultiModelExecutors : public IExecutors
 {
 public:
-  Executors(void) = delete;
-  Executors(std::unique_ptr<ir::ModelEdges> model_edges)
+  MultiModelExecutors(void) = delete;
+  MultiModelExecutors(std::unique_ptr<ir::ModelEdges> model_edges)
     : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},
       _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{false},
       _pkg_input_quant_layers{}, _pkg_output_quant_layers{}, _pkg_input_quant_tensors{},
@@ -59,9 +59,9 @@ public:
       _edge_map[edge.from].emplace_back(edge.to);
     }
   }
-  Executors(const Executors &) = delete;
-  Executors(Executors &&) = default;
-  ~Executors() = default;
+  MultiModelExecutors(const MultiModelExecutors &) = delete;
+  MultiModelExecutors(MultiModelExecutors &&) = default;
+  ~MultiModelExecutors() = default;
 
   // TODO Use Executor index
   void emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,

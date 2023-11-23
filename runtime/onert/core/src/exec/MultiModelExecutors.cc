@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "Executors.h"
+#include "MultiModelExecutors.h"
 
 #include "../backend/builtin/IOTensor.h"
 
@@ -60,7 +60,7 @@ namespace onert
 namespace exec
 {
 
-class Executors::EdgeTensor : public backend::builtin::IOTensor
+class MultiModelExecutors::EdgeTensor : public backend::builtin::IOTensor
 {
 public:
   EdgeTensor(const ir::OperandInfo &info, ir::Layout layout)
@@ -100,23 +100,24 @@ private:
   int32_t _ref_count;
 };
 
-void Executors::emplace(const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index,
-                        std::unique_ptr<IExecutor> exec)
+void MultiModelExecutors::emplace(const ir::ModelIndex &model_index,
+                                  const ir::SubgraphIndex &subg_index,
+                                  std::unique_ptr<IExecutor> exec)
 {
   _executors.emplace(std::make_pair(model_index, subg_index), std::move(exec));
 }
 
-IExecutor *Executors::at(const ir::ModelIndex &model_index,
-                         const ir::SubgraphIndex &subg_index) const
+IExecutor *MultiModelExecutors::at(const ir::ModelIndex &model_index,
+                                   const ir::SubgraphIndex &subg_index) const
 {
   return _executors.at(std::make_pair(model_index, subg_index)).get();
 }
 
-uint32_t Executors::inputSize() const { return _model_edges->pkg_inputs.size(); }
+uint32_t MultiModelExecutors::inputSize() const { return _model_edges->pkg_inputs.size(); }
 
-uint32_t Executors::outputSize() const { return _model_edges->pkg_outputs.size(); }
+uint32_t MultiModelExecutors::outputSize() const { return _model_edges->pkg_outputs.size(); }
 
-const ir::OperandInfo &Executors::inputInfo(const ir::IOIndex &index) const
+const ir::OperandInfo &MultiModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
   auto const desc = _model_edges->pkg_inputs[index.value()];
   auto const model_index = std::get<0>(desc);
@@ -126,7 +127,7 @@ const ir::OperandInfo &Executors::inputInfo(const ir::IOIndex &index) const
   return executor->getInputTensors().at(io_index.value())->orig_info();
 }
 
-const ir::OperandInfo &Executors::outputInfo(const ir::IOIndex &index) const
+const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
   auto const desc = _model_edges->pkg_outputs[index.value()];
   auto const model_index = std::get<0>(desc);
@@ -138,7 +139,7 @@ const ir::OperandInfo &Executors::outputInfo(const ir::IOIndex &index) const
 
 // Allow below edges only
 //  m1 < m2, s1 == 0 and s2 == 0 if m1:s1:o1 -> m2:s2:o2'
-void Executors::checkSupportedMultimodel() const
+void MultiModelExecutors::checkSupportedMultimodel() const
 {
   // If package includes no-connection model, model_count is less than real model count in package.
   // Then this method will throw exception based on model index
@@ -199,7 +200,7 @@ void Executors::checkSupportedMultimodel() const
   }
 }
 
-void Executors::createEdgeQuantLayers()
+void MultiModelExecutors::createEdgeQuantLayers()
 {
   if (_is_created_edge_quant_layers)
   {
@@ -275,7 +276,7 @@ void Executors::createEdgeQuantLayers()
   _is_created_edge_quant_layers = true;
 }
 
-void Executors::CreatePkgIOTensors(const IODescription &desc)
+void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
 {
   for (const auto &pkg_input : _model_edges->pkg_inputs)
   {
@@ -308,7 +309,7 @@ void Executors::CreatePkgIOTensors(const IODescription &desc)
   }
 }
 
-void Executors::createPkgIOQuantLayers(const IODescription &desc)
+void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
 {
   // Append type-aware quantization layer for nnpkg inputs/outputs between executors
   for (const auto &pair : _executors)
@@ -405,7 +406,7 @@ void Executors::createPkgIOQuantLayers(const IODescription &desc)
   }
 }
 
-void Executors::execute(const IODescription &desc)
+void MultiModelExecutors::execute(const IODescription &desc)
 {
   // Check supported multi model package
   checkSupportedMultimodel();
@@ -634,7 +635,7 @@ void Executors::execute(const IODescription &desc)
 // generated Executor.
 // If nnpackage includes model(s) which has no connection and Compiler does not
 // generate Executor for them, modelCount() return less value than real model count.
-uint16_t Executors::modelCount() const
+uint16_t MultiModelExecutors::modelCount() const
 {
   uint16_t model_count = 0;
   for (; _executors.find(std::make_pair(ir::ModelIndex{model_count}, ir::SubgraphIndex{0})) !=

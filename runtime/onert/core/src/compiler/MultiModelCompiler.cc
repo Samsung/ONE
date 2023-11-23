@@ -24,7 +24,7 @@
 #include "pass/PassRunner.h"
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
-#include "../exec/Executors.h"
+#include "../exec/MultiModelExecutors.h"
 #include "../ir/OperationDumper.h"
 #include "../ir/verifier/Verifier.h"
 
@@ -203,7 +203,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-  auto executors = std::make_shared<exec::Executors>(std::move(model_edges));
+  auto executors = std::make_shared<exec::MultiModelExecutors>(std::move(model_edges));
   for (auto &&pair : lowered_subgs)
   {
     auto const &model_index = pair.first;
