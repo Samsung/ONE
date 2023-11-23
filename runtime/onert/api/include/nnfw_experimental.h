@@ -182,9 +182,25 @@ typedef enum
 
 typedef enum
 {
+  /** Invalid */
+  NNFW_TRAIN_LOSS_REDUCTION_INVALID = 0,
+  /** Scalar sum divided by number of elements in losses */
+  NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE = 1,
+  /** Scalar sum of weighted losses */
+  NNFW_TRAIN_LOSS_REDUCTION_SUM = 2,
+} NNFW_TRAIN_LOSS_REDUCTION;
+
+typedef enum
+{
   NNFW_TRAIN_OPTIMIZER_SGD = 0,
   NNFW_TRAIN_OPTIMIZER_ADAM = 1,
 } NNFW_TRAIN_OPTIMIZER;
+
+typedef struct nnfw_loss_info
+{
+  NNFW_TRAIN_LOSS loss;
+  NNFW_TRAIN_LOSS_REDUCTION reduction_type;
+} nnfw_loss_info;
 
 /**
  * @brief Training information to prepare training
@@ -197,8 +213,9 @@ typedef struct nnfw_train_info
   float learning_rate = 0.001f;
   /** Batch size */
   uint32_t batch_size = 1;
-  /** loss type */
-  NNFW_TRAIN_LOSS loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+  /** loss info */
+  nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR,
+                           .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_INVALID};
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 } nnfw_train_info;

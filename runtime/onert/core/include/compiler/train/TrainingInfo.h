@@ -42,7 +42,14 @@ public:
   uint32_t batchSize() const { return _batch_size; }
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   const ir::train::LossInfo &lossInfo() const { return _loss_info; }
-  void setLossInfo(const ir::train::LossInfo &loss_info) { _loss_info = loss_info; }
+  void setLossInfo(const ir::train::LossInfo &loss_info)
+  {
+    _loss_info = loss_info;
+
+    // If the reduction type is not specified, it uses SumOverBatchSize.
+    if (_loss_info.reduction_type == ir::train::LossReductionType::Invalid)
+      _loss_info.reduction_type = ir::train::LossReductionType::SumOverBatchSize;
+  }
   const ir::train::OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   void setOptimizerInfo(const ir::train::OptimizerInfo &optimizer_info)
   {
@@ -50,7 +57,7 @@ public:
   }
 
 private:
-  ir::train::LossInfo _loss_info{ir::train::LossCode::Invalid};
+  ir::train::LossInfo _loss_info;
   ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
   uint32_t _batch_size = 0;
 };

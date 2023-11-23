@@ -1192,8 +1192,18 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
       else
         throw std::runtime_error("not supported loss type");
     };
+    auto convertLossReductionType = [](const int &type) {
+      if (type == NNFW_TRAIN_LOSS_REDUCTION_INVALID)
+        return onert::ir::train::LossReductionType::Invalid;
+      else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
+        return onert::ir::train::LossReductionType::SumOverBatchSize;
+      else
+        throw std::runtime_error("not supported loss reduction type");
+    };
     onert::ir::train::LossInfo loss_info;
-    loss_info.loss_code = convertLossType(tinfo.loss);
+    loss_info.loss_code = convertLossType(tinfo.loss_info.loss);
+    // TODO Consider the reduction type of model file
+    loss_info.reduction_type = convertLossReductionType(tinfo.loss_info.reduction_type);
 
     auto convertOptType = [](const int &type) {
       if (type == NNFW_TRAIN_OPTIMIZER_SGD)
