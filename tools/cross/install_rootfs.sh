@@ -109,10 +109,6 @@ if [[ -n $__LinuxCodeName ]]; then
     chroot $__RootfsDir apt-get -f -y install
     chroot $__RootfsDir apt-get -y install $__UbuntuPackages
     machine=$(chroot $__RootfsDir gcc -dumpmachine)
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.a /usr/lib/${machine}/libhdf5.a || true
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.a /usr/lib/${machine}/libhdf5_cpp.a || true
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.so /usr/lib/${machine}/libhdf5.so || true
-    chroot $__RootfsDir ln -s /usr/lib/${machine}/libhdf5_serial.so /usr/lib/${machine}/libhdf5_cpp.so || true
     chroot $__RootfsDir symlinks -cr /usr
 
     if [ $__SkipUnmount == 0 ]; then
