@@ -47,9 +47,6 @@ private:
 private:
   int32_t _axis;
   float _label_smoothing;
-
-  // TODO Consider if these tensors should be built in TensorBuilder
-  std::unique_ptr<Tensor> _scratch;
 };
 
 } // namespace ops

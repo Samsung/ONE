@@ -87,7 +87,6 @@ template <typename T>
 inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_data,
                                     const Shape &y_true_shape, const T *y_true_data,
                                     const Shape &output_shape, T *output_data,
-                                    const Shape &, T *scratch_data,
                                     const Shape &backprop_shape, T *backprop_data)
 {
   Tensor logits;
@@ -130,9 +129,6 @@ inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_d
 
   back_out.shape.ReplaceWith(backprop_shape);
   back_out.buffer = backprop_data;
-
-  // UNUSED_RELEASE(scratch_shape);
-  UNUSED_RELEASE(scratch_data);
 
   const auto shape_in_batches = shape_in.Dims(0);
   const auto shape_in_size = FlatSizeSkipDim(shape_in, 0);

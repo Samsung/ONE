@@ -39,10 +39,6 @@ void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
 
   _axis = axis;
   _label_smoothing = label_smoothing;
-
-  // TODO Consider broadcast
-  _scratch = std::make_unique<Tensor>(_y_pred->get_info(), _y_pred->layout());
-  _scratch->setBuffer(std::make_shared<basic::Allocator>(_y_pred->total_size()));
 }
 
 void LossCategoricalCrossentropyLayer::categoricalCrossEntropyFloat32()
@@ -50,7 +46,6 @@ void LossCategoricalCrossentropyLayer::categoricalCrossEntropyFloat32()
   nnfw::cker::train::CategoricalCrossEntropy(getShape(_y_pred), getBuffer<float>(_y_pred),
                                              getShape(_y_true), getBuffer<float>(_y_true),
                                              getShape(_output), getBuffer<float>(_output),
-                                             getShape(_scratch.get()), getBuffer<float>(_scratch.get()),
                                              getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
   // if (getNumberOfDimensions(_y_pred) == 1)
   // {
