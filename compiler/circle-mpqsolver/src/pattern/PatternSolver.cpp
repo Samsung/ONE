@@ -33,15 +33,6 @@ PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
   set_mpq_options(options);
 }
 
-PatternSolver::PatternSolver(const std::string &input_quantization,
-                             const std::string &output_quantization,
-                             const std::vector<QuantizationPattern> &patterns)
-  : MPQSolver(input_quantization, output_quantization)
-{
-  MPQOptions options{patterns};
-  set_mpq_options(options);
-}
-
 std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 {
   auto module = read_module(module_path);
