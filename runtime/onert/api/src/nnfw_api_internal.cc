@@ -1186,14 +1186,14 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 
     auto convertLossType = [](const int &type) {
       if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
-        return onert::ir::operation::Loss::Type::MEAN_SQUARED_ERROR;
+        return onert::ir::train::LossCode::MeanSquaredError;
       if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
-        return onert::ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY;
+        return onert::ir::train::LossCode::CategoricalCrossentropy;
       else
         throw std::runtime_error("not supported loss type");
     };
-    onert::compiler::train::LossInfo loss_info;
-    loss_info.type = convertLossType(tinfo.loss);
+    onert::ir::train::LossInfo loss_info;
+    loss_info.loss_code = convertLossType(tinfo.loss);
 
     auto convertOptType = [](const int &type) {
       if (type == NNFW_TRAIN_OPTIMIZER_SGD)

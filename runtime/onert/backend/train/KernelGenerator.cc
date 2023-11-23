@@ -242,18 +242,18 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
 
   auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
 
-  auto op_type = node.param().op_type;
+  auto loss_code = node.param().loss_code;
 
-  switch (op_type)
+  switch (loss_code)
   {
-    case ir::operation::Loss::Type::MEAN_SQUARED_ERROR:
+    case ir::train::LossCode::MeanSquaredError:
     {
       auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);
       _return_fn = std::move(fn);
       break;
     }
-    case ir::operation::Loss::Type::CATEGORICAL_CROSSENTROPY:
+    case ir::train::LossCode::CategoricalCrossentropy:
     default:
       throw std::runtime_error("LossLayer: unsupported loss type");
       break;

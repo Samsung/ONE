@@ -32,9 +32,6 @@ void LossInsertionPass::run()
 {
   const auto &loss_info = _training_info->lossInfo();
 
-  ir::operation::Loss::Param param;
-  param.op_type = loss_info.type;
-
   if (_trainable_graph.getOutputs().size() != 1)
   {
     throw std::runtime_error("LossInsertionPass: Not supported multiple outputs");
@@ -60,8 +57,8 @@ void LossInsertionPass::run()
   auto output_index = _trainable_graph.addOperand(ir::Shape{1}, float_op);
   ir::OperandIndexSequence outputs{output_index};
 
-  auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs, param);
-  auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op);
+  auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs);
+  auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op, loss_info);
 
   _trainable_graph.addOperation(std::move(trainable_loss_op));
 

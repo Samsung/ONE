@@ -20,6 +20,9 @@
 #include "ir/operation/Loss.h"
 #include "ir/train/ITrainableOperation.h"
 
+#include "ir/train/LossCode.h"
+#include "ir/train/LossInfo.h"
+
 namespace onert
 {
 namespace ir
@@ -35,12 +38,19 @@ private:
   using OperationType = ir::operation::Loss;
 
 public:
-  Loss(const OperationType &operation);
+  Loss(const OperationType &operation, const LossInfo &info);
 
 public:
   std::unique_ptr<ITrainableOperation> clone() const override;
   void accept(OperationVisitor &v) const override;
   void accept(TrainableOperationVisitor &v) const override;
+  std::string name() const override { return toString(_param.loss_code) + toString(opcode()); };
+
+public:
+  const LossInfo &param() const { return _param; }
+
+private:
+  LossInfo _param;
 };
 
 } // namespace operation

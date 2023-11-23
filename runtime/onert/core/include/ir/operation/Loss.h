@@ -36,35 +36,12 @@ public:
     // TODO Add more inputs if necessary
   };
 
-  // NOTE It is not yet determined how to get the information of the previous activation when
-  //      generating kernels of Loss operation for each backend. If it is determined to get it
-  //      from the object of this class, we have to consider whether to change this enum class.
-  enum class Type
-  {
-    MEAN_SQUARED_ERROR,
-    CATEGORICAL_CROSSENTROPY
-  };
-
-  struct Param
-  {
-    Type op_type;
-    // TODO Add more params if necessary
-    Param() : op_type(Type::MEAN_SQUARED_ERROR) {}
-  };
-
 public:
-  Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param);
+  Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
 
 public:
   void accept(OperationVisitor &v) const override;
-  std::string name() const override;
   OpCode opcode() const final { return OpCode::Loss; }
-
-public:
-  const Param &param() const { return _param; }
-
-private:
-  Param _param;
 };
 
 } // namespace operation
