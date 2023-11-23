@@ -81,22 +81,26 @@ bool set_params(const luci::CircleDepthwiseConv2D *node, compute::DepthwiseConv2
 bool fold_depthwise_conv_2d(luci::CircleDepthwiseConv2D *node)
 {
   auto const input = dynamic_cast<luci::CircleConst *>(node->input());
-
   if (input == nullptr)
     return false; // Constant input is required for folding
+  if (input->rank() != 4)
+    return false;
 
+  // filter format: [1, H, W, O]
   auto const filter = dynamic_cast<luci::CircleConst *>(node->filter());
-
   if (filter == nullptr)
     return false; // Constant filter is required for folding
-
+  if (filter->rank() != 4)
+    return false;
   if (filter->dim(0).value() != 1)
     return false; // Unsupported batch size
 
+  // TODO support nullptr bias as it is optional
   auto const bias = dynamic_cast<luci::CircleConst *>(node->bias());
-
   if (bias == nullptr)
-    return false; // Constant bias is required for folding
+    return false;
+  if (bias->rank() != 1)
+    return false;
 
   auto static_shape = [](luci::CircleNode *node) {
     loco::TensorShape shape;
