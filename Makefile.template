@@ -8,6 +8,7 @@ HOST_OS?=linux
 TARGET_OS?=linux
 COVERAGE_BUILD?=0
 OPTIONS?=
+OPTIONS_NNCC?=
 
 # make TARGET and TYPE to lowercase
 HOST_ARCH_LC=$(shell echo $(HOST_ARCH) | tr A-Z a-z)
@@ -36,6 +37,7 @@ endif
 ifeq ($(CROSS_BUILD),1)
 	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
 	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
+	OPTIONS_NNCC+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
 endif
 
 ifneq ($(filter create-covsuite,$(MAKECMDGOALS)),)
@@ -50,10 +52,12 @@ endif
 
 ifneq ($(EXTERNAL_VOLUME),)
 	OPTIONS+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
+	OPTIONS_NNCC+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
 endif
 
 ifeq ($(TARGET_OS),android)
 	OPTIONS+= -DNDK_DIR=$(NDK_DIR)
+	OPTIONS_NNCC+= -DNDK_DIR=$(NDK_DIR)
 endif
 
 ifneq ($(ANDROID_BUILD_TOOLS_DIR),)
@@ -81,10 +85,12 @@ endif
 WORKHOME=$(CURDIR)/Product
 WORKFOLDER=$(TARGET_ARCH_LC)-$(TARGET_OS).$(BUILD_TYPE_LC)
 WORKSPACE=$(WORKHOME)/$(WORKFOLDER)
+BUILDTOOL_WORKSPACE=$(WORKHOME)/buildtool
 
 INSTALL_PATH?=$(WORKSPACE)/out
 OVERLAY_FOLDER?=$(WORKSPACE)/overlay
 INSTALL_ALIAS=$(WORKHOME)/out
+BUILDTOOL_PATH?=$(BUILDTOOL_WORKSPACE)/out
 
 TIMESTAMP_CONFIGURE=$(WORKSPACE)/CONFIGURE
 TIMESTAMP_BUILD=$(WORKSPACE)/BUILD
@@ -104,11 +110,13 @@ export NNCC_WORKSPACE=$(NNCC_FOLDER)
 ###
 ### Default target
 ###
-all: prepare-nncc configure build install
+all: prepare-buildtool prepare-nncc configure build install
 
 ###
 ### Command (build step)
 ###
+prepare-buildtool: prepare_buildtool_internal
+
 prepare-nncc: prepare_nncc_internal
 
 configure: configure_internal
@@ -142,11 +150,15 @@ distclean:
 $(WORKSPACE):
 	mkdir -p $@
 
+prepare_buildtool_internal: $(WORKSPACE)
+	cmake -S infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
+	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
 prepare_nncc_internal: $(WORKSPACE)
-ifneq ($(CROSS_BUILD),1)
-	./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+ifeq (,$(findstring android,$(TARGET_OS)))
+	EXTERNAL_FLATC=$(BUILDTOOL_PATH)/bin/flatc ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
-		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle06;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
+		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle06;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str" \
+		$(OPTIONS_NNCC)
 	./nncc build -j$(NPROCS)
 	cmake --install $(NNCC_FOLDER)
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
@@ -154,8 +166,8 @@ ifneq ($(CROSS_BUILD),1)
 	@mkdir -p ${OVERLAY_FOLDER}/include/oops
 	@cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
-endif
 	@echo "Done prepare-nncc"
+endif
 
 configure_internal: $(WORKSPACE)
 ifneq ($(DEBIAN_BUILD),)

@@ -1,8 +1,3 @@
-# Luci library is not supported is on cross build
-if(CMAKE_CROSSCOMPILING)
-  return()
-endif()
-
 nnfw_find_package(Luci QUIET)
 if(NOT Luci_FOUND)
   message(STATUS "Luci not found. Skip onert_odc")
