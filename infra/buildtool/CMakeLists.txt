@@ -20,6 +20,17 @@ endmacro(nnas_include)
 
 nnas_include(OptionTools)
 envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
+# Sync with traditional external download tool: server login
+# TODO Migrate external download tool
+envoption(EXTERNAL_SERVER_USERPWD "")
+if(EXTERNAL_SERVER_USERPWD)
+  string(REGEX MATCH "^[^:]*" EXTERNAL_SERVER_USERNAME ${EXTERNAL_SERVER_USERPWD})
+  string(REGEX MATCH "[^:]*$" EXTERNAL_SERVER_PASSWORD ${EXTERNAL_SERVER_USERPWD})
+else()
+  envoption(EXTERNAL_SERVER_USERNAME "")
+  envoption(EXTERNAL_SERVER_PASSWORD "")
+endif()
+
 set(FLATBUFFERS_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/flatbuffers/archive/v2.0.0.tar.gz)
 
 # Download and build Flatbuffers 2.0
@@ -27,6 +38,8 @@ include(ExternalProject)
 ExternalProject_Add(flatbuffers
   URL ${FLATBUFFERS_URL}
   DOWNLOAD_NO_EXTRACT TRUE
+  HTTP_USERNAME ${EXTERNAL_SERVER_USERNAME}
+  HTTP_PASSWORD ${EXTERNAL_SERVER_PASSWORD}
   PREFIX  ${CMAKE_CURRENT_BINARY_DIR}/flatbuffers
   SOURCE_DIR  ${NNAS_EXTERNALS_DIR}/FLATBUFFERS-2.0
   STAMP_DIR ${NNAS_EXTERNALS_DIR}/external-stamp
