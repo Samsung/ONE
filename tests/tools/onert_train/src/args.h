@@ -56,6 +56,7 @@ public:
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
   const int getLossType(void) const { return _loss_type; }
+  const int getLossReductionType(void) const { return _loss_reduction_type; }
   const int getOptimizerType(void) const { return _optimizer_type; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
@@ -79,6 +80,7 @@ private:
   int _batch_size;
   float _learning_rate;
   int _loss_type;
+  int _loss_reduction_type;
   int _optimizer_type;
   bool _print_version = false;
   int _verbose_level;
