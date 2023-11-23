@@ -39,6 +39,7 @@ std::string ElementwiseBinary::name() const
   using ElementwiseBinaryType = onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType;
   static const std::unordered_map<ElementwiseBinaryType, std::string> name_map{
     {ElementwiseBinaryType::FLOOR_DIV, std::string{"FloorDiv"}},
+    {ElementwiseBinaryType::FLOOR_MOD, std::string{"FloorMod"}},
     {ElementwiseBinaryType::LOGICAL_AND, std::string{"LogicalAnd"}},
     {ElementwiseBinaryType::LOGICAL_OR, std::string{"LogicalOr"}},
     {ElementwiseBinaryType::MAX, std::string{"Max"}},

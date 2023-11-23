@@ -38,6 +38,7 @@ public:
   enum class ElementwiseBinaryType
   {
     FLOOR_DIV,
+    FLOOR_MOD,
     LOGICAL_AND,
     LOGICAL_OR,
     MAX,

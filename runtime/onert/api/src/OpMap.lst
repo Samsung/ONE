@@ -115,7 +115,7 @@ MAP_MACRO(REDUCE_ANY                    , ReduceAny)
 // SQUARE
 MAP_MACRO(ZEROS_LIKE                    , ZerosLike)
 MAP_MACRO(FILL                          , Fill)
-// FLOOR_MOD
+MAP_MACRO(FLOOR_MOD                     , FloorMod)
 MAP_MACRO(RANGE                         , Range)
 // RESIZE_NEAREST_NEIGHBOR
 // LEAKY_RELU
