@@ -74,11 +74,9 @@ bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string 
 
 } // namespace
 
-BisectionSolver::BisectionSolver(const std::string &input_data_path, float qerror_ratio,
-                                 const std::string &input_quantization,
-                                 const std::string &output_quantization)
-  : MPQSolver(input_quantization, output_quantization), _qerror_ratio(qerror_ratio),
-    _input_data_path(input_data_path)
+BisectionSolver::BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx,
+                                 const std::string &input_data_path, float qerror_ratio)
+  : MPQSolver(ctx), _qerror_ratio(qerror_ratio), _input_data_path(input_data_path)
 {
 }
 
