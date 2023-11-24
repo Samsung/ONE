@@ -93,7 +93,8 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
       luci_interpreter_pal::FullyConnected(
         params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
         kernels::getTensorData<float>(weights_data), kernels::getTensorData<float>(bias_data),
-        output_shape, kernels::getTensorData<float>(output_data));
+        output_shape, kernels::getTensorData<float>(output_data), Tensor::num_dims(output),
+        Tensor::num_dims(weights));
       break;
     }
     case DataType::S8:
@@ -104,7 +105,8 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
       luci_interpreter_pal::FullyConnected(
         params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
         kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<float>(bias_data),
-        output_shape, kernels::getTensorData<float>(output_data));
+        output_shape, kernels::getTensorData<float>(output_data), Tensor::num_dims(output),
+        Tensor::num_dims(weights));
       break;
     }
     default:
@@ -170,21 +172,24 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *weights,
     luci_interpreter_pal::FullyConnected<int8_t>(
       op_params, input_shape, kernels::getTensorData<int8_t>(input_data), weights_shape,
       kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
-      output_shape, kernels::getTensorData<int8_t>(output_data));
+      output_shape, kernels::getTensorData<int8_t>(output_data), Tensor::num_dims(output),
+      Tensor::num_dims(weights));
   }
   else if (type == DataType::U8)
   {
     luci_interpreter_pal::FullyConnected<uint8_t>(
       op_params, input_shape, kernels::getTensorData<uint8_t>(input_data), weights_shape,
       kernels::getTensorData<uint8_t>(weights_data), kernels::getTensorData<int32_t>(bias_data),
-      output_shape, kernels::getTensorData<uint8_t>(output_data));
+      output_shape, kernels::getTensorData<uint8_t>(output_data), Tensor::num_dims(output),
+      Tensor::num_dims(weights));
   }
   else if (type == DataType::S16)
   {
     luci_interpreter_pal::FullyConnected(
       op_params, input_shape, kernels::getTensorData<int16_t>(input_data), weights_shape,
       kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<int64_t>(bias_data),
-      output_shape, kernels::getTensorData<int16_t>(output_data));
+      output_shape, kernels::getTensorData<int16_t>(output_data), Tensor::num_dims(output),
+      Tensor::num_dims(weights));
   }
   else
   {
@@ -264,11 +269,6 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
 
   if (bias)
     LUCI_INTERPRETER_CHECK(Tensor::num_elements(bias) == Tensor::dim(weights, 0));
-
-  const auto *options = cur_op->builtin_options_as_FullyConnectedOptions();
-
-  // TODO: handle with it
-  assert(options->keep_num_dims() == false);
 }
 
 // TODO think how remove unused param

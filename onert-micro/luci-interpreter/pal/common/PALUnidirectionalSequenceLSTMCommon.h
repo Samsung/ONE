@@ -312,7 +312,8 @@ void calculateLstmGate(const LstmStepManager *step_info,
                      runtime_graph->getConstDataByTensor(input_weight)),
                    luci_interpreter::kernels::getTensorData<BiasType>(
                      runtime_graph->getConstDataByTensor(input_bias)),
-                   gate_output_shape.dimsData(), gate_output);
+                   gate_output_shape.dimsData(), gate_output, gate_output_shape.dimensionsCount(),
+                   luci_interpreter::Tensor::num_dims(input_weight));
   }
 
   // Recurrent FC
@@ -338,7 +339,9 @@ void calculateLstmGate(const LstmStepManager *step_info,
                      runtime_graph->getConstDataByTensor(recurrent_weight)),
                    luci_interpreter::kernels::getTensorData<BiasType>(
                      runtime_graph->getConstDataByTensor(recurrent_bias)),
-                   gate_output_shape.dimsData(), fc_output_buffer);
+                   gate_output_shape.dimsData(), fc_output_buffer,
+                   gate_output_shape.dimensionsCount(),
+                   luci_interpreter::Tensor::num_dims(recurrent_weight));
 
     addElementWise(gate_output, fc_output_buffer, /*n_batch=*/gate_output_shape.dimsData()[0],
                    /*n_state=*/gate_output_shape.dimsData()[1], gate_output);

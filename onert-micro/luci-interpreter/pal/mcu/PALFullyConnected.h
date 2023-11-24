@@ -24,10 +24,11 @@ namespace luci_interpreter_pal
 {
 
 template <>
-inline void
-FullyConnected(const luci_interpreter_pal::FullyConnectedParams &params, const int32_t *input_shape,
-               const int8_t *input_data, const int32_t *filter_shape, const int8_t *filter_data,
-               const int32_t *bias_data, const int32_t *output_shape, int8_t *output_data)
+inline void FullyConnected(const luci_interpreter_pal::FullyConnectedParams &params,
+                           const int32_t *input_shape, const int8_t *input_data,
+                           const int32_t *filter_shape, const int8_t *filter_data,
+                           const int32_t *bias_data, const int32_t *output_shape,
+                           int8_t *output_data, uint32_t, uint32_t)
 {
   // MARK: At this moment this operation doesn't support
   assert(false && "FullyConnected INT8 NYI");
@@ -44,7 +45,7 @@ FullyConnected(const luci_interpreter_pal::FullyConnectedParams &params, const i
 template <>
 inline void FullyConnected(const luci_interpreter_pal::FullyConnectedParams &, const int32_t *,
                            const int16_t *, const int32_t *, const int8_t *, const int64_t *,
-                           const int32_t *, int16_t *)
+                           const int32_t *, int16_t *, uint32_t, uint32_t)
 {
   // MARK: At this moment this operation doesn't support
   assert(false && "FullyConnected INT16 NYI");
