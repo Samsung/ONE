@@ -31,10 +31,10 @@ TEST(CircleMPQSolverQuantizerTest, verifyResultsTest)
   float range = g._a_max - g._a_min;
   g.transfer_to(m.get());
 
-  std::string def_quant = "uint8";
-  mpqsolver::core::Quantizer quantizer(def_quant, def_quant);
+  mpqsolver::core::Quantizer::Context context;
+  mpqsolver::core::Quantizer quantizer(context);
   mpqsolver::core::LayerParams params;
-  auto res = quantizer.quantize(m.get(), def_quant, params);
+  auto res = quantizer.quantize(m.get(), context.output_model_dtype, params);
   EXPECT_TRUE(res);
   auto quant_param = add->quantparam();
   EXPECT_TRUE(quant_param != nullptr);
@@ -46,9 +46,9 @@ TEST(CircleMPQSolverQuantizerTest, verifyResultsTest)
 
 TEST(CircleMPQSolverQuantizerTest, verifyResultsTest_NEG)
 {
-  std::string def_quant = "uint8";
-  mpqsolver::core::Quantizer quantizer(def_quant, def_quant);
+  mpqsolver::core::Quantizer::Context context;
+  mpqsolver::core::Quantizer quantizer(context);
   mpqsolver::core::LayerParams params;
-  auto res = quantizer.quantize(nullptr, def_quant, params);
+  auto res = quantizer.quantize(nullptr, context.output_model_dtype, params);
   EXPECT_TRUE(!res);
 }
