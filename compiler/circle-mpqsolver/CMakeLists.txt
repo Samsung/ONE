@@ -45,6 +45,7 @@ set(TEST_SOURCES
     "src/MPQSolver.cpp"
     "src/core/SolverOutput.cpp"
     "src/bisection/BisectionSolver.cpp"
+    "src/core/DataProvider.cpp"
 )
 
 nnas_find_package(GTest REQUIRED)

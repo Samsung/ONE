@@ -21,5 +21,6 @@
 TEST(CircleMPQSolverEvaluatorTest, empty_path_NEG)
 {
   mpqsolver::core::MAEMetric metric;
-  EXPECT_ANY_THROW(mpqsolver::core::DatasetEvaluator evaluator(nullptr, "", metric));
+  EXPECT_ANY_THROW(mpqsolver::core::H5FileDataProvider data("", "");
+                   mpqsolver::core::DatasetEvaluator evaluator(nullptr, data, metric));
 }

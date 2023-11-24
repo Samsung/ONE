@@ -18,6 +18,7 @@
 #include "DepthParameterizer.h"
 #include "VISQErrorApproximator.h"
 
+#include "core/DataProvider.h"
 #include "core/ErrorMetric.h"
 #include "core/SolverOutput.h"
 
@@ -74,9 +75,8 @@ bool front_has_higher_error(const NodeDepthType &nodes_depth, const std::string 
 
 } // namespace
 
-BisectionSolver::BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx,
-                                 const std::string &input_data_path, float qerror_ratio)
-  : MPQSolver(ctx), _qerror_ratio(qerror_ratio), _input_data_path(input_data_path)
+BisectionSolver::BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx, float qerror_ratio)
+  : MPQSolver(ctx), _qerror_ratio(qerror_ratio)
 {
 }
 
@@ -100,6 +100,11 @@ void BisectionSolver::algorithm(Algorithm algorithm) { _algorithm = algorithm; }
 
 void BisectionSolver::setVisqPath(const std::string &visq_path) { _visq_data_path = visq_path; }
 
+void BisectionSolver::setInputData(std::unique_ptr<mpqsolver::core::DataProvider> &&data)
+{
+  _input_data = std::move(data);
+}
+
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
   auto module = read_module(module_path);
@@ -118,7 +123,11 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   SolverOutput::get() << "\n>> Computing baseline qerrors\n";
 
   std::unique_ptr<core::MAEMetric> metric = std::make_unique<core::MAEMetric>();
-  core::DatasetEvaluator evaluator(module.get(), _input_data_path, *metric.get());
+  if (!_input_data)
+  {
+    throw std::runtime_error("no input data");
+  }
+  core::DatasetEvaluator evaluator(module.get(), *_input_data.get(), *metric.get());
 
   core::LayerParams layer_params;
   float int16_qerror =

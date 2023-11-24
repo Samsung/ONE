@@ -48,17 +48,21 @@ public:
    * @brief Construct a new Bisection Solver object
    *
    * @param ctx - quantizer context
-   * @param input_data_path - input path of h5 file
    * @param qerror_ratio - target error ratio
    */
-  BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx,
-                  const std::string &input_data_path, float qerror_ratio);
+  BisectionSolver(const mpqsolver::core::Quantizer::Context &ctx, float qerror_ratio);
+
   BisectionSolver() = delete;
 
   /**
    * @brief run bisection for recorded float module at module_path
    */
   std::unique_ptr<luci::Module> run(const std::string &module_path) override;
+
+  /**
+   * @brief set data provider
+   */
+  void setInputData(std::unique_ptr<mpqsolver::core::DataProvider> &&data);
 
   /**
    * @brief set used algorithm
@@ -81,7 +85,7 @@ private:
   float _qerror = 0.f;             // quantization error
   Algorithm _algorithm = Algorithm::ForceQ16Front;
   std::string _visq_data_path;
-  std::string _input_data_path;
+  std::unique_ptr<mpqsolver::core::DataProvider> _input_data;
 };
 
 } // namespace bisection

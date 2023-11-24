@@ -16,6 +16,8 @@
 
 #include "Evaluator.h"
 
+#include "core/DataProvider.h"
+
 #include <luci_interpreter/Interpreter.h>
 
 #include <dio_hdf5/HDF5Importer.h>
@@ -37,14 +39,14 @@ template <typename NodeT> size_t get_tensor_size(const NodeT *node)
   return tensor_size;
 }
 
-WholeOutput compute_outputs(const luci::Module *module, const std::string &h5file)
+WholeOutput compute_outputs(const luci::Module *module, const DataProvider *data_provider)
 {
-  dio::hdf5::HDF5Importer importer{h5file};
-  importer.importGroup("value");
+  if (data_provider == nullptr)
+  {
+    throw std::runtime_error("No data");
+  }
 
-  bool is_raw_data = importer.isRawData();
-
-  const auto num_records = importer.numData();
+  const auto num_records = data_provider->numSamples();
   if (num_records == 0)
     throw std::runtime_error("The input data file does not contain any record.");
   const auto input_nodes = loco::input_nodes(module->graph());
@@ -54,31 +56,19 @@ WholeOutput compute_outputs(const luci::Module *module, const std::string &h5fil
 
   // Create interpreter.
   luci_interpreter::Interpreter interpreter(module);
-  for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+  for (uint32_t record_idx = 0; record_idx < num_records; record_idx++)
   {
-    if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
+    if (num_inputs != data_provider->numInputs(record_idx))
       throw std::runtime_error("Wrong number of inputs.");
     for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
     {
       const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
       assert(input_node->index() == input_idx);
 
-      std::vector<char> input_data(get_tensor_size(input_node));
+      InputData input_data(get_tensor_size(input_node));
+      data_provider->getSampleInput(record_idx, input_idx, input_data);
 
-      if (!is_raw_data)
-      {
-        loco::DataType dtype;
-        Shape shape;
-        importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data(),
-                            input_data.size());
-      }
-      else
-      {
-        // Skip type/shape check for raw data
-        importer.readTensor(record_idx, input_idx, input_data.data(), input_data.size());
-      }
-
-      interpreter.writeInputTensor(input_node, input_data.data(), input_data.size());
+      interpreter.writeInputTensor(input_node, input_data.data().data(), input_data.data().size());
     }
 
     interpreter.interpret();
@@ -103,11 +93,11 @@ WholeOutput compute_outputs(const luci::Module *module, const std::string &h5fil
 
 } // namespace
 
-DatasetEvaluator::DatasetEvaluator(const luci::Module *ref_module, const std::string &h5file,
+DatasetEvaluator::DatasetEvaluator(const luci::Module *ref_module, const DataProvider &provider,
                                    const ErrorMetric &metric)
-  : _ref_module(ref_module), _h5file(h5file), _metric(&metric)
+  : _ref_module(ref_module), _provider(&provider), _metric(&metric)
 {
-  _ref_output = compute_outputs(_ref_module, _h5file);
+  _ref_output = compute_outputs(_ref_module, _provider);
 }
 
 void DatasetEvaluator::validate(const luci::Module *trgt_fq_module) const
@@ -132,7 +122,7 @@ float DatasetEvaluator::evaluate(const luci::Module *trgt_fq_module) const
 
   validate(trgt_fq_module);
 
-  const WholeOutput &cur_output = compute_outputs(trgt_fq_module, _h5file);
+  const WholeOutput &cur_output = compute_outputs(trgt_fq_module, _provider);
   float error = _metric->compute(_ref_output, cur_output);
   return error;
 }

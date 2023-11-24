@@ -20,6 +20,8 @@
 #include <luci/CircleFileExpContract.h>
 
 #include "bisection/BisectionSolver.h"
+#include "core/DataProvider.h"
+#include "core/SolverOutput.h"
 #include "pattern/PatternSolver.h"
 #include "core/SolverOutput.h"
 #include "core/Quantizer.h"
@@ -213,7 +215,11 @@ int entry(int argc, char **argv)
 
     using namespace mpqsolver::bisection;
 
-    auto bi_solver = std::make_unique<BisectionSolver>(ctx, data_path, qerror_ratio);
+    auto bi_solver = std::make_unique<BisectionSolver>(ctx, qerror_ratio);
+    auto input_data =
+      std::make_unique<mpqsolver::core::H5FileDataProvider>(data_path, input_model_path);
+    bi_solver->setInputData(std::move(input_data));
+
     {
       auto value = arser.get<std::string>(bisection_str);
       if (value == "auto")
