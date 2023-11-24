@@ -32,10 +32,10 @@ TrainableGraph::TrainableGraph() : _graph{} {}
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
   : _graph{tgraph._graph}, _back_props{tgraph._back_props}, _losses{tgraph._losses}
 {
-  tgraph.operations().iterate(
-    [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
-      replaceOperation(index, dynamic_cast<const ITrainableOperation &>(op).clone());
-    });
+  // tgraph.operations().iterate(
+  // [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
+  // replaceOperation(index, dynamic_cast<const IOperation &>(op).clone());
+  // });
 }
 
 TrainableGraph::TrainableGraph(const Graph &graph) : _graph{graph} {}
@@ -50,13 +50,13 @@ OperandIndex TrainableGraph::addOperand(OperandIndex index, std::unique_ptr<Oper
   return _graph.addOperand(index, std::move(operand));
 }
 
-OperationIndex TrainableGraph::addOperation(std::unique_ptr<ITrainableOperation> &&operation)
+OperationIndex TrainableGraph::addOperation(std::unique_ptr<IOperation> &&operation)
 {
   return _graph.addOperation(std::move(operation));
 }
 
 OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
-                                                std::unique_ptr<ITrainableOperation> &&operation)
+                                                std::unique_ptr<IOperation> &&operation)
 {
   return _graph.replaceOperation(index, std::move(operation));
 }
@@ -104,7 +104,7 @@ void TrainableGraph::verify(void) const
   operations().iterate([](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const onert::ir::train::ITrainableOperation &>(op));
+      UNUSED_RELEASE(dynamic_cast<const onert::ir::IOperation &>(op));
     }
     catch (const std::bad_cast &)
     {
@@ -117,10 +117,10 @@ void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOpera
 
 void TrainableGraph::setLayout(Layout layout) { _graph.setLayout(layout); }
 
-const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
+const IOperation &TrainableGraph::operation(OperationIndex index) const
 {
   // NOTE Virtual inherited objects cannot be static_casted.
-  return dynamic_cast<const ITrainableOperation &>(_graph.operations().at(index));
+  return dynamic_cast<const IOperation &>(_graph.operations().at(index));
 }
 
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const

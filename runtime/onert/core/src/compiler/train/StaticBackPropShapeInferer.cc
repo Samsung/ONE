@@ -102,22 +102,22 @@ void StaticBackPropShapeInferer::setShape(const ir::OperandIndex &index, const i
   }
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Conv2D &)
+void StaticBackPropShapeInferer::visit(const ir::operation::Conv2D &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
+void StaticBackPropShapeInferer::visit(const ir::operation::ElementwiseActivation &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Loss &)
+void StaticBackPropShapeInferer::visit(const ir::operation::Loss &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Permute &op)
+void StaticBackPropShapeInferer::visit(const ir::operation::Permute &op)
 {
   const auto &back_props = _lowered_subg->trainable_graph().back_props();
 
@@ -130,17 +130,17 @@ void StaticBackPropShapeInferer::visit(const ir::train::operation::Permute &op)
   setShape(input_idx, new_shape);
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Pool2D &)
+void StaticBackPropShapeInferer::visit(const ir::operation::Pool2D &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Reshape &)
+void StaticBackPropShapeInferer::visit(const ir::operation::Reshape &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Softmax &)
+void StaticBackPropShapeInferer::visit(const ir::operation::Softmax &)
 {
   // NYI
 }

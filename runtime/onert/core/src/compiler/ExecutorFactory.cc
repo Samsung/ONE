@@ -668,7 +668,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                            const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const ir::train::ITrainableOperation &>(op));
+      UNUSED_RELEASE(dynamic_cast<const ir::IOperation &>(op));
     }
     catch (std::bad_cast &)
     {
@@ -693,6 +693,9 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         const auto &orig_tgraph = lowered_graph->trainable_graph();
         const auto &trainable_op = orig_tgraph.operation(op_index);
+        // IOperation 으로부터 clone 을 만들어야 한다.
+        // Polymorphic 이여서 clone 함수에서 각각 return make_unique<Conv2D>(*this) 와 같이 구현이
+        // 필요하다.
         auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
         UNUSED_RELEASE(gen_index);
         assert(gen_index == op_index);

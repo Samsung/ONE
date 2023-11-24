@@ -47,6 +47,7 @@ public:
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Permute; }
+  std::unique_ptr<IOperation> clone() const override { return std::make_unique<Permute>(*this); }
 
 public:
   Permute(const OperandIndex &input, const OperandIndex &output, Type type);

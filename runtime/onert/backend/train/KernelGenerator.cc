@@ -117,9 +117,9 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
   // DO NOTHING
 }
 
-void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
+void KernelGenerator::visit(const ir::operation::Conv2D &node)
 {
-  using ir::train::operation::Conv2D;
+  using ir::operation::Conv2D;
 
   const auto out_index{node.getOutputs().at(0)};
   const auto in_index{node.getInputs().at(Conv2D::Input::INPUT)};
@@ -168,9 +168,9 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));
 }
 
-void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
+void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
 {
-  using ir::train::operation::ElementwiseActivation;
+  using ir::operation::ElementwiseActivation;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ElementwiseActivation::Input::INPUT)};
@@ -190,9 +190,9 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
+void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 {
-  using ir::train::operation::FullyConnected;
+  using ir::operation::FullyConnected;
 
   const auto out_index{node.getOutputs().at(0)};
   const auto in_index{node.getInputs().at(FullyConnected::Input::INPUT)};
@@ -228,9 +228,9 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
     generateGradientApplier(_optimizer, weights_grad_tensor, weights_tensor));
 }
 
-void KernelGenerator::visit(const ir::train::operation::Loss &node)
+void KernelGenerator::visit(const ir::operation::Loss &node)
 {
-  using ir::train::operation::Loss;
+  using ir::operation::Loss;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto y_pred_index{node.getInputs().at(Loss::Y_PRED)};
@@ -260,9 +260,9 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   }
 }
 
-void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
+void KernelGenerator::visit(const ir::operation::Pool2D &node)
 {
-  using ir::train::operation::Pool2D;
+  using ir::operation::Pool2D;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
@@ -302,9 +302,9 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::train::operation::Reshape &node)
+void KernelGenerator::visit(const ir::operation::Reshape &node)
 {
-  using ir::train::operation::Reshape;
+  using ir::operation::Reshape;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
@@ -331,9 +331,9 @@ void KernelGenerator::visit(const ir::train::operation::Reshape &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::train::operation::Softmax &node)
+void KernelGenerator::visit(const ir::operation::Softmax &node)
 {
-  using ir::train::operation::Softmax;
+  using ir::operation::Softmax;
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};

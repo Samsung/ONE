@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include "compiler/OperationLowerInfo.h"
 #include "exec/train/TrainableFnSequence.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/IOperation.h"
 
 namespace onert
 {
@@ -32,12 +32,12 @@ namespace train
 struct TrainableCodeAndInfo
 {
   ir::OperationIndex op_ind;
-  const ir::train::ITrainableOperation *op;
+  const ir::IOperation *op;
   const OperationLowerInfo *lower_info;
   // TODO Change to TrainableFnSequence
   std::unique_ptr<exec::train::TrainableFnSequence> tn_seq;
 
-  TrainableCodeAndInfo(const ir::OperationIndex op_ind, const ir::train::ITrainableOperation *op,
+  TrainableCodeAndInfo(const ir::OperationIndex op_ind, const ir::IOperation *op,
                        const OperationLowerInfo *lower_info,
                        std::unique_ptr<exec::train::TrainableFnSequence> &&tn_seq)
     : op_ind{op_ind}, op{op}, lower_info{lower_info}, tn_seq{std::move(tn_seq)}

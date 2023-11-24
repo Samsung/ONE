@@ -22,7 +22,7 @@
 #include "backend/ITensorRegistry.h"
 #include "exec/train/TrainableFnSequence.h"
 #include "ir/train/TrainableGraph.h"
-#include "ir/train/TrainableOperationVisitor.h"
+#include "ir/OperationVisitor.h"
 
 namespace onert
 {
@@ -31,7 +31,7 @@ namespace backend
 namespace train
 {
 
-class KernelGeneratorBase : public ir::train::TrainableOperationVisitor
+class KernelGeneratorBase : public ir::OperationVisitor
 {
 public:
   virtual ~KernelGeneratorBase() = default;
@@ -41,7 +41,7 @@ public:
 
 protected:
 #define OP(InternalName)                                                                \
-  void visit(const ir::train::operation::InternalName &) override                       \
+  void visit(const ir::operation::InternalName &) override                              \
   {                                                                                     \
     throw std::runtime_error("KernelGenerator: NYI for operation '" #InternalName "'"); \
   }

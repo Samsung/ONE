@@ -37,6 +37,11 @@ struct IOperation
   virtual void accept(OperationVisitor &v) const = 0;
   virtual std::string name() const { return std::string{toString(opcode())}; }
   virtual OpCode opcode() const = 0;
+  virtual std::unique_ptr<IOperation> clone() const
+  {
+    throw std::runtime_error{name() + "::clone() not supported"};
+    // return std::unique_ptr<IOperation>();
+  }
 
   virtual void replaceInputs(const OperandIndex &from, const OperandIndex &to) = 0;
   virtual void replaceOutputs(const OperandIndex &from, const OperandIndex &to) = 0;

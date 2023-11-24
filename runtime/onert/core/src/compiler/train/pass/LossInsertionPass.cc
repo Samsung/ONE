@@ -17,7 +17,7 @@
 #include "LossInsertionPass.h"
 
 #include "ir/train/TrainableGraph.h"
-#include "ir/train/operation/Loss.h"
+#include "ir/operation/Loss.h"
 
 namespace onert
 {
@@ -57,8 +57,7 @@ void LossInsertionPass::run()
   auto output_index = _trainable_graph.addOperand(ir::Shape{1}, float_op);
   ir::OperandIndexSequence outputs{output_index};
 
-  auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs);
-  auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op, loss_info);
+  auto trainable_loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs, loss_info);
 
   _trainable_graph.addOperation(std::move(trainable_loss_op));
 

@@ -50,7 +50,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   return ret;
 }
 
-void KernelGenerator::visit(const ir::train::operation::Permute &node)
+void KernelGenerator::visit(const ir::operation::Permute &node)
 {
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};

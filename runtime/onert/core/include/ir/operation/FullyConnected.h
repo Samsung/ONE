@@ -52,6 +52,10 @@ public:
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::FullyConnected; }
+  std::unique_ptr<IOperation> clone() const override
+  {
+    return std::make_unique<FullyConnected>(*this);
+  }
 
 public:
   const Param &param() const { return _param; }

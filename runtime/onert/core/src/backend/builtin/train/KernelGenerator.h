@@ -54,7 +54,7 @@ public:
   }
 
 private:
-  void visit(const ir::train::operation::Permute &) override;
+  void visit(const ir::operation::Permute &) override;
 
 private:
   backend::ITensor *getTensor(const ir::OperandIndex &index);

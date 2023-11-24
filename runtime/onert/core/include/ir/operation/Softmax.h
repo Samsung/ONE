@@ -48,6 +48,7 @@ public:
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Softmax; }
+  std::unique_ptr<IOperation> clone() const override { return std::make_unique<Softmax>(*this); }
 
 public:
   const Param &param() const { return _param; }
