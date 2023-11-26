@@ -19,6 +19,8 @@
 
 #include "ErrorMetric.h"
 
+#include "DataProvider.h"
+
 #include <luci/IR/Module.h>
 #include <luci/CircleQuantizer.h>
 
@@ -34,9 +36,9 @@ class DatasetEvaluator final
 {
 public:
   /**
-   * @brief create Evaluator for comparing output of ref_module on h5file
+   * @brief create Evaluator for comparing output of ref_module on provider
    */
-  DatasetEvaluator(const luci::Module *ref_module, const std::string &h5file,
+  DatasetEvaluator(const luci::Module *ref_module, const DataProvider &provider,
                    const ErrorMetric &metric);
   DatasetEvaluator() = delete;
   ~DatasetEvaluator() = default;
@@ -55,7 +57,7 @@ private:
 
 private:
   const luci::Module *_ref_module = nullptr;
-  std::string _h5file;
+  const DataProvider *_provider = nullptr;
   WholeOutput _ref_output;
   const ErrorMetric *_metric = nullptr;
 };
