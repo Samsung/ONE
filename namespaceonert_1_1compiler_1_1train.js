@@ -1,7 +1,6 @@
 var namespaceonert_1_1compiler_1_1train =
 [
     [ "pass", "namespaceonert_1_1compiler_1_1train_1_1pass.html", "namespaceonert_1_1compiler_1_1train_1_1pass" ],
-    [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", "structonert_1_1compiler_1_1train_1_1_loss_info" ],
     [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
     [ "StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer" ],
     [ "TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", "classonert_1_1compiler_1_1train_1_1_tensor_registries" ],

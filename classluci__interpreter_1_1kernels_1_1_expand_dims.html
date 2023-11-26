@@ -264,7 +264,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>      axis_value = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(*getTensorData&lt;int64_t&gt;(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_expand_dims.html#a1749010773701c02f905c9e89099379d">axis</a>()));</div>
 <div class="line"><span class="lineno">   41</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp ExpandDims Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   44</span>  }</div>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_expand_dims.html#ac594eee5aa4b219b72b91f6eefee74c9">input</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>();</div>

@@ -1,9 +1,12 @@
 var namespacempqsolver_1_1core =
 [
+    [ "DataProvider", "classmpqsolver_1_1core_1_1_data_provider.html", "classmpqsolver_1_1core_1_1_data_provider" ],
     [ "DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", "classmpqsolver_1_1core_1_1_dataset_evaluator" ],
     [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html", "classmpqsolver_1_1core_1_1_dumper" ],
     [ "DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", "classmpqsolver_1_1core_1_1_dumping_hooks" ],
     [ "ErrorMetric", "classmpqsolver_1_1core_1_1_error_metric.html", "classmpqsolver_1_1core_1_1_error_metric" ],
+    [ "H5FileDataProvider", "classmpqsolver_1_1core_1_1_h5_file_data_provider.html", "classmpqsolver_1_1core_1_1_h5_file_data_provider" ],
+    [ "InputData", "structmpqsolver_1_1core_1_1_input_data.html", "structmpqsolver_1_1core_1_1_input_data" ],
     [ "MAEMetric", "classmpqsolver_1_1core_1_1_m_a_e_metric.html", "classmpqsolver_1_1core_1_1_m_a_e_metric" ],
     [ "Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", "classmpqsolver_1_1core_1_1_quantizer" ],
     [ "QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", "structmpqsolver_1_1core_1_1_quantizer_hook" ],

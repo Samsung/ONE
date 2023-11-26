@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2kerne
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      t0-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != DataType::U8 &amp;&amp; t0-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != DataType::S8 &amp;&amp;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      t0-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != DataType::S16 &amp;&amp; t0-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != DataType::S64)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Pack(1) Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">for</span> (uint32_t i = 1; i &lt; <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#a69247fbdedf01b531955a388a43f2ef8">_inputs</a>.size(); ++i)</div>
@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2kerne
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      evalGeneric&lt;int64_t&gt;();</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Pack(2) Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  }</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>

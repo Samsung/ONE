@@ -121,7 +121,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "ReduceMax.h", "luci-interpreter_2src_2kernels_2_reduce_max_8h.html", "luci-interpreter_2src_2kernels_2_reduce_max_8h" ],
     [ "ReduceProd.cpp", "luci-interpreter_2src_2kernels_2_reduce_prod_8cpp.html", null ],
     [ "ReduceProd.h", "luci-interpreter_2src_2kernels_2_reduce_prod_8h.html", "luci-interpreter_2src_2kernels_2_reduce_prod_8h" ],
-    [ "Relu.cpp", "compiler_2luci-interpreter_2src_2kernels_2_relu_8cpp.html", null ],
+    [ "Relu.cpp", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp.html", null ],
     [ "Relu.h", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u_8h" ],
     [ "Relu6.cpp", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp.html", null ],
     [ "Relu6.h", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u6_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_re_l_u6_8h" ],

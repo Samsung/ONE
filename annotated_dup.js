@@ -2364,10 +2364,13 @@ var annotated_dup =
         [ "VISQErrorApproximator", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html", "classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator" ]
       ] ],
       [ "core", "namespacempqsolver_1_1core.html", [
+        [ "DataProvider", "classmpqsolver_1_1core_1_1_data_provider.html", "classmpqsolver_1_1core_1_1_data_provider" ],
         [ "DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", "classmpqsolver_1_1core_1_1_dataset_evaluator" ],
         [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html", "classmpqsolver_1_1core_1_1_dumper" ],
         [ "DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html", "classmpqsolver_1_1core_1_1_dumping_hooks" ],
         [ "ErrorMetric", "classmpqsolver_1_1core_1_1_error_metric.html", "classmpqsolver_1_1core_1_1_error_metric" ],
+        [ "H5FileDataProvider", "classmpqsolver_1_1core_1_1_h5_file_data_provider.html", "classmpqsolver_1_1core_1_1_h5_file_data_provider" ],
+        [ "InputData", "structmpqsolver_1_1core_1_1_input_data.html", "structmpqsolver_1_1core_1_1_input_data" ],
         [ "MAEMetric", "classmpqsolver_1_1core_1_1_m_a_e_metric.html", "classmpqsolver_1_1core_1_1_m_a_e_metric" ],
         [ "Quantizer", "classmpqsolver_1_1core_1_1_quantizer.html", "classmpqsolver_1_1core_1_1_quantizer" ],
         [ "QuantizerHook", "structmpqsolver_1_1core_1_1_quantizer_hook.html", "structmpqsolver_1_1core_1_1_quantizer_hook" ],
@@ -3057,6 +3060,7 @@ var annotated_dup =
             [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
             [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
+            [ "LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
             [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ],
             [ "SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer" ],
@@ -3141,7 +3145,6 @@ var annotated_dup =
             [ "LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass" ],
             [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
           ] ],
-          [ "LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", "structonert_1_1compiler_1_1train_1_1_loss_info" ],
           [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
           [ "StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer" ],
           [ "TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", "classonert_1_1compiler_1_1train_1_1_tensor_registries" ],
@@ -3333,6 +3336,7 @@ var annotated_dup =
             [ "UntrainableOperation", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation" ]
           ] ],
           [ "ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_i_trainable_operation" ],
+          [ "LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", "structonert_1_1ir_1_1train_1_1_loss_info" ],
           [ "OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", "structonert_1_1ir_1_1train_1_1_optimizer_info" ],
           [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
           [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ]

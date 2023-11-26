@@ -101,11 +101,11 @@ $(document).ready(function(){initNavTree('classmpqsolver_1_1_m_p_q_solver.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a51f962d03cf518d428b69acfbac5b566"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a51f962d03cf518d428b69acfbac5b566">MPQSolver</a> (const <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">core::Quantizer::Context</a> &amp;ctx, const std::string &amp;input_data_path, float qerror_ratio)</td></tr>
-<tr class="separator:a51f962d03cf518d428b69acfbac5b566"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dc867455554baf2ee26d56ac5bb3f0e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a4dc867455554baf2ee26d56ac5bb3f0e">MPQSolver</a> (const std::string &amp;input_data_path, float qerror_ratio, const std::string &amp;input_quantization, const std::string &amp;output_quantization)</td></tr>
-<tr class="memdesc:a4dc867455554baf2ee26d56ac5bb3f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct Solver using input_data_path for .h5 file, qerror_ratio to set target qerror, and input_quantization/output_quantization to set quantization type at input/output respectively  <a href="classmpqsolver_1_1_m_p_q_solver.html#a4dc867455554baf2ee26d56ac5bb3f0e">More...</a><br /></td></tr>
-<tr class="separator:a4dc867455554baf2ee26d56ac5bb3f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f5c4639c00c3a6483d198eb1ebc9db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a63f5c4639c00c3a6483d198eb1ebc9db">MPQSolver</a> (const <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">core::Quantizer::Context</a> &amp;ctx)</td></tr>
+<tr class="separator:a63f5c4639c00c3a6483d198eb1ebc9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa02c872b13a51d5aab15a5191d6c9aee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#aa02c872b13a51d5aab15a5191d6c9aee">MPQSolver</a> (const std::string &amp;input_quantization, const std::string &amp;output_quantization)</td></tr>
+<tr class="memdesc:aa02c872b13a51d5aab15a5191d6c9aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct Solver using input_quantization/output_quantization to set quantization type at input/output respectively  <a href="classmpqsolver_1_1_m_p_q_solver.html#aa02c872b13a51d5aab15a5191d6c9aee">More...</a><br /></td></tr>
+<tr class="separator:aa02c872b13a51d5aab15a5191d6c9aee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b4a0bf080a0bd771f78c82ca2459ea1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a8b4a0bf080a0bd771f78c82ca2459ea1">~MPQSolver</a> ()=default</td></tr>
 <tr class="separator:a8b4a0bf080a0bd771f78c82ca2459ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af854ab9e1030991ff049f31b904607f4"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">luci::Module</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#af854ab9e1030991ff049f31b904607f4">run</a> (const std::string &amp;module_path)=0</td></tr>
@@ -122,16 +122,12 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ae18e719178db7dc1dd0f7cd5deef4c78"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#ae18e719178db7dc1dd0f7cd5deef4c78">_input_data_path</a></td></tr>
-<tr class="separator:ae18e719178db7dc1dd0f7cd5deef4c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afef775ae4066ff8b079569237cb75bf0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">_input_quantization</a></td></tr>
 <tr class="separator:afef775ae4066ff8b079569237cb75bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7c586dcf32bcade6d7e8f67e94a4351"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">_output_quantization</a></td></tr>
 <tr class="separator:ae7c586dcf32bcade6d7e8f67e94a4351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85c835b7c8d1b1f5bc378a0c46d994d7"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classmpqsolver_1_1core_1_1_quantizer.html">core::Quantizer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a></td></tr>
 <tr class="separator:a85c835b7c8d1b1f5bc378a0c46d994d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538c70103adc499bde424bb3fcdb8525"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a538c70103adc499bde424bb3fcdb8525">_qerror_ratio</a> = 0.f</td></tr>
-<tr class="separator:a538c70103adc499bde424bb3fcdb8525"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a801eb1e84af6d450057011c2322589"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html">core::DumpingHooks</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a></td></tr>
 <tr class="separator:a8a801eb1e84af6d450057011c2322589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -139,8 +135,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00031">31</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a51f962d03cf518d428b69acfbac5b566" name="a51f962d03cf518d428b69acfbac5b566"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51f962d03cf518d428b69acfbac5b566">&#9670;&#160;</a></span>MPQSolver() <span class="overload">[1/2]</span></h2>
+<a id="a63f5c4639c00c3a6483d198eb1ebc9db" name="a63f5c4639c00c3a6483d198eb1ebc9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63f5c4639c00c3a6483d198eb1ebc9db">&#9670;&#160;</a></span>MPQSolver() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,43 +145,24 @@ Protected Attributes</h2></td></tr>
           <td class="memname">MPQSolver::MPQSolver </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">core::Quantizer::Context</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_data_path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>qerror_ratio</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00024">24</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>  : <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae18e719178db7dc1dd0f7cd5deef4c78">_input_data_path</a>(input_data_path), <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a538c70103adc499bde424bb3fcdb8525">_qerror_ratio</a>(qerror_ratio)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a> = std::make_unique&lt;core::Quantizer&gt;(ctx);</div>
-<div class="line"><span class="lineno">   29</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a538c70103adc499bde424bb3fcdb8525"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a538c70103adc499bde424bb3fcdb8525">mpqsolver::MPQSolver::_qerror_ratio</a></div><div class="ttdeci">float _qerror_ratio</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00065">MPQSolver.h:65</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a85c835b7c8d1b1f5bc378a0c46d994d7"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">mpqsolver::MPQSolver::_quantizer</a></div><div class="ttdeci">std::unique_ptr&lt; core::Quantizer &gt; _quantizer</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00064">MPQSolver.h:64</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_ae18e719178db7dc1dd0f7cd5deef4c78"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#ae18e719178db7dc1dd0f7cd5deef4c78">mpqsolver::MPQSolver::_input_data_path</a></div><div class="ttdeci">std::string _input_data_path</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00061">MPQSolver.h:61</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a> = std::make_unique&lt;core::Quantizer&gt;(ctx);</div>
+<div class="line"><span class="lineno">   27</span>}</div>
+<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a85c835b7c8d1b1f5bc378a0c46d994d7"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">mpqsolver::MPQSolver::_quantizer</a></div><div class="ttdeci">std::unique_ptr&lt; core::Quantizer &gt; _quantizer</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00060">MPQSolver.h:60</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00064">_quantizer</a>.</p>
+<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00060">_quantizer</a>.</p>
 
 </div>
 </div>
-<a id="a4dc867455554baf2ee26d56ac5bb3f0e" name="a4dc867455554baf2ee26d56ac5bb3f0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dc867455554baf2ee26d56ac5bb3f0e">&#9670;&#160;</a></span>MPQSolver() <span class="overload">[2/2]</span></h2>
+<a id="aa02c872b13a51d5aab15a5191d6c9aee" name="aa02c872b13a51d5aab15a5191d6c9aee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02c872b13a51d5aab15a5191d6c9aee">&#9670;&#160;</a></span>MPQSolver() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,18 +170,6 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">MPQSolver::MPQSolver </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_data_path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>qerror_ratio</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>input_quantization</em>, </td>
         </tr>
@@ -222,18 +187,17 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>construct Solver using input_data_path for .h5 file, qerror_ratio to set target qerror, and input_quantization/output_quantization to set quantization type at input/output respectively </p>
+<p>construct Solver using input_quantization/output_quantization to set quantization type at input/output respectively </p>
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00031">31</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>  : <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae18e719178db7dc1dd0f7cd5deef4c78">_input_data_path</a>(input_data_path), <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a538c70103adc499bde424bb3fcdb8525">_qerror_ratio</a>(qerror_ratio),</div>
-<div class="line"><span class="lineno">   34</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">_input_quantization</a>(input_quantization), <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">_output_quantization</a>(output_quantization)</div>
-<div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a> = std::make_unique&lt;core::Quantizer&gt;(<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">_input_quantization</a>, <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">_output_quantization</a>);</div>
-<div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_ae7c586dcf32bcade6d7e8f67e94a4351"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">mpqsolver::MPQSolver::_output_quantization</a></div><div class="ttdeci">std::string _output_quantization</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00063">MPQSolver.h:63</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_afef775ae4066ff8b079569237cb75bf0"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">mpqsolver::MPQSolver::_input_quantization</a></div><div class="ttdeci">std::string _input_quantization</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00062">MPQSolver.h:62</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00029">29</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>  : <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">_input_quantization</a>(input_quantization), <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">_output_quantization</a>(output_quantization)</div>
+<div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a> = std::make_unique&lt;core::Quantizer&gt;(<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">_input_quantization</a>, <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">_output_quantization</a>);</div>
+<div class="line"><span class="lineno">   33</span>}</div>
+<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_ae7c586dcf32bcade6d7e8f67e94a4351"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#ae7c586dcf32bcade6d7e8f67e94a4351">mpqsolver::MPQSolver::_output_quantization</a></div><div class="ttdeci">std::string _output_quantization</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00059">MPQSolver.h:59</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_afef775ae4066ff8b079569237cb75bf0"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#afef775ae4066ff8b079569237cb75bf0">mpqsolver::MPQSolver::_input_quantization</a></div><div class="ttdeci">std::string _input_quantization</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00058">MPQSolver.h:58</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00062">_input_quantization</a>, <a class="el" href="_m_p_q_solver_8h_source.html#l00063">_output_quantization</a>, and <a class="el" href="_m_p_q_solver_8h_source.html#l00064">_quantizer</a>.</p>
+<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00058">_input_quantization</a>, <a class="el" href="_m_p_q_solver_8h_source.html#l00059">_output_quantization</a>, and <a class="el" href="_m_p_q_solver_8h_source.html#l00060">_quantizer</a>.</p>
 
 </div>
 </div>
@@ -287,24 +251,24 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00044">44</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_class" href="classluci_1_1_importer_ex.html">luci::ImporterEx</a> importerex;</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a> = importerex.<a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(path);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load model&quot;</span>);</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00040">40</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_class" href="classluci_1_1_importer_ex.html">luci::ImporterEx</a> importerex;</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a> = importerex.<a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(path);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load model&quot;</span>);</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition:</b> <a href="_importer_ex_8h_source.html#l00028">ImporterEx.h:29</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html_adc96edd9e31ad56e6844829427b4403e"><div class="ttname"><a href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">luci::ImporterEx::importVerifyModule</a></div><div class="ttdeci">std::unique_ptr&lt; Module &gt; importVerifyModule(const std::string &amp;input_path) const</div><div class="ttdef"><b>Definition:</b> <a href="_importer_ex_8cpp_source.html#l00028">ImporterEx.cpp:28</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition:</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_importer_ex_8cpp_source.html#l00028">luci::ImporterEx::importVerifyModule()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_pattern_solver_8cpp_source.html#l00045">mpqsolver::pattern::PatternSolver::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00103">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_pattern_solver_8cpp_source.html#l00036">mpqsolver::pattern::PatternSolver::run()</a>.</p>
 
 </div>
 </div>
@@ -358,13 +322,13 @@ Protected Attributes</h2></td></tr>
 
 <p>set all intermediate artifacts to be saved </p>
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00039">39</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a> = std::make_unique&lt;core::DumpingHooks&gt;(save_path);</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a8a801eb1e84af6d450057011c2322589"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">mpqsolver::MPQSolver::_hooks</a></div><div class="ttdeci">std::unique_ptr&lt; core::DumpingHooks &gt; _hooks</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00066">MPQSolver.h:66</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8cpp_source.html#l00035">35</a> of file <a class="el" href="_m_p_q_solver_8cpp_source.html">MPQSolver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a> = std::make_unique&lt;core::DumpingHooks&gt;(save_path);</div>
+<div class="line"><span class="lineno">   38</span>}</div>
+<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a8a801eb1e84af6d450057011c2322589"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">mpqsolver::MPQSolver::_hooks</a></div><div class="ttdeci">std::unique_ptr&lt; core::DumpingHooks &gt; _hooks</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00061">MPQSolver.h:61</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00066">_hooks</a>.</p>
+<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00061">_hooks</a>.</p>
 
 </div>
 </div>
@@ -389,35 +353,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00066">66</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_m_p_q_solver_8cpp_source.html#l00039">set_save_intermediate()</a>.</p>
-
-</div>
-</div>
-<a id="ae18e719178db7dc1dd0f7cd5deef4c78" name="ae18e719178db7dc1dd0f7cd5deef4c78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae18e719178db7dc1dd0f7cd5deef4c78">&#9670;&#160;</a></span>_input_data_path</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string mpqsolver::MPQSolver::_input_data_path</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 <p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00061">61</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00103">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_m_p_q_solver_8cpp_source.html#l00035">set_save_intermediate()</a>.</p>
 
 </div>
 </div>
@@ -441,9 +379,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00062">62</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00058">58</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00031">MPQSolver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00029">MPQSolver()</a>.</p>
 
 </div>
 </div>
@@ -467,35 +405,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00063">63</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00059">59</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00031">MPQSolver()</a>.</p>
-
-</div>
-</div>
-<a id="a538c70103adc499bde424bb3fcdb8525" name="a538c70103adc499bde424bb3fcdb8525"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a538c70103adc499bde424bb3fcdb8525">&#9670;&#160;</a></span>_qerror_ratio</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float mpqsolver::MPQSolver::_qerror_ratio = 0.f</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00065">65</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00029">MPQSolver()</a>.</p>
 
 </div>
 </div>
@@ -519,9 +431,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00064">64</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_m_p_q_solver_8h_source.html#l00060">60</a> of file <a class="el" href="_m_p_q_solver_8h_source.html">MPQSolver.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00024">MPQSolver()</a>, <a class="el" href="_bisection_solver_8cpp_source.html#l00104">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_pattern_solver_8cpp_source.html#l00045">mpqsolver::pattern::PatternSolver::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_m_p_q_solver_8cpp_source.html#l00024">MPQSolver()</a>, <a class="el" href="_bisection_solver_8cpp_source.html#l00103">mpqsolver::bisection::BisectionSolver::run()</a>, and <a class="el" href="_pattern_solver_8cpp_source.html#l00036">mpqsolver::pattern::PatternSolver::run()</a>.</p>
 
 </div>
 </div>

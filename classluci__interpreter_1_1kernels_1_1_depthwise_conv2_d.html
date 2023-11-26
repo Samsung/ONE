@@ -326,7 +326,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>  }</div>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp DepthwiseConv2D(1) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   79</span>  }</div>
 <div class="line"><span class="lineno">   80</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html#a9695bea11507beaba3fe4f3ecbbca228">output</a>()-&gt;element_type() == <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html#a2123d086daeeea3ad57e8ce7b0b13ebd">input</a>()-&gt;element_type());</div>
 <div class="line"><span class="lineno">   81</span> </div>
@@ -425,7 +425,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  130</span>        evalFloat();</div>
 <div class="line"><span class="lineno">  131</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  132</span>      }</div>
-<div class="line"><span class="lineno">  133</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  133</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp DepthwiseConv2D(2) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">  134</span>    <span class="keywordflow">case</span> DataType::U8:</div>
 <div class="line"><span class="lineno">  135</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html#a86cc45f83dba03a28c4049176facbbf7">filter</a>()-&gt;scales().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == 1)</div>
 <div class="line"><span class="lineno">  136</span>      {</div>
@@ -446,7 +446,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  151</span>      evalQuantizedS16();</div>
 <div class="line"><span class="lineno">  152</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  153</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp DepthwiseConv2D(3) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->

@@ -1,5 +1,13 @@
 var NAVTREEINDEX12 =
 {
+"_float_sub_kernel_8h.html#a3a3859bd1469fe75bd02a9ff2c8df026":[36,0,3,4,0,0,1,77,0,8],
+"_float_sub_kernel_8h.html#a6fd817834ba1674e23cfeff03efd54a4":[36,0,3,4,0,0,1,77,0,3],
+"_float_sub_kernel_8h.html#ac93dcb9d384896e3e6869f2c723bfbd0":[36,0,3,4,0,0,1,77,0,5],
+"_float_sub_kernel_8h.html#acb7f773c70639de62b91d363d2ba4b90":[36,0,3,4,0,0,1,77,0,4],
+"_float_sub_kernel_8h.html#ad1879346f5560fc9ea7811dbb4de83af":[36,0,3,4,0,0,1,77,0,1],
+"_float_sub_kernel_8h.html#ad3dbc78a50bd9f4f44c33644a954d1fc":[36,0,3,4,0,0,1,77,0,2],
+"_float_sub_kernel_8h_source.html":[36,0,3,4,0,0,1,77,0],
+"_float_sum_kernel_8h.html":[36,0,3,4,0,0,1,78,0],
 "_float_sum_kernel_8h.html#a2a193e1881d0229e7f6b53f6699ee295":[36,0,3,4,0,0,1,78,0,3],
 "_float_sum_kernel_8h.html#a69d8faa8fc02717c2f5a78e3fc558049":[36,0,3,4,0,0,1,78,0,2],
 "_float_sum_kernel_8h.html#aee143d2d8b6a3f3c412b1f5c061a3fbc":[36,0,3,4,0,0,1,78,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX12 =
 "_fuse_relu_pass_8h.html":[36,0,0,37,1,3,9],
 "_fuse_relu_pass_8h_source.html":[36,0,0,37,1,3,9],
 "_fuse_rsqrt_pass_8cpp.html":[36,0,0,37,1,3,10],
-"_fuse_rsqrt_pass_8cpp_source.html":[36,0,0,37,1,3,10],
-"_fuse_rsqrt_pass_8h.html":[36,0,0,37,1,3,11],
-"_fuse_rsqrt_pass_8h_source.html":[36,0,0,37,1,3,11],
-"_fuse_slice_with_t_conv_pass_8cpp.html":[36,0,0,51,7,1,45],
-"_fuse_slice_with_t_conv_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff":[36,0,0,51,7,1,45,0],
-"_fuse_slice_with_t_conv_pass_8cpp_source.html":[36,0,0,51,7,1,45],
-"_fuse_slice_with_t_conv_pass_8h.html":[36,0,0,51,7,0,0,0,35],
-"_fuse_slice_with_t_conv_pass_8h_source.html":[36,0,0,51,7,0,0,0,35],
-"_fuse_squared_difference_pass_8cpp.html":[36,0,0,37,1,3,12]
+"_fuse_rsqrt_pass_8cpp_source.html":[36,0,0,37,1,3,10]
 };

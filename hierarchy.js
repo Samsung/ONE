@@ -1794,6 +1794,9 @@ var hierarchy =
     ] ],
     [ "minmax_embedder_test::DataGen", "classminmax__embedder__test_1_1_data_gen.html", null ],
     [ "DataLocation", "struct_data_location.html", null ],
+    [ "mpqsolver::core::DataProvider", "classmpqsolver_1_1core_1_1_data_provider.html", [
+      [ "mpqsolver::core::H5FileDataProvider", "classmpqsolver_1_1core_1_1_h5_file_data_provider.html", null ]
+    ] ],
     [ "onert::backend::cpu::ops::DataPtr", "uniononert_1_1backend_1_1cpu_1_1ops_1_1_data_ptr.html", null ],
     [ "souschef::Dataset< T >", "classsouschef_1_1_dataset.html", null ],
     [ "mpqsolver::core::DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", null ],
@@ -2662,6 +2665,7 @@ var hierarchy =
     [ "nnfw::cker::functor::InflateFunctor< Device, T, N >", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor.html", null ],
     [ "flatbuffers::FlatCompiler::InitParams", "structflatbuffers_1_1_flat_compiler_1_1_init_params.html", null ],
     [ "moco::tf::eltwise::binary::InputConnector< NodeTy >", "classmoco_1_1tf_1_1eltwise_1_1binary_1_1_input_connector.html", null ],
+    [ "mpqsolver::core::InputData", "structmpqsolver_1_1core_1_1_input_data.html", null ],
     [ "circle_eval_diff::InputDataLoader", "classcircle__eval__diff_1_1_input_data_loader.html", [
       [ "circle_eval_diff::DirectoryLoader", "classcircle__eval__diff_1_1_directory_loader.html", null ],
       [ "circle_eval_diff::HDF5Loader", "classcircle__eval__diff_1_1_h_d_f5_loader.html", null ]
@@ -2902,7 +2906,9 @@ var hierarchy =
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
       [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
-      [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", null ],
+      [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", [
+        [ "onert::backend::train::ops::LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", null ]
+      ] ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
       [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ],
       [ "onert::backend::train::ops::SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", null ]
@@ -3189,7 +3195,7 @@ var hierarchy =
     [ "std::logic_error", null, [
       [ "nnc::cli::BadOption", "classnnc_1_1cli_1_1_bad_option.html", null ]
     ] ],
-    [ "onert::compiler::train::LossInfo", "structonert_1_1compiler_1_1train_1_1_loss_info.html", null ],
+    [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
     [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
@@ -4155,7 +4161,6 @@ var hierarchy =
     [ "onert::ir::operation::InstanceNorm::Param", "structonert_1_1ir_1_1operation_1_1_instance_norm_1_1_param.html", null ],
     [ "onert::ir::operation::LocalResponseNormalization::Param", "structonert_1_1ir_1_1operation_1_1_local_response_normalization_1_1_param.html", null ],
     [ "onert::ir::operation::LogSoftmax::Param", "structonert_1_1ir_1_1operation_1_1_log_softmax_1_1_param.html", null ],
-    [ "onert::ir::operation::Loss::Param", "structonert_1_1ir_1_1operation_1_1_loss_1_1_param.html", null ],
     [ "onert::ir::operation::LSTM::Param", "structonert_1_1ir_1_1operation_1_1_l_s_t_m_1_1_param.html", null ],
     [ "onert::ir::operation::OneHot::Param", "structonert_1_1ir_1_1operation_1_1_one_hot_1_1_param.html", null ],
     [ "onert::ir::operation::Pack::Param", "structonert_1_1ir_1_1operation_1_1_pack_1_1_param.html", null ],

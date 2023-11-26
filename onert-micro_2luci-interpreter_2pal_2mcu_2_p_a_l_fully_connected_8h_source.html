@@ -118,35 +118,36 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2pal_2mc
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter__pal.html#a1bb5e22a6d0b3f042339d2c1f2d56fe9">   28</a></span>FullyConnected(<span class="keyword">const</span> <a class="code hl_struct" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;params, <span class="keyword">const</span> int32_t *input_shape,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>               <span class="keyword">const</span> int8_t *input_data, <span class="keyword">const</span> int32_t *filter_shape, <span class="keyword">const</span> int8_t *filter_data,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>               <span class="keyword">const</span> int32_t *bias_data, <span class="keyword">const</span> int32_t *<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, int8_t *output_data)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// MARK: At this moment this operation doesn&#39;t support</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;FullyConnected INT8 NYI&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  (void)params;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  (void)input_shape;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  (void)input_data;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  (void)filter_shape;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  (void)filter_data;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  (void)bias_data;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  (void)<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  (void)output_data;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter__pal.html#a5bd633cae0fd7f74b52daef6fcfe0bad">   45</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> FullyConnected(<span class="keyword">const</span> <a class="code hl_struct" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;, <span class="keyword">const</span> int32_t *,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                           <span class="keyword">const</span> int16_t *, <span class="keyword">const</span> int32_t *, <span class="keyword">const</span> int8_t *, <span class="keyword">const</span> int64_t *,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                           <span class="keyword">const</span> int32_t *, int16_t *)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// MARK: At this moment this operation doesn&#39;t support</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;FullyConnected INT16 NYI&quot;</span>);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace luci_interpreter_pal</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_PAL_FULLY_CONNECTED_H</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter__pal.html#abe15d3b8ef6de610d7b033e89843227c">   27</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> FullyConnected(<span class="keyword">const</span> <a class="code hl_struct" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;params,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                           <span class="keyword">const</span> int32_t *input_shape, <span class="keyword">const</span> int8_t *input_data,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                           <span class="keyword">const</span> int32_t *filter_shape, <span class="keyword">const</span> int8_t *filter_data,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                           <span class="keyword">const</span> int32_t *bias_data, <span class="keyword">const</span> int32_t *<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                           int8_t *output_data, uint32_t, uint32_t)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// MARK: At this moment this operation doesn&#39;t support</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;FullyConnected INT8 NYI&quot;</span>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  (void)params;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  (void)input_shape;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  (void)input_data;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  (void)filter_shape;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  (void)filter_data;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  (void)bias_data;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  (void)<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  (void)output_data;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter__pal.html#a05e6d22bd081b54e00528c265fe8da7d">   46</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> FullyConnected(<span class="keyword">const</span> <a class="code hl_struct" href="structluci__interpreter__pal_1_1_fully_connected_params.html">luci_interpreter_pal::FullyConnectedParams</a> &amp;, <span class="keyword">const</span> int32_t *,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                           <span class="keyword">const</span> int16_t *, <span class="keyword">const</span> int32_t *, <span class="keyword">const</span> int8_t *, <span class="keyword">const</span> int64_t *,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                           <span class="keyword">const</span> int32_t *, int16_t *, uint32_t, uint32_t)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// MARK: At this moment this operation doesn&#39;t support</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;FullyConnected INT16 NYI&quot;</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <span class="comment">// namespace luci_interpreter_pal</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_PAL_FULLY_CONNECTED_H</span></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="a_p_a_l_fully_connected_common_8h_html"><div class="ttname"><a href="_p_a_l_fully_connected_common_8h.html">PALFullyConnectedCommon.h</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html"><div class="ttname"><a href="namespaceluci__interpreter__pal.html">luci_interpreter_pal</a></div><div class="ttdef"><b>Definition:</b> <a href="cmsisnn_2_p_a_l_arg_max_8h_source.html#l00022">PALArgMax.h:23</a></div></div>

@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2kerne
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// TODO Support non-float types</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">if</span> (lhs-&gt;element_type() != DataType::FLOAT32 || rhs-&gt;element_type() != DataType::FLOAT32)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp BatchMatMul(1) Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(lhs-&gt;element_type() == rhs-&gt;element_type());</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
@@ -274,7 +274,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2kerne
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                                        getTensorData&lt;float&gt;(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html#a4a8c1bc677a6b0b6514be06c48cac685">output</a>()));</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp BatchMatMul(2) Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  }</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>}</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>

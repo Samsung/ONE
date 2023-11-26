@@ -107,6 +107,8 @@ Namespaces</h2></td></tr>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html">ITrainableOperation</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1train_1_1_loss_info.html">LossInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1train_1_1_optimizer_info.html">OptimizerInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html">TrainableGraph</a></td></tr>
@@ -116,6 +118,11 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a2cdc7e5960a14869ceeefc3320b35e52"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52">LossCode</a> { <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>
+, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">MeanSquaredError</a>
+, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">CategoricalCrossentropy</a>
+ }</td></tr>
+<tr class="separator:a2cdc7e5960a14869ceeefc3320b35e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a291a79d5fd8c967c49fab6af712bb2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2">OptimizerCode</a> { <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>
 , <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a>
 , <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">Adam</a>
@@ -124,11 +131,51 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aebfbfb608742622c99e8b6b88a7df17b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a> (<a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52">LossCode</a> opcode)</td></tr>
+<tr class="memdesc:aebfbfb608742622c99e8b6b88a7df17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <a href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">More...</a><br /></td></tr>
+<tr class="separator:aebfbfb608742622c99e8b6b88a7df17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a3b1cf34f72baebbcd6f6ce8b735071fe">toString</a> (<a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2">OptimizerCode</a> opcode)</td></tr>
 <tr class="memdesc:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <a href="namespaceonert_1_1ir_1_1train.html#a3b1cf34f72baebbcd6f6ce8b735071fe">More...</a><br /></td></tr>
 <tr class="separator:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a2cdc7e5960a14869ceeefc3320b35e52" name="a2cdc7e5960a14869ceeefc3320b35e52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cdc7e5960a14869ceeefc3320b35e52">&#9670;&#160;</a></span>LossCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52">onert::ir::train::LossCode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2cdc7e5960a14869ceeefc3320b35e52a4bbb8f967da6d1a610596d7257179c2b" name="a2cdc7e5960a14869ceeefc3320b35e52a4bbb8f967da6d1a610596d7257179c2b"></a>Invalid&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb" name="a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb"></a>MeanSquaredError&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44" name="a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44"></a>CategoricalCrossentropy&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_loss_code_8h_source.html#l00029">29</a> of file <a class="el" href="_loss_code_8h_source.html">LossCode.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>,                <span class="comment">//&lt; Invalid</span></div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">MeanSquaredError</a>,       <span class="comment">//&lt; MeanSquaredError optimizer</span></div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">CategoricalCrossentropy</a> <span class="comment">//&lt; CategoricalCrossentropy optimizer</span></div>
+<div class="line"><span class="lineno">   34</span>};</div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::LossCode::MeanSquaredError</a></div><div class="ttdeci">@ MeanSquaredError</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::LossCode::CategoricalCrossentropy</a></div><div class="ttdeci">@ CategoricalCrossentropy</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b">onert::ir::OpCode::Invalid</a></div><div class="ttdeci">@ Invalid</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a3a291a79d5fd8c967c49fab6af712bb2" name="a3a291a79d5fd8c967c49fab6af712bb2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a291a79d5fd8c967c49fab6af712bb2">&#9670;&#160;</a></span>OptimizerCode</h2>
 
@@ -161,13 +208,52 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>  Adam     <span class="comment">//&lt; Adam optimizer</span></div>
 <div class="line"><span class="lineno">   36</span>};</div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">onert::ir::train::OptimizerCode::SGD</a></div><div class="ttdeci">@ SGD</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b">onert::ir::OpCode::Invalid</a></div><div class="ttdeci">@ Invalid</div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aebfbfb608742622c99e8b6b88a7df17b" name="aebfbfb608742622c99e8b6b88a7df17b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfbfb608742622c99e8b6b88a7df17b">&#9670;&#160;</a></span>toString() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string onert::ir::train::toString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52">LossCode</a>&#160;</td>
+          <td class="paramname"><em>opcode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert the optimizer code to the name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opcode</td><td>The optimizer code </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The name of the optimizer </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_loss_code_8cc_source.html#l00028">28</a> of file <a class="el" href="_loss_code_8cc_source.html">LossCode.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::unordered_map&lt;LossCode, const char *&gt; map{</div>
+<div class="line"><span class="lineno">   31</span>    {LossCode::Invalid, <span class="stringliteral">&quot;Invalid&quot;</span>},</div>
+<div class="line"><span class="lineno">   32</span>    {LossCode::MeanSquaredError, <span class="stringliteral">&quot;MeanSquaredError&quot;</span>},</div>
+<div class="line"><span class="lineno">   33</span>    {LossCode::CategoricalCrossentropy, <span class="stringliteral">&quot;CategoricalCrossentropy&quot;</span>}};</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">return</span> map.at(code);</div>
+<div class="line"><span class="lineno">   35</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">CategoricalCrossentropy</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">MeanSquaredError</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_optimizers_8h_source.html#l00033">onert::backend::train::createOptimizer()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00047">onert::ir::train::operation::Loss::name()</a>.</p>
+
+</div>
+</div>
 <a id="a3b1cf34f72baebbcd6f6ce8b735071fe" name="a3b1cf34f72baebbcd6f6ce8b735071fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b1cf34f72baebbcd6f6ce8b735071fe">&#9670;&#160;</a></span>toString()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1cf34f72baebbcd6f6ce8b735071fe">&#9670;&#160;</a></span>toString() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,8 +287,6 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">Adam</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_optimizers_8h_source.html#l00033">onert::backend::train::createOptimizer()</a>.</p>
 
 </div>
 </div>

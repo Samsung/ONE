@@ -1,5 +1,7 @@
 var dir_b0d959bfb4898f70f2174a404917d975 =
 [
+    [ "DataProvider.cpp", "_data_provider_8cpp.html", "_data_provider_8cpp" ],
+    [ "DataProvider.h", "_data_provider_8h.html", "_data_provider_8h" ],
     [ "Dumper.cpp", "_dumper_8cpp.html", null ],
     [ "Dumper.h", "compiler_2circle-mpqsolver_2src_2core_2_dumper_8h.html", "compiler_2circle-mpqsolver_2src_2core_2_dumper_8h" ],
     [ "DumpingHooks.cpp", "_dumping_hooks_8cpp.html", null ],

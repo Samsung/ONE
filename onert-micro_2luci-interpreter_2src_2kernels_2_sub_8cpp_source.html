@@ -149,109 +149,118 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> input_shape2 =</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#afdd2b45a2055529250dfa7583b2c922c">kernels::getTensorRuntimeShape</a>(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), runtime_graph);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">bool</span> is_inplace = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a8a67e07e0050063eb6d26d45bc117c9f">is_inplace_op</a>(cur_op);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">switch</span> (Tensor::element_type(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>()))</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;float&gt;;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;float&gt;;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">if</span> (is_inplace)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        kernels::evalTISOInplaceKernel&lt;float&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                              std::move(input_shape1), std::move(input_shape2));</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        kernels::evalTISOKernel&lt;float&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                                       options, std::move(input_shape1), std::move(input_shape2));</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">case</span> DataType::S64:</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;int64_t&gt;;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;int64_t&gt;;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">if</span> (is_inplace)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        kernels::evalTISOInplaceKernel&lt;int64_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                                                std::move(input_shape1), std::move(input_shape2));</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_class" href="classluci__interpreter_1_1_runtime_shape.html">luci_interpreter::RuntimeShape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#afdd2b45a2055529250dfa7583b2c922c">kernels::getTensorRuntimeShape</a>(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>(), runtime_graph);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">bool</span> is_inplace = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a8a67e07e0050063eb6d26d45bc117c9f">is_inplace_op</a>(cur_op);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">switch</span> (Tensor::element_type(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>()))</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;float&gt;;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;float&gt;;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">if</span> (is_inplace)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        kernels::evalTISOInplaceKernel&lt;float&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                                              std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                                              std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        kernels::evalTISOKernel&lt;float&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                                       options, std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                                       std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">case</span> DataType::S64:</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;int64_t&gt;;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;int64_t&gt;;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <span class="keywordflow">if</span> (is_inplace)</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        kernels::evalTISOKernel&lt;int64_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                         options, std::move(input_shape1), std::move(input_shape2));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        kernels::evalTISOInplaceKernel&lt;int64_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                                std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                                std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">case</span> DataType::S32:</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;int32_t&gt;;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;int32_t&gt;;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      <span class="keywordflow">if</span> (is_inplace)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        kernels::evalTISOInplaceKernel&lt;int32_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                                                std::move(input_shape1), std::move(input_shape2));</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      }</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      {</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        kernels::evalTISOKernel&lt;int32_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                                         options, std::move(input_shape1), std::move(input_shape2));</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">// TODO: fix it</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#if 0</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">case</span> DataType::U8:</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keyword">auto</span> tiso_func = [](<span class="keyword">const</span> tflite::ArithmeticParams &amp;params,</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;input1_shape, <span class="keyword">const</span> uint8_t *input1_data,</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;input2_shape, <span class="keyword">const</span> uint8_t *input2_data,</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, uint8_t *output_data) {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        tflite::reference_ops::Sub(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                                   <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      };</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <span class="keyword">auto</span> broadcast_tiso_func =</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        [](<span class="keyword">const</span> tflite::ArithmeticParams &amp;params, <span class="keyword">const</span> tflite::RuntimeShape &amp;input1_shape,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>           <span class="keyword">const</span> uint8_t *input1_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;input2_shape,</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>           <span class="keyword">const</span> uint8_t *input2_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>           uint8_t *output_data) {</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>          tflite::reference_ops::BroadcastSubSlow(params, input1_shape, input1_data, input2_shape,</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                                                  input2_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        };</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <span class="keywordflow">if</span> (is_inplace)</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      {</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        kernels::evalTISOInplaceQuantizedKernel&lt;uint8_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel,</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                                                         options);</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        kernels::evalTISOQuantizedKernel&lt;uint8_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel,</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                                                  &amp;kernel_data, options);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      }</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#endif </span><span class="comment">// 0</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  }</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>      {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        kernels::evalTISOKernel&lt;int64_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                                         options, std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                                         std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">case</span> DataType::S32:</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keyword">auto</span> tiso_func = luci_interpreter_pal::Sub&lt;int32_t&gt;;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keyword">auto</span> broadcast_tiso_func = luci_interpreter_pal::BroadcastSub4DSlow&lt;int32_t&gt;;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <span class="keywordflow">if</span> (is_inplace)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        kernels::evalTISOInplaceKernel&lt;int32_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, options,</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                                                std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                                                std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        kernels::evalTISOKernel&lt;int32_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel, &amp;kernel_data,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                         options, std::move(input_shape1), std::move(input_shape2),</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                         std::move(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>));</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">// TODO: fix it</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#if 0</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">case</span> DataType::U8:</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keyword">auto</span> tiso_func = [](<span class="keyword">const</span> tflite::ArithmeticParams &amp;params,</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;input1_shape, <span class="keyword">const</span> uint8_t *input1_data,</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;input2_shape, <span class="keyword">const</span> uint8_t *input2_data,</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                          <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, uint8_t *output_data) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        tflite::reference_ops::Sub(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                                   <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      };</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keyword">auto</span> broadcast_tiso_func =</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        [](<span class="keyword">const</span> tflite::ArithmeticParams &amp;params, <span class="keyword">const</span> tflite::RuntimeShape &amp;input1_shape,</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>           <span class="keyword">const</span> uint8_t *input1_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;input2_shape,</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>           <span class="keyword">const</span> uint8_t *input2_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>           uint8_t *output_data) {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>          tflite::reference_ops::BroadcastSubSlow(params, input1_shape, input1_data, input2_shape,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                                                  input2_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        };</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">if</span> (is_inplace)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        kernels::evalTISOInplaceQuantizedKernel&lt;uint8_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel,</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                                                         options);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <a class="code hl_struct" href="structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html">kernels::TISOData</a> kernel_data = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#a38af4beffc19107e1ab53b19f1693234">readData</a>();</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        kernels::evalTISOQuantizedKernel&lt;uint8_t&gt;(tiso_func, broadcast_tiso_func, &amp;kernel,</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                                                  &amp;kernel_data, options);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    }</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#endif </span><span class="comment">// 0</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a8a67e07e0050063eb6d26d45bc117c9f"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a8a67e07e0050063eb6d26d45bc117c9f">luci_interpreter::RuntimeGraph::is_inplace_op</a></div><div class="ttdeci">bool is_inplace_op(const circle::Operator *op)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00113">RuntimeGraph.h:113</a></div></div>

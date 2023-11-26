@@ -243,7 +243,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>      t0-&gt;element_type() != DataType::U8 &amp;&amp; t0-&gt;element_type() != DataType::S8 &amp;&amp;</div>
 <div class="line"><span class="lineno">   49</span>      t0-&gt;element_type() != DataType::S16 &amp;&amp; t0-&gt;element_type() != DataType::S64)</div>
 <div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Pack(1) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   52</span>  }</div>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>  <span class="keywordflow">for</span> (uint32_t i = 1; i &lt; <a class="code hl_variable" href="classluci__interpreter_1_1_kernel.html#a69247fbdedf01b531955a388a43f2ef8">_inputs</a>.size(); ++i)</div>
@@ -352,7 +352,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  116</span>      evalGeneric&lt;int64_t&gt;();</div>
 <div class="line"><span class="lineno">  117</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  118</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Pack(2) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">  120</span>  }</div>
 <div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->

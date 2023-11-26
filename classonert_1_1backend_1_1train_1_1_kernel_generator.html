@@ -190,13 +190,13 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00120">120</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},</div>
-<div class="line"><span class="lineno">  125</span>    _tensor_reg{tensor_reg},</div>
-<div class="line"><span class="lineno">  126</span>    _external_context(external_context), _optimizer{optimizer}, _update_funcs{}</div>
-<div class="line"><span class="lineno">  127</span>{</div>
-<div class="line"><span class="lineno">  128</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  129</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00109">109</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},</div>
+<div class="line"><span class="lineno">  114</span>    _tensor_reg{tensor_reg},</div>
+<div class="line"><span class="lineno">  115</span>    _external_context(external_context), _optimizer{optimizer}, _update_funcs{}</div>
+<div class="line"><span class="lineno">  116</span>{</div>
+<div class="line"><span class="lineno">  117</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  118</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -227,34 +227,34 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ab2519a847a9b5cf654daac57d5ae6096">onert::backend::train::KernelGeneratorBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00091">91</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::train::TrainableFnSequence&gt;();</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">operation</a>(idx);</div>
-<div class="line"><span class="lineno">   96</span>  op.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">accept</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   97</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>);</div>
-<div class="line"><span class="lineno">   98</span>  ret-&gt;append(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>));</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;update_fn : _update_funcs)</div>
-<div class="line"><span class="lineno">  101</span>    ret-&gt;append(std::move(update_fn));</div>
-<div class="line"><span class="lineno">  102</span>  _update_funcs.clear();</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : (op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>) + op.getOutputs())</div>
-<div class="line"><span class="lineno">  105</span>  {</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keyword">auto</span> portable_tensor = _tensor_reg-&gt;getPortableTensor(ind);</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (portable_tensor)</div>
-<div class="line"><span class="lineno">  108</span>    {</div>
-<div class="line"><span class="lineno">  109</span>      assert(portable_tensor-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_reg-&gt;getNonConstTensor(ind);</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (tensor)</div>
-<div class="line"><span class="lineno">  113</span>    {</div>
-<div class="line"><span class="lineno">  114</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;increase_ref();</div>
-<div class="line"><span class="lineno">  115</span>    }</div>
-<div class="line"><span class="lineno">  116</span>  }</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">  118</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00080">80</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::train::TrainableFnSequence&gt;();</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">operation</a>(idx);</div>
+<div class="line"><span class="lineno">   85</span>  op.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">accept</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   86</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>);</div>
+<div class="line"><span class="lineno">   87</span>  ret-&gt;append(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>));</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;update_fn : _update_funcs)</div>
+<div class="line"><span class="lineno">   90</span>    ret-&gt;append(std::move(update_fn));</div>
+<div class="line"><span class="lineno">   91</span>  _update_funcs.clear();</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : (op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>) + op.getOutputs())</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keyword">auto</span> portable_tensor = _tensor_reg-&gt;getPortableTensor(ind);</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (portable_tensor)</div>
+<div class="line"><span class="lineno">   97</span>    {</div>
+<div class="line"><span class="lineno">   98</span>      assert(portable_tensor-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
+<div class="line"><span class="lineno">   99</span>    }</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_reg-&gt;getNonConstTensor(ind);</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">if</span> (tensor)</div>
+<div class="line"><span class="lineno">  102</span>    {</div>
+<div class="line"><span class="lineno">  103</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;increase_ref();</div>
+<div class="line"><span class="lineno">  104</span>    }</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">  107</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace46c76d914d0d7915a3749c442694b4"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition:</b> <a href="train_2_kernel_generator_base_8h_source.html#l00053">KernelGeneratorBase.h:53</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_af4cfc3d23cd44e15c60a83331675e1b2"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">onert::backend::train::KernelGeneratorBase::_tgraph</a></div><div class="ttdeci">const ir::train::TrainableGraph &amp; _tgraph</div><div class="ttdef"><b>Definition:</b> <a href="train_2_kernel_generator_base_8h_source.html#l00052">KernelGeneratorBase.h:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_i_trainable_operation_html_a8a8338d2a43a2fbb7a0aeff63a0e17ea"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept</a></div><div class="ttdeci">virtual void accept(OperationVisitor &amp;v) const override=0</div></div>
@@ -291,56 +291,56 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00131">131</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  132</span>{</div>
-<div class="line"><span class="lineno">  133</span>  <span class="keyword">using </span>ir::train::operation::Conv2D;</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keyword">const</span> <span class="keyword">auto</span> in_index{node.getInputs().at(Conv2D::Input::INPUT)};</div>
-<div class="line"><span class="lineno">  137</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};</div>
-<div class="line"><span class="lineno">  138</span>  <span class="keyword">const</span> <span class="keyword">auto</span> bias_index{node.getInputs().at(Conv2D::Input::BIAS)};</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(out_index);</div>
-<div class="line"><span class="lineno">  141</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(in_index);</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keyword">auto</span> ker_tensor = _tensor_reg-&gt;getTrainableTensor(ker_index);</div>
-<div class="line"><span class="lineno">  143</span>  <span class="keyword">auto</span> bias_tensor = _tensor_reg-&gt;getTrainableTensor(bias_index);</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(out_index);</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(in_index);</div>
-<div class="line"><span class="lineno">  147</span>  <span class="keyword">auto</span> ker_grad_tensor = _tensor_reg-&gt;getGradientTensor(ker_index);</div>
-<div class="line"><span class="lineno">  148</span>  <span class="keyword">auto</span> bias_grad_tensor = _tensor_reg-&gt;getGradientTensor(bias_index);</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>  <span class="comment">// Generate kernel</span></div>
-<div class="line"><span class="lineno">  151</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
-<div class="line"><span class="lineno">  152</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
-<div class="line"><span class="lineno">  153</span>  <span class="keyword">const</span> <span class="keyword">auto</span> param_padding = node.param().padding;</div>
-<div class="line"><span class="lineno">  154</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dilation = node.param().dilation;</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ConvolutionLayer&gt;();</div>
-<div class="line"><span class="lineno">  156</span> </div>
-<div class="line"><span class="lineno">  157</span>  <span class="keyword">auto</span> &amp;operands = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>();</div>
-<div class="line"><span class="lineno">  158</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(in_index).shape().asFeature(_current_layout);</div>
-<div class="line"><span class="lineno">  159</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = operands.at(in_index).shape().asFeature(_current_layout);</div>
-<div class="line"><span class="lineno">  160</span>  <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
-<div class="line"><span class="lineno">  161</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = operands.at(ker_index).shape();</div>
-<div class="line"><span class="lineno">  162</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
-<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00120">120</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">using </span>ir::train::operation::Conv2D;</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keyword">const</span> <span class="keyword">auto</span> in_index{node.getInputs().at(Conv2D::Input::INPUT)};</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keyword">auto</span> bias_index{node.getInputs().at(Conv2D::Input::BIAS)};</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(out_index);</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(in_index);</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keyword">auto</span> ker_tensor = _tensor_reg-&gt;getTrainableTensor(ker_index);</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keyword">auto</span> bias_tensor = _tensor_reg-&gt;getTrainableTensor(bias_index);</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(out_index);</div>
+<div class="line"><span class="lineno">  135</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(in_index);</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keyword">auto</span> ker_grad_tensor = _tensor_reg-&gt;getGradientTensor(ker_index);</div>
+<div class="line"><span class="lineno">  137</span>  <span class="keyword">auto</span> bias_grad_tensor = _tensor_reg-&gt;getGradientTensor(bias_index);</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>  <span class="comment">// Generate kernel</span></div>
+<div class="line"><span class="lineno">  140</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
+<div class="line"><span class="lineno">  141</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
+<div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> <span class="keyword">auto</span> param_padding = node.param().padding;</div>
+<div class="line"><span class="lineno">  143</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dilation = node.param().dilation;</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ConvolutionLayer&gt;();</div>
+<div class="line"><span class="lineno">  145</span> </div>
+<div class="line"><span class="lineno">  146</span>  <span class="keyword">auto</span> &amp;operands = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>();</div>
+<div class="line"><span class="lineno">  147</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(in_index).shape().asFeature(_current_layout);</div>
+<div class="line"><span class="lineno">  148</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = operands.at(in_index).shape().asFeature(_current_layout);</div>
+<div class="line"><span class="lineno">  149</span>  <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
+<div class="line"><span class="lineno">  150</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker_shape = operands.at(ker_index).shape();</div>
+<div class="line"><span class="lineno">  151</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_height = ker_shape.dim(1);</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_width = ker_shape.dim(2);</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
+<div class="line"><span class="lineno">  155</span>    <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
+<div class="line"><span class="lineno">  156</span>                         dilation.width_factor, dilation.height_factor);</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>  fn-&gt;configure(in_tensor, ker_tensor, bias_tensor, out_tensor, in_back_prop_tensor,</div>
+<div class="line"><span class="lineno">  159</span>                ker_grad_tensor, bias_grad_tensor, out_back_prop_tensor, param_padding.type,</div>
+<div class="line"><span class="lineno">  160</span>                padding.left, padding.right, padding.top, padding.bottom, stride.horizontal,</div>
+<div class="line"><span class="lineno">  161</span>                stride.vertical, dilation.width_factor, dilation.height_factor, activation);</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
 <div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
-<div class="line"><span class="lineno">  166</span>    <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(param_padding, ifm_shape, ofm_shape, stride, ker_width, ker_height,</div>
-<div class="line"><span class="lineno">  167</span>                         dilation.width_factor, dilation.height_factor);</div>
-<div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>  fn-&gt;configure(in_tensor, ker_tensor, bias_tensor, out_tensor, in_back_prop_tensor,</div>
-<div class="line"><span class="lineno">  170</span>                ker_grad_tensor, bias_grad_tensor, out_back_prop_tensor, param_padding.type,</div>
-<div class="line"><span class="lineno">  171</span>                padding.left, padding.right, padding.top, padding.bottom, stride.horizontal,</div>
-<div class="line"><span class="lineno">  172</span>                stride.vertical, dilation.width_factor, dilation.height_factor, activation);</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>  <span class="comment">// Generate GradientApplier</span></div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">if</span> (bias_tensor)</div>
-<div class="line"><span class="lineno">  178</span>    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));</div>
-<div class="line"><span class="lineno">  179</span>  _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));</div>
-<div class="line"><span class="lineno">  180</span>}</div>
+<div class="line"><span class="lineno">  165</span>  <span class="comment">// Generate GradientApplier</span></div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordflow">if</span> (bias_tensor)</div>
+<div class="line"><span class="lineno">  167</span>    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));</div>
+<div class="line"><span class="lineno">  168</span>  _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));</div>
+<div class="line"><span class="lineno">  169</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_aae91b113137f3e376bc71c8b13199bf6"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">onert::ir::train::TrainableGraph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8h_source.html#l00119">TrainableGraph.h:119</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a2ab58c9ae156f4ab01ecbe99b004ff85"><div class="ttname"><a href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">onert::ir::calculatePadding</a></div><div class="ttdeci">const ExplicitPadding calculatePadding(const Padding &amp;padding, const FeatureShape &amp;ifm_shape, const FeatureShape &amp;ofm_shape, const Stride &amp;stride, uint32_t kw, uint32_t kh, uint32_t dwf=1, uint32_t dhf=1)</div><div class="ttdef"><b>Definition:</b> <a href="_padding_8cc_source.html#l00137">Padding.cc:137</a></div></div>
@@ -373,27 +373,27 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00182">182</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <span class="keyword">using </span>ir::train::operation::ElementwiseActivation;</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00171">171</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
+<div class="line"><span class="lineno">  173</span>  <span class="keyword">using </span>ir::train::operation::ElementwiseActivation;</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(ElementwiseActivation::Input::INPUT)};</div>
+<div class="line"><span class="lineno">  177</span> </div>
+<div class="line"><span class="lineno">  178</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>  <span class="keyword">auto</span> back_prop_input_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
+<div class="line"><span class="lineno">  182</span>  <span class="keyword">auto</span> back_prop_output_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ElementwiseActivationLayer&gt;();</div>
 <div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  187</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(ElementwiseActivation::Input::INPUT)};</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
-<div class="line"><span class="lineno">  190</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
-<div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>  <span class="keyword">auto</span> back_prop_input_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
-<div class="line"><span class="lineno">  193</span>  <span class="keyword">auto</span> back_prop_output_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ElementwiseActivationLayer&gt;();</div>
-<div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>  fn-&gt;configure(input_tensor, output_tensor, back_prop_input_tensor, back_prop_output_tensor,</div>
-<div class="line"><span class="lineno">  198</span>                node.param().alpha, node.param().beta,</div>
-<div class="line"><span class="lineno">  199</span>                <a class="code hl_function" href="namespaceonert_1_1backend_1_1gpu__cl.html#ad0daec492c53415aa2d8e52be4411f4a">convertElementwiseActivationType</a>(node.param().op_type));</div>
-<div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  202</span>}</div>
+<div class="line"><span class="lineno">  186</span>  fn-&gt;configure(input_tensor, output_tensor, back_prop_input_tensor, back_prop_output_tensor,</div>
+<div class="line"><span class="lineno">  187</span>                node.param().alpha, node.param().beta,</div>
+<div class="line"><span class="lineno">  188</span>                <a class="code hl_function" href="namespaceonert_1_1backend_1_1gpu__cl.html#ad0daec492c53415aa2d8e52be4411f4a">convertElementwiseActivationType</a>(node.param().op_type));</div>
+<div class="line"><span class="lineno">  189</span> </div>
+<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  191</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1gpu__cl_html_ad0daec492c53415aa2d8e52be4411f4a"><div class="ttname"><a href="namespaceonert_1_1backend_1_1gpu__cl.html#ad0daec492c53415aa2d8e52be4411f4a">onert::backend::gpu_cl::convertElementwiseActivationType</a></div><div class="ttdeci">tflite::gpu::OperationType convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type_ir)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2backend_2gpu__cl_2_utils_8h_source.html#l00132">Utils.h:132</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a187620ffdf72abdf0acf204385501746"><div class="ttname"><a href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">part_eval_one.output_tensor</a></div><div class="ttdeci">output_tensor</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00117">part_eval_one.py:117</a></div></div>
@@ -426,43 +426,43 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00204">204</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">using </span>ir::train::operation::FullyConnected;</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keyword">const</span> <span class="keyword">auto</span> in_index{node.getInputs().at(FullyConnected::Input::INPUT)};</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keyword">const</span> <span class="keyword">auto</span> weights_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};</div>
-<div class="line"><span class="lineno">  211</span>  <span class="keyword">const</span> <span class="keyword">auto</span> bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(out_index);</div>
-<div class="line"><span class="lineno">  214</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(in_index);</div>
-<div class="line"><span class="lineno">  215</span>  <span class="keyword">auto</span> weights_tensor = _tensor_reg-&gt;getTrainableTensor(weights_index);</div>
-<div class="line"><span class="lineno">  216</span>  <span class="keyword">auto</span> bias_tensor = _tensor_reg-&gt;getTrainableTensor(bias_index);</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00193">193</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  194</span>{</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keyword">using </span>ir::train::operation::FullyConnected;</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  198</span>  <span class="keyword">const</span> <span class="keyword">auto</span> in_index{node.getInputs().at(FullyConnected::Input::INPUT)};</div>
+<div class="line"><span class="lineno">  199</span>  <span class="keyword">const</span> <span class="keyword">auto</span> weights_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <span class="keyword">auto</span> bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};</div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(out_index);</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(in_index);</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keyword">auto</span> weights_tensor = _tensor_reg-&gt;getTrainableTensor(weights_index);</div>
+<div class="line"><span class="lineno">  205</span>  <span class="keyword">auto</span> bias_tensor = _tensor_reg-&gt;getTrainableTensor(bias_index);</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(out_index);</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(in_index);</div>
+<div class="line"><span class="lineno">  209</span>  <span class="keyword">auto</span> weights_grad_tensor = _tensor_reg-&gt;getGradientTensor(weights_index);</div>
+<div class="line"><span class="lineno">  210</span>  <span class="keyword">auto</span> bias_grad_tensor = _tensor_reg-&gt;getGradientTensor(bias_index);</div>
+<div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span>  <span class="comment">// Generate kernel</span></div>
+<div class="line"><span class="lineno">  213</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keyword">const</span> <span class="keyword">auto</span> weights_format = node.param().weights_format;</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::FullyConnectedLayer&gt;();</div>
 <div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(out_index);</div>
-<div class="line"><span class="lineno">  219</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(in_index);</div>
-<div class="line"><span class="lineno">  220</span>  <span class="keyword">auto</span> weights_grad_tensor = _tensor_reg-&gt;getGradientTensor(weights_index);</div>
-<div class="line"><span class="lineno">  221</span>  <span class="keyword">auto</span> bias_grad_tensor = _tensor_reg-&gt;getGradientTensor(bias_index);</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>  <span class="comment">// Generate kernel</span></div>
-<div class="line"><span class="lineno">  224</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
-<div class="line"><span class="lineno">  225</span>  <span class="keyword">const</span> <span class="keyword">auto</span> weights_format = node.param().weights_format;</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::FullyConnectedLayer&gt;();</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>  fn-&gt;configure(in_tensor, weights_tensor, bias_tensor, out_tensor, in_back_prop_tensor,</div>
-<div class="line"><span class="lineno">  230</span>                weights_grad_tensor, bias_grad_tensor, out_back_prop_tensor, activation,</div>
-<div class="line"><span class="lineno">  231</span>                weights_format, _external_context);</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>  <span class="comment">// Generate GradientAppliers</span></div>
-<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">if</span> (bias_tensor)</div>
-<div class="line"><span class="lineno">  237</span>    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));</div>
-<div class="line"><span class="lineno">  238</span>  _update_funcs.emplace_back(</div>
-<div class="line"><span class="lineno">  239</span>    generateGradientApplier(_optimizer, weights_grad_tensor, weights_tensor));</div>
-<div class="line"><span class="lineno">  240</span>}</div>
+<div class="line"><span class="lineno">  218</span>  fn-&gt;configure(in_tensor, weights_tensor, bias_tensor, out_tensor, in_back_prop_tensor,</div>
+<div class="line"><span class="lineno">  219</span>                weights_grad_tensor, bias_grad_tensor, out_back_prop_tensor, activation,</div>
+<div class="line"><span class="lineno">  220</span>                weights_format, _external_context);</div>
+<div class="line"><span class="lineno">  221</span> </div>
+<div class="line"><span class="lineno">  222</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  223</span> </div>
+<div class="line"><span class="lineno">  224</span>  <span class="comment">// Generate GradientAppliers</span></div>
+<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">if</span> (bias_tensor)</div>
+<div class="line"><span class="lineno">  226</span>    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));</div>
+<div class="line"><span class="lineno">  227</span>  _update_funcs.emplace_back(</div>
+<div class="line"><span class="lineno">  228</span>    generateGradientApplier(_optimizer, weights_grad_tensor, weights_tensor));</div>
+<div class="line"><span class="lineno">  229</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_fully_connected_8h_source.html#l00044">onert::ir::operation::FullyConnected::Param::activation</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_fully_connected_8h_source.html#l00057">onert::ir::operation::FullyConnected::param()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_fully_connected_8h_source.html#l00045">onert::ir::operation::FullyConnected::Param::weights_format</a>.</p>
 
@@ -492,31 +492,41 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00242">242</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  243</span>{</div>
-<div class="line"><span class="lineno">  244</span>  <span class="keyword">using </span>ir::train::operation::Loss;</div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  247</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_pred_index{node.getInputs().at(Loss::Y_PRED)};</div>
-<div class="line"><span class="lineno">  248</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_true_index{node.getInputs().at(Loss::Y_TRUE)};</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
-<div class="line"><span class="lineno">  251</span>  <span class="keyword">auto</span> y_pred_tensor = _tensor_reg-&gt;getPortableTensor(y_pred_index);</div>
-<div class="line"><span class="lineno">  252</span>  <span class="keyword">auto</span> y_true_tensor = _tensor_reg-&gt;getPortableTensor(y_true_index);</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>  <span class="keyword">auto</span> back_prop_y_pred_tensor = _tensor_reg-&gt;getBackPropTensor(y_pred_index);</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::LossLayer&gt;();</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>  fn-&gt;configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,</div>
-<div class="line"><span class="lineno">  258</span>                convertLossType(node.param().op_type));</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(convertPoolType);</div>
-<div class="line"><span class="lineno">  263</span>}</div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00231">231</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keyword">using </span>ir::train::operation::Loss;</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  236</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_pred_index{node.getInputs().at(Loss::Y_PRED)};</div>
+<div class="line"><span class="lineno">  237</span>  <span class="keyword">const</span> <span class="keyword">auto</span> y_true_index{node.getInputs().at(Loss::Y_TRUE)};</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><span class="lineno">  240</span>  <span class="keyword">auto</span> y_pred_tensor = _tensor_reg-&gt;getPortableTensor(y_pred_index);</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keyword">auto</span> y_true_tensor = _tensor_reg-&gt;getPortableTensor(y_true_index);</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>  <span class="keyword">auto</span> back_prop_y_pred_tensor = _tensor_reg-&gt;getBackPropTensor(y_pred_index);</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>  <span class="keyword">auto</span> loss_code = node.param().loss_code;</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>  <span class="keywordflow">switch</span> (loss_code)</div>
+<div class="line"><span class="lineno">  248</span>  {</div>
+<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">ir::train::LossCode::MeanSquaredError</a>:</div>
+<div class="line"><span class="lineno">  250</span>    {</div>
+<div class="line"><span class="lineno">  251</span>      <span class="keyword">auto</span> fn = std::make_unique&lt;ops::LossMeanSquaredErrorLayer&gt;();</div>
+<div class="line"><span class="lineno">  252</span>      fn-&gt;configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);</div>
+<div class="line"><span class="lineno">  253</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  254</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  255</span>    }</div>
+<div class="line"><span class="lineno">  256</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">ir::train::LossCode::CategoricalCrossentropy</a>:</div>
+<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  258</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LossLayer: unsupported loss type&quot;</span>);</div>
+<div class="line"><span class="lineno">  259</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  260</span>  }</div>
+<div class="line"><span class="lineno">  261</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::LossCode::MeanSquaredError</a></div><div class="ttdeci">@ MeanSquaredError</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::LossCode::CategoricalCrossentropy</a></div><div class="ttdeci">@ CategoricalCrossentropy</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_loss_8h_source.html#l00050">onert::ir::operation::Loss::Param::op_type</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_loss_8h_source.html#l00064">onert::ir::operation::Loss::param()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::CategoricalCrossentropy</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="_loss_info_8h_source.html#l00031">onert::ir::train::LossInfo::loss_code</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::MeanSquaredError</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00050">onert::ir::train::operation::Loss::param()</a>.</p>
 
 </div>
 </div>
@@ -544,47 +554,47 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00265">265</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  266</span>{</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keyword">using </span>ir::train::operation::Pool2D;</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  270</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(0)};</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>  <span class="keyword">const</span> <span class="keyword">auto</span> operands = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>();</div>
-<div class="line"><span class="lineno">  273</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output_index).shape();</div>
-<div class="line"><span class="lineno">  274</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = operands.at(input_index).shape();</div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span>  <span class="keywordflow">if</span> (ifm_shape.rank() != 4)</div>
-<div class="line"><span class="lineno">  277</span>  {</div>
-<div class="line"><span class="lineno">  278</span>    std::runtime_error(node.name() + <span class="stringliteral">&quot; only supports 4D tensor as input&quot;</span>);</div>
-<div class="line"><span class="lineno">  279</span>  }</div>
-<div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>  <span class="comment">// calcualate padding</span></div>
-<div class="line"><span class="lineno">  282</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
-<div class="line"><span class="lineno">  283</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kh = node.param().kh;</div>
-<div class="line"><span class="lineno">  284</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kw = node.param().kw;</div>
-<div class="line"><span class="lineno">  285</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
-<div class="line"><span class="lineno">  286</span>    <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(node.param().padding, ifm_shape.asFeature(_current_layout),</div>
-<div class="line"><span class="lineno">  287</span>                         ofm_shape.asFeature(_current_layout), stride, kw, kh);</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(output_index);</div>
-<div class="line"><span class="lineno">  290</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
-<div class="line"><span class="lineno">  293</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
-<div class="line"><span class="lineno">  294</span> </div>
-<div class="line"><span class="lineno">  295</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
-<div class="line"><span class="lineno">  296</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pool_type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a05ab2f505d5924828192d94cefedfe12">convertPoolType</a>(node.param().op_type);</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00263">263</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  264</span>{</div>
+<div class="line"><span class="lineno">  265</span>  <span class="keyword">using </span>ir::train::operation::Pool2D;</div>
+<div class="line"><span class="lineno">  266</span> </div>
+<div class="line"><span class="lineno">  267</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  268</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(0)};</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>  <span class="keyword">const</span> <span class="keyword">auto</span> operands = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>();</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output_index).shape();</div>
+<div class="line"><span class="lineno">  272</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = operands.at(input_index).shape();</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>  <span class="keywordflow">if</span> (ifm_shape.rank() != 4)</div>
+<div class="line"><span class="lineno">  275</span>  {</div>
+<div class="line"><span class="lineno">  276</span>    std::runtime_error(node.name() + <span class="stringliteral">&quot; only supports 4D tensor as input&quot;</span>);</div>
+<div class="line"><span class="lineno">  277</span>  }</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>  <span class="comment">// calcualate padding</span></div>
+<div class="line"><span class="lineno">  280</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
+<div class="line"><span class="lineno">  281</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kh = node.param().kh;</div>
+<div class="line"><span class="lineno">  282</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kw = node.param().kw;</div>
+<div class="line"><span class="lineno">  283</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding =</div>
+<div class="line"><span class="lineno">  284</span>    <a class="code hl_function" href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">ir::calculatePadding</a>(node.param().padding, ifm_shape.asFeature(_current_layout),</div>
+<div class="line"><span class="lineno">  285</span>                         ofm_shape.asFeature(_current_layout), stride, kw, kh);</div>
+<div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span>  <span class="keyword">auto</span> out_tensor = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><span class="lineno">  288</span>  <span class="keyword">auto</span> in_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>  <span class="keyword">auto</span> out_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
+<div class="line"><span class="lineno">  291</span>  <span class="keyword">auto</span> in_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
+<div class="line"><span class="lineno">  292</span> </div>
+<div class="line"><span class="lineno">  293</span>  <span class="keyword">const</span> <span class="keyword">auto</span> activation = node.param().activation;</div>
+<div class="line"><span class="lineno">  294</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pool_type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a05ab2f505d5924828192d94cefedfe12">convertPoolType</a>(node.param().op_type);</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::PoolLayer&gt;();</div>
 <div class="line"><span class="lineno">  297</span> </div>
-<div class="line"><span class="lineno">  298</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::PoolLayer&gt;();</div>
-<div class="line"><span class="lineno">  299</span> </div>
-<div class="line"><span class="lineno">  300</span>  fn-&gt;configure(in_tensor, padding.left, padding.right, padding.top, padding.bottom,</div>
-<div class="line"><span class="lineno">  301</span>                stride.horizontal, stride.vertical, kw, kh, activation, out_tensor, pool_type,</div>
-<div class="line"><span class="lineno">  302</span>                in_back_prop_tensor, out_back_prop_tensor);</div>
-<div class="line"><span class="lineno">  303</span> </div>
-<div class="line"><span class="lineno">  304</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  305</span>}</div>
+<div class="line"><span class="lineno">  298</span>  fn-&gt;configure(in_tensor, padding.left, padding.right, padding.top, padding.bottom,</div>
+<div class="line"><span class="lineno">  299</span>                stride.horizontal, stride.vertical, kw, kh, activation, out_tensor, pool_type,</div>
+<div class="line"><span class="lineno">  300</span>                in_back_prop_tensor, out_back_prop_tensor);</div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  303</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1acl__common_html_a05ab2f505d5924828192d94cefedfe12"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__common.html#a05ab2f505d5924828192d94cefedfe12">onert::backend::acl_common::convertPoolType</a></div><div class="ttdeci">arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir)</div><div class="ttdef"><b>Definition:</b> <a href="acl__common_2_convert_8cc_source.html#l00320">Convert.cc:320</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00052">onert::backend::train::KernelGeneratorBase::_tgraph</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00055">onert::ir::operation::Pool2D::Param::activation</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="_padding_8cc_source.html#l00137">onert::ir::calculatePadding()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00051">onert::ir::operation::Pool2D::Param::kh</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00052">onert::ir::operation::Pool2D::Param::kw</a>, <a class="el" href="operation_2_pool2_d_8cc_source.html#l00037">onert::ir::operation::Pool2D::name()</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00050">onert::ir::operation::Pool2D::Param::op_type</a>, <a class="el" href="_trainable_graph_8h_source.html#l00119">onert::ir::train::TrainableGraph::operands()</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00054">onert::ir::operation::Pool2D::Param::padding</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00068">onert::ir::operation::Pool2D::param()</a>, and <a class="el" href="operation_2_pool2_d_8h_source.html#l00053">onert::ir::operation::Pool2D::Param::stride</a>.</p>
@@ -615,34 +625,34 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00307">307</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  308</span>{</div>
-<div class="line"><span class="lineno">  309</span>  <span class="keyword">using </span>ir::train::operation::Reshape;</div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7">ir::operation::Reshape::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
-<div class="line"><span class="lineno">  315</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> output_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
-<div class="line"><span class="lineno">  318</span>  <span class="keyword">auto</span> input_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
-<div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span>  <span class="comment">// optional 2nd input</span></div>
-<div class="line"><span class="lineno">  321</span>  IPortableTensor *shape_tensor = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">if</span> (node.getInputs().size() == 2)</div>
-<div class="line"><span class="lineno">  324</span>  {</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keyword">const</span> <span class="keyword">auto</span> shape_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab2a4a0930d3c65f99d44480ff3e01ef9">ir::operation::Reshape::Input::SHAPE</a>)};</div>
-<div class="line"><span class="lineno">  326</span>    shape_tensor = _tensor_reg-&gt;getPortableTensor(shape_index);</div>
-<div class="line"><span class="lineno">  327</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00305">305</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  306</span>{</div>
+<div class="line"><span class="lineno">  307</span>  <span class="keyword">using </span>ir::train::operation::Reshape;</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7">ir::operation::Reshape::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  311</span> </div>
+<div class="line"><span class="lineno">  312</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><span class="lineno">  313</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
+<div class="line"><span class="lineno">  314</span> </div>
+<div class="line"><span class="lineno">  315</span>  <span class="keyword">auto</span> output_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keyword">auto</span> input_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
+<div class="line"><span class="lineno">  317</span> </div>
+<div class="line"><span class="lineno">  318</span>  <span class="comment">// optional 2nd input</span></div>
+<div class="line"><span class="lineno">  319</span>  IPortableTensor *shape_tensor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">if</span> (node.getInputs().size() == 2)</div>
+<div class="line"><span class="lineno">  322</span>  {</div>
+<div class="line"><span class="lineno">  323</span>    <span class="keyword">const</span> <span class="keyword">auto</span> shape_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab2a4a0930d3c65f99d44480ff3e01ef9">ir::operation::Reshape::Input::SHAPE</a>)};</div>
+<div class="line"><span class="lineno">  324</span>    shape_tensor = _tensor_reg-&gt;getPortableTensor(shape_index);</div>
+<div class="line"><span class="lineno">  325</span>  }</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ReshapeLayer&gt;();</div>
 <div class="line"><span class="lineno">  328</span> </div>
-<div class="line"><span class="lineno">  329</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::ReshapeLayer&gt;();</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>  fn-&gt;configure(input_tensor, shape_tensor, output_tensor, input_back_prop_tensor,</div>
-<div class="line"><span class="lineno">  332</span>                output_back_prop_tensor);</div>
-<div class="line"><span class="lineno">  333</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  334</span>}</div>
+<div class="line"><span class="lineno">  329</span>  fn-&gt;configure(input_tensor, shape_tensor, output_tensor, input_back_prop_tensor,</div>
+<div class="line"><span class="lineno">  330</span>                output_back_prop_tensor);</div>
+<div class="line"><span class="lineno">  331</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  332</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reshape_html_adef75d1aba1a18596f9422aa2af53874ab2a4a0930d3c65f99d44480ff3e01ef9"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab2a4a0930d3c65f99d44480ff3e01ef9">onert::ir::operation::Reshape::SHAPE</a></div><div class="ttdeci">@ SHAPE</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h_source.html#l00038">Reshape.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reshape_html_adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7">onert::ir::operation::Reshape::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h_source.html#l00036">Reshape.h:36</a></div></div>
 </div><!-- fragment -->
@@ -674,26 +684,26 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00336">336</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  337</span>{</div>
-<div class="line"><span class="lineno">  338</span>  <span class="keyword">using </span>ir::train::operation::Softmax;</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  341</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_softmax.html#a22cbd3c0514149a9e93bb774cbda80dda657a98f99884f9ea4214ad7458790ab8">ir::operation::Softmax::Input::INPUT</a>)};</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00334">334</a> of file <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  335</span>{</div>
+<div class="line"><span class="lineno">  336</span>  <span class="keyword">using </span>ir::train::operation::Softmax;</div>
+<div class="line"><span class="lineno">  337</span> </div>
+<div class="line"><span class="lineno">  338</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  339</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_softmax.html#a22cbd3c0514149a9e93bb774cbda80dda657a98f99884f9ea4214ad7458790ab8">ir::operation::Softmax::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  340</span> </div>
+<div class="line"><span class="lineno">  341</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta = node.param().beta;</div>
 <div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta = node.param().beta;</div>
-<div class="line"><span class="lineno">  344</span> </div>
-<div class="line"><span class="lineno">  345</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
-<div class="line"><span class="lineno">  346</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>  <span class="keyword">auto</span> output_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
-<div class="line"><span class="lineno">  349</span>  <span class="keyword">auto</span> input_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
+<div class="line"><span class="lineno">  343</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = _tensor_reg-&gt;getPortableTensor(output_index);</div>
+<div class="line"><span class="lineno">  344</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getPortableTensor(input_index);</div>
+<div class="line"><span class="lineno">  345</span> </div>
+<div class="line"><span class="lineno">  346</span>  <span class="keyword">auto</span> output_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(output_index);</div>
+<div class="line"><span class="lineno">  347</span>  <span class="keyword">auto</span> input_back_prop_tensor = _tensor_reg-&gt;getBackPropTensor(input_index);</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::SoftMaxLayer&gt;();</div>
 <div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::SoftMaxLayer&gt;();</div>
-<div class="line"><span class="lineno">  352</span> </div>
-<div class="line"><span class="lineno">  353</span>  fn-&gt;configure(input_tensor, beta, output_tensor, input_back_prop_tensor, output_back_prop_tensor);</div>
-<div class="line"><span class="lineno">  354</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><span class="lineno">  355</span>}</div>
+<div class="line"><span class="lineno">  351</span>  fn-&gt;configure(input_tensor, beta, output_tensor, input_back_prop_tensor, output_back_prop_tensor);</div>
+<div class="line"><span class="lineno">  352</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><span class="lineno">  353</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_softmax_html_a22cbd3c0514149a9e93bb774cbda80dda657a98f99884f9ea4214ad7458790ab8"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_softmax.html#a22cbd3c0514149a9e93bb774cbda80dda657a98f99884f9ea4214ad7458790ab8">onert::ir::operation::Softmax::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_soft_max_8h_source.html#l00037">Softmax.h:36</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_soft_max_8h_source.html#l00041">onert::ir::operation::Softmax::Param::beta</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_soft_max_8h_source.html#l00036">onert::ir::operation::Softmax::INPUT</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_soft_max_8h_source.html#l00053">onert::ir::operation::Softmax::param()</a>.</p>

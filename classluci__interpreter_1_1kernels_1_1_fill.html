@@ -253,7 +253,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>      configureShape&lt;int64_t&gt;();</div>
 <div class="line"><span class="lineno">   81</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   82</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   83</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   83</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Fill(1) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">   84</span>  }</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a5ea62328ce6d801a3aef30b903b95d69"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">luci_interpreter::Tensor::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00107">Tensor.h:107</a></div></div>
@@ -351,7 +351,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>                                  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">getTensorShape</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_fill.html#a51c6ea9f92e28eebc1f56741d6745e9f">output</a>()), getTensorData&lt;float&gt;(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_fill.html#a51c6ea9f92e28eebc1f56741d6745e9f">output</a>()));</div>
 <div class="line"><span class="lineno">  110</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  111</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Fill(2) Unsupported type.&quot;</span>);</div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span>}</div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_html_a74f2161267eeabcf602a15e16c2350f5"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5">luci_interpreter::kernels::getTensorShape</a></div><div class="ttdeci">tflite::RuntimeShape getTensorShape(const Tensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">Utils.h:194</a></div></div>
