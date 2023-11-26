@@ -46,10 +46,10 @@ class Quantizer
 public:
   struct Context
   {
-    std::string output_model_dtype;
-    std::string granularity;
-    std::string input_type;
-    std::string output_type;
+    std::string output_model_dtype = "uint8";
+    std::string granularity = "channel";
+    std::string input_type = "uint8";
+    std::string output_type = "uint8";
     bool TF_style_maxpool = false;
     bool save_min_max = false;
     // TODO Support layer info
@@ -57,10 +57,6 @@ public:
 
 public:
   Quantizer(const Context &ctx) : _ctx(ctx) {}
-
-  // TODO Remove this
-public:
-  Quantizer(const std::string &input_dtype, const std::string &output_type);
 
   /**
    * @brief set hook on the end of quantization event
@@ -88,9 +84,6 @@ public:
 
 private:
   Context _ctx;
-  // TODO Remove _input_dtype and output_dtype
-  std::string _input_dtype = "uint8";
-  std::string _output_dtype = "uint8";
   const QuantizerHook *_hook = nullptr;
 };
 

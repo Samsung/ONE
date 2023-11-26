@@ -33,12 +33,6 @@ class MPQSolver
 public:
   MPQSolver(const core::Quantizer::Context &ctx);
 
-public:
-  /**
-   * @brief construct Solver using input_quantization/output_quantization to set quantization type
-   * at input/output respectively
-   */
-  MPQSolver(const std::string &input_quantization, const std::string &output_quantization);
   virtual ~MPQSolver() = default;
 
   /**

@@ -49,11 +49,6 @@ bool make_model_fake_quantized(luci::Module *module)
 
 } // namespace
 
-Quantizer::Quantizer(const std::string &input_dtype, const std::string &output_dtype)
-  : _input_dtype(input_dtype), _output_dtype(output_dtype)
-{
-}
-
 void Quantizer::set_hook(const QuantizerHook *hook) { _hook = hook; }
 
 /**
@@ -67,7 +62,6 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
     return false;
 
   static const std::string default_dtype = "float32";
-  static const std::string granularity_type = "channel";
 
   luci::CircleQuantizer quantizer;
 
@@ -76,10 +70,12 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
 
   options->param(AlgorithmParameters::Quantize_input_model_dtype, default_dtype);
   options->param(AlgorithmParameters::Quantize_output_model_dtype, quant_dtype);
-  options->param(AlgorithmParameters::Quantize_granularity, granularity_type);
-  options->param(AlgorithmParameters::Quantize_input_type, _input_dtype);
-  options->param(AlgorithmParameters::Quantize_output_type, _output_dtype);
-  options->param(AlgorithmParameters::Quantize_TF_style_maxpool, "False");
+  options->param(AlgorithmParameters::Quantize_granularity, _ctx.granularity);
+  options->param(AlgorithmParameters::Quantize_input_type, _ctx.input_type);
+  options->param(AlgorithmParameters::Quantize_output_type, _ctx.output_type);
+  options->param(AlgorithmParameters::Quantize_TF_style_maxpool,
+                 _ctx.TF_style_maxpool ? "True" : "False");
+  options->param(AlgorithmParameters::Quantize_save_min_max, _ctx.save_min_max ? "True" : "False");
 
   if (!layer_params.empty())
   {
