@@ -123,56 +123,7 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
 
 bool Quantizer::quantize(luci::Module *module, LayerParams &layer_params)
 {
-  if (!module)
-    return false;
-
-  static const std::string default_dtype = "float32";
-
-  luci::CircleQuantizer quantizer;
-
-  auto options = quantizer.options();
-  options->enable(Algorithms::QuantizeWithMinMax);
-
-  options->param(AlgorithmParameters::Quantize_input_model_dtype, default_dtype);
-  options->param(AlgorithmParameters::Quantize_output_model_dtype, _ctx.output_model_dtype);
-  options->param(AlgorithmParameters::Quantize_granularity, _ctx.granularity);
-  options->param(AlgorithmParameters::Quantize_input_type, _ctx.input_type);
-  options->param(AlgorithmParameters::Quantize_output_type, _ctx.output_type);
-  options->param(AlgorithmParameters::Quantize_TF_style_maxpool,
-                 _ctx.TF_style_maxpool ? "True" : "False");
-  options->param(AlgorithmParameters::Quantize_save_min_max, _ctx.save_min_max ? "True" : "False");
-
-  if (!layer_params.empty())
-  {
-    try
-    {
-      options->layer_params(AlgorithmParameters::Quantize_layer_params, layer_params);
-    }
-    catch (const std::runtime_error &e)
-    {
-      std::cerr << e.what() << '\n';
-      return false;
-    }
-  }
-
-  for (size_t idx = 0; idx < module->size(); ++idx)
-  {
-    auto graph = module->graph(idx);
-    // quantize the graph
-    quantizer.quantize(graph);
-    if (!luci::validate(graph))
-    {
-      std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
-      return false;
-    }
-  }
-
-  if (_hook)
-  {
-    _hook->on_quantized(module);
-  }
-
-  return true;
+  return quantize(module, _ctx.output_model_dtype, layer_params);
 }
 
 /**
