@@ -18,8 +18,6 @@
 
 #include <luci/IR/CircleNodes.h>
 
-#include <iostream>
-
 namespace
 {
 

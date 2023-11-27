@@ -15,7 +15,6 @@
  */
 
 #include "luci/Pass/FoldGatherPass.h"
-#include "CircleOptimizerUtils.h"
 
 #include <luci/IR/CircleNodes.h>
 
