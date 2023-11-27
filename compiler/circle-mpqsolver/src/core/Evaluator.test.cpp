@@ -18,6 +18,24 @@
 
 #include "Evaluator.h"
 
+#include "DataProvider.h"
+#include "TestHelper.h"
+
+TEST(CircleMPQSolverEvaluatorTest, verifyResultsTest)
+{
+  // create nn module
+  auto m = luci::make_module();
+  mpqsolver::test::models::AddGraph g;
+  g.init();
+  g.transfer_to(m.get());
+
+  mpqsolver::core::MAEMetric metric;
+  auto data = mpqsolver::test::data_utils::getSingleDataProvider();
+  mpqsolver::core::DatasetEvaluator evaluator(m.get(), *data.get(), metric);
+  float value = evaluator.evaluate(m.get());
+  EXPECT_FLOAT_EQ(value, 0.f);
+}
+
 TEST(CircleMPQSolverEvaluatorTest, empty_path_NEG)
 {
   mpqsolver::core::MAEMetric metric;
