@@ -32,6 +32,7 @@ struct ConsoleReporter final : public hermes::Sink
 
 private:
   bool _is_colored = false;
+  bool _env_checked = false;
 };
 
 } // namespace hermes
