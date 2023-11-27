@@ -54,7 +54,7 @@ public:
   /**
    * @brief   Do compilation with the options
    *
-   * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
+   * @return std::shared_ptr<CompilerArtifact> MultiModelExecutors as a result of compilation
    */
   std::shared_ptr<CompilerArtifact> compile(void);
 
