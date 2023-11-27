@@ -48,6 +48,9 @@ struct FrozenNodes
 class PatternSolver final : public MPQSolver
 {
 public:
+  /**
+   * @brief construct PatternSolver using qunatization context and patterns to apply
+   */
   PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
                 const std::vector<QuantizationPattern> &patterns);
 
