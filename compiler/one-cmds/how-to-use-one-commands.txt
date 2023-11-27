@@ -178,6 +178,7 @@ Current transformation options are
 - fuse_preactivation_batchnorm: This fuses batch normalization operators of pre-activations to Conv operators.
 - fuse_activation_function: This fuses Activation function to a preceding operator.
 - fuse_mean_with_mean: This fuses two consecutive ReduceMean operations into one.
+- fuse_mul_div: This fuses Mul and Div op as Div.
 - fuse_transpose_with_mean: This fuses ReduceMean with a preceding Transpose under certain conditions.
 - fuse_horizontal_fc_layers: This fuses horizontal FullyConnected layers under certain conditions.
 - make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).

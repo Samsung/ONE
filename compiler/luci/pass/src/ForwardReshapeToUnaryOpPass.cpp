@@ -146,6 +146,84 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleLogistic *logit)
   return true;
 }
 
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(mean != nullptr);    // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(mean).with(new_reshape);
+  mean->input(reshape->tensor());
+  new_reshape->tensor(mean);
+
+  // Do shape inference for this node again.
+  mean->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMul *div,
+                     luci::CircleConst *const_value)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(div != nullptr);     // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(div).with(new_reshape);
+  if (div->x() == const_value)
+  {
+    div->y(reshape->tensor());
+  }
+  else
+  {
+    assert(div->y() == const_value);
+    div->x(reshape->tensor());
+  }
+  new_reshape->tensor(div);
+
+  // Do shape inference for this node again.
+  div->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleDiv *div,
+                     luci::CircleConst *const_value)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(div != nullptr);     // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(div).with(new_reshape);
+  if (div->x() == const_value)
+  {
+    div->y(reshape->tensor());
+  }
+  else
+  {
+    assert(div->y() == const_value);
+    div->x(reshape->tensor());
+  }
+  new_reshape->tensor(div);
+
+  // Do shape inference for this node again.
+  div->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
 class ForwardReshape final : public luci::CircleNodeMutableVisitor<bool>
 {
 protected:
@@ -180,6 +258,100 @@ protected:
 
     return forward_reshape(reshape, node);
   }
+
+  bool visit(luci::CircleDiv *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    reshape = dynamic_cast<luci::CircleReshape *>(node->x());
+    const_value = dynamic_cast<luci::CircleConst *>(node->y());
+    if (reshape == nullptr or const_value == nullptr)
+    {
+      reshape = dynamic_cast<luci::CircleReshape *>(node->y());
+      const_value = dynamic_cast<luci::CircleConst *>(node->x());
+    }
+
+    if (reshape == nullptr or const_value == nullptr)
+      return false;
+
+    if (const_value->dtype() != loco::DataType::FLOAT32)
+      return false;
+
+    // Should be scalar
+    if (const_value->size<loco::DataType::FLOAT32>() != 1)
+      return false;
+
+    return forward_reshape(reshape, node, const_value);
+  }
+
+  bool visit(luci::CircleMul *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    reshape = dynamic_cast<luci::CircleReshape *>(node->x());
+    const_value = dynamic_cast<luci::CircleConst *>(node->y());
+    if (reshape == nullptr or const_value == nullptr)
+    {
+      reshape = dynamic_cast<luci::CircleReshape *>(node->y());
+      const_value = dynamic_cast<luci::CircleConst *>(node->x());
+    }
+
+    if (reshape == nullptr or const_value == nullptr)
+      return false;
+
+    if (const_value->dtype() != loco::DataType::FLOAT32)
+      return false;
+
+    // Should be scalar
+    if (const_value->size<loco::DataType::FLOAT32>() != 1)
+      return false;
+
+    return forward_reshape(reshape, node, const_value);
+  }
+
+  bool visit(luci::CircleMean *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *axis = nullptr;
+
+    reshape = dynamic_cast<luci::CircleReshape *>(node->input());
+    axis = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+
+    if (reshape == nullptr or axis == nullptr)
+      return false;
+
+    if (axis->dtype() != loco::DataType::S32)
+      return false;
+
+    // Should be scalar
+    if (axis->size<loco::DataType::S32>() != 1)
+      return false;
+
+    // axis value
+    int32_t axis_value;
+    axis_value = axis->at<loco::DataType::S32>(0);
+
+    if (axis_value < 0)
+      axis_value += static_cast<int32_t>(reshape->rank());
+
+    assert(axis_value >= 0);
+
+    auto *reshape_input = dynamic_cast<luci::CircleNode *>(reshape->tensor());
+    if (reshape_input == nullptr)
+      return false;
+
+    // rank should be the same
+    if (reshape_input->rank() <= static_cast<uint32_t>(axis_value))
+      return false;
+
+    // axis value for mean should be the same after reshape
+    if (reshape_input->dim(axis_value).value() != reshape->dim(axis_value).value())
+      return false;
+
+    return forward_reshape(reshape, node);
+  }
   // TODO add more unary operators
 };
 
@@ -201,6 +373,10 @@ namespace luci
  *          |            |           |
  *
  *   UnaryOp: CircleNeg, ...
+ *   Note: CircleDiv, CircleMul can also be considered as a unary operation
+ *   if one of the inputs is a scalar constant. For CircleMean in which the axis is a scalar
+ * constant and the reshape operation does not change the axis on which the mean is taken, pass can
+ * apply forward reshape
  *
  * AFTER
  *                       |

@@ -39,6 +39,7 @@
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FuseMulWithConvPass.h"
+#include "luci/Pass/FuseMulDivPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
@@ -269,6 +270,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseMulWithConv))
   {
     phase.emplace_back(std::make_unique<FuseMulWithConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseMulDiv))
+  {
+    phase.emplace_back(std::make_unique<FuseMulDivPass>());
   }
   if (_options->query(Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax))
   {
