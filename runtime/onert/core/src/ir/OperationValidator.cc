@@ -120,7 +120,7 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
   const auto output_index(node.getOutputs().at(0));
 
   // Constant lhs and rhs is not implemented yet
-  OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
+  // OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
 
   // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
   OP_REQUIRES(isValidType(

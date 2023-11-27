@@ -61,6 +61,35 @@ inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shap
   }
 }
 
+template <>
+inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                               const int64_t *input1_data, const Shape &input2_shape,
+                               const int64_t *input2_data, const Shape &output_shape,
+                               int64_t *output_data,
+                               const std::function<int64_t(const int64_t &, const int64_t &)> &fn)
+{
+  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  for (int i = 0; i < size; i++)
+  {
+    output_data[i] = ActivationFunctionWithMinMax(
+      fn(input1_data[i], input2_data[i]), params.int64_activation_min, params.int64_activation_max);
+  }
+}
+
+template <>
+inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &, const Shape &input1_shape,
+                               const bool *input1_data, const Shape &input2_shape,
+                               const bool *input2_data, const Shape &output_shape,
+                               bool *output_data,
+                               const std::function<bool(const bool &, const bool &)> &fn)
+{
+  const int size = MatchingElementsSize(input1_shape, input2_shape, output_shape);
+  for (int i = 0; i < size; i++)
+  {
+    output_data[i] = fn(input1_data[i], input2_data[i]);
+  }
+}
+
 template <typename T>
 inline typename std::enable_if_t<is_quant8<T>::value> BroadcastBinaryArithmeticOpSlow(
   const BinaryArithmeticOpParam &params, const Shape &input1_shape, const T *input1_data,
@@ -168,6 +197,64 @@ inline void BroadcastBinaryArithmeticOpSlow(
             ActivationFunctionWithMinMax(fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
                                             input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
                                          params.float_activation_min, params.float_activation_max);
+        }
+      }
+    }
+  }
+}
+
+template <>
+inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &params,
+                                            const Shape &input1_shape, const int64_t *input1_data,
+                                            const Shape &input2_shape, const int64_t *input2_data,
+                                            const Shape &output_shape, int64_t *output_data,
+                                            const std::function<int64_t(const int64_t &, const int64_t &)> &fn)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+
+  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        {
+          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax<int64_t>(
+            fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+               input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
+            params.int64_activation_min, params.int64_activation_max);
+        }
+      }
+    }
+  }
+}
+
+template <>
+inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &,
+                                            const Shape &input1_shape, const bool *input1_data,
+                                            const Shape &input2_shape, const bool *input2_data,
+                                            const Shape &output_shape, bool *output_data,
+                                            const std::function<bool(const bool &, const bool &)> &fn)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+
+  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        {
+          output_data[Offset(extended_output_shape, b, y, x, c)] = fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
+               input2_data[SubscriptToIndex(desc2, b, y, x, c)]);
         }
       }
     }

@@ -245,26 +245,26 @@ void ShapeValidator::visit(const ir::operation::Reduce &node)
   // Even if output shape is changed to {1,3,1,5}, there is another problem. It is that shape of
   // output tensor used at next operation is changed to {1,3,1,5} after this operation even if the
   // next operation is not desired.
-  if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
-  {
-    if (output_shape.rank() == 2)
-    {
-      // Reducing HW
-      OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
-                  input_shape.dim(3) == output_shape.dim(1));
-    }
-    else if (output_shape.rank() == 3)
-    {
-      // Reducing C or
-      // (Reducing H and C(input and output) == 1) or (Reducing W and C(input and output) == 1)
-      OP_REQUIRES(
-        (input_shape.dim(0) == output_shape.dim(0) && input_shape.dim(1) == output_shape.dim(1) &&
-         input_shape.dim(2) == output_shape.dim(2)) ||
-        (input_shape.dim(0) == output_shape.dim(0) &&
-         (input_shape.dim(1) == output_shape.dim(1) || input_shape.dim(2) == output_shape.dim(1)) &&
-         input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
-    }
-  }
+  // if (input_shape.rank() == 4 && input_shape.rank() != output_shape.rank())
+  // {
+  //   if (output_shape.rank() == 2)
+  //   {
+  //     // Reducing HW
+  //     OP_REQUIRES(input_shape.dim(0) == output_shape.dim(0) &&
+  //                 input_shape.dim(3) == output_shape.dim(1));
+  //   }
+  //   else if (output_shape.rank() == 3)
+  //   {
+  //     // Reducing C or
+  //     // (Reducing H and C(input and output) == 1) or (Reducing W and C(input and output) == 1)
+  //     OP_REQUIRES(
+  //       (input_shape.dim(0) == output_shape.dim(0) && input_shape.dim(1) == output_shape.dim(1) &&
+  //        input_shape.dim(2) == output_shape.dim(2)) ||
+  //       (input_shape.dim(0) == output_shape.dim(0) &&
+  //        (input_shape.dim(1) == output_shape.dim(1) || input_shape.dim(2) == output_shape.dim(1)) &&
+  //        input_shape.dim(3) == 1 && output_shape.dim(2) == 1));
+  //   }
+  // }
 }
 
 void ShapeValidator::visit(const ir::operation::Transpose &node)

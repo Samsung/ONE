@@ -114,6 +114,8 @@ generateKernelGeneric(const IPortableTensor *input, bool keep_dims,
       return evalType<float>(keep_dims, reduce_kernel, reduce_type);
     case OperandType::INT32:
       return evalType<int32_t>(keep_dims, reduce_kernel, reduce_type);
+    case OperandType::INT64:
+      return evalType<int64_t>(keep_dims, reduce_kernel, reduce_type);
     case OperandType::BOOL8:
       return evalType<bool>(keep_dims, reduce_kernel, reduce_type);
     default:

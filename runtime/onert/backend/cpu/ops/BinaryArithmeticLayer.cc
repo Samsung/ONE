@@ -68,12 +68,12 @@ template <nnfw::cker::BinaryArithmeticOpType arithmetic_type, typename T> struct
     auto output_buffer = getBuffer<T>(output);
     if (_need_broadcast)
     {
-      nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type>(
+      nnfw::cker::BroadcastBinaryArithmeticOp<arithmetic_type, T>(
         _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
     }
     else
     {
-      nnfw::cker::BinaryArithmeticOp<arithmetic_type>(
+      nnfw::cker::BinaryArithmeticOp<arithmetic_type, T>(
         _op_params, _lhs_shape, lhs_buffer, _rhs_shape, rhs_buffer, _output_shape, output_buffer);
     }
   }
@@ -103,6 +103,26 @@ generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
       op_params.quantized_activation_max = output_activation_max;
       op_params.quantized_activation_min = output_activation_min;
       return Eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
+      break;
+    }
+    case OperandType::INT64:
+    {
+      int64_t output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
+      op_params.int64_activation_max = output_activation_max;
+      op_params.int64_activation_min = output_activation_min;
+      return Eval<arithmetic_type, int64_t>(lhs, rhs, output, op_params);
+      break;
+    }
+    case OperandType::BOOL8:
+    {
+      if (activation != ir::Activation::NONE)
+        throw std::runtime_error("BinaryArithmetic(generic): Fused activation is not supported with bool8 type");
+      int32_t output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
+      op_params.int64_activation_max = output_activation_max;
+      op_params.int64_activation_min = output_activation_min;
+      return Eval<arithmetic_type, bool>(lhs, rhs, output, op_params);
       break;
     }
     default:
