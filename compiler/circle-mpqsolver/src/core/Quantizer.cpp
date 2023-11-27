@@ -70,7 +70,13 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
 
   options->param(AlgorithmParameters::Quantize_input_model_dtype, default_dtype);
   options->param(AlgorithmParameters::Quantize_output_model_dtype, quant_dtype);
-  options->param(AlgorithmParameters::Quantize_granularity, _ctx.granularity);
+  // Only channel-wise quantization is supported for int16
+  // TODO Fix this if this assumption breaks
+  if (quant_dtype == "int16")
+    options->param(AlgorithmParameters::Quantize_granularity, "channel");
+  else
+    options->param(AlgorithmParameters::Quantize_granularity, _ctx.granularity);
+
   options->param(AlgorithmParameters::Quantize_input_type, _ctx.input_type);
   options->param(AlgorithmParameters::Quantize_output_type, _ctx.output_type);
   options->param(AlgorithmParameters::Quantize_TF_style_maxpool,
