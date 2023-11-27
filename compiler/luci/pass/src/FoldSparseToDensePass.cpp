@@ -15,7 +15,6 @@
  */
 
 #include "luci/Pass/FoldSparseToDensePass.h"
-#include "CircleOptimizerUtils.h"
 
 #include <luci/IR/CircleNodes.h>
 
