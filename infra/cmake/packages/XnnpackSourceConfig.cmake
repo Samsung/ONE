@@ -8,8 +8,8 @@ function(_XnnpackSource_import)
   nnas_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  # xnnpack commit in tflite v2.3
-  envoption(XNNPACK_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/XNNPACK/archive/8b283aa30a3186c6e640aed520543e9c067132d.tar.gz)
+  # xnnpack commit in tflite v2.15
+  envoption(XNNPACK_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/XNNPACK/archive/bbbaa7352a3ea729987d3e654d37be93e8009691.tar.gz)
   ExternalSource_Download(XNNPACK
     DIRNAME XNNPACK
     URL ${XNNPACK_URL})
