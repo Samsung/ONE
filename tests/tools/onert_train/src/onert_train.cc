@@ -149,7 +149,7 @@ int main(const int argc, char **argv)
     nnfw_train_info tri;
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();
-    tri.loss = convertLossType(args.getLossType());
+    tri.loss_info.loss = convertLossType(args.getLossType());
     tri.opt = convertOptType(args.getOptimizerType());
 
     // prepare execution

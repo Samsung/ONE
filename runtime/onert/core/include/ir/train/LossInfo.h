@@ -26,10 +26,19 @@ namespace ir
 namespace train
 {
 
+enum class LossReductionType
+{
+  Invalid,          //< Invalid
+  SumOverBatchSize, //< SumOverBatchSize loss reduction type
+  Sum,              //< Sum loss reduction type
+};
+
 struct LossInfo
 {
   LossCode loss_code;
+  LossReductionType reduction_type;
   // TODO Add properties
+  LossInfo() : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid} {}
 };
 
 } // namespace train
