@@ -30,7 +30,7 @@ TEST(CircleMPQSolverEvaluatorTest, verifyResultsTest)
   g.transfer_to(m.get());
 
   mpqsolver::core::MAEMetric metric;
-  auto data = mpqsolver::test::data_utils::getSingleDataProvider();
+  auto data = mpqsolver::test::data_utils::getAllZeroSingleDataProvider();
   mpqsolver::core::DatasetEvaluator evaluator(m.get(), *data.get(), metric);
   float value = evaluator.evaluate(m.get());
   EXPECT_FLOAT_EQ(value, 0.f);

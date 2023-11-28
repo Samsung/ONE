@@ -136,7 +136,7 @@ bool isFileExists(const std::string &file_path);
 namespace data_utils
 {
 
-std::unique_ptr<mpqsolver::core::DataProvider> getSingleDataProvider();
+std::unique_ptr<mpqsolver::core::DataProvider> getAllZeroSingleDataProvider();
 
 } // namespace data_utils
 
