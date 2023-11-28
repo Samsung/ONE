@@ -33,10 +33,10 @@ TrainableExecutor::TrainableExecutor(
   backend::train::TrainableBackendContexts &&backend_contexts,
   const compiler::train::TensorRegistries &tensor_regs,
   compiler::train::TrainableCodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
-  const util::TracingCtx *tracing_ctx)
+  const util::TracingCtx *tracing_ctx, const ir::train::LossInfo &loss_info)
   : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
     _trainable_graph{_lowered_graph->trainable_graph()}, _tensor_regs{std::move(tensor_regs)},
-    _mutex(), _tracing_ctx(tracing_ctx)
+    _mutex(), _tracing_ctx(tracing_ctx), _loss_info(loss_info)
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
@@ -195,8 +195,16 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
   if (loss_ind.undefined())
     throw std::runtime_error{"Loss " + std::to_string(loss_ind.value()) + " is not defined."};
   backend::ITensor *tensor = _tensor_regs.getITensor(loss_ind);
-  auto loss_buf = reinterpret_cast<float *>(tensor->buffer());
-  return *loss_buf;
+  long double sum = 0;
+  for (uint64_t i = 0; i < tensor->getShape().num_elements(); ++i)
+  {
+    sum += reinterpret_cast<float *>(tensor->buffer())[i];
+  }
+  if (_loss_info.reduction_type == ir::train::LossReductionType::SumOverBatchSize)
+  {
+    sum /= tensor->getShape().num_elements();
+  }
+  return static_cast<float>(sum);
 }
 
 } // namespace train

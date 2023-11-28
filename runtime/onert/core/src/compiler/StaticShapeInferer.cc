@@ -605,11 +605,22 @@ void StaticShapeInferer::visit(const ir::operation::L2Normalization &op)
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::L2Normalization::Input::INPUT));
 }
 
-void StaticShapeInferer::visit(const ir::operation::Loss &)
+void StaticShapeInferer::visit(const ir::operation::Loss &op)
 {
   // TODO Consider SparseCategoricalCrossentropy case
 
-  // TODO Consider output shape in case of reduction option
+  auto &operands = _lowered_subg->graph().operands();
+
+  const auto input_index{op.getInputs().at(ir::operation::Loss::Input::Y_PRED)};
+  auto &input = operands.at(input_index);
+
+  const auto output_index{op.getOutputs().at(0)};
+  auto &output = operands.at(output_index);
+
+  ir::Shape new_shape = output.info().shape();
+  new_shape.dim(0) = input.info().shape().dim(0);
+
+  output.info().shape(new_shape);
 }
 
 void StaticShapeInferer::visit(const ir::operation::LSTM &op)

@@ -885,7 +885,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tensor_regs,
                                                  std::move(code_map),
                                                  order,
-                                                 tracing_ctx};
+                                                 tracing_ctx,
+                                                 training_info.lossInfo()};
 
   if (!options->trace_filepath.empty())
   {

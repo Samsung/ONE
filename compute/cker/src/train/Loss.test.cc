@@ -136,13 +136,16 @@ TEST(CKer_Operation, LossMSE)
     // Shape: {2, 3} -> m_rows:3, m_cols:2
     std::vector<float> y_pred = {27.2, 31.8, 51.9, 10.2, 34.2, 12.4};
     std::vector<float> y_true = {31.3, 40.3, 29.7, 12.9, 25.8, 11.9};
-    std::vector<float> output(1);
-    std::vector<float> expected = {110.0};
+    std::vector<float> output(2);
+    std::vector<float> expected = {193.9667, 26.033342};
 
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3}, y_pred.data(), nnfw::cker::Shape{2, 3},
-                           y_true.data(), nnfw::cker::Shape{1}, output.data());
+                           y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    EXPECT_FLOAT_EQ(output[0], expected[0]);
+    for (int i = 0; i < output.size(); ++i)
+    {
+      EXPECT_FLOAT_EQ(output[i], expected[i]);
+    }
   }
 
   {
@@ -151,13 +154,16 @@ TEST(CKer_Operation, LossMSE)
                                  1., 2., 3., 4., 1., 2., 3., 4., 1., 2., 3., 4.};
     std::vector<float> y_true = {1., 1., 1., 1., 2., 2., 2., 2., 3., 3., 3., 3.,
                                  1., 1., 1., 1., 2., 2., 2., 2., 3., 3., 3., 3.};
-    std::vector<float> output(1);
-    std::vector<float> expected = {2.1666667};
+    std::vector<float> output(2);
+    std::vector<float> expected = {2.1666667, 2.1666667};
 
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(), nnfw::cker::Shape{2, 3, 4},
-                           y_true.data(), nnfw::cker::Shape{1}, output.data());
+                           y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    EXPECT_FLOAT_EQ(output[0], expected[0]);
+    for (int i = 0; i < output.size(); ++i)
+    {
+      EXPECT_FLOAT_EQ(output[i], expected[i]);
+    }
   }
 }
 
@@ -167,13 +173,16 @@ TEST(CKer_Operation, neg_LossMSE)
     // Invalid expected value
     std::vector<float> y_pred = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10.};
     std::vector<float> y_true = {0., 1., 2., 3., 4., 5., 6., 7., 8., 9.};
-    std::vector<float> output(1);
-    std::vector<float> expected = {-1.0};
+    std::vector<float> output(2);
+    std::vector<float> expected = {0.0, 0.0};
 
-    nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(), nnfw::cker::Shape{2, 3, 4},
-                           y_true.data(), nnfw::cker::Shape{1}, output.data());
+    nnfw::cker::train::MSE(nnfw::cker::Shape{2, 5}, y_pred.data(), nnfw::cker::Shape{2, 5},
+                           y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    EXPECT_NE(output[0], expected[0]);
+    for (int i = 0; i < output.size(); ++i)
+    {
+      EXPECT_NE(output[i], expected[i]);
+    }
   }
 
   {
@@ -181,10 +190,10 @@ TEST(CKer_Operation, neg_LossMSE)
     std::vector<float> y_pred = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10.};
     std::vector<float> y_true = {0., 1., 2., 3., 4., 5., 6., 7., 8., 9.};
     std::vector<float> output(3);
-    std::vector<float> expected = {1.0};
+    std::vector<float> expected = {1.0, 1.0};
 
-    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
-                                            nnfw::cker::Shape{2, 3, 4}, y_true.data(),
+    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 5}, y_pred.data(),
+                                            nnfw::cker::Shape{2, 5}, y_true.data(),
                                             nnfw::cker::Shape{3}, output.data()));
   }
 
@@ -192,12 +201,12 @@ TEST(CKer_Operation, neg_LossMSE)
     // Different y_pread and y_true shape
     std::vector<float> y_pred = {1., 2., 3., 4., 5., 6., 7., 8., 9., 10.};
     std::vector<float> y_true = {0., 1., 2., 3., 4., 5.};
-    std::vector<float> output(1);
-    std::vector<float> expected = {1.0};
+    std::vector<float> output(2);
+    std::vector<float> expected = {1.0, 1.0};
 
-    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(),
+    EXPECT_ANY_THROW(nnfw::cker::train::MSE(nnfw::cker::Shape{2, 5}, y_pred.data(),
                                             nnfw::cker::Shape{2, 3}, y_true.data(),
-                                            nnfw::cker::Shape{1}, output.data()));
+                                            nnfw::cker::Shape{2}, output.data()));
   }
 }
 
