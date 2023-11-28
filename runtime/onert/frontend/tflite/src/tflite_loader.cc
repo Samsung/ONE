@@ -34,6 +34,7 @@ struct LoaderDomain
   using BuiltinOperator = onert_tflite::BuiltinOperator;
   using CustomOptionsFormat = onert_tflite::CustomOptionsFormat;
   using Model = onert_tflite::Model;
+  using Metadata = onert_tflite::Metadata;
   using Operator = onert_tflite::Operator;
   using Padding = onert_tflite::Padding;
   using Pool2DOptions = onert_tflite::Pool2DOptions;
@@ -86,6 +87,13 @@ public:
   }
 
 private:
+  std::unique_ptr<ir::IMetadata> loadMetadata(const onert_tflite::Metadata *) override
+  {
+    // NOTE: There is no metadata used in tflite for now
+    //       If necessary, Add metadata loader for tflite here
+    return nullptr;
+  }
+
   std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg) override
   {
     auto subg = std::make_unique<ir::Graph>();

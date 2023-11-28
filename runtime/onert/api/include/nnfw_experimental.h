@@ -176,6 +176,7 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 typedef enum
 {
+  NNFW_TRAIN_LOSS_INVALID = -1,
   NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR = 0,
   NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY = 1,
 } NNFW_TRAIN_LOSS;
@@ -192,6 +193,7 @@ typedef enum
 
 typedef enum
 {
+  NNFW_TRAIN_OPTIMIZER_INVALID = -1,
   NNFW_TRAIN_OPTIMIZER_SGD = 0,
   NNFW_TRAIN_OPTIMIZER_ADAM = 1,
 } NNFW_TRAIN_OPTIMIZER;
@@ -210,15 +212,39 @@ typedef struct nnfw_loss_info
 typedef struct nnfw_train_info
 {
   /** Learning rate */
-  float learning_rate = 0.001f;
+  float learning_rate = 0.00f;
   /** Batch size */
-  uint32_t batch_size = 1;
+  uint32_t batch_size = 0;
   /** loss info */
-  nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR,
+  nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_INVALID,
                            .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_INVALID};
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 } nnfw_train_info;
+
+/**
+ * @brief Get train info from session
+ * @note  This function should be called after {@link nnfw_load_model_from_file}
+ *
+ * @param[in] session       The session to get training info
+ * @param[out] train_info   The training info(parameters) in the session
+ *                          If the session doesn't have train_info, return it without changing
+ *
+ * @return @c NNFW_STATUS_NO_ERROR  If successful
+ */
+NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *train_info);
+
+/**
+ * @brief Get batch size from session
+ * @note  This function should be called after {@link nnfw_load_model_from_file}
+ *
+ * @param[in] session       The session to get batch size
+ * @param[out] batch_size   The batch size of model file's training info holds
+ *                          If the session doesn't have batch_size, return it without changing
+ *
+ * @return @c NNFW_STATUS_NO_ERROR  If successful
+ */
+NNFW_STATUS nnfw_tain_get_batch_size(nnfw_session *session, uint32_t *batch_size);
 
 /**
  * @brief Prepare session to be ready for training

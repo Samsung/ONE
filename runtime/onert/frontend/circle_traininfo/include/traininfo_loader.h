@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
-#define __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
+#ifndef __CIRCLE_TRAININFO_LOADER_H__
+#define __CIRCLE_TRAININFO_LOADER_H__
 
-#include "OptimizerCode.h"
+#include "ir/train/TrainingInfo.h"
+#include "ir/Model.h"
 
 namespace onert
 {
-namespace ir
-{
-namespace train
+namespace traininfo_loader
 {
 
-struct OptimizerInfo
-{
-  OptimizerCode optim_code;
-  float learning_rate;
-  // TODO Add properties
+std::unique_ptr<ir::IMetadata> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
-  OptimizerInfo() : optim_code{OptimizerCode::Invalid}, learning_rate(0.0) {}
-};
-
-} // namespace train
-} // namespace ir
+} // namespace traininfo_loader
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
+#endif // __CIRCLE_TRAININFO_LOADER_H__

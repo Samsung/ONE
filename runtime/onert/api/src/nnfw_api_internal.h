@@ -42,6 +42,10 @@ namespace ir
 struct IGraph;
 class Model;
 class NNPkg;
+namespace train
+{
+class TrainingInfo;
+}
 } // namespace ir
 namespace compiler
 {
@@ -167,6 +171,8 @@ public:
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
 #ifdef ONERT_TRAIN
+  NNFW_STATUS train_get_traininfo(nnfw_train_info *info);
+  NNFW_STATUS train_get_batch_size(uint32_t *batch_size);
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
@@ -209,6 +215,7 @@ private:
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
 #ifdef ONERT_TRAIN
+  std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   uint32_t _training_step{0};
 #endif // ONERT_TRAIN
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;

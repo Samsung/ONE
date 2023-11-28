@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
-#define __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
+#ifndef __ONERT_IR_META_H__
+#define __ONERT_IR_META_H__
 
-#include "OptimizerCode.h"
+#include <string>
+#include <memory>
 
 namespace onert
 {
 namespace ir
 {
-namespace train
-{
 
-struct OptimizerInfo
+enum class Metakey
 {
-  OptimizerCode optim_code;
-  float learning_rate;
-  // TODO Add properties
-
-  OptimizerInfo() : optim_code{OptimizerCode::Invalid}, learning_rate(0.0) {}
+  Unknown,
+  TrainingInfo,
+  // Add more field after other metadata added
 };
 
-} // namespace train
+class IMetadata
+{
+public:
+  IMetadata() {}
+  ~IMetadata() = default;
+
+  virtual Metakey key() const = 0;
+};
+
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__
+#endif // __ONERT_IR_META_H__

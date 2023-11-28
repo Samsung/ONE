@@ -64,6 +64,7 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_create_session(&session));
 
     // ModelLoad
+    // (NOTE) TrainInfo in modelfile.metadata is loaded into 'session._nnpkg._models'
     measure.run(PhaseType::MODEL_LOAD, [&]() {
       if (args.useSingleModel())
         NNPR_ENSURE_STATUS(
@@ -119,56 +120,25 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    auto convertLossType = [](int type) {
-      switch (type)
-      {
-        case 0:
-          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
-        case 1:
-          return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
-        default:
-          std::cerr << "E: not supported loss type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    auto convertLossReductionType = [](int type) {
-      switch (type)
-      {
-        case 0:
-          return NNFW_TRAIN_LOSS_REDUCTION_INVALID;
-        case 1:
-          return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
-        case 2:
-          return NNFW_TRAIN_LOSS_REDUCTION_SUM;
-        default:
-          std::cerr << "E: not supported loss reduction type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    auto convertOptType = [](int type) {
-      switch (type)
-      {
-        case 0:
-          return NNFW_TRAIN_OPTIMIZER_SGD;
-        case 1:
-          return NNFW_TRAIN_OPTIMIZER_ADAM;
-        default:
-          std::cerr << "E: not supported optimizer type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    // prepare training info
+    // get modelfile specified training parameter(info)
     nnfw_train_info tri;
-    tri.batch_size = args.getBatchSize();
-    tri.learning_rate = args.getLearningRate();
-    tri.loss_info.loss = convertLossType(args.getLossType());
-    tri.loss_info.reduction_type = convertLossReductionType(args.getLossReductionType());
-    tri.opt = convertOptType(args.getOptimizerType());
+    NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
 
-    // prepare execution
+    // update training parameter for the given parameter
+    if (args.getBatchSize() != 0)
+      tri.batch_size = args.getBatchSize();
+
+    if (args.getLearningRate() != 0.0f)
+      tri.learning_rate = args.getLearningRate();
+
+    if (args.getLossType() != NNFW_TRAIN_LOSS_INVALID)
+      tri.loss_info.loss = args.getLossType();
+
+    if (args.getLossReductionType() != NNFW_TRAIN_LOSS_REDUCTION_INVALID)
+      tri.loss_info.reduction_type = args.getLossReductionType();
+
+    if (args.getOptimizerType() != NNFW_TRAIN_OPTIMIZER_INVALID)
+      tri.opt = args.getOptimizerType();
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
     measure.run(PhaseType::PREPARE,
@@ -205,6 +175,7 @@ int main(const int argc, char **argv)
 
     if (!args.getLoadRawInputFilename().empty() && !args.getLoadRawExpectedFilename().empty())
     {
+      // train_info getter is necessary, - becuase here 'batch_size' is used.
       std::tie(generator, data_length) =
         rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
                                input_infos, expected_infos, tri.batch_size);

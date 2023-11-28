@@ -47,6 +47,7 @@ protected:
   using Buffer = typename LoaderDomain::Buffer;
   using BuiltinOperator = typename LoaderDomain::BuiltinOperator;
   using CustomOptionsFormat = typename LoaderDomain::CustomOptionsFormat;
+  using Metadata = typename LoaderDomain::Metadata;
   using Model = typename LoaderDomain::Model;
   using Operator = typename LoaderDomain::Operator;
   using Padding = typename LoaderDomain::Padding;
@@ -122,6 +123,7 @@ protected:
   }
 
 private:
+  virtual std::unique_ptr<ir::IMetadata> loadMetadata(const Metadata *meta) = 0;
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   template <typename OpIR, typename... Args>
@@ -1711,15 +1713,30 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
   _domain_model = LoaderDomain::GetModel(_base);
+
+  auto model = std::make_unique<ir::Model>();
   // Version unused
   // const auto version = _model->version();
   // Description unused
+
+  // Load Metadata
+  auto const metadata_list = _domain_model->metadata();
+  if (metadata_list != nullptr)
+  {
+    for (uint32_t i = 0; i < metadata_list->size(); ++i)
+    {
+      const auto metadata = metadata_list->Get(i);
+      if (metadata->name() == nullptr)
+        continue; // metadata should have name
+
+      std::unique_ptr<const ir::IMetadata> loaded_metadata = loadMetadata(metadata);
+      model->add_metadata(loaded_metadata->key(), std::move(loaded_metadata));
+    }
+  }
+
   // const auto *description = _model->description();
-  // Metabuffer unsued
-  // const auto *metadata_buffer = _model->metadata_buffer();
   // Load subgraphs and map operations on subgraph
   const auto subgraphs = _domain_model->subgraphs();
-  auto model = std::make_unique<ir::Model>();
   if (subgraphs->size() - 1 > ir::SubgraphIndex::max())
     throw std::runtime_error{"The number of subgraphs cannot exceed " +
                              std::to_string(ir::SubgraphIndex::max() + 1)};

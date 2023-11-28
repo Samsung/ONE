@@ -72,6 +72,7 @@ public:
 private:
   std::shared_ptr<ir::Model> _model;
   CompilerOptions *_options;
+  // TODO replace compiler::train::TrainingInfo with ir::train::TrainingInfo
   const TrainingInfo _training_info;
 };
 

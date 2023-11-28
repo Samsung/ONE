@@ -12,3 +12,4 @@ target_include_directories(circle_loader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/incl
 target_link_libraries(circle_loader PRIVATE onert_core)
 target_link_libraries(circle_loader PRIVATE base_loader nnfw_common nnfw_coverage)
 target_link_libraries(circle_loader PRIVATE circle_schema)
+target_link_libraries(circle_loader PRIVATE traininfo_loader)

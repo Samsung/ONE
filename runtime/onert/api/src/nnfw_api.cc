@@ -390,6 +390,18 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 #ifdef ONERT_TRAIN
 
+NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_get_traininfo(info);
+}
+
+NNFW_STATUS nnfw_train_get_batch_size(nnfw_session *session, uint32_t *batch_size)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_get_batch_size(batch_size);
+}
+
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
@@ -443,6 +455,18 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 }
 
 #else // ONERT_TRAIN
+
+NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_train_get_batch_size(nnfw_session *session, uint32_t *)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return NNFW_STATUS_ERROR;
+}
 
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *)
 {

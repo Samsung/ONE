@@ -17,6 +17,7 @@
 #include "circle_loader.h"
 #include "base_loader.h"
 #include "circle_schema_generated.h"
+#include "traininfo_loader.h"
 
 namespace onert
 {
@@ -26,6 +27,15 @@ namespace circle_loader
 namespace
 {
 
+using loadMetadata_t = std::unique_ptr<ir::IMetadata> (*)(const uint8_t *, const size_t);
+
+static const std::unordered_map<std::string, loadMetadata_t> metadata_loaders = {
+#ifdef ONERT_TRAIN
+  {"CIRCLE_TRAINING", &traininfo_loader::loadTrainingInfo}
+#endif // ONERT_TRAIN
+  // If necessary, add other metadata loader here
+};
+
 struct LoaderDomain
 {
   using Verifier = flatbuffers::Verifier;
@@ -33,6 +43,7 @@ struct LoaderDomain
   using Buffer = circle::Buffer;
   using BuiltinOperator = circle::BuiltinOperator;
   using CustomOptionsFormat = circle::CustomOptionsFormat;
+  using Metadata = circle::Metadata;
   using Model = circle::Model;
   using Operator = circle::Operator;
   using Padding = circle::Padding;
@@ -86,6 +97,20 @@ public:
   }
 
 private:
+  std::unique_ptr<ir::IMetadata> loadMetadata(const circle::Metadata *circle_meta) override
+  {
+    const auto name = circle_meta->name()->str();
+    if (metadata_loaders.find(name) == metadata_loaders.end())
+      return nullptr;
+
+    const auto loader = metadata_loaders.at(name);
+
+    const auto buffer_idx = circle_meta->buffer();
+    const auto buffer = _domain_model->buffers()->Get(buffer_idx)->data();
+
+    return loader(buffer->data(), buffer->size());
+  }
+
   std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg) override
   {
     auto subg = std::make_unique<ir::Graph>();

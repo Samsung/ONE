@@ -17,6 +17,8 @@
 #ifndef __ONERT_TRAIN_ARGS_H__
 #define __ONERT_TRAIN_ARGS_H__
 
+#include "nnfw_experimental.h"
+
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -55,9 +57,9 @@ public:
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
-  const int getLossType(void) const { return _loss_type; }
-  const int getLossReductionType(void) const { return _loss_reduction_type; }
-  const int getOptimizerType(void) const { return _optimizer_type; }
+  const NNFW_TRAIN_LOSS getLossType(void) const { return _loss_type; }
+  const NNFW_TRAIN_LOSS_REDUCTION getLossReductionType(void) const { return _loss_reduction_type; }
+  const NNFW_TRAIN_OPTIMIZER getOptimizerType(void) const { return _optimizer_type; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
@@ -77,11 +79,12 @@ private:
   std::string _load_raw_expected_filename;
   bool _mem_poll;
   int _epoch;
-  int _batch_size;
-  float _learning_rate;
-  int _loss_type;
-  int _loss_reduction_type;
-  int _optimizer_type;
+  // training parmater has invalid value by default
+  int _batch_size = 0;
+  float _learning_rate = 0.0f;
+  NNFW_TRAIN_LOSS _loss_type = NNFW_TRAIN_LOSS_INVALID;
+  NNFW_TRAIN_LOSS_REDUCTION _loss_reduction_type = NNFW_TRAIN_LOSS_REDUCTION_INVALID;
+  NNFW_TRAIN_OPTIMIZER _optimizer_type = NNFW_TRAIN_OPTIMIZER_INVALID;
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

@@ -21,6 +21,7 @@
 #include "ir/train/LossInfo.h"
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
+#include "ir/train/TrainingInfo.h"
 
 namespace onert
 {
@@ -29,6 +30,7 @@ namespace compiler
 namespace train
 {
 
+// TODO remove this class and replace it with ir::train::TrainingInfo
 class TrainingInfo
 {
 public:
@@ -37,6 +39,7 @@ public:
   TrainingInfo(TrainingInfo &&) = default;
   TrainingInfo &operator=(const TrainingInfo &) = default;
   TrainingInfo &operator=(TrainingInfo &&) = default;
+
   ~TrainingInfo() = default;
 
   uint32_t batchSize() const { return _batch_size; }
@@ -58,8 +61,8 @@ public:
 
 private:
   ir::train::LossInfo _loss_info;
-  ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
-  uint32_t _batch_size = 0;
+  ir::train::OptimizerInfo _optimizer_info;
+  uint32_t _batch_size;
 };
 
 } // namespace train
