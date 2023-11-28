@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_CUMSUM_H__
+#define __ONERT_BACKEND_CPU_OPS_CUMSUM_H__
 
 #include <backend/IPortableTensor.h>
 
@@ -30,35 +30,23 @@ namespace cpu
 namespace ops
 {
 
-enum class ElementwiseBinaryType
-{
-  kFloorDiv,
-  kFloorMod,
-  kLogicalAnd,
-  kLogicalOr,
-  kMax,
-  kMin,
-};
-
-class ElementwiseBinaryLayer : public ::onert::exec::IFunction
+class CumSumLayer : public ::onert::exec::IFunction
 {
 public:
-  ElementwiseBinaryLayer() : _lhs(nullptr), _rhs(nullptr), _output(nullptr)
-  {
-    // DO NOTHING
-  }
+  CumSumLayer();
 
 public:
-  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
-                 const ElementwiseBinaryType op_type);
+  void configure(const IPortableTensor *input, const IPortableTensor *axis, bool exclusive,
+                 bool reverse, IPortableTensor *output);
 
   void run() override;
 
 private:
-  const IPortableTensor *_lhs;
-  const IPortableTensor *_rhs;
+  const IPortableTensor *_input;
+  const IPortableTensor *_axis;
   IPortableTensor *_output;
-  std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)> _kernel;
+  bool _exclusive;
+  bool _reverse;
 };
 
 } // namespace ops
@@ -66,4 +54,4 @@ private:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_ELEMENTWISEBINARYLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_CUMSUM_H__

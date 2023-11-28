@@ -202,6 +202,10 @@ struct BinaryArithmeticOpParam
   // broadcast_shape[1] = a3; b3 = 1.
   // broadcast_shape[0] = b4 = a4.
   int broadcast_shape[5] = {};
+
+  // int64, activation params.
+  int64_t int64_activation_min = 0;
+  int64_t int64_activation_max = 0;
 };
 
 struct TransposeParams

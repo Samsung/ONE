@@ -41,6 +41,7 @@ public:
   void visit(const operation::Conv2D &node) override;
   void visit(const operation::ConvertFp16ToFp32 &node) override;
   void visit(const operation::ConvertFp32ToFp16 &node) override;
+  void visit(const operation::CumSum &node) override;
   void visit(const operation::DepthToSpace &) override;
   void visit(const operation::DepthwiseConv2D &node) override;
   void visit(const operation::ElementwiseActivation &) override;

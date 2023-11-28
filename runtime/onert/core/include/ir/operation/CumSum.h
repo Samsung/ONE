@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__
-#define __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__
+#ifndef __ONERT_IR_OPERATION_CUMSUM_H__
+#define __ONERT_IR_OPERATION_CUMSUM_H__
+
+#include <memory>
 
 #include "ir/Operation.h"
 
@@ -26,38 +28,28 @@ namespace ir
 namespace operation
 {
 
-class ElementwiseBinary : public Operation
+class CumSum : public Operation
 {
 public:
   enum Input
   {
-    LHS = 0,
-    RHS
-  };
-
-  enum class ElementwiseBinaryType
-  {
-    FLOOR_DIV,
-    FLOOR_MOD,
-    LOGICAL_AND,
-    LOGICAL_OR,
-    MAX,
-    MIN
+    INPUT = 0,
+    AXIS = 1
   };
 
   struct Param
   {
-    ElementwiseBinaryType op_type;
+    bool exclusive;
+    bool reverse;
   };
 
 public:
-  ElementwiseBinary(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-                    const Param &param);
+  CumSum(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+         const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  std::string name() const override;
-  OpCode opcode() const final { return OpCode::ElementwiseBinary; }
+  OpCode opcode() const final { return OpCode::CumSum; }
 
 public:
   const Param &param() const { return _param; }
@@ -70,4 +62,4 @@ private:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_OPERATION_ELEMENTWISEBINARY_H__
+#endif // __ONERT_IR_OPERATION_CUMSUM_H__

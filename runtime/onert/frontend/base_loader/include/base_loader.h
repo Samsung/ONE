@@ -136,6 +136,7 @@ private:
   void loadConcatenation(const Operator *op, ir::Graph &subg);
   void loadConv2D(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
+  void loadCumSum(const Operator *op, ir::Graph &subg);
   void loadDepthToSpace(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
   void loadEinsum(const Operator *op, ir::Graph &subg);
@@ -931,6 +932,16 @@ void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadCumSum(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::CumSum::Param param;
+  param.exclusive = op->builtin_options_as_CumsumOptions()->exclusive();
+  param.reverse = op->builtin_options_as_CumsumOptions()->reverse();
+
+  loadOperationTo<ir::operation::CumSum>(op, subg, param);
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadElementwiseBinary(
   const Operator *op, ir::Graph &subg,
   ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
@@ -1551,6 +1562,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_SUM:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::SUM);
       return;
+    case BuiltinOperator::BuiltinOperator_CUMSUM:
+      loadCumSum(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_CUSTOM:
       loadCustom(op, subg);
       return;
@@ -1578,6 +1592,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_FLOOR_DIV:
       loadElementwiseBinary(op, subg,
                             ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV);
+      return;
+    case BuiltinOperator::BuiltinOperator_FLOOR_MOD:
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_MOD);
       return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
       loadElementwiseBinary(op, subg, ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN);

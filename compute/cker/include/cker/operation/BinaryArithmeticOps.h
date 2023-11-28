@@ -32,7 +32,7 @@ namespace cker
 
 namespace
 {
-template <BinaryArithmeticOpType op_type, typename T>
+template <BinaryArithmeticOpType op_type, typename T, typename std::enable_if_t<!std::is_same<T, bool>::value, bool> = true>
 const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
 {
   switch (op_type)
@@ -68,6 +68,21 @@ const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
     {
       assert(false);
       return nullptr;
+    }
+  }
+}
+template <BinaryArithmeticOpType op_type, typename T, typename std::enable_if_t<std::is_same<T, bool>::value, bool> = true>
+const std::function<T(const bool &, const bool &)> GetBinaryArtithmeticFn()
+{
+  switch (op_type)
+  {
+    case BinaryArithmeticOpType::MUL:
+    {
+      return [](const bool &a, const bool &b) -> bool { return a && b; };
+    }
+    default:
+    {
+      throw std::runtime_error("GetBinaryArtithmeticFn: Unsupported OpType with Bool8");
     }
   }
 }
@@ -190,7 +205,17 @@ inline bool ProcessBroadcastShapes(const Shape &shape0, const Shape &shape1,
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
-inline typename std::enable_if_t<!is_quant8<T>::value>
+inline typename std::enable_if_t<!is_quant8<T>::value && std::is_same<T, bool>::value>
+BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                   const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                   const Shape &output_shape, T *output_data)
+{
+  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
+                                output_shape, output_data, GetBinaryArtithmeticFn<op_type, bool>());
+}
+
+template <BinaryArithmeticOpType op_type, typename T>
+inline typename std::enable_if_t<!is_quant8<T>::value && !std::is_same<T, bool>::value>
 BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                    const T *input1_data, const Shape &input2_shape, const T *input2_data,
                    const Shape &output_shape, T *output_data)
