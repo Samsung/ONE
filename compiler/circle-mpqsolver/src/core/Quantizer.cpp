@@ -120,7 +120,6 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
  * @brief quantize recorded module (min/max initialized) with specified parameters
  * returns true on success
  */
-
 bool Quantizer::quantize(luci::Module *module, LayerParams &layer_params)
 {
   return quantize(module, _ctx.output_model_dtype, layer_params);
