@@ -29,6 +29,7 @@
 #include "../../exec/train/TrainableExecutors.h"
 #include "../../ir/OperationDumper.h"
 #include "../../ir/verifier/Verifier.h"
+#include "../../ir/OperationCloner.h"
 
 #include <compiler/StaticShapeInferer.h>
 #include <compiler/train/LoweredTrainableGraph.h>
@@ -114,7 +115,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       // Convert operations to trainable operations
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
-          auto trainable_op = op.clone();
+          auto trainable_op = clone(op);
           auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           UNUSED_RELEASE(gen_index);
           assert(gen_index == op_index);
