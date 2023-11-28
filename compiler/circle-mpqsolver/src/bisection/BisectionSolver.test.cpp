@@ -61,7 +61,7 @@ TEST_F(CircleMPQSolverBisectionSolverTestF, verifyResultsTest)
   // create solver
   mpqsolver::core::Quantizer::Context ctx;
   mpqsolver::bisection::BisectionSolver solver(ctx, 0.5);
-  auto data = mpqsolver::test::data_utils::getSingleDataProvider();
+  auto data = mpqsolver::test::data_utils::getAllZeroSingleDataProvider();
   solver.setInputData(std::move(data));
   solver.algorithm(mpqsolver::bisection::BisectionSolver::Algorithm::ForceQ16Back);
   SolverOutput::get().TurnOn(false);

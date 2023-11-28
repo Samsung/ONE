@@ -229,7 +229,7 @@ public:
   }
 };
 
-std::unique_ptr<mpqsolver::core::DataProvider> getSingleDataProvider()
+std::unique_ptr<mpqsolver::core::DataProvider> getAllZeroSingleDataProvider()
 {
   return std::make_unique<SingleDataProvider>();
 }
