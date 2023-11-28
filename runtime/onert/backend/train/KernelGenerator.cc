@@ -20,6 +20,7 @@
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/LossMeanSquaredErrorLayer.h"
+#include "ops/LossCategoricalCrossentropyLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
@@ -243,6 +244,7 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
 
   auto loss_code = node.param().loss_code;
+  auto loss_param = node.param().loss_param;
 
   switch (loss_code)
   {
@@ -254,6 +256,13 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
       break;
     }
     case ir::train::LossCode::CategoricalCrossentropy:
+    {
+      auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
+      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
+                    loss_param.cce.axis, loss_param.cce.label_smoothing);
+      _return_fn = std::move(fn);
+      break;
+    }
     default:
       throw std::runtime_error("LossLayer: unsupported loss type");
       break;
