@@ -42,12 +42,16 @@ static constexpr const char *kTermColorResetAllCode = "\033[0m";
 
 void ConsoleReporter::notify(const hermes::Message *m)
 {
-  const char *env_color_p = std::getenv("ONE_HERMES_COLOR");
-  if (env_color_p)
+  if (not _env_checked)
   {
-    auto env_color_str = std::string(env_color_p);
-    if ((env_color_str == "1") or (env_color_str == "ON"))
-      _is_colored = true;
+    const char *env_color_p = std::getenv("ONE_HERMES_COLOR");
+    if (env_color_p)
+    {
+      auto env_color_str = std::string(env_color_p);
+      if ((env_color_str == "1") or (env_color_str == "ON"))
+        _is_colored = true;
+    }
+    _env_checked = true;
   }
 
   if (_is_colored)
