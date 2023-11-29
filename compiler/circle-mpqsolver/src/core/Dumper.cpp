@@ -40,10 +40,10 @@ const std::string layer_granularity_key = "granularity";
 
 Dumper::Dumper(const std::string &dir_path) : _dir_path(dir_path) {}
 
-void Dumper::set_model_path(const std::string &model_path) { _model_path = model_path; }
+void Dumper::setModelPath(const std::string &model_path) { _model_path = model_path; }
 
-void Dumper::dump_MPQ_configuration(const LayerParams &layers, const std::string &def_dtype,
-                                    const std::string &path) const
+void Dumper::dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
+                                  const std::string &path) const
 {
   Json::Value mpq_data;
   mpq_data[default_dtype_key] = def_dtype;
@@ -64,10 +64,10 @@ void Dumper::dump_MPQ_configuration(const LayerParams &layers, const std::string
   Json::StreamWriterBuilder builder;
   auto data = Json::writeString(builder, mpq_data);
 
-  write_data_to_file(path, data);
+  writeDataToFile(path, data);
 }
 
-void Dumper::prepare_directory(const std::string &dir_path) const
+void Dumper::prepareDirectory(const std::string &dir_path) const
 {
   struct stat sb;
   if (stat(dir_path.c_str(), &sb) != 0 || !S_ISDIR(sb.st_mode))
@@ -79,22 +79,22 @@ void Dumper::prepare_directory(const std::string &dir_path) const
   }
 }
 
-void Dumper::dump_MPQ_configuration(const LayerParams &layers, const std::string &def_dtype,
-                                    int step) const
+void Dumper::dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
+                                  int step) const
 {
-  prepare_directory(_dir_path);
+  prepareDirectory(_dir_path);
   std::string path = _dir_path + "/Configuration_" + std::to_string(step) + ".mpq.json";
-  dump_MPQ_configuration(layers, def_dtype, path);
+  dumpMPQConfiguration(layers, def_dtype, path);
 }
 
-void Dumper::dump_final_MPQ(const LayerParams &layers, const std::string &def_dtype) const
+void Dumper::dumpFinalMPQ(const LayerParams &layers, const std::string &def_dtype) const
 {
-  prepare_directory(_dir_path);
+  prepareDirectory(_dir_path);
   std::string path = _dir_path + "/FinalConfiguration" + ".mpq.json";
-  dump_MPQ_configuration(layers, def_dtype, path);
+  dumpMPQConfiguration(layers, def_dtype, path);
 }
 
-void Dumper::write_data_to_file(const std::string &path, const std::string &data) const
+void Dumper::writeDataToFile(const std::string &path, const std::string &data) const
 {
   std::ofstream file;
   file.open(path);
@@ -102,7 +102,7 @@ void Dumper::write_data_to_file(const std::string &path, const std::string &data
   file.close();
 }
 
-void Dumper::save_circle(luci::Module *module, std::string &path) const
+void Dumper::saveCircle(luci::Module *module, std::string &path) const
 {
   luci::CircleExporter exporter;
   luci::CircleFileExpContract contract(module, path);
@@ -112,13 +112,13 @@ void Dumper::save_circle(luci::Module *module, std::string &path) const
   }
 }
 
-void Dumper::dump_quantized(luci::Module *module, uint32_t step) const
+void Dumper::dumpQuantized(luci::Module *module, uint32_t step) const
 {
   std::string path = _dir_path + "/quantized_" + std::to_string(step) + ".mpq.circle";
-  save_circle(module, path);
+  saveCircle(module, path);
 }
 
-void Dumper::dump_error(float error, const std::string &tag, const std::string &path) const
+void Dumper::dumpError(float error, const std::string &tag, const std::string &path) const
 {
   std::ofstream file;
   file.open(path, std::ios_base::app);
@@ -126,35 +126,35 @@ void Dumper::dump_error(float error, const std::string &tag, const std::string &
   file.close();
 }
 
-void Dumper::prepare_for_error_dumping() const
+void Dumper::prepareForErrorDumping() const
 {
-  prepare_directory(_dir_path);
-  std::string path = get_error_path();
+  prepareDirectory(_dir_path);
+  std::string path = getErrorPath();
   std::ofstream file;
   file.open(path); // create empty
   file.close();
 }
 
-void Dumper::dump_Q8_error(float error) const
+void Dumper::dumpQ8Error(float error) const
 {
-  std::string path = get_error_path();
-  dump_error(error, "Q8", path);
+  std::string path = getErrorPath();
+  dumpError(error, "Q8", path);
 }
 
-void Dumper::dump_Q16_error(float error) const
+void Dumper::dumpQ16Error(float error) const
 {
-  std::string path = get_error_path();
-  dump_error(error, "Q16", path);
+  std::string path = getErrorPath();
+  dumpError(error, "Q16", path);
 }
 
-void Dumper::dump_MPQ_error(float error, uint32_t step) const
+void Dumper::dumpMPQError(float error, uint32_t step) const
 {
-  std::string path = get_error_path();
-  dump_error(error, std::to_string(step), path);
+  std::string path = getErrorPath();
+  dumpError(error, std::to_string(step), path);
 }
 
-void Dumper::dump_MPQ_error(float error) const
+void Dumper::dumpMPQError(float error) const
 {
-  std::string path = get_error_path();
-  dump_error(error, "FINAL", path);
+  std::string path = getErrorPath();
+  dumpError(error, "FINAL", path);
 }
