@@ -45,7 +45,7 @@ public:
       FuseInstanceNorm,
       FuseMeanWithMean,
       FuseMulWithConv,
-      FuseMulDiv,
+      FuseMulWithDiv,
       FuseTransposeWithMean,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,

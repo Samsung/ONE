@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/FuseMulDivPass.h"
+#include "luci/Pass/FuseMulWithDivPass.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -134,20 +134,20 @@ public:
 
 } // namespace
 
-TEST(FuseMulDivPassTest, fus_mul_div_pattern)
+TEST(FuseMulWithDivPassTest, fus_mul_div_pattern)
 {
   FuseMulDivPatternTestGraph g;
-  luci::FuseMulDivPass pass;
+  luci::FuseMulWithDivPass pass;
 
   g.init();
 
   EXPECT_TRUE(pass.run(g.g()));
 }
 
-TEST(FuseMulDivPassTest, fuse_mul_div_NEG)
+TEST(FuseMulWithDivPassTest, fuse_mul_div_NEG)
 {
   FuseMulDivPatternTestGraph g;
-  luci::FuseMulDivPass pass;
+  luci::FuseMulWithDivPass pass;
 
   g.init();
 

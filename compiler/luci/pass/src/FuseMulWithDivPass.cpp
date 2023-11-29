@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/FuseMulDivPass.h"
+#include "luci/Pass/FuseMulWithDivPass.h"
 #include "CircleOptimizerUtils.h"
 
 #include <luci/Profile/CircleNodeOrigin.h>
@@ -25,7 +25,7 @@ namespace luci
 
 /**
  * Pass to fuse mul(one of the input is const scalar) and
- * div(one of the input is const scalar) as div
+ * div(numerator is const scalar) as div
  *
  * BEFORE
  *             [CircleNode]                         [Scalar_Mul_Const]
@@ -47,7 +47,7 @@ namespace luci
  *          where Scalar_new_Div_Const = Scalar_Div_Const / Scalar_Mul_Const
  *
  **/
-bool FuseMulDivPass::run(loco::Graph *g)
+bool FuseMulWithDivPass::run(loco::Graph *g)
 {
   bool changed = false;
 

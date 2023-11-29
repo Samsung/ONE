@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_FUSE_MUL_DIV_PASS_H__
-#define __LUCI_FUSE_MUL_DIV_PASS_H__
+#ifndef __LUCI_FUSE_MUL_WITH_DIV_PASS_H__
+#define __LUCI_FUSE_MUL_WITH_DIV_PASS_H__
 
 #include <loco.h>
 
@@ -30,13 +30,13 @@ namespace luci
  *
  * For detailed subgraph pattern to be fused, please check its implementation.
  */
-struct FuseMulDivPass final : public logo::Pass
+struct FuseMulWithDivPass final : public logo::Pass
 {
-  const char *name(void) const final { return "luci::FuseMulDivPass"; }
+  const char *name(void) const final { return "luci::FuseMulWithDivPass"; }
 
   bool run(loco::Graph *g) final;
 };
 
 } // namespace luci
 
-#endif //__LUCI_FUSE_MUL_DIV_PASS_H__
+#endif //__LUCI_FUSE_MUL_WITH_DIV_PASS_H__

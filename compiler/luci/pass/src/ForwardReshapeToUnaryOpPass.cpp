@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
@@ -146,7 +148,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleLogistic *logit)
   return true;
 }
 
-bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean)
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean, uint32_t axis)
 {
   assert(reshape != nullptr); // FIX_CALLER_UNLESS
   assert(mean != nullptr);    // FIX_CALLER_UNLESS
@@ -160,8 +162,15 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean)
   mean->input(reshape->tensor());
   new_reshape->tensor(mean);
 
+  // Change const shape axis value
+  auto *shape_reshape = loco::must_cast<luci::CircleConst *>(new_reshape->shape());
+  assert(shape_reshape->dtype() == loco::DataType::S32);     // FIX_CALLER_UNLESS
+  assert(axis < shape_reshape->size<loco::DataType::S32>()); // FIX_CALLER_UNLESS
+  shape_reshape->at<loco::DataType::S32>(axis) = 1;
+
   // Do shape inference for this node again.
   mean->shape_status(luci::ShapeStatus::UNDEFINED);
+  reshape->shape_status(luci::ShapeStatus::UNDEFINED);
 
   return true;
 }
@@ -264,15 +273,7 @@ protected:
     luci::CircleReshape *reshape = nullptr;
     luci::CircleConst *const_value = nullptr;
 
-    reshape = dynamic_cast<luci::CircleReshape *>(node->x());
-    const_value = dynamic_cast<luci::CircleConst *>(node->y());
-    if (reshape == nullptr or const_value == nullptr)
-    {
-      reshape = dynamic_cast<luci::CircleReshape *>(node->y());
-      const_value = dynamic_cast<luci::CircleConst *>(node->x());
-    }
-
-    if (reshape == nullptr or const_value == nullptr)
+    if (not luci::fill(&reshape, &const_value).with_commutative_args_of(node))
       return false;
 
     if (const_value->dtype() != loco::DataType::FLOAT32)
@@ -290,15 +291,7 @@ protected:
     luci::CircleReshape *reshape = nullptr;
     luci::CircleConst *const_value = nullptr;
 
-    reshape = dynamic_cast<luci::CircleReshape *>(node->x());
-    const_value = dynamic_cast<luci::CircleConst *>(node->y());
-    if (reshape == nullptr or const_value == nullptr)
-    {
-      reshape = dynamic_cast<luci::CircleReshape *>(node->y());
-      const_value = dynamic_cast<luci::CircleConst *>(node->x());
-    }
-
-    if (reshape == nullptr or const_value == nullptr)
+    if (not luci::fill(&reshape, &const_value).with_commutative_args_of(node))
       return false;
 
     if (const_value->dtype() != loco::DataType::FLOAT32)
@@ -338,20 +331,26 @@ protected:
 
     assert(axis_value >= 0);
 
+    if (node->keep_dims() != true)
+      return false;
+
     auto *reshape_input = dynamic_cast<luci::CircleNode *>(reshape->tensor());
     if (reshape_input == nullptr)
       return false;
 
-    // rank should be the same
-    if (reshape_input->rank() <= static_cast<uint32_t>(axis_value))
+    // reshape shouldn't change rank
+    if (reshape_input->rank() != reshape->rank())
       return false;
+
+    assert(reshape_input->rank() > static_cast<uint32_t>(axis_value));
 
     // axis value for mean should be the same after reshape
     if (reshape_input->dim(axis_value).value() != reshape->dim(axis_value).value())
       return false;
 
-    return forward_reshape(reshape, node);
+    return forward_reshape(reshape, node, axis_value);
   }
+
   // TODO add more unary operators
 };
 
@@ -373,10 +372,10 @@ namespace luci
  *          |            |           |
  *
  *   UnaryOp: CircleNeg, ...
- *   Note: CircleDiv, CircleMul can also be considered as a unary operation
- *   if one of the inputs is a scalar constant. For CircleMean in which the axis is a scalar
- * constant and the reshape operation does not change the axis on which the mean is taken, pass can
- * apply forward reshape
+ *   Note: Binary Op (Div, Mul) can also be considered as a unary operation
+ *   if one of its inputs is a constant. For CircleMean in which the axis is a scalar
+ *   constant and reshape Op does not change the axis on which the mean is
+ *   taken, the Reshape Op can be forwarded.
  *
  * AFTER
  *                       |
