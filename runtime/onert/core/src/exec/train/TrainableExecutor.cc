@@ -32,9 +32,13 @@ TrainableExecutor::TrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
   backend::train::TrainableBackendContexts &&backend_contexts,
   const compiler::train::TensorRegistries &tensor_regs,
-  compiler::train::TrainableCodeMap &&code_map, const std::vector<ir::OperationIndex> &order,
-  const util::TracingCtx *tracing_ctx, const ir::train::LossInfo &loss_info)
-  : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
+  compiler::train::TrainableCodeMap &&code_map,
+  const std::vector<ir::OperationIndex> &forward_order,
+  const std::vector<ir::OperationIndex> &backward_order, const util::TracingCtx *tracing_ctx,
+  const ir::train::LossInfo &loss_info)
+  : _code_map{std::move(code_map)}, _forward_order{std::move(forward_order)},
+    _backward_order{std::move(backward_order)}, _lowered_graph{std::move(lowered_graph)},
+    _backend_contexts{std::move(backend_contexts)},
     _trainable_graph{_lowered_graph->trainable_graph()}, _tensor_regs{std::move(tensor_regs)},
     _mutex(), _tracing_ctx(tracing_ctx), _loss_info(loss_info)
 {
@@ -50,12 +54,6 @@ TrainableExecutor::TrainableExecutor(
   };
   build_tensor_list(_trainable_graph.getInputs(), _input_tensors);
   build_tensor_list(_trainable_graph.getOutputs(), _output_tensors);
-
-  for (auto &&index : order)
-  {
-    auto &trainable_code = code_map.at(index);
-    _code.emplace_back(std::move(trainable_code));
-  }
 }
 
 void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
@@ -110,8 +108,9 @@ void TrainableExecutor::forwardImpl(bool training)
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
 
     _subject.notifySubgraphBegin(profiling_subg_index);
-    for (auto &&code : _code)
+    for (auto &&index : _forward_order)
     {
+      const auto &code = _code_map.at(index);
       const auto backend = code.lower_info->backend();
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
@@ -128,8 +127,9 @@ void TrainableExecutor::forwardImpl(bool training)
   }
   else
   {
-    for (auto &&code : _code)
+    for (auto &&index : _forward_order)
     {
+      const auto &code = _code_map.at(index);
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
@@ -157,9 +157,9 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
 
     _subject.notifySubgraphBegin(profiling_subg_index);
-    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
+    for (auto &&index : _backward_order)
     {
-      const auto &code = *it;
+      const auto &code = _code_map.at(index);
       const auto backend = code.lower_info->backend();
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
@@ -176,9 +176,9 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
   }
   else
   {
-    for (auto it = _code.rbegin(); it != _code.rend(); ++it)
+    for (auto &&index : _backward_order)
     {
-      const auto &code = *it;
+      const auto &code = _code_map.at(index);
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());

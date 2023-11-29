@@ -129,7 +129,7 @@ public:
 
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
-  // TODO Support topological sort for backwarding
+  std::vector<ir::OperationIndex> btopolSortOperations() const;
 
 private:
   Graph _graph;
