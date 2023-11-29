@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_KERNELS_SELECT_H
-#define LUCI_INTERPRETER_KERNELS_SELECT_H
+#ifndef LUCI_INTERPRETER_KERNELS_SELECTV2_H
+#define LUCI_INTERPRETER_KERNELS_SELECTV2_H
 
 #include "core/Kernel.h"
 
@@ -25,10 +25,10 @@ namespace luci_interpreter
 namespace kernels
 {
 
-class Select : public Kernel
+class SelectV2 : public Kernel
 {
 public:
-  Select(const Tensor *cond, const Tensor *t, const Tensor *e, Tensor *output);
+  SelectV2(const Tensor *cond, const Tensor *t, const Tensor *e, Tensor *output);
 
   const Tensor *condition() const { return _inputs[0]; }
   const Tensor *t() const { return _inputs[1]; }
@@ -50,4 +50,4 @@ private:
 } // namespace kernels
 } // namespace luci_interpreter
 
-#endif // LUCI_INTERPRETER_KERNELS_SELECT_H
+#endif // LUCI_INTERPRETER_KERNELS_SELECTV2_H

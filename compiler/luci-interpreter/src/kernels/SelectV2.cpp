@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "kernels/Select.h"
+#include "kernels/SelectV2.h"
 #include "kernels/Utils.h"
 
 #include <tensorflow/lite/kernels/internal/reference/reference_ops.h>
@@ -30,13 +30,13 @@ namespace luci_interpreter
 namespace kernels
 {
 
-Select::Select(const Tensor *condition, const Tensor *t, const Tensor *e, Tensor *output)
+SelectV2::SelectV2(const Tensor *condition, const Tensor *t, const Tensor *e, Tensor *output)
   : Kernel({condition, t, e}, {output})
 {
   _has_low_rank_input_condition = false;
 }
 
-void Select::configure()
+void SelectV2::configure()
 {
   LUCI_INTERPRETER_CHECK(condition()->element_type() == DataType::BOOL);
   LUCI_INTERPRETER_CHECK(t()->element_type() == e()->element_type());
@@ -45,16 +45,19 @@ void Select::configure()
   auto cond_shape = condition()->shape();
   auto cond_num_dims = cond_shape.num_dims();
   auto t_shape = t()->shape();
+  auto e_shape = e()->shape();
 
   bool is_input_condition_scalar = cond_num_dims == 0;
   bool has_rank_one_input_condition = cond_num_dims == 1 && cond_shape.dim(0) == t_shape.dim(0);
 
-  _has_low_rank_input_condition = is_input_condition_scalar || has_rank_one_input_condition;
+  _has_low_rank_input_condition =
+    (is_input_condition_scalar || has_rank_one_input_condition) && t_shape == e_shape;
 
-  output()->resize(calculateShapeForBroadcast(t()->shape(), e()->shape()));
+  output()->resize(
+    calculateShapeForBroadcast(cond_shape, calculateShapeForBroadcast(t_shape, e_shape)));
 }
 
-void Select::execute() const
+void SelectV2::execute() const
 {
   switch (t()->element_type())
   {
@@ -62,12 +65,13 @@ void Select::execute() const
       evalFloat();
       break;
     default:
-      throw std::runtime_error("luci-intp Select unsupported type.");
+      throw std::runtime_error("luci-intp SelectV2 unsupported type.");
   }
 }
 
-void Select::evalFloat() const
+void SelectV2::evalFloat() const
 {
+
   const auto condition_shape = getTensorShape(condition());
   const auto condition_data = getTensorData<bool>(condition());
   const auto t_shape = getTensorShape(t());
@@ -84,8 +88,9 @@ void Select::evalFloat() const
   }
   else
   {
-    tflite::reference_ops::Select(condition_shape, condition_data, t_shape, t_data, e_shape, e_data,
-                                  output_shape, output_data);
+    // TODO Upgrade broadcast kernel to supporting 5D when upgrade to TF2.10.x or above
+    tflite::reference_ops::BroadcastSelect4DSlow(condition_shape, condition_data, t_shape, t_data,
+                                                 e_shape, e_data, output_shape, output_data);
   }
 }
 
