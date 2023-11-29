@@ -1579,6 +1579,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       loadElementwiseBinary(op, subg,
                             ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_DIV);
       return;
+    case BuiltinOperator::BuiltinOperator_FLOOR_MOD:
+      loadElementwiseBinary(op, subg,
+                            ir::operation::ElementwiseBinary::ElementwiseBinaryType::FLOOR_MOD);
+      return;
     case BuiltinOperator::BuiltinOperator_MINIMUM:
       loadElementwiseBinary(op, subg, ir::operation::ElementwiseBinary::ElementwiseBinaryType::MIN);
       return;
