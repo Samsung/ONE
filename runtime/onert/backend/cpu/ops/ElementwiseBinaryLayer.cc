@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/FloorDiv.h>
+#include <cker/operation/FloorMod.h>
 #include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
@@ -46,6 +47,22 @@ void FloorDivGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
   else
   {
     nnfw::cker::FloorDivElementwise<T>(getShape(lhs), getBuffer<T>(lhs), getBuffer<T>(rhs),
+                                       getBuffer<T>(output));
+  }
+}
+
+template <typename T>
+void FloorModGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                     IPortableTensor *output)
+{
+  if (!HaveSameShapes(lhs, rhs))
+  {
+    nnfw::cker::FloorModBroadcast<T>(getShape(lhs), getBuffer<T>(lhs), getShape(rhs),
+                                     getBuffer<T>(rhs), getShape(output), getBuffer<T>(output));
+  }
+  else
+  {
+    nnfw::cker::FloorModElementwise<T>(getShape(lhs), getBuffer<T>(lhs), getBuffer<T>(rhs),
                                        getBuffer<T>(output));
   }
 }
@@ -130,6 +147,20 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       else
       {
         throw std::runtime_error{"Max: unsupported data type"};
+      }
+      break;
+    case ElementwiseBinaryType::kFloorMod:
+      if (_lhs->data_type() == OperandType::FLOAT32)
+      {
+        _kernel = FloorModGeneric<float>;
+      }
+      else if (_lhs->data_type() == OperandType::INT64)
+      {
+        _kernel = FloorModGeneric<int64_t>;
+      }
+      else
+      {
+        throw std::runtime_error{"FloorMod: unsupported data type"};
       }
       break;
     case ElementwiseBinaryType::kLogicalAnd:

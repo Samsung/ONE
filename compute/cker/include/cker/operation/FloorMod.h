@@ -23,6 +23,7 @@
 
 #include <functional>
 #include <stdexcept>
+#include <string>
 
 namespace nnfw
 {
@@ -42,15 +43,9 @@ inline void FloorModBroadcast(const Shape &unextended_input1_shape, const T *inp
   using ModFunc =
     typename std::conditional<std::is_integral<T>::value, std::modulus<T>, FloatMod>::type;
 
-  if (unextended_input1_shape.DimensionsCount() > 4)
-    throw std::runtime_error("cker::FloorModBroadcast: Unsupported rank size : " +
-                             unextended_input1_shape.DimensionsCount());
-  if (unextended_input2_shape.DimensionsCount() > 4)
-    throw std::runtime_error("cker::FloorModBroadcast: Unsupported rank size : " +
-                             unextended_input2_shape.DimensionsCount());
   if (unextended_output_shape.DimensionsCount() > 4)
-    throw std::runtime_error("cker::FloorModBroadcast: Unsupported rank size : " +
-                             unextended_output_shape.DimensionsCount());
+    throw std::runtime_error(std::string("cker::FloorModBroadcast: Unsupported rank size : ") +
+                             std::to_string(unextended_output_shape.DimensionsCount()));
   const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
 
   NdArrayDesc<4> desc1;

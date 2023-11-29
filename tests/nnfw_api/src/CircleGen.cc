@@ -269,6 +269,12 @@ uint32_t CircleGen::addOperatorFloorDiv(const OperatorParams &params)
                                 circle::BuiltinOptions_NONE, 0);
 }
 
+uint32_t CircleGen::addOperatorFloorMod(const OperatorParams &params)
+{
+  return addOperatorWithOptions(params, circle::BuiltinOperator_FLOOR_MOD,
+                                circle::BuiltinOptions_NONE, 0);
+}
+
 uint32_t CircleGen::addOperatorGreater(const OperatorParams &params)
 {
   auto options = circle::CreateLessOptions(_fbb).Union();
