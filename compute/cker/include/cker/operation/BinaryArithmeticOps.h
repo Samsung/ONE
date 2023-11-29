@@ -19,6 +19,7 @@
 #define __NNFW_CKER_BINARY_ARITHMETIC_OPS_H__
 
 #include <functional>
+#include <stdexcept>
 #include "cker/operation/optimized/BinaryArithmeticOps.h"
 #include "cker/operation/reference/BinaryArithmeticOps.h"
 #include "cker/Shape.h"
@@ -32,7 +33,8 @@ namespace cker
 
 namespace
 {
-template <BinaryArithmeticOpType op_type, typename T>
+template <BinaryArithmeticOpType op_type, typename T,
+          typename std::enable_if_t<!std::is_same<T, bool>::value, bool> = true>
 const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
 {
   switch (op_type)
@@ -68,6 +70,22 @@ const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
     {
       assert(false);
       return nullptr;
+    }
+  }
+}
+template <BinaryArithmeticOpType op_type, typename T,
+          typename std::enable_if_t<std::is_same<T, bool>::value, bool> = true>
+const std::function<T(const bool &, const bool &)> GetBinaryArtithmeticFn()
+{
+  switch (op_type)
+  {
+    case BinaryArithmeticOpType::MUL:
+    {
+      return [](const bool &a, const bool &b) -> bool { return a && b; };
+    }
+    default:
+    {
+      throw std::runtime_error("GetBinaryArtithmeticFn: Unsupported OpType with Bool8");
     }
   }
 }
@@ -190,13 +208,23 @@ inline bool ProcessBroadcastShapes(const Shape &shape0, const Shape &shape1,
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
-inline typename std::enable_if_t<!is_quant8<T>::value>
+inline typename std::enable_if_t<!is_quant8<T>::value && !std::is_same<T, bool>::value>
 BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                    const T *input1_data, const Shape &input2_shape, const T *input2_data,
                    const Shape &output_shape, T *output_data)
 {
   reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
                                 output_shape, output_data, GetBinaryArtithmeticFn<op_type, T>());
+}
+
+template <BinaryArithmeticOpType op_type, typename T>
+inline typename std::enable_if_t<!is_quant8<T>::value && std::is_same<T, bool>::value>
+BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
+                   const bool *input1_data, const Shape &input2_shape, const bool *input2_data,
+                   const Shape &output_shape, bool *output_data)
+{
+  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
+                                output_shape, output_data, GetBinaryArtithmeticFn<op_type, bool>());
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
@@ -298,6 +326,10 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                         const float *input2_data, const Shape &output_shape,
                                         float *output_data)
 {
+  if (output_shape.DimensionsCount() > 4)
+    throw std::runtime_error(std::string("cker::BroadcastBinaryArithmeticOp: Unsupported rank size : ") +
+                             std::to_string(output_shape.DimensionsCount()));
+
   // Supported type is only float now
   switch (op_type)
   {

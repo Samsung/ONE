@@ -66,6 +66,23 @@ TEST_F(GenModelTest, OneOp_MulBroadcast_Uint8_VarVar)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_MulBroadcast_Bool_VarVar)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_BOOL});
+  int rhs = cgen.addTensor({{1, 1, 2, 1}, circle::TensorType::TensorType_BOOL});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_BOOL});
+  cgen.addOperatorMul({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<uint8_t>({{true, false, false, true}, {true, false}},
+                                            {{true, false, false, false}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_MulBroadcast_Int8_VarVar)
 {
   CircleGen cgen;
