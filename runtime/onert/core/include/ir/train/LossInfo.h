@@ -33,11 +33,20 @@ enum class LossReductionType
   Sum,              //< Sum loss reduction type
 };
 
+struct CategoricalCrossentropyParam
+{
+  int32_t axis;
+  float label_smoothing;
+};
+
 struct LossInfo
 {
   LossCode loss_code;
   LossReductionType reduction_type;
-  // TODO Add properties
+  union LossParam {
+    CategoricalCrossentropyParam cce;
+  } loss_param;
+
   LossInfo() : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid} {}
 };
 
