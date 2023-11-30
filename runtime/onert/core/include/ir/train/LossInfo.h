@@ -33,21 +33,22 @@ enum class LossReductionType
   Sum,              //< Sum loss reduction type
 };
 
-struct CategoricalCrossentropyParam
-{
-  int32_t axis;
-  float label_smoothing;
-};
-
 struct LossInfo
 {
-  LossCode loss_code;
-  LossReductionType reduction_type;
-  union LossParam {
-    CategoricalCrossentropyParam cce;
-  } loss_param;
+  LossCode loss_code = LossCode::Invalid;
+  LossReductionType reduction_type = LossReductionType::Invalid;
 
-  LossInfo() : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid} {}
+  virtual ~LossInfo() = default;
+};
+
+struct LossMeanSquaredErrorInfo : public LossInfo
+{
+};
+
+struct LossCategoricalCrossentropyInfo : public LossInfo
+{
+  int32_t axis = -1;
+  float label_smoothing = 0.0;
 };
 
 } // namespace train
