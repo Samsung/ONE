@@ -63,17 +63,17 @@ private:
   /**
    * @brief set quantization options
    */
-  void set_mpq_options(MPQOptions &options);
+  void setMPQOptions(MPQOptions &options);
 
   /**
    * @brief fill _frozen with prescribed quantization parameters of resolved nodes
    */
-  void resolve_patterns(luci::Module *module);
+  void resolvePatterns(luci::Module *module);
 
   /**
    * @brief transform _frozen nodes to Quantizer friendly form
    */
-  luci::CircleQuantizer::Options::LayerParams get_frozen_params() const;
+  luci::CircleQuantizer::Options::LayerParams getFrozenParams() const;
 
 private:
   MPQOptions _options; // options for mpq quantization
