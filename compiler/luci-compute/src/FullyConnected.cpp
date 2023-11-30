@@ -94,8 +94,7 @@ void FullyConnected::compute(void)
   params.float_activation_max     = _params.float_activation_max;
   params.lhs_cacheable            = _params.lhs_cacheable;
   params.rhs_cacheable            = _params.rhs_cacheable;
-  // TODO converty format
-  params.weights_format           = tflite::FullyConnectedWeightsFormat::kDefault;
+  params.weights_format           = tflite_weights_format(_params.weights_format);
   // clang-format on
 
   tflite::reference_ops::FullyConnected(

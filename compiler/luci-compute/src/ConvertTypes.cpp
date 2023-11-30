@@ -16,6 +16,7 @@
 #include "ConvertTypes.h"
 
 #include <cassert>
+#include <stdexcept>
 
 namespace luci
 {
@@ -44,6 +45,20 @@ tflite::PaddingType tflite_padding(const PaddingType type)
   }
   assert(false);
   return tflite::PaddingType::kNone;
+}
+
+tflite::FullyConnectedWeightsFormat tflite_weights_format(const FullyConnectedWeightsFormat type)
+{
+  switch (type)
+  {
+    case FullyConnectedWeightsFormat::kDefault:
+      return tflite::FullyConnectedWeightsFormat::kDefault;
+    case FullyConnectedWeightsFormat::kShuffled4x16Int8:
+      return tflite::FullyConnectedWeightsFormat::kShuffled4x16Int8;
+    default:
+      break;
+  }
+  throw std::runtime_error("luci-comp tflite_weights_format unsupported type.");
 }
 
 } // namespace compute

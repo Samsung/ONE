@@ -31,6 +31,8 @@ tflite::RuntimeShape tflite_shape(const loco::TensorShape &shape);
 
 tflite::PaddingType tflite_padding(const PaddingType type);
 
+tflite::FullyConnectedWeightsFormat tflite_weights_format(const FullyConnectedWeightsFormat type);
+
 } // namespace compute
 } // namespace luci
 
