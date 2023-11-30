@@ -16,6 +16,8 @@
 #ifndef __LUCI_COMPUTE_CONVERT_TYPES_H__
 #define __LUCI_COMPUTE_CONVERT_TYPES_H__
 
+#include "luci_compute/Types.h"
+
 #include <loco/IR/TensorShape.h>
 
 #include <tensorflow/lite/kernels/internal/types.h>
@@ -26,6 +28,8 @@ namespace compute
 {
 
 tflite::RuntimeShape tflite_shape(const loco::TensorShape &shape);
+
+tflite::PaddingType tflite_padding(const PaddingType type);
 
 } // namespace compute
 } // namespace luci

@@ -85,7 +85,7 @@ void DepthwiseConv2D::compute(void)
   tflite::DepthwiseParams params;
 
   // clang-format off
-  params.padding_type                   = tflite::PaddingType::kSame; // TODO convert type
+  params.padding_type                   = tflite_padding(_params.padding_type);
   params.padding_values.width           = _params.padding_values.width;
   params.padding_values.height          = _params.padding_values.height;
   params.padding_values.width_offset    = _params.padding_values.width_offset;
