@@ -56,7 +56,7 @@ public:
 
 public:
   bool prepare(void);
-  const loco::TensorShape &outputShape(void) const { return _output_shape; }
+  const loco::TensorShape &output_shape(void) const { return _output_shape; }
   void compute(void);
 
 private:
