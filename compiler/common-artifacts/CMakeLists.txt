@@ -49,6 +49,7 @@ if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
     COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
             ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
     COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
@@ -63,6 +64,7 @@ else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
     COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
     COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
             ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
     COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
