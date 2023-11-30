@@ -40,61 +40,13 @@ void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
   _label_smoothing = label_smoothing;
 }
 
-void LossCategoricalCrossentropyLayer::categoricalCrossEntropyFloat32()
-{
-  if (getNumberOfDimensions(_y_pred) == 1)
-  {
-    uint32_t input_size = getNumberOfElements(_y_pred);
-    nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
-                                               getBuffer<float>(_output), 1, input_size);
-  }
-  else if (getNumberOfDimensions(_y_pred) == 2)
-  {
-    uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
-    if (batch_size == 0)
-      throw std::runtime_error("batch_size should not be 0");
-
-    uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
-    nnfw::cker::train::CategoricalCrossEntropy(getBuffer<float>(_y_pred), getBuffer<float>(_y_true),
-                                               getBuffer<float>(_output), batch_size, input_size);
-  }
-  else
-  {
-    throw std::runtime_error("LossLayer: unsupported Dimensions");
-  }
-}
-
-void LossCategoricalCrossentropyLayer::categoricalCrossEntropyGradFloat32()
-{
-  if (getNumberOfDimensions(_y_pred) == 1)
-  {
-    uint32_t input_size = getNumberOfElements(_y_pred);
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred), 1,
-      input_size);
-  }
-  else if (getNumberOfDimensions(_y_pred) == 2)
-  {
-    uint32_t batch_size = getSizeOfDimension(_y_pred, 0);
-    if (batch_size == 0)
-      throw std::runtime_error("batch_size should not be 0");
-
-    uint32_t input_size = getNumberOfElements(_y_pred) / batch_size;
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getBuffer<float>(_y_pred), getBuffer<float>(_y_true), getBuffer<float>(_back_prop_y_pred),
-      batch_size, input_size);
-  }
-  else
-  {
-    throw std::runtime_error("LossLayer: unsupported Dimensions");
-  }
-}
-
 void LossCategoricalCrossentropyLayer::forward(bool)
 {
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
-    categoricalCrossEntropyFloat32();
+    nnfw::cker::train::CategoricalCrossEntropy(getShape(_y_pred), getBuffer<float>(_y_pred),
+                                               getShape(_y_true), getBuffer<float>(_y_true),
+                                               getShape(_output), getBuffer<float>(_output));
   }
   else
   {
@@ -106,7 +58,9 @@ void LossCategoricalCrossentropyLayer::backward()
 {
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
-    categoricalCrossEntropyGradFloat32();
+    nnfw::cker::train::CategoricalCrossEntropyGrad(
+      getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
+      getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
   }
   else
   {

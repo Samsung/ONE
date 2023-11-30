@@ -30,6 +30,7 @@ namespace train
 {
 
 template <typename T> inline T square(T value) { return value * value; }
+template <typename T> inline T log_threshold() { return static_cast<T>(1e-20); }
 
 template <typename T>
 inline void MSE(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_true_shape,
@@ -72,62 +73,44 @@ inline void MSEGrad(const Shape &y_pred_shape, const T *y_pred_data, const Shape
   }
 }
 
-template <typename T> bool checkValue(const T *data, int size, T min, T max)
+template <typename T>
+inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_data,
+                                    const Shape &y_true_shape, const T *y_true_data,
+                                    const Shape &output_shape, T *output_data)
 {
-  for (int i = 0; i < size; ++i)
-  {
-    if (data[i] > max || data[i] < min)
-      return false;
-  }
-  return true;
+  if (output_shape.DimensionsCount() != 1)
+    throw std::runtime_error("cker::CategoricalCrossEntropy: output dimension count should be 1");
+  if (y_pred_shape != y_true_shape)
+    throw std::runtime_error(
+      "cker::CategoricalCrossEntropy: y_pred and y_true do not have the same shape");
+  if (output_shape.Dims(0) != y_pred_shape.Dims(0))
+    throw std::runtime_error(
+      "cker::CategoricalCrossEntropy: output and y_pred do not have the same batch");
+
+  const auto y_pred = MapAsMatrixWithLastDimAsRows(y_pred_data, y_pred_shape);
+  const auto y_true = MapAsMatrixWithLastDimAsRows(y_true_data, y_true_shape);
+  auto output = MapAsVector(output_data, output_shape);
+
+  output = -(y_true.array() * y_pred.array().cwiseMax(log_threshold<T>()).log()).colwise().sum();
 }
 
 template <typename T>
-inline void CategoricalCrossEntropy(const T *y_pred_data, const T *y_true_data, T *output_data,
-                                    const int batch_size, const int input_size)
+inline void CategoricalCrossEntropyGrad(const Shape &y_pred_shape, const T *y_pred_data,
+                                        const Shape &y_true_shape, const T *y_true_data,
+                                        const Shape &grad_shape, T *grad_data)
 {
-  const T *y_prob_data = y_pred_data;
+  if (y_pred_shape != y_true_shape)
+    throw std::runtime_error(
+      "cker::CategoricalCrossEntropyGrad: y_pred and y_true do not have the same shape");
+  if (y_pred_shape != grad_shape)
+    throw std::runtime_error(
+      "cker::CategoricalCrossEntropyGrad: y_pred and grad do not have the same shape");
 
-  if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
-  {
-    throw std::runtime_error("cker::CategoricalCrossEntropy: y_pred data is not logit data.");
-  }
+  const auto y_pred = MapAsMatrixWithLastDimAsRows(y_pred_data, y_pred_shape);
+  const auto y_true = MapAsMatrixWithLastDimAsRows(y_true_data, y_true_shape);
+  auto grad = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
 
-  std::vector<T> sum(batch_size, 0.f);
-  for (int b = 0; b < batch_size; ++b)
-  {
-    int b_offset = b * input_size;
-    for (int i = 0; i < input_size; ++i)
-    {
-      if (y_true_data[b_offset + i] != 0)
-      {
-        sum[b] += -std::log(std::max(y_prob_data[b_offset + i], static_cast<float>(1.0e-20))) *
-                  y_true_data[b_offset + i];
-      }
-    }
-  }
-
-  output_data[0] = std::accumulate(sum.begin(), sum.end(), 0.f) / static_cast<float>(batch_size);
-}
-
-template <typename T>
-inline void CategoricalCrossEntropyGrad(const T *y_pred_data, const T *y_true_data, T *grad_data,
-                                        const int batch_size, const int input_size)
-{
-  if (!checkValue(y_pred_data, input_size * batch_size, static_cast<T>(0), static_cast<T>(1)))
-  {
-    throw std::runtime_error("cker::CategoricalCrossEntropyGrad: y_pred data is not logit data.");
-  }
-
-  for (int b = 0; b < batch_size; ++b)
-  {
-    int b_offset = b * input_size;
-    for (int i = 0; i < input_size; ++i)
-    {
-      grad_data[b_offset + i] = -(y_true_data[b_offset + i] /
-                                  std::max(y_pred_data[b_offset + i], static_cast<float>(1e-20)));
-    }
-  }
+  grad = -(y_true.array() / y_pred.array().cwiseMax(log_threshold<T>()));
 }
 
 } // namespace train

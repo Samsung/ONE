@@ -41,10 +41,6 @@ public:
   void backward() override;
 
 private:
-  void categoricalCrossEntropyFloat32();
-  void categoricalCrossEntropyGradFloat32();
-
-private:
   int32_t _axis{-1};
   float _label_smoothing{0.0f};
 };
