@@ -35,7 +35,7 @@ PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
 
 std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
 {
-  auto module = read_module(module_path);
+  auto module = readModule(module_path);
   assert(module != nullptr);
 
   resolve_patterns(module.get());

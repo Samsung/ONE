@@ -254,7 +254,7 @@ int entry(int argc, char **argv)
       auto data_path = arser.get<std::string>(save_intermediate_str);
       if (!data_path.empty())
       {
-        bi_solver->set_save_intermediate(data_path);
+        bi_solver->setSaveIntermediate(data_path);
       }
     }
 

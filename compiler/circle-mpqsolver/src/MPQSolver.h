@@ -43,10 +43,10 @@ public:
   /**
    * @brief set all intermediate artifacts to be saved
    */
-  void set_save_intermediate(const std::string &save_path);
+  void setSaveIntermediate(const std::string &save_path);
 
 protected:
-  std::unique_ptr<luci::Module> read_module(const std::string &path);
+  std::unique_ptr<luci::Module> readModule(const std::string &path);
 
 protected:
   std::string _input_quantization;

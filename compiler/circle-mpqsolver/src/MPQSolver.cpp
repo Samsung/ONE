@@ -26,12 +26,12 @@ MPQSolver::MPQSolver(const core::Quantizer::Context &ctx)
   _quantizer = std::make_unique<core::Quantizer>(ctx);
 }
 
-void MPQSolver::set_save_intermediate(const std::string &save_path)
+void MPQSolver::setSaveIntermediate(const std::string &save_path)
 {
   _hooks = std::make_unique<core::DumpingHooks>(save_path);
 }
 
-std::unique_ptr<luci::Module> MPQSolver::read_module(const std::string &path)
+std::unique_ptr<luci::Module> MPQSolver::readModule(const std::string &path)
 {
   luci::ImporterEx importerex;
   auto module = importerex.importVerifyModule(path);
