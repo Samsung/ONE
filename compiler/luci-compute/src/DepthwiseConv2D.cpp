@@ -28,6 +28,46 @@ namespace luci
 namespace compute
 {
 
+namespace
+{
+
+int32_t compute_output(PaddingType padding, int32_t in_size, int32_t filter_size, int32_t stride,
+                       int32_t dilation_rate)
+{
+  assert(in_size > 0);
+  assert(filter_size > 0);
+  assert(stride > 0);
+  assert(dilation_rate > 0);
+
+  auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  switch (padding)
+  {
+    case PaddingType::kSame:
+      return (in_size + stride - 1) / stride;
+
+    case PaddingType::kValid:
+      return (in_size + stride - effective_filter_size) / stride;
+  }
+  return -1;
+}
+
+int16_t compute_padding(int32_t out_size, int32_t in_size, int32_t filter_size, int32_t stride,
+                        int32_t dilation_rate)
+{
+  assert(out_size > 0);
+  assert(in_size > 0);
+  assert(filter_size > 0);
+  assert(stride > 0);
+  assert(dilation_rate > 0);
+
+  auto const effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+  auto const padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;
+  assert(padding < INT16_MAX);
+  return padding > 0 ? static_cast<int16_t>(padding) : 0;
+}
+
+} // namespace
+
 bool DepthwiseConv2D::prepare(void)
 {
   // TODO support other ranks if necessary
@@ -55,9 +95,15 @@ bool DepthwiseConv2D::prepare(void)
   if (_bias_shape.dim(0).value() != filter_channels_out)
     return false; // unsupported bias value
 
-  // TODO compute output
-  auto output_height = 0;
-  auto output_width = 0;
+  auto output_height = compute_output(_params.padding_type, input_height, filter_height,
+                                      _params.stride_height, _params.dilation_height_factor);
+  if (output_height < 0)
+    return false;
+
+  auto output_width = compute_output(_params.padding_type, input_width, filter_width,
+                                     _params.stride_width, _params.dilation_width_factor);
+  if (output_width < 0)
+    return false;
 
   _output_shape.rank(4);
   _output_shape.dim(0) = input_batches;
@@ -65,9 +111,11 @@ bool DepthwiseConv2D::prepare(void)
   _output_shape.dim(2) = output_width;
   _output_shape.dim(3) = filter_channels_out;
 
-  // TODO compute padding
-  _params.padding_values.height = 0;
-  _params.padding_values.width = 0;
+  _params.padding_values.height =
+    compute_padding(output_height, input_height, filter_height, _params.stride_height,
+                    _params.dilation_height_factor);
+  _params.padding_values.width = compute_padding(
+    output_width, input_width, filter_width, _params.stride_width, _params.dilation_width_factor);
 
   return true;
 }
