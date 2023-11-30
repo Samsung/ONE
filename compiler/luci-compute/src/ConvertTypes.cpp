@@ -33,5 +33,18 @@ tflite::RuntimeShape tflite_shape(const loco::TensorShape &shape)
   return runtime_shape;
 }
 
+tflite::PaddingType tflite_padding(const PaddingType type)
+{
+  switch (type)
+  {
+    case PaddingType::kSame:
+      return tflite::PaddingType::kSame;
+    case PaddingType::kValid:
+      return tflite::PaddingType::kValid;
+  }
+  assert(false);
+  return tflite::PaddingType::kNone;
+}
+
 } // namespace compute
 } // namespace luci
