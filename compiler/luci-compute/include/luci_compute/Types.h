@@ -76,6 +76,35 @@ struct DepthwiseParams
   const int32_t *output_shift_per_channel;
 };
 
+// from tflite, with tidy long comments
+enum class FullyConnectedWeightsFormat : uint8_t
+{
+  kDefault,
+  kShuffled4x16Int8,
+};
+
+// from tflite as-is
+struct FullyConnectedParams
+{
+  // uint8_t inference params.
+  // TODO(b/65838351): Use smaller types if appropriate.
+  int32_t input_offset;
+  int32_t weights_offset;
+  int32_t output_offset;
+  int32_t output_multiplier;
+  int output_shift;
+  // uint8_t, etc, activation params.
+  int32_t quantized_activation_min;
+  int32_t quantized_activation_max;
+  // float activation params.
+  float float_activation_min;
+  float float_activation_max;
+  // Mark the operands as cacheable if they are unchanging, e.g. weights.
+  bool lhs_cacheable;
+  bool rhs_cacheable;
+  FullyConnectedWeightsFormat weights_format;
+};
+
 } // namespace compute
 } // namespace luci
 
