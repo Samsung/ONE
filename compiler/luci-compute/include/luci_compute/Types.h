@@ -105,6 +105,19 @@ struct FullyConnectedParams
   FullyConnectedWeightsFormat weights_format;
 };
 
+// from luci as-is
+enum class FusedActFunc
+{
+  UNDEFINED, // This is not defined by TFLite or Circle. This was added to
+             // prevent programming error.
+  NONE,
+  RELU,
+  RELU_N1_TO_1,
+  RELU6,
+  TANH,
+  SIGN_BIT
+};
+
 } // namespace compute
 } // namespace luci
 

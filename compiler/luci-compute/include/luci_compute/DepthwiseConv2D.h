@@ -52,6 +52,8 @@ public:
     _bias_data = data;
   }
 
+  void fused_act_func(FusedActFunc func) { _fused_act_func = func; };
+
   void output(float *data) { _output_data = data; }
 
 public:
@@ -69,6 +71,7 @@ private:
   const float *_input_data = nullptr;
   const float *_filter_data = nullptr;
   const float *_bias_data = nullptr;
+  FusedActFunc _fused_act_func = FusedActFunc::UNDEFINED;
 
   // compute results
   loco::TensorShape _output_shape;
