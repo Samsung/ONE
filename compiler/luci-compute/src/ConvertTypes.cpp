@@ -42,9 +42,10 @@ tflite::PaddingType tflite_padding(const PaddingType type)
       return tflite::PaddingType::kSame;
     case PaddingType::kValid:
       return tflite::PaddingType::kValid;
+    default:
+      break;
   }
-  assert(false);
-  return tflite::PaddingType::kNone;
+  throw std::runtime_error("luci-comp tflite_padding unsupported type.");
 }
 
 tflite::FullyConnectedWeightsFormat tflite_weights_format(const FullyConnectedWeightsFormat type)
