@@ -30,7 +30,7 @@ PatternSolver::PatternSolver(const mpqsolver::core::Quantizer::Context &ctx,
   : MPQSolver(ctx)
 {
   MPQOptions options{patterns};
-  set_mpq_options(options);
+  setMPQOptions(options);
 }
 
 std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
@@ -38,9 +38,9 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
   auto module = read_module(module_path);
   assert(module != nullptr);
 
-  resolve_patterns(module.get());
+  resolvePatterns(module.get());
 
-  auto layer_params = get_frozen_params();
+  auto layer_params = getFrozenParams();
 
   if (!_quantizer->quantize(module.get(), layer_params))
   {
@@ -50,9 +50,9 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
   return module;
 }
 
-void PatternSolver::set_mpq_options(MPQOptions &options) { _options = options; }
+void PatternSolver::setMPQOptions(MPQOptions &options) { _options = options; }
 
-LayerParams PatternSolver::get_frozen_params() const
+LayerParams PatternSolver::getFrozenParams() const
 {
   LayerParams params;
   for (auto node_to_param : _frozen._node_to_param)
@@ -63,7 +63,7 @@ LayerParams PatternSolver::get_frozen_params() const
   return params;
 }
 
-void PatternSolver::resolve_patterns(luci::Module *module)
+void PatternSolver::resolvePatterns(luci::Module *module)
 {
   _frozen._node_to_param.clear();
 
