@@ -59,7 +59,6 @@ public:
   const CircleOperators_t *operators() { return _operators; }
   const std::vector<int32_t> &inputs() const { return _inputs; }
   const std::vector<int32_t> &outputs() const { return _outputs; }
-  const ::circle::DataFormat &data_format() const { return _data_format; }
   const CircleMetadata_t *metadata() const { return _metadata; }
   const CircleSignatureDef_t *signature_defs() const { return _signature_defs; }
 
@@ -92,7 +91,6 @@ private:
   std::vector<const ::circle::OperatorCode *> _op_codes;
   std::vector<int32_t> _inputs;
   std::vector<int32_t> _outputs;
-  ::circle::DataFormat _data_format = ::circle::DataFormat::DataFormat_CHANNELS_FIRST;
 };
 
 } // namespace circle

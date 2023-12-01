@@ -1310,8 +1310,8 @@ table SubGraph {
   // Name of this subgraph (used for debugging).
   name:string;
 
-  // Data format for input/output of SubGraph
-  data_format: DataFormat;
+  // Data format for input/output of SubGraph deprecated
+  deprecated_data_format: DataFormat (deprecated);
 }
 
 // Table of raw data buffers (used for constant tensors). Referenced by tensors

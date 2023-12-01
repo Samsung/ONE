@@ -323,7 +323,6 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
     circle_subgraph_builder.add_outputs(circle_outputs);
     circle_subgraph_builder.add_operators(circle_operators);
     circle_subgraph_builder.add_name(subgraphs_name);
-    circle_subgraph_builder.add_data_format(circle::DataFormat_CHANNELS_LAST);
 
     auto circle_subgraph = circle_subgraph_builder.Finish();
     subgprahs_vec.emplace_back(circle_subgraph);

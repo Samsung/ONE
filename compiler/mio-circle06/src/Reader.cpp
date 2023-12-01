@@ -135,7 +135,6 @@ bool Reader::select_subgraph(uint32_t sgindex)
 
   _tensors = subgraph->tensors();
   _operators = subgraph->operators();
-  _data_format = subgraph->data_format();
 
   _inputs = as_index_vector(subgraph->inputs());
   _outputs = as_index_vector(subgraph->outputs());

@@ -126,19 +126,6 @@ void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
 {
   auto tensors = reader.tensors();
   auto operators = reader.operators();
-  auto data_format = reader.data_format();
-
-  // dump data_format
-  os << "Data Format:" << std::endl;
-  if (data_format == circle::DataFormat::DataFormat_CHANNELS_LAST)
-  {
-    os << "CHANNEL_LAST (NHWC for 2d, NDHWC for 3d data)" << std::endl;
-  }
-  else if (data_format == circle::DataFormat::DataFormat_CHANNELS_FIRST)
-  {
-    os << "CHANNEL_FIRST (NCHW for 2d, NCDHW for 3d data)" << std::endl;
-  }
-  os << std::endl;
 
   // dump operands(tensors)
   os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
