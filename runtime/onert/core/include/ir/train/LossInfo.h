@@ -47,7 +47,10 @@ struct LossInfo
     CategoricalCrossentropyParam cce;
   } loss_param;
 
-  LossInfo() : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid} {}
+  LossInfo()
+    : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid}, loss_param{0, 0.0f}
+  {
+  }
 };
 
 } // namespace train
