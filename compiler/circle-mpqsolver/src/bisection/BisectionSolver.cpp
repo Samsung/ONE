@@ -84,7 +84,7 @@ float BisectionSolver::evaluate(const core::DatasetEvaluator &evaluator,
                                 const std::string &flt_path, const std::string &def_quant,
                                 core::LayerParams &layers)
 {
-  auto model = read_module(flt_path);
+  auto model = readModule(flt_path);
   assert(model != nullptr);
 
   // get fake quantized model for evaluation
@@ -107,7 +107,7 @@ void BisectionSolver::setInputData(std::unique_ptr<mpqsolver::core::DataProvider
 
 std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_path)
 {
-  auto module = read_module(module_path);
+  auto module = readModule(module_path);
   assert(module != nullptr);
 
   float min_depth = 0.f;
