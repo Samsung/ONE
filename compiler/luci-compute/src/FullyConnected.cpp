@@ -17,6 +17,7 @@
 #include "luci_compute/FullyConnected.h"
 
 #include "ConvertTypes.h"
+#include "ConvertValues.h"
 
 #include <tensorflow/lite/kernels/internal/reference/fully_connected.h>
 
@@ -52,6 +53,8 @@ bool FullyConnected::prepare(void)
     if (element_count(&_bias_shape) != num_units)
       return false;
   }
+
+  get_act_minmax(_fused_act_func, _params.float_activation_min, _params.float_activation_max);
 
   if (_keep_num_dims)
   {

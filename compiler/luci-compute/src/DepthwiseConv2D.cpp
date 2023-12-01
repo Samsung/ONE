@@ -17,6 +17,7 @@
 #include "luci_compute/DepthwiseConv2D.h"
 
 #include "ConvertTypes.h"
+#include "ConvertValues.h"
 
 #include <tensorflow/lite/kernels/internal/reference/depthwiseconv_float.h>
 
@@ -104,6 +105,8 @@ bool DepthwiseConv2D::prepare(void)
                                      _params.stride_width, _params.dilation_width_factor);
   if (output_width < 0)
     return false;
+
+  get_act_minmax(_fused_act_func, _params.float_activation_min, _params.float_activation_max);
 
   _output_shape.rank(4);
   _output_shape.dim(0) = input_batches;
