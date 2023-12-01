@@ -49,7 +49,8 @@ public:
                     backend::train::TrainableBackendContexts &&backend_contexts,
                     const compiler::train::TensorRegistries &tensor_regs,
                     compiler::train::TrainableCodeMap &&code_map,
-                    const std::vector<ir::OperationIndex> &order,
+                    const std::vector<ir::OperationIndex> &forward_order,
+                    const std::vector<ir::OperationIndex> &backward_order,
                     const util::TracingCtx *tracing_ctx, const ir::train::LossInfo &training_info);
 
 public:
@@ -90,7 +91,9 @@ private:
   void backwardImpl(uint32_t training_step);
 
 private:
-  std::vector<compiler::train::TrainableCodeAndInfo> _code;
+  compiler::train::TrainableCodeMap _code_map;
+  std::vector<ir::OperationIndex> _forward_order;
+  std::vector<ir::OperationIndex> _backward_order;
   ExecutionObservee _subject;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;

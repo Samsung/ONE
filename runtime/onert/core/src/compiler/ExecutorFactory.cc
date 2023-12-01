@@ -749,9 +749,15 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
 
-  // linearize
+  // linearize for forwarding
   auto order = Linear::linearize(*lowered_graph);
+  VERBOSE(ExecutorFactory) << "Linearize for forwarding order" << std::endl;
   Linear::dump(*lowered_graph, order);
+
+  // linearize for backwarding
+  auto backward_order = lowered_graph->trainable_graph().btopolSortOperations();
+  VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
+  Linear::dump(*lowered_graph, backward_order);
 
   for (auto &&pair : tbackend_contexts)
   {
@@ -885,6 +891,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tensor_regs,
                                                  std::move(code_map),
                                                  order,
+                                                 backward_order,
                                                  tracing_ctx,
                                                  training_info.lossInfo()};
 

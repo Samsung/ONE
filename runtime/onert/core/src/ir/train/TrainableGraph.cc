@@ -16,6 +16,7 @@
 
 #include "ir/train/TrainableGraph.h"
 #include "util/Utils.h"
+#include "util/Set.h"
 
 #include <algorithm>
 #include <misc/polymorphic_downcast.h>
@@ -126,6 +127,42 @@ const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const
 {
   return _graph.topolSortOperations();
+}
+
+std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
+{
+  std::vector<ir::OperationIndex> ret;
+  util::Set<ir::OperationIndex> unvisited;
+  ir::OperationIndex loss_idx;
+  operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &op) {
+    unvisited.add(index);
+    if (op.opcode() == ir::OpCode::Loss)
+    {
+      assert(!loss_idx.valid()); // Should be only one loss
+      loss_idx = index;
+    }
+  });
+
+  std::function<void(const ir::OperationIndex &, const ir::IOperation &)> dfs =
+    [&](const ir::OperationIndex &index, const ir::IOperation &op) -> void {
+    if (!unvisited.contains(index))
+      return;
+    unvisited.remove(index);
+    ret.push_back(index);
+
+    for (const auto &input : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    {
+      const auto &operand = operands().at(input);
+      const auto &def = operand.getDef();
+      if (!def.valid())
+        return;
+      dfs(def, operations().at(def));
+    }
+  };
+
+  dfs(loss_idx, operations().at(loss_idx));
+
+  return ret;
 }
 
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
