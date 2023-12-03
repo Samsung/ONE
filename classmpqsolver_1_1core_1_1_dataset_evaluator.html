@@ -99,9 +99,9 @@ $(document).ready(function(){initNavTree('classmpqsolver_1_1core_1_1_dataset_eva
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a03297d6672b50578e509c489c9ab9b4b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#a03297d6672b50578e509c489c9ab9b4b">DatasetEvaluator</a> (const <a class="el" href="classluci_1_1_module.html">luci::Module</a> *ref_module, const std::string &amp;h5file, const <a class="el" href="classmpqsolver_1_1core_1_1_error_metric.html">ErrorMetric</a> &amp;metric)</td></tr>
-<tr class="memdesc:a03297d6672b50578e509c489c9ab9b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">create Evaluator for comparing output of ref_module on h5file  <a href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#a03297d6672b50578e509c489c9ab9b4b">More...</a><br /></td></tr>
-<tr class="separator:a03297d6672b50578e509c489c9ab9b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec5dd54d1b0a023d8c53ec09df82029f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#aec5dd54d1b0a023d8c53ec09df82029f">DatasetEvaluator</a> (const <a class="el" href="classluci_1_1_module.html">luci::Module</a> *ref_module, const <a class="el" href="classmpqsolver_1_1core_1_1_data_provider.html">DataProvider</a> &amp;provider, const <a class="el" href="classmpqsolver_1_1core_1_1_error_metric.html">ErrorMetric</a> &amp;metric)</td></tr>
+<tr class="memdesc:aec5dd54d1b0a023d8c53ec09df82029f"><td class="mdescLeft">&#160;</td><td class="mdescRight">create Evaluator for comparing output of ref_module on provider  <a href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#aec5dd54d1b0a023d8c53ec09df82029f">More...</a><br /></td></tr>
+<tr class="separator:aec5dd54d1b0a023d8c53ec09df82029f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5b7773b1a08427ed240579eefb2f3b5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#aa5b7773b1a08427ed240579eefb2f3b5">DatasetEvaluator</a> ()=delete</td></tr>
 <tr class="separator:aa5b7773b1a08427ed240579eefb2f3b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af54f83718b6943332e7dc5c7823ca092"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dataset_evaluator.html#af54f83718b6943332e7dc5c7823ca092">~DatasetEvaluator</a> ()=default</td></tr>
@@ -112,10 +112,10 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_evaluator_8h_source.html#l00033">33</a> of file <a class="el" href="_evaluator_8h_source.html">Evaluator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_evaluator_8h_source.html#l00035">35</a> of file <a class="el" href="_evaluator_8h_source.html">Evaluator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a03297d6672b50578e509c489c9ab9b4b" name="a03297d6672b50578e509c489c9ab9b4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03297d6672b50578e509c489c9ab9b4b">&#9670;&#160;</a></span>DatasetEvaluator() <span class="overload">[1/2]</span></h2>
+<a id="aec5dd54d1b0a023d8c53ec09df82029f" name="aec5dd54d1b0a023d8c53ec09df82029f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec5dd54d1b0a023d8c53ec09df82029f">&#9670;&#160;</a></span>DatasetEvaluator() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,8 +129,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>h5file</em>, </td>
+          <td class="paramtype">const <a class="el" href="classmpqsolver_1_1core_1_1_data_provider.html">DataProvider</a> &amp;&#160;</td>
+          <td class="paramname"><em>provider</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -146,13 +146,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>create Evaluator for comparing output of ref_module on h5file </p>
+<p>create Evaluator for comparing output of ref_module on provider </p>
 
-<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00106">106</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>  : _ref_module(ref_module), _h5file(h5file), _metric(&amp;metric)</div>
-<div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  _ref_output = compute_outputs(_ref_module, _h5file);</div>
-<div class="line"><span class="lineno">  111</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00096">96</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>  : _ref_module(ref_module), _provider(&amp;provider), _metric(&amp;metric)</div>
+<div class="line"><span class="lineno">   99</span>{</div>
+<div class="line"><span class="lineno">  100</span>  _ref_output = compute_outputs(_ref_module, _provider);</div>
+<div class="line"><span class="lineno">  101</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -225,20 +225,20 @@ Public Member Functions</h2></td></tr>
 
 <p>evaluate trgt_fq_module (fake-quantized) returns error-metric </p>
 
-<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00125">125</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span>{</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">if</span> (trgt_fq_module == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid target module&quot;</span>);</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (_metric == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid metric&quot;</span>);</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>  validate(trgt_fq_module);</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">WholeOutput</a> &amp;cur_output = compute_outputs(trgt_fq_module, _h5file);</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keywordtype">float</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> = _metric-&gt;<a class="code hl_function" href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">compute</a>(_ref_output, cur_output);</div>
-<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>;</div>
-<div class="line"><span class="lineno">  138</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00115">115</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">if</span> (trgt_fq_module == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid target module&quot;</span>);</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> (_metric == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid metric&quot;</span>);</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>  validate(trgt_fq_module);</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">WholeOutput</a> &amp;cur_output = compute_outputs(trgt_fq_module, _provider);</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordtype">float</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> = _metric-&gt;<a class="code hl_function" href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">compute</a>(_ref_output, cur_output);</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>;</div>
+<div class="line"><span class="lineno">  128</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_error_metric_html_aadb2e066914b666590fa00ff448c3542"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">mpqsolver::core::ErrorMetric::compute</a></div><div class="ttdeci">virtual float compute(const WholeOutput &amp;first, const WholeOutput &amp;second) const =0</div><div class="ttdoc">abstract method for comparing first and second operands</div></div>
 <div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition:</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1core_html_ad3c539d2e051cae08d654d4e7a8dee41"><div class="ttname"><a href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">mpqsolver::core::WholeOutput</a></div><div class="ttdeci">std::vector&lt; Output &gt; WholeOutput</div><div class="ttdef"><b>Definition:</b> <a href="_error_metric_8h_source.html#l00029">ErrorMetric.h:29</a></div></div>

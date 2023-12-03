@@ -130,6 +130,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleAveragePool2D", "namespaceluci__interpreter.html#a83b6d9ba619598e90eef9e3f09423f4c", null ],
     [ "build_kernel_CircleBatchMatMul", "namespaceluci__interpreter.html#ada43472e71e1b41d6d1092ac4f6a2a51", null ],
     [ "build_kernel_CircleBatchToSpaceND", "namespaceluci__interpreter.html#a8cce7b44f8a8c3221b6e81a2d970779f", null ],
+    [ "build_kernel_CircleBroadcastTo", "namespaceluci__interpreter.html#aa39437f5aade7632022dc805aab1e835", null ],
     [ "build_kernel_CircleCast", "namespaceluci__interpreter.html#ac7ae81d64ffec05ffc82dff106cf57c2", null ],
     [ "build_kernel_CircleConcatenation", "namespaceluci__interpreter.html#a46ef4b3d153000591730761070306535", null ],
     [ "build_kernel_CircleConv2D", "namespaceluci__interpreter.html#a57bf8d47dadfd78ec6bc0ffd8d5ce941", null ],

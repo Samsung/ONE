@@ -3,6 +3,7 @@ var classonert_1_1ir_1_1operation_1_1_elementwise_binary =
     [ "Param", "structonert_1_1ir_1_1operation_1_1_elementwise_binary_1_1_param.html", "structonert_1_1ir_1_1operation_1_1_elementwise_binary_1_1_param" ],
     [ "ElementwiseBinaryType", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783", [
       [ "FLOOR_DIV", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a77811fd0ec3d3ed2711a923332e8e69f", null ],
+      [ "FLOOR_MOD", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783ab10eec01ae4fc20357527b92cf75224a", null ],
       [ "LOGICAL_AND", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783aa770916377f618641eccd6783b13503a", null ],
       [ "LOGICAL_OR", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a0d0389dd347e259ac16a47fc9db81c18", null ],
       [ "MAX", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a26a4b44a837bf97b972628509912b4a5", null ],

@@ -1,7 +1,7 @@
 var namespacempqsolver_1_1test =
 [
     [ "data_utils", "namespacempqsolver_1_1test_1_1data__utils.html", [
-      [ "getSingleDataProvider", "namespacempqsolver_1_1test_1_1data__utils.html#a3acc4b3de3376e16fe1e4d38ed378431", null ]
+      [ "getAllZeroSingleDataProvider", "namespacempqsolver_1_1test_1_1data__utils.html#a7f1e8709f40c0115668ac196ab865c28", null ]
     ] ],
     [ "io_utils", "namespacempqsolver_1_1test_1_1io__utils.html", [
       [ "isFileExists", "namespacempqsolver_1_1test_1_1io__utils.html#a4cf61b45ea587eea7de9a83ab8e2c65a", null ],

@@ -12,6 +12,7 @@ var classonert_1_1ir_1_1train_1_1_trainable_graph =
     [ "addOperation", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a5cda7d52efd07000b4a220f0b8777a7c", null ],
     [ "addOutput", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a7ed269c873122002160e95826d5b4bd2", null ],
     [ "back_props", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#ad0838ad73545f93b3b1ff54234f46f6f", null ],
+    [ "btopolSortOperations", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a62f1a965853158ed420a2251dd6f9844", null ],
     [ "changeBackPropShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a89d73fca654060fc46256f3e3b5b0d77", null ],
     [ "changeShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a32e1f89b53054766afc09a9775aa879b", null ],
     [ "getInputIndex", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a1d4c2bb31889ad1c905fddf4716aca7f", null ],

@@ -1193,35 +1193,35 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01531">1531</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1532</span>{</div>
-<div class="line"><span class="lineno"> 1533</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1534</span>  {</div>
-<div class="line"><span class="lineno"> 1535</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1536</span>    {</div>
-<div class="line"><span class="lineno"> 1537</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1538</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1539</span>    }</div>
-<div class="line"><span class="lineno"> 1540</span> </div>
-<div class="line"><span class="lineno"> 1541</span>    <span class="keyword">auto</span> result = _quant_manager-&gt;quantize();</div>
-<div class="line"><span class="lineno"> 1542</span>    <span class="keywordflow">if</span> (!result)</div>
-<div class="line"><span class="lineno"> 1543</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1544</span> </div>
-<div class="line"><span class="lineno"> 1545</span>    <span class="comment">// Replace model</span></div>
-<div class="line"><span class="lineno"> 1546</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
-<div class="line"><span class="lineno"> 1547</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(_quant_manager-&gt;exportModelPath(), <span class="stringliteral">&quot;circle&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1548</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno"> 1549</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1550</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
-<div class="line"><span class="lineno"> 1551</span>  }</div>
-<div class="line"><span class="lineno"> 1552</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1553</span>  {</div>
-<div class="line"><span class="lineno"> 1554</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::quantize : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1555</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1556</span>  }</div>
-<div class="line"><span class="lineno"> 1557</span> </div>
-<div class="line"><span class="lineno"> 1558</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1559</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01543">1543</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1544</span>{</div>
+<div class="line"><span class="lineno"> 1545</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1546</span>  {</div>
+<div class="line"><span class="lineno"> 1547</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1548</span>    {</div>
+<div class="line"><span class="lineno"> 1549</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1550</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1551</span>    }</div>
+<div class="line"><span class="lineno"> 1552</span> </div>
+<div class="line"><span class="lineno"> 1553</span>    <span class="keyword">auto</span> result = _quant_manager-&gt;quantize();</div>
+<div class="line"><span class="lineno"> 1554</span>    <span class="keywordflow">if</span> (!result)</div>
+<div class="line"><span class="lineno"> 1555</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1556</span> </div>
+<div class="line"><span class="lineno"> 1557</span>    <span class="comment">// Replace model</span></div>
+<div class="line"><span class="lineno"> 1558</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
+<div class="line"><span class="lineno"> 1559</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(_quant_manager-&gt;exportModelPath(), <span class="stringliteral">&quot;circle&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1560</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno"> 1561</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1562</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
+<div class="line"><span class="lineno"> 1563</span>  }</div>
+<div class="line"><span class="lineno"> 1564</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1565</span>  {</div>
+<div class="line"><span class="lineno"> 1566</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::quantize : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1567</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1568</span>  }</div>
+<div class="line"><span class="lineno"> 1569</span> </div>
+<div class="line"><span class="lineno"> 1570</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1571</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -1894,41 +1894,41 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01478">1478</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1479</span>{</div>
-<div class="line"><span class="lineno"> 1480</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1481</span>  {</div>
-<div class="line"><span class="lineno"> 1482</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1483</span>    {</div>
-<div class="line"><span class="lineno"> 1484</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1485</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1486</span>    }</div>
-<div class="line"><span class="lineno"> 1487</span> </div>
-<div class="line"><span class="lineno"> 1488</span>    <span class="keywordtype">bool</span> is_q16 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1489</span>    <span class="keywordflow">switch</span> (qtype)</div>
-<div class="line"><span class="lineno"> 1490</span>    {</div>
-<div class="line"><span class="lineno"> 1491</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>:</div>
-<div class="line"><span class="lineno"> 1492</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1493</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>:</div>
-<div class="line"><span class="lineno"> 1494</span>        is_q16 = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1495</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1496</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno"> 1497</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01490">1490</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1491</span>{</div>
+<div class="line"><span class="lineno"> 1492</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1493</span>  {</div>
+<div class="line"><span class="lineno"> 1494</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1495</span>    {</div>
+<div class="line"><span class="lineno"> 1496</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1497</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
 <div class="line"><span class="lineno"> 1498</span>    }</div>
-<div class="line"><span class="lineno"> 1499</span>    _quant_manager-&gt;quantizeType(is_q16);</div>
-<div class="line"><span class="lineno"> 1500</span>  }</div>
-<div class="line"><span class="lineno"> 1501</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1502</span>  {</div>
-<div class="line"><span class="lineno"> 1503</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantization_type : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1504</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1505</span>  }</div>
-<div class="line"><span class="lineno"> 1506</span> </div>
-<div class="line"><span class="lineno"> 1507</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1508</span>}</div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00356">nnfw_experimental.h:356</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00358">nnfw_experimental.h:358</a></div></div>
+<div class="line"><span class="lineno"> 1499</span> </div>
+<div class="line"><span class="lineno"> 1500</span>    <span class="keywordtype">bool</span> is_q16 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno"> 1501</span>    <span class="keywordflow">switch</span> (qtype)</div>
+<div class="line"><span class="lineno"> 1502</span>    {</div>
+<div class="line"><span class="lineno"> 1503</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>:</div>
+<div class="line"><span class="lineno"> 1504</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1505</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>:</div>
+<div class="line"><span class="lineno"> 1506</span>        is_q16 = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1507</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1508</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno"> 1509</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1510</span>    }</div>
+<div class="line"><span class="lineno"> 1511</span>    _quant_manager-&gt;quantizeType(is_q16);</div>
+<div class="line"><span class="lineno"> 1512</span>  }</div>
+<div class="line"><span class="lineno"> 1513</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1514</span>  {</div>
+<div class="line"><span class="lineno"> 1515</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantization_type : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1516</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1517</span>  }</div>
+<div class="line"><span class="lineno"> 1518</span> </div>
+<div class="line"><span class="lineno"> 1519</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1520</span>}</div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00373">nnfw_experimental.h:373</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00375">nnfw_experimental.h:375</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__experimental_8h_source.html#l00358">NNFW_QUANTIZE_TYPE_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00356">NNFW_QUANTIZE_TYPE_U8_ASYM</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__experimental_8h_source.html#l00375">NNFW_QUANTIZE_TYPE_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00373">NNFW_QUANTIZE_TYPE_U8_ASYM</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
 </div>
 </div>
@@ -1948,26 +1948,26 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01510">1510</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1511</span>{</div>
-<div class="line"><span class="lineno"> 1512</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1513</span>  {</div>
-<div class="line"><span class="lineno"> 1514</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1515</span>    {</div>
-<div class="line"><span class="lineno"> 1516</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1517</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1518</span>    }</div>
-<div class="line"><span class="lineno"> 1519</span> </div>
-<div class="line"><span class="lineno"> 1520</span>    _quant_manager-&gt;exportModelPath(std::string(path));</div>
-<div class="line"><span class="lineno"> 1521</span>  }</div>
-<div class="line"><span class="lineno"> 1522</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1523</span>  {</div>
-<div class="line"><span class="lineno"> 1524</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantized_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1525</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1526</span>  }</div>
-<div class="line"><span class="lineno"> 1527</span> </div>
-<div class="line"><span class="lineno"> 1528</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1529</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01522">1522</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1523</span>{</div>
+<div class="line"><span class="lineno"> 1524</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1525</span>  {</div>
+<div class="line"><span class="lineno"> 1526</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1527</span>    {</div>
+<div class="line"><span class="lineno"> 1528</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1529</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1530</span>    }</div>
+<div class="line"><span class="lineno"> 1531</span> </div>
+<div class="line"><span class="lineno"> 1532</span>    _quant_manager-&gt;exportModelPath(std::string(path));</div>
+<div class="line"><span class="lineno"> 1533</span>  }</div>
+<div class="line"><span class="lineno"> 1534</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1535</span>  {</div>
+<div class="line"><span class="lineno"> 1536</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantized_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1537</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1538</span>  }</div>
+<div class="line"><span class="lineno"> 1539</span> </div>
+<div class="line"><span class="lineno"> 1540</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1541</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 

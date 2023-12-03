@@ -20,7 +20,7 @@ var searchData=
   ['paddingbase_3c_20rawpadding_20_3e_17',['PaddingBase&lt; RawPadding &gt;',['../class_padding_base.html',1,'']]],
   ['paddingbase_3c_20spatialpadding_20_3e_18',['PaddingBase&lt; SpatialPadding &gt;',['../class_padding_base.html',1,'']]],
   ['paddingnd_19',['PaddingND',['../classloco_1_1_padding_n_d.html',1,'loco']]],
-  ['paddingvalues_20',['PaddingValues',['../structluci__interpreter__pal_1_1_padding_values.html',1,'luci_interpreter_pal::PaddingValues'],['../structnnfw_1_1cker_1_1_padding_values.html',1,'nnfw::cker::PaddingValues'],['../structnnfw_1_1ruy_1_1_padding_values.html',1,'nnfw::ruy::PaddingValues']]],
+  ['paddingvalues_20',['PaddingValues',['../structluci_1_1compute_1_1_padding_values.html',1,'luci::compute::PaddingValues'],['../structluci__interpreter__pal_1_1_padding_values.html',1,'luci_interpreter_pal::PaddingValues'],['../structnnfw_1_1cker_1_1_padding_values.html',1,'nnfw::cker::PaddingValues'],['../structnnfw_1_1ruy_1_1_padding_values.html',1,'nnfw::ruy::PaddingValues']]],
   ['padf_21',['PadF',['../classcoco_1_1_pad_f.html',1,'coco']]],
   ['padgraphbuilder_22',['PadGraphBuilder',['../classmoco_1_1_pad_graph_builder.html',1,'moco']]],
   ['padimpl_23',['PadImpl',['../structmir__interpreter_1_1_pad_impl.html',1,'mir_interpreter']]],

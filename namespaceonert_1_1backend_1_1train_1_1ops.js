@@ -4,6 +4,7 @@ var namespaceonert_1_1backend_1_1train_1_1ops =
     [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
     [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
     [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
+    [ "LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer" ],
     [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
     [ "LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer" ],
     [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],

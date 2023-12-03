@@ -7,7 +7,7 @@ var dir_21922cce5cf568cd02691658c598ce24 =
     [ "PALArgMinMax.h", "_p_a_l_arg_min_max_8h.html", "_p_a_l_arg_min_max_8h" ],
     [ "PALAveragePool2DCommon.h", "_p_a_l_average_pool2_d_common_8h.html", "_p_a_l_average_pool2_d_common_8h" ],
     [ "PALBatchToSpaceND.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_batch_to_space_n_d_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_batch_to_space_n_d_8h" ],
-    [ "PALBroadcastTo.h", "_p_a_l_broadcast_to_8h.html", "_p_a_l_broadcast_to_8h" ],
+    [ "PALBroadcastTo.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_broadcast_to_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_broadcast_to_8h" ],
     [ "PALCeil.h", "_p_a_l_ceil_8h.html", "_p_a_l_ceil_8h" ],
     [ "PALComparisons.h", "_p_a_l_comparisons_8h.html", "_p_a_l_comparisons_8h" ],
     [ "PALConcatenation.h", "_p_a_l_concatenation_8h.html", "_p_a_l_concatenation_8h" ],

@@ -277,7 +277,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   27</span> </div>
 <div class="line"><span class="lineno">   28</span>  assert(operation.has_transpose_conv_options());</div>
 <div class="line"><span class="lineno">   29</span> </div>
-<div class="line"><span class="lineno">   30</span>  <span class="keyword">auto</span> tflite_padding = <a class="code hl_function" href="tflchef_2core_2src_2_convert_8cpp.html#aaa38c4bd6e3ddec7d478ae20e0b671cf">as_tflite_padding</a>(operation.transpose_conv_options().padding());</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10">tflite_padding</a> = <a class="code hl_function" href="tflchef_2core_2src_2_convert_8cpp.html#aaa38c4bd6e3ddec7d478ae20e0b671cf">as_tflite_padding</a>(operation.transpose_conv_options().padding());</div>
 <div class="line"><span class="lineno">   31</span> </div>
 <div class="line"><span class="lineno">   32</span>  options_builder.add_padding(tflite_padding);</div>
 <div class="line"><span class="lineno">   33</span> </div>
@@ -293,6 +293,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> options_builder.Finish().Union();</div>
 <div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="anamespaceluci_1_1compute_html_a01e2269d95c82f55a227d9382504be10"><div class="ttname"><a href="namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10">luci::compute::tflite_padding</a></div><div class="ttdeci">tflite::PaddingType tflite_padding(const PaddingType type)</div><div class="ttdef"><b>Definition:</b> <a href="_convert_types_8cpp_source.html#l00037">ConvertTypes.cpp:37</a></div></div>
 <div class="ttc" id="atflchef_2core_2src_2_convert_8cpp_html_a0168eabec6019278c3c1200e5fab2afd"><div class="ttname"><a href="tflchef_2core_2src_2_convert_8cpp.html#a0168eabec6019278c3c1200e5fab2afd">as_tflite_activation</a></div><div class="ttdeci">tflite::ActivationFunctionType as_tflite_activation(const tflchef::Activation &amp;value)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2src_2_convert_8cpp_source.html#l00037">Convert.cpp:37</a></div></div>
 <div class="ttc" id="atflchef_2core_2src_2_convert_8cpp_html_aaa38c4bd6e3ddec7d478ae20e0b671cf"><div class="ttname"><a href="tflchef_2core_2src_2_convert_8cpp.html#aaa38c4bd6e3ddec7d478ae20e0b671cf">as_tflite_padding</a></div><div class="ttdeci">tflite::Padding as_tflite_padding(const tflchef::Padding &amp;value)</div><div class="ttdef"><b>Definition:</b> <a href="tflchef_2core_2src_2_convert_8cpp_source.html#l00022">Convert.cpp:22</a></div></div>
 </div><!-- fragment -->

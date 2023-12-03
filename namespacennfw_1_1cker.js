@@ -222,6 +222,8 @@ var namespacennfw_1_1cker =
     [ "Floor", "namespacennfw_1_1cker.html#aecdf75929b291260f974929f3ca6f6c4", null ],
     [ "FloorDivBroadcast", "namespacennfw_1_1cker.html#a57fa48996f59d40c551d1615cc9f4a78", null ],
     [ "FloorDivElementwise", "namespacennfw_1_1cker.html#a2211b6799b4ad571bc4c513ea4959908", null ],
+    [ "FloorModBroadcast", "namespacennfw_1_1cker.html#aa2ff0a6dcc313c823608f48e61190127", null ],
+    [ "FloorModElementwise", "namespacennfw_1_1cker.html#aded32d45a6af8b875bfdabe3059fe278", null ],
     [ "FullyConnected", "namespacennfw_1_1cker.html#a893434782a43556a99989be14e599d63", null ],
     [ "FullyConnected", "namespacennfw_1_1cker.html#a8c32d26f142b5304fdd43e8d25625ff0", null ],
     [ "FullyConnectedHybrid", "namespacennfw_1_1cker.html#a86c3c8cb5e011dd68e4e3eaaa99d5800", null ],

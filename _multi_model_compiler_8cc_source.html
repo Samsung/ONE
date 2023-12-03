@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('_multi_model_compiler_8cc_source.html'
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="_pass_runner_8h.html">pass/PassRunner.h</a>&quot;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="_unused_operand_elimination_pass_8h.html">pass/UnusedOperandEliminationPass.h</a>&quot;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;../dumper/dot/DotDumper.h&quot;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;../exec/Executors.h&quot;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &quot;../exec/MultiModelExecutors.h&quot;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &quot;../ir/OperationDumper.h&quot;</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &quot;../ir/verifier/Verifier.h&quot;</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
@@ -297,7 +297,7 @@ $(document).ready(function(){initNavTree('_multi_model_compiler_8cc_source.html'
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">  /*************************************************************</span></div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">   *************************************************************/</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::Executors&gt;(std::move(model_edges));</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::MultiModelExecutors&gt;(std::move(model_edges));</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  {</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>

@@ -3,8 +3,10 @@ var nnfw__experimental_8h =
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", "structcustom__kernel__registration__info" ],
+    [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
+    [ "nnfw_loss_info", "nnfw__experimental_8h.html#a880f87813a0082373ae5b64f1b66606a", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
     [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
       [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],
@@ -14,6 +16,11 @@ var nnfw__experimental_8h =
     [ "NNFW_TRAIN_LOSS", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660", [
       [ "NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929", null ],
       [ "NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60", null ]
+    ] ],
+    [ "NNFW_TRAIN_LOSS_REDUCTION", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1", [
+      [ "NNFW_TRAIN_LOSS_REDUCTION_INVALID", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a130fcbb1818c8c3675ecd81db8ba2872", null ],
+      [ "NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17", null ],
+      [ "NNFW_TRAIN_LOSS_REDUCTION_SUM", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df", null ]
     ] ],
     [ "NNFW_TRAIN_OPTIMIZER", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4", [
       [ "NNFW_TRAIN_OPTIMIZER_SGD", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e", null ],

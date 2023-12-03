@@ -887,6 +887,13 @@ var annotated_dup =
       [ "SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", "structlogo_1_1_simplify_domain_conversion_pass" ]
     ] ],
     [ "luci", "namespaceluci.html", [
+      [ "compute", "namespaceluci_1_1compute.html", [
+        [ "DepthwiseConv2D", "classluci_1_1compute_1_1_depthwise_conv2_d.html", "classluci_1_1compute_1_1_depthwise_conv2_d" ],
+        [ "DepthwiseParams", "structluci_1_1compute_1_1_depthwise_params.html", "structluci_1_1compute_1_1_depthwise_params" ],
+        [ "FullyConnected", "classluci_1_1compute_1_1_fully_connected.html", "classluci_1_1compute_1_1_fully_connected" ],
+        [ "FullyConnectedParams", "structluci_1_1compute_1_1_fully_connected_params.html", "structluci_1_1compute_1_1_fully_connected_params" ],
+        [ "PaddingValues", "structluci_1_1compute_1_1_padding_values.html", "structluci_1_1compute_1_1_padding_values" ]
+      ] ],
       [ "pass", "namespaceluci_1_1pass.html", [
         [ "Expression", "structluci_1_1pass_1_1_expression.html", "structluci_1_1pass_1_1_expression" ],
         [ "ExpressionCache", "classluci_1_1pass_1_1_expression_cache.html", "classluci_1_1pass_1_1_expression_cache" ]
@@ -1516,6 +1523,7 @@ var annotated_dup =
         [ "BatchMatMul", "classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html", "classluci__interpreter_1_1kernels_1_1_batch_mat_mul" ],
         [ "BatchToSpaceND", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d.html", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d" ],
         [ "BroadcastableWrapper", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper.html", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper" ],
+        [ "BroadcastTo", "classluci__interpreter_1_1kernels_1_1_broadcast_to.html", "classluci__interpreter_1_1kernels_1_1_broadcast_to" ],
         [ "Cast", "classluci__interpreter_1_1kernels_1_1_cast.html", "classluci__interpreter_1_1kernels_1_1_cast" ],
         [ "ChannelQuantMultipliers", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers" ],
         [ "Concatenation", "classluci__interpreter_1_1kernels_1_1_concatenation.html", "classluci__interpreter_1_1kernels_1_1_concatenation" ],
@@ -3059,6 +3067,7 @@ var annotated_dup =
             [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
             [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
             [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
+            [ "LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer" ],
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
             [ "LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
@@ -3224,7 +3233,6 @@ var annotated_dup =
         [ "Execution", "classonert_1_1exec_1_1_execution.html", "classonert_1_1exec_1_1_execution" ],
         [ "ExecutionObservee", "classonert_1_1exec_1_1_execution_observee.html", "classonert_1_1exec_1_1_execution_observee" ],
         [ "ExecutorBase", "classonert_1_1exec_1_1_executor_base.html", "classonert_1_1exec_1_1_executor_base" ],
-        [ "Executors", "classonert_1_1exec_1_1_executors.html", "classonert_1_1exec_1_1_executors" ],
         [ "FunctionSequence", "classonert_1_1exec_1_1_function_sequence.html", "classonert_1_1exec_1_1_function_sequence" ],
         [ "HookFunction", "classonert_1_1exec_1_1_hook_function.html", "classonert_1_1exec_1_1_hook_function" ],
         [ "IExecutionObserver", "classonert_1_1exec_1_1_i_execution_observer.html", "classonert_1_1exec_1_1_i_execution_observer" ],
@@ -3239,6 +3247,7 @@ var annotated_dup =
         [ "JSON", "classonert_1_1exec_1_1_j_s_o_n.html", "classonert_1_1exec_1_1_j_s_o_n" ],
         [ "LinearExecutor", "classonert_1_1exec_1_1_linear_executor.html", "classonert_1_1exec_1_1_linear_executor" ],
         [ "MinMaxRecorder", "classonert_1_1exec_1_1_min_max_recorder.html", "classonert_1_1exec_1_1_min_max_recorder" ],
+        [ "MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html", "classonert_1_1exec_1_1_multi_model_executors" ],
         [ "NopFunction", "classonert_1_1exec_1_1_nop_function.html", "classonert_1_1exec_1_1_nop_function" ],
         [ "OpMinMaxHash", "structonert_1_1exec_1_1_op_min_max_hash.html", "structonert_1_1exec_1_1_op_min_max_hash" ],
         [ "OutputDesc", "structonert_1_1exec_1_1_output_desc.html", "structonert_1_1exec_1_1_output_desc" ],
@@ -3335,6 +3344,7 @@ var annotated_dup =
             [ "Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax" ],
             [ "UntrainableOperation", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation" ]
           ] ],
+          [ "CategoricalCrossentropyParam", "structonert_1_1ir_1_1train_1_1_categorical_crossentropy_param.html", "structonert_1_1ir_1_1train_1_1_categorical_crossentropy_param" ],
           [ "ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_i_trainable_operation" ],
           [ "LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", "structonert_1_1ir_1_1train_1_1_loss_info" ],
           [ "OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", "structonert_1_1ir_1_1train_1_1_optimizer_info" ],
@@ -4027,9 +4037,10 @@ var annotated_dup =
     [ "NegChefFactory", "struct_neg_chef_factory.html", "struct_neg_chef_factory" ],
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
+    [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

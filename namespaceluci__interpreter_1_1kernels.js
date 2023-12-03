@@ -26,6 +26,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "BatchMatMul", "classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html", "classluci__interpreter_1_1kernels_1_1_batch_mat_mul" ],
     [ "BatchToSpaceND", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d.html", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d" ],
     [ "BroadcastableWrapper", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper.html", "classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper" ],
+    [ "BroadcastTo", "classluci__interpreter_1_1kernels_1_1_broadcast_to.html", "classluci__interpreter_1_1kernels_1_1_broadcast_to" ],
     [ "Cast", "classluci__interpreter_1_1kernels_1_1_cast.html", "classluci__interpreter_1_1kernels_1_1_cast" ],
     [ "ChannelQuantMultipliers", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers.html", "structluci__interpreter_1_1kernels_1_1_channel_quant_multipliers" ],
     [ "Concatenation", "classluci__interpreter_1_1kernels_1_1_concatenation.html", "classluci__interpreter_1_1kernels_1_1_concatenation" ],

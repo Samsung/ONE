@@ -235,7 +235,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Do compilation with the options. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::shared_ptr&lt;CompilerArtifact&gt; Executors as a result of compilation </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::shared_ptr&lt;CompilerArtifact&gt; MultiModelExecutors as a result of compilation </dd></dl>
 
 <p>Implements <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#aac54546d9fe1a04cdddd81eae9426fcf">onert::compiler::ICompiler</a>.</p>
 
@@ -392,7 +392,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  203</span><span class="comment">  /*************************************************************</span></div>
 <div class="line"><span class="lineno">  204</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
 <div class="line"><span class="lineno">  205</span><span class="comment">   *************************************************************/</span></div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::Executors&gt;(std::move(model_edges));</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::MultiModelExecutors&gt;(std::move(model_edges));</div>
 <div class="line"><span class="lineno">  207</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
 <div class="line"><span class="lineno">  208</span>  {</div>
 <div class="line"><span class="lineno">  209</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>

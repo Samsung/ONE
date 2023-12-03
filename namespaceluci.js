@@ -1,5 +1,6 @@
 var namespaceluci =
 [
+    [ "compute", "namespaceluci_1_1compute.html", "namespaceluci_1_1compute" ],
     [ "pass", "namespaceluci_1_1pass.html", "namespaceluci_1_1pass" ],
     [ "sinf", "namespaceluci_1_1sinf.html", "namespaceluci_1_1sinf" ],
     [ "test", "namespaceluci_1_1test.html", "namespaceluci_1_1test" ],

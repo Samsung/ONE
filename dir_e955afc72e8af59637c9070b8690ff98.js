@@ -52,6 +52,7 @@ var dir_e955afc72e8af59637c9070b8690ff98 =
     [ "logo-core", "dir_e10f75ff6f60ef64ea34f56571acc2b7.html", "dir_e10f75ff6f60ef64ea34f56571acc2b7" ],
     [ "logo-ex", "dir_768ad2090da3bb05812a7244afc5e739.html", "dir_768ad2090da3bb05812a7244afc5e739" ],
     [ "luci", "dir_d868bd9b9ef6b656f76179dd48055579.html", "dir_d868bd9b9ef6b656f76179dd48055579" ],
+    [ "luci-compute", "dir_89b722a201aeb3c71a28172b1c5bdc1f.html", "dir_89b722a201aeb3c71a28172b1c5bdc1f" ],
     [ "luci-eval-driver", "dir_fc518504e5f7a66a7495016b5cbf6135.html", "dir_fc518504e5f7a66a7495016b5cbf6135" ],
     [ "luci-interpreter", "dir_e35eadadeb299332bd59a9b672c17e8e.html", "dir_e35eadadeb299332bd59a9b672c17e8e" ],
     [ "luci-pass-value-test", "dir_21c224326b0895319a6f9860d650e428.html", "dir_21c224326b0895319a6f9860d650e428" ],

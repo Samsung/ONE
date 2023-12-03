@@ -1,13 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,360,159,415"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_cast_base.html" title=" " alt="" coords="225,5,405,60"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_dequantize_base.html" title=" " alt="" coords="207,84,424,139"/>
-<area shape="rect" id="node4" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_equal_base.html" title=" " alt="" coords="223,163,408,217"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_greater_base.html" title=" " alt="" coords="217,241,413,296"/>
-<area shape="rect" id="node6" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_greater_equal_base.html" title=" " alt="" coords="216,320,415,375"/>
-<area shape="rect" id="node7" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_less_base.html" title=" " alt="" coords="224,399,407,453"/>
-<area shape="rect" id="node8" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_less_equal_base.html" title=" " alt="" coords="208,477,423,532"/>
-<area shape="rect" id="node9" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_not_equal_base.html" title=" " alt="" coords="212,556,419,611"/>
-<area shape="rect" id="node10" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_quantize_base.html" title=" " alt="" coords="213,635,417,689"/>
-<area shape="rect" id="node11" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_shape_kernel.html" title=" " alt="" coords="217,713,414,768"/>
+<area shape="rect" id="node1" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,5,159,60"/>
 </map>

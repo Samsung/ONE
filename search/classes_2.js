@@ -76,7 +76,7 @@ var searchData=
   ['broadcastablewrapper_73',['BroadcastableWrapper',['../classluci__interpreter_1_1kernels_1_1_broadcastable_wrapper.html',1,'luci_interpreter::kernels']]],
   ['broadcastfunctor_74',['BroadcastFunctor',['../classmoco_1_1tf_1_1_broadcast_functor.html',1,'moco::tf']]],
   ['broadcastop_75',['BroadcastOp',['../classmir_1_1ops_1_1_broadcast_op.html',1,'mir::ops']]],
-  ['broadcastto_76',['BroadcastTo',['../structnnfw_1_1cker_1_1functor_1_1_broadcast_to.html',1,'nnfw::cker::functor::BroadcastTo&lt; Device, T &gt;'],['../classonert_1_1ir_1_1operation_1_1_broadcast_to.html',1,'onert::ir::operation::BroadcastTo']]],
+  ['broadcastto_76',['BroadcastTo',['../classluci__interpreter_1_1kernels_1_1_broadcast_to.html',1,'luci_interpreter::kernels::BroadcastTo'],['../structnnfw_1_1cker_1_1functor_1_1_broadcast_to.html',1,'nnfw::cker::functor::BroadcastTo&lt; Device, T &gt;'],['../classonert_1_1ir_1_1operation_1_1_broadcast_to.html',1,'onert::ir::operation::BroadcastTo']]],
   ['broadcasttochef_77',['BroadcastToChef',['../class_broadcast_to_chef.html',1,'']]],
   ['broadcasttocheffactory_78',['BroadcastToChefFactory',['../struct_broadcast_to_chef_factory.html',1,'']]],
   ['broadcasttolayer_79',['BroadcastToLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_broadcast_to_layer.html',1,'onert::backend::cpu::ops']]],

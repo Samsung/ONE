@@ -8,6 +8,8 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
     [ "FullyConnectedLayer.h", "train_2ops_2_fully_connected_layer_8h.html", "train_2ops_2_fully_connected_layer_8h" ],
     [ "GradientApplier.cc", "_gradient_applier_8cc.html", null ],
     [ "GradientApplier.h", "_gradient_applier_8h.html", "_gradient_applier_8h" ],
+    [ "LossCategoricalCrossentropyLayer.cc", "_loss_categorical_crossentropy_layer_8cc.html", null ],
+    [ "LossCategoricalCrossentropyLayer.h", "_loss_categorical_crossentropy_layer_8h.html", "_loss_categorical_crossentropy_layer_8h" ],
     [ "LossLayer.cc", "_loss_layer_8cc.html", null ],
     [ "LossLayer.h", "_loss_layer_8h.html", "_loss_layer_8h" ],
     [ "LossMeanSquaredErrorLayer.cc", "_loss_mean_squared_error_layer_8cc.html", null ],

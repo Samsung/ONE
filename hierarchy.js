@@ -1350,6 +1350,7 @@ var hierarchy =
     ] ],
     [ "mir_interpreter::CappedReLUImpl< T >", "structmir__interpreter_1_1_capped_re_l_u_impl.html", null ],
     [ "mir_interpreter::CappedReLUImpl< uint8_t >", "structmir__interpreter_1_1_capped_re_l_u_impl_3_01uint8__t_01_4.html", null ],
+    [ "onert::ir::train::CategoricalCrossentropyParam", "structonert_1_1ir_1_1train_1_1_categorical_crossentropy_param.html", null ],
     [ "luci_interpreter::lstm::CellStateInfo", "structluci__interpreter_1_1lstm_1_1_cell_state_info.html", null ],
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::CenterSizeBox", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html", null ],
     [ "CfgRunner.CfgRunner", "class_cfg_runner_1_1_cfg_runner.html", null ],
@@ -1840,6 +1841,7 @@ var hierarchy =
     ] ],
     [ "coco::Dep", "classcoco_1_1_dep.html", null ],
     [ "luci_interpreter::DepthToSpaceParams", "structluci__interpreter_1_1_depth_to_space_params.html", null ],
+    [ "luci::compute::DepthwiseConv2D", "classluci_1_1compute_1_1_depthwise_conv2_d.html", null ],
     [ "mir_interpreter::DepthwiseConv2DImpl< T >", "structmir__interpreter_1_1_depthwise_conv2_d_impl.html", null ],
     [ "mir_interpreter::DepthwiseConv2DImpl< uint8_t >", "structmir__interpreter_1_1_depthwise_conv2_d_impl_3_01uint8__t_01_4.html", null ],
     [ "DepthwiseConv2DLayer", "struct_depthwise_conv2_d_layer.html", null ],
@@ -1854,6 +1856,7 @@ var hierarchy =
     ] ],
     [ "loco::DepthwiseFilterIndex", "classloco_1_1_depthwise_filter_index.html", null ],
     [ "loco::DepthwiseFilterShape", "classloco_1_1_depthwise_filter_shape.html", null ],
+    [ "luci::compute::DepthwiseParams", "structluci_1_1compute_1_1_depthwise_params.html", null ],
     [ "flatbuffers::DetachedBuffer", "classflatbuffers_1_1_detached_buffer.html", null ],
     [ "onert::backend::cpu::ops::DetectionPostProcessLayer::DetectionPostProcessParameters", "structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_detection_post_process_parameters.html", null ],
     [ "onert::backend::trix::DevContext", "classonert_1_1backend_1_1trix_1_1_dev_context.html", null ],
@@ -2117,8 +2120,10 @@ var hierarchy =
     [ "moco::onnx::Frontend", "classmoco_1_1onnx_1_1_frontend.html", null ],
     [ "moco::tf::Frontend", "classmoco_1_1tf_1_1_frontend.html", null ],
     [ "mpqsolver::pattern::FrozenNodes", "structmpqsolver_1_1pattern_1_1_frozen_nodes.html", null ],
+    [ "luci::compute::FullyConnected", "classluci_1_1compute_1_1_fully_connected.html", null ],
     [ "mir_interpreter::FullyConnectedImpl< T >", "structmir__interpreter_1_1_fully_connected_impl.html", null ],
     [ "mir_interpreter::FullyConnectedImpl< uint8_t >", "structmir__interpreter_1_1_fully_connected_impl_3_01uint8__t_01_4.html", null ],
+    [ "luci::compute::FullyConnectedParams", "structluci_1_1compute_1_1_fully_connected_params.html", null ],
     [ "luci_interpreter::FullyConnectedParams", "structluci__interpreter_1_1_fully_connected_params.html", null ],
     [ "luci_interpreter_pal::FullyConnectedParams", "structluci__interpreter__pal_1_1_fully_connected_params.html", null ],
     [ "nnfw::cker::FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", null ],
@@ -2465,7 +2470,7 @@ var hierarchy =
       [ "onert::exec::train::TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html", null ]
     ] ],
     [ "onert::exec::IExecutors", "classonert_1_1exec_1_1_i_executors.html", [
-      [ "onert::exec::Executors", "classonert_1_1exec_1_1_executors.html", null ],
+      [ "onert::exec::MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html", null ],
       [ "onert::exec::SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", null ],
       [ "onert::exec::train::TrainableExecutors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html", null ]
     ] ],
@@ -2857,7 +2862,7 @@ var hierarchy =
           [ "onert::backend::train::Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", null ]
         ] ],
         [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", [
-          [ "onert::exec::Executors::EdgeTensor", "classonert_1_1exec_1_1_executors_1_1_edge_tensor.html", null ]
+          [ "onert::exec::MultiModelExecutors::EdgeTensor", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html", null ]
         ] ],
         [ "onert::backend::builtin::UserTensor", "classonert_1_1backend_1_1builtin_1_1_user_tensor.html", null ],
         [ "onert::backend::train::ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", [
@@ -2907,6 +2912,7 @@ var hierarchy =
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
       [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", [
+        [ "onert::backend::train::ops::LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", null ],
         [ "onert::backend::train::ops::LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", null ]
       ] ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
@@ -3067,6 +3073,7 @@ var hierarchy =
       [ "luci_interpreter::KernelWithParams< Params >", "classluci__interpreter_1_1_kernel_with_params.html", null ],
       [ "luci_interpreter::kernels::Abs", "classluci__interpreter_1_1kernels_1_1_abs.html", null ],
       [ "luci_interpreter::kernels::BatchToSpaceND", "classluci__interpreter_1_1kernels_1_1_batch_to_space_n_d.html", null ],
+      [ "luci_interpreter::kernels::BroadcastTo", "classluci__interpreter_1_1kernels_1_1_broadcast_to.html", null ],
       [ "luci_interpreter::kernels::Cast", "classluci__interpreter_1_1kernels_1_1_cast.html", null ],
       [ "luci_interpreter::kernels::Cos", "classluci__interpreter_1_1kernels_1_1_cos.html", null ],
       [ "luci_interpreter::kernels::Dequantize", "classluci__interpreter_1_1kernels_1_1_dequantize.html", null ],
@@ -3196,6 +3203,7 @@ var hierarchy =
       [ "nnc::cli::BadOption", "classnnc_1_1cli_1_1_bad_option.html", null ]
     ] ],
     [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
+    [ "onert::ir::train::LossInfo::LossParam", "uniononert_1_1ir_1_1train_1_1_loss_info_1_1_loss_param.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
     [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
@@ -3490,12 +3498,13 @@ var hierarchy =
     ] ],
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
+    [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
     [ "nnfw_operand", "structnnfw__operand.html", null ],
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4125,6 +4134,7 @@ var hierarchy =
       [ "SpatialPadding", "struct_spatial_padding.html", null ]
     ] ],
     [ "loco::PaddingND", "classloco_1_1_padding_n_d.html", null ],
+    [ "luci::compute::PaddingValues", "structluci_1_1compute_1_1_padding_values.html", null ],
     [ "luci_interpreter_pal::PaddingValues", "structluci__interpreter__pal_1_1_padding_values.html", null ],
     [ "nnfw::cker::PaddingValues", "structnnfw_1_1cker_1_1_padding_values.html", null ],
     [ "nnfw::ruy::PaddingValues", "structnnfw_1_1ruy_1_1_padding_values.html", null ],
