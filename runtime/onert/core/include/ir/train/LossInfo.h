@@ -48,7 +48,7 @@ struct LossInfo
   } loss_param;
 
   LossInfo()
-    : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid}, loss_param{0, 0.0f}
+    : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid}, loss_param{-1, 0.0f}
   {
   }
 };
