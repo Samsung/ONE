@@ -45,8 +45,8 @@ private:
   void categoricalCrossEntropyGradFloat32();
 
 private:
-  int32_t _axis;
-  float _label_smoothing;
+  int32_t _axis{-1};
+  float _label_smoothing{0.0f};
 };
 
 } // namespace ops
