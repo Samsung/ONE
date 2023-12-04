@@ -15,37 +15,13 @@
  */
 
 #include "helpers/InferenceCandidates.h"
+#include "helpers/Shape.h"
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 
 #include <luci/Service/CircleShapeInference.h>
 
 #include <loco.h>
-
-namespace
-{
-
-bool is_same_shape(luci::CircleNode *node, loco::TensorShape shape)
-{
-  if (node->shape_status() != luci::ShapeStatus::VALID)
-    return false;
-
-  if (node->rank() != shape.rank())
-    return false;
-
-  for (uint32_t i = 0; i < node->rank(); ++i)
-  {
-    if (node->dim(i).known() != shape.dim(i).known())
-      return false;
-
-    if (node->dim(i).value() != shape.dim(i).value())
-      return false;
-  }
-
-  return true;
-}
-
-} // namespace
 
 namespace luci
 {
