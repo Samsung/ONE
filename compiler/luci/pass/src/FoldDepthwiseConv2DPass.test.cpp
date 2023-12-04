@@ -56,6 +56,7 @@ public:
     _dconv->filter(_dconv_filter);
     _dconv->bias(_dconv_bias);
     _dconv->shape({1, 4, 4, 1});
+    _dconv->shape_status(luci::ShapeStatus::VALID);
     _dconv->stride()->h(1);
     _dconv->stride()->w(1);
     _dconv->depthMultiplier(1);
