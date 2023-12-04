@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import h5py as h5
+import numpy as np
+import argparse
+import glob
+import os
+import onelib.utils as oneutils
+
+
+def get_parser():
+    """Create and return given the argument parser"""
+    parser = argparse.ArgumentParser(
+        description='command line tool to convert data files to hdf5 file')
+    parser.add_argument(
+        "-i",
+        "--input_data_format",
+        type=str,
+        help="Input data format of either rawdata or numpy",
+        choices=['rawdata', 'numpy'],
+        required=True)
+    parser.add_argument(
+        "-l",
+        "--data_list",
+        type=str,
+        help=
+        "Path to the text file where lists the absolute paths of data files to be converted.",
+        required=True)
+    parser.add_argument(
+        "-p", "--output_path", type=str, help="Path to the output file.", required=True)
+    return parser
+
+
+def create_hdf5(input_data_format, data_list, output_path):
+    """Create the hdf5 file using one of raw data file and numpy files listed in input_dir"""
+    h5_file = h5.File(output_path, 'w')
+    group = h5_file.create_group("value")
+
+    if input_data_format == 'rawdata':
+        # We assume the raw input data have the correct type/shape for the corresponding model
+        # If this flag is set in the hdf5 file, record-minmax will skip type/shape check
+        group.attrs['rawData'] = '1'
+
+    if not os.path.isfile(data_list):
+        raise FileNotFoundError("No such file. " + data_list)
+
+    num_converted = 0
+
+    # Data list
+    datalist = []
+    with open(data_list, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            if line.strip():
+                filenames = line.rstrip().split(' ')
+                # A single input can indicate multiple files (multi-input)
+                for filename in filenames:
+                    if not os.path.isfile(filename):
+                        raise FileNotFoundError("No such file. " + filename)
+                datalist.append(filenames)
+
+    # Input files
+    for input_files in datalist:
+        sample = group.create_group(str(num_converted))
+        for idx, input_file in enumerate(input_files):
+            if input_data_format == 'rawdata':  # rawdata2hdf5
+                with open(input_file, 'rb') as f:
+                    raw_data = bytearray(f.read())
+                    sample.create_dataset(str(idx), data=raw_data)
+            else:  # numpy2hdf5
+                numpy_data = np.load(input_file)
+                sample.create_dataset(str(idx), data=numpy_data)
+        sample.attrs['desc'] = ','.join(
+            list(map(lambda x: os.path.basename(x), input_files)))
+        num_converted += 1
+
+    h5_file.close()
+
+    if input_data_format == 'rawdata':  # rawdata2hdf5
+        print("Raw data have been packaged to " + output_path)
+    else:  # numpy2hdf5
+        print("Numpy data have been packaged to " + output_path)
+    print("Number of packaged data: " + str(num_converted))
+
+
+def main():
+    # parse arguments
+    parser = get_parser()
+    args = parser.parse_args()
+
+    # Currently, we are only supporting the conversion to the form of hdf5.
+    create_hdf5(args.input_data_format, args.data_list, args.output_path)
+
+
+if __name__ == '__main__':
+    main()
