@@ -25,6 +25,8 @@ namespace luci
 bool is_same_shape(const luci::CircleNode *node, const loco::TensorShape &shape);
 bool is_same_shape(const luci::CircleNode *node, const std::initializer_list<uint32_t> shape);
 
+bool has_dynamic_shape(const loco::Node *node);
+
 } // namespace luci
 
 #endif // __LUCI_PASS_HELPERS_SHAPE_H__

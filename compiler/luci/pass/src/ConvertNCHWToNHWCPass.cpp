@@ -15,7 +15,6 @@
  */
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
-#include "CircleOptimizerUtils.h"
 #include "helpers/Shape.h"
 
 #include <luci/IR/CircleNodes.h>
