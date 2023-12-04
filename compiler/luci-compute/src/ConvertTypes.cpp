@@ -28,7 +28,8 @@ tflite::RuntimeShape tflite_shape(const loco::TensorShape &shape)
   tflite::RuntimeShape runtime_shape(shape.rank());
   for (uint32_t i = 0; i < shape.rank(); ++i)
   {
-    assert(shape.dim(i).known());
+    if (not shape.dim(i).known())
+      throw std::runtime_error("luci-comp tflite_shape shape unknown.");
     runtime_shape.SetDim(i, shape.dim(i).value());
   }
   return runtime_shape;
