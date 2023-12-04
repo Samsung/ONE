@@ -16,6 +16,7 @@
 
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "CircleOptimizerUtils.h"
+#include "helpers/Shape.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -96,22 +97,6 @@ bool is_output(const loco::Node *node)
     return true;
 
   return false;
-}
-
-bool is_same_shape(const luci::CircleNode *node, const std::vector<loco::Dimension> &shape)
-{
-  if (not node)
-    return false;
-
-  if (shape.size() != node->rank())
-    return false;
-
-  for (uint32_t i = 0; i < shape.size(); i++)
-  {
-    if (not(node->dim(i) == shape[i]))
-      return false;
-  }
-  return true;
 }
 
 enum class DataFormat
