@@ -58,6 +58,7 @@ public:
     _fc->weights(_fc_weights);
     _fc->bias(_fc_bias);
     _fc->shape({NUM_UNITS});
+    _fc->shape_status(luci::ShapeStatus::VALID);
     _fc->weights_format(luci::CircleFullyConnected::WeightsFormat::DEFAULT);
     _fc->keep_num_dims(true);
 
