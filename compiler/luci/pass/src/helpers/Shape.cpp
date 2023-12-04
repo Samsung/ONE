@@ -59,4 +59,13 @@ bool is_same_shape(const luci::CircleNode *node, const std::initializer_list<uin
   return true;
 }
 
+bool has_dynamic_shape(const loco::Node *node)
+{
+  const auto circle_node = loco::must_cast<const luci::CircleNode *>(node);
+  for (uint32_t i = 0; i < circle_node->rank(); ++i)
+    if (!circle_node->dim(i).known())
+      return true;
+  return false;
+}
+
 } // namespace luci
