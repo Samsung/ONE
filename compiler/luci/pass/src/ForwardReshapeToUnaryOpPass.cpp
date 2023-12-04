@@ -344,9 +344,11 @@ protected:
 
     assert(reshape_input->rank() > static_cast<uint32_t>(axis_value));
 
-    // axis value for mean should be the same after reshape
-    if (reshape_input->dim(axis_value).value() != reshape->dim(axis_value).value())
-      return false;
+    for (int32_t i = 0; i <= axis_value; ++i)
+    {
+      if (reshape_input->dim(i).value() != reshape->dim(i).value())
+        return false;
+    }
 
     return forward_reshape(reshape, node, axis_value);
   }
