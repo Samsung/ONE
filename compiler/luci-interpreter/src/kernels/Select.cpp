@@ -33,8 +33,6 @@ namespace kernels
 Select::Select(const Tensor *condition, const Tensor *t, const Tensor *e, Tensor *output)
   : Kernel({condition, t, e}, {output})
 {
-  // NOTE _requires_broadcast is for SelectV2
-  _requires_broadcast = false;
   _has_low_rank_input_condition = false;
 }
 
@@ -83,11 +81,6 @@ void Select::evalFloat() const
   {
     tflite::reference_ops::RankOneSelect(condition_shape, condition_data, t_shape, t_data, e_shape,
                                          e_data, output_shape, output_data);
-  }
-  else if (_requires_broadcast)
-  {
-    // TODO support broadcast kernel when upgrade to TF2.10.x or above
-    assert(false);
   }
   else
   {

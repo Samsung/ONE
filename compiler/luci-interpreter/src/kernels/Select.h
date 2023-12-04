@@ -42,8 +42,6 @@ private:
   void evalFloat() const;
 
 private:
-  // for SelectV2
-  bool _requires_broadcast = false;
   // True if input condition is scalar or input condition has rank one and
   // matches the first dimension of other inputs.
   bool _has_low_rank_input_condition = false;
