@@ -7,6 +7,10 @@ from argparser import parse_args
 # You can see arguments' information in argparser.py
 args = parse_args()
 
+if len(args.split) != len(args.length):
+    print(f'length and split should have the same count')
+    exit(1)
+
 ################################################################################
 # Load a dataset of tensorflow
 ################################################################################
@@ -21,6 +25,7 @@ from datasets import DatasetLoader
 from pathlib import Path
 import tensorflow as tf
 import numpy as np
+import re
 
 ds_loader = DatasetLoader()
 
@@ -30,13 +35,11 @@ if args.show_datasets:
     print(f'[{names}]')
     exit(0)
 
-ds_loader.load(args.dataset_name)
-ds_train, ds_test = ds_loader.prefetched_datasets()
-nums_train_ds = ds_loader.get_num_train_examples()
-nums_test_ds = ds_loader.get_num_test_examples()
-print(f'class names       : {ds_loader.class_names()}')
-print(f'train dataset len : {nums_train_ds}')
-print(f'test dataset len  : {nums_test_ds}')
+ds_loader.load(args.dataset_name, args.split, args.model)
+ds_dict = ds_loader.prefetched_dataset()
+ds_info = ds_loader.get_dataset_info()
+print(f'class names[:10]  : {ds_loader.class_names(num=10)}')
+print(f'class length      : {ds_loader.num_classes()}')
 
 ################################################################################
 # Convert tensorlfow dataset to onert format
@@ -46,16 +49,17 @@ prefix_name = f'{args.out_dir}/{args.prefix_name}'
 if args.prefix_name != '':
     prefix_name += '.'
 
-nums_train = args.train_length
-if (nums_train > nums_train_ds):
-    print(
-        f'Oops! The number of data for training in the dataset is less than {nums_train}')
-    exit(1)
+split_length = dict(zip(args.split, args.length))
 
-nums_test = args.test_length
-if (nums_test > nums_test_ds):
-    print(f'Oops! The number of data for test in the dataset is less than {nums_test}')
-    exit(1)
+for key in split_length.keys():
+    if key not in ds_info.keys():
+        print(f'Oops! The given split is not included in {args.dataset_name}')
+        exit(1)
+
+for key in split_length.keys():
+    if ds_info[key] < split_length[key]:
+        print(f'Oops! The number of data in the dataset is less than {v}')
+        exit(1)
 
 
 def _only_image(image, _):
@@ -73,22 +77,29 @@ def _label_to_array(label):
     return tensor
 
 
-file_path_list = [
-    f'{prefix_name}train.input.{nums_train}.bin',
-    f'{prefix_name}test.input.{nums_test}.bin',
-    f'{prefix_name}train.output.{nums_train}.bin',
-    f'{prefix_name}test.output.{nums_test}.bin'
-]
+def _replace_key(key):
+    for ch in ['[', ':', ']']:
+        key = key.replace(ch, '_')
+    return key
 
-ds_list = [
-    ds_train.take(nums_train).map(_only_image),
-    ds_test.take(nums_test).map(_only_image),
-    [_label_to_array(label) for label in ds_train.take(nums_train).map(_only_label)],
-    [_label_to_array(label) for label in ds_test.take(nums_test).map(_only_label)]
-]
 
-for i in range(4):
-    file_path = file_path_list[i]
+file_path_list = []
+for k, v in split_length.items():
+    _k = _replace_key(k)
+    file_path_list.append(f'{prefix_name}{_k}.input.{v}.bin')
+    file_path_list.append(f'{prefix_name}{_k}.output.{v}.bin')
+
+ds_list = []
+for i, v in enumerate(split_length.values()):
+    ds_list.append(ds_dict[i].take(v).map(_only_image)),
+    ds_list.append(
+        [_label_to_array(label) for label in ds_dict[i].take(v).map(_only_label)])
+
+if len(file_path_list) != len(ds_list):
+    print(f'file_path_list and ds_list should have the same length')
+    exit(1)
+
+for i, file_path in enumerate(file_path_list):
     with open(file_path, 'wb') as f:
         ds = ds_list[i]
         for tensor in ds:
