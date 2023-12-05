@@ -1,6 +1,6 @@
 # luci-value-py-test
 
-`luci-value-test` validates luci IR graph model file (.circle)
+`luci-value-py-test` validates luci IR graph model file (.circle)
 
 The test proceeds as follows
 
