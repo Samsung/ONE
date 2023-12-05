@@ -1,0 +1,72 @@
+#
+# Format:
+#   eval(MODEL PASS)
+# MODEL: tflite model file name in build/compiler/common-artifacts folder.
+# PASS: Optimization Pass to test. Supports only one Pass for now.
+#
+
+# eval(Net_Preactivation_BN_000 fuse_preactivation_batchnorm) : value diff exist
+# --> https://github.com/Samsung/ONE/issues/5782
+eval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
+eval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
+eval(Net_Conv_Add_Mul_001 fuse_batchnorm_with_conv)
+eval(Net_Conv_Add_Mul_002 fuse_batchnorm_with_conv)
+eval(Net_Conv_Min_Max_000 transform_min_max_to_relu6)
+eval(Net_Conv_Min_Relu_000 transform_min_relu_to_relu6)
+eval(Net_Conv_Mul_000 fuse_mul_with_conv)
+eval(Net_Conv_Mul_001 fuse_mul_with_conv)
+eval(Net_Conv_Mul_002 fuse_mul_with_conv)
+eval(Net_Conv_Mul_003 fuse_mul_with_conv)
+eval(HardSwish_001 decompose_hardswish)
+eval(Net_Conv_PReluGraph_000 fuse_prelu)
+eval(Net_Conv_Relu6_000 fuse_activation_function)
+eval(Net_Densify_Add_000 fold_densify)
+eval(Net_Dequantize_Add_000 fold_dequantize)
+eval(Net_DwConv_BN_000 fuse_batchnorm_with_dwconv)
+eval(Net_DwConv_BN_001 fuse_batchnorm_with_dwconv)
+eval(Net_FullyConnected_Add_000 fold_fully_connected)
+eval(Net_Horizontal_FullyConnected_Add_000 fuse_horizontal_fc_layers)
+eval(Net_Reshape_Neg_000 forward_reshape_to_unaryop)
+eval(Net_Mul_Add_000 remove_unnecessary_add)
+eval(Net_Mul_Add_001 remove_unnecessary_add)
+eval(Net_Mul_Add_002 remove_unnecessary_add)
+eval(Net_Mul_Add_003 remove_unnecessary_add)
+eval(Net_Reshape_Reshape_000 remove_redundant_reshape)
+eval(Net_Squeeze_Squeeze_000 substitute_squeeze_to_reshape)
+eval(Net_TConv_Add_000 fuse_add_with_tconv)
+eval(Net_TConv_Add_001 fuse_add_with_tconv)
+eval(Net_TConv_Add_002 fuse_add_with_tconv)
+eval(Net_TConv_BN_000 fuse_batchnorm_with_tconv)
+eval(Net_TConv_BN_001 fuse_batchnorm_with_tconv)
+eval(Net_TConv_BN_002 fuse_batchnorm_with_tconv)
+eval(Net_TConv_BN_003 fuse_batchnorm_with_tconv)
+eval(Net_TConv_BN_004 fuse_batchnorm_with_tconv)
+eval(Net_TConv_BN_005 fuse_batchnorm_with_tconv)
+eval(Net_TConv_Slice_000 fuse_slice_with_tconv)
+eval(Net_TConv_Slice_001 fuse_slice_with_tconv)
+eval(Net_TConv_Slice_002 fuse_slice_with_tconv)
+eval(Net_TConv_Slice_003 fuse_slice_with_tconv)
+eval(Net_Trans_Reshape_Trans_000 remove_unnecessary_transpose)
+eval(Net_InstanceNorm_001 fuse_instnorm)
+eval(Net_InstanceNorm_002 fuse_instnorm)
+eval(Net_InstanceNorm_003 fuse_instnorm)
+eval(Net_StridedSlice_StridedSlice_000 remove_unnecessary_strided_slice)
+eval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
+eval(Net_Transpose_Add_000 forward_transpose_op)
+eval(Net_Transpose_Abs_000 forward_transpose_op)
+eval(Softmax_001 decompose_softmax)
+eval(Softmax_002 decompose_softmax)
+eval(UnidirectionalSequenceLSTM_003 unroll_unidirseqlstm)
+eval(UnidirectionalSequenceLSTM_004 unroll_unidirseqlstm)
+
+# test for limited support for FLOAT16
+eval(Net_Dequantize_Add_000 fold_dequantize)
+eval(Net_Densify_Dequantize_Add_000 fold_dequantize fold_densify)
+
+# test SignatureDef, with any optimization
+#eval(SignatureDef_MultiOut_000 fuse_instnorm)
+#eval(SignatureDef_MultiOut_001 fuse_instnorm)
+
+# test for common subexpression elimination
+eval(CSE_Quantize_000 common_subexpression_elimination)
+eval(CSE_Transpose_000 common_subexpression_elimination)
