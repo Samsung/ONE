@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_TRAIN_ITENSOR_REGISTRY_H__
 
 #include "backend/ITensorRegistry.h"
+#include "backend/train/ITrainableTensor.h"
 
 namespace onert
 {
@@ -55,6 +56,13 @@ public:
    * @note  Returned tensor cannot be used longer than dynamic tensor manager
    */
   virtual ITensor *getGradientITensor(const ir::OperandIndex &) = 0;
+
+  /**
+   * @brief Iterate ITrainableTensors with fn
+   * @param fn function to be called with OperandIndex and a pointer to ITrainableTensor
+   */
+  virtual void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, train::ITrainableTensor *)> &) const = 0;
 };
 
 } // namespace train
@@ -100,6 +108,16 @@ public:
   ITensor *getGradientITensor(const ir::OperandIndex &index) override
   {
     return getGradientTensor(index);
+  }
+
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, train::ITrainableTensor *)> &fn)
+    const override
+  {
+    for (const auto &e : _trainable)
+    {
+      fn(e.first, e.second.get());
+    }
   }
 
   IPortableTensor *getPortableTensor(const ir::OperandIndex &index)
