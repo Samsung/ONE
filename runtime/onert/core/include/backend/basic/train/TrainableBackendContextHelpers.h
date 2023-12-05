@@ -43,9 +43,7 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
       return;
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-                                 obj.isConstant()};
-    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerTensorInfo(ind, obj.info(), ir::Layout::NHWC);
   });
 
   // For the executors that does not have fixed linear execution order:
