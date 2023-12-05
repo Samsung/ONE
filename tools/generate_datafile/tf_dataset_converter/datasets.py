@@ -7,15 +7,52 @@ from pathlib import Path
 dataset_root_dir = Path(__file__).parent.absolute() / 'data'
 
 
+class Mnist():
+    def check(dataset_name):
+        supported_dataset_list = ['fashion_mnist']
+        if dataset_name in supported_dataset_list:
+            return
+        print(f'{dataset_name} does not fit Mnist')
+        exit(1)
+
+    def preprocess_input(image, label):
+        """Preprocess input data for Mnist."""
+
+        def _normalize_img(image):
+            """Normalize images: `uint8` -> `float32`."""
+            return tf.cast(image, tf.float32) / 255.
+
+        return _normalize_img(image), label
+
+
+class MobileNetV2():
+    def check(dataset_name):
+        supported_dataset_list = ['imagenet_a']
+        if dataset_name in supported_dataset_list:
+            return
+        print(f'{dataset_name} does not fit MobileNetV2')
+        exit(1)
+
+    def preprocess_input(image, label):
+        """Preprocess input data for MobileNetV2."""
+
+        def _resize_img(image):
+            _image = tf.cast(image, tf.float32) / 255.
+            _image = tf.image.resize_with_crop_or_pad(_image, 224, 224)
+            return _image
+
+        return _resize_img(image), label
+
+
 class DatasetLoader():
     '''
     Loader of tensorflow datasets
     '''
 
-    def load(self, dataset_name):
-        (ds_train, ds_test), ds_info = tfds.load(
+    def load(self, dataset_name, splits, model_name):
+        ds_dict, ds_info = tfds.load(
             dataset_name,
-            split=['train', 'test'],
+            split=splits,
             data_dir=dataset_root_dir,
             shuffle_files=True,
             as_supervised=True,
@@ -23,15 +60,15 @@ class DatasetLoader():
         )
 
         self.ds_info = ds_info
+        self.ds_dict = []
+        if model_name == 'mnist':
+            Mnist.check(dataset_name)
+            self.ds_dict = [data.map(Mnist.preprocess_input) for data in ds_dict]
+        elif model_name == 'mobilenetv2':
+            MobileNetV2.check(dataset_name)
+            self.ds_dict = [data.map(MobileNetV2.preprocess_input) for data in ds_dict]
 
-        def _normalize_img(image, label):
-            """Normalizes images: `uint8` -> `float32`."""
-            return tf.cast(image, tf.float32) / 255., label
-
-        self.ds_train = ds_train.map(_normalize_img)
-        self.ds_test = ds_test.map(_normalize_img)
-
-        for images, labels in self.ds_train:
+        for images, labels in self.ds_dict[0]:
             print(f'Shape of images : {images.shape}')
             print(f'Shape of labels: {labels.shape} {labels.dtype}')
             break
@@ -39,11 +76,11 @@ class DatasetLoader():
     def get_dataset_names(self):
         return tfds.list_builders()
 
-    def class_names(self):
+    def class_names(self, num=10):
         '''
         Get class names
         '''
-        return self.ds_info.features['label'].names
+        return self.ds_info.features['label'].names[:num]
 
     def num_classes(self):
         '''
@@ -51,30 +88,21 @@ class DatasetLoader():
         '''
         return self.ds_info.features['label'].num_classes
 
-    def get_num_train_examples(self):
+    def get_dataset_info(self):
         '''
-        Get examples for training
+        Get examples for each data
         '''
-        return self.ds_info.splits['train'].num_examples
+        dict_num = {}
+        for key in self.ds_info.splits.keys():
+            dict_num[key] = self.ds_info.splits[key].num_examples
+        return dict_num
 
-    def get_num_test_examples(self):
-        '''
-        Get examples for testing
-        '''
-        return self.ds_info.splits['test'].num_examples
-
-    def prefetched_datasets(self):
+    def prefetched_dataset(self):
         '''
         get prefetched datasets for traning.
 
         Return:
            Datasets for training and testing.
         '''
-
-        train_dataset = self.ds_train.cache()
-        train_dataset = train_dataset.shuffle(self.ds_info.splits['train'].num_examples)
-
-        test_dataset = self.ds_train.cache()
-
-        # return train_dataset, test_dataset
-        return self.ds_train.cache(), self.ds_test.cache()
+        ds_dict = [d.cache() for d in self.ds_dict]
+        return ds_dict
