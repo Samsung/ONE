@@ -2,7 +2,7 @@ import re
 
 
 def extract_test_args(s):
-    p = re.compile('eval\((.*)\)')
+    p = re.compile('eval\\((.*)\\)')
     result = p.search(s)
     return result.group(1)
 
