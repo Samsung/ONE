@@ -20,6 +20,8 @@
 #include "../../backend/builtin/Config.h"
 #include "../../backend/builtin/train/TensorRegistry.h"
 
+#include <backend/train/ITensorRegistry.h>
+#include <backend/train/ITrainableTensor.h>
 #include <backend/train/TrainableBackendContext.h>
 
 #include <memory>
@@ -91,6 +93,15 @@ public:
         return tensor;
     }
     return nullptr;
+  }
+
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
+    const
+  {
+    assert(_tensor_regs.size() == 2); // training backend and built-in backcend
+    for (auto &&tensor_reg : _tensor_regs)
+      tensor_reg->iterateTrainableTensors(fn);
   }
 
 private:
