@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_REGISTRY_H__
 
 #include <backend/train/ITensorRegistry.h>
+#include <backend/train/ITrainableTensor.h>
 
 #include "../IOTensor.h"
 #include "../Tensor.h"
@@ -94,6 +95,14 @@ public:
     assert(!getITensor(index)); // For the index, tensor is not registered yet
     _base_reg->setMigrantTensor(index, tensor);
     return true;
+  }
+
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &)
+    const override
+  {
+    // DO NOTHING
+    // Builtin tensor registry does not have trainable tensor.
   }
 
   void setBackPropTensor(const ir::OperandIndex &index, std::unique_ptr<BackPropTensor> tensor)
