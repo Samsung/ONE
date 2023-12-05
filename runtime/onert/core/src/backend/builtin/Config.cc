@@ -27,11 +27,6 @@ std::string Config::ID = "builtin";
 
 bool Config::initialize() { return true; }
 
-ir::Layout Config::supportLayout(const ir::IOperation &, ir::Layout frontend_layout)
-{
-  return frontend_layout;
-}
-
 } // namespace builtin
 } // namespace backend
 } // namespace onert

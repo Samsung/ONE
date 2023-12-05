@@ -116,8 +116,6 @@ void TrainableGraph::verify(void) const
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
 
-void TrainableGraph::setLayout(Layout layout) { _graph.setLayout(layout); }
-
 const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
 {
   // NOTE Virtual inherited objects cannot be static_casted.

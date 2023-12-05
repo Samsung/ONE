@@ -38,9 +38,8 @@ namespace compiler
 class OperationLowerInfo
 {
 public:
-  OperationLowerInfo(const backend::Backend *backend, ir::Layout layout);
+  OperationLowerInfo(const backend::Backend *backend);
   const backend::Backend *backend() const { return _permute_factor.backend(); }
-  ir::Layout layout() const { return _permute_factor.layout(); }
 
 private:
   PermuteFactor _permute_factor;

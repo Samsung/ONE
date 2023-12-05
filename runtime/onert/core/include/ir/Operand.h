@@ -35,8 +35,8 @@ namespace ir
 class Operand
 {
 public:
-  explicit Operand(const Shape &shape, const TypeInfo &type)
-    : _info{shape, type, MemAllocType::STATIC}
+  explicit Operand(const Shape &shape, const TypeInfo &type, Layout layout = Layout::UNKNOWN)
+    : _info{shape, type, layout, MemAllocType::STATIC}
   {
     // DO NOTHING
   }

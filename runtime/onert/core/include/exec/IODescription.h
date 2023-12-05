@@ -34,11 +34,10 @@ struct InputDesc
   const ir::OperandInfo info;
   const void *buffer;
   const size_t size;
-  const ir::Layout layout;
 
   InputDesc(void) = delete;
-  InputDesc(const ir::OperandInfo &info, const void *buffer, const size_t size, ir::Layout layout)
-    : info(info), buffer(buffer), size(size), layout(layout)
+  InputDesc(const ir::OperandInfo &info, const void *buffer, const size_t size)
+    : info(info), buffer(buffer), size(size)
   {
   }
 };
@@ -50,11 +49,10 @@ struct OutputDesc
   ir::OperandInfo info;
   void *buffer;
   const size_t size;
-  const ir::Layout layout;
 
   OutputDesc(void) = delete;
-  OutputDesc(const ir::OperandInfo &info, void *buffer, const size_t size, ir::Layout layout)
-    : info(info), buffer(buffer), size(size), layout(layout)
+  OutputDesc(const ir::OperandInfo &info, void *buffer, const size_t size)
+    : info(info), buffer(buffer), size(size)
   {
   }
 };

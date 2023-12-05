@@ -60,7 +60,7 @@ void ConvolutionLayer::configure(const IPortableTensor *input, const IPortableTe
   _output = output;
 
   // TODO Support not nhwc layer
-  assert(_input->layout() == ir::Layout::NHWC);
+  assert(_input->layout() == ir::Layout::NHWC || _input->layout() == ir::Layout::UNKNOWN);
 
   assert(_activation == ir::Activation::NONE || _activation == ir::Activation::RELU ||
          _activation == ir::Activation::RELU1 || _activation == ir::Activation::RELU6);

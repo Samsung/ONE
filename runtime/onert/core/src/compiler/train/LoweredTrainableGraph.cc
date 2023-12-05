@@ -22,7 +22,6 @@
 #include "../pass/PassRunner.h"
 #include "../pass/PermutationEliminationPass.h"
 #include "../pass/PermutationInsertionPass.h"
-#include "../pass/PermutationOperationPass.h"
 #include "../../backend/builtin/Config.h"
 #include "../../dumper/text/GraphDumper.h"
 #include "../../ir/verifier/Verifier.h"
@@ -100,7 +99,6 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
   compiler::pass::PassRunner{}
     .append(std::make_unique<compiler::pass::ConstantInsertionPass>(*this))
     .append(std::make_unique<compiler::pass::ConstantLoweringPass>(*this))
-    .append(std::make_unique<compiler::pass::PermutationOperationPass>(*this))
     .append(std::make_unique<compiler::pass::PermutationInsertionPass>(*this))
     .run();
 
@@ -143,9 +141,12 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
 
 void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolver)
 {
-  _trainable_graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
-    lower_info().operand.set(index, std::make_unique<OperandLowerInfo>());
-  });
+  _trainable_graph.operands().iterate(
+    [&](const ir::OperandIndex &index, const ir::Operand &operand) {
+      auto operand_li = std::make_unique<OperandLowerInfo>();
+      operand_li->setLayout(operand.info().layout());
+      lower_info().operand.set(index, std::move(operand_li));
+    });
 
   // Set operand lower info using assigned backends to operations
   _trainable_graph.operations().iterate(
@@ -156,29 +157,22 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
         throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
       }
 
-      auto frontend_layout = _trainable_graph.layout();
-
-      // The layout of each backend should be set at another place
-      // TODO Change setting layout of each backend at another place
-      auto backend_layout = backend->config()->supportLayout(op, frontend_layout);
-
       for (auto &&ind : op.getInputs() | ir::Remove::UNDEFINED)
       {
         auto &operand_li = lower_info().operand.at(ind);
-        operand_li.addUsePermuteFactor(PermuteFactor{backend, backend_layout});
+        operand_li.addUsePermuteFactor(PermuteFactor{backend});
       }
       for (auto &&ind : op.getOutputs() | ir::Remove::UNDEFINED)
       {
         auto &operand_li = lower_info().operand.at(ind);
-        operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
+        operand_li.addDefPermuteFactor(PermuteFactor{backend});
       }
-      lower_info().operation.set(
-        op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
+      lower_info().operation.set(op_ind, std::make_unique<compiler::OperationLowerInfo>(backend));
     });
 
   // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
-  auto factor = PermuteFactor{builtin_backend, _trainable_graph.layout()};
+  auto factor = PermuteFactor{builtin_backend};
   for (auto &&index : _trainable_graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);
@@ -234,7 +228,6 @@ void LoweredTrainableGraph::dumpLowerInfo()
         for (auto &&factor : factors)
         {
           str += factor.backend()->config()->id();
-          str += "(" + to_string(factor.layout()) + ")";
           str += " ";
         }
         return "{ " + str + "}";

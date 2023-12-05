@@ -58,6 +58,10 @@ protected:
   using SparseIndexVector = typename LoaderDomain::SparseIndexVector;
 
 protected:
+  // Default layout of circle and tflite
+  static constexpr ir::Layout DEFAULT_LAYOUT = ir::Layout::NHWC;
+
+protected:
   bool isOptionalInputTensor(std::int32_t idx) { return idx == -1; }
   virtual bool allowOptionalInputTensor(BuiltinOperator) = 0;
 
@@ -96,6 +100,10 @@ protected:
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
   flexbuffers::Map getCustomOpAttrMap(const Operator *op);
+  void updateOperandLayout(ir::Layout layout, ir::Operand &operand)
+  {
+    operand.info().layout(layout);
+  }
 
   // Create operands form tflite::Tensor
   ir::OperandIndex loadOperand(const Tensor *tensor, ir::Graph &subg);
@@ -130,6 +138,7 @@ private:
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
+  void loadBatchToSpaceND(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
                             ir::operation::BinaryArithmetic::ArithmeticType op_type);
   void loadComparison(const Operator *op, ir::Graph &subg);
@@ -163,6 +172,7 @@ private:
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
   void loadSoftmax(const Operator *op, ir::Graph &subg);
+  void loadSpaceToBatchND(const Operator *op, ir::Graph &subg);
   void loadSpaceToDepth(const Operator *op, ir::Graph &subg);
   void loadSplit(const Operator *op, ir::Graph &subg);
   void loadSplitV(const Operator *op, ir::Graph &subg);
@@ -653,10 +663,14 @@ void BaseLoader<LoaderDomain>::loadConv2D(const Operator *op, ir::Graph &subg)
 
   const auto conv = loadOperationTo<ir::operation::Conv2D>(op, subg, param);
 
+  // Update input/output layout
+  auto &input_operand = subg.operands().at(conv->getInputs().at(ir::operation::Conv2D::INPUT));
+  auto &output_operand = subg.operands().at(conv->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
+
   // TFLite support old hybrid quantization (float input/output, uint8 kernel)
   // but it interprets weight type as init8 internally
-  const auto &input_operand =
-    subg.operands().at(conv->getInputs().at(ir::operation::Conv2D::INPUT));
   auto &weights_operand = subg.operands().at(conv->getInputs().at(ir::operation::Conv2D::KERNEL));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
       ((weights_operand.typeInfo().type() == ir::DataType::QUANT_UINT8_ASYMM) ||
@@ -680,11 +694,16 @@ void BaseLoader<LoaderDomain>::loadDepthwiseConv2D(const Operator *op, ir::Graph
 
   const auto dconv = loadOperationTo<ir::operation::DepthwiseConv2D>(op, subg, param);
 
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(dconv->getInputs().at(ir::operation::DepthwiseConv2D::INPUT));
+  auto &output_operand = subg.operands().at(dconv->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
+
   // TFLite does not support old hybrid quantization (float input/output, uint8 kernel)
   // for depthwise convolution.
   // But for consistency with Conv2D and FC, we interpret weight type as init8 internally
-  const auto &input_operand =
-    subg.operands().at(dconv->getInputs().at(ir::operation::DepthwiseConv2D::INPUT));
   auto &weights_operand =
     subg.operands().at(dconv->getInputs().at(ir::operation::DepthwiseConv2D::KERNEL));
   if (input_operand.typeInfo().type() == ir::DataType::FLOAT32 &&
@@ -702,7 +721,14 @@ void BaseLoader<LoaderDomain>::loadTransposeConv(const Operator *op, ir::Graph &
   const auto *options = op->builtin_options_as_TransposeConvOptions();
   loadStridesAndPaddings(param, options);
 
-  loadOperationTo<ir::operation::TransposeConv>(op, subg, param);
+  const auto tconv = loadOperationTo<ir::operation::TransposeConv>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(tconv->getInputs().at(ir::operation::TransposeConv::INPUT));
+  auto &output_operand = subg.operands().at(tconv->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -715,7 +741,13 @@ void BaseLoader<LoaderDomain>::loadPool2D(const Operator *op, ir::Graph &subg,
 
   loadPool2DOptions(param, options);
 
-  loadOperationTo<ir::operation::Pool2D>(op, subg, param);
+  const auto pool = loadOperationTo<ir::operation::Pool2D>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand = subg.operands().at(pool->getInputs().at(ir::operation::Pool2D::INPUT));
+  auto &output_operand = subg.operands().at(pool->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -814,7 +846,14 @@ void BaseLoader<LoaderDomain>::loadDepthToSpace(const Operator *op, ir::Graph &s
   const auto *options = op->builtin_options_as_DepthToSpaceOptions();
   param.block_size = options->block_size();
 
-  loadOperationTo<ir::operation::DepthToSpace>(op, subg, param);
+  const auto new_op = loadOperationTo<ir::operation::DepthToSpace>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::DepthToSpace::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -889,7 +928,14 @@ void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph 
   param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
   param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
-  loadOperationTo<ir::operation::ResizeBilinear>(op, subg, param);
+  const auto new_op = loadOperationTo<ir::operation::ResizeBilinear>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::ResizeBilinear::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -898,7 +944,14 @@ void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir:
   ir::operation::ResizeNearestNeighbor::Param param;
   param.align_corners = op->builtin_options_as_ResizeNearestNeighborOptions()->align_corners();
 
-  loadOperationTo<ir::operation::ResizeNearestNeighbor>(op, subg, param);
+  const auto new_op = loadOperationTo<ir::operation::ResizeNearestNeighbor>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::ResizeNearestNeighbor::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -1049,13 +1102,46 @@ void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &su
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBatchToSpaceND(const Operator *op, ir::Graph &subg)
+{
+  const auto new_op = loadOperationTo<ir::operation::BatchToSpaceND>(op, subg);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::BatchToSpaceND::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadSpaceToBatchND(const Operator *op, ir::Graph &subg)
+{
+  const auto new_op = loadOperationTo<ir::operation::SpaceToBatchND>(op, subg);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::SpaceToBatchND::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
 {
   ir::operation::SpaceToDepth::Param param;
   const auto *options = op->builtin_options_as_SpaceToDepthOptions();
   param.block_size = options->block_size();
 
-  loadOperationTo<ir::operation::SpaceToDepth>(op, subg, param);
+  const auto new_op = loadOperationTo<ir::operation::SpaceToDepth>(op, subg, param);
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::SpaceToDepth::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
 }
 
 template <typename LoaderDomain>
@@ -1543,10 +1629,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       loadGather(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:
-      loadOperationTo<ir::operation::SpaceToBatchND>(op, subg);
+      loadSpaceToBatchND(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_BATCH_TO_SPACE_ND:
-      loadOperationTo<ir::operation::BatchToSpaceND>(op, subg);
+      loadBatchToSpaceND(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SUM:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::SUM);

@@ -52,10 +52,8 @@ public:
    * @brief     Register tensor information to allocate on ACL-CL backend
    * @param[in] ind    Operand index
    * @param[in] info   Tensor information
-   * @param[in] layout Tensor data layout
    */
-  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout);
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info);
 
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
@@ -137,13 +135,19 @@ AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::AclTensorBuilder(const ir::O
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
 void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
-  const ir::OperandIndex &ind, const ir::OperandInfo &info, ir::Layout backend_layout)
+  const ir::OperandIndex &ind, const ir::OperandInfo &info)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
 
   _uses_count_map[ind] = _operands.at(ind).getUses().size();
 
+  auto backend_layout = info.layout();
+  // FIXME Set correct layout
+  if (backend_layout == ir::Layout::UNKNOWN)
+  {
+    backend_layout = ir::Layout::NHWC;
+  }
   if (_parent_map.count(ind) == 0)
   {
     // Normal Tensors
@@ -183,7 +187,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
       offset = {offset[0], offset[2], offset[3], offset[1]};
     }
     auto new_shape = permuteShape(shape, frontend_layout, backend_layout);
-    auto oi = ir::OperandInfo::createStaticInfo(new_shape, obj.typeInfo());
+    auto oi = ir::OperandInfo::createStaticInfo(new_shape, obj.typeInfo(), backend_layout);
     _tensor_info_map.emplace(ind, oi);
   }
 }

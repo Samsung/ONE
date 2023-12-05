@@ -210,8 +210,7 @@ KernelGenerator::KernelGenerator(
   const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
   const std::shared_ptr<TensorRegistry> &tensor_reg,
   const std::shared_ptr<tflite::gpu::cl::CreationContext> &creation_context)
-  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()),
-    _operations_ctx(graph.operations()), _current_layout{graph.layout()},
+  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx(graph.operations()),
     _tensor_builder(tensor_builder), _tensor_reg(tensor_reg), _creation_context(creation_context)
 {
 }

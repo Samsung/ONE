@@ -56,8 +56,7 @@ public:
   FunctionMap genKernels() override;
 
 protected:
-  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout) override;
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) override;
 };
 
 } // namespace gpu_cl

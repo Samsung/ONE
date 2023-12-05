@@ -221,6 +221,10 @@ getPool2DGenerator(const onert::ir::operation::Pool2D::PoolType pool_type)
     OperandIndexSequence inputs{init_param.inputs[0]};
     OperandIndexSequence outputs{init_param.outputs[0]};
 
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+
     operation::Pool2D::Param param;
     param.op_type = pool_type;
     if (init_param.input_count == 7) // support implicit padding
@@ -370,7 +374,19 @@ OperationFactory::OperationFactory()
   // Each input should be interpreted as follows:
   //  0 -> Input Tensor Index
   //  1 -> Block size Index
-  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = createSimpleBinaryOp<operation::BatchToSpaceND>;
+  _map[ANEURALNETWORKS_BATCH_TO_SPACE_ND] = [](const OperationFactory::Param &init_param,
+                                               Operands &operands) {
+    assert(init_param.input_count == 2 && init_param.output_count == 1);
+
+    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1]};
+    OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+
+    return new operation::BatchToSpaceND{inputs, outputs};
+  };
 
   _map[ANEURALNETWORKS_DEPTHWISE_CONV_2D] = [](const OperationFactory::Param &init_param,
                                                Operands &operands) {
@@ -383,6 +399,10 @@ OperationFactory::OperationFactory()
     // 2 -> Bias Tensor Index
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
     OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     operation::DepthwiseConv2D::Param param;
     if (init_param.input_count == 8)
@@ -557,6 +577,10 @@ OperationFactory::OperationFactory()
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
     OperandIndexSequence outputs{init_param.outputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     Conv2D::Param param;
     if (init_param.input_count == 7) // support implicit padding
@@ -849,6 +873,10 @@ OperationFactory::OperationFactory()
     //  2 -> Width Index
     OperandIndexSequence inputs{init_param.inputs[0]};
 
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+
     operation::ResizeBilinear::Param param;
     param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
     param.width_out = operands.at(OperandIndex{init_param.inputs[2]}).asScalar<int32_t>();
@@ -870,6 +898,10 @@ OperationFactory::OperationFactory()
     //  1 -> Height Index
     //  2 -> Width Index
     OperandIndexSequence inputs{init_param.inputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     operation::ResizeNearestNeighbor::Param param;
     param.height_out = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<int32_t>();
@@ -934,7 +966,7 @@ OperationFactory::OperationFactory()
     getElementwiseUnaryGenerator(operation::ElementwiseUnary::Type::FLOOR);
 
   _map[ANEURALNETWORKS_SPACE_TO_BATCH_ND] = [](const OperationFactory::Param &init_param,
-                                               Operands &) {
+                                               Operands &operands) {
     assert(init_param.input_count == 3 && init_param.output_count == 1);
 
     OperandIndexSequence outputs{init_param.outputs[0]};
@@ -950,6 +982,10 @@ OperationFactory::OperationFactory()
       inputs.append(OperandIndex{init_param.inputs[n]});
     }
 
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+
     return new operation::SpaceToBatchND{inputs, outputs};
   };
 
@@ -964,6 +1000,10 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Block size Index
     OperandIndexSequence inputs{init_param.inputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     operation::SpaceToDepth::Param param;
     param.block_size = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();
@@ -1051,6 +1091,10 @@ OperationFactory::OperationFactory()
     //  5 -> Stride height
 
     OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
+
+    // Set layout
+    operands.at(inputs.at(2)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     operation::TransposeConv::Param param;
 
@@ -1347,6 +1391,10 @@ OperationFactory::OperationFactory()
     //  0 -> Input Tensor Index
     //  1 -> Block size Index
     OperandIndexSequence inputs{init_param.inputs[0]};
+
+    // Set layout
+    operands.at(inputs.at(0)).info().layout(onert::ir::Layout::NHWC);
+    operands.at(outputs.at(0)).info().layout(onert::ir::Layout::NHWC);
 
     operation::DepthToSpace::Param param;
     param.block_size = operands.at(OperandIndex{init_param.inputs[1]}).asScalar<std::int32_t>();

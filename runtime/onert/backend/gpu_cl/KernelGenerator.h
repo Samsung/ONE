@@ -69,7 +69,6 @@ private:
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
-  ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   std::shared_ptr<tflite::gpu::cl::CreationContext> _creation_context;

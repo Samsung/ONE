@@ -55,7 +55,6 @@ public:
   void visit(const ir::train::operation::Softmax &node) override;
 
 private:
-  ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   const exec::train::optimizer::Optimizer *_optimizer;

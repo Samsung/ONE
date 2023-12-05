@@ -98,7 +98,7 @@ inline nnfw::cker::Shape getShape(const IPortableTensor *tensor)
 
   const ir::Shape &shape = tensor->get_info().shape();
 
-  assert(tensor->layout() == ir::Layout::NHWC);
+  assert(tensor->layout() == ir::Layout::NHWC || tensor->layout() == ir::Layout::UNKNOWN);
 
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
@@ -132,20 +132,13 @@ convertActivationType(const ir::Activation activation)
   }
 }
 
-inline int32_t getAxis(uint32_t rank, int32_t axis, ir::Layout frontend_layout)
+inline int32_t getAxis(uint32_t rank, int32_t axis)
 {
   auto ret = axis;
 
   if (axis < 0)
   {
     ret += rank;
-  }
-
-  // NCHW -> NHWC
-  if (frontend_layout == ir::Layout::NCHW)
-  {
-    int32_t permutation[4] = {0, 3, 1, 2};
-    ret = permutation[ret];
   }
 
   return ret;

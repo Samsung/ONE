@@ -29,8 +29,7 @@ namespace builtin
 // With this as a key function, `dynamic_cast` works across dl
 IOTensor::~IOTensor() {}
 
-IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
+IOTensor::IOTensor(const ir::OperandInfo &info) : IPortableTensor{info}, _orig_info{info}
 {
   setUserTensor(nullptr, 0);
 }
@@ -40,14 +39,14 @@ void IOTensor::setTensor(IPortableTensor *tensor)
   assert(tensor);
   assert(tensor != this);
   // TODO Handle when layout was changed
-  assert(tensor->layout() == _orig_layout); // Changing layout is not considered yet
+  assert(tensor->layout() == _orig_info.layout()); // Changing layout is not considered yet
   _user_tensor.reset();
   _tensor = tensor;
 }
 
 void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
 {
-  _user_tensor = std::make_unique<UserTensor>(_orig_info, _orig_layout, buffer, size);
+  _user_tensor = std::make_unique<UserTensor>(_orig_info, buffer, size);
   _tensor = _user_tensor.get();
 }
 

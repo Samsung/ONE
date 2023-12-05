@@ -48,7 +48,6 @@ private:
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
-  ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<basic::TensorRegistry> _tensor_reg;
   const std::shared_ptr<DevContext> _dev_context;

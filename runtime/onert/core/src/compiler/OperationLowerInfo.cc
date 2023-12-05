@@ -21,8 +21,7 @@ namespace onert
 namespace compiler
 {
 
-OperationLowerInfo::OperationLowerInfo(const backend::Backend *backend, ir::Layout layout)
-  : _permute_factor{backend, layout}
+OperationLowerInfo::OperationLowerInfo(const backend::Backend *backend) : _permute_factor{backend}
 {
   // DO NOTHING
 }

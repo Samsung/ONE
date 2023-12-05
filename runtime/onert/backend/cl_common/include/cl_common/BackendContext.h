@@ -81,7 +81,6 @@ protected:
   void initConsts()
   {
     _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
-      constant_initializer->setLayout(graph()->layout());
       op.accept(*constant_initializer);
     });
 
@@ -98,8 +97,7 @@ protected:
     constant_initializer->run();
   }
 
-  virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                  ir::Layout backend_layout) = 0;
+  virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) = 0;
 
   void planTensors()
   {
@@ -121,10 +119,11 @@ protected:
       if (!tensor_builder->isRegistered(ind))
       {
         // These tensors do not exist in any operation (No use and def)
-        const auto info = obj.info();
-        const auto layout = _data.operand_layouts.at(ind);
+        auto info = obj.info();
+        // TODO Set backend layout
+        info.layout(_data.operand_layouts.at(ind));
         // TODO Change tensor info to have permuted shape
-        registerTensorInfo(ind, info, layout);
+        registerTensorInfo(ind, info);
       }
     });
 

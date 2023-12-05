@@ -96,7 +96,8 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
     if (portable_tensor)
     {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
+      assert(portable_tensor->layout() == ir::Layout::NHWC ||
+             portable_tensor->layout() == ir::Layout::UNKNOWN);
     }
     auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
@@ -111,8 +112,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  const exec::train::optimizer::Optimizer *optimizer)
-  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg},
+  : backend::train::KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg},
     _external_context(external_context), _optimizer{optimizer}, _update_funcs{}
 {
   // DO NOTHING
@@ -145,8 +145,10 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   auto fn = std::make_unique<ops::ConvolutionLayer>();
 
   auto &operands = _tgraph.operands();
-  const auto ifm_shape = operands.at(in_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = operands.at(in_index).shape().asFeature(_current_layout);
+  const auto ifm_shape =
+    operands.at(in_index).shape().asFeature(operands.at(in_index).info().layout());
+  const auto ofm_shape =
+    operands.at(out_index).shape().asFeature(operands.at(out_index).info().layout());
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -289,9 +291,9 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   const auto stride = node.param().stride;
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
-  const auto padding =
-    ir::calculatePadding(node.param().padding, ifm_shape.asFeature(_current_layout),
-                         ofm_shape.asFeature(_current_layout), stride, kw, kh);
+  const auto padding = ir::calculatePadding(
+    node.param().padding, ifm_shape.asFeature(operands.at(input_index).info().layout()),
+    ofm_shape.asFeature(operands.at(output_index).info().layout()), stride, kw, kh);
 
   auto out_tensor = _tensor_reg->getPortableTensor(output_index);
   auto in_tensor = _tensor_reg->getPortableTensor(input_index);

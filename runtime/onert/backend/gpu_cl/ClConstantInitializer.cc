@@ -25,7 +25,7 @@ namespace gpu_cl
 
 ClConstantInitializer::ClConstantInitializer(const ir::Operands &operands,
                                              const std::shared_ptr<ITensorRegistry> &tensor_reg)
-  : _operands{operands}, _tensor_reg{tensor_reg}, _current_layout{ir::Layout::UNKNOWN}
+  : _operands{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }
@@ -85,16 +85,17 @@ void ClConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &i
     return;
 
   const auto type = obj.typeInfo().type();
+  const auto frontend_layout = obj.info().layout();
   using ir::DataType;
   using namespace std::placeholders;
 
   switch (type)
   {
     case DataType::FLOAT32:
-      _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_layout);
+      _init_map[index] = std::bind(permuteInit<float>, _1, _2, frontend_layout);
       break;
     case DataType::INT32:
-      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_layout);
+      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, frontend_layout);
       break;
     default:
       throw std::runtime_error("Not supported, yet");

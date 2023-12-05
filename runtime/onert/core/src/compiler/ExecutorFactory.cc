@@ -119,10 +119,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::builtin::IOTensor>(
-      operand.info(),
-      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
-    );
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
@@ -150,10 +147,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::builtin::IOTensor>(
-      operand.info(),
-      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
-    );
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
@@ -174,9 +168,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   for (auto &&backend : backend_manager.getAll())
   {
     auto &data = context_data_map[backend];
-    auto graph = std::make_unique<ir::Graph>();
-    graph->setLayout(lgraph.graph().layout());
-    data.graph = std::move(graph);
+    data.graph = std::make_unique<ir::Graph>();
   }
 
   auto &whole_graph = lgraph.graph();
@@ -191,7 +183,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     auto &partial_graph = *context_data_map[backend].graph;
     auto &operand_layouts = context_data_map[backend].operand_layouts;
     assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = def_factor.layout();
+    operand_layouts[operand_ind] = operand_li.at(operand_ind).layout();
 
     // Copy the operand and insert it to the partial graph
     auto new_operand = std::make_unique<ir::Operand>(operand);
@@ -227,8 +219,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
 
-          auto layout =
-            lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
+          auto layout = lgraph.lower_info().operand.at(operand_ind).layout();
           assert(operand_layouts.find(operand_ind) == operand_layouts.end());
           operand_layouts[operand_ind] = layout;
           external_operands.add(operand_ind);
@@ -744,10 +735,9 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 
   train::TensorRegistries tensor_regs{tbackend_contexts, true};
 
-  initializeSubgraphIOTensors(
-    *lowered_graph, tbackend_contexts,
-    (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
-      ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+  initializeSubgraphIOTensors(*lowered_graph, tbackend_contexts,
+                              (lowered_graph->graph().getInputs()) | ir::Remove::DUPLICATED |
+                                ir::Remove::UNDEFINED);
 
   // linearize for forwarding
   auto order = Linear::linearize(*lowered_graph);

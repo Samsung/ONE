@@ -42,13 +42,13 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
   /* empty */
 }
 
-void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout layout)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info)
 {
   _tensor_info_map.emplace(ind, info);
 
   // CPU backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
+  const auto layout = info.layout();
+  assert(layout == ir::Layout::NHWC || layout == ir::Layout::UNKNOWN);
   if (info.isDynamic())
   {
     _dynamic_tensor_mgr->buildTensor(ind, info, layout);

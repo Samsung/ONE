@@ -24,5 +24,5 @@
 std::ostream &operator<<(std::ostream &os, const onert::compiler::PermuteFactor &obj)
 {
   assert(obj.backend() && obj.backend()->config());
-  return os << "(" << obj.backend()->config()->id() << "/" << to_string(obj.layout()) << ")";
+  return os << "(" << obj.backend()->config()->id() << ")";
 }

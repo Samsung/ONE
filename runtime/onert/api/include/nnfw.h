@@ -389,7 +389,7 @@ NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number);
 /**
  * @brief Set the layout of an input
  *
- * The input that does not call this has NNFW_LAYOUT_NHWC layout
+ * The input that does not call this has NNFW_LAYOUT_NONE layout
  *
  * @param[in] session session from inference input is to be extracted
  * @param[in] index   index of input to be set (0-indexed)
@@ -402,7 +402,7 @@ NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LA
 /**
  * @brief Set the layout of an output
  *
- * The output that does not call this has NNFW_LAYOUT_NHWC layout
+ * The output that does not call this has NNFW_LAYOUT_NONE layout
  *
  * @param[in] session session from inference output is to be extracted
  * @param[in] index   index of output to be set (0-indexed)

@@ -51,7 +51,7 @@ TensorBuilder::TensorBuilder(const ir::Operands &operands, TensorManager *tensor
 }
 
 void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout backend_layout, TensorType type)
+                                       TensorType type)
 {
   assert(_tensor_mgr->constTensors().size() == 0);
   assert(_tensor_mgr->nonconstTensors().size() == 0);
@@ -61,7 +61,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
   _tensor_info_map.emplace(ind, info);
   _tensor_type_map.emplace(ind, type);
 
-  _tensor_layout_map.insert({ind, backend_layout});
+  _tensor_layout_map.insert({ind, info.layout()});
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)

@@ -88,7 +88,7 @@ public:
 public:
   void forward(const IPortableTensor *in, IPortableTensor *out)
   {
-    assert(in->layout() == ir::Layout::NHWC);
+    assert(in->layout() == ir::Layout::NHWC || in->layout() == ir::Layout::UNKNOWN);
 
     auto out_shape = getShape(out);
     auto out_data = getBuffer<float>(out);
@@ -101,7 +101,8 @@ public:
 
   void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
   {
-    assert(back_prop_out->layout() == ir::Layout::NHWC);
+    assert(back_prop_out->layout() == ir::Layout::NHWC ||
+           back_prop_out->layout() == ir::Layout::UNKNOWN);
 
     // activation bacward
     switch (_activation)

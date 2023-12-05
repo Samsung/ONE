@@ -35,12 +35,12 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
   /* empty */
 }
 
-void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout backend_layout)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info)
 {
   _tensor_info_map.emplace(ind, info);
 
   VERBOSE_F() << "cpucommon REGISTER!! " << ind << std::endl;
+  const auto backend_layout = info.layout();
   if (info.isDynamic())
   {
     _dynamic_tensor_mgr->buildTensor(ind, info, backend_layout);

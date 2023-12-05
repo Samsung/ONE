@@ -227,7 +227,7 @@ template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
 std::unique_ptr<exec::IFunction>
 kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands,
                         const std::shared_ptr<T_TensorBuilder> &tensor_builder,
-                        const std::shared_ptr<T_TensorRegistry> &tensor_reg, ir::Layout layout)
+                        const std::shared_ptr<T_TensorRegistry> &tensor_reg)
 {
   using ir::operation::FullyConnected;
 
@@ -273,8 +273,6 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto input_tensor = tensor_reg->getAclTensor(input_index);
   const auto weight_tensor = tensor_reg->getAclTensor(weight_index);
   const auto bias_tensor = bias_index.undefined() ? nullptr : tensor_reg->getAclTensor(bias_index);
-  const auto frontend_layout = layout;
-  const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
   typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
   if (operands.at(weight_index).isConstant())
@@ -287,7 +285,7 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
     tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
     weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
     output_tensor->handle(), needs_reshape,
-    asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
+    asTensorShape(reshape, ir::Layout::UNKNOWN, ir::Layout::UNKNOWN), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }

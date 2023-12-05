@@ -60,11 +60,12 @@ public:
       if (this->external_operands().contains(ind))
         return;
 
-      const auto frontend_layout = this->graph()->layout();
+      const auto frontend_layout = obj.info().layout();
       const auto backend_layout = this->operand_layouts().at(ind);
       ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                   obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
-      this->tensor_builder->registerTensorInfo(ind, backend_info, backend_layout);
+                                   obj.typeInfo(), backend_layout, obj.info().memAllocType(),
+                                   obj.isConstant()};
+      this->tensor_builder->registerTensorInfo(ind, backend_info);
     });
 
     // TODO Get compiler options from compiler, and use it rather than getting it from Env
@@ -88,10 +89,9 @@ public:
   }
 
 protected:
-  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout) override
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) override
   {
-    this->tensor_builder->registerTensorInfo(ind, info, backend_layout);
+    this->tensor_builder->registerTensorInfo(ind, info);
   }
 
 public:

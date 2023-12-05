@@ -26,10 +26,11 @@ ir::Shape convertShape(const ir::Shape &shape, ir::Layout src_layout, ir::Layout
   if (shape.rank() != 4)
     return shape;
 
-  if (src_layout == dst_layout)
+  if (src_layout == dst_layout || src_layout == ir::Layout::UNKNOWN ||
+      dst_layout == ir::Layout::UNKNOWN)
     return shape;
 
-  if (src_layout == ir::Layout::NCHW && dst_layout == ir::Layout::NHWC)
+  if ((src_layout == ir::Layout::NCHW) && (dst_layout == ir::Layout::NHWC))
   {
     const ir::Shape &src_NCHW = shape;
     ir::Shape dst_NHWC(4);
@@ -41,7 +42,7 @@ ir::Shape convertShape(const ir::Shape &shape, ir::Layout src_layout, ir::Layout
     return dst_NHWC;
   }
 
-  if (src_layout == ir::Layout::NHWC && dst_layout == ir::Layout::NCHW)
+  if ((src_layout == ir::Layout::NHWC) && (dst_layout == ir::Layout::NCHW))
   {
     const ir::Shape &src_NHWC = shape;
     ir::Shape dst_NCHW(4);

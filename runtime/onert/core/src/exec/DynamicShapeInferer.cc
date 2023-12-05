@@ -333,7 +333,9 @@ void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
 
-  ir::Shape output_shape = shape_inference::inferConv2DShape(input_shape, ker_shape, op.param());
+  assert(input->layout() == output->layout());
+  ir::Shape output_shape =
+    shape_inference::inferConv2DShape(input_shape, ker_shape, op.param(), input->layout());
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);

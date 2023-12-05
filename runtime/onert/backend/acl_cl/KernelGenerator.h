@@ -90,7 +90,6 @@ private:
 private:
   const ir::Operands &_ctx;
   const ir::Operations &_operations_ctx;
-  const ir::Layout _current_layout;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> _tensor_reg;
 };

@@ -121,6 +121,8 @@ bool ANeuralNetworksModel::addOperation(ANeuralNetworksOperationType type, uint3
         weights_operand.type(onert::ir::DataType::QUANT_INT8_SYMM);
       }
     }
+
+    // TODO Update operand layout
   }
   catch (const std::exception &e)
   {

@@ -448,8 +448,9 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
   ir::Operand &output = operands.at(output_idx);
 
   // re-sizing output shape
-  ir::Shape new_shape =
-    shape_inference::inferConv2DShape(input.info().shape(), ker.info().shape(), op.param());
+  assert(input.info().layout() == output.info().layout());
+  ir::Shape new_shape = shape_inference::inferConv2DShape(input.info().shape(), ker.info().shape(),
+                                                          op.param(), input.info().layout());
   output.info().shape(new_shape);
 }
 
@@ -822,8 +823,6 @@ void StaticShapeInferer::visit(const ir::operation::Pool2D &op)
 {
   auto &operands = _lowered_subg->graph().operands();
 
-  const auto layout = _lowered_subg->graph().layout();
-
   const auto input_idx{op.getInputs().at(ir::operation::Pool2D::Input::INPUT)};
   const auto &input = operands.at(input_idx);
   if (input.info().shape().rank() != 4)
@@ -834,6 +833,8 @@ void StaticShapeInferer::visit(const ir::operation::Pool2D &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = operands.at(output_idx);
 
+  const auto layout = input.info().layout();
+  assert(layout == output.info().layout());
   ir::Shape new_shape = shape_inference::inferPoolShape(input.info().shape(), op.param(), layout);
   output.info().shape(new_shape);
 }

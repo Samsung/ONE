@@ -176,7 +176,7 @@ public:
   ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout)
     : Tensor(info, layout, nullptr)
   {
-    assert(_layout == ir::Layout::NHWC);
+    assert(_layout == ir::Layout::NHWC || _layout == ir::Layout::UNKNOWN);
     assert(_info.isConstant());
     assert(_info.isDynamic() == false);
   }

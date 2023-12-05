@@ -48,7 +48,8 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                          ir::Layout layout)
 {
-  const auto info = _executors->inputInfo(index);
+  auto info = _executors->inputInfo(index);
+  info.layout(layout);
 
   // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
 
@@ -68,62 +69,69 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
     }
   }
 
-  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
+  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length);
 }
 
 // TODO Remove default parameter
 void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
                          const void *buffer, size_t length, ir::Layout layout)
 {
-  auto info = ir::OperandInfo::createStaticInfo(shape, type);
+  auto info = ir::OperandInfo::createStaticInfo(shape, type, layout);
 
   if (length < info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
 
-  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
+  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length);
 }
 
 // TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length, ir::Layout layout)
 {
-  const auto info = _executors->outputInfo(index);
+  auto info = _executors->outputInfo(index);
+  info.layout(layout);
 
   if (length < info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
 
-  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length, layout);
+  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length);
 }
 
 // TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, const ir::TypeInfo &type,
                           const ir::Shape &shape, void *buffer, size_t length, ir::Layout layout)
 {
-  auto info = ir::OperandInfo::createStaticInfo(shape, type);
+  auto info = ir::OperandInfo::createStaticInfo(shape, type, layout);
 
   if (length < info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
 
-  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length, layout);
+  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length);
 }
 
 void Execution::setInputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
   const auto &input_desc = _io_desc.inputs.at(index.value());
+  auto info = input_desc->info;
+  info.layout(layout);
+
   _io_desc.inputs.at(index.value()) =
-    std::make_unique<InputDesc>(input_desc->info, input_desc->buffer, input_desc->size, layout);
+    std::make_unique<InputDesc>(input_desc->info, input_desc->buffer, input_desc->size);
 }
 
 void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
   const auto &output_desc = _io_desc.outputs.at(index.value());
+  auto info = output_desc->info;
+  info.layout(layout);
+
   _io_desc.outputs.at(index.value()) =
-    std::make_unique<OutputDesc>(output_desc->info, output_desc->buffer, output_desc->size, layout);
+    std::make_unique<OutputDesc>(output_desc->info, output_desc->buffer, output_desc->size);
 }
 
 void Execution::execute()

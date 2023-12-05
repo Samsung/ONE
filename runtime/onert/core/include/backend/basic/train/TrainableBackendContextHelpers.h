@@ -41,11 +41,12 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+    // NOTE Always assume NHWC or UNKNOWN
+    const auto layout = obj.info().layout();
+    assert(layout == ir::Layout::NHWC || layout == ir::Layout::UNKNOWN);
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), layout, obj.info().memAllocType(),
                                  obj.isConstant()};
-    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerTensorInfo(ind, backend_info);
   });
 
   // For the executors that does not have fixed linear execution order:

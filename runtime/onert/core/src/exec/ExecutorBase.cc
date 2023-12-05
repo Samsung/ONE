@@ -170,7 +170,7 @@ void ExecutorBase::execute(const IODescription &desc)
     // set shape of outputDesc to tensor shape since tensor can be dynamic
     const auto output_tensor_shape = _output_tensors[n]->getShape();
     output.info.shape(
-      convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.layout));
+      convertShape(output_tensor_shape, _output_tensors[n]->layout(), output.info.layout()));
   }
 }
 

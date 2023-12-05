@@ -68,8 +68,9 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
       //      There is no way to get the layout info from the backend context for now.
       //      When we support NCHW tensors as well, we also need to change tensor info to be
       //      permuted shape.
-      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC);
-      tensor_builder->registerTensorInfo(ind, info, ir::Layout::NHWC);
+      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC ||
+             ctx.operand_layouts().at(ind) == ir::Layout::UNKNOWN);
+      tensor_builder->registerTensorInfo(ind, info);
     }
   });
 
@@ -199,11 +200,12 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(graph.layout() != ir::Layout::NCHW);
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+    // NOTE Always assume NHWC or UNKNOWN in frontend
+    const auto layout = obj.info().layout();
+    assert(obj.info().layout() == ir::Layout::NHWC || obj.info().layout() == ir::Layout::UNKNOWN);
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), layout, obj.info().memAllocType(),
                                  obj.isConstant()};
-    tensor_builder->registerTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerTensorInfo(ind, backend_info);
   });
 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env

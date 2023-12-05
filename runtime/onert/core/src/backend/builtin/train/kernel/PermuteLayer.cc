@@ -53,7 +53,7 @@ void PermuteLayer::optimize()
 
 void PermuteLayer::forward(bool training)
 {
-  if (training && _ignore_forward_in_training)
+  if (!training || (training && _ignore_forward_in_training))
     return;
 
   builtin::kernel::PermuteLayer::run();

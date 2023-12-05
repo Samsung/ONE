@@ -70,7 +70,7 @@ public:
    * @param[in] layout  Input data's data format
    */
   void setInput(const ir::IOIndex &index, const void *buffer, size_t length,
-                ir::Layout layout = ir::Layout::NHWC);
+                ir::Layout layout = ir::Layout::UNKNOWN);
 
   /**
    * @brief     Set input data's information, especially to specify unknown dimensions on model
@@ -83,7 +83,7 @@ public:
    * @param[in] layout  Input data's data format
    */
   void setInput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
-                const void *buffer, size_t length, ir::Layout layout = ir::Layout::NHWC);
+                const void *buffer, size_t length, ir::Layout layout = ir::Layout::UNKNOWN);
   /**
    * @brief     Set output data's information
    * @param[in] index   Output index
@@ -92,7 +92,7 @@ public:
    * @param[in] layout  Output data's data format
    */
   void setOutput(const ir::IOIndex &index, void *buffer, size_t length,
-                 ir::Layout layout = ir::Layout::NHWC);
+                 ir::Layout layout = ir::Layout::UNKNOWN);
   /**
    * @brief     Set output data's information, especially to specify unknown dimensions on model
    * build time.
@@ -104,7 +104,7 @@ public:
    * @param[in] layout  Output data's data format
    */
   void setOutput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
-                 void *buffer, size_t length, ir::Layout layout = ir::Layout::NHWC);
+                 void *buffer, size_t length, ir::Layout layout = ir::Layout::UNKNOWN);
   /**
    * @brief     Set input data's data format
    * @param[in] index   Input index

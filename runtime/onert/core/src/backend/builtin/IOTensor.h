@@ -41,14 +41,14 @@ namespace builtin
 class IOTensor : public IPortableTensor
 {
 public:
-  IOTensor(const ir::OperandInfo &info, ir::Layout layout);
+  IOTensor(const ir::OperandInfo &info);
   ~IOTensor();
 
 public:
   void setTensor(IPortableTensor *tensor);
   void setUserTensor(uint8_t *buffer, size_t size);
   const ir::OperandInfo &orig_info() const { return _orig_info; }
-  ir::Layout orig_layout() const { return _orig_layout; }
+  ir::Layout orig_layout() const { return _orig_info.layout(); }
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
@@ -84,7 +84,6 @@ public:
 
 private:
   const ir::OperandInfo _orig_info;
-  const ir::Layout _orig_layout;
   bool _is_dynamic{false};
   IPortableTensor *_tensor{nullptr};        //< The actual tensor that is indirected
   std::unique_ptr<UserTensor> _user_tensor; //< If it is a user tensor, it is managed by this object

@@ -36,8 +36,6 @@ public:
 public:
   std::string id() override { return "gpu_cl"; }
   bool initialize() override;
-  ir::Layout supportLayout(const ir::IOperation &node, ir::Layout frontend_layout) override;
-  bool supportPermutation() override { return true; }
   bool supportDynamicTensor() override { return false; }
   bool supportFP16() override { return true; }
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }

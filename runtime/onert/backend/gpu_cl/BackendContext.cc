@@ -33,11 +33,10 @@ namespace backend
 namespace gpu_cl
 {
 
-void BackendContext::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                        ir::Layout backend_layout)
+void BackendContext::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info)
 {
   TensorType type = TensorType::TENSOR_TYPE_VALID;
-  tensor_builder->registerTensorInfo(ind, info, backend_layout, type);
+  tensor_builder->registerTensorInfo(ind, info, type);
 }
 
 ITensorRegistry *BackendContext::genTensors()
@@ -57,15 +56,16 @@ ITensorRegistry *BackendContext::genTensors()
     if (external_operands().contains(ind))
       return;
 
-    const auto frontend_layout = graph()->layout();
+    const auto frontend_layout = obj.info().layout();
     const auto backend_layout = operand_layouts().at(ind);
     ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
-                                 obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
+                                 obj.typeInfo(), backend_layout, obj.info().memAllocType(),
+                                 obj.isConstant()};
     if (obj.isConstant())
     {
       type_map[ind] = TensorType::TENSOR_TYPE_INPUT;
     }
-    tensor_builder->registerTensorInfo(ind, backend_info, backend_layout, type_map[ind]);
+    tensor_builder->registerTensorInfo(ind, backend_info, type_map[ind]);
   });
 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env

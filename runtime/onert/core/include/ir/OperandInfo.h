@@ -63,12 +63,13 @@ public:
    * @brief     Construct a new OperandInfo object
    * @param[in] shape     Tensor shape
    * @param[in] typeInfo  Tensor data type
+   * @param[in] layout    Tensor layout
    * @param[in] alloc_type  When the thesor needs memory allocation
    */
-  OperandInfo(const Shape &shape, const TypeInfo &typeInfo, MemAllocType alloc_type,
+  OperandInfo(const Shape &shape, const TypeInfo &typeInfo, Layout layout, MemAllocType alloc_type,
               bool is_const = false, bool is_variable = false)
-    : _shape(shape), _typeInfo(typeInfo), _alloc_type(alloc_type), _const(is_const),
-      _variable(is_variable)
+    : _shape(shape), _typeInfo(typeInfo), _layout(layout), _alloc_type(alloc_type),
+      _const(is_const), _variable(is_variable)
   {
     // DO NOTHING
   }
@@ -81,9 +82,9 @@ public:
   /**
    * @brief Create a static OperandInfo object
    */
-  static OperandInfo createStaticInfo(const Shape &shape, const TypeInfo &typeInfo)
+  static OperandInfo createStaticInfo(const Shape &shape, const TypeInfo &typeInfo, Layout layout)
   {
-    return OperandInfo(shape, typeInfo, MemAllocType::STATIC);
+    return OperandInfo(shape, typeInfo, layout, MemAllocType::STATIC);
   }
 
 public:
@@ -110,6 +111,15 @@ public:
    * @brief   Set tensor data type
    */
   void type(const DataType type) { _typeInfo.type(type); }
+  /**
+   * @brief   Return tensor data layout
+   * @return  Tensor data layout
+   */
+  Layout layout() const { return _layout; }
+  /**
+   * @brief   Set tensor data layout
+   */
+  void layout(const Layout layout) { _layout = layout; }
   /**
    * @brief   Return size of tensor (bytes)
    * @return  Tensor size
@@ -139,6 +149,7 @@ public:
 private:
   Shape _shape;
   TypeInfo _typeInfo;
+  Layout _layout;
 
   MemAllocType _alloc_type;
   bool _const;

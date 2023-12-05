@@ -84,13 +84,12 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
       auto &operation = _graph.operations().at(use);
       auto op_li = _lowered_graph.lower_info().operation.getRawPtr(use);
       assert(op_li);
-      const auto op_layout = op_li->layout();
       const backend::Backend *backend = op_li->backend();
       assert(backend);
       auto use_node_inputs = operation.getInputs();
       assert(use_node_inputs.contains(index));
 
-      auto new_index = factor_to_index.at({backend, op_layout});
+      auto new_index = factor_to_index.at({backend});
       if (index != new_index)
       {
         // Update from operation
@@ -119,6 +118,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Generate output operand and permute operation
   auto out_operand_index = _graph.addOperand(operand.shape(), operand.typeInfo());
+  _graph.operands().at(out_operand_index).info().layout(operand.info().layout());
   // change model output if operand_index is model output index and the out operand is builtin
   // backend
   auto &model_outputs = _graph.getOutputs();
@@ -136,9 +136,6 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   auto input_factor = operand_li_map.getRawPtr(operand_index)->def_factors().getOnlyElement();
   auto input_backend = input_factor.backend();
   auto output_backend = factor.backend();
-  // NOTE Permute may not have specific layout because the layout of input and output may be
-  // different.
-  const auto permute_node_layout = ir::Layout::UNKNOWN;
   // NOTE If one backend supports several layout, the backend must support Permute operation
   const backend::Backend *permute_node_backend = compiler::BackendManager::get().getBuiltin();
   assert(permute_node_backend->config()->id() == onert::backend::builtin::Config::ID);
@@ -147,12 +144,13 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   {
     permute_node_backend = input_backend;
   }
-  const PermuteFactor permute_node_factor{permute_node_backend, permute_node_layout};
+  const PermuteFactor permute_node_factor{permute_node_backend};
 
   // Update LowerInfo of input operand
   auto operand_lower_info = operand_li_map.getRawPtr(operand_index);
   operand_lower_info->removeUsePermuteFactor(factor);
   operand_lower_info->addUsePermuteFactor(permute_node_factor);
+  const auto layout = operand_lower_info->layout();
 
   // Update LowerInfo of output operand
   auto out_operand_li = std::make_unique<compiler::OperandLowerInfo>();
@@ -162,26 +160,13 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // TODO Change param to permute_node_factor
   out_operand_li->addDefPermuteFactor(factor);
   out_operand_li->addUsePermuteFactor(factor);
+  out_operand_li->setLayout(layout);
   operand_li_map.set(out_operand_index, std::move(out_operand_li));
 
   // Insert permute operation to the graph
-  const auto input_layout = input_factor.layout();
-  const auto output_layout = factor.layout();
   using Permute = ir::operation::Permute;
-  const auto permute_type = [&]() {
-    if (input_layout == ir::Layout::NHWC && output_layout == ir::Layout::NCHW)
-    {
-      return Permute::Type::NHWC_TO_NCHW;
-    }
-    else if (input_layout == ir::Layout::NCHW && output_layout == ir::Layout::NHWC)
-    {
-      return Permute::Type::NCHW_TO_NHWC;
-    }
-    else
-    {
-      return Permute::Type::COPY;
-    }
-  }();
+  const auto permute_type = Permute::Type::COPY;
+  ;
   auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index, permute_type);
 
   auto node_index = _graph.operations().push(std::move(insert_node));
@@ -195,8 +180,8 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // Operation LowerInfo
   {
     auto &operation_li_map = _lowered_graph.lower_info().operation;
-    operation_li_map.set(node_index, std::make_unique<compiler::OperationLowerInfo>(
-                                       permute_node_backend, permute_node_layout));
+    operation_li_map.set(node_index,
+                         std::make_unique<compiler::OperationLowerInfo>(permute_node_backend));
   }
 
   // Update Use/Def info

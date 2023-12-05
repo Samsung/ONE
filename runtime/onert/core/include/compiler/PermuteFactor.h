@@ -24,8 +24,7 @@
 #define __ONERT_COMPILER_OPERAND_PERMUTE_FACTOR_H__
 
 #include <functional>
-
-#include "ir/Layout.h"
+#include <ostream>
 
 namespace onert
 {
@@ -51,15 +50,14 @@ public:
    * @param backend  The backend factor
    * @param layout   The layout factor
    */
-  PermuteFactor(const backend::Backend *backend, ir::Layout layout)
-    : _backend{backend}, _layout{layout}
+  PermuteFactor(const backend::Backend *backend) : _backend{backend}
   {
     // DO NOTHING
   }
   /**
    * @brief Construct PermuteFactor object by copy semantics.
    */
-  PermuteFactor(const PermuteFactor &f) : _backend{f._backend}, _layout{f._layout}
+  PermuteFactor(const PermuteFactor &f) : _backend{f._backend}
   {
     // DO NOTHING
   }
@@ -75,12 +73,6 @@ public:
    * @return Backend factor
    */
   const backend::Backend *backend() const { return _backend; }
-  /**
-   * @brief Get layout
-   *
-   * @return Layout factor
-   */
-  ir::Layout layout() const { return _layout; }
 
 public:
   /**
@@ -88,10 +80,7 @@ public:
    *
    * @return Whether two PermuteFactor are the same
    */
-  bool operator==(const PermuteFactor &other) const
-  {
-    return _backend == other.backend() && _layout == other.layout();
-  }
+  bool operator==(const PermuteFactor &other) const { return _backend == other.backend(); }
   /**
    * @brief operator overloading function for `!=`
    *
@@ -101,7 +90,6 @@ public:
 
 private:
   const backend::Backend *_backend{nullptr};
-  ir::Layout _layout{ir::Layout::UNKNOWN};
 };
 
 } // namespace compiler
@@ -117,9 +105,7 @@ template <> struct hash<onert::compiler::PermuteFactor>
 {
   size_t operator()(const onert::compiler::PermuteFactor &factor) const noexcept
   {
-    hash<const onert::backend::Backend *> b_hash{};
-    hash<onert::ir::Layout> l_hash{};
-    return b_hash(factor.backend()) ^ (l_hash(factor.layout()) << 1);
+    return hash<const onert::backend::Backend *>{}(factor.backend());
   }
 };
 

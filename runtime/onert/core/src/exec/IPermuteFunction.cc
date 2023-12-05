@@ -37,7 +37,7 @@ inline nnfw::cker::Shape getShape(const backend::ITensor *tensor)
 {
   const ir::Shape shape = tensor->getShape();
 
-  assert(tensor->layout() == ir::Layout::NHWC);
+  assert(tensor->layout() == ir::Layout::NHWC || tensor->layout() == ir::Layout::UNKNOWN);
 
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);

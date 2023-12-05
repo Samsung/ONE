@@ -44,10 +44,8 @@ public:
    * @brief     Register tensor information to allocate on CPU backend
    * @param[in] ind    Operand index
    * @param[in] info   Operand information
-   * @param[in] layout Operand data layout
    */
-  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout);
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info);
 
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);

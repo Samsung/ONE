@@ -229,8 +229,7 @@ KernelGenerator::KernelGenerator(
   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
   const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
   const std::shared_ptr<ExternalContext> &external_context)
-  : basic::KernelGeneratorBase{graph},
-    _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},
+  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx{graph.operations()},
     _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
     _external_context(external_context)
 {
@@ -262,7 +261,8 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
     auto portable_tensor = _tensor_reg->getPortableTensor(ind);
     if (portable_tensor)
     {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
+      assert(portable_tensor->layout() == ir::Layout::NHWC ||
+             portable_tensor->layout() == ir::Layout::UNKNOWN);
     }
 
     auto tensor = _tensor_reg->getNativeTensor(ind);
@@ -324,8 +324,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     _return_fn = std::move(fn);
     return;
   }
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_ctx.at(ifm_index).info().layout());
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_ctx.at(ofm_index).info().layout());
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -353,8 +353,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
 
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_ctx.at(ifm_index).info().layout());
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_ctx.at(ofm_index).info().layout());
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -385,7 +385,7 @@ void KernelGenerator::visit(const ir::operation::Concat &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = _ctx.at(ofm_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis);
 
   auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
 
@@ -571,22 +571,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
   auto indices_tensor = _tensor_reg->getPortableTensor(indices_index);
 
-  const auto backend_layout = output_tensor->layout();
-  UNUSED_RELEASE(backend_layout);
-
-  // NOTE The frontend layout and backend layout must be the same for this operation.
-  //      If not the same, we have to add a stage(?) to perform permutation of output tensor. It
-  //      is not not efficient even if it works well. If so, it would be better to set the
-  //      layout of these backend tensors to the same layout.
-  //      There is also one thing we have to think about. This operation depends on the layout of
-  //      a model. For example, if a model in NHWC has this operation as output rank == 4, indices
-  //      rank == 2 and axis == 2, this operation should work as the axis W and C, but the axis W
-  //      and C are not sequential in NCHW. So the backend in NCHW cannot handle this case.
-  assert(backend_layout == input_tensor->layout());
-  assert(backend_layout == indices_tensor->layout());
   const auto &input_shape = _ctx.at(input_index).shape();
-  UNUSED_RELEASE(input_shape);
-  assert(input_shape.rank() < 4 || _current_layout == backend_layout);
 
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (input_shape.rank() + axis_raw) : axis_raw);
@@ -650,7 +635,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
     for (const auto &idx : opSeq)
     {
       const auto &operand = _ctx.at(idx);
-      // TODO make sure using `_current_layout` is correct for custom operations
+      // TODO make sure if Custom op is not related to layout
       types.emplace_back(custom::TypeInfo{operand.shape(), operand.typeInfo().type()});
       auto in_tensor = _tensor_reg->getPortableTensor(idx);
       tensors.emplace_back(in_tensor);
@@ -747,7 +732,7 @@ void KernelGenerator::visit(const ir::operation::Pack &node)
   const auto ofm_index{node.getOutputs().at(0)};
 
   const auto rank = _ctx.at(ofm_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis);
 
   assert(-rank <= axis && axis < rank);
 
@@ -769,7 +754,7 @@ void KernelGenerator::visit(const ir::operation::Unpack &node)
   const auto input_index{node.getInputs().at(0)};
 
   const auto rank = _ctx.at(input_index).shape().rank();
-  const auto axis = ops::getAxis(rank, node.param().axis, _current_layout);
+  const auto axis = ops::getAxis(rank, node.param().axis);
 
   assert(rank == 0 || (-rank <= axis && axis < rank));
 
@@ -1045,8 +1030,8 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(_ctx.at(ifm_index).info().layout());
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(_ctx.at(ofm_index).info().layout());
   const auto padding =
     ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride, kw, kh);
   const auto activation = node.param().activation;

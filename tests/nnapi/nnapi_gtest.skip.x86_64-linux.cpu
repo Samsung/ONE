@@ -1,4 +1,3 @@
-GeneratedTests.abs_
 GeneratedTests.cast_float16_to_float16
 GeneratedTests.cast_float16_to_float32
 GeneratedTests.cast_float16_to_float32_relaxed
@@ -20,9 +19,6 @@ GeneratedTests.dequantize_v1_2_zero_sized_float16
 GeneratedTests.embedding_lookup
 GeneratedTests.embedding_lookup_2d_nnfw
 GeneratedTests.embedding_lookup_4d_nnfw
-GeneratedTests.equal_broadcast_float_nnfw
-GeneratedTests.exp_
-GeneratedTests.floor_
 GeneratedTests.gather_float16
 GeneratedTests.gather_float16_2
 GeneratedTests.gather_float16_3
@@ -41,7 +37,6 @@ GeneratedTests.local_response_norm_float_1
 GeneratedTests.local_response_norm_float_2
 GeneratedTests.local_response_norm_float_3
 GeneratedTests.local_response_norm_float_4
-GeneratedTests.logical_not
 GeneratedTests.lsh_projection
 GeneratedTests.lsh_projection_2
 GeneratedTests.lsh_projection_weights_as_inputs
@@ -55,9 +50,6 @@ GeneratedTests.minimum_int32
 GeneratedTests.minimum_broadcast_quant8
 GeneratedTests.minimum_overflow
 GeneratedTests.minimum_simple_quant8
-GeneratedTests.neg
-GeneratedTests.neg_3D_int_nnfw
-GeneratedTests.neg_4D_int_nnfw
 GeneratedTests.prelu
 GeneratedTests.prelu_broadcast_float_1_nnfw
 GeneratedTests.prelu_broadcast_quant8_1_nnfw
@@ -169,7 +161,6 @@ GeneratedTests.resize_nearest_neighbor_zero_sized_nchw_2
 GeneratedTests.resize_nearest_neighbor_zero_sized_nchw_quant8_2
 GeneratedTests.rnn
 GeneratedTests.rnn_state
-GeneratedTests.rsqrt
 GeneratedTests.select_v1_2_five_dim
 GeneratedTests.select_v1_2_five_dim_quant8
 GeneratedTests.select_v1_2_one_dim_quant8
@@ -179,11 +170,6 @@ GeneratedTests.slice_6
 GeneratedTests.slice_8
 GeneratedTests.slice_zero_sized
 GeneratedTests.slice_zero_sized_quant8
-GeneratedTests.sqrt_
-GeneratedTests.sqrt_1D_float_nnfw
-GeneratedTests.sqrt_2D_float_nnfw
-GeneratedTests.sqrt_3D_float_nnfw
-GeneratedTests.sqrt_4D_float_nnfw
 GeneratedTests.strided_slice_qaunt8_10
 GeneratedTests.strided_slice_qaunt8_11
 GeneratedTests.strided_slice_quant8_1

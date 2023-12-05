@@ -40,10 +40,10 @@ public:
    * @brief     Register tensor information to allocate on ACL-CL backend
    * @param[in] ind    Operand index
    * @param[in] info   Tensor information
-   * @param[in] layout Tensor data layout
+   * @param[in] type   Tensor type
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout, TensorType type);
+                          TensorType type);
 
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);

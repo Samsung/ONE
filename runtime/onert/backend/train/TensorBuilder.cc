@@ -34,14 +34,14 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
   /* empty */
 }
 
-void TensorBuilder::registerTensorInfo(const ir::OperandIndex &index, const ir::OperandInfo &info,
-                                       ir::Layout layout)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &index, const ir::OperandInfo &info)
 {
   _tensor_info_map.emplace(index, info);
   _as_constants[index] = info.isConstant();
 
   // Train backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
+  const auto layout = info.layout();
+  assert(layout == ir::Layout::NHWC || layout == ir::Layout::UNKNOWN);
   assert(!info.isDynamic());
 
   // NOTE For now, whether or not to build operands to trainable tensor depends on whether
@@ -59,12 +59,13 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &index, const ir::
 }
 
 void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
-                                               const ir::OperandInfo &info, ir::Layout layout)
+                                               const ir::OperandInfo &info)
 {
   _backward_tensor_info_map.emplace(index, info);
 
   // Train backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
+  const auto layout = info.layout();
+  assert(layout == ir::Layout::NHWC || layout == ir::Layout::UNKNOWN);
   assert(!info.isDynamic());
 
   // NOTE For now, whether or not to build operands to trainable tensor depends on whether

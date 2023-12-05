@@ -67,10 +67,12 @@ asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, 
                       float beta);
 
 arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank,
-                                       ir::Layout frontend_layout, ir::Layout backend_layout);
+                                       ir::Layout frontend_layout = ir::Layout::UNKNOWN,
+                                       ir::Layout backend_layout = ir::Layout::UNKNOWN);
 
-std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank, ir::Layout frontend_layout,
-                         ir::Layout backend_layout);
+std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank,
+                         ir::Layout frontend_layout = ir::Layout::UNKNOWN,
+                         ir::Layout backend_layout = ir::Layout::UNKNOWN);
 
 std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunction> &&layer);
 

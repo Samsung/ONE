@@ -41,13 +41,14 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands().contains(ind))
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
+    // NOTE Always assume NHWC or UNKNOWN
+    const auto layout = obj.info().layout();
+    assert(obj.info().layout() == ir::Layout::NHWC || obj.info().layout() == ir::Layout::UNKNOWN);
 
     // TODO Different shape of back propagation tensor
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), layout, obj.info().memAllocType(),
                                  obj.isConstant()};
-    tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerBackwardTensorInfo(ind, backend_info);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage

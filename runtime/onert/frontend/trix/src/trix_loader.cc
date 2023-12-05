@@ -214,6 +214,7 @@ void TrixLoader::loadOperands(ir::Graph &subg)
   {
     loadOperandFromOutput(i, subg);
   }
+  // TODO: Set operand layout
 }
 
 std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
@@ -237,8 +238,6 @@ std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
   // Create operations
   loadBulk(*subg);
 
-  // TODO: NHWC only supported at this moment.
-  subg->setLayout(ir::Layout::NHWC);
   subg->verify();
   return subg;
 }

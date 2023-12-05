@@ -113,9 +113,6 @@ private:
       CircleLoader::loadOperation(op, *subg);
     }
 
-    // TODO Remove frontend layout feature
-    subg->setLayout(ir::Layout::NHWC);
-
     subg->verify();
 
     return subg;
@@ -178,6 +175,14 @@ void CircleLoader::loadInstanceNorm(const Operator *op, ir::Graph &subg)
   param.epsilon = options->epsilon() == 0.f ? 1e-5 : options->epsilon();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::InstanceNorm(inputs, outputs, param));
+
+  // Update input/output layout
+  auto &input_operand =
+    subg.operands().at(new_op->getInputs().at(ir::operation::InstanceNorm::INPUT));
+  auto &output_operand = subg.operands().at(new_op->getOutputs().at(0));
+  updateOperandLayout(DEFAULT_LAYOUT, input_operand);
+  updateOperandLayout(DEFAULT_LAYOUT, output_operand);
+
   subg.addOperation(std::move(new_op));
 }
 

@@ -51,7 +51,7 @@ FeatureShape Shape::asFeature(Layout layout) const
   }
   else if (layout == Layout::NCHW)
   {
-    // Feature Map in NHWC layout
+    // Feature Map in NCHW layout
     //  - Dimension(0) -> Batch
     //  - Dimension(1) -> Depth
     //  - Dimension(2) -> Height

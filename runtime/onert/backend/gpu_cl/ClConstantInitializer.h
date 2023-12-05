@@ -116,7 +116,6 @@ public:
   void registerPermuteInitializer(const ir::OperandIndex &index, const ir::Operand &obj);
 
 public:
-  void setLayout(ir::Layout layout) { _current_layout = layout; }
   bool exist(const ir::OperandIndex &ind) { return _init_map.find(ind) != _init_map.end(); }
 
 public:
@@ -128,7 +127,6 @@ protected:
   const ir::Operands &_operands;
   std::shared_ptr<ITensorRegistry> _tensor_reg;
   std::unordered_map<ir::OperandIndex, Initializer> _init_map;
-  ir::Layout _current_layout;
 };
 
 } // namespace gpu_cl
