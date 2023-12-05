@@ -33,6 +33,7 @@ namespace ops
 enum class ElementwiseBinaryType
 {
   kFloorDiv,
+  kFloorMod,
   kLogicalAnd,
   kLogicalOr,
   kMax,
