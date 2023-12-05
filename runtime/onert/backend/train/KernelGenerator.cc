@@ -146,7 +146,7 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 
   auto &operands = _tgraph.operands();
   const auto ifm_shape = operands.at(in_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = operands.at(in_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = operands.at(out_index).shape().asFeature(_current_layout);
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
