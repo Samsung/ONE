@@ -1,0 +1,3 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+usr/include/onert usr/include/
+usr/lib/pkgconfig/nnfw-plugin.pc usr/lib/pkgconfig/
