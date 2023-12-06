@@ -1,6 +1,6 @@
-if(NOT TARGET mio_circle06)
+if(NOT TARGET mio_circle07)
   return()
-endif(NOT TARGET mio_circle06)
+endif(NOT TARGET mio_circle07)
 
 nnas_find_package(HDF5 COMPONENTS STATIC QUIET)
 
@@ -19,8 +19,8 @@ target_include_directories(circle-tensordump PRIVATE ${HDF5_INCLUDE_DIRS})
 target_link_libraries(circle-tensordump PRIVATE ${HDF5_CXX_LIBRARIES})
 target_link_libraries(circle-tensordump PRIVATE arser)
 target_link_libraries(circle-tensordump PRIVATE foder)
-target_link_libraries(circle-tensordump PRIVATE mio_circle06)
-target_link_libraries(circle-tensordump PRIVATE mio_circle06_helper)
+target_link_libraries(circle-tensordump PRIVATE mio_circle07)
+target_link_libraries(circle-tensordump PRIVATE mio_circle07_helper)
 target_link_libraries(circle-tensordump PRIVATE safemain)
 
 install(TARGETS circle-tensordump DESTINATION bin)
