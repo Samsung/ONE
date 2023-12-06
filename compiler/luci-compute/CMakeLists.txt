@@ -24,6 +24,8 @@ if(NOT NEON2SSESource_FOUND)
 endif(NOT NEON2SSESource_FOUND)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 if (NOT LUCI_LIBRARY_TYPE)
   set(LUCI_LIBRARY_TYPE "SHARED")
@@ -39,3 +41,17 @@ target_include_directories(luci_compute SYSTEM PUBLIC "${TensorFlowRuySource_DIR
 target_include_directories(luci_compute SYSTEM PUBLIC "${NEON2SSESource_DIR}")
 target_link_libraries(luci_compute PUBLIC loco)
 install(TARGETS luci_compute DESTINATION lib)
+
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(luci_compute_test ${TESTS})
+target_include_directories(luci_compute_test PRIVATE src)
+target_link_libraries(luci_compute_test luci_compute)
+target_include_directories(luci_compute_test SYSTEM PRIVATE "${TensorFlowSource_DIR}")
+target_include_directories(luci_compute_test SYSTEM PRIVATE "${TensorFlowGEMMLowpSource_DIR}")
+target_include_directories(luci_compute_test SYSTEM PRIVATE "${TensorFlowRuySource_DIR}")
+target_include_directories(luci_compute_test SYSTEM PRIVATE "${NEON2SSESource_DIR}")
