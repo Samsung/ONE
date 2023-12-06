@@ -52,17 +52,17 @@ protected:
 TEST_F(CircleMPQSolverDumpingHooksTest, verifyResultsTest)
 {
   mpqsolver::core::DumpingHooks hooks(_folder);
-  EXPECT_NO_THROW(hooks.on_begin_solver("model_path.circle", 0.0, 1.0));
+  EXPECT_NO_THROW(hooks.onBeginSolver("model_path.circle", 0.0, 1.0));
   std::string errors_path = _folder + "/errors" + ".mpq.txt";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(errors_path));
 
-  hooks.on_begin_iteration();
+  hooks.onBeginIteration();
 
-  EXPECT_NO_THROW(hooks.on_end_iteration(mpqsolver::core::LayerParams(), "uint8", 0.0));
+  EXPECT_NO_THROW(hooks.onEndIteration(mpqsolver::core::LayerParams(), "uint8", 0.0));
   std::string current_mpq_path = _folder + "/Configuration_" + std::to_string(1) + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(current_mpq_path));
 
-  EXPECT_NO_THROW(hooks.on_end_solver(mpqsolver::core::LayerParams(), "uint8", 0.5));
+  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", 0.5));
   std::string final_mpq_path = _folder + "/FinalConfiguration" + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(final_mpq_path));
 }
@@ -70,9 +70,9 @@ TEST_F(CircleMPQSolverDumpingHooksTest, verifyResultsTest)
 TEST_F(CircleMPQSolverDumpingHooksTest, empty_path_NEG)
 {
   mpqsolver::core::DumpingHooks hooks("");
-  EXPECT_ANY_THROW(hooks.on_begin_solver("", -1, -1));
-  hooks.on_begin_iteration();
-  EXPECT_ANY_THROW(hooks.on_quantized(nullptr));
-  EXPECT_ANY_THROW(hooks.on_end_iteration(mpqsolver::core::LayerParams(), "uint8", -1));
-  EXPECT_ANY_THROW(hooks.on_end_solver(mpqsolver::core::LayerParams(), "uint8", -1));
+  EXPECT_ANY_THROW(hooks.onBeginSolver("", -1, -1));
+  hooks.onBeginIteration();
+  EXPECT_ANY_THROW(hooks.onQuantized(nullptr));
+  EXPECT_ANY_THROW(hooks.onEndIteration(mpqsolver::core::LayerParams(), "uint8", -1));
+  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", -1));
 }

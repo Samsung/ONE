@@ -110,7 +110,7 @@ bool Quantizer::quantize(luci::Module *module, const std::string &quant_dtype,
 
   if (_hook)
   {
-    _hook->on_quantized(module);
+    _hook->onQuantized(module);
   }
 
   return true;

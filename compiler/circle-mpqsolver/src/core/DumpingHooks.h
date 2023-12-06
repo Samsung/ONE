@@ -45,30 +45,29 @@ public:
   /**
    * @brief called on successfull quantization
    */
-  virtual void on_quantized(luci::Module *module) const override;
+  virtual void onQuantized(luci::Module *module) const override;
 
   /**
    * @brief called on the start of iterative search
    */
-  virtual void on_begin_solver(const std::string &model_path, float q8error,
-                               float q16error) override;
+  virtual void onBeginSolver(const std::string &model_path, float q8error, float q16error) override;
 
   /**
    * @brief called on the start of current iteration
    */
-  virtual void on_begin_iteration() override;
+  virtual void onBeginIteration() override;
 
   /**
    * @brief called at the end of current iteration
    */
-  virtual void on_end_iteration(const LayerParams &layers, const std::string &def_dtype,
-                                float error) const override;
+  virtual void onEndIteration(const LayerParams &layers, const std::string &def_dtype,
+                              float error) const override;
 
   /**
    * @brief called at the end of iterative search
    */
-  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype,
-                             float qerror) override;
+  virtual void onEndSolver(const LayerParams &layers, const std::string &def_dtype,
+                           float qerror) override;
 
 protected:
   std::string _model_path;

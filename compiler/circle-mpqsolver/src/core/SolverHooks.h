@@ -37,12 +37,12 @@ public:
    * @param q8error error of Q8 quantization
    * @param q16error error of Q16 quantization
    */
-  virtual void on_begin_solver(const std::string &model_path, float q8error, float q16error) = 0;
+  virtual void onBeginSolver(const std::string &model_path, float q8error, float q16error) = 0;
 
   /**
    * @brief called on the start of current iteration
    */
-  virtual void on_begin_iteration() = 0;
+  virtual void onBeginIteration() = 0;
 
   /**
    * @brief called at the end of current iteration
@@ -50,8 +50,8 @@ public:
    * @param def_dtype default quantization dtype
    * @param error error of quantization for current iteration
    */
-  virtual void on_end_iteration(const LayerParams &layers, const std::string &def_dtype,
-                                float error) const = 0;
+  virtual void onEndIteration(const LayerParams &layers, const std::string &def_dtype,
+                              float error) const = 0;
 
   /**
    * @brief called at the end of iterative search
@@ -59,8 +59,8 @@ public:
    * @param def_dtype default quantization dtype
    * @param qerror final error of quantization
    */
-  virtual void on_end_solver(const LayerParams &layers, const std::string &def_dtype,
-                             float qerror) = 0;
+  virtual void onEndSolver(const LayerParams &layers, const std::string &def_dtype,
+                           float qerror) = 0;
 };
 
 } // namespace core

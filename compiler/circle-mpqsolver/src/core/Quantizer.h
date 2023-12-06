@@ -38,7 +38,7 @@ struct QuantizerHook
    * @brief called on successfull quantization
    * @param module quantized module
    */
-  virtual void on_quantized(luci::Module *module) const = 0;
+  virtual void onQuantized(luci::Module *module) const = 0;
 };
 
 class Quantizer
