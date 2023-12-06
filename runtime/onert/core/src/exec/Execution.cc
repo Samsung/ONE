@@ -180,6 +180,12 @@ float Execution::getLoss(const ir::IOIndex &ind)
 
   return execs->getLoss(ind);
 }
+
+void Execution::export_circle(const std::string &path) const
+{
+  auto tr_executors = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  tr_executors->export_circle(path);
+}
 #endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const

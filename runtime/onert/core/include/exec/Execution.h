@@ -158,6 +158,14 @@ public:
    * @return @c float Loss value
    */
   float getLoss(const ir::IOIndex &ind);
+
+  /**
+   * @brief     Export circle
+   * @note      It should be called after training
+   * @param[in] path   Output path
+   * @throw     runtime_error on wrong path or permission denied
+   */
+  void export_circle(const std::string &path) const;
 #endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;
