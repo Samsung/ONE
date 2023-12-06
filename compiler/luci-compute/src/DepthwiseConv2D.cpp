@@ -48,6 +48,9 @@ int32_t compute_output(PaddingType padding, int32_t in_size, int32_t filter_size
 
     case PaddingType::kValid:
       return (in_size + stride - effective_filter_size) / stride;
+
+    default:
+      return -1;
   }
   return -1;
 }
