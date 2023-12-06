@@ -21,6 +21,8 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
+#include <string>
+
 namespace onert
 {
 namespace exec
@@ -79,6 +81,8 @@ public:
   void train(const IODescription &desc, uint32_t training_step);
 
   float getLoss(const ir::IOIndex &index) const;
+
+  void export_circle(const std::string &path) const;
 
 private:
   // TODO Append model index to ModelIndex

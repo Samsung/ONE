@@ -84,6 +84,13 @@ float TrainableExecutors::getLoss(const ir::IOIndex &index) const
   return entryExecutor()->getLoss(index);
 }
 
+void TrainableExecutors::export_circle(const std::string &path) const
+{
+  if (_executors.size() > 1)
+    throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
+  return entryExecutor()->export_circle(path);
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert
