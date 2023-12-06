@@ -35,7 +35,7 @@ ARM32_BUILD_ITEMS+=;luci-interpreter
 ARM32_BUILD_ITEMS+=;tflite2circle
 ARM32_BUILD_ITEMS+=;tflchef;circlechef
 ARM32_BUILD_ITEMS+=;circle2circle;record-minmax;circle-quantizer
-ARM32_BUILD_ITEMS+=;luci-eval-driver;luci-value-test
+ARM32_BUILD_ITEMS+=;luci-eval-driver;luci-value-py-test
 
 ARM32_TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_armv7l-linux.cmake
 
@@ -54,7 +54,7 @@ ARM32_HOST_ITEMS+=;tflchef;circlechef
 ARM32_HOST_ITEMS+=;circle-tensordump
 ARM32_HOST_ITEMS+=;circle2circle
 ARM32_HOST_ITEMS+=;common-artifacts
-ARM32_HOST_ITEMS+=;luci-eval-driver;luci-value-test
+ARM32_HOST_ITEMS+=;luci-eval-driver;luci-value-py-test
 
 
 _EMPTY_:=
@@ -132,6 +132,16 @@ int_test_arm32_host:
 	NNCC_WORKSPACE=$(BUILD_ARM32_HOST) ./nncc test
 
 #
+# prepare python venv in target for testing
+# NOTE sync package versions with compiler/common-artifacts
+#
+int_prep_venv_arm32:
+	python3 -m venv $(BUILD_ARM32_FOLDER)/overlay/venv_2_12_1
+	$(BUILD_ARM32_FOLDER)/overlay/venv_2_12_1/bin/python3 -m pip install --upgrade pip setuptools
+	$(BUILD_ARM32_FOLDER)/overlay/venv_2_12_1/bin/python3 -m pip install --upgrade tensorflow==2.12.1 \
+		flatbuffers==23.5.26 protobuf==4.23.3 pydot==1.4.2 pytest==7.4.3
+
+#
 # tests: run in ARM32 Ubuntu 18.04 device
 #
 int_test:
@@ -147,6 +157,9 @@ debug: int_build_arm32
 
 # NOTE before run test in ARM32, run test in host is required to prepare test data
 test_prep: int_test_arm32_host
+
+# NOTE before run test in ARM32, prepare python venv in ARM32
+test_venv: int_prep_venv_arm32
 
 # NOTE run test in ARM32 Ubuntu 18.04 device
 test: int_test
