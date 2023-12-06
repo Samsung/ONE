@@ -80,6 +80,10 @@ public:
 
   float getLoss(const ir::IOIndex &index) const;
 
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)>
+      &fn) const;
+
 private:
   // TODO Append model index to ModelIndex
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;

@@ -84,6 +84,10 @@ public:
 
   float getLoss(const ir::IOIndex &pred_io_ind) const;
 
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)>
+      &fn) const;
+
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
