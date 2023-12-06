@@ -83,6 +83,7 @@ public:
   }
 
   float getLoss(const ir::IOIndex &pred_io_ind) const;
+  void export_circle(const std::string &path) const;
 
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 

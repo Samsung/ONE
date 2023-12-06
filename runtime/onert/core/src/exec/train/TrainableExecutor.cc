@@ -207,6 +207,11 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
   return static_cast<float>(sum);
 }
 
+void TrainableExecutor::export_circle(const std::string &path) const
+{
+  (void)path;
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert
