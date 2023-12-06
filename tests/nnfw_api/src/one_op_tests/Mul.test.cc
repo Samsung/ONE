@@ -82,6 +82,23 @@ TEST_F(GenModelTest, OneOp_MulBroadcast_Int8_VarVar)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_MulBroadcast_Bool_VarVar)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_BOOL});
+  int rhs = cgen.addTensor({{1, 1, 2, 1}, circle::TensorType::TensorType_BOOL});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_BOOL});
+  cgen.addOperatorMul({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<uint8_t>({{true, false, false, true}, {true, false}},
+                                            {{true, false, false, false}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_Mul_InvalidType)
 {
   CircleGen cgen;
@@ -140,6 +157,22 @@ TEST_F(GenModelTest, neg_OneOp_Mul_ThreeOperands)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Mul_Invalid_Broadcast_Bool)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int rhs = cgen.addTensor({{1, 1, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorMul({{lhs, rhs}, {out}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs, rhs}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailCompile();
 
   SUCCEED();
 }

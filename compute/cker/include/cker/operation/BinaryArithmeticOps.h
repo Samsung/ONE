@@ -221,11 +221,11 @@ BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_sh
 template <BinaryArithmeticOpType op_type, typename T>
 inline typename std::enable_if_t<!is_quant8<T>::value && std::is_same<T, bool>::value>
 BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
-                   const bool *input1_data, const Shape &input2_shape, const bool *input2_data,
-                   const Shape &output_shape, bool *output_data)
+                   const T *input1_data, const Shape &input2_shape, const T *input2_data,
+                   const Shape &output_shape, T *output_data)
 {
   reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,
-                                output_shape, output_data, GetBinaryArtithmeticFn<op_type, bool>());
+                                output_shape, output_data, GetBinaryArtithmeticFn<op_type, T>());
 }
 
 template <BinaryArithmeticOpType op_type, typename T>
