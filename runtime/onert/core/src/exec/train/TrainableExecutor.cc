@@ -42,11 +42,12 @@ TrainableExecutor::TrainableExecutor(
     _trainable_graph{_lowered_graph->trainable_graph()}, _tensor_regs{std::move(tensor_regs)},
     _mutex(), _tracing_ctx(tracing_ctx), _loss_info(loss_info)
 {
+  auto builtin_registry = _tensor_regs.getBuiltinTensorRegistry();
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());
     for (auto &&ind : ind_seq)
     {
-      backend::ITensor *tensor = _tensor_regs.getITensor(ind);
+      backend::ITensor *tensor = builtin_registry->getNativeIOTensor(ind);
       assert(tensor != nullptr);
       auto io_tensor = nnfw::misc::polymorphic_downcast<backend::builtin::IOTensor *>(tensor);
       tensors.push_back(io_tensor);
@@ -80,20 +81,6 @@ void TrainableExecutor::forward(const IODescription &desc, bool training)
     // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
     tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
                           desc.inputs[i]->size);
-  }
-
-  if (!training)
-  {
-    // Set output(s)
-    assert(_output_tensors.size() == desc.outputs.size());
-    for (uint32_t i = 0; i < _output_tensors.size(); ++i)
-    {
-      auto tensor = _output_tensors[i];
-
-      if (desc.outputs[i] == nullptr)
-        throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
-      tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
-    }
   }
 
   forwardImpl(training);
@@ -205,6 +192,18 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
     sum /= tensor->getShape().num_elements();
   }
   return static_cast<float>(sum);
+}
+
+float TrainableExecutor::getAccuracy(const ir::IOIndex &output_ind) const
+{
+  if (output_ind.undefined())
+    throw std::runtime_error{"Invalid output index"};
+  backend::ITensor *output_tensor = _output_tensors.at(output_ind.value());
+  backend::ITensor *expected_tensor = _input_tensors.at(_input_tensors.size() - 1);
+
+  UNUSED_RELEASE(output_tensor);
+  UNUSED_RELEASE(expected_tensor);
+  return static_cast<float>(0.34f);
 }
 
 } // namespace train

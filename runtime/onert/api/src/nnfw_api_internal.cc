@@ -1435,6 +1435,41 @@ NNFW_STATUS nnfw_session::train_get_loss(uint32_t index, float *loss)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_get_accuracy(uint32_t index, float *accuracy)
+{
+  if (accuracy == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_get_accuracy : accuracy is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStateFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_get_accuracy : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (index >= getOutputSize())
+  {
+    std::cerr << "Error during nnfw_session::train_get_accuracy : index is out of range"
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  try
+  {
+    auto ind = onert::ir::IOIndex(index);
+    *accuracy = _execution->getAccuracy(ind);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_get_accuracy : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_export_circle(const char *path)
 {
   if (path == nullptr)

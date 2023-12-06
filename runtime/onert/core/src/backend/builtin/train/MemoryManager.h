@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
-#define __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_MEMORY_MANAGER_H__
+#define __ONERT_BACKEND_BUILTIN_TRAIN_MEMORY_MANAGER_H__
 
-#include <backend/basic/train/TrainableTensor.h>
+#include <backend/basic/MemoryManager.h>
 
 namespace onert
 {
@@ -28,30 +28,11 @@ namespace builtin
 namespace train
 {
 
-// NOTE This class can be replaced with basic::Tensor if this backend supports dynamic tensors.
-class Tensor : public basic::Tensor
-{
-public:
-  Tensor() = delete;
-
-public:
-  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
-    : basic::Tensor{info, layout, nullptr}
-  {
-    // DO NOTHING
-  }
-
-public:
-  bool applyShape(const ir::Shape &) override { return false; }
-};
-
-using TrainableTensor = basic::train::TrainableTensor;
-using BackPropTensor = basic::Tensor;
-using GradientTensor = basic::Tensor;
+using MemoryManager = backend::basic::MemoryManager;
 
 } // namespace train
 } // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_TRAIN_MEMORY_MANAGER_H__

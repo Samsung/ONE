@@ -217,12 +217,16 @@ int main(const int argc, char **argv)
     }
 
     std::vector<float> losses(num_expecteds);
+    std::vector<float> accuracy(num_expecteds);
     measure.run(PhaseType::EXECUTE, [&]() {
       const int num_step = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_step);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
+        //
+        // TRAINING
+        //
         std::fill(losses.begin(), losses.end(), 0);
         for (uint32_t n = 0; n < num_step; ++n)
         {
@@ -266,7 +270,61 @@ int main(const int argc, char **argv)
         {
           std::cout << "[" << i << "] " << losses[i] / num_step;
         }
-        std::cout /* << "- accuracy: " << accuracy*/ << std::endl;
+
+        //
+        // VALIDATION
+        //
+        std::fill(losses.begin(), losses.end(), 0);
+        std::fill(accuracy.begin(), accuracy.end(), 0);
+        const int num_valid_step = data_length / tri.batch_size;
+        for (uint32_t n = 0; n < num_valid_step; ++n)
+        {
+          // get batchsize validation data
+          if (!generator(n, input_data, expected_data))
+            break;
+
+          // prepare input
+          for (uint32_t i = 0; i < num_inputs; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+          }
+
+          // prepare output
+          for (uint32_t i = 0; i < num_expecteds; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+          }
+
+          // validation
+          NNPR_ENSURE_STATUS(nnfw_train(session, false));
+
+          // get validation loss and accuracy
+          for (int32_t i = 0; i < num_expecteds; ++i)
+          {
+            float temp = 0.f;
+            NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
+            losses[i] += temp;
+            NNPR_ENSURE_STATUS(nnfw_train_get_accuracy(session, i, &temp));
+            accuracy[i] += temp;
+          }
+        }
+
+        // print validation loss and accuracy
+        std::cout << std::fixed;
+        std::cout.precision(4);
+        std::cout << " - val_loss: ";
+        for (uint32_t i = 0; i < num_expecteds; ++i)
+        {
+          std::cout << "[" << i << "] " << losses[i] / num_valid_step;
+        }
+        std::cout << " - val_accuracy: ";
+        for (uint32_t i = 0; i < num_expecteds; ++i)
+        {
+          std::cout << "[" << i << "] " << accuracy[i] / num_valid_step;
+        }
+        std::cout << std::endl;
       }
     });
 

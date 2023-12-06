@@ -158,6 +158,14 @@ public:
    * @return @c float Loss value
    */
   float getLoss(const ir::IOIndex &ind);
+
+  /**
+   * @brief     Get accuracy
+   * @note      It should be called after training
+   * @param[in] ind   Output index
+   * @return @c float Accuracy value
+   */
+  float getAccuracy(const ir::IOIndex &ind);
 #endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;

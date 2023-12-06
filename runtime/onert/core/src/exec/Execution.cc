@@ -180,6 +180,17 @@ float Execution::getLoss(const ir::IOIndex &ind)
 
   return execs->getLoss(ind);
 }
+
+float Execution::getAccuracy(const ir::IOIndex &ind)
+{
+  auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutors"};
+  }
+
+  return execs->getAccuracy(ind);
+}
 #endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const

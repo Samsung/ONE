@@ -436,6 +436,12 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
   return session->train_get_loss(index, loss);
 }
 
+NNFW_STATUS nnfw_train_get_accuracy(nnfw_session *session, uint32_t index, float *accuracy)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_get_accuracy(index, accuracy);
+}
+
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);

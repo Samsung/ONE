@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
-#define __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
+#ifndef __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_MANAGER_H__
+#define __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_MANAGER_H__
 
-#include <backend/basic/train/TrainableTensor.h>
+#include "MemoryManager.h"
+#include "TensorRegistry.h"
+
+#include <ir/OperandIndexMap.h>
+#include <ir/OperandInfo.h>
 
 namespace onert
 {
@@ -28,30 +32,26 @@ namespace builtin
 namespace train
 {
 
-// NOTE This class can be replaced with basic::Tensor if this backend supports dynamic tensors.
-class Tensor : public basic::Tensor
+class TensorManager
 {
 public:
-  Tensor() = delete;
+  TensorManager(const std::shared_ptr<TensorRegistry> &reg);
+  virtual ~TensorManager() = default;
 
-public:
-  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
-    : basic::Tensor{info, layout, nullptr}
-  {
-    // DO NOTHING
-  }
+  void allocateNonConstTensors();
+  // TODO Add member functions to deallocate tensors
 
-public:
-  bool applyShape(const ir::Shape &) override { return false; }
+  void claimNonConstPlan(const ir::OperandIndex &ind);
+  void releaseNonConstPlan(const ir::OperandIndex &ind);
+
+private:
+  std::unique_ptr<MemoryManager> _nonconst_mgr;
+  const std::shared_ptr<BaseTensorRegistry> _tensors;
 };
-
-using TrainableTensor = basic::train::TrainableTensor;
-using BackPropTensor = basic::Tensor;
-using GradientTensor = basic::Tensor;
 
 } // namespace train
 } // namespace builtin
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__
+#endif // __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_MANAGER_H__
