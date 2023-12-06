@@ -117,8 +117,7 @@ CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
   auto outputs = _builder.CreateVector(gd._outputs);
   auto operators = _builder.CreateVector(gd._operators);
   auto name = _builder.CreateString(gd._name);
-  auto df = gd._data_format;
-  auto subgraph = CreateSubGraph(_builder, tensors, inputs, outputs, operators, name, df);
+  auto subgraph = CreateSubGraph(_builder, tensors, inputs, outputs, operators, name);
   return subgraph;
 }
 
@@ -201,9 +200,6 @@ void CircleExporterImpl::exportModule(Module *module)
 
     // set Subgraph name
     gd._name = graph->name();
-
-    // TODO set this value properly
-    gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
 
     // parse graph into SerializedModelData structure
     exportOpDefinedTensors(graph, _builder, md, gd);

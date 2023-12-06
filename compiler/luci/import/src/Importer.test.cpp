@@ -50,7 +50,6 @@ struct BasicCircleModel
   {
     model->subgraphs.push_back(std::make_unique<circle::SubGraphT>());
     model->subgraphs.back()->name = "";
-    model->subgraphs.back()->data_format = circle::DataFormat_CHANNELS_LAST;
     return model->subgraphs.size() - 1;
   }
 
