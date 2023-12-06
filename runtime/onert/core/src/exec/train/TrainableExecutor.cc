@@ -210,6 +210,14 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
 void TrainableExecutor::export_circle(const std::string &path) const
 {
   (void)path;
+  _tensor_regs.iterateTrainableTensors(
+    [&](const ir::OperandIndex &idx, backend::train::ITrainableTensor *tensor) {
+      printf("[G] Tensor %u: origin = %u, buffer (addr, size) = (%p, %zu)\n", idx.value(),
+             tensor->get_info().originIndex().value(), tensor->buffer(), tensor->total_size());
+      // I did not check buffer size or type. It is just quick check for temporary
+      float *fbuf = (float *)tensor->buffer();
+      printf("              buffer = %f, %f, %f, %f,...\n", fbuf[0], fbuf[1], fbuf[2], fbuf[3]);
+    });
 }
 
 } // namespace train
