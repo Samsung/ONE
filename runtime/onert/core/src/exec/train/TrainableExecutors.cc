@@ -85,10 +85,9 @@ float TrainableExecutors::getLoss(const ir::IOIndex &index) const
 }
 
 void TrainableExecutors::iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
-    const
+  const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn) const
 {
-    return entryExecutor()->iterateTrainableTensors(fn);
+  return entryExecutor()->iterateTrainableTensors(fn);
 }
 
 } // namespace train

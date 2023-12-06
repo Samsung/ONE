@@ -208,8 +208,7 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
 }
 
 void TrainableExecutor::iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
-    const
+  const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn) const
 {
   _tensor_regs.iterateTrainableTensors(fn);
 }

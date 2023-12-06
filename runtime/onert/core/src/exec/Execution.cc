@@ -182,8 +182,7 @@ float Execution::getLoss(const ir::IOIndex &ind)
 }
 
 void Execution::iterateTrainableTensors(
-  const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
-  const
+  const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn) const
 {
   auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
   if (!execs)
