@@ -1,7 +1,7 @@
-if(NOT TARGET mio_circle06)
-  message(STATUS "Skip circledump: mio_circle06 not found")
+if(NOT TARGET mio_circle07)
+  message(STATUS "Skip circledump: mio_circle07 not found")
   return()
-endif(NOT TARGET mio_circle06)
+endif(NOT TARGET mio_circle07)
 
 set(DRIVER "driver/Driver.cpp")
 
@@ -11,8 +11,8 @@ add_executable(circledump ${DRIVER} ${SOURCES})
 target_include_directories(circledump PRIVATE include)
 target_link_libraries(circledump arser)
 target_link_libraries(circledump foder)
-target_link_libraries(circledump mio_circle06)
-target_link_libraries(circledump mio_circle06_helper)
+target_link_libraries(circledump mio_circle07)
+target_link_libraries(circledump mio_circle07_helper)
 target_link_libraries(circledump safemain)
 
 install(TARGETS circledump DESTINATION bin)
