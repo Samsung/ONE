@@ -1,4 +1,5 @@
 #!/bin/bash
+# NOTE this file is not used and not updated anymore but left for any future referennce.
 
 import "build.configuration"
 
