@@ -270,6 +270,10 @@ int main(const int argc, char **argv)
       }
     });
 
+    // TODO: Add command-line option
+    if (true)
+      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, "tr.circle"));
+
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
     measure.printResult();
