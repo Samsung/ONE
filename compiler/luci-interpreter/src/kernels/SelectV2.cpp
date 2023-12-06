@@ -32,7 +32,6 @@ namespace kernels
 SelectV2::SelectV2(const Tensor *condition, const Tensor *t, const Tensor *e, Tensor *output)
   : Kernel({condition, t, e}, {output})
 {
-  _has_low_rank_input_condition = false;
 }
 
 void SelectV2::configure()
@@ -42,15 +41,8 @@ void SelectV2::configure()
   LUCI_INTERPRETER_CHECK(t()->element_type() == output()->element_type());
 
   auto cond_shape = condition()->shape();
-  auto cond_num_dims = cond_shape.num_dims();
   auto t_shape = t()->shape();
   auto e_shape = e()->shape();
-
-  bool is_input_condition_scalar = cond_num_dims == 0;
-  bool has_rank_one_input_condition = cond_num_dims == 1 && cond_shape.dim(0) == t_shape.dim(0);
-
-  _has_low_rank_input_condition =
-    (is_input_condition_scalar || has_rank_one_input_condition) && t_shape == e_shape;
 
   output()->resize(
     calculateShapeForBroadcast(cond_shape, calculateShapeForBroadcast(t_shape, e_shape)));
@@ -70,7 +62,6 @@ void SelectV2::execute() const
 
 void SelectV2::evalFloat() const
 {
-
   const auto condition_shape = getTensorShape(condition());
   const auto condition_data = getTensorData<bool>(condition());
   const auto t_shape = getTensorShape(t());
@@ -80,17 +71,9 @@ void SelectV2::evalFloat() const
   const auto output_shape = getTensorShape(output());
   auto output_data = getTensorData<float>(output());
 
-  if (_has_low_rank_input_condition)
-  {
-    tflite::reference_ops::RankOneSelect(condition_shape, condition_data, t_shape, t_data, e_shape,
-                                         e_data, output_shape, output_data);
-  }
-  else
-  {
-    // TODO Upgrade broadcast kernel to supporting 5D when upgrade to TF2.10.x or above
-    tflite::reference_ops::BroadcastSelect4DSlow(condition_shape, condition_data, t_shape, t_data,
-                                                 e_shape, e_data, output_shape, output_data);
-  }
+  // TODO Upgrade broadcast kernel to supporting 5D when upgrade to TF2.10.x or above
+  tflite::reference_ops::BroadcastSelect4DSlow(condition_shape, condition_data, t_shape, t_data,
+                                               e_shape, e_data, output_shape, output_data);
 }
 
 } // namespace kernels
