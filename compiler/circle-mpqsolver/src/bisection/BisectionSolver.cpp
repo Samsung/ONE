@@ -140,7 +140,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   _quantizer->set_hook(_hooks.get());
   if (_hooks)
   {
-    _hooks->on_begin_solver(module_path, uint8_qerror, int16_qerror);
+    _hooks->onBeginSolver(module_path, uint8_qerror, int16_qerror);
   }
 
   if (int16_qerror > uint8_qerror)
@@ -163,7 +163,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     if (_hooks)
     {
-      _hooks->on_end_solver(layer_params, "int16", int16_qerror);
+      _hooks->onEndSolver(layer_params, "int16", int16_qerror);
     }
 
     SolverOutput::get() << "The best configuration is int16 configuration\n";
@@ -180,7 +180,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     if (_hooks)
     {
-      _hooks->on_end_solver(layer_params, "uint8", uint8_qerror);
+      _hooks->onEndSolver(layer_params, "uint8", uint8_qerror);
     }
 
     SolverOutput::get() << "The best configuration is uint8 configuration\n";
@@ -233,7 +233,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   {
     if (_hooks)
     {
-      _hooks->on_begin_iteration();
+      _hooks->onBeginIteration();
     }
 
     int cut_depth = static_cast<int>(std::floor(0.5f * (min_depth + max_depth)));
@@ -277,7 +277,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
     if (_hooks)
     {
-      _hooks->on_end_iteration(layer_params, "uint8", cur_error);
+      _hooks->onEndIteration(layer_params, "uint8", cur_error);
     }
 
     if (cur_error < _qerror)
@@ -300,7 +300,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   if (_hooks)
   {
-    _hooks->on_end_solver(best_params, "uint8", best_error);
+    _hooks->onEndSolver(best_params, "uint8", best_error);
   }
 
   SolverOutput::get() << "Found the best configuration at depth " << best_depth << "\n";
