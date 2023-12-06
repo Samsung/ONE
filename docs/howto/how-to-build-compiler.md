@@ -197,11 +197,14 @@ python3 -m pip install numpy
 You can also run unit tests in ARM32 Ubuntu device with cross build results.
 First you need to run the test in host to prepare files that are currently
 complicated in target device.
+For value test with python, separate venv is requried. make target `test_venv`
+will prepare this.
 ```
 # run this in x86-64 host
 make -f infra/nncc/Makefile.arm32 test_prep
 
 # run this in ARM32 target device
+make -f infra/nncc/Makefile.arm32 test_venv
 make -f infra/nncc/Makefile.arm32 test
 ```
 
