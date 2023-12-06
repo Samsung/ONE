@@ -106,7 +106,6 @@ public: // direct API
   VectorWrapper<int32_t> inputs() const { return wrap(_current_subgraph->inputs()); }
   VectorWrapper<int32_t> outputs() const { return wrap(_current_subgraph->outputs()); }
   std::string name() const { return fb_string2std_string(_current_subgraph->name()); }
-  circle::DataFormat data_format() const { return _current_subgraph->data_format(); }
   CircleMetadataSet metadata() const { return wrap(_model->metadata()); }
 
   uint32_t num_subgraph() const { return wrap(_model->subgraphs()).size(); }
