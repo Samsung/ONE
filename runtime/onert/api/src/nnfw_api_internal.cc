@@ -1450,7 +1450,7 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // NYI
+  _execution->export_circle(std::string(path));
   return NNFW_STATUS_ERROR;
 }
 
