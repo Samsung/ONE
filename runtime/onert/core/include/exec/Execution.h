@@ -21,6 +21,7 @@
 #ifndef __ONERT_EXEC_EXECUTION_H__
 #define __ONERT_EXEC_EXECUTION_H__
 
+#include "backend/train/ITrainableTensor.h"
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
 #include "IODescription.h"
@@ -158,6 +159,15 @@ public:
    * @return @c float Loss value
    */
   float getLoss(const ir::IOIndex &ind);
+
+  /**
+   * @brief     Iterate trainable tensors
+   * @note      It should be called after training
+   * @param[in] fn  function to be called with OperandIndex and a pointer to ITrainableTensor
+   */
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
+    const;
 #endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;

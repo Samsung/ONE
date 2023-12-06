@@ -180,6 +180,19 @@ float Execution::getLoss(const ir::IOIndex &ind)
 
   return execs->getLoss(ind);
 }
+
+void Execution::iterateTrainableTensors(
+  const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
+  const
+{
+  auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
+  if (!execs)
+  {
+    throw std::runtime_error{"Supported only TrainableExecutors"};
+  }
+  execs->iterateTrainableTensors(fn);
+}
+
 #endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const

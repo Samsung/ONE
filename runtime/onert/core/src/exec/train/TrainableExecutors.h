@@ -21,6 +21,8 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
+#include <string>
+
 namespace onert
 {
 namespace exec
@@ -79,6 +81,10 @@ public:
   void train(const IODescription &desc, uint32_t training_step);
 
   float getLoss(const ir::IOIndex &index) const;
+
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
+    const;
 
 private:
   // TODO Append model index to ModelIndex
