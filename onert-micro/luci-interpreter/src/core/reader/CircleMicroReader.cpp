@@ -45,6 +45,8 @@ DataType luci_datatype(const circle::TensorType type)
       break;
     case circle::TensorType_INT8:
       return DataType::S8;
+    case circle::TensorType_INT4:
+      return DataType::S4;
     default:
       break;
   }

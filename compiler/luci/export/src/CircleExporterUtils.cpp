@@ -53,6 +53,8 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
     case loco::DataType::U8:
       return circle::TensorType_UINT8;
 
+    case loco::DataType::S4:
+      return circle::TensorType_INT4;
     case loco::DataType::S8:
       return circle::TensorType_INT8;
     case loco::DataType::S16:

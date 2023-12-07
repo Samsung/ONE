@@ -37,6 +37,7 @@ enum class DataType
   U32, // 32-bit unsigned integer
   U64, // 64-bit unsigned integer
 
+  S4,  // 8-bit signed integer
   S8,  // 8-bit signed integer
   S16, // 16-bit signed integer
   S32, // 32-bit signed integer
@@ -60,6 +61,12 @@ template <DataType DT> struct DataTypeImpl
 };
 
 // TODO Support other enum values
+template <> struct DataTypeImpl<DataType::S4>
+{
+  // Use C++ int8_t type for 8bit integer
+  using Type = int8_t;
+};
+
 template <> struct DataTypeImpl<DataType::S8>
 {
   // Use C++ int8_t type for 8bit integer
@@ -142,6 +149,8 @@ inline uint32_t size(DataType data_type)
 {
   switch (data_type)
   {
+    case DataType::S4:
+      return sizeof(DataTypeImpl<DataType::S4>::Type);
     case DataType::S8:
       return sizeof(DataTypeImpl<DataType::S8>::Type);
     case DataType::U8:

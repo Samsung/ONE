@@ -32,6 +32,7 @@ enum class DataType
   U32, // 32-bit unsigned integer
   U64, // 64-bit unsigned integer
 
+  S4,  // 4-bit signed integer
   S8,  // 8-bit signed integer
   S16, // 16-bit signed integer
   S32, // 32-bit signed integer

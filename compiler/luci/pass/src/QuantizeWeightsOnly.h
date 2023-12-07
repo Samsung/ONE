@@ -29,14 +29,16 @@ namespace luci
  */
 struct QuantizeWeightsOnly final : public luci::CircleNodeMutableVisitor<void>
 {
-  QuantizeWeightsOnly(loco::DataType input, loco::DataType output, QuantizationGranularity gr)
-    : input_type(input), output_type(output), granularity(gr)
+  QuantizeWeightsOnly(loco::DataType input, loco::DataType output, QuantizationGranularity gr,
+                      QuantizationAlgorithm alg = QuantizationAlgorithm::Common)
+    : input_type(input), output_type(output), granularity(gr), algorithm(alg)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
   QuantizationGranularity granularity;
+  QuantizationAlgorithm algorithm;
 
 private:
   void quantize_weights(luci::CircleConst *weights);

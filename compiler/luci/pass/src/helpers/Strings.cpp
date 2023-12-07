@@ -55,6 +55,8 @@ loco::DataType str_to_dtype(const std::string &str)
   if (to_lower_case(str).compare("uint64") == 0)
     return loco::DataType::U64;
 
+  if (to_lower_case(str).compare("int4") == 0)
+    return loco::DataType::S4;
   if (to_lower_case(str).compare("int8") == 0)
     return loco::DataType::S8;
   if (to_lower_case(str).compare("int16") == 0)

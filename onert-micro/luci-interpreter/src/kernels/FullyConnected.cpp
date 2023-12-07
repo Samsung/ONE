@@ -88,8 +88,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
 
   switch (Tensor::element_type(weights))
   {
-    case DataType::FLOAT32:
-    {
+    case DataType::FLOAT32: {
       luci_interpreter_pal::FullyConnected(
         params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
         kernels::getTensorData<float>(weights_data), kernels::getTensorData<float>(bias_data),
@@ -97,8 +96,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
         Tensor::num_dims(weights));
       break;
     }
-    case DataType::S8:
-    {
+    case DataType::S8: {
       // Hybrid mode
       params.weights_scales =
         reinterpret_cast<const float *>(weights->quantization()->scale()->data());
@@ -107,6 +105,29 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
         kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<float>(bias_data),
         output_shape, kernels::getTensorData<float>(output_data), Tensor::num_dims(output),
         Tensor::num_dims(weights));
+      break;
+    }
+    case DataType::S4: {
+      // Hybrid mode
+      params.weights_scales =
+        reinterpret_cast<const float *>(weights->quantization()->scale()->data());
+//      // TODO unpack int4 without additional buffer
+//      size_t buf_size = luci_interpreter_pal::flatSizeSkipDim(
+//        weight_shape, Tensor::num_dims(weights) - 1, Tensor::num_dims(weights));
+//      auto buf_weights = new int8_t[buf_size];
+      // deserialize int4 to int8
+//      size_t max_idx = buf_size % 2 ? buf_size / 2 + 1 : buf_size / 2;
+//      for (uint32_t i = 0; i < max_idx; ++i)
+//      {
+//        buf_weights[2 * i] = weights_data[i] >> 4;
+//        buf_weights[2 * i + 1] = weights_data[i] & 0x0F;
+//      }
+      luci_interpreter_pal::FullyConnected(
+        params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
+        kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<float>(bias_data),
+        output_shape, kernels::getTensorData<float>(output_data), Tensor::num_dims(output),
+        Tensor::num_dims(weights));
+//      delete[] buf_weights;
       break;
     }
     default:
@@ -241,6 +262,23 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
     LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S8 ||
                            Tensor::element_type(input) == DataType::FLOAT32);
     LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S8 ||
+                           Tensor::element_type(output) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32 ||
+                           Tensor::element_type(bias) == DataType::S64 ||
+                           Tensor::element_type(bias) == DataType::FLOAT32)
+    if (Tensor::element_type(input) == DataType::FLOAT32)
+    {
+      // Check it is channel wise quantization
+      LUCI_INTERPRETER_CHECK(weights->quantization() != nullptr);
+      LUCI_INTERPRETER_CHECK(weights->quantization()->scale()->size() ==
+                             weights->shape()->operator[](0));
+    }
+  }
+  else if (Tensor::element_type(weights) == DataType::S4)
+  {
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == DataType::S4 ||
+                           Tensor::element_type(input) == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(Tensor::element_type(output) == DataType::S4 ||
                            Tensor::element_type(output) == DataType::FLOAT32);
     LUCI_INTERPRETER_CHECK(!bias || Tensor::element_type(bias) == DataType::S32 ||
                            Tensor::element_type(bias) == DataType::S64 ||
