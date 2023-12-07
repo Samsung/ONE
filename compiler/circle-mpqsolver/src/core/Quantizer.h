@@ -61,7 +61,7 @@ public:
   /**
    * @brief set hook on the end of quantization event
    */
-  void set_hook(const QuantizerHook *callback);
+  void setHook(const QuantizerHook *callback);
 
   /**
    * @brief quantize recorded module (min/max initialized) with specified parameters
@@ -79,8 +79,8 @@ public:
    * @brief fake_quantize recorded module (min/max initialized) with specified parameters
    * returns true on success
    */
-  bool fake_quantize(luci::Module *module, const std::string &quant_dtype,
-                     LayerParams &layer_params);
+  bool fakeQuantize(luci::Module *module, const std::string &quant_dtype,
+                    LayerParams &layer_params);
 
 private:
   Context _ctx;

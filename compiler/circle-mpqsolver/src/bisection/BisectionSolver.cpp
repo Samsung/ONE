@@ -88,7 +88,7 @@ float BisectionSolver::evaluate(const core::DatasetEvaluator &evaluator,
   assert(model != nullptr);
 
   // get fake quantized model for evaluation
-  if (!_quantizer->fake_quantize(model.get(), def_quant, layers))
+  if (!_quantizer->fakeQuantize(model.get(), def_quant, layers))
   {
     throw std::runtime_error("Failed to produce fake-quantized model.");
   }
@@ -137,7 +137,7 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
   float uint8_qerror =
     evaluate(evaluator, module_path, "uint8" /* default quant_dtype */, layer_params);
   SolverOutput::get() << "Full uint8 model qerror: " << uint8_qerror << "\n";
-  _quantizer->set_hook(_hooks.get());
+  _quantizer->setHook(_hooks.get());
   if (_hooks)
   {
     _hooks->onBeginSolver(module_path, uint8_qerror, int16_qerror);

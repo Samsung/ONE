@@ -49,7 +49,7 @@ bool make_model_fake_quantized(luci::Module *module)
 
 } // namespace
 
-void Quantizer::set_hook(const QuantizerHook *hook) { _hook = hook; }
+void Quantizer::setHook(const QuantizerHook *hook) { _hook = hook; }
 
 /**
  * @brief quantize recorded module (min/max initialized) with specified parameters
@@ -129,8 +129,8 @@ bool Quantizer::quantize(luci::Module *module, LayerParams &layer_params)
  * @brief fake_quantize recorded module (min/max initialized) with specified parameters
  * returns true on success
  */
-bool Quantizer::fake_quantize(luci::Module *module, const std::string &quant_dtype,
-                              LayerParams &layer_params)
+bool Quantizer::fakeQuantize(luci::Module *module, const std::string &quant_dtype,
+                             LayerParams &layer_params)
 {
   if (!quantize(module, quant_dtype, layer_params))
     return false;
