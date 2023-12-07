@@ -70,7 +70,7 @@ class TidyIONames:
         for idx in range(0, len(self.onnx_model.graph.input)):
             name = self.onnx_model.graph.input[idx].name
             if not name in self.initializers:
-                if '.' in name or ':' in name or '/' in name:
+                if '.' in name or ':' in name or '/' in name or name[:1].isdigit():
                     self.input_nodes.append(name)
                     name_alt = name.replace('.', '_')
                     name_alt = name_alt.replace(':', '_')
@@ -79,7 +79,7 @@ class TidyIONames:
                     self.remap_inputs.append(name_alt)
         for idx in range(0, len(self.onnx_model.graph.output)):
             name = self.onnx_model.graph.output[idx].name
-            if '.' in name or ':' in name or '/' in name:
+            if '.' in name or ':' in name or '/' in name or name[:1].isdigit():
                 self.output_nodes.append(name)
                 name_alt = name.replace('.', '_')
                 name_alt = name_alt.replace(':', '_')
