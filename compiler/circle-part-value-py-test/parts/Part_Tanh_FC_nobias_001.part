@@ -1,0 +1,7 @@
+[partition]
+backends=cpu,npu
+default=npu
+comply=opcode
+
+[OPCODE]
+TANH=cpu

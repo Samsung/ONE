@@ -1,0 +1,58 @@
+# Add recipe names from /res/TensorFlowLiteRecipes to test.
+# Only add items exist in common-artifacts test: tflite/circle files are copied as source.
+#
+# add(RECIPE_NAME PARTITION_NAME EXPECTED_OUTPUT_COUNT)
+#     EXPECTED_OUTPUT_COUNT: 0 for skip expected count test
+
+add(Part_Add_Sub_000 Part_Add_Sub_000 2)
+add(Part_Sqrt_Rsqrt_000 Part_Sqrt_Rsqrt_000 2)
+add(Part_Sqrt_Rsqrt_001 Part_Sqrt_Rsqrt_001 2)
+add(Part_Sqrt_Rsqrt_002 Part_Sqrt_Rsqrt_002 4)
+add(Part_Sqrt_Rsqrt_003 Part_Sqrt_Rsqrt_003 3)
+add(Part_Sqrt_Rsqrt_Add_000 Part_Sqrt_Rsqrt_Add_000 3)
+add(Part_Sqrt_Rsqrt_Add_001 Part_Sqrt_Rsqrt_Add_001 3)
+add(Part_Sqrt_Rsqrt_Add_002 Part_Sqrt_Rsqrt_Add_002 4)
+add(Part_Sqrt_Rsqrt_Add_003 Part_Sqrt_Rsqrt_Add_003 1)
+add(Part_Sqrt_Rsqrt_Add_004 Part_Sqrt_Rsqrt_Add_004 1)
+add(Part_Add_Sqrt_000 Part_Add_Sqrt_000 3)
+add(Part_Add_Sqrt_Rsqrt_000 Part_Add_Sqrt_Rsqrt_000 3)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003 3)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.001 5)
+# skip expected count for now
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.002 0)
+
+# comply=opname
+add(Part_Add_Sub_000 Part_Add_Sub_000.001 3)
+add(Part_Add_Sub_001 Part_Add_Sub_001 3)
+add(Part_Add_Sub_002 Part_Add_Sub_002.001 2)
+add(Part_Add_Sub_002 Part_Add_Sub_002.002 2)
+add(Net_InstanceNorm_003 Net_InstanceNorm_003.003 3)
+
+# IF with subgraphs
+add(Part_If_Add_Sub_000 Part_If_Add_Sub_000.001 3)
+add(Part_If_Add_Sub_001 Part_If_Add_Sub_001.001 3)
+
+# WHILE with subgraphs
+add(Part_While_000 Part_While_000 3)
+add(Part_While_001 Part_While_001 3)
+
+# UNPACK with multiple outputs
+add(Net_UnpackAdd_001 Net_UnpackAdd_001 2)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.001 2)
+add(Net_UnpackAdd_001 Net_UnpackAdd_001.002 2)
+
+# Other multiple outputs
+add(Part_Split_Add_000 Part_Split_Add_000 2)
+
+# test SignatureDef, with any OPCODE
+add(SignatureDef_MultiOut_000 SignatureDef_MultiOut_000 0)
+add(SignatureDef_MultiOut_001 SignatureDef_MultiOut_001 0)
+
+# FC with nobias
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias 1)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_001 2)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_002 2)
+add(Part_Tanh_FC_nobias Part_Tanh_FC_nobias_003 2)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_000 0)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_001 0)
+add(Part_Mul_Sqrt_FC_nobias_000 Part_Mul_Sqrt_FC_nobias_000_002 0)
