@@ -231,16 +231,16 @@ std::unique_ptr<luci::Module> BisectionSolver::run(const std::string &module_pat
 
   while (true)
   {
-    if (_hooks)
-    {
-      _hooks->onBeginIteration();
-    }
-
     int cut_depth = static_cast<int>(std::floor(0.5f * (min_depth + max_depth)));
 
     if (last_depth == cut_depth)
     {
       break;
+    }
+
+    if (_hooks)
+    {
+      _hooks->onBeginIteration();
     }
 
     SolverOutput::get() << "Looking for the optimal configuration in [" << min_depth << " , "
