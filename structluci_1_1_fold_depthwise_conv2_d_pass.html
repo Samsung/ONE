@@ -187,28 +187,28 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_fold_depthwise_conv2_d_pass_8cpp_source.html#l00220">220</a> of file <a class="el" href="_fold_depthwise_conv2_d_pass_8cpp_source.html">FoldDepthwiseConv2DPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  224</span>  {</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keyword">auto</span> depthwise_conv2d = <span class="keyword">dynamic_cast&lt;</span>CircleDepthwiseConv2D *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">if</span> (depthwise_conv2d == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  228</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">switch</span> (depthwise_conv2d-&gt;dtype())</div>
-<div class="line"><span class="lineno">  231</span>    {</div>
-<div class="line"><span class="lineno">  232</span>      <span class="keywordflow">case</span> loco::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  233</span>        changed = fold_depthwise_conv_2d(depthwise_conv2d);</div>
-<div class="line"><span class="lineno">  234</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  235</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  236</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  237</span>    }</div>
-<div class="line"><span class="lineno">  238</span>  }</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  241</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_fold_depthwise_conv2_d_pass_8cpp_source.html#l00147">147</a> of file <a class="el" href="_fold_depthwise_conv2_d_pass_8cpp_source.html">FoldDepthwiseConv2DPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><span class="lineno">  151</span>  {</div>
+<div class="line"><span class="lineno">  152</span>    <span class="keyword">auto</span> depthwise_conv2d = <span class="keyword">dynamic_cast&lt;</span>CircleDepthwiseConv2D *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">if</span> (depthwise_conv2d == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  155</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">switch</span> (depthwise_conv2d-&gt;dtype())</div>
+<div class="line"><span class="lineno">  158</span>    {</div>
+<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">case</span> loco::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  160</span>        changed = fold_depthwise_conv_2d(depthwise_conv2d);</div>
+<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  164</span>    }</div>
+<div class="line"><span class="lineno">  165</span>  }</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  168</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition:</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition:</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 </div><!-- fragment -->

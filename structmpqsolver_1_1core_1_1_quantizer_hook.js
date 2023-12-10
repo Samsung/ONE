@@ -1,4 +1,4 @@
 var structmpqsolver_1_1core_1_1_quantizer_hook =
 [
-    [ "on_quantized", "structmpqsolver_1_1core_1_1_quantizer_hook.html#a400e326694eeac41715a0df61a7a3979", null ]
+    [ "onQuantized", "structmpqsolver_1_1core_1_1_quantizer_hook.html#ab24bc9b5baa77b124d30cabbab2b284f", null ]
 ];

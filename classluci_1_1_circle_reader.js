@@ -3,7 +3,6 @@ var classluci_1_1_circle_reader =
     [ "CircleReader", "classluci_1_1_circle_reader.html#a3f372679949a337380a88b47e1e50a2a", null ],
     [ "buffers", "classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5", null ],
     [ "builtin_code", "classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4", null ],
-    [ "data_format", "classluci_1_1_circle_reader.html#a52719941d231f90b4976f0b59e967c0d", null ],
     [ "inputs", "classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1", null ],
     [ "metadata", "classluci_1_1_circle_reader.html#a4cda8c4d7efddaf529e3957485391613", null ],
     [ "name", "classluci_1_1_circle_reader.html#a2551e899429fe4ea62db9b780c873118", null ],

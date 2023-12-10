@@ -142,6 +142,8 @@ Functions</h2></td></tr>
 <tr class="separator:a01e2269d95c82f55a227d9382504be10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfa8da6955e81b1f2e3fb5c15058bf24"><td class="memItemLeft" align="right" valign="top">tflite::FullyConnectedWeightsFormat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#abfa8da6955e81b1f2e3fb5c15058bf24">tflite_weights_format</a> (const <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518">FullyConnectedWeightsFormat</a> type)</td></tr>
 <tr class="separator:abfa8da6955e81b1f2e3fb5c15058bf24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab610b986109530fb45fa29144537b655"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1compute.html#ab610b986109530fb45fa29144537b655">get_act_minmax</a> (const <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61">FusedActFunc</a> act, float &amp;act_min, float &amp;act_max)</td></tr>
+<tr class="separator:ab610b986109530fb45fa29144537b655"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a156ca988c8cb195bf32faef3c4521518" name="a156ca988c8cb195bf32faef3c4521518"></a>
@@ -263,6 +265,70 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ab610b986109530fb45fa29144537b655" name="ab610b986109530fb45fa29144537b655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab610b986109530fb45fa29144537b655">&#9670;&#160;</a></span>get_act_minmax()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci::compute::get_act_minmax </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61">FusedActFunc</a>&#160;</td>
+          <td class="paramname"><em>act</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>act_min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>act_max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_convert_values_8cpp_source.html#l00026">26</a> of file <a class="el" href="_convert_values_8cpp_source.html">ConvertValues.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">switch</span> (act)</div>
+<div class="line"><span class="lineno">   29</span>  {</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">case</span> FusedActFunc::NONE:</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">case</span> FusedActFunc::TANH:</div>
+<div class="line"><span class="lineno">   32</span>      act_min = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">   33</span>      act_max = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">   34</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">case</span> FusedActFunc::RELU:</div>
+<div class="line"><span class="lineno">   36</span>      act_min = 0;</div>
+<div class="line"><span class="lineno">   37</span>      act_max = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">case</span> FusedActFunc::RELU_N1_TO_1:</div>
+<div class="line"><span class="lineno">   40</span>      act_min = -1;</div>
+<div class="line"><span class="lineno">   41</span>      act_max = 1;</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">case</span> FusedActFunc::RELU6:</div>
+<div class="line"><span class="lineno">   44</span>      act_min = 0;</div>
+<div class="line"><span class="lineno">   45</span>      act_max = 6;</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp get_act_minmax unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61ad346bb4679d29be241279f15d7795c1c">RELU</a>, <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61ac014a3d2b85dcb087a709b9b2a3b8e6b">RELU6</a>, <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61a3d1350ef81160c32cf3605ab32159c2b">RELU_N1_TO_1</a>, and <a class="el" href="namespaceluci_1_1compute.html#a3d972542e21a05eed61ab95bab2ecc61a143c8c6f51b9bb893ce71e38702e3cc1">TANH</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00075">luci::compute::DepthwiseConv2D::prepare()</a>, and <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00037">luci::compute::FullyConnected::prepare()</a>.</p>
+
+</div>
+</div>
 <a id="a01e2269d95c82f55a227d9382504be10" name="a01e2269d95c82f55a227d9382504be10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01e2269d95c82f55a227d9382504be10">&#9670;&#160;</a></span>tflite_padding()</h2>
 
@@ -279,23 +345,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00037">37</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">case</span> PaddingType::kSame:</div>
-<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">return</span> tflite::PaddingType::kSame;</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">case</span> PaddingType::kValid:</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">return</span> tflite::PaddingType::kValid;</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_padding unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00038">38</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> PaddingType::kSame:</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">return</span> tflite::PaddingType::kSame;</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">case</span> PaddingType::kValid:</div>
+<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">return</span> tflite::PaddingType::kValid;</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_padding unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aad523906435f67e94367d4fab5b9380da">kSame</a>, and <a class="el" href="namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aa4d3576c37e6f03700bad4345238fffa0">kValid</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00123">luci::compute::DepthwiseConv2D::compute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00129">luci::compute::DepthwiseConv2D::compute()</a>.</p>
 
 </div>
 </div>
@@ -320,11 +386,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   28</span>  tflite::RuntimeShape runtime_shape(shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#af1de7d61456632efdf2ef3b4320d049f">rank</a>());</div>
 <div class="line"><span class="lineno">   29</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#af1de7d61456632efdf2ef3b4320d049f">rank</a>(); ++i)</div>
 <div class="line"><span class="lineno">   30</span>  {</div>
-<div class="line"><span class="lineno">   31</span>    assert(shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(i).<a class="code hl_function" href="classloco_1_1_dimension.html#aada2b1e1eeb76c2d5cc16895e20a2307">known</a>());</div>
-<div class="line"><span class="lineno">   32</span>    runtime_shape.SetDim(i, shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(i).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>());</div>
-<div class="line"><span class="lineno">   33</span>  }</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">return</span> runtime_shape;</div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">if</span> (not shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(i).<a class="code hl_function" href="classloco_1_1_dimension.html#aada2b1e1eeb76c2d5cc16895e20a2307">known</a>())</div>
+<div class="line"><span class="lineno">   32</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_shape shape unknown.&quot;</span>);</div>
+<div class="line"><span class="lineno">   33</span>    runtime_shape.SetDim(i, shape.<a class="code hl_function" href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">dim</a>(i).<a class="code hl_function" href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">value</a>());</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> runtime_shape;</div>
+<div class="line"><span class="lineno">   36</span>}</div>
 <div class="ttc" id="aclassloco_1_1_dimension_html_a94eb6a5e9deeb18884f9acc05967f0a8"><div class="ttname"><a href="classloco_1_1_dimension.html#a94eb6a5e9deeb18884f9acc05967f0a8">loco::Dimension::value</a></div><div class="ttdeci">uint32_t value(void) const</div><div class="ttdoc">Return the value.</div><div class="ttdef"><b>Definition:</b> <a href="_dimension_8h_source.html#l00051">Dimension.h:51</a></div></div>
 <div class="ttc" id="aclassloco_1_1_dimension_html_aada2b1e1eeb76c2d5cc16895e20a2307"><div class="ttname"><a href="classloco_1_1_dimension.html#aada2b1e1eeb76c2d5cc16895e20a2307">loco::Dimension::known</a></div><div class="ttdeci">bool known(void) const</div><div class="ttdoc">Return whether the value is known (or not)</div><div class="ttdef"><b>Definition:</b> <a href="_dimension_8h_source.html#l00047">Dimension.h:47</a></div></div>
 <div class="ttc" id="aclassloco_1_1_tensor_shape_html_a0d6b59ff61333f8856ce7b3ffa687423"><div class="ttname"><a href="classloco_1_1_tensor_shape.html#a0d6b59ff61333f8856ce7b3ffa687423">loco::TensorShape::dim</a></div><div class="ttdeci">const Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition:</b> <a href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00038">TensorShape.h:38</a></div></div>
@@ -332,7 +399,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00038">loco::TensorShape::dim()</a>, <a class="el" href="_dimension_8h_source.html#l00047">loco::Dimension::known()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00035">loco::TensorShape::rank()</a>, and <a class="el" href="_dimension_8h_source.html#l00051">loco::Dimension::value()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00123">luci::compute::DepthwiseConv2D::compute()</a>, and <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00073">luci::compute::FullyConnected::compute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_depthwise_conv2_d_8cpp_source.html#l00129">luci::compute::DepthwiseConv2D::compute()</a>, and <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00076">luci::compute::FullyConnected::compute()</a>.</p>
 
 </div>
 </div>
@@ -352,23 +419,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00051">51</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">case</span> FullyConnectedWeightsFormat::kDefault:</div>
-<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">return</span> tflite::FullyConnectedWeightsFormat::kDefault;</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">case</span> FullyConnectedWeightsFormat::kShuffled4x16Int8:</div>
-<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">return</span> tflite::FullyConnectedWeightsFormat::kShuffled4x16Int8;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_weights_format unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">   63</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_convert_types_8cpp_source.html#l00052">52</a> of file <a class="el" href="_convert_types_8cpp_source.html">ConvertTypes.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">case</span> FullyConnectedWeightsFormat::kDefault:</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">return</span> tflite::FullyConnectedWeightsFormat::kDefault;</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">case</span> FullyConnectedWeightsFormat::kShuffled4x16Int8:</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">return</span> tflite::FullyConnectedWeightsFormat::kShuffled4x16Int8;</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-comp tflite_weights_format unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a6867faeaa475fda467e48267db2bb8a8">kDefault</a>, and <a class="el" href="namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a3373f5dce891a3dd9ad189b7d42842f7">kShuffled4x16Int8</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00073">luci::compute::FullyConnected::compute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-compute_2src_2_fully_connected_8cpp_source.html#l00076">luci::compute::FullyConnected::compute()</a>.</p>
 
 </div>
 </div>

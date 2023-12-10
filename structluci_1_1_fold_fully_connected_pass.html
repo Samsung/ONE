@@ -187,19 +187,19 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_fold_fully_connected_pass_8cpp_source.html#l00182">182</a> of file <a class="el" href="_fold_fully_connected_pass_8cpp_source.html">FoldFullyConnectedPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><span class="lineno">  186</span>  {</div>
-<div class="line"><span class="lineno">  187</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span>CircleFullyConnected *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">if</span> (fold_fully_connected(fc))</div>
-<div class="line"><span class="lineno">  190</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  191</span>  }</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  194</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_fold_fully_connected_pass_8cpp_source.html#l00156">156</a> of file <a class="el" href="_fold_fully_connected_pass_8cpp_source.html">FoldFullyConnectedPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><span class="lineno">  160</span>  {</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span>CircleFullyConnected *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">if</span> (fold_fully_connected(fc))</div>
+<div class="line"><span class="lineno">  164</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  165</span>  }</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  168</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition:</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition:</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 </div><!-- fragment -->

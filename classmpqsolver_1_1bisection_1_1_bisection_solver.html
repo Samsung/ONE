@@ -355,10 +355,10 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  137</span>  <span class="keywordtype">float</span> uint8_qerror =</div>
 <div class="line"><span class="lineno">  138</span>    evaluate(evaluator, module_path, <span class="stringliteral">&quot;uint8&quot;</span> <span class="comment">/* default quant_dtype */</span>, layer_params);</div>
 <div class="line"><span class="lineno">  139</span>  <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;Full uint8 model qerror: &quot;</span> &lt;&lt; uint8_qerror &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;set_hook(<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>.get());</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;setHook(<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>.get());</div>
 <div class="line"><span class="lineno">  141</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  142</span>  {</div>
-<div class="line"><span class="lineno">  143</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_begin_solver(module_path, uint8_qerror, int16_qerror);</div>
+<div class="line"><span class="lineno">  143</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onBeginSolver(module_path, uint8_qerror, int16_qerror);</div>
 <div class="line"><span class="lineno">  144</span>  }</div>
 <div class="line"><span class="lineno">  145</span> </div>
 <div class="line"><span class="lineno">  146</span>  <span class="keywordflow">if</span> (int16_qerror &gt; uint8_qerror)</div>
@@ -381,7 +381,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  163</span> </div>
 <div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  165</span>    {</div>
-<div class="line"><span class="lineno">  166</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_end_solver(layer_params, <span class="stringliteral">&quot;int16&quot;</span>, int16_qerror);</div>
+<div class="line"><span class="lineno">  166</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onEndSolver(layer_params, <span class="stringliteral">&quot;int16&quot;</span>, int16_qerror);</div>
 <div class="line"><span class="lineno">  167</span>    }</div>
 <div class="line"><span class="lineno">  168</span> </div>
 <div class="line"><span class="lineno">  169</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;The best configuration is int16 configuration\n&quot;</span>;</div>
@@ -398,7 +398,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  180</span> </div>
 <div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  182</span>    {</div>
-<div class="line"><span class="lineno">  183</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_end_solver(layer_params, <span class="stringliteral">&quot;uint8&quot;</span>, uint8_qerror);</div>
+<div class="line"><span class="lineno">  183</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onEndSolver(layer_params, <span class="stringliteral">&quot;uint8&quot;</span>, uint8_qerror);</div>
 <div class="line"><span class="lineno">  184</span>    }</div>
 <div class="line"><span class="lineno">  185</span> </div>
 <div class="line"><span class="lineno">  186</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;The best configuration is uint8 configuration\n&quot;</span>;</div>
@@ -451,7 +451,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  233</span>  {</div>
 <div class="line"><span class="lineno">  234</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  235</span>    {</div>
-<div class="line"><span class="lineno">  236</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_begin_iteration();</div>
+<div class="line"><span class="lineno">  236</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onBeginIteration();</div>
 <div class="line"><span class="lineno">  237</span>    }</div>
 <div class="line"><span class="lineno">  238</span> </div>
 <div class="line"><span class="lineno">  239</span>    <span class="keywordtype">int</span> cut_depth = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(0.5f * (min_depth + max_depth)));</div>
@@ -495,7 +495,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  277</span> </div>
 <div class="line"><span class="lineno">  278</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  279</span>    {</div>
-<div class="line"><span class="lineno">  280</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_end_iteration(layer_params, <span class="stringliteral">&quot;uint8&quot;</span>, cur_error);</div>
+<div class="line"><span class="lineno">  280</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onEndIteration(layer_params, <span class="stringliteral">&quot;uint8&quot;</span>, cur_error);</div>
 <div class="line"><span class="lineno">  281</span>    }</div>
 <div class="line"><span class="lineno">  282</span> </div>
 <div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> (cur_error &lt; _qerror)</div>
@@ -518,7 +518,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  300</span> </div>
 <div class="line"><span class="lineno">  301</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><span class="lineno">  302</span>  {</div>
-<div class="line"><span class="lineno">  303</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;on_end_solver(best_params, <span class="stringliteral">&quot;uint8&quot;</span>, best_error);</div>
+<div class="line"><span class="lineno">  303</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onEndSolver(best_params, <span class="stringliteral">&quot;uint8&quot;</span>, best_error);</div>
 <div class="line"><span class="lineno">  304</span>  }</div>
 <div class="line"><span class="lineno">  305</span> </div>
 <div class="line"><span class="lineno">  306</span>  <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;Found the best configuration at depth &quot;</span> &lt;&lt; best_depth &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>

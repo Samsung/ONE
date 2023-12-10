@@ -23,6 +23,7 @@ var namespaceluci_1_1compute =
       [ "kSame", "namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aad523906435f67e94367d4fab5b9380da", null ],
       [ "kValid", "namespaceluci_1_1compute.html#a52381b052bdb6a24da6275568a80d75aa4d3576c37e6f03700bad4345238fffa0", null ]
     ] ],
+    [ "get_act_minmax", "namespaceluci_1_1compute.html#ab610b986109530fb45fa29144537b655", null ],
     [ "tflite_padding", "namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10", null ],
     [ "tflite_shape", "namespaceluci_1_1compute.html#ae4ee2fd01c261cc9208fb58e4904f54f", null ],
     [ "tflite_weights_format", "namespaceluci_1_1compute.html#abfa8da6955e81b1f2e3fb5c15058bf24", null ]

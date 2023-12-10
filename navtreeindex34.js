@@ -1,5 +1,15 @@
 var NAVTREEINDEX34 =
 {
+"_zeros_like_options_8h_source.html":[36,0,0,123,2,0,185],
+"_zipper_8h.html":[36,0,4,0,1,0,0,3,10],
+"_zipper_8h.html#a1a14c5627fd37433f742d28a854b6ced":[36,0,4,0,1,0,0,3,10,1],
+"_zipper_8h.html#ae816323a1119de39d502d07f8c12bf86":[36,0,4,0,1,0,0,3,10,2],
+"_zipper_8h_source.html":[36,0,4,0,1,0,0,3,10],
+"acl__cl_2_constant_initializer_8cc.html":[36,0,4,2,1,0,7],
+"acl__cl_2_constant_initializer_8cc_source.html":[36,0,4,2,1,0,7],
+"acl__cl_2_optimizer_8cc.html":[36,0,4,2,1,0,11],
+"acl__cl_2_optimizer_8cc_source.html":[36,0,4,2,1,0,11],
+"acl__cl_2_tensor_manager_8h.html":[36,0,4,2,1,0,14],
 "acl__cl_2_tensor_manager_8h.html#a38f4246ec6bdaee3b5bcc440f2c89dbb":[36,0,4,2,1,0,14,0],
 "acl__cl_2_tensor_manager_8h.html#a7fa14cb8cd7dc2738a942198b5e5b963":[36,0,4,2,1,0,14,3],
 "acl__cl_2_tensor_manager_8h.html#aec9f8d43988a9d43b9dcbfaa13891484":[36,0,4,2,1,0,14,2],
@@ -239,15 +249,5 @@ var NAVTREEINDEX34 =
 "backend_2gpu__cl_2_tensor_registry_8h_source.html":[36,0,4,2,1,5,19],
 "backend_2ruy_2_backend_context_8cc.html":[36,0,4,2,1,6,2],
 "backend_2ruy_2_backend_context_8cc_source.html":[36,0,4,2,1,6,2],
-"backend_2ruy_2_backend_context_8h.html":[36,0,4,2,1,6,3],
-"backend_2ruy_2_backend_context_8h_source.html":[36,0,4,2,1,6,3],
-"backend_2ruy_2_config_8cc.html":[36,0,4,2,1,6,4],
-"backend_2ruy_2_config_8cc_source.html":[36,0,4,2,1,6,4],
-"backend_2ruy_2_external_context_8h.html":[36,0,4,2,1,6,6],
-"backend_2ruy_2_external_context_8h_source.html":[36,0,4,2,1,6,6],
-"backend_2ruy_2_kernel_generator_8cc.html":[36,0,4,2,1,6,7],
-"backend_2ruy_2_kernel_generator_8cc_source.html":[36,0,4,2,1,6,7],
-"backend_2ruy_2_kernel_generator_8h.html":[36,0,4,2,1,6,8],
-"backend_2ruy_2_kernel_generator_8h_source.html":[36,0,4,2,1,6,8],
-"backend_2ruy_2_static_tensor_manager_8h.html":[36,0,4,2,1,6,10]
+"backend_2ruy_2_backend_context_8h.html":[36,0,4,2,1,6,3]
 };

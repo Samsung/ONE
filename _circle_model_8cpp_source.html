@@ -417,114 +417,113 @@ $(document).ready(function(){initNavTree('_circle_model_8cpp_source.html',''); i
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    circle_subgraph_builder.add_outputs(circle_outputs);</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    circle_subgraph_builder.add_operators(circle_operators);</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    circle_subgraph_builder.add_name(subgraphs_name);</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    circle_subgraph_builder.add_data_format(circle::DataFormat_CHANNELS_LAST);</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keyword">auto</span> circle_subgraph = circle_subgraph_builder.Finish();</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    subgprahs_vec.emplace_back(circle_subgraph);</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="comment">// next subgraph</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    subgraph_index = subgraph_index + 1;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  }</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(subgprahs_vec);</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>}</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_offset.html#a3090e2ee11beac58c5c2fd4cbfdc429d">  337</a></span><span class="keyword">template</span> &lt;&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_offset.html#a8f154d5b11c3413fb0e7bf4f9f15c23b">Offset&lt;OperatorCodeLink&gt;::build</a>(<span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">TFLFlatBufVec</a> *tflite_flatbuffer_vec)</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>{</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>  std::vector&lt;flatbuffers::Offset&lt;circle::OperatorCode&gt;&gt; operator_code_vec;</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : *tflite_flatbuffer_vec)</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>  {</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keyword">auto</span> custom_code = _fb-&gt;CreateString(it-&gt;custom_code());</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    circle::OperatorCodeBuilder operator_code_builder{*_fb};</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keyword">auto</span> de_code = it-&gt;deprecated_builtin_code();</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keyword">auto</span> bt_code = it-&gt;builtin_code();</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="comment">// There are two builtin codes (deprecated_builtin, (extended) builtin)</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="comment">// deprecated builtin code uses 0~126</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <span class="comment">// extended builtin code uses 127~</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="comment">// NOTE 127 = BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="keywordflow">if</span> (de_code &gt;= 0 and de_code &lt; 127)</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    {</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      <span class="comment">// Use deprecated builtin opcode.</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      <span class="keyword">auto</span> cir_de_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(de_code);</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      <span class="comment">// correct bt_code where bt_code == 0 for old tflite format</span></div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>      <span class="keywordflow">if</span> (cir_bt_code == 0)</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        cir_bt_code = <span class="keyword">static_cast&lt;</span>circle::BuiltinOperator<span class="keyword">&gt;</span>(cir_de_code);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      operator_code_builder.add_deprecated_builtin_code(cir_de_code);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    }</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    {</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>      <span class="comment">// Use extended builtin opcode</span></div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>      <span class="comment">// Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code</span></div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      operator_code_builder.add_deprecated_builtin_code(</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    }</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    operator_code_builder.add_custom_code(custom_code);</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    operator_code_builder.add_version(it-&gt;version());</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keyword">auto</span> code = operator_code_builder.Finish();</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    operator_code_vec.emplace_back(code);</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  }</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(operator_code_vec);</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>}</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a8ab159baea5d752528b4bc6731ea540d">  380</a></span><a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a731579184d63686f98c3f384d17be9af">CircleModel::CircleModel</a>(<a class="code hl_typedef" href="namespacetflite2circle.html#a7d3f623dcd2b43198a02b11c1ade90ee">FlatBufBuilder</a> &amp;fb)</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  : _version{0}, _description{fb-&gt;CreateString(<span class="stringliteral">&quot;ONE-tflite2circle&quot;</span>)}, _fb{fb}</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>{</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  <span class="comment">// NOTHING TODO</span></div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>}</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">  386</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">CircleModel::load_offsets</a>(<span class="keyword">const</span> tflite::Model *tfl_model)</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>{</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  _operator_codes_offset = std::make_unique&lt;Offset&lt;OperatorCodeLink&gt;&gt;(_fb);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  _subGraphs_offset = std::make_unique&lt;Offset&lt;SubGraphLink&gt;&gt;(_fb);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  _buffers_offset = std::make_unique&lt;Offset&lt;BufferLink&gt;&gt;(_fb);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  _metadata_buffer_offset = std::make_unique&lt;Offset&lt;MetaDataBufferLink&gt;&gt;(_fb);</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  _subGraphs_offset-&gt;set_signature_defs(tfl_model-&gt;signature_defs());</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  _operator_codes_offset-&gt;build(tfl_model-&gt;operator_codes());</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  _subGraphs_offset-&gt;build(tfl_model-&gt;subgraphs());</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  _buffers_offset-&gt;build(tfl_model-&gt;buffers());</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  _metadata_buffer_offset-&gt;build(tfl_model-&gt;metadata_buffer());</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>}</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">  401</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">CircleModel::model_build</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  circle::ModelBuilder model_builder{*_fb};</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  model_builder.add_version(_version);</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  model_builder.add_description(_description);</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  model_builder.add_operator_codes(_operator_codes_offset-&gt;offset());</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  model_builder.add_subgraphs(_subGraphs_offset-&gt;offset());</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  model_builder.add_buffers(_buffers_offset-&gt;offset());</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  model_builder.add_metadata_buffer(_metadata_buffer_offset-&gt;offset());</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keyword">auto</span> model = model_builder.Finish();</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  circle::FinishModelBuffer(*_fb, model);</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>}</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">  416</a></span><span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">CircleModel::base</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>}</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">  421</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">CircleModel::size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _fb-&gt;GetSize(); }</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>} <span class="comment">// namespace tflite2circle</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="keyword">auto</span> circle_subgraph = circle_subgraph_builder.Finish();</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    subgprahs_vec.emplace_back(circle_subgraph);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="comment">// next subgraph</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    subgraph_index = subgraph_index + 1;</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  }</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(subgprahs_vec);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>}</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_offset.html#a3090e2ee11beac58c5c2fd4cbfdc429d">  336</a></span><span class="keyword">template</span> &lt;&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_offset.html#a8f154d5b11c3413fb0e7bf4f9f15c23b">Offset&lt;OperatorCodeLink&gt;::build</a>(<span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">TFLFlatBufVec</a> *tflite_flatbuffer_vec)</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>{</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  std::vector&lt;flatbuffers::Offset&lt;circle::OperatorCode&gt;&gt; operator_code_vec;</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : *tflite_flatbuffer_vec)</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  {</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    <span class="keyword">auto</span> custom_code = _fb-&gt;CreateString(it-&gt;custom_code());</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    circle::OperatorCodeBuilder operator_code_builder{*_fb};</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    <span class="keyword">auto</span> de_code = it-&gt;deprecated_builtin_code();</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keyword">auto</span> bt_code = it-&gt;builtin_code();</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="comment">// There are two builtin codes (deprecated_builtin, (extended) builtin)</span></div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="comment">// deprecated builtin code uses 0~126</span></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="comment">// extended builtin code uses 127~</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <span class="comment">// NOTE 127 = BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keywordflow">if</span> (de_code &gt;= 0 and de_code &lt; 127)</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    {</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>      <span class="comment">// Use deprecated builtin opcode.</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      <span class="keyword">auto</span> cir_de_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(de_code);</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      <span class="comment">// correct bt_code where bt_code == 0 for old tflite format</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      <span class="keywordflow">if</span> (cir_bt_code == 0)</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>        cir_bt_code = <span class="keyword">static_cast&lt;</span>circle::BuiltinOperator<span class="keyword">&gt;</span>(cir_de_code);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      operator_code_builder.add_deprecated_builtin_code(cir_de_code);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    }</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    {</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>      <span class="comment">// Use extended builtin opcode</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>      <span class="comment">// Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>      <span class="keyword">auto</span> cir_bt_code = <a class="code hl_function" href="namespacetflite2circle.html#aed430112f65a79d9698f4a7d1544b9ce">get_circle_builtin_code</a>(bt_code);</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      operator_code_builder.add_deprecated_builtin_code(</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      operator_code_builder.add_builtin_code(cir_bt_code);</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    }</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    operator_code_builder.add_custom_code(custom_code);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    operator_code_builder.add_version(it-&gt;version());</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keyword">auto</span> code = operator_code_builder.Finish();</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    operator_code_vec.emplace_back(code);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  }</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(operator_code_vec);</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>}</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a8ab159baea5d752528b4bc6731ea540d">  379</a></span><a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a731579184d63686f98c3f384d17be9af">CircleModel::CircleModel</a>(<a class="code hl_typedef" href="namespacetflite2circle.html#a7d3f623dcd2b43198a02b11c1ade90ee">FlatBufBuilder</a> &amp;fb)</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  : _version{0}, _description{fb-&gt;CreateString(<span class="stringliteral">&quot;ONE-tflite2circle&quot;</span>)}, _fb{fb}</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>{</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="comment">// NOTHING TODO</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>}</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">  385</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">CircleModel::load_offsets</a>(<span class="keyword">const</span> tflite::Model *tfl_model)</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>{</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  _operator_codes_offset = std::make_unique&lt;Offset&lt;OperatorCodeLink&gt;&gt;(_fb);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  _subGraphs_offset = std::make_unique&lt;Offset&lt;SubGraphLink&gt;&gt;(_fb);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>  _buffers_offset = std::make_unique&lt;Offset&lt;BufferLink&gt;&gt;(_fb);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>  _metadata_buffer_offset = std::make_unique&lt;Offset&lt;MetaDataBufferLink&gt;&gt;(_fb);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>  _subGraphs_offset-&gt;set_signature_defs(tfl_model-&gt;signature_defs());</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  _operator_codes_offset-&gt;build(tfl_model-&gt;operator_codes());</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>  _subGraphs_offset-&gt;build(tfl_model-&gt;subgraphs());</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  _buffers_offset-&gt;build(tfl_model-&gt;buffers());</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  _metadata_buffer_offset-&gt;build(tfl_model-&gt;metadata_buffer());</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>}</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">  400</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">CircleModel::model_build</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  circle::ModelBuilder model_builder{*_fb};</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  model_builder.add_version(_version);</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  model_builder.add_description(_description);</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  model_builder.add_operator_codes(_operator_codes_offset-&gt;offset());</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>  model_builder.add_subgraphs(_subGraphs_offset-&gt;offset());</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  model_builder.add_buffers(_buffers_offset-&gt;offset());</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  model_builder.add_metadata_buffer(_metadata_buffer_offset-&gt;offset());</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <span class="keyword">auto</span> model = model_builder.Finish();</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  circle::FinishModelBuffer(*_fb, model);</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>}</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">  415</a></span><span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">CircleModel::base</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>}</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">  420</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">CircleModel::size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _fb-&gt;GetSize(); }</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>} <span class="comment">// namespace tflite2circle</span></div>
 <div class="ttc" id="a_circle_model_8h_html"><div class="ttname"><a href="_circle_model_8h.html">CircleModel.h</a></div></div>
 <div class="ttc" id="a_data_lookup_8h_html"><div class="ttname"><a href="_data_lookup_8h.html">DataLookup.h</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a53e9c0cb1d27e4bd355034dbd43f0127"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a53e9c0cb1d27e4bd355034dbd43f0127">flatbuffers::Vector::end</a></div><div class="ttdeci">iterator end()</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00318">flatbuffers.h:318</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_ac1ab40cdffad6cd50c222fe42c51437b"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#ac1ab40cdffad6cd50c222fe42c51437b">flatbuffers::Vector::begin</a></div><div class="ttdeci">iterator begin()</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00315">flatbuffers.h:315</a></div></div>
-<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a09d7848b06f8c74e41c22cf1aacc0ba8"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">tflite2circle::CircleModel::model_build</a></div><div class="ttdeci">void model_build(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00401">CircleModel.cpp:401</a></div></div>
-<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a3e087f116e34d7544480a786f998ac25"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">tflite2circle::CircleModel::size</a></div><div class="ttdeci">size_t size(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00421">CircleModel.cpp:421</a></div></div>
+<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a09d7848b06f8c74e41c22cf1aacc0ba8"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">tflite2circle::CircleModel::model_build</a></div><div class="ttdeci">void model_build(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00400">CircleModel.cpp:400</a></div></div>
+<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a3e087f116e34d7544480a786f998ac25"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">tflite2circle::CircleModel::size</a></div><div class="ttdeci">size_t size(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00420">CircleModel.cpp:420</a></div></div>
 <div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a731579184d63686f98c3f384d17be9af"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a731579184d63686f98c3f384d17be9af">tflite2circle::CircleModel::CircleModel</a></div><div class="ttdeci">CircleModel(void)=delete</div></div>
-<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a73c7e918f396ac06f93145507fd8e7a5"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">tflite2circle::CircleModel::base</a></div><div class="ttdeci">const char * base(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00416">CircleModel.cpp:416</a></div></div>
-<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_ad0d9e0932b68c98e2235dc63bb9a5b24"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">tflite2circle::CircleModel::load_offsets</a></div><div class="ttdeci">void load_offsets(const tflite::Model *tfl_model)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00386">CircleModel.cpp:386</a></div></div>
+<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a73c7e918f396ac06f93145507fd8e7a5"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">tflite2circle::CircleModel::base</a></div><div class="ttdeci">const char * base(void) const</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00415">CircleModel.cpp:415</a></div></div>
+<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_ad0d9e0932b68c98e2235dc63bb9a5b24"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#ad0d9e0932b68c98e2235dc63bb9a5b24">tflite2circle::CircleModel::load_offsets</a></div><div class="ttdeci">void load_offsets(const tflite::Model *tfl_model)</div><div class="ttdef"><b>Definition:</b> <a href="_circle_model_8cpp_source.html#l00385">CircleModel.cpp:385</a></div></div>
 <div class="ttc" id="aclasstflite2circle_1_1_offset_html_a8f154d5b11c3413fb0e7bf4f9f15c23b"><div class="ttname"><a href="classtflite2circle_1_1_offset.html#a8f154d5b11c3413fb0e7bf4f9f15c23b">tflite2circle::Offset::build</a></div><div class="ttdeci">void build(const TFLFlatBufVec *tflite_flatbuffer_vec)</div></div>
 <div class="ttc" id="amio-tflite2121_2include_2mio__tflite2121_2_helper_8h_html"><div class="ttname"><a href="mio-tflite2121_2include_2mio__tflite2121_2_helper_8h.html">Helper.h</a></div></div>
 <div class="ttc" id="anamespacesparsity_html"><div class="ttname"><a href="namespacesparsity.html">sparsity</a></div><div class="ttdef"><b>Definition:</b> <a href="_sparsity_format_converter_8cpp_source.html#l00029">SparsityFormatConverter.cpp:30</a></div></div>

@@ -86,7 +86,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "ScatterNd.h", "tflite_2src_2_op_2include_2_scatter_nd_8h.html", "tflite_2src_2_op_2include_2_scatter_nd_8h" ],
     [ "SegmentSum.h", "tflite_2src_2_op_2include_2_segment_sum_8h.html", "tflite_2src_2_op_2include_2_segment_sum_8h" ],
     [ "Select.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_select_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_select_8h" ],
-    [ "SelectV2.h", "tflite_2src_2_op_2include_2_select_v2_8h.html", "tflite_2src_2_op_2include_2_select_v2_8h" ],
+    [ "SelectV2.h", "tflchef_2tflite_2src_2_op_2include_2_select_v2_8h.html", "tflchef_2tflite_2src_2_op_2include_2_select_v2_8h" ],
     [ "Shape.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_shape_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_shape_8h" ],
     [ "Sin.h", "tflchef_2tflite_2src_2_op_2include_2_sin_8h.html", "tflchef_2tflite_2src_2_op_2include_2_sin_8h" ],
     [ "Slice.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_slice_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_slice_8h" ],

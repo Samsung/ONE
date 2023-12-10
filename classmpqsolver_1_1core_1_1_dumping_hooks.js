@@ -1,11 +1,11 @@
 var classmpqsolver_1_1core_1_1_dumping_hooks =
 [
     [ "DumpingHooks", "classmpqsolver_1_1core_1_1_dumping_hooks.html#abfd1ec3dd03c16d970eb0dd0c3128003", null ],
-    [ "on_begin_iteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a9d99ab294faa7adae1de75e6abee95e3", null ],
-    [ "on_begin_solver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#af6874a3a33516d8ae1ba2a308ba14eed", null ],
-    [ "on_end_iteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#ac680507000a96fcc40682eab16e56e80", null ],
-    [ "on_end_solver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a285adcf0a002d8e1060febae22784a5e", null ],
-    [ "on_quantized", "classmpqsolver_1_1core_1_1_dumping_hooks.html#ab2370b0a79c448f4cdfe7f8767ee5d4b", null ],
+    [ "onBeginIteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a6368c74944a85b5c8987e861948de4bb", null ],
+    [ "onBeginSolver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a2a06c319aa00a96ce4f2081bcb3cbafc", null ],
+    [ "onEndIteration", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a76f8137b8089a23097720dc1712ff600", null ],
+    [ "onEndSolver", "classmpqsolver_1_1core_1_1_dumping_hooks.html#ab511b6f7282dbe4407d4b0c632a111fb", null ],
+    [ "onQuantized", "classmpqsolver_1_1core_1_1_dumping_hooks.html#af237565c7c7077416d0e313c49b66af9", null ],
     [ "_dumper", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a9be47f81ca94013bc693e6238a491030", null ],
     [ "_in_iterations", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a8a7a54713c121387869ee4c7e2af1055", null ],
     [ "_model_path", "classmpqsolver_1_1core_1_1_dumping_hooks.html#a3b2bd941fba1394ed5cd7d739fdcecf7", null ],

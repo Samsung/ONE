@@ -117,36 +117,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abfd1ec3dd03c16d970eb0dd0c3128003"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#abfd1ec3dd03c16d970eb0dd0c3128003">DumpingHooks</a> (const std::string &amp;save_path)</td></tr>
 <tr class="memdesc:abfd1ec3dd03c16d970eb0dd0c3128003"><td class="mdescLeft">&#160;</td><td class="mdescRight">DumpingHooks constructor.  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#abfd1ec3dd03c16d970eb0dd0c3128003">More...</a><br /></td></tr>
 <tr class="separator:abfd1ec3dd03c16d970eb0dd0c3128003"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2370b0a79c448f4cdfe7f8767ee5d4b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ab2370b0a79c448f4cdfe7f8767ee5d4b">on_quantized</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module) const override</td></tr>
-<tr class="memdesc:ab2370b0a79c448f4cdfe7f8767ee5d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on successfull quantization  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ab2370b0a79c448f4cdfe7f8767ee5d4b">More...</a><br /></td></tr>
-<tr class="separator:ab2370b0a79c448f4cdfe7f8767ee5d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6874a3a33516d8ae1ba2a308ba14eed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#af6874a3a33516d8ae1ba2a308ba14eed">on_begin_solver</a> (const std::string &amp;model_path, float q8error, float q16error) override</td></tr>
-<tr class="memdesc:af6874a3a33516d8ae1ba2a308ba14eed"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of iterative search  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#af6874a3a33516d8ae1ba2a308ba14eed">More...</a><br /></td></tr>
-<tr class="separator:af6874a3a33516d8ae1ba2a308ba14eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d99ab294faa7adae1de75e6abee95e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a9d99ab294faa7adae1de75e6abee95e3">on_begin_iteration</a> () override</td></tr>
-<tr class="memdesc:a9d99ab294faa7adae1de75e6abee95e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of current iteration  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a9d99ab294faa7adae1de75e6abee95e3">More...</a><br /></td></tr>
-<tr class="separator:a9d99ab294faa7adae1de75e6abee95e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac680507000a96fcc40682eab16e56e80"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ac680507000a96fcc40682eab16e56e80">on_end_iteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error) const override</td></tr>
-<tr class="memdesc:ac680507000a96fcc40682eab16e56e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ac680507000a96fcc40682eab16e56e80">More...</a><br /></td></tr>
-<tr class="separator:ac680507000a96fcc40682eab16e56e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a285adcf0a002d8e1060febae22784a5e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a285adcf0a002d8e1060febae22784a5e">on_end_solver</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float qerror) override</td></tr>
-<tr class="memdesc:a285adcf0a002d8e1060febae22784a5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of iterative search  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a285adcf0a002d8e1060febae22784a5e">More...</a><br /></td></tr>
-<tr class="separator:a285adcf0a002d8e1060febae22784a5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a400e326694eeac41715a0df61a7a3979"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmpqsolver_1_1core_1_1_quantizer_hook.html#a400e326694eeac41715a0df61a7a3979">on_quantized</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module) const =0</td></tr>
-<tr class="memdesc:a400e326694eeac41715a0df61a7a3979"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on successfull quantization  <a href="structmpqsolver_1_1core_1_1_quantizer_hook.html#a400e326694eeac41715a0df61a7a3979">More...</a><br /></td></tr>
-<tr class="separator:a400e326694eeac41715a0df61a7a3979"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab341157f2d833538300ffdbac722dd6d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#ab341157f2d833538300ffdbac722dd6d">on_begin_solver</a> (const std::string &amp;model_path, float q8error, float q16error)=0</td></tr>
-<tr class="memdesc:ab341157f2d833538300ffdbac722dd6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#ab341157f2d833538300ffdbac722dd6d">More...</a><br /></td></tr>
-<tr class="separator:ab341157f2d833538300ffdbac722dd6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd414cafe76e3cf4fc9e6e66ababace5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#acd414cafe76e3cf4fc9e6e66ababace5">on_begin_iteration</a> ()=0</td></tr>
-<tr class="memdesc:acd414cafe76e3cf4fc9e6e66ababace5"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#acd414cafe76e3cf4fc9e6e66ababace5">More...</a><br /></td></tr>
-<tr class="separator:acd414cafe76e3cf4fc9e6e66ababace5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17a9bad7cc357748d39cf212a6cf4609"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a17a9bad7cc357748d39cf212a6cf4609">on_end_iteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error) const =0</td></tr>
-<tr class="memdesc:a17a9bad7cc357748d39cf212a6cf4609"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a17a9bad7cc357748d39cf212a6cf4609">More...</a><br /></td></tr>
-<tr class="separator:a17a9bad7cc357748d39cf212a6cf4609"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfabff936341116fea071ef11196809a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#adfabff936341116fea071ef11196809a">on_end_solver</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float qerror)=0</td></tr>
-<tr class="memdesc:adfabff936341116fea071ef11196809a"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#adfabff936341116fea071ef11196809a">More...</a><br /></td></tr>
-<tr class="separator:adfabff936341116fea071ef11196809a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af237565c7c7077416d0e313c49b66af9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#af237565c7c7077416d0e313c49b66af9">onQuantized</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module) const override</td></tr>
+<tr class="memdesc:af237565c7c7077416d0e313c49b66af9"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on successfull quantization  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#af237565c7c7077416d0e313c49b66af9">More...</a><br /></td></tr>
+<tr class="separator:af237565c7c7077416d0e313c49b66af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a06c319aa00a96ce4f2081bcb3cbafc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2a06c319aa00a96ce4f2081bcb3cbafc">onBeginSolver</a> (const std::string &amp;model_path, float q8error, float q16error) override</td></tr>
+<tr class="memdesc:a2a06c319aa00a96ce4f2081bcb3cbafc"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of iterative search  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2a06c319aa00a96ce4f2081bcb3cbafc">More...</a><br /></td></tr>
+<tr class="separator:a2a06c319aa00a96ce4f2081bcb3cbafc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6368c74944a85b5c8987e861948de4bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a6368c74944a85b5c8987e861948de4bb">onBeginIteration</a> () override</td></tr>
+<tr class="memdesc:a6368c74944a85b5c8987e861948de4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of current iteration  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a6368c74944a85b5c8987e861948de4bb">More...</a><br /></td></tr>
+<tr class="separator:a6368c74944a85b5c8987e861948de4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76f8137b8089a23097720dc1712ff600"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a76f8137b8089a23097720dc1712ff600">onEndIteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error) const override</td></tr>
+<tr class="memdesc:a76f8137b8089a23097720dc1712ff600"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a76f8137b8089a23097720dc1712ff600">More...</a><br /></td></tr>
+<tr class="separator:a76f8137b8089a23097720dc1712ff600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab511b6f7282dbe4407d4b0c632a111fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ab511b6f7282dbe4407d4b0c632a111fb">onEndSolver</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float qerror) override</td></tr>
+<tr class="memdesc:ab511b6f7282dbe4407d4b0c632a111fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of iterative search  <a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ab511b6f7282dbe4407d4b0c632a111fb">More...</a><br /></td></tr>
+<tr class="separator:ab511b6f7282dbe4407d4b0c632a111fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab24bc9b5baa77b124d30cabbab2b284f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmpqsolver_1_1core_1_1_quantizer_hook.html#ab24bc9b5baa77b124d30cabbab2b284f">onQuantized</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module) const =0</td></tr>
+<tr class="memdesc:ab24bc9b5baa77b124d30cabbab2b284f"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on successfull quantization  <a href="structmpqsolver_1_1core_1_1_quantizer_hook.html#ab24bc9b5baa77b124d30cabbab2b284f">More...</a><br /></td></tr>
+<tr class="separator:ab24bc9b5baa77b124d30cabbab2b284f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a55609986a582a554e7976e2e06560"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">onBeginSolver</a> (const std::string &amp;model_path, float q8error, float q16error)=0</td></tr>
+<tr class="memdesc:a22a55609986a582a554e7976e2e06560"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">More...</a><br /></td></tr>
+<tr class="separator:a22a55609986a582a554e7976e2e06560"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ca3c255fbfdd3a6cb5053810172416"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a20ca3c255fbfdd3a6cb5053810172416">onBeginIteration</a> ()=0</td></tr>
+<tr class="memdesc:a20ca3c255fbfdd3a6cb5053810172416"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a20ca3c255fbfdd3a6cb5053810172416">More...</a><br /></td></tr>
+<tr class="separator:a20ca3c255fbfdd3a6cb5053810172416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6406a0158543930eaa5c3d9ebdc92569"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a6406a0158543930eaa5c3d9ebdc92569">onEndIteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error) const =0</td></tr>
+<tr class="memdesc:a6406a0158543930eaa5c3d9ebdc92569"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a6406a0158543930eaa5c3d9ebdc92569">More...</a><br /></td></tr>
+<tr class="separator:a6406a0158543930eaa5c3d9ebdc92569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">onEndSolver</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float qerror)=0</td></tr>
+<tr class="memdesc:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">More...</a><br /></td></tr>
+<tr class="separator:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -194,14 +194,14 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   22</span>  : <a class="code hl_variable" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2e33ebf72f45aec30a595dd979e8453c">_save_path</a>(save_path), <a class="code hl_variable" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a9be47f81ca94013bc693e6238a491030">_dumper</a>(<a class="code hl_variable" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2e33ebf72f45aec30a595dd979e8453c">_save_path</a>)</div>
 <div class="line"><span class="lineno">   23</span>{</div>
 <div class="line"><span class="lineno">   24</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a2e33ebf72f45aec30a595dd979e8453c"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2e33ebf72f45aec30a595dd979e8453c">mpqsolver::core::DumpingHooks::_save_path</a></div><div class="ttdeci">std::string _save_path</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00075">DumpingHooks.h:75</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a9be47f81ca94013bc693e6238a491030"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a9be47f81ca94013bc693e6238a491030">mpqsolver::core::DumpingHooks::_dumper</a></div><div class="ttdeci">Dumper _dumper</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00076">DumpingHooks.h:76</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a2e33ebf72f45aec30a595dd979e8453c"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a2e33ebf72f45aec30a595dd979e8453c">mpqsolver::core::DumpingHooks::_save_path</a></div><div class="ttdeci">std::string _save_path</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00074">DumpingHooks.h:74</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a9be47f81ca94013bc693e6238a491030"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a9be47f81ca94013bc693e6238a491030">mpqsolver::core::DumpingHooks::_dumper</a></div><div class="ttdeci">Dumper _dumper</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00075">DumpingHooks.h:75</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9d99ab294faa7adae1de75e6abee95e3" name="a9d99ab294faa7adae1de75e6abee95e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d99ab294faa7adae1de75e6abee95e3">&#9670;&#160;</a></span>on_begin_iteration()</h2>
+<a id="a6368c74944a85b5c8987e861948de4bb" name="a6368c74944a85b5c8987e861948de4bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6368c74944a85b5c8987e861948de4bb">&#9670;&#160;</a></span>onBeginIteration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpingHooks::on_begin_iteration </td>
+          <td class="memname">void DumpingHooks::onBeginIteration </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -225,22 +225,22 @@ Protected Attributes</h2></td></tr>
 
 <p>called on the start of current iteration </p>
 
-<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#acd414cafe76e3cf4fc9e6e66ababace5">mpqsolver::core::SolverHooks</a>.</p>
+<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a20ca3c255fbfdd3a6cb5053810172416">mpqsolver::core::SolverHooks</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_dumping_hooks_8cpp_source.html#l00035">35</a> of file <a class="el" href="_dumping_hooks_8cpp_source.html">DumpingHooks.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
 <div class="line"><span class="lineno">   37</span>  <a class="code hl_variable" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a8a7a54713c121387869ee4c7e2af1055">_in_iterations</a> = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   38</span>  <a class="code hl_variable" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#aded45eb22120d3335173b82b163d360d">_num_of_iterations</a> += 1;</div>
 <div class="line"><span class="lineno">   39</span>}</div>
-<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a8a7a54713c121387869ee4c7e2af1055"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a8a7a54713c121387869ee4c7e2af1055">mpqsolver::core::DumpingHooks::_in_iterations</a></div><div class="ttdeci">bool _in_iterations</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00078">DumpingHooks.h:78</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_aded45eb22120d3335173b82b163d360d"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#aded45eb22120d3335173b82b163d360d">mpqsolver::core::DumpingHooks::_num_of_iterations</a></div><div class="ttdeci">uint32_t _num_of_iterations</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00077">DumpingHooks.h:77</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a8a7a54713c121387869ee4c7e2af1055"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a8a7a54713c121387869ee4c7e2af1055">mpqsolver::core::DumpingHooks::_in_iterations</a></div><div class="ttdeci">bool _in_iterations</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00077">DumpingHooks.h:77</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_aded45eb22120d3335173b82b163d360d"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#aded45eb22120d3335173b82b163d360d">mpqsolver::core::DumpingHooks::_num_of_iterations</a></div><div class="ttdeci">uint32_t _num_of_iterations</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00076">DumpingHooks.h:76</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00078">_in_iterations</a>, and <a class="el" href="_dumping_hooks_8h_source.html#l00077">_num_of_iterations</a>.</p>
+<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00077">_in_iterations</a>, and <a class="el" href="_dumping_hooks_8h_source.html#l00076">_num_of_iterations</a>.</p>
 
 </div>
 </div>
-<a id="af6874a3a33516d8ae1ba2a308ba14eed" name="af6874a3a33516d8ae1ba2a308ba14eed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6874a3a33516d8ae1ba2a308ba14eed">&#9670;&#160;</a></span>on_begin_solver()</h2>
+<a id="a2a06c319aa00a96ce4f2081bcb3cbafc" name="a2a06c319aa00a96ce4f2081bcb3cbafc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a06c319aa00a96ce4f2081bcb3cbafc">&#9670;&#160;</a></span>onBeginSolver()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +249,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpingHooks::on_begin_solver </td>
+          <td class="memname">void DumpingHooks::onBeginSolver </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>model_path</em>, </td>
@@ -281,7 +281,7 @@ Protected Attributes</h2></td></tr>
 
 <p>called on the start of iterative search </p>
 
-<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#ab341157f2d833538300ffdbac722dd6d">mpqsolver::core::SolverHooks</a>.</p>
+<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">mpqsolver::core::SolverHooks</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_dumping_hooks_8cpp_source.html#l00026">26</a> of file <a class="el" href="_dumping_hooks_8cpp_source.html">DumpingHooks.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
@@ -295,14 +295,14 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_a4c4632c968f1b52c5fc549b3e2c13faf"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#a4c4632c968f1b52c5fc549b3e2c13faf">mpqsolver::core::Dumper::setModelPath</a></div><div class="ttdeci">void setModelPath(const std::string &amp;model_path)</div><div class="ttdoc">sets model path for further usage</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00043">Dumper.cpp:43</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_adb912798431d0efb4d448df8776c3d49"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#adb912798431d0efb4d448df8776c3d49">mpqsolver::core::Dumper::dumpQ8Error</a></div><div class="ttdeci">void dumpQ8Error(float error) const</div><div class="ttdoc">append error of Q8 quantization</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00138">Dumper.cpp:138</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_afb69345a225024a2f2c5fb7843d13a00"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#afb69345a225024a2f2c5fb7843d13a00">mpqsolver::core::Dumper::prepareForErrorDumping</a></div><div class="ttdeci">void prepareForErrorDumping() const</div><div class="ttdoc">create file for error dumping</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00129">Dumper.cpp:129</a></div></div>
-<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a3b2bd941fba1394ed5cd7d739fdcecf7"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a3b2bd941fba1394ed5cd7d739fdcecf7">mpqsolver::core::DumpingHooks::_model_path</a></div><div class="ttdeci">std::string _model_path</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00074">DumpingHooks.h:74</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumping_hooks_html_a3b2bd941fba1394ed5cd7d739fdcecf7"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a3b2bd941fba1394ed5cd7d739fdcecf7">mpqsolver::core::DumpingHooks::_model_path</a></div><div class="ttdeci">std::string _model_path</div><div class="ttdef"><b>Definition:</b> <a href="_dumping_hooks_8h_source.html#l00073">DumpingHooks.h:73</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00076">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00074">_model_path</a>, <a class="el" href="_dumper_8cpp_source.html#l00144">mpqsolver::core::Dumper::dumpQ16Error()</a>, <a class="el" href="_dumper_8cpp_source.html#l00138">mpqsolver::core::Dumper::dumpQ8Error()</a>, <a class="el" href="_dumper_8cpp_source.html#l00129">mpqsolver::core::Dumper::prepareForErrorDumping()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00043">mpqsolver::core::Dumper::setModelPath()</a>.</p>
+<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00075">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00073">_model_path</a>, <a class="el" href="_dumper_8cpp_source.html#l00144">mpqsolver::core::Dumper::dumpQ16Error()</a>, <a class="el" href="_dumper_8cpp_source.html#l00138">mpqsolver::core::Dumper::dumpQ8Error()</a>, <a class="el" href="_dumper_8cpp_source.html#l00129">mpqsolver::core::Dumper::prepareForErrorDumping()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00043">mpqsolver::core::Dumper::setModelPath()</a>.</p>
 
 </div>
 </div>
-<a id="ac680507000a96fcc40682eab16e56e80" name="ac680507000a96fcc40682eab16e56e80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac680507000a96fcc40682eab16e56e80">&#9670;&#160;</a></span>on_end_iteration()</h2>
+<a id="a76f8137b8089a23097720dc1712ff600" name="a76f8137b8089a23097720dc1712ff600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76f8137b8089a23097720dc1712ff600">&#9670;&#160;</a></span>onEndIteration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,7 +311,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpingHooks::on_end_iteration </td>
+          <td class="memname">void DumpingHooks::onEndIteration </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;&#160;</td>
           <td class="paramname"><em>layers</em>, </td>
@@ -343,7 +343,7 @@ Protected Attributes</h2></td></tr>
 
 <p>called at the end of current iteration </p>
 
-<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a17a9bad7cc357748d39cf212a6cf4609">mpqsolver::core::SolverHooks</a>.</p>
+<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a6406a0158543930eaa5c3d9ebdc92569">mpqsolver::core::SolverHooks</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">41</a> of file <a class="el" href="_dumping_hooks_8cpp_source.html">DumpingHooks.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
@@ -353,12 +353,12 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_a9def0a78bd2e8de63fd092a7e861982e"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#a9def0a78bd2e8de63fd092a7e861982e">mpqsolver::core::Dumper::dumpMPQError</a></div><div class="ttdeci">void dumpMPQError(float error, uint32_t step) const</div><div class="ttdoc">append error of mpq quantization</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00150">Dumper.cpp:150</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_aee588be98fa9017ea47b924983d237b7"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#aee588be98fa9017ea47b924983d237b7">mpqsolver::core::Dumper::dumpMPQConfiguration</a></div><div class="ttdeci">void dumpMPQConfiguration(const LayerParams &amp;layers, const std::string &amp;def_dtype, int step) const</div><div class="ttdoc">dumps mpq configuration</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00082">Dumper.cpp:82</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00076">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00077">_num_of_iterations</a>, <a class="el" href="_dumper_8cpp_source.html#l00082">mpqsolver::core::Dumper::dumpMPQConfiguration()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00150">mpqsolver::core::Dumper::dumpMPQError()</a>.</p>
+<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00075">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00076">_num_of_iterations</a>, <a class="el" href="_dumper_8cpp_source.html#l00082">mpqsolver::core::Dumper::dumpMPQConfiguration()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00150">mpqsolver::core::Dumper::dumpMPQError()</a>.</p>
 
 </div>
 </div>
-<a id="a285adcf0a002d8e1060febae22784a5e" name="a285adcf0a002d8e1060febae22784a5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a285adcf0a002d8e1060febae22784a5e">&#9670;&#160;</a></span>on_end_solver()</h2>
+<a id="ab511b6f7282dbe4407d4b0c632a111fb" name="ab511b6f7282dbe4407d4b0c632a111fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab511b6f7282dbe4407d4b0c632a111fb">&#9670;&#160;</a></span>onEndSolver()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +367,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpingHooks::on_end_solver </td>
+          <td class="memname">void DumpingHooks::onEndSolver </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;&#160;</td>
           <td class="paramname"><em>layers</em>, </td>
@@ -399,7 +399,7 @@ Protected Attributes</h2></td></tr>
 
 <p>called at the end of iterative search </p>
 
-<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#adfabff936341116fea071ef11196809a">mpqsolver::core::SolverHooks</a>.</p>
+<p>Implements <a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">mpqsolver::core::SolverHooks</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">48</a> of file <a class="el" href="_dumping_hooks_8cpp_source.html">DumpingHooks.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
@@ -409,12 +409,12 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_ad9a27149f5707cd60b2ad499f35c279e"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#ad9a27149f5707cd60b2ad499f35c279e">mpqsolver::core::Dumper::dumpFinalMPQ</a></div><div class="ttdeci">void dumpFinalMPQ(const LayerParams &amp;layers, const std::string &amp;def_dtype) const</div><div class="ttdoc">dumps final mpq configuration</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00090">Dumper.cpp:90</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00076">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00078">_in_iterations</a>, <a class="el" href="_dumper_8cpp_source.html#l00090">mpqsolver::core::Dumper::dumpFinalMPQ()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00150">mpqsolver::core::Dumper::dumpMPQError()</a>.</p>
+<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00075">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00077">_in_iterations</a>, <a class="el" href="_dumper_8cpp_source.html#l00090">mpqsolver::core::Dumper::dumpFinalMPQ()</a>, and <a class="el" href="_dumper_8cpp_source.html#l00150">mpqsolver::core::Dumper::dumpMPQError()</a>.</p>
 
 </div>
 </div>
-<a id="ab2370b0a79c448f4cdfe7f8767ee5d4b" name="ab2370b0a79c448f4cdfe7f8767ee5d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2370b0a79c448f4cdfe7f8767ee5d4b">&#9670;&#160;</a></span>on_quantized()</h2>
+<a id="af237565c7c7077416d0e313c49b66af9" name="af237565c7c7077416d0e313c49b66af9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af237565c7c7077416d0e313c49b66af9">&#9670;&#160;</a></span>onQuantized()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +423,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void DumpingHooks::on_quantized </td>
+          <td class="memname">void DumpingHooks::onQuantized </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classluci_1_1_module.html">luci::Module</a> *&#160;</td>
           <td class="paramname"><em>module</em></td><td>)</td>
@@ -439,7 +439,7 @@ Protected Attributes</h2></td></tr>
 
 <p>called on successfull quantization </p>
 
-<p>Implements <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_hook.html#a400e326694eeac41715a0df61a7a3979">mpqsolver::core::QuantizerHook</a>.</p>
+<p>Implements <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_hook.html#ab24bc9b5baa77b124d30cabbab2b284f">mpqsolver::core::QuantizerHook</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">56</a> of file <a class="el" href="_dumping_hooks_8cpp_source.html">DumpingHooks.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
@@ -450,7 +450,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   62</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_dumper_html_abccf3495fd1efb6b81d36c4db2c5879c"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_dumper.html#abccf3495fd1efb6b81d36c4db2c5879c">mpqsolver::core::Dumper::dumpQuantized</a></div><div class="ttdeci">void dumpQuantized(luci::Module *module, uint32_t step) const</div><div class="ttdoc">dumps quantized module</div><div class="ttdef"><b>Definition:</b> <a href="_dumper_8cpp_source.html#l00115">Dumper.cpp:115</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00076">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00078">_in_iterations</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00077">_num_of_iterations</a>, and <a class="el" href="_dumper_8cpp_source.html#l00115">mpqsolver::core::Dumper::dumpQuantized()</a>.</p>
+<p class="reference">References <a class="el" href="_dumping_hooks_8h_source.html#l00075">_dumper</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00077">_in_iterations</a>, <a class="el" href="_dumping_hooks_8h_source.html#l00076">_num_of_iterations</a>, and <a class="el" href="_dumper_8cpp_source.html#l00115">mpqsolver::core::Dumper::dumpQuantized()</a>.</p>
 
 </div>
 </div>
@@ -475,9 +475,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00076">76</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00075">75</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00026">on_begin_solver()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">on_end_iteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">on_end_solver()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">on_quantized()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00026">onBeginSolver()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">onEndIteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">onEndSolver()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">onQuantized()</a>.</p>
 
 </div>
 </div>
@@ -501,9 +501,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00078">78</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00077">77</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00035">on_begin_iteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">on_end_solver()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">on_quantized()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00035">onBeginIteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00048">onEndSolver()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">onQuantized()</a>.</p>
 
 </div>
 </div>
@@ -527,9 +527,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00074">74</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00073">73</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00026">on_begin_solver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00026">onBeginSolver()</a>.</p>
 
 </div>
 </div>
@@ -553,9 +553,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00077">77</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00076">76</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00035">on_begin_iteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">on_end_iteration()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">on_quantized()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dumping_hooks_8cpp_source.html#l00035">onBeginIteration()</a>, <a class="el" href="_dumping_hooks_8cpp_source.html#l00041">onEndIteration()</a>, and <a class="el" href="_dumping_hooks_8cpp_source.html#l00056">onQuantized()</a>.</p>
 
 </div>
 </div>
@@ -579,7 +579,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00075">75</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dumping_hooks_8h_source.html#l00074">74</a> of file <a class="el" href="_dumping_hooks_8h_source.html">DumpingHooks.h</a>.</p>
 
 </div>
 </div>

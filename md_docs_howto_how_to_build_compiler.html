@@ -192,10 +192,11 @@ $(document).ready(function(){initNavTree('md_docs_howto_how_to_build_compiler.ht
 <p >Preprequisite for testing in ARM32 device. </p><div class="fragment"><div class="line"># numpy is required for value match in ARM32 target device</div>
 <div class="line">sudo apt-get install python3-pip</div>
 <div class="line">python3 -m pip install numpy</div>
-</div><!-- fragment --><p >You can also run unit tests in ARM32 Ubuntu device with cross build results. First you need to run the test in host to prepare files that are currently complicated in target device. </p><div class="fragment"><div class="line"># run this in x86-64 host</div>
+</div><!-- fragment --><p >You can also run unit tests in ARM32 Ubuntu device with cross build results. First you need to run the test in host to prepare files that are currently complicated in target device. For value test with python, separate venv is requried. make target <code>test_venv</code> will prepare this. </p><div class="fragment"><div class="line"># run this in x86-64 host</div>
 <div class="line">make -f infra/nncc/Makefile.arm32 test_prep</div>
 <div class="line"> </div>
 <div class="line"># run this in ARM32 target device</div>
+<div class="line">make -f infra/nncc/Makefile.arm32 test_venv</div>
 <div class="line">make -f infra/nncc/Makefile.arm32 test</div>
 </div><!-- fragment --><p >NOTE: this assumes</p><ul>
 <li>host and target have same directoy structure</li>

@@ -3114,6 +3114,7 @@ var hierarchy =
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
       [ "luci_interpreter::kernels::Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", null ],
       [ "luci_interpreter::kernels::Select", "classluci__interpreter_1_1kernels_1_1_select.html", null ],
+      [ "luci_interpreter::kernels::SelectV2", "classluci__interpreter_1_1kernels_1_1_select_v2.html", null ],
       [ "luci_interpreter::kernels::Sin", "classluci__interpreter_1_1kernels_1_1_sin.html", null ],
       [ "luci_interpreter::kernels::Slice", "classluci__interpreter_1_1kernels_1_1_slice.html", null ],
       [ "luci_interpreter::kernels::SpaceToBatchND", "classluci__interpreter_1_1kernels_1_1_space_to_batch_n_d.html", null ],
@@ -3503,8 +3504,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

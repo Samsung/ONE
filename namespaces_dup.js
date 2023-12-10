@@ -61,6 +61,11 @@ var namespaces_dup =
     ] ],
     [ "compat", "namespacecompat.html", null ],
     [ "Concatenation_000", "namespace_concatenation__000.html", "namespace_concatenation__000" ],
+    [ "conftest", "namespaceconftest.html", [
+      [ "extract_test_args", "namespaceconftest.html#ae7df7ddd3f4033321eeb0d35db31376b", null ],
+      [ "pytest_addoption", "namespaceconftest.html#ab0ebca4c0bae417023a405900453603d", null ],
+      [ "pytest_generate_tests", "namespaceconftest.html#ae6533508b4a0c118bf13004aa3d6dc20", null ]
+    ] ],
     [ "constant", "namespaceconstant.html", "namespaceconstant" ],
     [ "Conv2D_000", "namespace_conv2_d__000.html", "namespace_conv2_d__000" ],
     [ "Conv2D_001", "namespace_conv2_d__001.html", "namespace_conv2_d__001" ],
@@ -526,6 +531,19 @@ var namespaces_dup =
     [ "souschef", "namespacesouschef.html", "namespacesouschef" ],
     [ "sparsity", "namespacesparsity.html", "namespacesparsity" ],
     [ "std", "namespacestd.html", "namespacestd" ],
+    [ "test_luci_eval", "namespacetest__luci__eval.html", [
+      [ "luci_eval_verify", "namespacetest__luci__eval.html#ada231ecaadd2be6206da67e3c0de1cfd", null ],
+      [ "luci_eval_verify", "namespacetest__luci__eval.html#aaceab0aa4f95a3d67ea25dbcdad89ad6", null ],
+      [ "test_luci_eval", "namespacetest__luci__eval.html#ad28ce5e324731fb4d6b629b671e82b81", null ],
+      [ "test_luci_eval", "namespacetest__luci__eval.html#a27f3561e997fb2560e62ce6a49c8184e", null ],
+      [ "test_luci_eval_tol", "namespacetest__luci__eval.html#a7e1756668cbc8a276b74810723e32c0f", null ]
+    ] ],
+    [ "test_luci_eval_ref", "namespacetest__luci__eval__ref.html", [
+      [ "dtype_from_file", "namespacetest__luci__eval__ref.html#aae4a6997bbce8234695a3923d20fb0fe", null ],
+      [ "luci_eval_verify_ref", "namespacetest__luci__eval__ref.html#a2c566c7b2e9bd3d290fe47c01c460807", null ],
+      [ "test_luci_eval_ref", "namespacetest__luci__eval__ref.html#ae2503a80a8cf1a6fb242f028ff6a0fad", null ],
+      [ "test_luci_eval_tol_ref", "namespacetest__luci__eval__ref.html#a2d535fec569017a6b307011c6d90ee3c", null ]
+    ] ],
     [ "test_utils", "namespacetest__utils.html", "namespacetest__utils" ],
     [ "TestUtil", "namespace_test_util.html", [
       [ "assertTrue", "namespace_test_util.html#af2a3b06e7e76c316cdf8668179f23311", null ],

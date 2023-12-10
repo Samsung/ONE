@@ -96,11 +96,13 @@ $(document).ready(function(){initNavTree('_fold_fully_connected_pass_8cpp.html',
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_fold_fully_connected_pass_8h_source.html">luci/Pass/FoldFullyConnectedPass.h</a>&quot;</code><br />
-<code>#include &lt;tensorflow/lite/kernels/internal/reference/fully_connected.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_compute_8h_source.html">helpers/Compute.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="compiler_2luci_2pass_2src_2helpers_2_shape_8h_source.html">helpers/Shape.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_source.html">luci/IR/CircleNodes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_attr_fused_act_func_8h_source.html">luci/IR/AttrFusedActFunc.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html">luci/Log.h</a>&gt;</code><br />
-<code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;<a class="el" href="compiler_2luci-compute_2include_2luci__compute_2_fully_connected_8h_source.html">luci_compute/FullyConnected.h</a>&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
 </div>
 <p><a href="_fold_fully_connected_pass_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -133,7 +135,7 @@ Macros</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (not(cond))                  \</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_fold_fully_connected_pass_8cpp_source.html#l00067">67</a> of file <a class="el" href="_fold_fully_connected_pass_8cpp_source.html">FoldFullyConnectedPass.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_fold_fully_connected_pass_8cpp_source.html#l00064">64</a> of file <a class="el" href="_fold_fully_connected_pass_8cpp_source.html">FoldFullyConnectedPass.cpp</a>.</p>
 
 </div>
 </div>

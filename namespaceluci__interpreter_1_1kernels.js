@@ -91,6 +91,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", "classluci__interpreter_1_1kernels_1_1_reverse_v2" ],
     [ "Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", "classluci__interpreter_1_1kernels_1_1_rsqrt" ],
     [ "Select", "classluci__interpreter_1_1kernels_1_1_select.html", "classluci__interpreter_1_1kernels_1_1_select" ],
+    [ "SelectV2", "classluci__interpreter_1_1kernels_1_1_select_v2.html", "classluci__interpreter_1_1kernels_1_1_select_v2" ],
     [ "ShapeKernel", "classluci__interpreter_1_1kernels_1_1_shape_kernel.html", "classluci__interpreter_1_1kernels_1_1_shape_kernel" ],
     [ "Sin", "classluci__interpreter_1_1kernels_1_1_sin.html", "classluci__interpreter_1_1kernels_1_1_sin" ],
     [ "SISOKernel", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html", "classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel" ],

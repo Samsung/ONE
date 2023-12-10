@@ -4,8 +4,6 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "BatchNormPatternFinder.cpp", "_batch_norm_pattern_finder_8cpp.html", "_batch_norm_pattern_finder_8cpp" ],
     [ "BatchNormPatternFinder.h", "_batch_norm_pattern_finder_8h.html", "_batch_norm_pattern_finder_8h" ],
     [ "CircleOptimizer.cpp", "_circle_optimizer_8cpp.html", null ],
-    [ "CircleOptimizerUtils.cpp", "_circle_optimizer_utils_8cpp.html", "_circle_optimizer_utils_8cpp" ],
-    [ "CircleOptimizerUtils.h", "_circle_optimizer_utils_8h.html", "_circle_optimizer_utils_8h" ],
     [ "CircleQuantizer.cpp", "luci_2pass_2src_2_circle_quantizer_8cpp.html", null ],
     [ "CircleShapeInferencePass.cpp", "_circle_shape_inference_pass_8cpp.html", null ],
     [ "CircleTypeInferencePass.cpp", "_circle_type_inference_pass_8cpp.html", null ],
