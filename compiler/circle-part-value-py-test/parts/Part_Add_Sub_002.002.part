@@ -1,0 +1,9 @@
+[partition]
+backends=cpu,acl_cl
+default=cpu
+comply=opname
+
+[OPNAME]
+add1=acl_cl
+add2=acl_cl
+ofm=cpu
