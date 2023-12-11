@@ -38,6 +38,10 @@
 #include <dirent.h>
 #include <misc/string_helpers.h>
 
+#include <fcntl.h>    // O_RDONLY
+#include <sys/mman.h> // mmap, munmap
+#include <sys/stat.h> // fstat
+#include <unistd.h>   // fstat
 /*
  * API does not accept string argument longer than max length below
  */
@@ -1454,17 +1458,86 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  (void)path;
-  _execution->iterateTrainableTensors(
-    [&](const onert::ir::OperandIndex &idx, onert::backend::train::ITrainableTensor *tensor) {
-      printf("[G] Tensor %u: origin = %u, buffer (addr, size) = (%p, %zu)\n", idx.value(),
-             tensor->get_info().originIndex().value(), tensor->buffer(), tensor->total_size());
-      // I did not check buffer size or type. It is just quick check for temporary
-      float *fbuf = (float *)tensor->buffer();
-      printf("              buffer = %f, %f, %f, %f,...\n", fbuf[0], fbuf[1], fbuf[2], fbuf[3]);
-    });
+  std::ifstream src(_model_path, std::ios::binary);
+  std::ofstream dst(path, std::ios::binary);
+  dst << src.rdbuf();
 
-  return NNFW_STATUS_ERROR;
+  auto getFdSize = [](int fd) {
+    if (fd < 0)
+      return -1L;
+
+    struct stat file_stat;
+    if (fstat(fd, &file_stat) != 0)
+      return -1L;
+
+    return file_stat.st_size;
+  };
+
+  auto ensure_mmap = [getFdSize](const char *file_path,
+                                 /* out */ off_t &mmapped_buf_sz) -> uint8_t * {
+    int fd = open(file_path, O_RDWR);
+    auto sz = getFdSize(fd);
+    if (sz == -1)
+      return nullptr;
+
+    auto buf = static_cast<uint8_t *>(mmap(NULL, sz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
+    if (buf == MAP_FAILED)
+    {
+      close(fd);
+      return nullptr;
+    }
+    mmapped_buf_sz = sz;
+    return buf;
+  };
+
+  off_t mmapped_buf_sz;
+  uint8_t *mmapped_buf = ensure_mmap(path, mmapped_buf_sz);
+  if (mmapped_buf == nullptr)
+    return NNFW_STATUS_INVALID_FILE;
+
+  try
+  {
+    _execution->iterateTrainableTensors([&](const onert::ir::OperandIndex &idx,
+                                            onert::backend::train::ITrainableTensor *tensor) {
+      auto model = ::circle::GetModel(mmapped_buf);
+      auto subgs = model->subgraphs();
+      if (!model || !subgs || subgs->size() != 1)
+        throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
+
+      auto subg = subgs->Get(0); // Get 1st subgraph
+      if (!idx.valid() || idx.value() >= subg->tensors()->size())
+        throw std::runtime_error("Trainable tensor index is out of range");
+
+      auto buf_idx = subg->tensors()->Get(idx.value())->buffer();
+      const ::circle::Buffer *buffer = (*model->buffers())[buf_idx];
+      if (!buffer || !buffer->data())
+        throw std::runtime_error("Buffer for trainable tensors is invalid");
+
+      const flatbuffers::Vector<uint8_t> *array = buffer->data();
+      if (!array)
+        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+
+      uint8_t *org_buf = const_cast<uint8_t *>(array->Data());
+      if (!org_buf)
+        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+
+      auto org_buf_sz = array->size();
+      if (org_buf_sz != tensor->total_size())
+        throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
+
+      memcpy(org_buf, tensor->buffer(), org_buf_sz);
+    });
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_export_circle : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+  if (msync(mmapped_buf, mmapped_buf_sz, MS_SYNC) == -1)
+    return NNFW_STATUS_ERROR;
+  if (munmap(mmapped_buf, mmapped_buf_sz) == -1)
+    return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 bool nnfw_session::isStatePreparedTraining()
