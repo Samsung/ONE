@@ -29,6 +29,7 @@
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
+#include "circle_schema_generated.h"
 
 #include <fstream>
 #include <iostream>
