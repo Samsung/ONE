@@ -78,6 +78,33 @@ luci::CircleReshape *create_cloned_reshape(luci::CircleReshape *reshape)
   return new_reshape;
 }
 
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean, uint32_t axis)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(mean != nullptr);    // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(mean).with(new_reshape);
+  mean->input(reshape->tensor());
+  new_reshape->tensor(mean);
+
+  // Change const shape axis value
+  auto *shape_reshape = loco::must_cast<luci::CircleConst *>(new_reshape->shape());
+  assert(shape_reshape->dtype() == loco::DataType::S32);     // FIX_CALLER_UNLESS
+  assert(axis < shape_reshape->size<loco::DataType::S32>()); // FIX_CALLER_UNLESS
+  shape_reshape->at<loco::DataType::S32>(axis) = 1;
+
+  // Do shape inference for this node again.
+  mean->shape_status(luci::ShapeStatus::UNDEFINED);
+  reshape->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
 bool forward_reshape(luci::CircleReshape *reshape, luci::CircleAbs *abs)
 {
   assert(reshape != nullptr); // FIX_CALLER_UNLESS
@@ -216,6 +243,55 @@ protected:
     return false;
   }
 
+  bool visit(luci::CircleMean *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *axis = nullptr;
+
+    reshape = dynamic_cast<luci::CircleReshape *>(node->input());
+    axis = dynamic_cast<luci::CircleConst *>(node->reduction_indices());
+
+    if (reshape == nullptr or axis == nullptr)
+      return false;
+
+    if (axis->dtype() != loco::DataType::S32)
+      return false;
+
+    // Should be scalar
+    if (axis->size<loco::DataType::S32>() != 1)
+      return false;
+
+    // axis value
+    int32_t axis_value;
+    axis_value = axis->at<loco::DataType::S32>(0);
+
+    if (axis_value < 0)
+      axis_value += static_cast<int32_t>(reshape->rank());
+
+    assert(axis_value >= 0);
+
+    if (node->keep_dims() != true)
+      return false;
+
+    auto *reshape_input = dynamic_cast<luci::CircleNode *>(reshape->tensor());
+    if (reshape_input == nullptr)
+      return false;
+
+    // reshape shouldn't change rank
+    if (reshape_input->rank() != reshape->rank())
+      return false;
+
+    assert(reshape_input->rank() > static_cast<uint32_t>(axis_value));
+
+    for (int32_t i = 0; i <= axis_value; ++i)
+    {
+      if (reshape_input->dim(i).value() != reshape->dim(i).value())
+        return false;
+    }
+
+    return forward_reshape(reshape, node, axis_value);
+  }
+
   bool visit(luci::CircleAbs *node)
   {
     auto reshape = as_reshape(node->x());
@@ -300,6 +376,9 @@ namespace luci
  *   UnaryOp: CircleNeg, ...
  *   Note: Binary Op (Div, Mul) can also be considered as a unary operation
  *         if one of its inputs is a constant.
+ *         For CircleMean in which the axis is a scalar
+ *         constant and reshape Op does not change the axis on which the mean is
+ *         taken, the Reshape Op can be forwarded.
  *
  * AFTER
  *                       |
