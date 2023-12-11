@@ -176,6 +176,7 @@ public:
                                  const nnfw_tensorinfo *expected_tensorinfo);
   NNFW_STATUS train_run(bool update_weights);
   NNFW_STATUS train_get_loss(uint32_t index, float *loss);
+  NNFW_STATUS train_get_accuracy(uint32_t index, float *accuracy);
   NNFW_STATUS train_export_circle(const char *path);
 #endif // ONERT_TRAIN
 

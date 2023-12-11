@@ -21,7 +21,7 @@
 
 #include "KernelGenerator.h"
 #include "../ExternalContext.h"
-#include "../TensorBuilder.h"
+#include "TensorBuilder.h"
 
 namespace onert
 {

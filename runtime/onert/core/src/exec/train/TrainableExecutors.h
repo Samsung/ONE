@@ -80,6 +80,8 @@ public:
 
   float getLoss(const ir::IOIndex &index) const;
 
+  float getAccuracy(const ir::IOIndex &index) const;
+
 private:
   // TODO Append model index to ModelIndex
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;

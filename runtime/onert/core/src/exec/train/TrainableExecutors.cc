@@ -84,6 +84,13 @@ float TrainableExecutors::getLoss(const ir::IOIndex &index) const
   return entryExecutor()->getLoss(index);
 }
 
+float TrainableExecutors::getAccuracy(const ir::IOIndex &index) const
+{
+  if (_executors.size() > 1)
+    throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
+  return entryExecutor()->getAccuracy(index);
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert

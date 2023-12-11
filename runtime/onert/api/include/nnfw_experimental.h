@@ -287,6 +287,17 @@ NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights);
 NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *loss);
 
 /**
+ * @brief Get accuracy value for output
+ * @note  This function should be called after {@link nnfw_train}
+ *
+ * @param[in]   session  The session to get accuracy value
+ * @param[in]   index    The index of loss value [0, number of expected outputs)
+ * @param[out]  accuracy The accuracy value
+ * @return  @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_get_accuracy(nnfw_session *session, uint32_t index, float *accuracy);
+
+/**
  * @brief Export circle model
  * @note  This function should be called on training mode
  *        This function should be called after {@link nnfw_train}

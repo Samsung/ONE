@@ -84,6 +84,8 @@ public:
 
   float getLoss(const ir::IOIndex &pred_io_ind) const;
 
+  float getAccuracy(const ir::IOIndex &output_ind) const;
+
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
