@@ -36,7 +36,7 @@ source "${VIRTUALENV}/bin/activate"
 
 if [[ $? -ne 0 ]]; then
   echo "FAILED TO GENERATE INPUT"
-  continue
+  exit 255
 fi
 
 for TESTCASE in "$@"; do
