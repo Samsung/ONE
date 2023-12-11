@@ -62,7 +62,7 @@ public:
  */
 class AddGraph final : public SimpleGraph
 {
-protected:
+private:
   void initInput(loco::Node *input) override;
   void initMinMax(luci::CircleNode *node);
 

@@ -69,7 +69,7 @@ public:
   virtual void onEndSolver(const LayerParams &layers, const std::string &def_dtype,
                            float qerror) override;
 
-protected:
+private:
   std::string _model_path;
   std::string _save_path;
   Dumper _dumper;
