@@ -39,10 +39,11 @@ void DumpingHooks::onBeginIteration()
 }
 
 void DumpingHooks::onEndIteration(const LayerParams &layers, const std::string &def_type,
-                                  float error) const
+                                  float error)
 {
   _dumper.dumpMPQConfiguration(layers, def_type, _num_of_iterations);
   _dumper.dumpMPQError(error, _num_of_iterations);
+  _in_iterations = false;
 }
 
 void DumpingHooks::onEndSolver(const LayerParams &layers, const std::string &def_dtype,
@@ -50,7 +51,6 @@ void DumpingHooks::onEndSolver(const LayerParams &layers, const std::string &def
 {
   _dumper.dumpFinalMPQ(layers, def_dtype);
   _dumper.dumpMPQError(qerror);
-  _in_iterations = false;
 }
 
 void DumpingHooks::onQuantized(luci::Module *module) const
