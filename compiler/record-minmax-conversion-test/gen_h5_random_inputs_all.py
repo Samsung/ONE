@@ -6,7 +6,7 @@ import argparse
 import os
 
 #
-# This script generates a pack of random input data (.h5) expected by the input tflite model
+# This script generates a pack of random input data (.h5) expected by the input tflite models
 #
 parser = argparse.ArgumentParser()
 parser.add_argument('--num_data', type=int, required=True)
