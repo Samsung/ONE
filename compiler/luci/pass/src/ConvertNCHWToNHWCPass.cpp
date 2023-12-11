@@ -1273,6 +1273,9 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
       auto post_trans = create_post_transpose(svo);
       loco::replace(svo).with(post_trans);
       post_trans->a(svo);
+
+      // Do shape inference for this node again.
+      svo->shape_status(luci::ShapeStatus::UNDEFINED);
     }
 
     return true;
