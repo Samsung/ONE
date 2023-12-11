@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
@@ -146,6 +148,64 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleLogistic *logit)
   return true;
 }
 
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMul *div,
+                     luci::CircleConst *const_value)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(div != nullptr);     // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(div).with(new_reshape);
+  if (div->x() == const_value)
+  {
+    div->y(reshape->tensor());
+  }
+  else
+  {
+    assert(div->y() == const_value);
+    div->x(reshape->tensor());
+  }
+  new_reshape->tensor(div);
+
+  // Do shape inference for this node again.
+  div->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
+bool forward_reshape(luci::CircleReshape *reshape, luci::CircleDiv *div,
+                     luci::CircleConst *const_value)
+{
+  assert(reshape != nullptr); // FIX_CALLER_UNLESS
+  assert(div != nullptr);     // FIX_CALLER_UNLESS
+
+  auto new_reshape = create_cloned_reshape(reshape);
+  if (not new_reshape)
+    return false;
+
+  // reconnect network
+  loco::replace(div).with(new_reshape);
+  if (div->x() == const_value)
+  {
+    div->y(reshape->tensor());
+  }
+  else
+  {
+    assert(div->y() == const_value);
+    div->x(reshape->tensor());
+  }
+  new_reshape->tensor(div);
+
+  // Do shape inference for this node again.
+  div->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  return true;
+}
+
 class ForwardReshape final : public luci::CircleNodeMutableVisitor<bool>
 {
 protected:
@@ -180,6 +240,43 @@ protected:
 
     return forward_reshape(reshape, node);
   }
+
+  bool visit(luci::CircleDiv *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    if (not luci::fill(&reshape, &const_value).with_commutative_args_of(node))
+      return false;
+
+    if (const_value->dtype() != loco::DataType::FLOAT32)
+      return false;
+
+    // Should be scalar
+    if (const_value->size<loco::DataType::FLOAT32>() != 1)
+      return false;
+
+    return forward_reshape(reshape, node, const_value);
+  }
+
+  bool visit(luci::CircleMul *node)
+  {
+    luci::CircleReshape *reshape = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    if (not luci::fill(&reshape, &const_value).with_commutative_args_of(node))
+      return false;
+
+    if (const_value->dtype() != loco::DataType::FLOAT32)
+      return false;
+
+    // Should be scalar
+    if (const_value->size<loco::DataType::FLOAT32>() != 1)
+      return false;
+
+    return forward_reshape(reshape, node, const_value);
+  }
+
   // TODO add more unary operators
 };
 
@@ -201,6 +298,8 @@ namespace luci
  *          |            |           |
  *
  *   UnaryOp: CircleNeg, ...
+ *   Note: Binary Op (Div, Mul) can also be considered as a unary operation
+ *   if one of its inputs is a constant.
  *
  * AFTER
  *                       |
