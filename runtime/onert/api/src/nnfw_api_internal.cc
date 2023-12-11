@@ -37,6 +37,10 @@
 #include <dirent.h>
 #include <misc/string_helpers.h>
 
+#include <fcntl.h>    // O_RDONLY
+#include <sys/mman.h> // mmap, munmap
+#include <sys/stat.h> // fstat
+#include <unistd.h>   // close
 /*
  * API does not accept string argument longer than max length below
  */
@@ -1450,8 +1454,47 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+  auto getFdSize = [](int fd) -> off_t {
+    if (fd < 0)
+      return -1L;
+
+    struct stat file_stat;
+    if (fstat(fd, &file_stat) != 0)
+      return -1L;
+
+    return file_stat.st_size;
+  };
+
+  auto ensure_mmap = [getFdSize](const char *file_path,
+                                 /* out */ size_t &mmapped_buf_sz) -> uint8_t * {
+    int fd = open(file_path, O_RDWR);
+    auto sz = getFdSize(fd);
+    if (sz < 0)
+      return nullptr;
+
+    auto buf = static_cast<uint8_t *>(mmap(NULL, sz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
+    if (buf == MAP_FAILED)
+    {
+      close(fd);
+      return nullptr;
+    }
+    // msync, munmap requires `size_t` while fstat returns `off_t`.
+    // `off_t` may be long or long long.
+    // `size_t` may be uint32 or uint64.
+    // `sz` is not negative by if-statement above.
+    assert(sizeof(off_t) == sizeof(size_t));
+    mmapped_buf_sz = static_cast<size_t>(sz);
+    return buf;
+  };
+
+  size_t mmapped_buf_sz;
+  uint8_t *mmapped_buf = ensure_mmap(path, mmapped_buf_sz);
+  if (mmapped_buf == nullptr)
+    return NNFW_STATUS_INVALID_FILE;
+
+  if (munmap(mmapped_buf, mmapped_buf_sz) == -1)
+    return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 bool nnfw_session::isStatePreparedTraining()
