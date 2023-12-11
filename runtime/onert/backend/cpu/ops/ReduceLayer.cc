@@ -87,6 +87,7 @@ template <>
 std::function<void(const IPortableTensor *, IPortableTensor *, const std::vector<int> &)>
 evalType<bool>(bool keep_dims, nnfw::cker::Reduce &reduce_kernel, ReduceType reduce_type)
 {
+  static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
   switch (reduce_type)
   {
     case ReduceType::kAny:

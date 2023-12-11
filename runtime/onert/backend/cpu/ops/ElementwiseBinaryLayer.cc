@@ -166,6 +166,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
     case ElementwiseBinaryType::kLogicalAnd:
       if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
       {
+        static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
         _kernel = logicalAndGeneric<bool>;
       }
       else
@@ -176,6 +177,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
     case ElementwiseBinaryType::kLogicalOr:
       if ((_lhs->data_type() == OperandType::BOOL8) && (_rhs->data_type() == OperandType::BOOL8))
       {
+        static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
         _kernel = logicalOrGeneric<bool>;
       }
       else
