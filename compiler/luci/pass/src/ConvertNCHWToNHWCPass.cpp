@@ -257,6 +257,27 @@ int32_t nchw_axis_to_nhwc(int32_t axis)
   return to_nhwc[pos_axis];
 }
 
+// Return a new CircleConst with NHWC value
+luci::CircleConst *create_nhwc_axis(luci::CircleConst *axis)
+{
+  assert(axis);                                   // FIX_CALLER_UNLESS
+  assert(axis->dtype() == loco::DataType::S32);   // FIX_CALLER_UNLESS
+  assert(axis->size<loco::DataType::S32>() == 1); // FIX_CALLER_UNLESS
+
+  auto new_axis = axis->graph()->nodes()->create<luci::CircleConst>();
+  new_axis->dtype(loco::DataType::S32);
+  new_axis->size<loco::DataType::S32>(1);
+  new_axis->rank(1);
+  new_axis->dim(0) = 1;
+  new_axis->at<loco::DataType::S32>(0) = nchw_axis_to_nhwc(axis->at<loco::DataType::S32>(0));
+  new_axis->shape_status(luci::ShapeStatus::VALID);
+  new_axis->name(axis->name() + "_NHWC");
+
+  luci::add_origin(new_axis, luci::get_origin(axis));
+
+  return new_axis;
+}
+
 luci::CircleTranspose *create_post_transpose(luci::CircleNode *node)
 {
   return create_4d_transpose(node, {0, 3, 1, 2});
@@ -1254,13 +1275,15 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     if (axis->size<loco::DataType::S32>() != 1)
       return false;
 
-    axis->at<loco::DataType::S32>(0) = nchw_axis_to_nhwc(axis->at<loco::DataType::S32>(0));
+    auto new_axis = create_nhwc_axis(axis);
+    assert(new_axis); // FIX_ME_UNLESS
 
     // Insert pre-transpose
     const auto pred_node = loco::must_cast<luci::CircleNode *>(node->input());
     auto pre_trans = create_pre_transpose(node);
     pre_trans->a(pred_node);
     node->input(pre_trans);
+    node->split_dim(new_axis);
 
     // Do shape inference for this node again.
     node->shape_status(luci::ShapeStatus::UNDEFINED);
