@@ -9,7 +9,7 @@
 # work_dir : build directory of record-minmax-conversion-test (ex: build/compiler/record-minmax-conversion-test)
 
 GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs.py"
+GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "$CONFIG_PATH")
 WORKDIR="$1"; shift
@@ -25,6 +25,20 @@ PASSED=()
 FAILED=()
 
 pushd "${WORKDIR}"
+
+# Generate h5 input data
+source "${VIRTUALENV}/bin/activate"
+  "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
+  --num_data 3 \
+  --output_dir "${BIN_PATH}" \
+  --artifact_dir ${WORKDIR} \
+  --model "$@"
+
+if [[ $? -ne 0 ]]; then
+  echo "FAILED TO GENERATE INPUT"
+  exit 255
+fi
+
 for TESTCASE in "$@"; do
   TESTED+=("${TESTCASE}")
 
@@ -36,18 +50,6 @@ for TESTCASE in "$@"; do
   cat > "${BIN_PATH}/${TESTCASE}.log" <(
     exec 2>&1
     set -ex
-
-    # Generate h5 input data
-    source "${VIRTUALENV}/bin/activate"
-    "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
-    --model "${TESTCASE_FILE}.tflite" \
-    --num_data 3 \
-    --output "${BIN_PATH}/${TESTCASE}.tflite.input.h5"
-
-    if [[ $? -ne 0 ]]; then
-      echo "FAILED TO GENERATE INPUT"
-      continue
-    fi
 
     # Run record-minmax
     "${RECORD_MINMAX_PATH}" \
