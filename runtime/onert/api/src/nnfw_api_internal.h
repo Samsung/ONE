@@ -212,6 +212,16 @@ private:
   uint32_t _training_step{0};
 #endif // ONERT_TRAIN
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
+  // Remember path to loaded original model
+  // It may be used for on-device compiler / on-device training.
+  //
+  // If necessary, we may replace _model_path to _model_origin like:
+  //
+  //   union _model_origin {
+  //     const char* path;
+  //     const const uint8* buf
+  //   }
+  std::string _model_path;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
