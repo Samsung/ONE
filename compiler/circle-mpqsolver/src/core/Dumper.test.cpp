@@ -56,12 +56,12 @@ TEST_F(CircleMPQSolverDumperTest, verifyResultsTest)
   dumper.setModelPath("");
   mpqsolver::core::LayerParams params;
   auto const step = 0;
-  dumper.dumpMPQConfiguration(params, "uint8", step);
+  dumper.dumpMPQConfiguration(params, "uint8", "channel", step);
 
   std::string step_path = _folder + "/Configuration_" + std::to_string(step) + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(step_path));
 
-  dumper.dumpFinalMPQ(params, "uint8");
+  dumper.dumpFinalMPQ(params, "uint8", "channel");
   std::string fin_path = _folder + "/FinalConfiguration" + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(fin_path));
 
@@ -77,7 +77,7 @@ TEST_F(CircleMPQSolverDumperTest, empty_path_NEG)
 
   mpqsolver::core::LayerParams params;
   auto const step = 0;
-  EXPECT_THROW(dumper.dumpMPQConfiguration(params, "uint8", step), std::runtime_error);
-  EXPECT_THROW(dumper.dumpFinalMPQ(params, "uint8"), std::runtime_error);
+  EXPECT_THROW(dumper.dumpMPQConfiguration(params, "uint8", "channel", step), std::runtime_error);
+  EXPECT_THROW(dumper.dumpFinalMPQ(params, "uint8", "channel"), std::runtime_error);
   EXPECT_THROW(dumper.prepareForErrorDumping(), std::runtime_error);
 }
