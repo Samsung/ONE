@@ -544,6 +544,8 @@ loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
   for (uint32_t i = 1; i < node->numValues(); ++i)
   {
     auto input_shape = luci::shape_get(node->values(i)).as<loco::TensorShape>();
+    if (input_shape.rank() != output_shape.rank())
+      INTERNAL_EXN_V("Input has incompatible shape", node->name());
 
     for (uint32_t j = 0; j < output_shape.rank(); ++j)
     {
