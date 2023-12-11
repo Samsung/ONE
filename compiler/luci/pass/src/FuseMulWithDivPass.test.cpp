@@ -32,26 +32,26 @@ using namespace luci::test;
  *
  *  BEFORE
  *                [Input]
- *              (3, 197, 1)
+ *              (1, 2, 3)
  *                  |
  *          [Mul, MUL_Scalar_Const]
- *              (3, 197, 1)
+ *              (1, 2, 3)
  *                  |
  *           [Div, DIV_Scalar_Const]
- *             (3, 197, 1)
+ *             (1, 2, 3)
  *                 |
- *               [Output]
- *            (3, 197, 1)
+ *             [Output]
+ *             (1, 2, 3)
  *
  *  AFTER
  *                [Input]
- *              (3, 197, 1)
+ *              (1, 2, 3)
  *                  |
  *           [Div, Scalar_Const_new]
- *             (3, 197, 1)
+ *             (1, 2, 3)
  *                 |
- *               [Output]
- *            (3, 197, 1)
+ *             [Output]
+ *             (1, 2, 3)
  *
  *  WHERE: Scalar_Const_new = DIV_Scalar_Const / MUL_Scalar_Const
  */
@@ -95,7 +95,7 @@ public:
 
   void init(void)
   {
-    TestIOGraph::init({3, 197, 1}, {3, 197, 1});
+    TestIOGraph::init({1, 2, 3}, {1, 2, 3});
     PatternMulDivGraphlet::init(g());
 
     _mul_const->rank(1);
@@ -111,18 +111,18 @@ public:
     _div_const->shape_status(luci::ShapeStatus::VALID);
 
     _mul->rank(3);
-    _mul->dim(0).set(3);
-    _mul->dim(1).set(197);
-    _mul->dim(2).set(1);
+    _mul->dim(0).set(1);
+    _mul->dim(1).set(2);
+    _mul->dim(2).set(3);
     _mul->dtype(loco::DataType::FLOAT32);
     _mul->shape_status(luci::ShapeStatus::VALID);
     _mul->x(input());
     _mul->y(_mul_const);
 
     _div->rank(3);
-    _div->dim(0).set(3);
-    _div->dim(1).set(197);
-    _div->dim(2).set(1);
+    _div->dim(0).set(1);
+    _div->dim(1).set(2);
+    _div->dim(2).set(3);
     _div->dtype(loco::DataType::FLOAT32);
     _div->shape_status(luci::ShapeStatus::VALID);
     _div->x(_div_const);

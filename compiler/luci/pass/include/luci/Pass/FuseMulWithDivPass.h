@@ -25,10 +25,7 @@ namespace luci
 {
 
 /**
- * @brief Pass to fuse mul(one of the input is const scalar) and div(one of the input is const
- * scalar) as div
- *
- * For detailed subgraph pattern to be fused, please check its implementation.
+ * @brief  Class to fuse Mul operation with a Div operation
  */
 struct FuseMulWithDivPass final : public logo::Pass
 {
