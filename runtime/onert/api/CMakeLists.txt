@@ -15,6 +15,7 @@ target_link_libraries(${ONERT_DEV} PRIVATE jsoncpp tflite_loader circle_loader $
 target_link_libraries(${ONERT_DEV} PRIVATE trix_loader)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_common)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_coverage)
+target_link_libraries(${ONERT_DEV} PRIVATE circle_schema)
 # NOTE Below line is added to remove warning for android build
 #      It will be removed after android build uses gold linker
 if (ANDROID)
