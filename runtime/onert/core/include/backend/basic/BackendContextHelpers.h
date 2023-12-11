@@ -68,8 +68,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
       //      There is no way to get the layout info from the backend context for now.
       //      When we support NCHW tensors as well, we also need to change tensor info to be
       //      permuted shape.
-      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC ||
-             ctx.operand_layouts().at(ind) == ir::Layout::UNKNOWN);
+      assert(info.layout() == ir::Layout::NHWC || info.layout() == ir::Layout::UNKNOWN);
       tensor_builder->registerTensorInfo(ind, info);
     }
   });

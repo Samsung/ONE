@@ -114,10 +114,8 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
 
 void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolver)
 {
-  _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &operand) {
-    auto operand_li = std::make_unique<OperandLowerInfo>();
-    operand_li->setLayout(operand.info().layout());
-    lower_info().operand.set(index, std::move(operand_li));
+  _graph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
+    lower_info().operand.set(index, std::make_unique<OperandLowerInfo>());
   });
 
   // Set operand lower info using assigned backends to operations

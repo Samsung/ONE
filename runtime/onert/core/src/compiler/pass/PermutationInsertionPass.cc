@@ -150,7 +150,6 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   auto operand_lower_info = operand_li_map.getRawPtr(operand_index);
   operand_lower_info->removeUsePermuteFactor(factor);
   operand_lower_info->addUsePermuteFactor(permute_node_factor);
-  const auto layout = operand_lower_info->layout();
 
   // Update LowerInfo of output operand
   auto out_operand_li = std::make_unique<compiler::OperandLowerInfo>();
@@ -160,7 +159,6 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // TODO Change param to permute_node_factor
   out_operand_li->addDefPermuteFactor(factor);
   out_operand_li->addUsePermuteFactor(factor);
-  out_operand_li->setLayout(layout);
   operand_li_map.set(out_operand_index, std::move(out_operand_li));
 
   // Insert permute operation to the graph

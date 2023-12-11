@@ -43,8 +43,6 @@ struct ContextData
   std::vector<onert::ir::OperationIndex> op_order;
   /* Operands that are defined by other backends */
   util::Set<ir::OperandIndex> external_operands;
-  /* Operand layout info */
-  ir::OperandIndexMap<ir::Layout> operand_layouts;
   /* Custom kernel builder */
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
@@ -65,7 +63,6 @@ public:
   const Backend *backend() const { return _backend; }
   const ir::Graph *graph() const { return _data.graph.get(); }
   const util::Set<ir::OperandIndex> &external_operands() const { return _data.external_operands; }
-  const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _data.operand_layouts; }
   const ContextData &data() const { return _data; }
 
   virtual ITensorRegistry *genTensors() = 0;

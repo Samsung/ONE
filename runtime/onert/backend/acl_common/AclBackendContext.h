@@ -60,8 +60,9 @@ public:
       if (this->external_operands().contains(ind))
         return;
 
+      // FIXME Use correct layout
       const auto frontend_layout = obj.info().layout();
-      const auto backend_layout = this->operand_layouts().at(ind);
+      const auto backend_layout = frontend_layout;
       ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, backend_layout),
                                    obj.typeInfo(), backend_layout, obj.info().memAllocType(),
                                    obj.isConstant()};

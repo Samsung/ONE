@@ -50,19 +50,16 @@ public:
 public:
   const PermuteFactorSet &def_factors(void) const { return _def_factors; }
   const PermuteFactorSet &use_factors(void) const { return _use_factors; }
-  ir::Layout layout(void) const { return _layout; }
 
 public:
   void addDefPermuteFactor(const PermuteFactor &factor) { _def_factors.add(factor); }
   void addUsePermuteFactor(const PermuteFactor &factor) { _use_factors.add(factor); }
   void removeDefPermuteFactor(const PermuteFactor &factor) { _def_factors.remove(factor); }
   void removeUsePermuteFactor(const PermuteFactor &factor) { _use_factors.remove(factor); }
-  void setLayout(ir::Layout layout) { _layout = layout; }
 
 private:
   PermuteFactorSet _def_factors;
   PermuteFactorSet _use_factors;
-  ir::Layout _layout;
 };
 
 } // namespace compiler

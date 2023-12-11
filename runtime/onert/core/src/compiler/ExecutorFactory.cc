@@ -181,9 +181,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     const auto &def_factor = def_factors.getOnlyElement();
     const auto backend = def_factor.backend();
     auto &partial_graph = *context_data_map[backend].graph;
-    auto &operand_layouts = context_data_map[backend].operand_layouts;
-    assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = operand_li.at(operand_ind).layout();
 
     // Copy the operand and insert it to the partial graph
     auto new_operand = std::make_unique<ir::Operand>(operand);
@@ -200,7 +197,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       auto backend = op_li.at(op_ind).backend();
       auto &partial_graph = *context_data_map[backend].graph;
       auto &external_operands = context_data_map[backend].external_operands;
-      auto &operand_layouts = context_data_map[backend].operand_layouts;
 
       {
         // Add missing operands (externals)
@@ -219,9 +215,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
 
-          auto layout = lgraph.lower_info().operand.at(operand_ind).layout();
-          assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-          operand_layouts[operand_ind] = layout;
           external_operands.add(operand_ind);
         }
 
@@ -713,7 +706,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
     tdata.external_operands = std::move(external_operands);
-    tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
     tdata.optim_info = training_info.optimizerInfo();

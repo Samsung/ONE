@@ -46,7 +46,6 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
       auto operand_li = std::make_unique<compiler::OperandLowerInfo>();
       operand_li->addDefPermuteFactor(factor);
       operand_li->addUsePermuteFactor(factor);
-      operand_li->setLayout(object.info().layout());
       _lowered_graph.lower_info().operand.set(input, std::move(operand_li));
     }
   }

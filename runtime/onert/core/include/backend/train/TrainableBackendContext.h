@@ -44,8 +44,6 @@ struct TrainableContextData
   std::vector<onert::ir::OperationIndex> op_order;
   /* Operands that are defined by other backends */
   util::Set<ir::OperandIndex> external_operands;
-  /* Operand layout info */
-  ir::OperandIndexMap<ir::Layout> operand_layouts;
   /* Custom kernel builder */
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
@@ -72,7 +70,6 @@ public:
 
   const ITrainableBackend *backend() const { return _backend; }
   const util::Set<ir::OperandIndex> &external_operands() const { return _tdata->external_operands; }
-  const ir::OperandIndexMap<ir::Layout> &operand_layouts() const { return _tdata->operand_layouts; }
 
   std::shared_ptr<ITensorRegistry> tensor_registry() { return _tensor_registry; }
 

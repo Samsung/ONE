@@ -120,8 +120,8 @@ protected:
       {
         // These tensors do not exist in any operation (No use and def)
         auto info = obj.info();
-        // TODO Set backend layout
-        info.layout(_data.operand_layouts.at(ind));
+        // FIXME Set backend layout
+        // info.layout(_data.operand_layouts.at(ind));
         // TODO Change tensor info to have permuted shape
         registerTensorInfo(ind, info);
       }
