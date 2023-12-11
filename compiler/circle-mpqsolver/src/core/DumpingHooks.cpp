@@ -41,14 +41,14 @@ void DumpingHooks::onBeginIteration()
 void DumpingHooks::onEndIteration(const LayerParams &layers, const std::string &def_type,
                                   float error) const
 {
-  _dumper.dumpMPQConfiguration(layers, def_type, _num_of_iterations);
+  _dumper.dumpMPQConfiguration(layers, def_type, "channel", _num_of_iterations);
   _dumper.dumpMPQError(error, _num_of_iterations);
 }
 
 void DumpingHooks::onEndSolver(const LayerParams &layers, const std::string &def_dtype,
                                float qerror)
 {
-  _dumper.dumpFinalMPQ(layers, def_dtype);
+  _dumper.dumpFinalMPQ(layers, def_dtype, "channel");
   _dumper.dumpMPQError(qerror);
   _in_iterations = false;
 }

@@ -45,17 +45,20 @@ public:
    * @brief dumps mpq configuration
    * @param layers specific quantization parameters
    * @param def_dtype default quantization data type
+   * @param def_granularity default granularity
    * @param step id of mpq configuration
    */
   void dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
-                            int step) const;
+                            const std::string &def_granularity, int step) const;
 
   /**
    * @brief dumps final mpq configuration
    * @param layers specific quantization parameters
    * @param def_dtype default quantization data type
+   * @param def_granularity default granularity
    */
-  void dumpFinalMPQ(const LayerParams &layers, const std::string &def_dtype) const;
+  void dumpFinalMPQ(const LayerParams &layers, const std::string &def_dtype,
+                    const std::string &def_granularity) const;
 
   /**
    * @brief dumps quantized module
@@ -95,7 +98,7 @@ public:
 private:
   void writeDataToFile(const std::string &path, const std::string &data) const;
   void dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
-                            const std::string &path) const;
+                            const std::string &def_granularity, const std::string &path) const;
   void prepareDirectory(const std::string &dir_path) const;
   void saveCircle(luci::Module *module, std::string &path) const;
   void dumpError(float error, const std::string &tag, const std::string &path) const;

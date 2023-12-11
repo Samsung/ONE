@@ -43,11 +43,11 @@ Dumper::Dumper(const std::string &dir_path) : _dir_path(dir_path) {}
 void Dumper::setModelPath(const std::string &model_path) { _model_path = model_path; }
 
 void Dumper::dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
-                                  const std::string &path) const
+                                  const std::string &def_granularity, const std::string &path) const
 {
   Json::Value mpq_data;
   mpq_data[default_dtype_key] = def_dtype;
-  mpq_data[default_granularity_key] = "channel";
+  mpq_data[default_granularity_key] = def_granularity;
   mpq_data[model_key] = _model_path;
 
   Json::Value layers_data;
@@ -80,18 +80,19 @@ void Dumper::prepareDirectory(const std::string &dir_path) const
 }
 
 void Dumper::dumpMPQConfiguration(const LayerParams &layers, const std::string &def_dtype,
-                                  int step) const
+                                  const std::string &def_granularity, int step) const
 {
   prepareDirectory(_dir_path);
   std::string path = _dir_path + "/Configuration_" + std::to_string(step) + ".mpq.json";
-  dumpMPQConfiguration(layers, def_dtype, path);
+  dumpMPQConfiguration(layers, def_dtype, def_granularity, path);
 }
 
-void Dumper::dumpFinalMPQ(const LayerParams &layers, const std::string &def_dtype) const
+void Dumper::dumpFinalMPQ(const LayerParams &layers, const std::string &def_dtype,
+                          const std::string &def_granularity) const
 {
   prepareDirectory(_dir_path);
   std::string path = _dir_path + "/FinalConfiguration" + ".mpq.json";
-  dumpMPQConfiguration(layers, def_dtype, path);
+  dumpMPQConfiguration(layers, def_dtype, def_granularity, path);
 }
 
 void Dumper::writeDataToFile(const std::string &path, const std::string &data) const
