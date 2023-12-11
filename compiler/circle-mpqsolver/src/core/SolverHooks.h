@@ -51,7 +51,7 @@ public:
    * @param error error of quantization for current iteration
    */
   virtual void onEndIteration(const LayerParams &layers, const std::string &def_dtype,
-                              float error) const = 0;
+                              float error) = 0;
 
   /**
    * @brief called at the end of iterative search

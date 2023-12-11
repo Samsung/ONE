@@ -61,7 +61,7 @@ public:
    * @brief called at the end of current iteration
    */
   virtual void onEndIteration(const LayerParams &layers, const std::string &def_dtype,
-                              float error) const override;
+                              float error) override;
 
   /**
    * @brief called at the end of iterative search
