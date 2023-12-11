@@ -105,6 +105,17 @@ generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
       return Eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
       break;
     }
+    case OperandType::BOOL8:
+    {
+      if (activation != ir::Activation::NONE)
+        throw std::runtime_error(
+          "BinaryArithmetic(generic): Fused activation is not supported with bool8 type");
+      int32_t output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
+      static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
+      return Eval<arithmetic_type, bool>(lhs, rhs, output, op_params);
+      break;
+    }
     default:
       throw std::runtime_error{"BinaryArithmetic(generic): Unsupported data type"};
   }
