@@ -1,0 +1,45 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 197 dim: 197 }
+}
+operand {
+  name: "shape1"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "-1" arg: "197" }
+}
+operand {
+  name: "reshape_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 591 dim: 197 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 591 dim: 1 }
+}
+operand {
+  name: "reduction_indices"
+  type: INT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "-1" }
+}
+operation {
+  type: "Reshape"
+  input: "ifm"
+  input: "shape1"
+  output: "reshape_out"
+}
+operation {
+  type: "Mean"
+  mean_options {
+    keep_dims: true
+  }
+  input: "reshape_out"
+  input: "reduction_indices"
+  output: "ofm"
+}
+
+input: "ifm"
+output: "ofm"
