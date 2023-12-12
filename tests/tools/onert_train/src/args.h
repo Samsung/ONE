@@ -48,6 +48,7 @@ public:
 
   const std::string &getPackageFilename(void) const { return _package_filename; }
   const std::string &getModelFilename(void) const { return _model_filename; }
+  const std::string &getExportModelFilename(void) const { return _export_model_filename; }
   const bool useSingleModel(void) const { return _use_single_model; }
   const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
@@ -72,6 +73,7 @@ private:
 
   std::string _package_filename;
   std::string _model_filename;
+  std::string _export_model_filename;
   bool _use_single_model = false;
   std::string _load_raw_input_filename;
   std::string _load_raw_expected_filename;
