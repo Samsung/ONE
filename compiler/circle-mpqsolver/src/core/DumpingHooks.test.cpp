@@ -19,6 +19,7 @@
 #include "DumpingHooks.h"
 #include "core/TestHelper.h"
 
+#include <cmath>
 #include <ftw.h>
 #include <string>
 
@@ -67,6 +68,18 @@ TEST_F(CircleMPQSolverDumpingHooksTest, verifyResultsTest)
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(final_mpq_path));
 }
 
+TEST_F(CircleMPQSolverDumpingHooksTest, verify_NAN_results_test)
+{
+  mpqsolver::core::DumpingHooks hooks(_folder);
+  EXPECT_NO_THROW(hooks.onBeginSolver("model_path.circle", NAN, NAN));
+  std::string errors_path = _folder + "/errors" + ".mpq.txt";
+  EXPECT_TRUE(not mpqsolver::test::io_utils::isFileExists(errors_path));
+
+  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", NAN));
+  std::string final_mpq_path = _folder + "/FinalConfiguration" + ".mpq.json";
+  EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(final_mpq_path));
+}
+
 TEST_F(CircleMPQSolverDumpingHooksTest, empty_path_NEG)
 {
   mpqsolver::core::DumpingHooks hooks("");
@@ -75,4 +88,11 @@ TEST_F(CircleMPQSolverDumpingHooksTest, empty_path_NEG)
   EXPECT_ANY_THROW(hooks.onQuantized(nullptr));
   EXPECT_ANY_THROW(hooks.onEndIteration(mpqsolver::core::LayerParams(), "uint8", -1));
   EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", -1));
+}
+
+TEST_F(CircleMPQSolverDumpingHooksTest, empty_NAN_path_NEG)
+{
+  mpqsolver::core::DumpingHooks hooks("");
+  EXPECT_NO_THROW(hooks.onBeginSolver("", NAN, NAN));
+  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", NAN));
 }

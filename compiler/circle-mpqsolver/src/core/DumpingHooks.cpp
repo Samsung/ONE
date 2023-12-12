@@ -15,6 +15,7 @@
  */
 
 #include "DumpingHooks.h"
+#include <cmath>
 
 using namespace mpqsolver::core;
 
@@ -27,9 +28,18 @@ void DumpingHooks::onBeginSolver(const std::string &model_path, float q8error, f
 {
   _model_path = model_path;
   _dumper.setModelPath(_model_path);
-  _dumper.prepareForErrorDumping();
-  _dumper.dumpQ8Error(q8error);
-  _dumper.dumpQ16Error(q16error);
+  if (!std::isnan(q8error) || !std::isnan(q16error))
+  {
+    _dumper.prepareForErrorDumping();
+  }
+  if (!std::isnan(q8error))
+  {
+    _dumper.dumpQ8Error(q8error);
+  }
+  if (!std::isnan(q16error))
+  {
+    _dumper.dumpQ16Error(q16error);
+  }
 }
 
 void DumpingHooks::onBeginIteration()
@@ -50,7 +60,10 @@ void DumpingHooks::onEndSolver(const LayerParams &layers, const std::string &def
                                float qerror)
 {
   _dumper.dumpFinalMPQ(layers, def_dtype, "channel");
-  _dumper.dumpMPQError(qerror);
+  if (!std::isnan(qerror))
+  {
+    _dumper.dumpMPQError(qerror);
+  }
 }
 
 void DumpingHooks::onQuantized(luci::Module *module) const
