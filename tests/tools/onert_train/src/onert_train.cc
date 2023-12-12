@@ -270,9 +270,8 @@ int main(const int argc, char **argv)
       }
     });
 
-    // TODO: Add command-line option
-    if (true)
-      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, "tr.circle"));
+    if (args.getExportModelFilename() != "")
+      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, args.getExportModelFilename().c_str()));
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 

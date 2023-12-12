@@ -150,6 +150,8 @@ void Args::Initialize(void)
     }
   };
 
+  auto process_export_path = [&](const std::string &path) { _export_model_filename = path; };
+
   auto process_load_raw_inputfile = [&](const std::string &input_filename) {
     _load_raw_input_filename = input_filename;
 
@@ -198,6 +200,7 @@ void Args::Initialize(void)
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
     ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
     ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
+    ("export_path", po::value<std::string>()->notifier(process_export_path), "Path to export circle")
     ("load_input:raw", po::value<std::string>()->notifier(process_load_raw_inputfile),
          "NN Model Raw Input data file\n"
          "The datafile must have data for each input number.\n"
