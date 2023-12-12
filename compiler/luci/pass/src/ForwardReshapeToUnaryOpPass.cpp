@@ -299,7 +299,7 @@ namespace luci
  *
  *   UnaryOp: CircleNeg, ...
  *   Note: Binary Op (Div, Mul) can also be considered as a unary operation
- *   if one of its inputs is a constant.
+ *         if one of its inputs is a constant.
  *
  * AFTER
  *                       |
