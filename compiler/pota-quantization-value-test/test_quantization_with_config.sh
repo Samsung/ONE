@@ -9,11 +9,11 @@
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
+COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
 TEST_INPUT_PATH="${SOURCE_PATH}/test_inputs"
-GEN_SCRIPT_PATH="${BIN_PATH}/gen_h5_explicit_inputs.py"
+GEN_SCRIPT_PATH="${BIN_PATH}/gen_h5_explicit_inputs_all.py"
 WORKDIR="$1"; shift
 
 source "${CONFIG_PATH}"
@@ -25,6 +25,23 @@ echo "-- Found workdir: ${WORKDIR}"
 TESTED=()
 PASSED=()
 FAILED=()
+
+TEST_PARAMS="$@"
+
+# Generate h5 input data
+source "${VIRTUALENV}/bin/activate"
+"${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
+  --output_dir ${BIN_PATH} \
+  --artifact_dir ${WORKDIR} \
+  --input_dir ${TEST_INPUT_PATH} \
+  --test_param "$TEST_PARAMS" \
+  --config \
+  --mode 'mixed_quantization'
+
+if [[ $? -ne 0 ]]; then
+  echo "FAILED TO GENERATE INPUT"
+  exit 255
+fi
 
 pushd "${WORKDIR}"
 while [ "$1" != "" ]; do  
@@ -45,24 +62,12 @@ while [ "$1" != "" ]; do
     exec 2>&1
     set -ex
 
-    # Generate h5 input data
-    source "${VIRTUALENV}/bin/activate"
-    "${VIRTUALENV}/bin/python" "${GEN_SCRIPT_PATH}" \
-      --model "${WORKDIR}/${MODELNAME}.circle" \
-      --input "${TEST_INPUT_PATH}/${MODELNAME}_config/${GRANULARITY}/${DTYPE}" \
-      --output "${TESTCASE_FILE}.mixed.input.h5"
-
-    if [[ $? -ne 0 ]]; then
-      echo "FAILED TO GENERATE INPUT"
-      continue
-    fi
-
     # Run record-minmax
     # NOTE There is no '_with_config' test for record-minmax, because it does not
     # use quantization config file.
     "${RECORD_MINMAX_PATH}" \
       --input_model "${TEST_RESULT_FILE}.fake_quantized.mixed.circle" \
-      --input_data "${TESTCASE_FILE}.mixed.input.h5" \
+      --input_data "${TEST_RESULT_FILE}.mixed.input.h5" \
       --output_model "${TEST_RESULT_FILE}.minmax_recorded.mixed.circle" 
 
     # Run circle-quantizer with --quantize_with_minmax
@@ -76,32 +81,18 @@ while [ "$1" != "" ]; do
     "${CIRCLE_TENSORDUMP_PATH}" \
       "${TEST_RESULT_FILE}.quantized.mixed.circle" \
       --tensors_to_hdf5 "${TEST_RESULT_FILE}.quantized.mixed.circle.h5"
-
-    # Compare result
-    "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
-      --input_h5 "${TEST_RESULT_FILE}.quantized.mixed.circle.h5" \
-      --expect_dir "${SOURCE_PATH}/expected_outputs/${MODELNAME}_config/${GRANULARITY}/${DTYPE}/quantization" \
-      --mode quantization
-
-    if [[ $? -eq 0 ]]; then
-      touch "${PASSED_TAG}"
-    fi
   )
-
-  if [[ -f "${PASSED_TAG}" ]]; then
-    PASSED+=("$TESTCASE")
-  else
-    FAILED+=("$TESTCASE")
-  fi
 done
 popd
 
-if [[ ${#TESTED[@]} -ne ${#PASSED[@]} ]]; then
-  echo "FAILED"
-  for TEST in "${FAILED[@]}"
-  do
-    echo "- ${TEST}"
-  done
+# Compare result
+"${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
+  --test_param "${TEST_PARAMS}" \
+  --bin_dir ${BIN_PATH} \
+  --source_dir ${SOURCE_PATH} \
+  --mode quantization
+
+if [[ $? -ne 0 ]]; then
   exit 255
 fi
 

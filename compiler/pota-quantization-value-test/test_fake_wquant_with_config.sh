@@ -9,7 +9,7 @@
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
 SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors.py"
+COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
 WORKDIR="$1"; shift
@@ -23,6 +23,8 @@ echo "-- Found workdir: ${WORKDIR}"
 TESTED=()
 PASSED=()
 FAILED=()
+
+TEST_PARAMS="$@"
 
 pushd "${WORKDIR}"
 while [ "$1" != "" ]; do  
@@ -54,32 +56,18 @@ while [ "$1" != "" ]; do
     "${CIRCLE_TENSORDUMP_PATH}" \
       "${TEST_RESULT_FILE}.fake_quantized.mixed.circle" \
       --tensors_to_hdf5 "${TEST_RESULT_FILE}.fake_quantized.mixed.circle.h5"
-
-    # Compare result
-    "${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
-      --input_h5 "${TEST_RESULT_FILE}.fake_quantized.mixed.circle.h5" \
-      --expect_dir "${SOURCE_PATH}/expected_outputs/${MODELNAME}_config/${GRANULARITY}/${DTYPE}/fake_quantization" \
-      --mode fake_quantization
-
-    if [[ $? -eq 0 ]]; then
-      touch "${PASSED_TAG}"
-    fi
   )
-
-  if [[ -f "${PASSED_TAG}" ]]; then
-    PASSED+=("$TESTCASE")
-  else
-    FAILED+=("$TESTCASE")
-  fi
 done
 popd
 
-if [[ ${#TESTED[@]} -ne ${#PASSED[@]} ]]; then
-  echo "FAILED"
-  for TEST in "${FAILED[@]}"
-  do
-    echo "- ${TEST}"
-  done
+# Compare result
+"${VIRTUALENV}/bin/python" "${COMPARE_SCRIPT_PATH}" \
+  --test_param "${TEST_PARAMS}" \
+  --bin_dir ${BIN_PATH} \
+  --source_dir ${SOURCE_PATH} \
+  --mode fake_quantization
+
+if [[ $? -ne 0 ]]; then
   exit 255
 fi
 
