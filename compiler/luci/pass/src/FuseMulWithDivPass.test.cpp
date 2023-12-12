@@ -31,27 +31,20 @@ using namespace luci::test;
  *  Simple graph for test
  *
  *  BEFORE
- *                [Input]
- *              (1, 2, 3)
- *                  |
+ *              [Input]
+ *                 |
  *          [Mul, MUL_Scalar_Const]
- *              (1, 2, 3)
- *                  |
- *           [Div, DIV_Scalar_Const]
- *             (1, 2, 3)
+ *                 |
+ *          [Div, DIV_Scalar_Const]
  *                 |
  *             [Output]
- *             (1, 2, 3)
  *
  *  AFTER
- *                [Input]
- *              (1, 2, 3)
- *                  |
- *           [Div, Scalar_Const_new]
- *             (1, 2, 3)
+ *              [Input]
+ *                 |
+ *          [Div, Scalar_Const_new]
  *                 |
  *             [Output]
- *             (1, 2, 3)
  *
  *  WHERE: Scalar_Const_new = DIV_Scalar_Const / MUL_Scalar_Const
  */

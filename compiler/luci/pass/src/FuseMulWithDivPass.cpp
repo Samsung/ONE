@@ -40,7 +40,7 @@ luci::CircleConst *create_div_const_with_new_value(luci::CircleConst *div_const,
   new_div_const->dim(0) = 1;
   new_div_const->at<loco::DataType::FLOAT32>(0) = new_value;
   new_div_const->shape_status(luci::ShapeStatus::VALID);
-  new_div_const->name(div_const->name() + "_" + mul_const->name());
+  new_div_const->name(div_const->name() + ";" + mul_const->name());
 
   luci::add_origin(new_div_const, luci::composite_origin(
                                     {luci::get_origin(div_const), luci::get_origin(mul_const)}));
