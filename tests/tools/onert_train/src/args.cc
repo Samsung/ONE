@@ -228,6 +228,10 @@ void Args::Initialize(void)
       "Optimizer type\n"
       "0: SGD (default)\n"
       "1: Adam\n")
+    ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
+      "Metricy type\n"
+      "  Simply calculates the metric value using the variables (default: none)\n"
+      "0: CATEGORICAL_ACCURACY\n")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
