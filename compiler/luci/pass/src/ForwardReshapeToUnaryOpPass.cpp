@@ -285,7 +285,7 @@ protected:
 
     for (int32_t i = 0; i <= axis_value; ++i)
     {
-      if (reshape_input->dim(i).value() != reshape->dim(i).value())
+      if (not reshape_input->dim(i).known() or reshape_input->dim(i).value() != reshape->dim(i).value())
         return false;
     }
 
