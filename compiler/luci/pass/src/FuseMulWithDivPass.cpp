@@ -53,21 +53,21 @@ luci::CircleConst *create_div_const_with_new_value(luci::CircleConst *div_const,
  * div(numerator is const scalar) as div
  *
  * BEFORE
- *             [CircleNode]                         [Scalar_Mul_Const]
- *                  |                                      |
- * [CirlceMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
+ *             [CircleNode]                                [Scalar_Mul_Const]
+ *                  |                                               |
+ *          [CirlceMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
  *                  |
  *                  |                                     [Scalar_Div_Const]
  *                  |                                             |
- *           [CircleDiv, (y=Scalar_Div_Const, x=CirlceMul)] -------
+ *           [CircleDiv, (x=Scalar_Div_Const, y=CirlceMul)] ------
  *                  |
  *             [CircleNode]
  *
  *  AFTER
  *            [CircleNode]
- *                 |                                   [Scalar_new_Div_Const]
- *                 |                                            |
- *          [Div, (y=Scalar_new_Div_Const, x=CircleNode)] -------
+ *                 |                                          [Scalar_new_Div_Const]
+ *                 |                                                   |
+ *          [CircleDiv, (x=Scalar_new_Div_Const, y=CircleNode)] -------
  *                 |
  *            [CircleNode]
  *
