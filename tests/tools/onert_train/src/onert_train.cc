@@ -181,6 +181,7 @@ int main(const int argc, char **argv)
     // prepare data buffers
     std::vector<Allocation> input_data(num_inputs);
     std::vector<Allocation> expected_data(num_expecteds);
+    std::vector<Allocation> output_data(num_expecteds);
 
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
@@ -194,7 +195,13 @@ int main(const int argc, char **argv)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-      expected_data[i].alloc(bufsize_for(&ti));
+      // For validation
+      uint64_t output_size_in_bytes = bufsize_for(&ti);
+      output_data[i].alloc(output_size_in_bytes);
+      NNPR_ENSURE_STATUS(
+        nnfw_train_set_output(session, i, ti.dtype, output_data[i].data(), output_size_in_bytes));
+
+      expected_data[i].alloc(output_size_in_bytes);
       expected_infos.emplace_back(std::move(ti));
     }
 
@@ -217,12 +224,16 @@ int main(const int argc, char **argv)
     }
 
     std::vector<float> losses(num_expecteds);
+    std::vector<float> accuracy(num_expecteds);
     measure.run(PhaseType::EXECUTE, [&]() {
       const int num_step = data_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_step);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
+        //
+        // TRAINING
+        //
         std::fill(losses.begin(), losses.end(), 0);
         for (uint32_t n = 0; n < num_step; ++n)
         {
@@ -266,7 +277,94 @@ int main(const int argc, char **argv)
         {
           std::cout << "[" << i << "] " << losses[i] / num_step;
         }
-        std::cout /* << "- accuracy: " << accuracy*/ << std::endl;
+
+        //
+        // VALIDATION
+        //
+        std::fill(losses.begin(), losses.end(), 0);
+        std::fill(accuracy.begin(), accuracy.end(), 0);
+        const int num_valid_step = data_length / tri.batch_size;
+        for (uint32_t n = 0; n < num_valid_step; ++n)
+        {
+          // get batchsize validation data
+          if (!generator(n, input_data, expected_data))
+            break;
+
+          // prepare input
+          for (uint32_t i = 0; i < num_inputs; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+          }
+
+          // prepare output
+          for (uint32_t i = 0; i < num_expecteds; ++i)
+          {
+            NNPR_ENSURE_STATUS(
+              nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+          }
+
+          // validation
+          NNPR_ENSURE_STATUS(nnfw_train(session, false));
+
+          auto calculateAccuracy = [&](const void *output_data, const void *expected_data,
+                                       const nnfw_tensorinfo &info) -> float {
+            switch (info.dtype)
+            {
+              case NNFW_TYPE_TENSOR_FLOAT32:
+              {
+                int correct = 0;
+                int size = num_elems(&info) / info.dims[0];
+                for (int b = 0; b < info.dims[0]; ++b)
+                {
+                  int b_offset = b * size;
+                  std::vector<float> output(static_cast<const float *>(output_data) + b_offset,
+                                            static_cast<const float *>(output_data) + b_offset +
+                                              size);
+                  std::vector<float> expected(static_cast<const float *>(expected_data) + b_offset,
+                                              static_cast<const float *>(expected_data) + b_offset +
+                                                size);
+                  auto output_idx =
+                    std::distance(output.begin(), std::max_element(output.begin(), output.end()));
+                  auto expected_idx = std::distance(
+                    expected.begin(), std::max_element(expected.begin(), expected.end()));
+                  if (output_idx == expected_idx)
+                    correct++;
+                }
+                return static_cast<float>(correct) / info.dims[0];
+              }
+              default:
+                std::cerr << "E: not supported tensor type in calculateAccuracy" << std::endl;
+                exit(-1);
+            }
+          };
+
+          // get validation loss and accuracy
+          for (int32_t i = 0; i < num_expecteds; ++i)
+          {
+            float temp = 0.f;
+            NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
+            losses[i] += temp;
+            temp =
+              calculateAccuracy(output_data[i].data(), expected_data[i].data(), expected_infos[i]);
+            accuracy[i] += temp;
+          }
+        }
+
+        // print validation loss and accuracy
+        std::cout << std::fixed;
+        std::cout.precision(4);
+        std::cout << " - val_loss: ";
+        for (uint32_t i = 0; i < num_expecteds; ++i)
+        {
+          std::cout << "[" << i << "] " << losses[i] / num_valid_step;
+        }
+        std::cout << " - val_accuracy: ";
+        for (uint32_t i = 0; i < num_expecteds; ++i)
+        {
+          std::cout << "[" << i << "] " << accuracy[i] / num_valid_step;
+        }
+        std::cout << std::endl;
       }
     });
 
