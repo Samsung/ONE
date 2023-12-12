@@ -82,6 +82,8 @@ public:
   bool fakeQuantize(luci::Module *module, const std::string &quant_dtype,
                     LayerParams &layer_params);
 
+  const Context &getContext() const { return _ctx; }
+
 private:
   Context _ctx;
   const QuantizerHook *_hook = nullptr;
