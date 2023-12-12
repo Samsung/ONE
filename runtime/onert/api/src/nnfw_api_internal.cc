@@ -1500,6 +1500,9 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
   if (mmapped_buf == nullptr)
     return NNFW_STATUS_INVALID_FILE;
 
+  // make sure the architecture is little endian before direct access to flatbuffers
+  assert(FLATBUFFERS_LITTLEENDIAN);
+
   try
   {
     _execution->iterateTrainableTensors([&](const onert::ir::OperandIndex &idx,
