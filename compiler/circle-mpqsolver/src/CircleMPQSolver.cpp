@@ -249,15 +249,6 @@ int entry(int argc, char **argv)
       }
     }
 
-    if (arser[save_intermediate_str])
-    {
-      auto data_path = arser.get<std::string>(save_intermediate_str);
-      if (!data_path.empty())
-      {
-        bi_solver->setSaveIntermediate(data_path);
-      }
-    }
-
     SolverOutput::get() << "qerror metric: MAE\n"
                         << "target qerror ratio: " << qerror_ratio << "\n";
 
@@ -283,6 +274,15 @@ int entry(int argc, char **argv)
   {
     std::cerr << "ERROR: Unrecognized solver" << std::endl;
     return EXIT_FAILURE;
+  }
+
+  if (arser[save_intermediate_str])
+  {
+    auto data_path = arser.get<std::string>(save_intermediate_str);
+    if (!data_path.empty())
+    {
+      solver->setSaveIntermediate(data_path);
+    }
   }
 
   auto optimized = solver->run(input_model_path);
