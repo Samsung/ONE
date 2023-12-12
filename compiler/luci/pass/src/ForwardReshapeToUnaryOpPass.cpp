@@ -262,8 +262,7 @@ protected:
       return false;
 
     // axis value
-    int32_t axis_value;
-    axis_value = axis->at<loco::DataType::S32>(0);
+    auto axis_value = axis->at<loco::DataType::S32>(0);
 
     if (axis_value < 0)
       axis_value += static_cast<int32_t>(reshape->rank());
@@ -273,9 +272,7 @@ protected:
     if (node->keep_dims() != true)
       return false;
 
-    auto *reshape_input = dynamic_cast<luci::CircleNode *>(reshape->tensor());
-    if (reshape_input == nullptr)
-      return false;
+    auto reshape_input = loco::must_cast<luci::CircleNode *>(reshape->tensor());
 
     // reshape shouldn't change rank
     if (reshape_input->rank() != reshape->rank())
@@ -285,7 +282,8 @@ protected:
 
     for (int32_t i = 0; i <= axis_value; ++i)
     {
-      if (not reshape_input->dim(i).known() or reshape_input->dim(i).value() != reshape->dim(i).value())
+      if (not reshape_input->dim(i).known() or
+          reshape_input->dim(i).value() != reshape->dim(i).value())
         return false;
     }
 
