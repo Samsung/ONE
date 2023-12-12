@@ -34,8 +34,8 @@ public:
   /**
    * @brief called on the start of iterative search
    * @param model_path path of original float model to quantize
-   * @param q8error error of Q8 quantization
-   * @param q16error error of Q16 quantization
+   * @param q8error error of Q8 quantization (if NAN, then not applicable)
+   * @param q16error error of Q16 quantization (if NAN, then not applicable)
    */
   virtual void onBeginSolver(const std::string &model_path, float q8error, float q16error) = 0;
 
@@ -57,7 +57,7 @@ public:
    * @brief called at the end of iterative search
    * @param layers model nodes with specific quantization parameters
    * @param def_dtype default quantization dtype
-   * @param qerror final error of quantization
+   * @param qerror final error of quantization (if NAN, then not applicable)
    */
   virtual void onEndSolver(const LayerParams &layers, const std::string &def_dtype,
                            float qerror) = 0;
