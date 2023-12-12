@@ -25,6 +25,7 @@
 #include "randomgen.h"
 #include "rawformatter.h"
 #include "rawdataloader.h"
+#include "metric.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -307,47 +308,14 @@ int main(const int argc, char **argv)
           // validation
           NNPR_ENSURE_STATUS(nnfw_train(session, false));
 
-          auto calculateAccuracy = [&](const void *output_data, const void *expected_data,
-                                       const nnfw_tensorinfo &info) -> float {
-            switch (info.dtype)
-            {
-              case NNFW_TYPE_TENSOR_FLOAT32:
-              {
-                int correct = 0;
-                int size = num_elems(&info) / info.dims[0];
-                for (int b = 0; b < info.dims[0]; ++b)
-                {
-                  int b_offset = b * size;
-                  std::vector<float> output(static_cast<const float *>(output_data) + b_offset,
-                                            static_cast<const float *>(output_data) + b_offset +
-                                              size);
-                  std::vector<float> expected(static_cast<const float *>(expected_data) + b_offset,
-                                              static_cast<const float *>(expected_data) + b_offset +
-                                                size);
-                  auto output_idx =
-                    std::distance(output.begin(), std::max_element(output.begin(), output.end()));
-                  auto expected_idx = std::distance(
-                    expected.begin(), std::max_element(expected.begin(), expected.end()));
-                  if (output_idx == expected_idx)
-                    correct++;
-                }
-                return static_cast<float>(correct) / info.dims[0];
-              }
-              default:
-                std::cerr << "E: not supported tensor type in calculateAccuracy" << std::endl;
-                exit(-1);
-            }
-          };
-
           // get validation loss and accuracy
+          Metric metric(output_data, expected_data, expected_infos);
           for (int32_t i = 0; i < num_expecteds; ++i)
           {
             float temp = 0.f;
             NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
             losses[i] += temp;
-            temp =
-              calculateAccuracy(output_data[i].data(), expected_data[i].data(), expected_infos[i]);
-            accuracy[i] += temp;
+            accuracy[i] += metric.categoricalAccuracy(i);
           }
         }
 
