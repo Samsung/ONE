@@ -189,6 +189,18 @@ template <typename T> T *getBuffer(IPortableTensor *tensor)
   return reinterpret_cast<T *>(tensor->buffer());
 }
 
+template <> inline const bool *getBuffer(const IPortableTensor *tensor)
+{
+  static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
+  return reinterpret_cast<const bool *>(tensor->buffer());
+}
+
+template <> inline bool *getBuffer(IPortableTensor *tensor)
+{
+  static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
+  return reinterpret_cast<bool *>(tensor->buffer());
+}
+
 } // namespace ops
 } // namespace cpu
 } // namespace backend

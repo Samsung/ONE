@@ -63,6 +63,7 @@ void castPtr(const FromT *in, DataPtr out, int num_elements, ir::DataType data_t
                      [](FromT a) { return static_cast<uint8_t>(a); });
       return;
     case ir::DataType::BOOL8:
+      static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
       std::transform(in, in + num_elements, out.b, [](FromT a) { return static_cast<bool>(a); });
       return;
     case ir::DataType::INT64:
@@ -298,6 +299,7 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
     case ElementwiseUnaryType::kLogicalNot:
       if ((input->data_type() == OperandType::BOOL8))
       {
+        static_assert(sizeof(bool) == 1, "cpu backend supports bool type which is 1 byte");
         _kernel = logicalNot;
       }
       else
