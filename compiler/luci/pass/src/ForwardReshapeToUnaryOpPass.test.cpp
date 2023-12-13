@@ -173,6 +173,112 @@ protected:
   luci::ForwardReshapeToUnaryOpPass _pass;
 };
 
+/**
+ *  Simple graph for test
+ *
+ *  BEFORE
+ *               [Input]
+ *              (3, 4, 4)                 [Shape_Const = (1, -1, 4)]
+ *                  |                     |
+ *              [Reshape] ----------------
+ *              (1, 12, 4)
+ *                  |
+ *        [Mean, keep_dims = true]
+ *              (1, 12, 1)
+ *                  |
+ *               [Output]
+ *
+ *  AFTER
+ *               [Input]
+ *              (3, 4, 4)
+ *                  |
+ *         [Mean, keep_dims = true]
+ *              (3, 4, 1)                 [Shape_Const = (1, -1, 1)]
+ *                  |                     |
+ *              [Reshape]-----------------
+ *              (1, 12, 1)
+ *                  |
+ *              [Output]
+ *
+ */
+class PatternReshapeMeanGraphlet
+{
+public:
+  PatternReshapeMeanGraphlet() = default;
+
+  void init(loco::Graph *g)
+  {
+    _mean = g->nodes()->create<luci::CircleMean>();
+    _mean_const = g->nodes()->create<luci::CircleConst>();
+    _reshape = g->nodes()->create<luci::CircleReshape>();
+    _reshape_const = g->nodes()->create<luci::CircleConst>();
+
+    _mean->name("_mean");
+    _mean_const->name("_mean_const");
+    _reshape->name("_reshape");
+    _reshape_const->name("_reshape_const");
+  }
+
+public:
+  luci::CircleMean *mean() { return _mean; }
+  luci::CircleConst *mean_const() { return _mean_const; }
+  luci::CircleReshape *reshape() { return _reshape; }
+  luci::CircleConst *reshape_const() { return _reshape_const; }
+
+protected:
+  luci::CircleMean *_mean = nullptr;
+  luci::CircleConst *_mean_const = nullptr;
+  luci::CircleReshape *_reshape = nullptr;
+  luci::CircleConst *_reshape_const = nullptr;
+};
+
+class ForwardReshapeToMeanPatternTestGraph : public TestIOGraph, public PatternReshapeMeanGraphlet
+{
+public:
+  ForwardReshapeToMeanPatternTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({3, 4, 4}, {3, 4, 4});
+    PatternReshapeMeanGraphlet::init(g());
+
+    _reshape_const->rank(1);
+    _reshape_const->dtype(loco::DataType::S32);
+    _reshape_const->size<loco::DataType::S32>(3);
+    _reshape_const->at<loco::DataType::S32>(0) = 1;
+    _reshape_const->at<loco::DataType::S32>(1) = -1;
+    _reshape_const->at<loco::DataType::S32>(2) = 4;
+    _reshape_const->shape_status(luci::ShapeStatus::VALID);
+
+    _reshape->rank(3);
+    _reshape->dim(0).set(3);
+    _reshape->dim(1).set(4);
+    _reshape->dim(2).set(4);
+    _reshape->dtype(loco::DataType::FLOAT32);
+    _reshape->shape_status(luci::ShapeStatus::VALID);
+    _reshape->tensor(input());
+    _reshape->shape(_reshape_const);
+
+    _mean_const->rank(1);
+    _mean_const->dtype(loco::DataType::S32);
+    _mean_const->size<loco::DataType::S32>(1);
+    _mean_const->at<loco::DataType::S32>(0) = -1;
+    _mean_const->shape_status(luci::ShapeStatus::VALID);
+
+    _mean->rank(3);
+    _mean->dim(0).set(1);
+    _mean->dim(1).set(12);
+    _mean->dim(2).set(1);
+    _mean->dtype(loco::DataType::FLOAT32);
+    _mean->shape_status(luci::ShapeStatus::VALID);
+    _mean->input(_reshape);
+    _mean->reduction_indices(_mean_const);
+    _mean->keep_dims(true);
+
+    output()->from(_mean);
+  }
+};
+
 } // namespace
 
 TEST(ForwardReshapeToUnaryOpPassTest, name)
@@ -208,4 +314,14 @@ TEST_F(ForwardReshapeToLogisticGraphTest, forward)
   ASSERT_EQ(nullptr, log);
   log = dynamic_cast<luci::CircleLogistic *>(reshape->tensor());
   ASSERT_NE(nullptr, log);
+}
+
+TEST(FuseMulWithDivPassTest, forward_reshape_to_mean_pattern)
+{
+  ForwardReshapeToMeanPatternTestGraph g;
+  luci::ForwardReshapeToUnaryOpPass pass;
+
+  g.init();
+
+  EXPECT_TRUE(pass.run(g.g()));
 }
