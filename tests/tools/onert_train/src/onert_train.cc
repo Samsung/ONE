@@ -270,6 +270,9 @@ int main(const int argc, char **argv)
       }
     });
 
+    if (args.getExportModelFilename() != "")
+      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, args.getExportModelFilename().c_str()));
+
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
     measure.printResult();
