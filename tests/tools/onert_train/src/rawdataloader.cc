@@ -20,6 +20,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <numeric>
+#include <cassert>
 
 namespace onert_train
 {
@@ -39,64 +40,82 @@ uint64_t getRawTensorSize(const std::vector<nnfw_tensorinfo> &infos)
 
 namespace onert_train
 {
-std::tuple<Generator, uint32_t>
-RawDataLoader::loadData(const std::string &input_file, const std::string &expected_file,
-                        const std::vector<nnfw_tensorinfo> &input_infos,
-                        const std::vector<nnfw_tensorinfo> &expected_infos,
-                        const uint32_t batch_size)
+
+RawDataLoader::RawDataLoader(const std::string &input_file, const std::string &expected_file,
+                             const std::vector<nnfw_tensorinfo> &input_infos,
+                             const std::vector<nnfw_tensorinfo> &expected_infos)
+  : DataLoader(input_infos, expected_infos)
 {
   _input_file = std::ifstream(input_file, std::ios::binary);
   _expected_file = std::ifstream(expected_file, std::ios::binary);
 
   _input_file.seekg(0, std::ios::end);
   uint32_t input_file_size = _input_file.tellg();
-  uint32_t input_data_length = input_file_size / getRawTensorSize(input_infos);
+  uint32_t input_data_length = input_file_size / getRawTensorSize(_input_infos);
 
   _expected_file.seekg(0, std::ios::end);
   uint32_t expected_file_size = _expected_file.tellg();
-  uint32_t expected_data_length = expected_file_size / getRawTensorSize(expected_infos);
+  uint32_t expected_data_length = expected_file_size / getRawTensorSize(_expected_infos);
 
   if (input_data_length != expected_data_length)
   {
     throw std::runtime_error("The length of input data and expected data does not match.");
   }
 
-  uint32_t data_length = input_data_length;
+  _data_length = input_data_length;
+}
 
-  std::vector<uint32_t> input_origins(input_infos.size());
+std::tuple<Generator, uint32_t> RawDataLoader::loadData(const uint32_t batch_size, const float from,
+                                                        const float to)
+{
+  assert(from >= 0.f && from <= 1.f);
+  assert(to >= 0.f && to <= 1.f);
+  assert(from <= to);
+
+  // Total data length : D
+  // model output count : O
+  // model batch size: B
+  // model tensorinfo shape : [B H W C]
+  // Data format
+  // [ 00 01 02 ... 0D ] repeats O times
+  int32_t split_size = _data_length * (to - from);
+  int32_t split_start = _data_length * from;
+  std::vector<uint32_t> input_origins(_input_infos.size());
   uint32_t start = 0;
-  for (uint32_t i = 0; i < input_infos.size(); ++i)
+  for (uint32_t i = 0; i < _input_infos.size(); ++i)
   {
-    input_origins.at(i) = start;
-    start += (bufsize_for(&input_infos[i]) / batch_size * data_length);
+    auto hwc_size = bufsize_for(&_input_infos[i]) / batch_size;
+    input_origins.at(i) = start + (hwc_size * split_start);
+    start += (hwc_size * _data_length);
   }
 
-  std::vector<uint32_t> expected_origins(expected_infos.size());
+  std::vector<uint32_t> expected_origins(_expected_infos.size());
   start = 0;
-  for (uint32_t i = 0; i < expected_infos.size(); ++i)
+  for (uint32_t i = 0; i < _expected_infos.size(); ++i)
   {
-    expected_origins.at(i) = start;
-    start += (bufsize_for(&expected_infos[i]) / batch_size * data_length);
+    auto hwc_size = bufsize_for(&_expected_infos[i]) / batch_size;
+    expected_origins.at(i) = start + (hwc_size * split_start);
+    start += (hwc_size * _data_length);
   }
 
   return std::make_tuple(
-    [input_origins, expected_origins, &input_infos, &expected_infos,
-     this](uint32_t idx, std::vector<Allocation> &inputs, std::vector<Allocation> &expecteds) {
-      for (uint32_t i = 0; i < input_infos.size(); ++i)
+    [input_origins, expected_origins, this](uint32_t idx, std::vector<Allocation> &inputs,
+                                            std::vector<Allocation> &expecteds) {
+      for (uint32_t i = 0; i < _input_infos.size(); ++i)
       {
-        auto bufsz = bufsize_for(&input_infos[i]);
+        auto bufsz = bufsize_for(&_input_infos[i]);
         _input_file.seekg(input_origins[i] + idx * bufsz, std::ios::beg);
         _input_file.read(reinterpret_cast<char *>(inputs[i].data()), bufsz);
       }
-      for (uint32_t i = 0; i < expected_infos.size(); ++i)
+      for (uint32_t i = 0; i < _expected_infos.size(); ++i)
       {
-        auto bufsz = bufsize_for(&expected_infos[i]);
+        auto bufsz = bufsize_for(&_expected_infos[i]);
         _expected_file.seekg(expected_origins[i] + idx * bufsz, std::ios::beg);
         _expected_file.read(reinterpret_cast<char *>(expecteds[i].data()), bufsz);
       }
       return true;
     },
-    data_length);
+    split_size);
 }
 
 } // namespace onert_train

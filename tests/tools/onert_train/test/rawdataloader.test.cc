@@ -174,11 +174,10 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   }
 
   // Load test datas
-  RawDataLoader loader;
+  RawDataLoader loader(input_file, expected_file, in_infos, expected_infos);
   Generator generator;
   uint32_t test_data_length;
-  std::tie(generator, test_data_length) =
-    loader.loadData(input_file, expected_file, in_infos, expected_infos, batch_size);
+  std::tie(generator, test_data_length) = loader.loadData(batch_size, 0.f, 1.f);
 
   EXPECT_EQ(data_length, test_data_length);
 

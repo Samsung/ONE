@@ -60,6 +60,7 @@ public:
   const int getLossReductionType(void) const { return _loss_reduction_type; }
   const int getOptimizerType(void) const { return _optimizer_type; }
   const int getMetricType(void) const { return _metric_type; }
+  const float getValidationSplit(void) const { return _validation_split; }
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
@@ -86,6 +87,7 @@ private:
   int _loss_reduction_type;
   int _optimizer_type;
   int _metric_type;
+  float _validation_split;
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
