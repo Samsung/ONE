@@ -96,6 +96,14 @@ public:
     return true;
   }
 
+  void iterateTrainableTensors(
+    const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)> &)
+    const override
+  {
+    // DO NOTHING
+    // Builtin tensor registry does not have trainable tensor.
+  }
+
   void setBackPropTensor(const ir::OperandIndex &index, std::unique_ptr<BackPropTensor> tensor)
   {
     _base_reg->setBackPropTensor(index, std::move(tensor));
