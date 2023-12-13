@@ -39,7 +39,7 @@ std::string formatOperandIndexSequence(const ir::OperandIndexSequence &seq)
   std::vector<std::string> strs;
   for (auto &&ind : seq)
     strs.push_back(dumper::text::formatOperandBrief(ind));
-  return nnfw::misc::join(strs.begin(), strs.end(), ", ");
+  return nnfw::misc::join(strs.begin(), strs.end(), ",");
 }
 
 } // namespace
@@ -88,7 +88,6 @@ void dumpGraph(const ir::Graph &graph)
     VERBOSE(GraphDumper) << "  " << formatOperation(op, op_ind) << "\n";
   }
   VERBOSE(GraphDumper) << "}\n";
-  VERBOSE(GraphDumper) << std::endl;
 }
 
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph)
