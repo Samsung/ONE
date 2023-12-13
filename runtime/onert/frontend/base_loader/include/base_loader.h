@@ -1729,9 +1729,9 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
       if (metadata->name() == nullptr)
         continue; // metadata should have name
 
-      std::unique_ptr<const ir::IMetadata> loaded_metadata = loadMetadata(metadata);
+      std::shared_ptr<const ir::IMetadata> loaded_metadata = loadMetadata(metadata);
       const auto key = loaded_metadata->key();
-      model->add_metadata(key, std::move(loaded_metadata));
+      model->add_metadata(key, loaded_metadata);
     }
   }
 

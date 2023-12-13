@@ -319,7 +319,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       const auto train_info =
         std::dynamic_pointer_cast<const onert::ir::train::TrainingInfo>(metadata);
 
-      _train_info = std::move(train_info->clone());
+      _train_info = train_info->clone();
     }
 #endif // ONERT_TRAIN
 

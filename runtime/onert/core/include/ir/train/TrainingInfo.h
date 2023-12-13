@@ -30,10 +30,11 @@ namespace ir
 namespace train
 {
 
-class TrainingInfo : public IMetadata
+class TrainingInfo final : public IMetadata
 {
 public:
   TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
+  TrainingInfo(const TrainingInfo &) = default;
   ~TrainingInfo() = default;
   static std::unique_ptr<TrainingInfo> createFromDefault();
 

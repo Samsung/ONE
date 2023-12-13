@@ -36,7 +36,7 @@ class IMetadata
 {
 public:
   IMetadata() {}
-  ~IMetadata() = default;
+  virtual ~IMetadata() = default;
 
   virtual Metakey key() const = 0;
 };
