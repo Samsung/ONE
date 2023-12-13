@@ -277,6 +277,8 @@ public:
 
     output()->from(_mean);
   }
+
+  void invalid_type() { _mean_const->dtype(loco::DataType::FLOAT32); }
 };
 
 } // namespace
@@ -324,4 +326,16 @@ TEST(FuseMulWithDivPassTest, forward_reshape_to_mean_pattern)
   g.init();
 
   EXPECT_TRUE(pass.run(g.g()));
+}
+
+TEST(FuseMulWithDivPassTest, forward_reshape_to_mean_pattern_NEG)
+{
+  ForwardReshapeToMeanPatternTestGraph g;
+  luci::ForwardReshapeToUnaryOpPass pass;
+
+  g.init();
+
+  g.invalid_type();
+
+  EXPECT_FALSE(pass.run(g.g()));
 }
