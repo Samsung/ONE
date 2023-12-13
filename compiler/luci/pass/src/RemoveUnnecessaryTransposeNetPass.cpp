@@ -82,7 +82,7 @@ private:
 
   struct Dim final
   {
-    uint32_t value;
+    int32_t value;
     std::vector<uint8_t> tags;
   };
 
@@ -90,7 +90,51 @@ private:
 
   using Shape = std::vector<Dim>;
   Shape _shape;
+
+  int32_t flatsize(const Shape &shape) const;
+  bool inference_incomplete_shape(const Shape &src, Shape &dst);
 };
+
+int32_t TaggedShapeAnalyzer::flatsize(const Shape &shape) const
+{
+  int32_t size = 1;
+  for (const auto &dim : shape)
+  {
+    if (dim.value >= 1)
+      size *= dim.value;
+  }
+  return size;
+}
+
+/**
+ * @brief if 'dst' has -1 valued dim, replace -1 with inferenced value
+ *
+ * @return  ture, if successfully replace -1 value
+ *          false, otherwise
+ */
+bool TaggedShapeAnalyzer::inference_incomplete_shape(const Shape &src, Shape &dst)
+{
+  std::vector<size_t> incomplete_indexes;
+  for (size_t i = 0; i < dst.size(); i++)
+  {
+    if (dst[i].value == -1)
+      incomplete_indexes.push_back(i);
+  }
+
+  if (incomplete_indexes.size() == 0)
+    return true;
+  else if (incomplete_indexes.size() == 1)
+  {
+    if (flatsize(src) % flatsize(dst) == 0)
+      dst[incomplete_indexes[0]].value = flatsize(src) / flatsize(dst);
+    else
+      return false;
+  }
+  else // incomplete_indexes.size() >= 2
+    return false;
+
+  return true;
+}
 
 /**
  * @brief initalize _shape with input tensor named in_tensor
@@ -180,10 +224,14 @@ bool TaggedShapeAnalyzer::analyze_reshape(const luci::CircleReshape *reshape_nod
     new_shape.push_back(dim);
   }
 
+  // inference new_shape dim with -1 value
+  if (inference_incomplete_shape(_shape, new_shape) == false)
+    return false;
+
   // indexing for _shape [old_shape_start_idx, old_shape_end_idx)
   uint32_t old_shape_start_idx = 0;
   uint32_t old_shape_end_idx = 1;
-  uint32_t old_shape_product = _shape[old_shape_start_idx].value;
+  auto old_shape_product = _shape[old_shape_start_idx].value;
 
   auto expand_range = [&]() -> bool {
     if (old_shape_end_idx >= _shape.size())
