@@ -116,9 +116,7 @@ public:
     const override
   {
     for (const auto &e : _trainable)
-    {
       fn(e.first, e.second.get());
-    }
   }
 
   IPortableTensor *getPortableTensor(const ir::OperandIndex &index)
