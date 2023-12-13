@@ -62,7 +62,8 @@ public:
    * @param fn function to be called with OperandIndex and a pointer to ITrainableTensor
    */
   virtual void iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, train::ITrainableTensor *)> &) const = 0;
+    const std::function<void(const ir::OperandIndex &, const train::ITrainableTensor *)> &)
+    const = 0;
 };
 
 } // namespace train
@@ -111,7 +112,7 @@ public:
   }
 
   void iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, train::ITrainableTensor *)> &fn)
+    const std::function<void(const ir::OperandIndex &, const train::ITrainableTensor *)> &fn)
     const override
   {
     for (const auto &e : _trainable)

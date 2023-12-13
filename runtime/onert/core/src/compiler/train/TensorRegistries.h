@@ -96,11 +96,11 @@ public:
   }
 
   void iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &fn)
-    const
+    const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)>
+      &fn) const
   {
-    assert(_tensor_regs.size() == 2); // training backend and built-in backcend
-    for (auto &&tensor_reg : _tensor_regs)
+    assert(_tensor_regs.size() == 2); // training backend and built-in backend
+    for (const auto &tensor_reg : _tensor_regs)
       tensor_reg->iterateTrainableTensors(fn);
   }
 

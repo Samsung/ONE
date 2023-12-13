@@ -98,7 +98,7 @@ public:
   }
 
   void iterateTrainableTensors(
-    const std::function<void(const ir::OperandIndex &, backend::train::ITrainableTensor *)> &)
+    const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)> &)
     const override
   {
     // DO NOTHING
