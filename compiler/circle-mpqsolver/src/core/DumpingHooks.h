@@ -40,7 +40,7 @@ public:
    * @brief DumpingHooks constructor
    * @param save_path directory where all intermediate data will be saved
    */
-  DumpingHooks(const std::string &save_path);
+  DumpingHooks(const std::string &save_path, const Quantizer::Context &ctx);
 
   /**
    * @brief called on successfull quantization
@@ -75,6 +75,7 @@ private:
   Dumper _dumper;
   uint32_t _num_of_iterations = 0;
   bool _in_iterations = false;
+  Quantizer::Context _ctx;
 };
 
 } // namespace core

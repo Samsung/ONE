@@ -19,8 +19,8 @@
 
 using namespace mpqsolver::core;
 
-DumpingHooks::DumpingHooks(const std::string &save_path)
-  : _save_path(save_path), _dumper(_save_path)
+DumpingHooks::DumpingHooks(const std::string &save_path, const Quantizer::Context &ctx)
+  : _save_path(save_path), _dumper(_save_path), _ctx(ctx)
 {
 }
 
@@ -51,7 +51,7 @@ void DumpingHooks::onBeginIteration()
 void DumpingHooks::onEndIteration(const LayerParams &layers, const std::string &def_type,
                                   float error)
 {
-  _dumper.dumpMPQConfiguration(layers, def_type, "channel", _num_of_iterations);
+  _dumper.dumpMPQConfiguration(layers, def_type, _ctx.granularity, _num_of_iterations);
   _dumper.dumpMPQError(error, _num_of_iterations);
   _in_iterations = false;
 }
@@ -59,7 +59,7 @@ void DumpingHooks::onEndIteration(const LayerParams &layers, const std::string &
 void DumpingHooks::onEndSolver(const LayerParams &layers, const std::string &def_dtype,
                                float qerror)
 {
-  _dumper.dumpFinalMPQ(layers, def_dtype, "channel");
+  _dumper.dumpFinalMPQ(layers, def_dtype, _ctx.granularity);
   if (!std::isnan(qerror))
   {
     _dumper.dumpMPQError(qerror);

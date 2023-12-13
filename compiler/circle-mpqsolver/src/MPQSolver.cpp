@@ -28,7 +28,7 @@ MPQSolver::MPQSolver(const core::Quantizer::Context &ctx)
 
 void MPQSolver::setSaveIntermediate(const std::string &save_path)
 {
-  _hooks = std::make_unique<core::DumpingHooks>(save_path);
+  _hooks = std::make_unique<core::DumpingHooks>(save_path, _quantizer->getContext());
 }
 
 std::unique_ptr<luci::Module> MPQSolver::readModule(const std::string &path)

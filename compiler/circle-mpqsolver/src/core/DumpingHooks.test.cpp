@@ -52,47 +52,53 @@ protected:
 
 TEST_F(CircleMPQSolverDumpingHooksTest, verifyResultsTest)
 {
-  mpqsolver::core::DumpingHooks hooks(_folder);
+  mpqsolver::core::Quantizer::Context ctx;
+  mpqsolver::core::DumpingHooks hooks(_folder, ctx);
   EXPECT_NO_THROW(hooks.onBeginSolver("model_path.circle", 0.0, 1.0));
   std::string errors_path = _folder + "/errors" + ".mpq.txt";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(errors_path));
 
   hooks.onBeginIteration();
 
-  EXPECT_NO_THROW(hooks.onEndIteration(mpqsolver::core::LayerParams(), "uint8", 0.0));
+  EXPECT_NO_THROW(
+    hooks.onEndIteration(mpqsolver::core::LayerParams(), ctx.output_model_dtype, 0.0));
   std::string current_mpq_path = _folder + "/Configuration_" + std::to_string(1) + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(current_mpq_path));
 
-  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", 0.5));
+  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), ctx.output_model_dtype, 0.5));
   std::string final_mpq_path = _folder + "/FinalConfiguration" + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(final_mpq_path));
 }
 
 TEST_F(CircleMPQSolverDumpingHooksTest, verify_NAN_results_test)
 {
-  mpqsolver::core::DumpingHooks hooks(_folder);
+  mpqsolver::core::Quantizer::Context ctx;
+  mpqsolver::core::DumpingHooks hooks(_folder, ctx);
   EXPECT_NO_THROW(hooks.onBeginSolver("model_path.circle", NAN, NAN));
   std::string errors_path = _folder + "/errors" + ".mpq.txt";
   EXPECT_TRUE(not mpqsolver::test::io_utils::isFileExists(errors_path));
 
-  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", NAN));
+  EXPECT_NO_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), ctx.output_model_dtype, NAN));
   std::string final_mpq_path = _folder + "/FinalConfiguration" + ".mpq.json";
   EXPECT_TRUE(mpqsolver::test::io_utils::isFileExists(final_mpq_path));
 }
 
 TEST_F(CircleMPQSolverDumpingHooksTest, empty_path_NEG)
 {
-  mpqsolver::core::DumpingHooks hooks("");
+  mpqsolver::core::Quantizer::Context ctx;
+  mpqsolver::core::DumpingHooks hooks("", ctx);
   EXPECT_ANY_THROW(hooks.onBeginSolver("", -1, -1));
   hooks.onBeginIteration();
   EXPECT_ANY_THROW(hooks.onQuantized(nullptr));
-  EXPECT_ANY_THROW(hooks.onEndIteration(mpqsolver::core::LayerParams(), "uint8", -1));
-  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", -1));
+  EXPECT_ANY_THROW(
+    hooks.onEndIteration(mpqsolver::core::LayerParams(), ctx.output_model_dtype, -1));
+  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), ctx.output_model_dtype, -1));
 }
 
 TEST_F(CircleMPQSolverDumpingHooksTest, empty_NAN_path_NEG)
 {
-  mpqsolver::core::DumpingHooks hooks("");
+  mpqsolver::core::Quantizer::Context ctx;
+  mpqsolver::core::DumpingHooks hooks("", ctx);
   EXPECT_NO_THROW(hooks.onBeginSolver("", NAN, NAN));
-  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), "uint8", NAN));
+  EXPECT_ANY_THROW(hooks.onEndSolver(mpqsolver::core::LayerParams(), ctx.output_model_dtype, NAN));
 }
