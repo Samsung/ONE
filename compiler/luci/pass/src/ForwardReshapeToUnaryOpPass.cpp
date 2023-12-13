@@ -243,6 +243,34 @@ protected:
     return false;
   }
 
+  /**
+   * Graph example:
+   *
+   *  BEFORE
+   *               [Input]
+   *              (3, 4, 4)                 [Shape_Const = (1, -1, 4)]
+   *                  |                     |
+   *              [Reshape] ----------------
+   *              (1, 12, 4)
+   *                  |
+   *        [Mean, keep_dims = true]
+   *              (1, 12, 1)
+   *                  |
+   *               [Output]
+   *
+   *  AFTER
+   *               [Input]
+   *              (3, 4, 4)
+   *                  |
+   *         [Mean, keep_dims = true]
+   *              (3, 4, 1)                 [Shape_Const = (1, -1, 1)]
+   *                  |                     |
+   *              [Reshape]-----------------
+   *              (1, 12, 1)
+   *                  |
+   *              [Output]
+   *
+   */
   bool visit(luci::CircleMean *node)
   {
     luci::CircleReshape *reshape = nullptr;
