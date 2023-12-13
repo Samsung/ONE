@@ -144,6 +144,10 @@ int main(const int argc, char **argv)
     measure.run(PhaseType::PREPARE,
                 [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
 
+    std::cout << "== training parameter ==" << std::endl;
+    std::cout << tri;
+    std::cout << "========================" << std::endl;
+
     // prepare input and expected tensor info lists
     std::vector<nnfw_tensorinfo> input_infos;
     std::vector<nnfw_tensorinfo> expected_infos;

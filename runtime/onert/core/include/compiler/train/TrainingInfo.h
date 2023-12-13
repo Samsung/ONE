@@ -39,7 +39,6 @@ public:
   TrainingInfo(TrainingInfo &&) = default;
   TrainingInfo &operator=(const TrainingInfo &) = default;
   TrainingInfo &operator=(TrainingInfo &&) = default;
-
   ~TrainingInfo() = default;
 
   uint32_t batchSize() const { return _batch_size; }
@@ -61,8 +60,8 @@ public:
 
 private:
   ir::train::LossInfo _loss_info;
-  ir::train::OptimizerInfo _optimizer_info;
-  uint32_t _batch_size;
+  ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
+  uint32_t _batch_size = 0;
 };
 
 } // namespace train

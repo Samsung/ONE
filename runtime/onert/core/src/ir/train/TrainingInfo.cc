@@ -49,11 +49,11 @@ std::unique_ptr<TrainingInfo> TrainingInfo::clone() const
   return std::make_unique<TrainingInfo>(*this);
 }
 
-std::unique_ptr<TrainingInfo> TrainingInfo::fromDefault()
+std::unique_ptr<TrainingInfo> TrainingInfo::createFromDefault()
 {
   auto info = std::make_unique<TrainingInfo>();
 
-  info->setBatchSize(32);
+  info->setBatchSize(1);
 
   onert::ir::train::LossInfo loss_info;
   {

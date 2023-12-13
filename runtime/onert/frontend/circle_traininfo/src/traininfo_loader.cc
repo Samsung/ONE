@@ -70,6 +70,10 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
     default:
       throw std::runtime_error{"unknown loss function"};
   }
+
+  // TODO update circle schema to include reduction type
+  ir_loss.reduction_type = ir::train::LossReductionType::SumOverBatchSize;
+
   return ir_loss;
 }
 } // namespace

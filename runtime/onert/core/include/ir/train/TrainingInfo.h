@@ -35,6 +35,7 @@ class TrainingInfo : public IMetadata
 public:
   TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
   ~TrainingInfo() = default;
+  static std::unique_ptr<TrainingInfo> createFromDefault();
 
   // getter
   const LossInfo &lossInfo() const { return _loss_info; }
@@ -50,12 +51,7 @@ public:
 
   // IMetadata
   Metakey key() const override { return Metakey::TrainingInfo; }
-
   std::unique_ptr<TrainingInfo> clone() const;
-
-  static std::unique_ptr<TrainingInfo> fromDefault();
-
-  // return training_info configuration is valid for training
   bool isValid() const;
 
 private:

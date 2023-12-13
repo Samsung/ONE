@@ -1730,7 +1730,8 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
         continue; // metadata should have name
 
       std::unique_ptr<const ir::IMetadata> loaded_metadata = loadMetadata(metadata);
-      model->add_metadata(loaded_metadata->key(), std::move(loaded_metadata));
+      const auto key = loaded_metadata->key();
+      model->add_metadata(key, std::move(loaded_metadata));
     }
   }
 

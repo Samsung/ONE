@@ -209,14 +209,14 @@ void Args::Initialize(void)
          "(Same data policy with load_input:raw)\n"
     )
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling")
-    ("epoch", po::value<int>()->notifier([&](const auto &v) { _epoch = v; }), "Epoch number")
-    ( "batch_size", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _batch_size = v; }), 
+    ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
+    ( "batch_size", po::value<int>()->notifier([&](const auto &v) { _batch_size = v; }), 
       "Batch size (default : use model parameter)"
     )
-    ("learning_rate", po::value<float>()->default_value(0.0f)->notifier([&](const auto &v) { _learning_rate = v; }), 
-      "Learning rate(default : use model parameter)"
+    ("learning_rate", po::value<float>()->notifier([&](const auto &v) { _learning_rate = v; }), 
+      "Learning rate (default : use model parameter)"
     )
-    ("loss", po::value<int>()->notifier(
+    ("loss", po::value<int>()->default_value(-1)->notifier(
         [&] (const auto &v) { _loss_type = static_cast<NNFW_TRAIN_LOSS>(v); }),
         "Loss type\n"
         "-1: use mdoel parameter(default))\n"
@@ -226,7 +226,7 @@ void Args::Initialize(void)
     ("loss_reduction_type", po::value<int>()->default_value(0)->notifier(
         [&] (const auto &v) { _loss_reduction_type = static_cast<NNFW_TRAIN_LOSS_REDUCTION>(v); }),
         "Loss Reduction type\n"
-        "0: Use default setting (Model parameter or ONERT train setting, default)\n"
+        "0: Use default setting (Model parameter or ONERT train setting)\n"
         "1: SUM_OVER_BATCH_SIZE\n"
         "2: SUM\n"
     )
@@ -234,7 +234,7 @@ void Args::Initialize(void)
         [&] (const auto &v) { _optimizer_type = static_cast<NNFW_TRAIN_OPTIMIZER>(v); }),
       "Optimizer type\n"
       "-1: use model parameter (default)\n"
-      "0: SGD (default)\n"
+      "0: SGD\n"
       "1: Adam\n"
     )
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),

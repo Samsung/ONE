@@ -38,7 +38,6 @@
 #include <vector>
 #include <dirent.h>
 #include <misc/string_helpers.h>
-#include <misc/polymorphic_downcast.h>
 
 /*
  * API does not accept string argument longer than max length below
@@ -1334,7 +1333,7 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     {
       // If info is not given, and there is NO train_info in session
       // Fill train_info with default configuration
-      _train_info = onert::ir::train::TrainingInfo::fromDefault();
+      _train_info = onert::ir::train::TrainingInfo::createFromDefault();
     }
 
     if (not _train_info->isValid())
@@ -1357,6 +1356,7 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     std::cerr << "Error during nnfw_session::train_prepare : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
   _state = State::PREPARED_TRAINING;
   return NNFW_STATUS_NO_ERROR;
 }
