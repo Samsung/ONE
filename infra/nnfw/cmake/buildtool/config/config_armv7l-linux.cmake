@@ -9,7 +9,8 @@ include("${CMAKE_CURRENT_LIST_DIR}/config_linux.cmake")
 
 # addition for arm-linux
 set(FLAGS_COMMON ${FLAGS_COMMON}
-    "-mcpu=cortex-a7"
+    "-march=armv7-a"
+    "-mtune=cortex-a15.cortex-a7"
     "-mfloat-abi=hard"
     "-mfpu=neon-vfpv4"
     "-ftree-vectorize"
