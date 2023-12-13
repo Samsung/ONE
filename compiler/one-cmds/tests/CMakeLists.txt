@@ -70,6 +70,7 @@ fi\n
 
 set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_materials.sh")
 set(PREPROCESS_IMAGES_PY "${CMAKE_CURRENT_SOURCE_DIR}/preprocess_images.py")
+set(PREPROCESS_IMAGES_NUMPY_PY "${CMAKE_CURRENT_SOURCE_DIR}/preprocess_images_numpy.py")
 set(ONNX_LEGALIZE_RUN_COMPARE "${CMAKE_CURRENT_SOURCE_DIR}/onnx_legalize_run_compare.py")
 set(PRINT_ONNX_MODEL "${CMAKE_CURRENT_SOURCE_DIR}/print_onnx_model.py")
 
@@ -91,6 +92,12 @@ install(FILES ${PREPROCESS_IMAGES_PY}
                     WORLD_READ
         DESTINATION test)
 
+install(FILES ${PREPROCESS_IMAGES_NUMPY_PY}
+        PERMISSIONS OWNER_WRITE OWNER_READ
+                    GROUP_READ
+                    WORLD_READ
+        DESTINATION test)
+        
 install(FILES ${ONNX_LEGALIZE_RUN_COMPARE}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
