@@ -21,7 +21,6 @@
 #include "../../backend/builtin/train/TensorRegistry.h"
 
 #include <backend/train/ITensorRegistry.h>
-#include <backend/train/ITrainableTensor.h>
 #include <backend/train/TrainableBackendContext.h>
 
 #include <memory>
