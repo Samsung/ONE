@@ -208,6 +208,7 @@ int main(const int argc, char **argv)
       std::tie(generator, data_length) =
         rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
                                input_infos, expected_infos, tri.batch_size);
+      // TODO get data generator for validation
     }
     else
     {
@@ -223,50 +224,109 @@ int main(const int argc, char **argv)
       measure.set(num_epoch, num_step);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
-        std::fill(losses.begin(), losses.end(), 0);
-        for (uint32_t n = 0; n < num_step; ++n)
+        //
+        // TRAINING
+        //
         {
-          // get batchsize data
-          if (!generator(n, input_data, expected_data))
-            break;
-
-          // prepare input
-          for (uint32_t i = 0; i < num_inputs; ++i)
+          std::fill(losses.begin(), losses.end(), 0);
+          for (uint32_t n = 0; n < num_step; ++n)
           {
-            NNPR_ENSURE_STATUS(
-              nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+            // get batchsize data
+            if (!generator(n, input_data, expected_data))
+              break;
+
+            // prepare input
+            for (uint32_t i = 0; i < num_inputs; ++i)
+            {
+              NNPR_ENSURE_STATUS(
+                nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+            }
+
+            // prepare output
+            for (uint32_t i = 0; i < num_expecteds; ++i)
+            {
+              NNPR_ENSURE_STATUS(
+                nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+            }
+
+            // train
+            measure.run(epoch, n, [&]() { NNPR_ENSURE_STATUS(nnfw_train(session, true)); });
+
+            // store loss
+            for (int32_t i = 0; i < num_expecteds; ++i)
+            {
+              float temp = 0.f;
+              NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
+              losses[i] += temp;
+            }
           }
 
-          // prepare output
+          // print loss
+          std::cout << std::fixed;
+          std::cout << "Epoch " << epoch + 1 << "/" << num_epoch;
+          measure.printTimeMs(epoch, AggregateType::AVERAGE);
+          std::cout.precision(4);
+          std::cout << " - loss: ";
           for (uint32_t i = 0; i < num_expecteds; ++i)
           {
-            NNPR_ENSURE_STATUS(
-              nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
-          }
-
-          // train
-          measure.run(epoch, n, [&]() { NNPR_ENSURE_STATUS(nnfw_train(session, true)); });
-
-          // store loss
-          for (int32_t i = 0; i < num_expecteds; ++i)
-          {
-            float temp = 0.f;
-            NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
-            losses[i] += temp;
+            std::cout << "[" << i << "] " << losses[i] / num_step;
           }
         }
 
-        // print loss
-        std::cout << std::fixed;
-        std::cout << "Epoch " << epoch + 1 << "/" << num_epoch;
-        measure.printTimeMs(epoch, AggregateType::AVERAGE);
-        std::cout.precision(4);
-        std::cout << " - loss: ";
-        for (uint32_t i = 0; i < num_expecteds; ++i)
+        //
+        // VALIDATION
+        //
+        // TODO Enable validation
+        if (false)
         {
-          std::cout << "[" << i << "] " << losses[i] / num_step;
+          std::fill(losses.begin(), losses.end(), 0);
+          // TODO Use validation data length
+          const int num_valid_step = data_length / tri.batch_size;
+          for (uint32_t n = 0; n < num_valid_step; ++n)
+          {
+            // TODO get as much validation data as batchsize
+            if (!generator(n, input_data, expected_data))
+              break;
+
+            // prepare input
+            for (uint32_t i = 0; i < num_inputs; ++i)
+            {
+              NNPR_ENSURE_STATUS(
+                nnfw_train_set_input(session, i, input_data[i].data(), &input_infos[i]));
+            }
+
+            // prepare output
+            for (uint32_t i = 0; i < num_expecteds; ++i)
+            {
+              NNPR_ENSURE_STATUS(
+                nnfw_train_set_expected(session, i, expected_data[i].data(), &expected_infos[i]));
+            }
+
+            // validation
+            NNPR_ENSURE_STATUS(nnfw_train(session, false));
+
+            // get validation loss and accuracy
+            for (int32_t i = 0; i < num_expecteds; ++i)
+            {
+              float temp = 0.f;
+              NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
+              losses[i] += temp;
+              // TODO get validation accuracy
+            }
+          }
+
+          // print validation loss and accuracy
+          std::cout << std::fixed;
+          std::cout.precision(4);
+          std::cout << " - val_loss: ";
+          for (uint32_t i = 0; i < num_expecteds; ++i)
+          {
+            std::cout << "[" << i << "] " << losses[i] / num_valid_step;
+          }
+          // TODO print validation accuracy
         }
-        std::cout /* << "- accuracy: " << accuracy*/ << std::endl;
+
+        std::cout << std::endl;
       }
     });
 
