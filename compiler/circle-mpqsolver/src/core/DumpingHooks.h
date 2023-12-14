@@ -48,7 +48,7 @@ public:
   virtual void onQuantized(luci::Module *module) const override;
 
   /**
-   * @brief called on the start of iterative search
+   * @brief called on the start of mpq search
    */
   virtual void onBeginSolver(const std::string &model_path, float q8error, float q16error) override;
 
@@ -64,7 +64,7 @@ public:
                               float error) override;
 
   /**
-   * @brief called at the end of iterative search
+   * @brief called at the end of mpq search
    */
   virtual void onEndSolver(const LayerParams &layers, const std::string &def_dtype,
                            float qerror) override;

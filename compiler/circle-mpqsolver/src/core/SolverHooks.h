@@ -32,7 +32,7 @@ class SolverHooks
 {
 public:
   /**
-   * @brief called on the start of iterative search
+   * @brief called on the start of mpq search
    * @param model_path path of original float model to quantize
    * @param q8error error of Q8 quantization (if NAN, then not applicable)
    * @param q16error error of Q16 quantization (if NAN, then not applicable)
@@ -54,7 +54,7 @@ public:
                               float error) = 0;
 
   /**
-   * @brief called at the end of iterative search
+   * @brief called at the end of mpq search
    * @param layers model nodes with specific quantization parameters
    * @param def_dtype default quantization dtype
    * @param qerror final error of quantization (if NAN, then not applicable)
