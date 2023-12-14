@@ -19,6 +19,7 @@
 #include "PatternResolver.h"
 
 #include <iostream>
+#include <cmath>
 
 using namespace mpqsolver::pattern;
 
@@ -38,9 +39,20 @@ std::unique_ptr<luci::Module> PatternSolver::run(const std::string &module_path)
   auto module = readModule(module_path);
   assert(module != nullptr);
 
+  _quantizer->setHook(_hooks.get());
+  if (_hooks)
+  {
+    _hooks->onBeginSolver(module_path, NAN, NAN);
+  }
+
   resolvePatterns(module.get());
 
   auto layer_params = getFrozenParams();
+
+  if (_hooks)
+  {
+    _hooks->onEndSolver(layer_params, _quantizer->getContext().output_model_dtype, NAN);
+  }
 
   if (!_quantizer->quantize(module.get(), layer_params))
   {
