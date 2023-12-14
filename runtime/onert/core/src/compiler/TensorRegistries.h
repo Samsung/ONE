@@ -71,7 +71,7 @@ public:
 
   backend::ITensor *getITensor(ir::OperandIndex ind) const
   {
-    for (auto &&tensor_reg : _tensor_regs)
+    for (const auto &tensor_reg : _tensor_regs)
     {
       auto tensor = tensor_reg->getITensor(ind);
       if (tensor)
