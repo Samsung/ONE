@@ -87,13 +87,6 @@ public:
   }
 
 private:
-  std::unique_ptr<ir::IMetadata> loadMetadata(const onert_tflite::Metadata *) override
-  {
-    // NOTE: There is no metadata used in tflite for now
-    //       If necessary, Add metadata loader for tflite here
-    return nullptr;
-  }
-
   std::unique_ptr<ir::Graph> loadSubgraph(const onert_tflite::SubGraph *tflite_subg) override
   {
     auto subg = std::make_unique<ir::Graph>();

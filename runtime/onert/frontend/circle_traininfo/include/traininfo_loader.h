@@ -25,7 +25,7 @@ namespace onert
 namespace traininfo_loader
 {
 
-std::unique_ptr<ir::IMetadata> loadTrainingInfo(const uint8_t *buffer, const size_t size);
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
 } // namespace traininfo_loader
 } // namespace onert

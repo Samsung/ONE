@@ -21,7 +21,6 @@
 #include <unordered_map>
 
 #include "ir/IGraph.h"
-#include "ir/IMetadata.h"
 #include "ir/Index.h"
 #include "util/ObjectManager.h"
 
@@ -178,28 +177,24 @@ private:
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
 
 public:
-  void add_metadata(const ir::Metakey key, const std::shared_ptr<const ir::IMetadata> data)
+  void add_metadata(const std::string &name, std::shared_ptr<const ir::Data> data)
   {
-    _metadatas.emplace(key, data);
+    _metadatas.emplace(name, data);
   }
 
-  bool is_metadata_exist(const ir::Metakey key) const
+  bool is_metadata_exist(const std::string &name) const
   {
-    return _metadatas.find(key) != _metadatas.end();
+    return _metadatas.find(name) != _metadatas.end();
   }
 
-  const std::shared_ptr<const ir::IMetadata> get_metadata(const ir::Metakey key) const
+  std::shared_ptr<const ir::Data> get_metadata(const std::string name) const
   {
-    return _metadatas.at(key);
+    return _metadatas.at(name);
   }
 
 private:
-  // notes : Since ir::Model is shared between TFLite and Circle,
-  //         It is in-appropriate to use ir::train::TrainingInfo right here.
-  //         So, Wrap ir::train::TrainingInfo using ir::IMetadata
-  std::unordered_map<const Metakey, std::shared_ptr<const ir::IMetadata>> _metadatas;
+  std::unordered_map<std::string, std::shared_ptr<const ir::Data>> _metadatas;
 };
-
 } // namespace ir
 } // namespace onert
 

@@ -78,7 +78,7 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
 }
 } // namespace
 
-std::unique_ptr<ir::IMetadata> loadTrainingInfo(const uint8_t *buffer, const size_t size)
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size)
 {
   flatbuffers::Verifier v(buffer, size);
   bool verified = circle::VerifyModelTrainingBuffer(v);
@@ -96,7 +96,7 @@ std::unique_ptr<ir::IMetadata> loadTrainingInfo(const uint8_t *buffer, const siz
     tinfo->setLossInfo(loadLossInfo(circle_model));
     tinfo->setEpoch(circle_model->epochs());
   }
-  return std::move(tinfo);
+  return tinfo;
 }
 
 } // namespace traininfo_loader

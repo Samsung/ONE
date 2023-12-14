@@ -123,7 +123,7 @@ protected:
   }
 
 private:
-  virtual std::unique_ptr<ir::IMetadata> loadMetadata(const Metadata *meta) = 0;
+  std::unique_ptr<ir::Data> bufferIndexToData(const uint32_t buffer_idx);
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   template <typename OpIR, typename... Args>
@@ -243,6 +243,35 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_
   _base = buffer;
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
   loadModel();
+}
+
+template <typename LoaderDomain>
+std::unique_ptr<ir::Data>
+BaseLoader<LoaderDomain>::BaseLoader::bufferIndexToData(const uint32_t buffer_idx)
+{
+  if (_domain_model == nullptr)
+  {
+    throw std::runtime_error{"fail to access _domain_model"};
+  }
+
+  const auto *data = _domain_model->buffers()->Get(buffer_idx)->data();
+  if (_fd == -1) // Model is from memory
+  {
+    return std::make_unique<ir::ExternalData>(data->data(), data->size());
+  }
+  else // Model is loaded(mmap'd) from a file
+  {
+    size_t data_size = data->size();
+    ptrdiff_t offset_start = data->data() - _base;
+    ptrdiff_t offset_end = offset_start + data_size;
+
+    ptrdiff_t page_start = (offset_start / _pagesize) * _pagesize;
+    size_t mapping_size = offset_end - page_start;
+
+    // Since metadata is not accessed in inferece, always use mmaped-data
+    // Ref : https://github.com/Samsung/ONE/issues/3961#issuecomment-681750231
+    return std::make_unique<ir::MMapedData>(_fd, page_start, mapping_size, offset_start, data_size);
+  }
 }
 
 template <typename LoaderDomain>
@@ -1729,9 +1758,8 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
       if (metadata->name() == nullptr)
         continue; // metadata should have name
 
-      std::shared_ptr<const ir::IMetadata> loaded_metadata = loadMetadata(metadata);
-      const auto key = loaded_metadata->key();
-      model->add_metadata(key, loaded_metadata);
+      std::shared_ptr<const ir::Data> data = bufferIndexToData(metadata->buffer());
+      model->add_metadata(metadata->name()->str(), data);
     }
   }
 

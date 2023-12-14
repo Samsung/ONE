@@ -24,6 +24,7 @@
 #include "circle_loader.h"
 #include "tflite_loader.h"
 #include "trix_loader.h"
+#include "traininfo_loader.h"
 #include "json/json.h"
 #include "ir/Model.h"
 #include "ir/NNPkg.h"
@@ -313,13 +314,12 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       return NNFW_STATUS_ERROR;
 
 #ifdef ONERT_TRAIN
-    if (model->is_metadata_exist(onert::ir::Metakey::TrainingInfo))
+    constexpr const char *tinfo_name = "CIRCLE_TRAINING";
+    if (model->is_metadata_exist(tinfo_name))
     {
-      const auto metadata = model->get_metadata(onert::ir::Metakey::TrainingInfo);
-      const auto train_info =
-        std::dynamic_pointer_cast<const onert::ir::train::TrainingInfo>(metadata);
-
-      _train_info = train_info->clone();
+      const auto buffer = model->get_metadata(tinfo_name);
+      // parse buffer to TrainingInfo
+      _train_info = onert::traininfo_loader::loadTrainingInfo(buffer->base(), buffer->size());
     }
 #endif // ONERT_TRAIN
 

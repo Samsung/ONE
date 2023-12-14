@@ -18,7 +18,8 @@
 #ifndef __ONERT_IR_TRAIN_TRAINING_INFO_H__
 #define __ONERT_IR_TRAIN_TRAINING_INFO_H__
 
-#include "ir/IMetadata.h"
+#include <memory>
+
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
 #include "ir/train/LossInfo.h"
@@ -30,7 +31,7 @@ namespace ir
 namespace train
 {
 
-class TrainingInfo final : public IMetadata
+class TrainingInfo final
 {
 public:
   TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
@@ -50,8 +51,6 @@ public:
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   void setEpoch(uint32_t epoch) { _epoch = epoch; }
 
-  // IMetadata
-  Metakey key() const override { return Metakey::TrainingInfo; }
   std::unique_ptr<TrainingInfo> clone() const;
   bool isValid() const;
 
