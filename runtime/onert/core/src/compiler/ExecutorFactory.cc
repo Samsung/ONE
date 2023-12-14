@@ -40,6 +40,7 @@
 #include <memory>
 
 #ifdef ONERT_TRAIN
+#include <compiler/train/TrainingInfo.h>
 #include "../backend/builtin/train/BackendContext.h"
 #include "../exec/train/TrainableExecutor.h"
 
@@ -611,23 +612,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 }
 
 #ifdef ONERT_TRAIN
-exec::IExecutor *
-ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-                        const std::shared_ptr<exec::IExecutors> &executors,
-                        const ExecutorFactoryArgs &args,
-                        const compiler::train::TrainingInfo &training_info)
-{
-  assert(args.options != nullptr);
-
-  if (args.options->executor != "Linear")
-    throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
-
-  return createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);
-}
-
-void ExecutorFactory::prepareMigrantTensors(
-  compiler::ILoweredGraph &lowered_graph,
-  const backend::train::TrainableBackendContexts &backend_contexts)
+void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
+                           const backend::train::TrainableBackendContexts &backend_contexts)
 {
   train::TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -653,10 +639,10 @@ void ExecutorFactory::prepareMigrantTensors(
     });
 }
 
-exec::IExecutor *ExecutorFactory::createTrainableExecutor(
-  std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-  const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
-  const compiler::train::TrainingInfo &training_info)
+exec::IExecutor *
+createTrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                        const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
+                        const compiler::train::TrainingInfo &training_info)
 {
   const auto options = args.options;
   const auto tracing_ctx = args.tracing_ctx;
@@ -904,6 +890,20 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // TODO Support MINMAX_H5DUMPER
 
   return exec;
+}
+
+exec::IExecutor *
+ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+                        const std::shared_ptr<exec::IExecutors> &executors,
+                        const ExecutorFactoryArgs &args,
+                        const compiler::train::TrainingInfo &training_info)
+{
+  assert(args.options != nullptr);
+
+  if (args.options->executor != "Linear")
+    throw std::runtime_error("ExecutorFactory: TrainableExecutor supports only 'Linear' now");
+
+  return createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);
 }
 #endif // ONERT_TRAIN
 
