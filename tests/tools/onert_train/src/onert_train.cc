@@ -168,6 +168,9 @@ int main(const int argc, char **argv)
     tri.loss_info.reduction_type = convertLossReductionType(args.getLossReductionType());
     tri.opt = convertOptType(args.getOptimizerType());
 
+    std::cout << "== training parameter ==" << std::endl;
+    std::cout << tri;
+    std::cout << "========================" << std::endl;
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
