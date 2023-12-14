@@ -34,12 +34,10 @@ namespace compiler
 {
 class LoweredGraph;
 
-#ifdef ONERT_TRAIN
 namespace train
 {
 class LoweredTrainableGraph;
 } // namespace train
-#endif // ONERT_TRAIN
 } // namespace compiler
 } // namespace onert
 
@@ -55,9 +53,7 @@ std::string formatOperand(const ir::Graph &, ir::OperandIndex ind);
 std::string formatOperation(const ir::Graph &graph, ir::OperationIndex ind);
 void dumpGraph(const ir::Graph &graph);
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph);
-#ifdef ONERT_TRAIN
 void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph);
-#endif // ONERT_TRAIN
 
 } // namespace text
 } // namespace dumper

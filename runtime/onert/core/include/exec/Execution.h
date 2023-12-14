@@ -142,7 +142,6 @@ public:
    */
   bool isFinished(void) const;
 
-#ifdef ONERT_TRAIN
   /**
    * @brief  Train
    * @note   It should be called after setting input and output buffer
@@ -158,7 +157,6 @@ public:
    * @return @c float Loss value
    */
   float getLoss(const ir::IOIndex &ind);
-#endif // ONERT_TRAIN
 
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;

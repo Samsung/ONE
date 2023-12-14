@@ -196,7 +196,6 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
-#ifdef ONERT_TRAIN
 uint64_t getBufSize(const nnfw_tensorinfo *info)
 {
   static int elmsize[] = {
@@ -218,7 +217,6 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
   }
   return elmsize[info->dtype] * n;
 }
-#endif // ONERT_TRAIN
 } // namespace
 
 nnfw_session::nnfw_session()
@@ -1161,7 +1159,6 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
-#ifdef ONERT_TRAIN
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
@@ -1484,8 +1481,6 @@ bool nnfw_session::isStatePreparedOrFinishedTraining()
 {
   return isStatePreparedTraining() || isStateFinishedTraining();
 }
-
-#endif // ONERT_TRAIN
 
 NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
 {

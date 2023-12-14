@@ -18,9 +18,7 @@
 
 #include "ir/Graph.h"
 #include "compiler/LoweredGraph.h"
-#ifdef ONERT_TRAIN
 #include "compiler/train/LoweredTrainableGraph.h"
-#endif // ONERT_TRAIN
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
@@ -99,13 +97,11 @@ void dumpLoweredGraph(const compiler::LoweredGraph &lgraph)
   dumpGraph(lgraph.graph());
 }
 
-#ifdef ONERT_TRAIN
 void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph)
 {
   // TODO Graph dump with backend info
   dumpGraph(lgraph.graph());
 }
-#endif // ONERT_TRAIN
 
 } // namespace text
 } // namespace dumper

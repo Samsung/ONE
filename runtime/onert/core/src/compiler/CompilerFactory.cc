@@ -17,10 +17,7 @@
 #include "compiler/CompilerFactory.h"
 
 #include "MultiModelCompiler.h"
-#ifdef ONERT_TRAIN
 #include "train/TrainingCompiler.h"
-#endif // ONERT_TRAIN
-
 #include "compiler/Compiler.h"
 
 namespace onert
@@ -39,13 +36,9 @@ CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
                         std::vector<std::unique_ptr<CompilerOptions>> &copts,
                         const compiler::train::TrainingInfo *training_info)
 {
-#ifdef ONERT_TRAIN
   // Returing compiler for training
   if (training_info)
     return std::make_unique<train::TrainingCompiler>(nnpkg, copts, *training_info);
-#else  // ONERT_TRAIN
-  (void)training_info;
-#endif // ONERT_TRAIN
 
   // Returing compiler for inference
   if (nnpkg->model_count() == 1)

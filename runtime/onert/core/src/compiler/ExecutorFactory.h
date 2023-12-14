@@ -20,15 +20,10 @@
 #include "TensorRegistries.h"
 
 #include "backend/ITensor.h"
-
-#ifdef ONERT_TRAIN
 #include "backend/train/TrainableBackendContext.h"
-#endif // ONERT_TRAIN
 #include "compiler/LoweredGraph.h"
-#ifdef ONERT_TRAIN
 #include "compiler/train/LoweredTrainableGraph.h"
 #include "compiler/train/TrainingInfo.h"
-#endif // ONERT_TRAIN
 #include "exec/IExecutors.h"
 
 #include <deque>
@@ -58,13 +53,11 @@ public:
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args);
 
-#ifdef ONERT_TRAIN
   // TODO Unify create()
   exec::IExecutor *create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args,
                           const compiler::train::TrainingInfo &training_info);
-#endif // ONERT_TRAIN
 
 private:
   ExecutorFactory();
@@ -87,7 +80,6 @@ private:
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const std::shared_ptr<exec::IExecutors> &executors,
                          const ExecutorFactoryArgs &args, bool parallel);
-#ifdef ONERT_TRAIN
   // TODO Unify prepareMigrantTensors
   static void
   prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
@@ -97,7 +89,6 @@ private:
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args,
                           const compiler::train::TrainingInfo &training_info);
-#endif // ONERT_TRAIN
 
 private:
   std::unordered_map<

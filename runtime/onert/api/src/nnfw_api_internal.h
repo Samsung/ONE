@@ -166,7 +166,6 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
-#ifdef ONERT_TRAIN
   NNFW_STATUS train_prepare(const nnfw_train_info *info);
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
@@ -177,7 +176,6 @@ public:
   NNFW_STATUS train_run(bool update_weights);
   NNFW_STATUS train_get_loss(uint32_t index, float *loss);
   NNFW_STATUS train_export_circle(const char *path);
-#endif // ONERT_TRAIN
 
   NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
   NNFW_STATUS set_quantized_model_path(const char *path);
@@ -194,11 +192,9 @@ private:
   bool isStateRunning();
   bool isStateFinishedRun();
   bool isStatePreparedOrFinishedRun();
-#ifdef ONERT_TRAIN
   bool isStatePreparedTraining();
   bool isStateFinishedTraining();
   bool isStatePreparedOrFinishedTraining();
-#endif // ONERT_TRAIN
 
 private:
   State _state{State::INITIALIZED};
@@ -208,9 +204,7 @@ private:
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
-#ifdef ONERT_TRAIN
   uint32_t _training_step{0};
-#endif // ONERT_TRAIN
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
 };
 
