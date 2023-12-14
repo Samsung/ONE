@@ -47,6 +47,7 @@ protected:
   using Buffer = typename LoaderDomain::Buffer;
   using BuiltinOperator = typename LoaderDomain::BuiltinOperator;
   using CustomOptionsFormat = typename LoaderDomain::CustomOptionsFormat;
+  using Metadata = typename LoaderDomain::Metadata;
   using Model = typename LoaderDomain::Model;
   using Operator = typename LoaderDomain::Operator;
   using Padding = typename LoaderDomain::Padding;
@@ -122,6 +123,7 @@ protected:
   }
 
 private:
+  std::unique_ptr<ir::Data> loadMetadata(const uint32_t buffer_idx);
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   template <typename OpIR, typename... Args>
@@ -241,6 +243,35 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_
   _base = buffer;
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
   loadModel();
+}
+
+template <typename LoaderDomain>
+std::unique_ptr<ir::Data>
+BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const uint32_t buffer_idx)
+{
+  if (_domain_model == nullptr)
+  {
+    throw std::runtime_error{"fail to access _domain_model"};
+  }
+
+  const auto *data = _domain_model->buffers()->Get(buffer_idx)->data();
+  if (_fd == -1) // Model is from memory
+  {
+    return std::make_unique<ir::ExternalData>(data->data(), data->size());
+  }
+  else // Model is loaded(mmap'd) from a file
+  {
+    size_t data_size = data->size();
+    ptrdiff_t offset_start = data->data() - _base;
+    ptrdiff_t offset_end = offset_start + data_size;
+
+    ptrdiff_t page_start = (offset_start / _pagesize) * _pagesize;
+    size_t mapping_size = offset_end - page_start;
+
+    // Since metadata is not access often in inference/training time, always use mmaped-data
+    // Ref : https://github.com/Samsung/ONE/issues/3961#issuecomment-681750231
+    return std::make_unique<ir::MMapedData>(_fd, page_start, mapping_size, offset_start, data_size);
+  }
 }
 
 template <typename LoaderDomain>
@@ -1711,15 +1742,30 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
   _domain_model = LoaderDomain::GetModel(_base);
+
+  auto model = std::make_unique<ir::Model>();
   // Version unused
   // const auto version = _model->version();
   // Description unused
+
+  // Load Metadata
+  auto const metadata_list = _domain_model->metadata();
+  if (metadata_list != nullptr)
+  {
+    for (uint32_t i = 0; i < metadata_list->size(); ++i)
+    {
+      const auto metadata = metadata_list->Get(i);
+      if (metadata->name() == nullptr)
+        continue; // metadata should have name
+
+      std::shared_ptr<const ir::Data> data = loadMetadata(metadata->buffer());
+      model->add_metadata(metadata->name()->str(), data);
+    }
+  }
+
   // const auto *description = _model->description();
-  // Metabuffer unsued
-  // const auto *metadata_buffer = _model->metadata_buffer();
   // Load subgraphs and map operations on subgraph
   const auto subgraphs = _domain_model->subgraphs();
-  auto model = std::make_unique<ir::Model>();
   if (subgraphs->size() - 1 > ir::SubgraphIndex::max())
     throw std::runtime_error{"The number of subgraphs cannot exceed " +
                              std::to_string(ir::SubgraphIndex::max() + 1)};

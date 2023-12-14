@@ -175,8 +175,26 @@ public:
 
 private:
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-};
 
+public:
+  void add_metadata(const std::string &name, std::shared_ptr<const ir::Data> data)
+  {
+    _metadatas.emplace(name, data);
+  }
+
+  bool is_metadata_exist(const std::string &name) const
+  {
+    return _metadatas.find(name) != _metadatas.end();
+  }
+
+  std::shared_ptr<const ir::Data> get_metadata(const std::string name) const
+  {
+    return _metadatas.at(name);
+  }
+
+private:
+  std::unordered_map<std::string, std::shared_ptr<const ir::Data>> _metadatas;
+};
 } // namespace ir
 } // namespace onert
 

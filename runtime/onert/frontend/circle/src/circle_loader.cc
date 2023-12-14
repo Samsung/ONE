@@ -33,6 +33,7 @@ struct LoaderDomain
   using Buffer = circle::Buffer;
   using BuiltinOperator = circle::BuiltinOperator;
   using CustomOptionsFormat = circle::CustomOptionsFormat;
+  using Metadata = circle::Metadata;
   using Model = circle::Model;
   using Operator = circle::Operator;
   using Padding = circle::Padding;
