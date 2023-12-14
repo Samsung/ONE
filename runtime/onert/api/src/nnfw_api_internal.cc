@@ -321,6 +321,10 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       // parse buffer to TrainingInfo
       _train_info = onert::traininfo_loader::loadTrainingInfo(buffer->base(), buffer->size());
     }
+    else
+    {
+      _train_info = onert::ir::train::TrainingInfo::createFromDefault();
+    }
 #endif // ONERT_TRAIN
 
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
@@ -1329,13 +1333,8 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
       _train_info->setLossInfo(loss_info);
       _train_info->setOptimizerInfo(opt_info);
     }
-    else if (info == nullptr && _train_info == nullptr)
-    {
-      // If info is not given, and there is NO train_info in session
-      // Fill train_info with default configuration
-      _train_info = onert::ir::train::TrainingInfo::createFromDefault();
-    }
 
+    assert(_train_info != nullptr);
     if (not _train_info->isValid())
       throw std::runtime_error{"training info is not invalid"};
 

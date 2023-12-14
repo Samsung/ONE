@@ -225,10 +225,13 @@ typedef struct nnfw_train_info
 /**
  * @brief Get train info from session
  * @note  This function should be called after {@link nnfw_load_model_from_file}
+ *        'train_info' in the session is usually from model file,
+ *        If model doens't have train_info, return default train_info
+ *        Default training information is {learning_rate = 0.001f, batch_size = 1,
+ *          loss={MeanSquaredError, SumOverBatchSize}, optimizer=SGD}
  *
  * @param[in] session       The session to get training info
  * @param[out] train_info   The training infomation(parameters) in the session
- *                          If the session doesn't have train_info, return it without changing
  *
  * @return @c NNFW_STATUS_NO_ERROR  If successful
  */
@@ -240,7 +243,6 @@ NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *tra
  *
  * @param[in] session       The session to get batch size
  * @param[out] batch_size   The batch size of model file's training info holds
- *                          If the session doesn't have batch_size, return it without changing
  *
  * @return @c NNFW_STATUS_NO_ERROR  If successful
  */
