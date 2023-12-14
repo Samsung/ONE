@@ -1368,6 +1368,35 @@ NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expecte
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
+                                           size_t length)
+{
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_set_output : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (!buffer && length != 0)
+  {
+    std::cerr << "Error during nnfw_session::train_set_output : given buffer is NULL but the "
+                 "length is not 0"
+              << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  try
+  {
+    _execution->setOutput(onert::ir::IOIndex(index), buffer, length);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_set_output : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_run(bool update_weights)
 {
   if (!isStatePreparedOrFinishedTraining())
