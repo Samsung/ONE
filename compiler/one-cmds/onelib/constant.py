@@ -111,6 +111,7 @@ class CONSTANT:
          'fuse BatchNorm operators of pre-activations to Convolution op'),
         ('fuse_mean_with_mean', 'fuse two consecutive Mean ops'),
         ('fuse_mul_with_conv', 'fuse Mul op to Convolution op'),
+        ('fuse_mul_div', 'fuse Mul with Div as Div'),
         ('fuse_transpose_with_mean',
          'fuse Mean with a preceding Transpose under certain conditions'),
         ('fuse_horizontal_fc_layers',
