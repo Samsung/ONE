@@ -218,8 +218,8 @@ private:
   // If necessary, we may replace _model_path to _model_origin like:
   //
   //   union _model_origin {
-  //     const char* path;
-  //     const const uint8* buf
+  //     const char *path;
+  //     const uint8 *buf;
   //   }
   std::string _model_path;
 };
