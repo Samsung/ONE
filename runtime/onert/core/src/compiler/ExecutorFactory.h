@@ -72,12 +72,6 @@ private:
   ExecutorFactory();
 
 private:
-  static exec::IExecutor *
-  createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                         const std::shared_ptr<exec::IExecutors> &executors,
-                         const ExecutorFactoryArgs &args, bool parallel);
-
-private:
   std::unordered_map<
     std::string, std::function<exec::IExecutor *(std::unique_ptr<compiler::LoweredGraph>,
                                                  const std::shared_ptr<exec::IExecutors> &executors,

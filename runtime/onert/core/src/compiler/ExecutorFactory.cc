@@ -497,31 +497,7 @@ exec::IExecutor *createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   return exec;
 }
 
-ExecutorFactory &ExecutorFactory::get()
-{
-  static ExecutorFactory singleton;
-  return singleton;
-}
-
-ExecutorFactory::ExecutorFactory()
-{
-  _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, false);
-  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, true);
-}
-
-exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                                         const std::shared_ptr<exec::IExecutors> &executors,
-                                         const ExecutorFactoryArgs &args)
-{
-  assert(args.options != nullptr);
-  return _map.at(args.options->executor)(std::move(lowered_graph), executors, args);
-}
-
-exec::IExecutor *
-ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+exec::IExecutor *createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                         const std::shared_ptr<exec::IExecutors> &executors,
                                         const ExecutorFactoryArgs &args, bool parallel)
 {
@@ -607,6 +583,29 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   }
 
   return exec;
+}
+
+ExecutorFactory &ExecutorFactory::get()
+{
+  static ExecutorFactory singleton;
+  return singleton;
+}
+
+ExecutorFactory::ExecutorFactory()
+{
+  _map["Linear"] = createLinearExecutor;
+  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, false);
+  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, true);
+}
+
+exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                         const std::shared_ptr<exec::IExecutors> &executors,
+                                         const ExecutorFactoryArgs &args)
+{
+  assert(args.options != nullptr);
+  return _map.at(args.options->executor)(std::move(lowered_graph), executors, args);
 }
 
 #ifdef ONERT_TRAIN
