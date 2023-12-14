@@ -72,19 +72,6 @@ private:
   ExecutorFactory();
 
 private:
-  static void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
-                                    const backend::BackendContexts &backend_contexts);
-  static void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
-                                    const std::shared_ptr<exec::IExecutors> &executors,
-                                    const backend::BackendContexts &backend_contexts,
-                                    const ir::ModelIndex &index);
-  static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
-  orderBackendContext(const backend::BackendContexts &backend_contexts);
-
-  static exec::IExecutor *
-  createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                       const std::shared_ptr<exec::IExecutors> &executors,
-                       const ExecutorFactoryArgs &args);
   static exec::IExecutor *
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const std::shared_ptr<exec::IExecutors> &executors,

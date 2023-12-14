@@ -300,32 +300,8 @@ namespace onert
 {
 namespace compiler
 {
-
-ExecutorFactory &ExecutorFactory::get()
-{
-  static ExecutorFactory singleton;
-  return singleton;
-}
-
-ExecutorFactory::ExecutorFactory()
-{
-  _map["Linear"] = createLinearExecutor;
-  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, false);
-  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
-                               std::placeholders::_3, true);
-}
-
-exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                                         const std::shared_ptr<exec::IExecutors> &executors,
-                                         const ExecutorFactoryArgs &args)
-{
-  assert(args.options != nullptr);
-  return _map.at(args.options->executor)(std::move(lowered_graph), executors, args);
-}
-
-void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
-                                            const backend::BackendContexts &backend_contexts)
+void prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
+                           const backend::BackendContexts &backend_contexts)
 {
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -351,10 +327,10 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
     });
 }
 
-void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
-                                            const std::shared_ptr<exec::IExecutors> &executors,
-                                            const backend::BackendContexts &backend_contexts,
-                                            const ir::ModelIndex &index)
+void prepareBuiltinBackend(const TensorRegistries &tensor_regs,
+                           const std::shared_ptr<exec::IExecutors> &executors,
+                           const backend::BackendContexts &backend_contexts,
+                           const ir::ModelIndex &index)
 {
   for (auto &&pair : backend_contexts)
   {
@@ -370,7 +346,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
 }
 
 std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
-ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_contexts)
+orderBackendContext(const backend::BackendContexts &backend_contexts)
 {
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
   for (auto &&pair : backend_contexts)
@@ -387,8 +363,7 @@ ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_con
   return ordered_contexts;
 }
 
-exec::IExecutor *
-ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+exec::IExecutor *createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                                       const std::shared_ptr<exec::IExecutors> &executors,
                                       const ExecutorFactoryArgs &args)
 {
@@ -520,6 +495,29 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 #endif
 
   return exec;
+}
+
+ExecutorFactory &ExecutorFactory::get()
+{
+  static ExecutorFactory singleton;
+  return singleton;
+}
+
+ExecutorFactory::ExecutorFactory()
+{
+  _map["Linear"] = createLinearExecutor;
+  _map["Dataflow"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, false);
+  _map["Parallel"] = std::bind(createDataflowExecutor, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, true);
+}
+
+exec::IExecutor *ExecutorFactory::create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                         const std::shared_ptr<exec::IExecutors> &executors,
+                                         const ExecutorFactoryArgs &args)
+{
+  assert(args.options != nullptr);
+  return _map.at(args.options->executor)(std::move(lowered_graph), executors, args);
 }
 
 exec::IExecutor *
