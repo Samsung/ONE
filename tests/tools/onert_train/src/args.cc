@@ -166,6 +166,15 @@ void Args::Initialize(void)
     checkModelfile(_load_raw_expected_filename);
   };
 
+  auto process_validation_split = [&](const float v) {
+    if (v < 0.f || v > 1.f)
+    {
+      std::cerr << "Invalid validation_split. Float between 0 and 1." << std::endl;
+      exit(1);
+    }
+    _validation_split = v;
+  };
+
   auto process_output_sizes = [&](const std::string &output_sizes_json_str) {
     Json::Value root;
     Json::Reader reader;
@@ -231,6 +240,8 @@ void Args::Initialize(void)
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
       "Metricy type\n"
       "  Simply calculates the metric value using the variables (default: none)\n")
+    ("validation_split", po::value<float>()->default_value(0.0f)->notifier(process_validation_split),
+         "Float between 0 and 1. Fraction of the training data to be used as validation data.")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
