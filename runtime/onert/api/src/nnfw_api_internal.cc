@@ -1469,9 +1469,7 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
       // `size_t` may be uint32 or uint64.
       static_assert(sizeof(off_t) == sizeof(size_t), "sizeof(off_t) != sizeof(size_t)");
       _buf_sz = static_cast<size_t>(file_stat.st_size);
-      _buf =
-        static_cast<uint8_t *>(mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0));
-
+      _buf = mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0);
       return _buf != MAP_FAILED;
     }
 
