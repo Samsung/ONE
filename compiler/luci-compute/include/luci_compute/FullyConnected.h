@@ -66,7 +66,7 @@ public:
 
 private:
   // param to pass to compute kernel
-  FullyConnectedParams _params;
+  FullyConnectedParams _params = {};
   // new param from tflite version 5
   bool _keep_num_dims = false;
   // shape and data for inputs

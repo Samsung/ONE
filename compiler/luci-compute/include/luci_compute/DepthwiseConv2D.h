@@ -63,7 +63,7 @@ public:
 
 private:
   // param to pass to compute kernel
-  DepthwiseParams _params;
+  DepthwiseParams _params = {};
   // shape and data for inputs
   loco::TensorShape _input_shape;
   loco::TensorShape _filter_shape;
