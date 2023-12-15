@@ -1467,7 +1467,8 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
       // file_stat.st_size is `off_t` while msync, munmap requires `size_t`
       // `off_t` may be long or long long.
       // `size_t` may be uint32 or uint64.
-      static_assert(sizeof(off_t) == sizeof(size_t), "sizeof(off_t) != sizeof(size_t)");
+      static_assert(sizeof(off_t) <= sizeof(size_t),
+                    "size_t should be bigger than off_t in positive range");
       _buf_sz = static_cast<size_t>(file_stat.st_size);
       _buf = mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0);
       return _buf != MAP_FAILED;
