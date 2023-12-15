@@ -144,10 +144,11 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::registerTensorInfo(
 
   auto backend_layout = info.layout();
   // FIXME Set correct layout
-  if (backend_layout == ir::Layout::UNKNOWN)
-  {
-    backend_layout = ir::Layout::NHWC;
-  }
+  // if (backend_layout == ir::Layout::UNKNOWN)
+  // {
+  //   backend_layout = ir::Layout::NHWC;
+  // }
+
   if (_parent_map.count(ind) == 0)
   {
     // Normal Tensors

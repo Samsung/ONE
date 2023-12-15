@@ -42,6 +42,8 @@ void Operand::insertUse(const OperationIndex &idx) { _uses.insert(idx); }
 
 void Operand::removeUse(const OperationIndex &idx) { _uses.remove(idx); }
 
+void Operand::clearUses() { _uses.clear(); }
+
 void Operand::setDef(const OperationIndex &idx) { _def = idx; }
 
 void Operand::unsetDef() { _def = OperationIndex{}; }
@@ -49,7 +51,7 @@ void Operand::unsetDef() { _def = OperationIndex{}; }
 void Operand::clearDefUse()
 {
   unsetDef();
-  _uses.clear();
+  clearUses();
 }
 
 } // namespace ir

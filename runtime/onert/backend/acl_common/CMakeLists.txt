@@ -4,7 +4,7 @@ if(NOT ARMCompute_FOUND)
   return()
 endif(NOT ARMCompute_FOUND)
 
-file(GLOB SOURCES "*.cc")
+file(GLOB_RECURSE SOURCES "*.cc")
 
 add_library(${LIB_ONERT_BACKEND_ACL_COMMON} STATIC ${SOURCES})
 

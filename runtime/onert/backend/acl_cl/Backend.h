@@ -24,6 +24,7 @@
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
+#include "layout/LayoutResolver.h"
 #include "TensorManager.h"
 #include "Optimizer.h"
 #include "AclTensorRegistry.h"
@@ -44,6 +45,9 @@ public:
 
   std::unique_ptr<backend::BackendContext> newContext(ContextData &&data) const override
   {
+    acl_common::LayoutResolver layout_resolver{};
+    layout_resolver(data);
+
     const auto &graph = *data.graph;
     const auto &operands = data.graph->operands();
     const auto is_linear_executor = data.is_linear_executor;

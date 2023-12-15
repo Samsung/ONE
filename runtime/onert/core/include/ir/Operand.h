@@ -35,7 +35,12 @@ namespace ir
 class Operand
 {
 public:
-  explicit Operand(const Shape &shape, const TypeInfo &type, Layout layout = Layout::UNKNOWN)
+  explicit Operand(const Shape &shape, const TypeInfo &type)
+    : _info{shape, type, ir::Layout::UNKNOWN, MemAllocType::STATIC}
+  {
+    // DO NOTHING
+  }
+  explicit Operand(const Shape &shape, const TypeInfo &type, Layout layout)
     : _info{shape, type, layout, MemAllocType::STATIC}
   {
     // DO NOTHING
@@ -53,6 +58,7 @@ public:
   OperationIndex getDef() const { return _def; }
   void insertUse(const OperationIndex &idx);
   void removeUse(const OperationIndex &idx);
+  void clearUses();
   void setDef(const OperationIndex &idx);
   void unsetDef();
   void clearDefUse();
