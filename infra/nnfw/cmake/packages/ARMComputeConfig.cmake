@@ -3,19 +3,17 @@ function(_ARMCompute_Import)
 
   list(APPEND ARMCompute_LIB_SEARCH_PATHS ${ARMCompute_PREFIX}/lib)
 
-  find_path(INCLUDE_DIR NAMES arm_compute/core/ITensor.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
+  find_path(INCLUDE_DIR NAMES arm_compute/core/ITensor.h)
 
-  find_library(CORE_LIBRARY NAMES  	 arm_compute_core  PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
-  find_library(RUNTIME_LIBRARY NAMES arm_compute       PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
-  find_library(GRAPH_LIBRARY NAMES   arm_compute_graph PATHS ${ARMCompute_LIB_SEARCH_PATHS} CMAKE_FIND_ROOT_PATH_BOTH)
-
-  message(STATUS "Search acl in ${ARMCompute_LIB_SEARCH_PATHS}")
+  find_library(CORE_LIBRARY NAMES  	 arm_compute_core)
+  find_library(RUNTIME_LIBRARY NAMES arm_compute)
+  find_library(GRAPH_LIBRARY NAMES   arm_compute_graph)
 
   # ARMCompute v21.02 moves some headers into "src/".
   # And we cannot build armcompute-ex library without these headers.
   # So we need to download and use source code if our build root doesn't have headers in "src/" (tizen's devel package includes these headers).
   # TODO Don't use headers in "src/"
-  find_path(HEADER_SRC_DIR NAMES src/core/CL/ICLKernel.h PATHS ${ARMCompute_INCLUDE_SEARCH_PATHS})
+  find_path(HEADER_SRC_DIR NAMES src/core/CL/ICLKernel.h)
   if(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
     nnas_find_package(ARMComputeSource QUIET)
     if (NOT ARMComputeSource_FOUND)
