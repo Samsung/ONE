@@ -1463,7 +1463,7 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     {
       struct stat file_stat;
       if (fstat(_fd, &file_stat) != 0 || file_stat.st_size < 0 ||
-          static_cast<size_t>(file_stat.st_size) > SIZE_MAX)
+          static_cast<uint64_t>(file_stat.st_size) > SIZE_MAX)
         return false;
 
       _buf_sz = static_cast<size_t>(file_stat.st_size);
