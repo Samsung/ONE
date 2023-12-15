@@ -116,16 +116,16 @@ LayerParamsSet read_layer_params_set(std::string &filename)
 
   auto layers = qcr.root()["layers"];
   // alternate names
-  for (auto layer : layers)
+  for (const auto &layer : layers)
   {
     const std::string key_alt_names = "alternate";
     if (layer.isMember(key_alt_names))
     {
       auto alternate = layer[key_alt_names];
-      for (auto altkey : alternate.getMemberNames())
+      for (const auto &altkey : alternate.getMemberNames())
       {
         LayerParams lps;
-        for (auto altvalue : alternate[altkey])
+        for (const auto &altvalue : alternate[altkey])
         {
           auto l = std::make_shared<LayerParam>();
           {
