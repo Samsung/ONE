@@ -15,7 +15,5 @@ add_subdirectory(xnnpack)
 add_subdirectory(trix)
 
 # Backend to train
-if(ENABLE_ONERT_TRAIN)
-  add_subdirectory(train)
-endif(ENABLE_ONERT_TRAIN)
+add_subdirectory(train)
 

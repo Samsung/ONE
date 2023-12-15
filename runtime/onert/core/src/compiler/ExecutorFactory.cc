@@ -20,6 +20,7 @@
 #include "../backend/builtin/BackendContext.h"
 #include "../backend/builtin/Config.h"
 #include "../backend/builtin/UserTensor.h"
+#include "../backend/builtin/train/BackendContext.h"
 #include "../dumper/text/GraphDumper.h"
 #include "../exec/DataflowExecutor.h"
 #include "../exec/ExecTime.h"
@@ -29,23 +30,18 @@
 #include "../exec/MinMaxRecorder.h"
 #endif
 #include "../exec/ParallelExecutor.h"
+#include "../exec/train/TrainableExecutor.h"
 #include "../ir/OperationCloner.h"
 
 #include <backend/IPortableTensor.h>
+#include <backend/train/TrainableBackendContext.h>
+#include <backend/train/ITrainableBackend.h>
 #include <compiler/BackendManager.h>
 #include <compiler/ExecutionBuilder.h>
 #include <util/TracingCtx.h>
 
 #include <functional>
 #include <memory>
-
-#ifdef ONERT_TRAIN
-#include "../backend/builtin/train/BackendContext.h"
-#include "../exec/train/TrainableExecutor.h"
-
-#include <backend/train/TrainableBackendContext.h>
-#include <backend/train/ITrainableBackend.h>
-#endif // ONERT_TRAIN
 
 namespace onert
 {
@@ -129,7 +125,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
 }
 
-#ifdef ONERT_TRAIN
 void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const backend::train::TrainableBackendContexts &backend_contexts,
                                  const ir::OperandIndexSequence &indices)
@@ -159,7 +154,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
   }
 }
-#endif // ONERT_TRAIN
 
 backend::BackendContexts
 createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
@@ -610,7 +604,6 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   return exec;
 }
 
-#ifdef ONERT_TRAIN
 exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                         const std::shared_ptr<exec::IExecutors> &executors,
@@ -905,7 +898,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
 
   return exec;
 }
-#endif // ONERT_TRAIN
 
 } // namespace compiler
 } // namespace onert

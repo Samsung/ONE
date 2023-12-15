@@ -22,16 +22,12 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
-#ifdef ONERT_TRAIN
 #include "train/BackendContext.h"
 #include "train/KernelGenerator.h"
 #include "train/TensorRegistry.h"
-#endif // ONERT_TRAIN
 
 #include <backend/Backend.h>
-#ifdef ONERT_TRAIN
 #include <backend/train/ITrainableBackend.h>
-#endif // ONERT_TRAIN
 
 #include <memory>
 
@@ -42,11 +38,7 @@ namespace backend
 namespace builtin
 {
 
-class Backend : public ::onert::backend::Backend
-#ifdef ONERT_TRAIN
-  ,
-                public backend::train::ITrainableBackend
-#endif // ONERT_TRAIN
+class Backend : public ::onert::backend::Backend, public backend::train::ITrainableBackend
 {
 public:
   Backend() : _config{std::make_shared<Config>()} {}
@@ -82,7 +74,6 @@ public:
     return context;
   }
 
-#ifdef ONERT_TRAIN
   std::unique_ptr<backend::train::TrainableBackendContext>
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
@@ -96,7 +87,6 @@ public:
       std::make_shared<train::KernelGenerator>(tgraph, tr, context->external_context());
     return context;
   }
-#endif // ONERT_TRAIN
 
 private:
   std::shared_ptr<IConfig> _config;

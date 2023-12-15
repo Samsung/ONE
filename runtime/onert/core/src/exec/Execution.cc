@@ -153,7 +153,6 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
-#ifdef ONERT_TRAIN
 void Execution::train(uint32_t training_step)
 {
   auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
@@ -180,7 +179,6 @@ float Execution::getLoss(const ir::IOIndex &ind)
 
   return execs->getLoss(ind);
 }
-#endif // ONERT_TRAIN
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {
