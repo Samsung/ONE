@@ -1454,46 +1454,63 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  auto getFdSize = [](int fd) -> off_t {
-    if (fd < 0)
-      return -1L;
+  class MMappedFile
+  {
+  public:
+    MMappedFile(const char *filename) { _fd = open(filename, O_RDWR); }
 
-    struct stat file_stat;
-    if (fstat(fd, &file_stat) != 0)
-      return -1L;
-
-    return file_stat.st_size;
-  };
-
-  auto ensure_mmap = [getFdSize](const char *file_path,
-                                 /* out */ size_t &mmapped_buf_sz) -> uint8_t * {
-    int fd = open(file_path, O_RDWR);
-    auto sz = getFdSize(fd);
-    if (sz < 0)
-      return nullptr;
-
-    auto buf = static_cast<uint8_t *>(mmap(NULL, sz, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
-    if (buf == MAP_FAILED)
+    bool ensure_mmap()
     {
-      close(fd);
-      return nullptr;
+      struct stat file_stat;
+      if (fstat(_fd, &file_stat) != 0)
+        return false;
+      // file_stat.st_size is `off_t` while msync, munmap requires `size_t`
+      // `off_t` may be long or long long.
+      // `size_t` may be uint32 or uint64.
+      assert(sizeof(off_t) == sizeof(size_t));
+      _buf_sz = static_cast<size_t>(file_stat.st_size);
+      _buf =
+        static_cast<uint8_t *>(mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0));
+
+      return _buf != MAP_FAILED;
     }
-    // msync, munmap requires `size_t` while fstat returns `off_t`.
-    // `off_t` may be long or long long.
-    // `size_t` may be uint32 or uint64.
-    // `sz` is not negative by if-statement above.
-    assert(sizeof(off_t) == sizeof(size_t));
-    mmapped_buf_sz = static_cast<size_t>(sz);
-    return buf;
+
+    bool close()
+    {
+      bool ret = false;
+      if (_buf != MAP_FAILED)
+      {
+        ret = munmap(_buf, _buf_sz) == 0;
+        _buf = MAP_FAILED; // mark as cleaned up
+      }
+      if (_fd != -1)
+      {
+        ::close(_fd);
+        _fd = -1; // mark as cleaned up
+      }
+      return ret;
+    }
+
+    ~MMappedFile() { close(); }
+
+    uint8_t *buf() const { return static_cast<uint8_t *>(_buf); }
+    size_t buf_size() const { return _buf_sz; }
+
+  private:
+    int _fd;
+    void *_buf = MAP_FAILED;
+    size_t _buf_sz = 0;
   };
 
-  size_t mmapped_buf_sz;
-  uint8_t *mmapped_buf = ensure_mmap(path, mmapped_buf_sz);
-  if (mmapped_buf == nullptr)
-    return NNFW_STATUS_INVALID_FILE;
-
-  if (munmap(mmapped_buf, mmapped_buf_sz) == -1)
+  MMappedFile mmapfile(path);
+  if (!mmapfile.ensure_mmap())
     return NNFW_STATUS_ERROR;
+
+  // TODO: Update weights in mmapfile
+
+  if (mmapfile.close() == false)
+    return NNFW_STATUS_ERROR;
+
   return NNFW_STATUS_NO_ERROR;
 }
 
