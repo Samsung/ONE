@@ -422,6 +422,13 @@ NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, const
   return session->train_set_expected(index, expected, expected_info);
 }
 
+NNFW_STATUS nnfw_train_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type,
+                                  void *buffer, size_t length)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_set_output(index, type, buffer, length);
+}
+
 NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
