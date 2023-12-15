@@ -44,7 +44,7 @@ void VISQErrorApproximator::init(std::istream &visq_data)
 
   auto layers = completeJsonData["error"][0];
   auto names = layers.getMemberNames();
-  for (auto name : names)
+  for (const auto &name : names)
   {
     auto value = layers[name].asFloat();
     _layer_errors[name] = value;

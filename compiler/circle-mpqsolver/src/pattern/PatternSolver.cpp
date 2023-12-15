@@ -67,7 +67,7 @@ void PatternSolver::setMPQOptions(MPQOptions &options) { _options = options; }
 LayerParams PatternSolver::getFrozenParams() const
 {
   LayerParams params;
-  for (auto node_to_param : _frozen._node_to_param)
+  for (const auto &node_to_param : _frozen._node_to_param)
   {
     params.push_back(std::make_shared<LayerParam>(node_to_param.second));
   }
@@ -95,7 +95,7 @@ void PatternSolver::resolvePatterns(luci::Module *module)
     }
 
     auto const resolved = resolver->resolve(module);
-    for (auto node_param : resolved)
+    for (const auto &node_param : resolved)
     {
       auto const frozen = _frozen._node_to_param.find(node_param.first);
       if (frozen == _frozen._node_to_param.end())
