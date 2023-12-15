@@ -267,6 +267,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   try
   {
     auto model = onert::circle_loader::loadModel(buffer, size);
+    // TODO: Update _model_path if necessary
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
@@ -307,6 +308,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     auto model = loadModel(filename, model_type);
     if (model == nullptr)
       return NNFW_STATUS_ERROR;
+    _model_path = std::string(model_file_path);
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _state = State::MODEL_LOADED;
@@ -389,6 +391,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       auto model = loadModel(model_file_path, model_type);
       if (model == nullptr)
         return NNFW_STATUS_ERROR;
+      _model_path = std::string(model_file_path);
       model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
@@ -1554,6 +1557,7 @@ NNFW_STATUS nnfw_session::quantize()
     auto model = loadModel(_quant_manager->exportModelPath(), "circle");
     if (model == nullptr)
       return NNFW_STATUS_ERROR;
+    // TODO: Update _model_path if necessary
     _nnpkg->replaceModel(std::move(model));
   }
   catch (const std::exception &e)
