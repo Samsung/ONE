@@ -2,7 +2,7 @@ Source: one
 Section: devel
 Priority: extra
 Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
-Build-Depends: cmake, debhelper (>=9), dh-python, python3-all
+Build-Depends: cmake, debhelper (>=9), dh-python, python3-all, libboost-all-dev, libhdf5-dev
 Standards-Version: 3.9.8
 Homepage: https://github.com/Samsung/ONE
 
@@ -16,4 +16,10 @@ Package: nnfw-dev
 Architecture: amd64
 Multi-Arch: same
 Depends: nnfw, ${shlibs:Depends}, ${misc:Depends}
+Description: one-runtime development package
+
+Package: nnfw-plugin-dev
+Architecture: amd64
+Multi-Arch: same
+Depends: nnfw, nnfw-dev, ${shlibs:Depends}, ${misc:Depends}
 Description: one-runtime development package

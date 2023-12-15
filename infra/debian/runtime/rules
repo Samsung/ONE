@@ -6,7 +6,7 @@ DEBVER := $(shell dpkg-parsechangelog -SVersion)
 NPROC ?= $(shell nproc)
 
 export DH_VERBOSE = 1
-export NNFW_WORKSPACE = build
+export NNFW_WORKSPACE = build/onert
 export NNFW_INSTALL_PREFIX = $(CURDIR)/debian/tmp/usr/
 
 %:
@@ -17,8 +17,8 @@ override_dh_auto_build:
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
 	mkdir -p $(NNFW_WORKSPACE)
 	./nnfw configure -DCMAKE_BUILD_TYPE=Release -DEXTERNALS_BUILD_THREADS=$(NPROC) \
-		-DBUILD_LOGGING=OFF -DDOWNLOAD_GTEST=OFF -DENABLE_TEST=OFF \
-		-DBUILD_TENSORFLOW_LITE=OFF -DBUILD_PYTHON_BINDING=OFF -DBUILD_MINMAX_H5DUMPER=OFF
+	  -DBUILD_LOGGING=OFF -DDOWNLOAD_GTEST=OFF -DENABLE_TEST=OFF \
+		-DBUILD_PYTHON_BINDING=OFF
 	./nnfw build -j$(NPROC)
 override_dh_auto_install:
 	./nnfw install --prefix $(NNFW_INSTALL_PREFIX)
@@ -27,5 +27,10 @@ override_dh_install:
 	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
 	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
 	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
+	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw-plugin.pc.in
+	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw-plugin.pc.in
+	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw-plugin.pc.in
+
 	install -m 0644 packaging/nnfw.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/nnfw.pc
+	install -m 0644 packaging/nnfw-plugin.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/nnfw-plugin.pc
 	dh_install
