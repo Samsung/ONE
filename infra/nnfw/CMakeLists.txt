@@ -26,8 +26,9 @@ set(NNFW_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
 # Share package build script with compiler
 set(EXT_OVERLAY_DIR ${NNFW_OVERLAY_DIR})
 
-# This allows find_package to access configurations installed inside overlay
-list(APPEND CMAKE_PREFIX_PATH "${EXT_OVERLAY_DIR}")
+# This allows find_package configurations, find_library, and find_path to access installed inside overlay
+# EXT_OVERLAY_DIR is higher priority than ROOTFS_DIR on cross build
+list(INSERT CMAKE_FIND_ROOT_PATH 0 "${EXT_OVERLAY_DIR}")
 
 macro(nnas_include PREFIX)
   include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")

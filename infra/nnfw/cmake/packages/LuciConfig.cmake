@@ -2,13 +2,11 @@
 
 set(Luci_FOUND FALSE)
 
-find_path(LUCI_HEADERS
-    NAMES loco.h luci/IR/CircleNode.h
-    PATHS ${EXT_OVERLAY_DIR}/include)
+find_path(LUCI_HEADERS NAMES loco.h luci/IR/CircleNode.h)
 
 macro(_load_library LUCI_NAME)
     add_library(luci::${LUCI_NAME} SHARED IMPORTED)
-    find_library(LUCI_LIB_PATH_${LUCI_NAME} NAMES luci_${LUCI_NAME} PATHS ${EXT_OVERLAY_DIR}/lib NO_DEFAULT_PATH)
+    find_library(LUCI_LIB_PATH_${LUCI_NAME} NAMES luci_${LUCI_NAME})
     if (NOT LUCI_LIB_PATH_${LUCI_NAME})
         return()
     endif()
@@ -32,7 +30,7 @@ _load_library(service)
 # Need luci::loco to avoid "DSO missing from command line" link error
 # TODO Find better way to do this
 add_library(luci::loco SHARED IMPORTED)
-find_library(LOCO_LIB_PATH NAMES loco PATHS ${EXT_OVERLAY_DIR}/lib)
+find_library(LOCO_LIB_PATH NAMES loco)
 if (NOT LOCO_LIB_PATH)
     return()
 endif()
