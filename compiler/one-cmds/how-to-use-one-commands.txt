@@ -168,6 +168,7 @@ Current transformation options are
 - fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
 - fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
 - fuse_mul_with_conv: This fuses Mul with a preceding Convolution op if possible.
+- fuse_mul_div: This fuses Mul and Div op as Div.
 - fuse_slice_with_tconv: This fuses Slice with a preceding TConv if possible.
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
