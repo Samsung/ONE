@@ -2630,6 +2630,7 @@ var hierarchy =
     [ "onert::util::Index< uint16_t, SubgraphIndexTag >", "classonert_1_1util_1_1_index.html", null ],
     [ "onert::util::Index< uint32_t, OperandIndexTag >", "classonert_1_1util_1_1_index.html", null ],
     [ "onert::util::Index< uint32_t, OperationIndexTag >", "classonert_1_1util_1_1_index.html", null ],
+    [ "onert::util::Index< uint32_t, OriginIndexTag >", "classonert_1_1util_1_1_index.html", null ],
     [ "nncc::core::ADT::kernel::IndexEnumerator", "classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_index_enumerator.html", null ],
     [ "nncc::core::ADT::tensor::IndexEnumerator", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index_enumerator.html", null ],
     [ "nnfw::misc::tensor::IndexEnumerator", "classnnfw_1_1misc_1_1tensor_1_1_index_enumerator.html", null ],
@@ -2904,6 +2905,7 @@ var hierarchy =
       [ "onert::util::CPUTimer", "classonert_1_1util_1_1_c_p_u_timer.html", null ]
     ] ],
     [ "onert::backend::train::ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", [
+      [ "onert::backend::builtin::Backend", "classonert_1_1backend_1_1builtin_1_1_backend.html", null ],
       [ "onert::backend::train::Backend", "classonert_1_1backend_1_1train_1_1_backend.html", null ]
     ] ],
     [ "onert::exec::train::ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", [
@@ -3504,8 +3506,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4412,6 +4414,7 @@ var hierarchy =
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
       [ "luci::FuseMulWithConvPass", "structluci_1_1_fuse_mul_with_conv_pass.html", null ],
+      [ "luci::FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
       [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],

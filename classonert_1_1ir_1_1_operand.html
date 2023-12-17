@@ -149,6 +149,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3503c3cf859c03305032dc5365be307"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa3503c3cf859c03305032dc5365be307"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand.html#aa3503c3cf859c03305032dc5365be307">asVector</a> () const</td></tr>
 <tr class="separator:aa3503c3cf859c03305032dc5365be307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce34d66dbff689a0be40dcdf9e58b9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand.html#acce34d66dbff689a0be40dcdf9e58b9e">setOriginIndex</a> (<a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a> origin)</td></tr>
+<tr class="separator:acce34d66dbff689a0be40dcdf9e58b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08e32a49913d49fdd23747300a0caad6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand.html#a08e32a49913d49fdd23747300a0caad6">originIndex</a> () const</td></tr>
+<tr class="separator:a08e32a49913d49fdd23747300a0caad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -401,9 +405,9 @@ template&lt;typename T , typename... Args&gt; </div>
 <div class="line"><span class="lineno">   66</span>    _data = std::move(<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a5dda59a3ed855297183ccd8b2f6e6bb7">data</a>);</div>
 <div class="line"><span class="lineno">   67</span>    _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a4638f0b19a6c1fcac6b82487c7681d1e">setAsConstant</a>();</div>
 <div class="line"><span class="lineno">   68</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a4638f0b19a6c1fcac6b82487c7681d1e"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a4638f0b19a6c1fcac6b82487c7681d1e">onert::ir::OperandInfo::setAsConstant</a></div><div class="ttdeci">void setAsConstant()</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00120">OperandInfo.h:120</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a4638f0b19a6c1fcac6b82487c7681d1e"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a4638f0b19a6c1fcac6b82487c7681d1e">onert::ir::OperandInfo::setAsConstant</a></div><div class="ttdeci">void setAsConstant()</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00121">OperandInfo.h:121</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00069">data()</a>, and <a class="el" href="_operand_info_8h_source.html#l00120">onert::ir::OperandInfo::setAsConstant()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00069">data()</a>, and <a class="el" href="_operand_info_8h_source.html#l00121">onert::ir::OperandInfo::setAsConstant()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00247">onert::backend::acl_common::asSet()</a>, <a class="el" href="_acl_constant_initializer_8h_source.html#l00157">onert::backend::acl_common::initReverseOrder()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00054">onert::backend::acl_common::AclConstantInitializer::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00054">onert::backend::acl_cl::ConstantInitializer::visit()</a>, and <a class="el" href="acl__neon_2_constant_initializer_8cc_source.html#l00033">onert::backend::acl_neon::ConstantInitializer::visit()</a>.</p>
 
@@ -609,11 +613,11 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">79</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   79</span>{ <span class="keywordflow">return</span> _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#abfd22bc736dc81aa1d00200d75eacbec">isConstant</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_abfd22bc736dc81aa1d00200d75eacbec"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#abfd22bc736dc81aa1d00200d75eacbec">onert::ir::OperandInfo::isConstant</a></div><div class="ttdeci">bool isConstant() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00122">OperandInfo.h:122</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_abfd22bc736dc81aa1d00200d75eacbec"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#abfd22bc736dc81aa1d00200d75eacbec">onert::ir::OperandInfo::isConstant</a></div><div class="ttdeci">bool isConstant() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00123">OperandInfo.h:123</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00122">onert::ir::OperandInfo::isConstant()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00123">onert::ir::OperandInfo::isConstant()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00350">onert::backend::acl_common::asPixelValue()</a>, <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00064">onert::backend::train::BackendContext::genKernels()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00046">onert::backend::builtin::train::BackendContext::genKernels()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00229">onert::backend::basic::initConsts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00350">onert::backend::acl_common::asPixelValue()</a>, <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00064">onert::backend::train::BackendContext::genKernels()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00046">onert::backend::builtin::train::BackendContext::genKernels()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00227">onert::backend::basic::initConsts()</a>.</p>
 
 </div>
 </div>
@@ -655,6 +659,39 @@ template&lt;typename T , typename... Args&gt; </div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_8cc_source.html#l00029">DataType.cc:29</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00046">shape()</a>, <a class="el" href="_data_type_8cc_source.html#l00029">onert::ir::sizeOfDataType()</a>, <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">type()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00047">typeInfo()</a>.</p>
+
+</div>
+</div>
+<a id="a08e32a49913d49fdd23747300a0caad6" name="a08e32a49913d49fdd23747300a0caad6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e32a49913d49fdd23747300a0caad6">&#9670;&#160;</a></span>originIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a> onert::ir::Operand::originIndex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00108">108</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>{ <span class="keywordflow">return</span> _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#af225e52cc73d96d1568bc1c8cc0b4abc">originIndex</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_af225e52cc73d96d1568bc1c8cc0b4abc"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#af225e52cc73d96d1568bc1c8cc0b4abc">onert::ir::OperandInfo::originIndex</a></div><div class="ttdeci">OriginIndex originIndex() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00139">OperandInfo.h:139</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00139">onert::ir::OperandInfo::originIndex()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_graph_dumper_8cc_source.html#l00079">onert::dumper::text::dumpGraph()</a>.</p>
 
 </div>
 </div>
@@ -732,6 +769,38 @@ template&lt;typename T , typename... Args&gt; </div>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="acce34d66dbff689a0be40dcdf9e58b9e" name="acce34d66dbff689a0be40dcdf9e58b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acce34d66dbff689a0be40dcdf9e58b9e">&#9670;&#160;</a></span>setOriginIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::ir::Operand::setOriginIndex </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a>&#160;</td>
+          <td class="paramname"><em>origin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00107">107</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a0e45f55d96c728f587d4eaae33b1184c">setOriginIndex</a>(origin); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a0e45f55d96c728f587d4eaae33b1184c"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a0e45f55d96c728f587d4eaae33b1184c">onert::ir::OperandInfo::setOriginIndex</a></div><div class="ttdeci">void setOriginIndex(OriginIndex origin)</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00140">OperandInfo.h:140</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00140">onert::ir::OperandInfo::setOriginIndex()</a>.</p>
+
+</div>
+</div>
 <a id="a701cef233994b0f0b209ffc7b0517589" name="a701cef233994b0f0b209ffc7b0517589"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a701cef233994b0f0b209ffc7b0517589">&#9670;&#160;</a></span>shape()</h2>
 
@@ -758,9 +827,9 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00046">46</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00094">OperandInfo.h:94</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00095">OperandInfo.h:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00094">onert::ir::OperandInfo::shape()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00350">onert::backend::acl_common::asPixelValue()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00088">asScalar()</a>, <a class="el" href="acl__common_2_convert_8cc_source.html#l00247">onert::backend::acl_common::asSet()</a>, <a class="el" href="_acl_constant_initializer_8h_source.html#l00157">onert::backend::acl_common::initReverseOrder()</a>, <a class="el" href="_operand_8cc_source.html#l00024">operandSize()</a>, <a class="el" href="_acl_constant_initializer_8cc_source.html#l00054">onert::backend::acl_common::AclConstantInitializer::visit()</a>, <a class="el" href="acl__cl_2_constant_initializer_8cc_source.html#l00054">onert::backend::acl_cl::ConstantInitializer::visit()</a>, and <a class="el" href="acl__neon_2_constant_initializer_8cc_source.html#l00033">onert::backend::acl_neon::ConstantInitializer::visit()</a>.</p>
 
@@ -793,7 +862,7 @@ template&lt;typename T , typename... Args&gt; </div>
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00073">73</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> _data; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00064">onert::backend::train::BackendContext::genKernels()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00229">onert::backend::basic::initConsts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00064">onert::backend::train::BackendContext::genKernels()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00227">onert::backend::basic::initConsts()</a>.</p>
 
 </div>
 </div>
@@ -823,9 +892,9 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">61</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{ _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#ae6894566a889a31fa5a2c194ab54db42">type</a>); };</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00112">OperandInfo.h:112</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00113">OperandInfo.h:113</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00112">onert::ir::OperandInfo::type()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00113">onert::ir::OperandInfo::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_option_builder_8py_source.html#l00082">OptionBuilder.OptionBuilder::build()</a>, <a class="el" href="_operand_8cc_source.html#l00024">operandSize()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">type()</a>.</p>
 
@@ -857,9 +926,9 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html">Operand.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a40f2daaa24d4855d98b2bb2cd7f42036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">onert::ir::OperandInfo::typeInfo</a></div><div class="ttdeci">const TypeInfo &amp; typeInfo() const</div><div class="ttdoc">Return tensor data type info.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00108">OperandInfo.h:108</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a40f2daaa24d4855d98b2bb2cd7f42036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">onert::ir::OperandInfo::typeInfo</a></div><div class="ttdeci">const TypeInfo &amp; typeInfo() const</div><div class="ttdoc">Return tensor data type info.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00109">OperandInfo.h:109</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00108">onert::ir::OperandInfo::typeInfo()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00109">onert::ir::OperandInfo::typeInfo()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00350">onert::backend::acl_common::asPixelValue()</a>, <a class="el" href="acl__common_2_convert_8cc_source.html#l00247">onert::backend::acl_common::asSet()</a>, and <a class="el" href="_operand_8cc_source.html#l00024">operandSize()</a>.</p>
 
@@ -882,7 +951,7 @@ template&lt;typename T , typename... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_operand_8cc_source.html#l00047">47</a> of file <a class="el" href="_operand_8cc_source.html">Operand.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   47</span>{ _def = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{}; }</div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00030">Index.h:30</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00049">clearDefUse()</a>.</p>
 

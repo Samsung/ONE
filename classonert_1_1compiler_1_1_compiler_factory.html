@@ -144,24 +144,20 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00038">38</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span><span class="preprocessor">#ifdef ONERT_TRAIN</span></div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// Returing compiler for training</span></div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (training_info)</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
-<div class="line"><span class="lineno">   46</span><span class="preprocessor">#else  </span><span class="comment">// ONERT_TRAIN</span></div>
-<div class="line"><span class="lineno">   47</span>  (void)training_info;</div>
-<div class="line"><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_TRAIN</span></div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="comment">// Returing compiler for inference</span></div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (nnpkg-&gt;model_count() == 1)</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(nnpkg, copts);</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(nnpkg, copts);</div>
-<div class="line"><span class="lineno">   55</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00035">35</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// Returing compiler for training</span></div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (training_info)</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="comment">// Returing compiler for inference</span></div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (nnpkg-&gt;model_count() == 1)</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   48</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00438">nnfw_session::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00439">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01165">nnfw_session::train_prepare()</a>.</p>
 
 </div>
 </div>
@@ -188,13 +184,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00031">31</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">static</span> CompilerFactory singleton;</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00028">28</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keyword">static</span> CompilerFactory singleton;</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00438">nnfw_session::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00439">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01165">nnfw_session::train_prepare()</a>.</p>
 
 </div>
 </div>

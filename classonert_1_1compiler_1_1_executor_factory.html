@@ -102,6 +102,8 @@ $(document).ready(function(){initNavTree('classonert_1_1compiler_1_1_executor_fa
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3330cf1fb069dc076abb3f6232833522"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">exec::IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">create</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_lowered_graph.html">compiler::LoweredGraph</a> &gt; lowered_graph, const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;executors, const <a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> &amp;args)</td></tr>
 <tr class="separator:a3330cf1fb069dc076abb3f6232833522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf44f8a31276864659f949b283a5f019"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">exec::IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_executor_factory.html#adf44f8a31276864659f949b283a5f019">create</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html">compiler::train::LoweredTrainableGraph</a> &gt; lowered_graph, const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;executors, const <a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> &amp;args, const <a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html">compiler::train::TrainingInfo</a> &amp;training_info)</td></tr>
+<tr class="separator:adf44f8a31276864659f949b283a5f019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -110,10 +112,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00051">51</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00046">46</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a3330cf1fb069dc076abb3f6232833522" name="a3330cf1fb069dc076abb3f6232833522"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3330cf1fb069dc076abb3f6232833522">&#9670;&#160;</a></span>create()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3330cf1fb069dc076abb3f6232833522">&#9670;&#160;</a></span>create() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,15 +146,65 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00318">318</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  321</span>{</div>
-<div class="line"><span class="lineno">  322</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor)(std::move(lowered_graph), executors, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>);</div>
-<div class="line"><span class="lineno">  324</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00312">312</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  315</span>{</div>
+<div class="line"><span class="lineno">  316</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  317</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor)(std::move(lowered_graph), executors, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>);</div>
+<div class="line"><span class="lineno">  318</span>}</div>
 <div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition:</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00060">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 
+</div>
+</div>
+<a id="adf44f8a31276864659f949b283a5f019" name="adf44f8a31276864659f949b283a5f019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf44f8a31276864659f949b283a5f019">&#9670;&#160;</a></span>create() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">exec::IExecutor</a> * onert::compiler::ExecutorFactory::create </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html">compiler::train::LoweredTrainableGraph</a> &gt;&#160;</td>
+          <td class="paramname"><em>lowered_graph</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_executors.html">exec::IExecutors</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>executors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html">ExecutorFactoryArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1compiler_1_1train_1_1_training_info.html">compiler::train::TrainingInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>training_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00608">608</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  612</span>{</div>
+<div class="line"><span class="lineno">  613</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  614</span> </div>
+<div class="line"><span class="lineno">  615</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
+<div class="line"><span class="lineno">  616</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
+<div class="line"><span class="lineno">  617</span> </div>
+<div class="line"><span class="lineno">  618</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
+<div class="line"><span class="lineno">  619</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="af12fec093001b1c415ca1e86b4e55663" name="af12fec093001b1c415ca1e86b4e55663"></a>
@@ -178,11 +230,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00303">303</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
-<div class="line"><span class="lineno">  305</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">  307</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00297">297</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  298</span>{</div>
+<div class="line"><span class="lineno">  299</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
+<div class="line"><span class="lineno">  300</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">  301</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00060">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 

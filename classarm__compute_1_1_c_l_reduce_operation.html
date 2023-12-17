@@ -219,12 +219,12 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_c_l_reduce_operation_8cpp_source.html#l00106">106</a> of file <a class="el" href="_c_l_reduce_operation_8cpp_source.html">CLReduceOperation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  ARM_COMPUTE_ERROR_THROW_ON(<a class="code hl_function" href="classarm__compute_1_1_c_l_reduce_operation.html#a39832d472174d4112e90344e48f0fbb2">validate</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), axis, keep_dims, op));</div>
+<div class="line"><span class="lineno">  110</span>  ARM_COMPUTE_ERROR_THROW_ON(<a class="code hl_function" href="classarm__compute_1_1_c_l_reduce_operation.html#a39832d472174d4112e90344e48f0fbb2">validate</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(), axis, keep_dims, op));</div>
 <div class="line"><span class="lineno">  111</span> </div>
 <div class="line"><span class="lineno">  112</span>  _axis = axis;</div>
 <div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
-<div class="line"><span class="lineno">  115</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">  114</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  115</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">  116</span>  _keep_dims = keep_dims;</div>
 <div class="line"><span class="lineno">  117</span> </div>
 <div class="line"><span class="lineno">  118</span>  <span class="comment">// NOTE The axis must have no duplication.</span></div>
@@ -249,14 +249,14 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  137</span>  tensors.emplace_back(output);</div>
 <div class="line"><span class="lineno">  138</span> </div>
 <div class="line"><span class="lineno">  139</span>  <span class="comment">// Apply ReductionOperation on all kernels</span></div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> shape{<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape()};</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> shape{<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape()};</div>
 <div class="line"><span class="lineno">  141</span>  <span class="keyword">auto</span> it = axis.begin();</div>
 <div class="line"><span class="lineno">  142</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_of_kernels; ++i, ++it)</div>
 <div class="line"><span class="lineno">  143</span>  {</div>
 <div class="line"><span class="lineno">  144</span>    shape.set(*it, 1, <span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  145</span>    <span class="keywordflow">if</span> (!keep_dims || i != (num_of_kernels - 1))</div>
 <div class="line"><span class="lineno">  146</span>    {</div>
-<div class="line"><span class="lineno">  147</span>      _interm_tensors[i].allocator()-&gt;init(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;clone()-&gt;set_tensor_shape(shape));</div>
+<div class="line"><span class="lineno">  147</span>      _interm_tensors[i].allocator()-&gt;init(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;clone()-&gt;set_tensor_shape(shape));</div>
 <div class="line"><span class="lineno">  148</span>      _memory_group.manage(&amp;_interm_tensors[i]);</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
 <div class="line"><span class="lineno">  150</span>    _reduce_kernels[i].configure(tensors[i], tensors[i + 1], *it, op);</div>
@@ -275,8 +275,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  163</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_reduce_operation_html_a39832d472174d4112e90344e48f0fbb2"><div class="ttname"><a href="classarm__compute_1_1_c_l_reduce_operation.html#a39832d472174d4112e90344e48f0fbb2">arm_compute::CLReduceOperation::validate</a></div><div class="ttdeci">static Status validate(const ITensorInfo *input, const ITensorInfo *output, const std::set&lt; uint32_t &gt; &amp;axis, bool keep_dims, const ReductionOperation &amp;op)</div><div class="ttdoc">Static function to check if given info will lead to a valid configuration of CLReduceOperation.</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_reduce_operation_8cpp_source.html#l00054">CLReduceOperation.cpp:54</a></div></div>
 <div class="ttc" id="anamespaceangkor_html_a064734f560e3fa5d4be0828c9d7a3859"><div class="ttname"><a href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">angkor::TensorShape</a></div><div class="ttdeci">::nncc::core::ADT::tensor::Shape TensorShape</div><div class="ttdef"><b>Definition:</b> <a href="angkor_2include_2angkor_2_tensor_shape_8h_source.html#l00025">TensorShape.h:25</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_c_l_reduce_operation_8cpp_source.html#l00054">validate()</a>.</p>
 
@@ -404,17 +404,17 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>  <span class="keyword">auto</span> interm_tensors = std::make_unique&lt;TensorInfo[]&gt;(num_of_interm_tensors);</div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>  <span class="comment">// Create intermediate tensor info</span></div>
-<div class="line"><span class="lineno">   67</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> shape{<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;tensor_shape()};</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_typedef" href="namespaceangkor.html#a064734f560e3fa5d4be0828c9d7a3859">TensorShape</a> shape{<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;tensor_shape()};</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>  <span class="keyword">auto</span> it = axis.begin();</div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_of_interm_tensors; ++i, ++it)</div>
 <div class="line"><span class="lineno">   71</span>  {</div>
 <div class="line"><span class="lineno">   72</span>    shape.set(*it, 1, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   73</span>    interm_tensors[i].set_data_type(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;data_type());</div>
+<div class="line"><span class="lineno">   73</span>    interm_tensors[i].set_data_type(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type());</div>
 <div class="line"><span class="lineno">   74</span>    interm_tensors[i].set_tensor_shape(shape);</div>
-<div class="line"><span class="lineno">   75</span>    interm_tensors[i].set_num_channels(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;num_channels());</div>
-<div class="line"><span class="lineno">   76</span>    interm_tensors[i].set_data_layout(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;data_layout());</div>
-<div class="line"><span class="lineno">   77</span>    interm_tensors[i].set_quantization_info(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;quantization_info());</div>
+<div class="line"><span class="lineno">   75</span>    interm_tensors[i].set_num_channels(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;num_channels());</div>
+<div class="line"><span class="lineno">   76</span>    interm_tensors[i].set_data_layout(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_layout());</div>
+<div class="line"><span class="lineno">   77</span>    interm_tensors[i].set_quantization_info(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;quantization_info());</div>
 <div class="line"><span class="lineno">   78</span>  }</div>
 <div class="line"><span class="lineno">   79</span> </div>
 <div class="line"><span class="lineno">   80</span>  <span class="comment">// Set a vector that is ordered ITensorInfo sequentially.</span></div>

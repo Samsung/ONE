@@ -248,8 +248,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
 <div class="line"><span class="lineno">   74</span>  ARM_COMPUTE_ERROR_ON_NULLPTR(input, weights, output);</div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classarm__compute_1_1_c_l_transpose_conv_layer.html#aea5b18cddb127056f856e00349ccc0bf">CLTransposeConvLayer::get_deconvolution_method</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), weights-&gt;info(), <span class="keyword">nullptr</span>,</div>
-<div class="line"><span class="lineno">   77</span>                                                         <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), deconv_info, invalid_right,</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classarm__compute_1_1_c_l_transpose_conv_layer.html#aea5b18cddb127056f856e00349ccc0bf">CLTransposeConvLayer::get_deconvolution_method</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), weights-&gt;info(), <span class="keyword">nullptr</span>,</div>
+<div class="line"><span class="lineno">   77</span>                                                         <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(), deconv_info, invalid_right,</div>
 <div class="line"><span class="lineno">   78</span>                                                         invalid_bottom, weights_info))</div>
 <div class="line"><span class="lineno">   79</span>  {</div>
 <div class="line"><span class="lineno">   80</span>    <span class="keywordflow">case</span> DeconvolutionMethod::DIRECT:</div>
@@ -273,8 +273,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   98</span>  }</div>
 <div class="line"><span class="lineno">   99</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_transpose_conv_layer_html_aea5b18cddb127056f856e00349ccc0bf"><div class="ttname"><a href="classarm__compute_1_1_c_l_transpose_conv_layer.html#aea5b18cddb127056f856e00349ccc0bf">arm_compute::CLTransposeConvLayer::get_deconvolution_method</a></div><div class="ttdeci">static DeconvolutionMethod get_deconvolution_method(const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *bias, ITensorInfo *output, const PadStrideInfo &amp;deconv_info, unsigned int invalid_right, unsigned int invalid_bottom, const WeightsInfo &amp;weights_info)</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_transpose_conv_layer_8cpp_source.html#l00132">CLTransposeConvLayer.cpp:132</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_c_l_transpose_conv_layer_8cpp_source.html#l00132">get_deconvolution_method()</a>.</p>
 
@@ -443,7 +443,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
 <div class="line"><span class="lineno">  137</span>  ARM_COMPUTE_UNUSED(output, bias, weights_info);</div>
 <div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>  <span class="keyword">const</span> DataLayout data_layout = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;data_layout();</div>
+<div class="line"><span class="lineno">  139</span>  <span class="keyword">const</span> DataLayout data_layout = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_layout();</div>
 <div class="line"><span class="lineno">  140</span> </div>
 <div class="line"><span class="lineno">  141</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> idx_w = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);</div>
 <div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> idx_h = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);</div>

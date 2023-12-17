@@ -151,7 +151,7 @@ Output(1, 49, 448)
 <div class="line"> </div>
 <div class="line">  <span class="keyword">struct </span>Dim final</div>
 <div class="line">  {</div>
-<div class="line">    uint32_t value;</div>
+<div class="line">    int32_t value;</div>
 <div class="line">    std::vector&lt;uint8_t&gt; tags;</div>
 <div class="line">  };</div>
 <div class="line"> </div>
@@ -159,7 +159,45 @@ Output(1, 49, 448)
 <div class="line"> </div>
 <div class="line">  <span class="keyword">using </span><a id="_a3" name="_a3"></a><a class="code hl_struct" href="struct_shape.html">Shape</a> = std::vector&lt;Dim&gt;;</div>
 <div class="line">  <a class="code hl_struct" href="struct_shape.html">Shape</a> _shape;</div>
+<div class="line"> </div>
+<div class="line">  int32_t flatsize(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;shape) <span class="keyword">const</span>;</div>
+<div class="line">  <span class="keywordtype">bool</span> inference_incomplete_shape(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;src, <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;dst);</div>
 <div class="line">};</div>
+<div class="line"> </div>
+<div class="line">int32_t TaggedShapeAnalyzer::flatsize(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;shape)<span class="keyword"> const</span></div>
+<div class="line"><span class="keyword"></span>{</div>
+<div class="line">  int32_t <a id="a4" name="a4"></a><a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = 1;</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dim : shape)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="keywordflow">if</span> (dim.value &gt;= 1)</div>
+<div class="line">      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> *= dim.value;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> TaggedShapeAnalyzer::inference_incomplete_shape(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;src, <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;dst)</div>
+<div class="line">{</div>
+<div class="line">  std::vector&lt;size_t&gt; incomplete_indexes;</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; dst.size(); i++)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="keywordflow">if</span> (dst[i].value == -1)</div>
+<div class="line">      incomplete_indexes.push_back(i);</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (incomplete_indexes.size() == 0)</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (incomplete_indexes.size() == 1)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="keywordflow">if</span> (flatsize(src) % flatsize(dst) == 0)</div>
+<div class="line">      dst[incomplete_indexes[0]].value = flatsize(src) / flatsize(dst);</div>
+<div class="line">    <span class="keywordflow">else</span></div>
+<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">else</span> <span class="comment">// incomplete_indexes.size() &gt;= 2</span></div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> TaggedShapeAnalyzer::init_shape_with_tag(<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *in_tensor)</div>
 <div class="line">{</div>
@@ -181,11 +219,11 @@ Output(1, 49, 448)
 <div class="line"><span class="keyword">template</span> &lt;loco::DataType PermType&gt;</div>
 <div class="line"><span class="keywordtype">void</span> TaggedShapeAnalyzer::analyze_transpose(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *transpose_node)</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">const</span> <a id="_a4" name="_a4"></a><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *perm_node = loco::must_cast&lt;luci::CircleConst *&gt;(transpose_node-&gt;<a id="a5" name="a5"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
+<div class="line">  <span class="keyword">const</span> <a id="_a5" name="_a5"></a><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *perm_node = loco::must_cast&lt;luci::CircleConst *&gt;(transpose_node-&gt;<a id="a6" name="a6"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
 <div class="line">  assert(perm_node-&gt;dtype() == PermType);</div>
 <div class="line"> </div>
 <div class="line">  TaggedShapeAnalyzer::Shape new_shape;</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a id="a6" name="a6"></a><a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = perm_node-&gt;<a id="a7" name="a7"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;PermType&gt;();</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = perm_node-&gt;<a id="a7" name="a7"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;PermType&gt;();</div>
 <div class="line">  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
 <div class="line">  {</div>
 <div class="line">    <span class="keyword">auto</span> perm_idx = perm_node-&gt;<a id="a8" name="a8"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;PermType&gt;(i);</div>
@@ -214,10 +252,14 @@ Output(1, 49, 448)
 <div class="line">    new_shape.push_back(dim);</div>
 <div class="line">  }</div>
 <div class="line"> </div>
+<div class="line">  <span class="comment">// inference new_shape dim with -1 value</span></div>
+<div class="line">  <span class="keywordflow">if</span> (inference_incomplete_shape(_shape, new_shape) == <span class="keyword">false</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">// indexing for _shape [old_shape_start_idx, old_shape_end_idx)</span></div>
 <div class="line">  uint32_t old_shape_start_idx = 0;</div>
 <div class="line">  uint32_t old_shape_end_idx = 1;</div>
-<div class="line">  uint32_t old_shape_product = _shape[old_shape_start_idx].value;</div>
+<div class="line">  <span class="keyword">auto</span> old_shape_product = _shape[old_shape_start_idx].value;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> expand_range = [&amp;]() -&gt; <span class="keywordtype">bool</span> {</div>
 <div class="line">    <span class="keywordflow">if</span> (old_shape_end_idx &gt;= _shape.size())</div>
@@ -469,7 +511,7 @@ Output(1, 49, 448)
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_acacef6d89b0ea391f613395f920074b4"><div class="ttname"><a href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">luci::CircleNode::shape_status</a></div><div class="ttdeci">ShapeStatus shape_status(void) const</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00064">CircleNodeDecl.h:64</a></div></div>
-<div class="ttc" id="astructluci_1_1_remove_unnecessary_transpose_net_pass_html_ae67319dd51cf61ce6807ccd78233d19d"><div class="ttname"><a href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">luci::RemoveUnnecessaryTransposeNetPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition:</b> <a href="_remove_unnecessary_transpose_net_pass_8cpp_source.html#l00434">RemoveUnnecessaryTransposeNetPass.cpp:434</a></div></div>
+<div class="ttc" id="astructluci_1_1_remove_unnecessary_transpose_net_pass_html_ae67319dd51cf61ce6807ccd78233d19d"><div class="ttname"><a href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">luci::RemoveUnnecessaryTransposeNetPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition:</b> <a href="_remove_unnecessary_transpose_net_pass_8cpp_source.html#l00482">RemoveUnnecessaryTransposeNetPass.cpp:482</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

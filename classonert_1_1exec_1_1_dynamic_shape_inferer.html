@@ -282,31 +282,31 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00095">95</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
 <div class="line"><span class="lineno">   97</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94">ir::operation::ArgMinMax::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno">   99</span> </div>
 <div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33">ir::operation::ArgMinMax::Input::AXIS</a>)};</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis = _tensor_registry-&gt;getITensor(axis_idx);</div>
 <div class="line"><span class="lineno">  102</span> </div>
 <div class="line"><span class="lineno">  103</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  104</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() &amp;&amp; !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() &amp;&amp; !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  107</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  109</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  110</span>  <span class="keyword">auto</span> axis_value = *<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(axis-&gt;buffer());</div>
 <div class="line"><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = input_shape.rank();</div>
 <div class="line"><span class="lineno">  112</span>  axis_value = axis_value &lt; 0 ? axis_value + rank : axis_value;</div>
 <div class="line"><span class="lineno">  113</span> </div>
 <div class="line"><span class="lineno">  114</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#acddad12a30710fc6fb86a11d59b73ed2">shape_inference::inferArgMinMaxShape</a>(input_shape, axis_value, rank);</div>
 <div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  117</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  116</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  117</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  118</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_arg_min_max_html_a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33">onert::ir::operation::ArgMinMax::AXIS</a></div><div class="ttdeci">@ AXIS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00036">ArgMinMax.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_arg_min_max_html_a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94">onert::ir::operation::ArgMinMax::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00034">ArgMinMax.h:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_acddad12a30710fc6fb86a11d59b73ed2"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#acddad12a30710fc6fb86a11d59b73ed2">onert::shape_inference::inferArgMinMaxShape</a></div><div class="ttdeci">ir::Shape inferArgMinMaxShape(const ir::Shape &amp;input_shape, int axis, int rank)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00130">ShapeInference.cc:130</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00035">onert::ir::operation::ArgMinMax::AXIS</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="_shape_inference_8cc_source.html#l00130">onert::shape_inference::inferArgMinMaxShape()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00034">onert::ir::operation::ArgMinMax::INPUT</a>.</p>
@@ -348,14 +348,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  129</span> </div>
 <div class="line"><span class="lineno">  130</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  131</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span>  <span class="keyword">auto</span> lhs_shape = lhs-&gt;getShape();</div>
 <div class="line"><span class="lineno">  134</span>  <span class="keyword">auto</span> rhs_shape = rhs-&gt;getShape();</div>
 <div class="line"><span class="lineno">  135</span>  <span class="comment">// TODO</span></div>
 <div class="line"><span class="lineno">  136</span> </div>
 <div class="line"><span class="lineno">  137</span>  <span class="keyword">auto</span> new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#adc2d975b105929881bafff90fef477bf">shape_inference::inferBatchMatMulShape</a>(lhs_shape, rhs_shape, op.param());</div>
-<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
 <div class="line"><span class="lineno">  139</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_mat_mul_html_ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83">onert::ir::operation::BatchMatMul::LHS</a></div><div class="ttdeci">@ LHS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00034">BatchMatMul.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_mat_mul_html_ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31">onert::ir::operation::BatchMatMul::RHS</a></div><div class="ttdeci">@ RHS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00036">BatchMatMul.h:35</a></div></div>
@@ -392,17 +392,17 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00141">141</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
 <div class="line"><span class="lineno">  143</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html#abbe3c43ddbac87eeed6bdb8b2e3db4f9a743a67d66bd7747f6c41ed30a694d364">ir::operation::BCQFullyConnected::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno">  145</span> </div>
 <div class="line"><span class="lineno">  146</span>  <span class="keyword">const</span> <span class="keyword">auto</span> cluster_idx{</div>
 <div class="line"><span class="lineno">  147</span>    op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html#abbe3c43ddbac87eeed6bdb8b2e3db4f9aced211b3b6e6b6d100ae58f8f2ae6158">ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS</a>)};</div>
 <div class="line"><span class="lineno">  148</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;cluster = _tensor_registry-&gt;getITensor(cluster_idx);</div>
 <div class="line"><span class="lineno">  149</span>  assert(cluster-&gt;is_constant());</div>
 <div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  152</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  154</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  155</span>  <span class="keyword">auto</span> cluster_shape = cluster-&gt;getShape();</div>
 <div class="line"><span class="lineno">  156</span> </div>
 <div class="line"><span class="lineno">  157</span>  <span class="keyword">auto</span> cluster_buf = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(cluster-&gt;buffer());</div>
@@ -412,10 +412,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  161</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#aef3d1762a92b8fa3d998fa47224a1592">shape_inference::inferBCQFullyConnectedShape</a>(input_shape, cluster_shape, cluster_buf);</div>
 <div class="line"><span class="lineno">  162</span> </div>
 <div class="line"><span class="lineno">  163</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  164</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  167</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  166</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  167</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  168</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected_html_abbe3c43ddbac87eeed6bdb8b2e3db4f9a743a67d66bd7747f6c41ed30a694d364"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html#abbe3c43ddbac87eeed6bdb8b2e3db4f9a743a67d66bd7747f6c41ed30a694d364">onert::ir::operation::BCQFullyConnected::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_fully_connected_8h_source.html#l00037">BCQFullyConnected.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected_html_abbe3c43ddbac87eeed6bdb8b2e3db4f9aced211b3b6e6b6d100ae58f8f2ae6158"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html#abbe3c43ddbac87eeed6bdb8b2e3db4f9aced211b3b6e6b6d100ae58f8f2ae6158">onert::ir::operation::BCQFullyConnected::WEIGHTS_CLUSTERS</a></div><div class="ttdeci">@ WEIGHTS_CLUSTERS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_fully_connected_8h_source.html#l00041">BCQFullyConnected.h:41</a></div></div>
@@ -475,10 +475,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  193</span>                                                             cluster_buf, rank, op.param());</div>
 <div class="line"><span class="lineno">  194</span> </div>
 <div class="line"><span class="lineno">  195</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  196</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  199</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  198</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  199</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  200</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_b_c_q_gather_html_a8febabf4f8510586fbd01a7c4d812089a440b798fe712dae1c43546ffb8ab38fd"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html#a8febabf4f8510586fbd01a7c4d812089a440b798fe712dae1c43546ffb8ab38fd">onert::ir::operation::BCQGather::INPUT_CLUSTERS</a></div><div class="ttdeci">@ INPUT_CLUSTERS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_gather_8h_source.html#l00040">BCQGather.h:40</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_b_c_q_gather_html_a8febabf4f8510586fbd01a7c4d812089a7abed4cd0e0ca96fbb1bfcbb2cda3f9f"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html#a8febabf4f8510586fbd01a7c4d812089a7abed4cd0e0ca96fbb1bfcbb2cda3f9f">onert::ir::operation::BCQGather::INPUT_BINARY</a></div><div class="ttdeci">@ INPUT_BINARY</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_gather_8h_source.html#l00038">BCQGather.h:38</a></div></div>
@@ -552,12 +552,12 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00208">208</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  209</span>{</div>
 <div class="line"><span class="lineno">  210</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  211</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  212</span> </div>
 <div class="line"><span class="lineno">  213</span>  <span class="keyword">auto</span> input_idx = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a">ir::operation::BroadcastTo::INPUT</a>);</div>
-<div class="line"><span class="lineno">  214</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno">  215</span> </div>
-<div class="line"><span class="lineno">  216</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  216</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  217</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  218</span> </div>
 <div class="line"><span class="lineno">  219</span>  <span class="keyword">auto</span> shape_idx = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aa23b34ec2951617d519758a51a3956ec4">ir::operation::Tile::Input::MULTIPLES</a>);</div>
@@ -569,8 +569,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  225</span>    shape-&gt;getShape(), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(shape-&gt;buffer()));</div>
 <div class="line"><span class="lineno">  226</span> </div>
 <div class="line"><span class="lineno">  227</span>  <span class="comment">// set output shape and output buffer</span></div>
-<div class="line"><span class="lineno">  228</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  229</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  228</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  229</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  230</span>}</div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_broadcast_to_html_a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a">onert::ir::operation::BroadcastTo::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_broadcast_to_8h_source.html#l00036">BroadcastTo.h:36</a></div></div>
@@ -661,8 +661,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  255</span>  <span class="keywordtype">bool</span> all_static = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  256</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  257</span>  {</div>
-<div class="line"><span class="lineno">  258</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  258</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  260</span>    {</div>
 <div class="line"><span class="lineno">  261</span>      all_static = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  262</span>      <span class="keywordflow">break</span>;</div>
@@ -698,7 +698,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  292</span> </div>
 <div class="line"><span class="lineno">  293</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  294</span>    {</div>
-<div class="line"><span class="lineno">  295</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  295</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  296</span>      <span class="keywordflow">if</span> (input != first_input &amp;&amp; !isConcatible(first_input, input, op.param().axis))</div>
 <div class="line"><span class="lineno">  297</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;input shapes does not matched for concat&quot;</span>);</div>
 <div class="line"><span class="lineno">  298</span>    }</div>
@@ -708,17 +708,17 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  302</span>  <a class="code hl_typedef" href="namespaceonert_1_1shape__inference.html#a70e5c20289b21b1f0c0cb7175bcf6b0b">onert::shape_inference::Shapes</a> in_shapes;</div>
 <div class="line"><span class="lineno">  303</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_ind : op.getInputs())</div>
 <div class="line"><span class="lineno">  304</span>  {</div>
-<div class="line"><span class="lineno">  305</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
-<div class="line"><span class="lineno">  306</span>    ir::Shape shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  306</span>    ir::Shape shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  307</span> </div>
 <div class="line"><span class="lineno">  308</span>    in_shapes.emplace_back(shape);</div>
 <div class="line"><span class="lineno">  309</span>  }</div>
 <div class="line"><span class="lineno">  310</span> </div>
 <div class="line"><span class="lineno">  311</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  312</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  313</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a82ec85e7c31358cd319a0b1981202549">shape_inference::inferConcatShape</a>(in_shapes, op.param());</div>
 <div class="line"><span class="lineno">  314</span> </div>
-<div class="line"><span class="lineno">  315</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  315</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  316</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_a70e5c20289b21b1f0c0cb7175bcf6b0b"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#a70e5c20289b21b1f0c0cb7175bcf6b0b">onert::shape_inference::Shapes</a></div><div class="ttdeci">std::vector&lt; ir::Shape &gt; Shapes</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00040">ShapeInference.h:40</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_a82ec85e7c31358cd319a0b1981202549"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#a82ec85e7c31358cd319a0b1981202549">onert::shape_inference::inferConcatShape</a></div><div class="ttdeci">ir::Shape inferConcatShape(const Shapes &amp;in_shapes, const ir::operation::Concat::Param &amp;param)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00304">ShapeInference.cc:304</a></div></div>
@@ -755,24 +755,24 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  319</span>{</div>
 <div class="line"><span class="lineno">  320</span>  <span class="comment">// check if input is not dynamic</span></div>
 <div class="line"><span class="lineno">  321</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086ae2a775fe3b007ec3c1fbd2a9ce5de45b">ir::operation::Conv2D::INPUT</a>);</div>
-<div class="line"><span class="lineno">  322</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  322</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  323</span> </div>
 <div class="line"><span class="lineno">  324</span>  <span class="keyword">auto</span> ker_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086aed43a2c4f1ee11e7446e6adbb8b1161b">ir::operation::Conv2D::KERNEL</a>);</div>
 <div class="line"><span class="lineno">  325</span>  <span class="keyword">auto</span> ker = _tensor_registry-&gt;getITensor(ker_ind);</div>
 <div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!ker-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!ker-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  328</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  329</span> </div>
-<div class="line"><span class="lineno">  330</span>  ir::Shape input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  330</span>  ir::Shape input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  331</span>  ir::Shape ker_shape = ker-&gt;getShape();</div>
 <div class="line"><span class="lineno">  332</span> </div>
 <div class="line"><span class="lineno">  333</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  334</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  334</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  335</span> </div>
 <div class="line"><span class="lineno">  336</span>  ir::Shape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#adeb7518da50c24d5d3a751081261d54d">shape_inference::inferConv2DShape</a>(input_shape, ker_shape, op.param());</div>
 <div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  339</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  338</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  339</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  340</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_conv2_d_html_a48b1f6f4294be2d2184d02f7ad474086ae2a775fe3b007ec3c1fbd2a9ce5de45b"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086ae2a775fe3b007ec3c1fbd2a9ce5de45b">onert::ir::operation::Conv2D::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_conv2_d_8h_source.html#l00038">Conv2D.h:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_conv2_d_html_a48b1f6f4294be2d2184d02f7ad474086aed43a2c4f1ee11e7446e6adbb8b1161b"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086aed43a2c4f1ee11e7446e6adbb8b1161b">onert::ir::operation::Conv2D::KERNEL</a></div><div class="ttdeci">@ KERNEL</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_conv2_d_8h_source.html#l00039">Conv2D.h:39</a></div></div>
@@ -948,11 +948,11 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  359</span>{</div>
 <div class="line"><span class="lineno">  360</span>  <span class="comment">// check if input is not dynamic</span></div>
 <div class="line"><span class="lineno">  361</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_expand_dims.html#a95f37c4d2858013b6dd84beb39012ec3adf47a3db0a2a7236ceb14f6db5dd74a4">ir::operation::ExpandDims::INPUT</a>);</div>
-<div class="line"><span class="lineno">  362</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  362</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  363</span> </div>
 <div class="line"><span class="lineno">  364</span>  <span class="comment">// check if output is not dynamic, meaning when 1st input is static and 2nd input is const</span></div>
 <div class="line"><span class="lineno">  365</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  366</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  366</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  367</span> </div>
 <div class="line"><span class="lineno">  368</span>  <span class="comment">/*</span></div>
 <div class="line"><span class="lineno">  369</span><span class="comment">    Here, the state after compilation (satic shape inference) could be one of the following:</span></div>
@@ -972,10 +972,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  383</span><span class="comment"></span> </div>
 <div class="line"><span class="lineno">  384</span><span class="comment">    So, only when input1 and ouput are static, we can skip dynamic shape inference.</span></div>
 <div class="line"><span class="lineno">  385</span><span class="comment">  */</span></div>
-<div class="line"><span class="lineno">  386</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  386</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  387</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  388</span> </div>
-<div class="line"><span class="lineno">  389</span>  ir::Shape input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  389</span>  ir::Shape input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  390</span> </div>
 <div class="line"><span class="lineno">  391</span>  <span class="keyword">auto</span> axis_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_expand_dims.html#a95f37c4d2858013b6dd84beb39012ec3a5c2c93c3632d15f1aae24d8e087bc21f">ir::operation::ExpandDims::AXIS</a>);</div>
 <div class="line"><span class="lineno">  392</span>  <span class="keyword">auto</span> axis = _tensor_registry-&gt;getITensor(axis_ind);</div>
@@ -990,8 +990,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  401</span> </div>
 <div class="line"><span class="lineno">  402</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0da8b986f531953219b9b4d8da542870">shape_inference::inferExpandDimsShape</a>(input_shape, axis_value);</div>
 <div class="line"><span class="lineno">  403</span> </div>
-<div class="line"><span class="lineno">  404</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  405</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  404</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  405</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  406</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_expand_dims_html_a95f37c4d2858013b6dd84beb39012ec3a5c2c93c3632d15f1aae24d8e087bc21f"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_expand_dims.html#a95f37c4d2858013b6dd84beb39012ec3a5c2c93c3632d15f1aae24d8e087bc21f">onert::ir::operation::ExpandDims::AXIS</a></div><div class="ttdeci">@ AXIS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_expand_dims_8h_source.html#l00038">ExpandDims.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_expand_dims_html_a95f37c4d2858013b6dd84beb39012ec3adf47a3db0a2a7236ceb14f6db5dd74a4"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_expand_dims.html#a95f37c4d2858013b6dd84beb39012ec3adf47a3db0a2a7236ceb14f6db5dd74a4">onert::ir::operation::ExpandDims::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_expand_dims_8h_source.html#l00036">ExpandDims.h:36</a></div></div>
@@ -1029,11 +1029,11 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  409</span>{</div>
 <div class="line"><span class="lineno">  410</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno">  411</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  412</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  412</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  413</span>  <span class="keyword">auto</span> shape_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_fill.html#a5982322cc48817e3df2d3512c3c3112ba44f03eee113bca71e206184a06a041f1">ir::operation::Fill::Input::SHAPE</a>);</div>
 <div class="line"><span class="lineno">  414</span>  <span class="keyword">auto</span> shape = _tensor_registry-&gt;getITensor(shape_ind);</div>
 <div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">if</span> ((!shape-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">if</span> ((!shape-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  417</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  418</span> </div>
 <div class="line"><span class="lineno">  419</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dims_type = shape-&gt;data_type();</div>
@@ -1049,8 +1049,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  429</span>                         : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
 <div class="line"><span class="lineno">  430</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
 <div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  433</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  432</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  433</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  434</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_fill_html_a5982322cc48817e3df2d3512c3c3112ba44f03eee113bca71e206184a06a041f1"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_fill.html#a5982322cc48817e3df2d3512c3c3112ba44f03eee113bca71e206184a06a041f1">onert::ir::operation::Fill::SHAPE</a></div><div class="ttdeci">@ SHAPE</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_fill_8h_source.html#l00034">Fill.h:34</a></div></div>
 </div><!-- fragment -->
@@ -1085,24 +1085,24 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00436">436</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  437</span>{</div>
 <div class="line"><span class="lineno">  438</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_fully_connected.html#aa30a860635703c7f72331d8ac2ee06e1ab02c9265cd770e7ececb44990549f4b6">ir::operation::FullyConnected::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  439</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  439</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno">  440</span> </div>
 <div class="line"><span class="lineno">  441</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ker_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_fully_connected.html#aa30a860635703c7f72331d8ac2ee06e1a7f3bbba2b844538b00f44f164b5c191c">ir::operation::FullyConnected::Input::WEIGHT</a>)};</div>
 <div class="line"><span class="lineno">  442</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ker = _tensor_registry-&gt;getITensor(ker_idx);</div>
 <div class="line"><span class="lineno">  443</span> </div>
-<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() &amp;&amp; !ker-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() &amp;&amp; !ker-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  445</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  446</span> </div>
-<div class="line"><span class="lineno">  447</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  447</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  448</span>  <span class="keyword">auto</span> ker_shape = ker-&gt;getShape();</div>
 <div class="line"><span class="lineno">  449</span> </div>
 <div class="line"><span class="lineno">  450</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#ac164390405abbf5d5f49f010577ad3a6">shape_inference::inferFullyConnectedShape</a>(input_shape, ker_shape);</div>
 <div class="line"><span class="lineno">  451</span> </div>
 <div class="line"><span class="lineno">  452</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  453</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  453</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  454</span> </div>
-<div class="line"><span class="lineno">  455</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  456</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  455</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  456</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  457</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_fully_connected_html_aa30a860635703c7f72331d8ac2ee06e1a7f3bbba2b844538b00f44f164b5c191c"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_fully_connected.html#aa30a860635703c7f72331d8ac2ee06e1a7f3bbba2b844538b00f44f164b5c191c">onert::ir::operation::FullyConnected::WEIGHT</a></div><div class="ttdeci">@ WEIGHT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_fully_connected_8h_source.html#l00038">FullyConnected.h:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_fully_connected_html_aa30a860635703c7f72331d8ac2ee06e1ab02c9265cd770e7ececb44990549f4b6"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_fully_connected.html#aa30a860635703c7f72331d8ac2ee06e1ab02c9265cd770e7ececb44990549f4b6">onert::ir::operation::FullyConnected::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_fully_connected_8h_source.html#l00037">FullyConnected.h:37</a></div></div>
@@ -1173,14 +1173,14 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00464">464</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  465</span>{</div>
 <div class="line"><span class="lineno">  466</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa980db81808e146c9d8c6ce8ddd2500a8">ir::operation::Gather::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
-<div class="line"><span class="lineno">  468</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  468</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  469</span> </div>
 <div class="line"><span class="lineno">  470</span>  <span class="keyword">const</span> <span class="keyword">auto</span> indices_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa75545c588c17aad469af48e95a53c079">ir::operation::Gather::Input::INDICES</a>)};</div>
 <div class="line"><span class="lineno">  471</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;indices = _tensor_registry-&gt;getITensor(indices_idx);</div>
 <div class="line"><span class="lineno">  472</span>  <span class="keyword">auto</span> indices_shape = indices-&gt;getShape();</div>
 <div class="line"><span class="lineno">  473</span> </div>
-<div class="line"><span class="lineno">  474</span>  <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; !(indices-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  474</span>  <span class="keywordflow">if</span> (!(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; !(indices-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  475</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  476</span> </div>
 <div class="line"><span class="lineno">  477</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = input_shape.rank();</div>
@@ -1191,10 +1191,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  482</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a662b459b41e43ba0b50a036fa7865451">shape_inference::inferGatherShape</a>(input_shape, indices_shape, axis, rank);</div>
 <div class="line"><span class="lineno">  483</span> </div>
 <div class="line"><span class="lineno">  484</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  485</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  485</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  486</span> </div>
-<div class="line"><span class="lineno">  487</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  488</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  487</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  488</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  489</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_gather_html_a970b669de6b75eea1ea60c330c674e6aa75545c588c17aad469af48e95a53c079"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa75545c588c17aad469af48e95a53c079">onert::ir::operation::Gather::INDICES</a></div><div class="ttdeci">@ INDICES</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_gather_8h_source.html#l00037">Gather.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_gather_html_a970b669de6b75eea1ea60c330c674e6aa980db81808e146c9d8c6ce8ddd2500a8"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa980db81808e146c9d8c6ce8ddd2500a8">onert::ir::operation::Gather::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_gather_8h_source.html#l00036">Gather.h:36</a></div></div>
@@ -1265,7 +1265,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00496">496</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  497</span>{</div>
 <div class="line"><span class="lineno">  498</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{op.getOutputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a9e4009c85f43784c283f6d1924fdf1e2ad941c2bf8fab99d8cb6aa1092367b839">ir::operation::LSTM::Output::OUTPUT</a>)};</div>
-<div class="line"><span class="lineno">  499</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
+<div class="line"><span class="lineno">  499</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
 <div class="line"><span class="lineno">  500</span> </div>
 <div class="line"><span class="lineno">  501</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_state_out_index{</div>
 <div class="line"><span class="lineno">  502</span>    op.getOutputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a9e4009c85f43784c283f6d1924fdf1e2ae67fc3cde67d03aac7db6d9a9f2a0fe2">ir::operation::LSTM::Output::OUTPUT_STATE_OUT</a>)};</div>
@@ -1274,7 +1274,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  505</span> </div>
 <div class="line"><span class="lineno">  506</span>  <span class="keyword">const</span> <span class="keyword">auto</span> scratch_buffer_index{op.getOutputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a9e4009c85f43784c283f6d1924fdf1e2af06d7946b333014a1ead15548e183e90">ir::operation::LSTM::Output::SCRATCH_BUFFER</a>)};</div>
 <div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic() &amp;&amp;</div>
+<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic() &amp;&amp;</div>
 <div class="line"><span class="lineno">  509</span>      !(_tensor_registry-&gt;getITensor(output_state_out_index) != <span class="keyword">nullptr</span> &amp;&amp;</div>
 <div class="line"><span class="lineno">  510</span>        _tensor_registry-&gt;getITensor(output_state_out_index)-&gt;is_dynamic()) &amp;&amp;</div>
 <div class="line"><span class="lineno">  511</span>      !(_tensor_registry-&gt;getITensor(cell_state_out_index) != <span class="keyword">nullptr</span> &amp;&amp;</div>
@@ -1284,8 +1284,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  515</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  516</span> </div>
 <div class="line"><span class="lineno">  517</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486a99bbf97fb531687bb88da64707d705b3">ir::operation::LSTM::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  518</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
-<div class="line"><span class="lineno">  519</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  518</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
+<div class="line"><span class="lineno">  519</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  520</span> </div>
 <div class="line"><span class="lineno">  521</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_to_output_weights_index{</div>
 <div class="line"><span class="lineno">  522</span>    op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486a94782fe2826941bd0c93c7e9cf159685">ir::operation::LSTM::Input::INPUT_TO_OUTPUT_WEIGHTS</a>)};</div>
@@ -1306,16 +1306,16 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  537</span>  <span class="keywordflow">if</span> (input_shape.rank() == 3)</div>
 <div class="line"><span class="lineno">  538</span>  {</div>
 <div class="line"><span class="lineno">  539</span>    <span class="keywordflow">if</span> (op.param().time_major)</div>
-<div class="line"><span class="lineno">  540</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(ir::Shape{input_shape.dim(0), n_batch, n_output});</div>
+<div class="line"><span class="lineno">  540</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(ir::Shape{input_shape.dim(0), n_batch, n_output});</div>
 <div class="line"><span class="lineno">  541</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  542</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(ir::Shape{n_batch, input_shape.dim(1), n_output});</div>
+<div class="line"><span class="lineno">  542</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(ir::Shape{n_batch, input_shape.dim(1), n_output});</div>
 <div class="line"><span class="lineno">  543</span>  }</div>
 <div class="line"><span class="lineno">  544</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  545</span>  {</div>
 <div class="line"><span class="lineno">  546</span>    assert(input_shape.rank() == 2);</div>
-<div class="line"><span class="lineno">  547</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(ir::Shape{n_batch, n_output});</div>
+<div class="line"><span class="lineno">  547</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(ir::Shape{n_batch, n_output});</div>
 <div class="line"><span class="lineno">  548</span>  }</div>
-<div class="line"><span class="lineno">  549</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  549</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  550</span> </div>
 <div class="line"><span class="lineno">  551</span>  <span class="keyword">auto</span> output_state_out = _tensor_registry-&gt;getITensor(output_state_out_index);</div>
 <div class="line"><span class="lineno">  552</span>  <span class="keywordflow">if</span> (output_state_out != <span class="keyword">nullptr</span>)</div>
@@ -1440,7 +1440,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00612">612</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  613</span>{</div>
 <div class="line"><span class="lineno">  614</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  615</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  615</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  616</span> </div>
 <div class="line"><span class="lineno">  617</span>  <span class="keyword">auto</span> indices_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_one_hot.html#a3ec9353e939ab66ee41c4c6fd06eb7bfad9964906f84ac0aa0b3c6e71367d14a5">ir::operation::OneHot::INDICES</a>);</div>
 <div class="line"><span class="lineno">  618</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;indices = _tensor_registry-&gt;getITensor(indices_ind);</div>
@@ -1459,8 +1459,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  631</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_val = op.param().axis;</div>
 <div class="line"><span class="lineno">  632</span> </div>
 <div class="line"><span class="lineno">  633</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#addd08a55e11dbcc499dddd1413bb31e1">shape_inference::inferOnehotShape</a>(indices_shape, *depth_buf, axis_val);</div>
-<div class="line"><span class="lineno">  634</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  635</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  634</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  635</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  636</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_one_hot_html_a3ec9353e939ab66ee41c4c6fd06eb7bfab342684caf62354a7a8f4a5aa6aca52d"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_one_hot.html#a3ec9353e939ab66ee41c4c6fd06eb7bfab342684caf62354a7a8f4a5aa6aca52d">onert::ir::operation::OneHot::DEPTH</a></div><div class="ttdeci">@ DEPTH</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h_source.html#l00035">OneHot.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_one_hot_html_a3ec9353e939ab66ee41c4c6fd06eb7bfad9964906f84ac0aa0b3c6e71367d14a5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_one_hot.html#a3ec9353e939ab66ee41c4c6fd06eb7bfad9964906f84ac0aa0b3c6e71367d14a5">onert::ir::operation::OneHot::INDICES</a></div><div class="ttdeci">@ INDICES</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_one_hot_8h_source.html#l00034">OneHot.h:34</a></div></div>
@@ -1499,8 +1499,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  640</span>  <span class="keywordtype">bool</span> is_any_of_inputs_dynamic = [&amp;]() -&gt; <span class="keywordtype">bool</span> {</div>
 <div class="line"><span class="lineno">  641</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; op.getInputs().size(); ++i)</div>
 <div class="line"><span class="lineno">  642</span>    {</div>
-<div class="line"><span class="lineno">  643</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(op.getInputs().at(i));</div>
-<div class="line"><span class="lineno">  644</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  643</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(op.getInputs().at(i));</div>
+<div class="line"><span class="lineno">  644</span>      <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  645</span>      {</div>
 <div class="line"><span class="lineno">  646</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  647</span>      }</div>
@@ -1509,13 +1509,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  650</span>  }();</div>
 <div class="line"><span class="lineno">  651</span> </div>
 <div class="line"><span class="lineno">  652</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(0)};</div>
-<div class="line"><span class="lineno">  653</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
-<div class="line"><span class="lineno">  654</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  653</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  654</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  655</span> </div>
 <div class="line"><span class="lineno">  656</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  657</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  657</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  658</span> </div>
-<div class="line"><span class="lineno">  659</span>  <span class="keywordflow">if</span> (!is_any_of_inputs_dynamic &amp;&amp; !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  659</span>  <span class="keywordflow">if</span> (!is_any_of_inputs_dynamic &amp;&amp; !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  660</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  661</span> </div>
 <div class="line"><span class="lineno">  662</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = input_shape.rank() + 1;</div>
@@ -1526,8 +1526,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  667</span> </div>
 <div class="line"><span class="lineno">  668</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a6a54581549572c86f237df73e779f2d1">shape_inference::inferPackShape</a>(input_shape, axis, rank, num);</div>
 <div class="line"><span class="lineno">  669</span> </div>
-<div class="line"><span class="lineno">  670</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  671</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  670</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  671</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  672</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_a6a54581549572c86f237df73e779f2d1"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#a6a54581549572c86f237df73e779f2d1">onert::shape_inference::inferPackShape</a></div><div class="ttdeci">ir::Shape inferPackShape(const ir::Shape &amp;input_shape, int axis, int rank, int num)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00516">ShapeInference.cc:516</a></div></div>
 </div><!-- fragment -->
@@ -1563,27 +1563,27 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  675</span>{</div>
 <div class="line"><span class="lineno">  676</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno">  677</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  678</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  678</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  679</span> </div>
 <div class="line"><span class="lineno">  680</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba3cdfc07deb2cd91625efcc29cdcac61b">ir::operation::Pad::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  681</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  681</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  682</span> </div>
 <div class="line"><span class="lineno">  683</span>  <span class="keyword">auto</span> pad_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba89a662bc02e3e0dbd1e36db5fda2ca14">ir::operation::Pad::Input::PAD</a>);</div>
 <div class="line"><span class="lineno">  684</span>  <span class="keyword">auto</span> pad = _tensor_registry-&gt;getITensor(pad_ind);</div>
 <div class="line"><span class="lineno">  685</span> </div>
 <div class="line"><span class="lineno">  686</span>  <span class="comment">// check if input and output are not dynamic</span></div>
-<div class="line"><span class="lineno">  687</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  687</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  688</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  689</span> </div>
 <div class="line"><span class="lineno">  690</span>  int32_t *pad_buf = <span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(pad-&gt;buffer());</div>
 <div class="line"><span class="lineno">  691</span>  assert(pad_buf);</div>
 <div class="line"><span class="lineno">  692</span> </div>
 <div class="line"><span class="lineno">  693</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
-<div class="line"><span class="lineno">  694</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a9fc6c1a205abac1ab75b727d5118ca76">shape_inference::inferPadShape</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape(), pad_buf, pad-&gt;getShape().num_elements());</div>
+<div class="line"><span class="lineno">  694</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a9fc6c1a205abac1ab75b727d5118ca76">shape_inference::inferPadShape</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape(), pad_buf, pad-&gt;getShape().num_elements());</div>
 <div class="line"><span class="lineno">  695</span> </div>
 <div class="line"><span class="lineno">  696</span>  <span class="comment">// change output shape and reallocate output tensor memory</span></div>
-<div class="line"><span class="lineno">  697</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  698</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  697</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  698</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  699</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_pad_html_acda0ae4bfca6d917f271cf4fda9f28bba3cdfc07deb2cd91625efcc29cdcac61b"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba3cdfc07deb2cd91625efcc29cdcac61b">onert::ir::operation::Pad::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_pad_8h_source.html#l00034">Pad.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_pad_html_acda0ae4bfca6d917f271cf4fda9f28bba89a662bc02e3e0dbd1e36db5fda2ca14"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba89a662bc02e3e0dbd1e36db5fda2ca14">onert::ir::operation::Pad::PAD</a></div><div class="ttdeci">@ PAD</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_pad_8h_source.html#l00035">Pad.h:35</a></div></div>
@@ -1690,7 +1690,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  715</span>{</div>
 <div class="line"><span class="lineno">  716</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno">  717</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  718</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  718</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  719</span> </div>
 <div class="line"><span class="lineno">  720</span>  <span class="comment">// from op, access the buffer of second input to read new shape</span></div>
 <div class="line"><span class="lineno">  721</span>  <span class="keyword">auto</span> start_idx = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_range.html#af9d9a3851e5e9bbc0b331a033842a982a13365aeb6afedfdd116b497133abcdc5">ir::operation::Range::Input::START</a>);</div>
@@ -1703,26 +1703,26 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  728</span>  <span class="keyword">auto</span> delta_tensor = _tensor_registry-&gt;getITensor(delta_idx);</div>
 <div class="line"><span class="lineno">  729</span> </div>
 <div class="line"><span class="lineno">  730</span>  <span class="keywordflow">if</span> (!start_tensor-&gt;is_dynamic() &amp;&amp; !limit_tensor-&gt;is_dynamic() &amp;&amp; !delta_tensor-&gt;is_dynamic() &amp;&amp;</div>
-<div class="line"><span class="lineno">  731</span>      !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  731</span>      !<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  732</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  733</span> </div>
 <div class="line"><span class="lineno">  734</span>  ir::Shape new_shape;</div>
-<div class="line"><span class="lineno">  735</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;data_type() == ir::DataType::FLOAT32)</div>
+<div class="line"><span class="lineno">  735</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == ir::DataType::FLOAT32)</div>
 <div class="line"><span class="lineno">  736</span>  {</div>
 <div class="line"><span class="lineno">  737</span>    new_shape =</div>
 <div class="line"><span class="lineno">  738</span>      shape_inference::inferRangeShape&lt;float&gt;(*<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(start_tensor-&gt;buffer()),</div>
 <div class="line"><span class="lineno">  739</span>                                              *<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(limit_tensor-&gt;buffer()),</div>
 <div class="line"><span class="lineno">  740</span>                                              *<span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(delta_tensor-&gt;buffer()));</div>
 <div class="line"><span class="lineno">  741</span>  }</div>
-<div class="line"><span class="lineno">  742</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;data_type() == ir::DataType::INT32)</div>
+<div class="line"><span class="lineno">  742</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() == ir::DataType::INT32)</div>
 <div class="line"><span class="lineno">  743</span>  {</div>
 <div class="line"><span class="lineno">  744</span>    new_shape = shape_inference::inferRangeShape&lt;int32_t&gt;(</div>
 <div class="line"><span class="lineno">  745</span>      *<span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(start_tensor-&gt;buffer()),</div>
 <div class="line"><span class="lineno">  746</span>      *<span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(limit_tensor-&gt;buffer()),</div>
 <div class="line"><span class="lineno">  747</span>      *<span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(delta_tensor-&gt;buffer()));</div>
 <div class="line"><span class="lineno">  748</span>  }</div>
-<div class="line"><span class="lineno">  749</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  750</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  749</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  750</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  751</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_range_html_af9d9a3851e5e9bbc0b331a033842a982a13365aeb6afedfdd116b497133abcdc5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_range.html#af9d9a3851e5e9bbc0b331a033842a982a13365aeb6afedfdd116b497133abcdc5">onert::ir::operation::Range::START</a></div><div class="ttdeci">@ START</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_range_8h_source.html#l00034">Range.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_range_html_af9d9a3851e5e9bbc0b331a033842a982a1d80907d2dc632f963481abb81d7debb"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_range.html#af9d9a3851e5e9bbc0b331a033842a982a1d80907d2dc632f963481abb81d7debb">onert::ir::operation::Range::LIMIT</a></div><div class="ttdeci">@ LIMIT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_range_8h_source.html#l00035">Range.h:35</a></div></div>
@@ -1759,13 +1759,13 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00753">753</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  754</span>{</div>
 <div class="line"><span class="lineno">  755</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">ir::operation::Reduce::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  756</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
-<div class="line"><span class="lineno">  757</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  756</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  757</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  758</span> </div>
 <div class="line"><span class="lineno">  759</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axes_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9a8fde42e50a85528ddcabdb597630d02c">ir::operation::Reduce::Input::AXES</a>)};</div>
 <div class="line"><span class="lineno">  760</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;axes = _tensor_registry-&gt;getITensor(axes_idx);</div>
 <div class="line"><span class="lineno">  761</span> </div>
-<div class="line"><span class="lineno">  762</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  762</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  763</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  764</span> </div>
 <div class="line"><span class="lineno">  765</span>  std::vector&lt;int32_t&gt; axes_vec;</div>
@@ -1792,12 +1792,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  786</span>  <span class="keyword">const</span> <span class="keyword">auto</span> keep_dims = op.param().keep_dims;</div>
 <div class="line"><span class="lineno">  787</span> </div>
 <div class="line"><span class="lineno">  788</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  789</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  789</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  790</span> </div>
 <div class="line"><span class="lineno">  791</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a2e87ee4364b92bbf36d2dfd8c90ae18b">shape_inference::inferReduceShape</a>(input_shape, axes_vec, keep_dims);</div>
 <div class="line"><span class="lineno">  792</span> </div>
-<div class="line"><span class="lineno">  793</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  794</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  793</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  794</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  795</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_afe4136810f64caebdf3f12dea419cba9a8fde42e50a85528ddcabdb597630d02c"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9a8fde42e50a85528ddcabdb597630d02c">onert::ir::operation::Reduce::AXES</a></div><div class="ttdeci">@ AXES</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html#l00038">Reduce.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">onert::ir::operation::Reduce::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html#l00036">Reduce.h:36</a></div></div>
@@ -1836,10 +1836,10 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  798</span>{</div>
 <div class="line"><span class="lineno">  799</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno">  800</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  801</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  801</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  802</span> </div>
 <div class="line"><span class="lineno">  803</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7">ir::operation::Reshape::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  804</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  804</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  805</span> </div>
 <div class="line"><span class="lineno">  806</span>  <span class="comment">/*</span></div>
 <div class="line"><span class="lineno">  807</span><span class="comment">    Here, the state after compilation (satic shape inference) could be one of the following:</span></div>
@@ -1859,7 +1859,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  821</span><span class="comment"></span> </div>
 <div class="line"><span class="lineno">  822</span><span class="comment">    So, only when both input1 and ouput are static, we can skip dynamic shape inference.</span></div>
 <div class="line"><span class="lineno">  823</span><span class="comment">  */</span></div>
-<div class="line"><span class="lineno">  824</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  824</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  825</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  826</span> </div>
 <div class="line"><span class="lineno">  827</span>  <span class="comment">// New shape is given by second input tensor</span></div>
@@ -1876,15 +1876,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  838</span>    assert(new_shape_buf);</div>
 <div class="line"><span class="lineno">  839</span> </div>
 <div class="line"><span class="lineno">  840</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(</div>
-<div class="line"><span class="lineno">  841</span>      new_shape_buf, new_shape-&gt;getShape().num_elements(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape().num_elements());</div>
+<div class="line"><span class="lineno">  841</span>      new_shape_buf, new_shape-&gt;getShape().num_elements(), <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape().num_elements());</div>
 <div class="line"><span class="lineno">  842</span> </div>
 <div class="line"><span class="lineno">  843</span>    <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><span class="lineno">  844</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  844</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  845</span>    {</div>
 <div class="line"><span class="lineno">  846</span>      <span class="comment">// change on output shape</span></div>
-<div class="line"><span class="lineno">  847</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  847</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  848</span>    }</div>
-<div class="line"><span class="lineno">  849</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  849</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  850</span>  }</div>
 <div class="line"><span class="lineno">  851</span>  <span class="comment">// New shape is given by option</span></div>
 <div class="line"><span class="lineno">  852</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (op.param().new_shape.size() != 0)</div>
@@ -1892,15 +1892,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  854</span>    <span class="comment">// Let&#39;s check the new_shape option</span></div>
 <div class="line"><span class="lineno">  855</span>    <span class="keyword">auto</span> shape = op.param().new_shape;</div>
 <div class="line"><span class="lineno">  856</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">shape_inference::inferReshapeShape</a>(shape.data(), shape.size(),</div>
-<div class="line"><span class="lineno">  857</span>                                                           <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape().num_elements());</div>
+<div class="line"><span class="lineno">  857</span>                                                           <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape().num_elements());</div>
 <div class="line"><span class="lineno">  858</span> </div>
 <div class="line"><span class="lineno">  859</span>    <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><span class="lineno">  860</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  860</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  861</span>    {</div>
 <div class="line"><span class="lineno">  862</span>      <span class="comment">// change on output shape</span></div>
-<div class="line"><span class="lineno">  863</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  863</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  864</span>    }</div>
-<div class="line"><span class="lineno">  865</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  865</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  866</span>  }</div>
 <div class="line"><span class="lineno">  867</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  868</span>  {</div>
@@ -1944,12 +1944,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  875</span>{</div>
 <div class="line"><span class="lineno">  876</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno">  877</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  878</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  878</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  879</span> </div>
 <div class="line"><span class="lineno">  880</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reshape.html#adef75d1aba1a18596f9422aa2af53874ab9f5fc97f8138ba9c81e5302c7ce5ae7">ir::operation::Reshape::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  881</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno">  881</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
 <div class="line"><span class="lineno">  882</span> </div>
-<div class="line"><span class="lineno">  883</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  883</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  884</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  885</span> </div>
 <div class="line"><span class="lineno">  886</span>  <span class="comment">// getting output shape from input shape and Params</span></div>
@@ -1975,15 +1975,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  906</span>    width_out = op.param().width_out;</div>
 <div class="line"><span class="lineno">  907</span>  }</div>
 <div class="line"><span class="lineno">  908</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
-<div class="line"><span class="lineno">  909</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a95e6b5239a720ee8b7c7695757204053">shape_inference::inferResizeBilinearShape</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape(), height_out, width_out);</div>
+<div class="line"><span class="lineno">  909</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a95e6b5239a720ee8b7c7695757204053">shape_inference::inferResizeBilinearShape</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape(), height_out, width_out);</div>
 <div class="line"><span class="lineno">  910</span> </div>
 <div class="line"><span class="lineno">  911</span>  <span class="comment">// if shape is changed, change output shape and reallocate output tensor memory</span></div>
-<div class="line"><span class="lineno">  912</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  912</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getShape() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  913</span>  {</div>
 <div class="line"><span class="lineno">  914</span>    <span class="comment">// change on output shape</span></div>
-<div class="line"><span class="lineno">  915</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  915</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  916</span>  }</div>
-<div class="line"><span class="lineno">  917</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  917</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  918</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_resize_bilinear_html_abd830b1277edab42d9882659926b47fca583ee063bf35648f8478ce801a7e1851"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_resize_bilinear.html#abd830b1277edab42d9882659926b47fca583ee063bf35648f8478ce801a7e1851">onert::ir::operation::ResizeBilinear::SIZE</a></div><div class="ttdeci">@ SIZE</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h_source.html#l00037">ResizeBilinear.h:37</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_a95e6b5239a720ee8b7c7695757204053"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#a95e6b5239a720ee8b7c7695757204053">onert::shape_inference::inferResizeBilinearShape</a></div><div class="ttdeci">ir::Shape inferResizeBilinearShape(const ir::Shape &amp;in_shape, const int32_t output_height, const int32_t output_width)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00567">ShapeInference.cc:567</a></div></div>
@@ -2076,10 +2076,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  947</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a3e50d586546d461ab6a0c205b7d44f13">shape_inference::inferSelectShape</a>(input_cond_shape, input_true_shape, input_false_shape);</div>
 <div class="line"><span class="lineno">  948</span> </div>
 <div class="line"><span class="lineno">  949</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  950</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  950</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  951</span> </div>
-<div class="line"><span class="lineno">  952</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  953</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  952</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  953</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  954</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_a57feacffca5a5139ac1733628b4c22dda2b0c85c5fe15a2d7487541889059ff82"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#a57feacffca5a5139ac1733628b4c22dda2b0c85c5fe15a2d7487541889059ff82">onert::ir::operation::Select::INPUT_TRUE</a></div><div class="ttdeci">@ INPUT_TRUE</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h_source.html#l00035">Select.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_select_html_a57feacffca5a5139ac1733628b4c22dda9f2de3d12542a89a7b0bc90259eb9663"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_select.html#a57feacffca5a5139ac1733628b4c22dda9f2de3d12542a89a7b0bc90259eb9663">onert::ir::operation::Select::INPUT_FALSE</a></div><div class="ttdeci">@ INPUT_FALSE</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_select_8h_source.html#l00037">Select.h:36</a></div></div>
@@ -2117,20 +2117,20 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00956">956</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  957</span>{</div>
 <div class="line"><span class="lineno">  958</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(0)};</div>
-<div class="line"><span class="lineno">  959</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
-<div class="line"><span class="lineno">  960</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  959</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno">  960</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  961</span> </div>
-<div class="line"><span class="lineno">  962</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  962</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">  963</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  964</span> </div>
 <div class="line"><span class="lineno">  965</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  966</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno">  966</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno">  967</span> </div>
 <div class="line"><span class="lineno">  968</span>  ir::Shape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  969</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(input_shape.rank());</div>
 <div class="line"><span class="lineno">  970</span> </div>
-<div class="line"><span class="lineno">  971</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">  972</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  971</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  972</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  973</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
@@ -2164,27 +2164,27 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00975">975</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  976</span>{</div>
 <div class="line"><span class="lineno">  977</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_slice.html#a3ff48b6aaa2ca9187218b4bf227620ffa51dca06c12d59aa313807222f9d1e47c">ir::operation::Slice::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  978</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
+<div class="line"><span class="lineno">  978</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
 <div class="line"><span class="lineno">  979</span>  <span class="keyword">const</span> <span class="keyword">auto</span> begins_index{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_slice.html#a3ff48b6aaa2ca9187218b4bf227620ffabf2ff513f0f2b0e50c0a11d294b6b374">ir::operation::Slice::Input::BEGINS</a>)};</div>
 <div class="line"><span class="lineno">  980</span>  <span class="keyword">const</span> <span class="keyword">auto</span> begins = _tensor_registry-&gt;getITensor(begins_index);</div>
 <div class="line"><span class="lineno">  981</span>  <span class="keyword">const</span> <span class="keyword">auto</span> sizes_index{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_slice.html#a3ff48b6aaa2ca9187218b4bf227620ffa199910dce07aaadfc24515688f0dfc87">ir::operation::Slice::Input::SIZES</a>)};</div>
 <div class="line"><span class="lineno">  982</span>  <span class="keyword">const</span> <span class="keyword">auto</span> sizes = _tensor_registry-&gt;getITensor(sizes_index);</div>
 <div class="line"><span class="lineno">  983</span>  <span class="keyword">auto</span> output_index = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  984</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
+<div class="line"><span class="lineno">  984</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
 <div class="line"><span class="lineno">  985</span> </div>
-<div class="line"><span class="lineno">  986</span>  <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() || begins-&gt;is_dynamic() || sizes-&gt;is_dynamic() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno">  986</span>  <span class="keywordflow">if</span> (!(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() || begins-&gt;is_dynamic() || sizes-&gt;is_dynamic() || <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno">  987</span>  {</div>
 <div class="line"><span class="lineno">  988</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  989</span>  }</div>
 <div class="line"><span class="lineno">  990</span> </div>
-<div class="line"><span class="lineno">  991</span>  ir::Shape input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  991</span>  ir::Shape input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  992</span>  <span class="keyword">auto</span> begins_buf = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(begins-&gt;buffer());</div>
 <div class="line"><span class="lineno">  993</span>  <span class="keyword">auto</span> sizes_buf = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(sizes-&gt;buffer());</div>
 <div class="line"><span class="lineno">  994</span> </div>
 <div class="line"><span class="lineno">  995</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#aa4fc196af8471f317dd84a52b6c5ff94">shape_inference::inferSliceShape</a>(input_shape, begins_buf, sizes_buf);</div>
 <div class="line"><span class="lineno">  996</span> </div>
-<div class="line"><span class="lineno">  997</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno">  998</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  997</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno">  998</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  999</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_slice_html_a3ff48b6aaa2ca9187218b4bf227620ffa199910dce07aaadfc24515688f0dfc87"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_slice.html#a3ff48b6aaa2ca9187218b4bf227620ffa199910dce07aaadfc24515688f0dfc87">onert::ir::operation::Slice::SIZES</a></div><div class="ttdeci">@ SIZES</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_slice_8h_source.html#l00036">Slice.h:36</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_slice_html_a3ff48b6aaa2ca9187218b4bf227620ffa51dca06c12d59aa313807222f9d1e47c"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_slice.html#a3ff48b6aaa2ca9187218b4bf227620ffa51dca06c12d59aa313807222f9d1e47c">onert::ir::operation::Slice::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_slice_8h_source.html#l00034">Slice.h:34</a></div></div>
@@ -2260,18 +2260,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1010</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_space_to_batch_n_d.html#af71759131f9f83b8d7b760ca59d2b47fa5fd00db7527032837c33925054a239a3">ir::operation::SpaceToBatchND::Input::PADDINGS</a>)};</div>
 <div class="line"><span class="lineno"> 1011</span>  <span class="keyword">auto</span> output_idx{op.getOutputs().at(0)};</div>
 <div class="line"><span class="lineno"> 1012</span> </div>
-<div class="line"><span class="lineno"> 1013</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno"> 1013</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno"> 1014</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;block_shape = _tensor_registry-&gt;getITensor(block_shape_idx);</div>
 <div class="line"><span class="lineno"> 1015</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;padding = _tensor_registry-&gt;getITensor(padding_idx);</div>
-<div class="line"><span class="lineno"> 1016</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_idx);</div>
+<div class="line"><span class="lineno"> 1016</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_idx);</div>
 <div class="line"><span class="lineno"> 1017</span> </div>
-<div class="line"><span class="lineno"> 1018</span>  <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() || block_shape-&gt;is_dynamic() || padding-&gt;is_dynamic() ||</div>
-<div class="line"><span class="lineno"> 1019</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno"> 1018</span>  <span class="keywordflow">if</span> (!(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() || block_shape-&gt;is_dynamic() || padding-&gt;is_dynamic() ||</div>
+<div class="line"><span class="lineno"> 1019</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno"> 1020</span>  {</div>
 <div class="line"><span class="lineno"> 1021</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1022</span>  }</div>
 <div class="line"><span class="lineno"> 1023</span> </div>
-<div class="line"><span class="lineno"> 1024</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1024</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1025</span>  <span class="keyword">auto</span> block_shape_shape = block_shape-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1026</span>  <span class="keyword">auto</span> padding_shape = padding-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1027</span> </div>
@@ -2281,8 +2281,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1031</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#a559c4c73acb79657eaa8504a08996478">shape_inference::inferSpaceToBatchNDShape</a>(</div>
 <div class="line"><span class="lineno"> 1032</span>    input_shape, block_shape_shape, padding_shape, block_shape_data, padding_data);</div>
 <div class="line"><span class="lineno"> 1033</span> </div>
-<div class="line"><span class="lineno"> 1034</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno"> 1035</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1034</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno"> 1035</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1036</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_space_to_batch_n_d_html_af71759131f9f83b8d7b760ca59d2b47fa5fd00db7527032837c33925054a239a3"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_space_to_batch_n_d.html#af71759131f9f83b8d7b760ca59d2b47fa5fd00db7527032837c33925054a239a3">onert::ir::operation::SpaceToBatchND::PADDINGS</a></div><div class="ttdeci">@ PADDINGS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_space_to_batch_n_d_8h_source.html#l00039">SpaceToBatchND.h:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_space_to_batch_n_d_html_af71759131f9f83b8d7b760ca59d2b47fa63da9ddc53b9674a7028d89f31dc1a79"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_space_to_batch_n_d.html#af71759131f9f83b8d7b760ca59d2b47fa63da9ddc53b9674a7028d89f31dc1a79">onert::ir::operation::SpaceToBatchND::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_space_to_batch_n_d_8h_source.html#l00036">SpaceToBatchND.h:36</a></div></div>
@@ -2320,21 +2320,21 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01038">1038</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1039</span>{</div>
 <div class="line"><span class="lineno"> 1040</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_split.html#a41dfe95aebabac1971ac2b56183653fdaf1bd367883cebac093e375ef0ebf8a3e">ir::operation::Split::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno"> 1041</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno"> 1041</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno"> 1042</span> </div>
 <div class="line"><span class="lineno"> 1043</span>  <span class="comment">// Return if all tensors are not dynamic</span></div>
 <div class="line"><span class="lineno"> 1044</span>  <span class="keywordtype">bool</span> has_dynamic = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno"> 1045</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_idx : op.getOutputs())</div>
 <div class="line"><span class="lineno"> 1046</span>  {</div>
-<div class="line"><span class="lineno"> 1047</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_idx);</div>
-<div class="line"><span class="lineno"> 1048</span>    has_dynamic |= <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic();</div>
+<div class="line"><span class="lineno"> 1047</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_idx);</div>
+<div class="line"><span class="lineno"> 1048</span>    has_dynamic |= <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic();</div>
 <div class="line"><span class="lineno"> 1049</span>  }</div>
-<div class="line"><span class="lineno"> 1050</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() &amp;&amp; !has_dynamic)</div>
+<div class="line"><span class="lineno"> 1050</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() &amp;&amp; !has_dynamic)</div>
 <div class="line"><span class="lineno"> 1051</span>  {</div>
 <div class="line"><span class="lineno"> 1052</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1053</span>  }</div>
 <div class="line"><span class="lineno"> 1054</span> </div>
-<div class="line"><span class="lineno"> 1055</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1055</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1056</span> </div>
 <div class="line"><span class="lineno"> 1057</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_split.html#a41dfe95aebabac1971ac2b56183653fdafd641b0d9fec8b267677ac550d24c003">ir::operation::Split::Input::AXIS</a>)};</div>
 <div class="line"><span class="lineno"> 1058</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;axis = _tensor_registry-&gt;getITensor(axis_idx);</div>
@@ -2350,10 +2350,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1068</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_tensor_idx = 0; out_tensor_idx &lt; num_splits; out_tensor_idx++)</div>
 <div class="line"><span class="lineno"> 1069</span>  {</div>
 <div class="line"><span class="lineno"> 1070</span>    <span class="keyword">auto</span> output_ind = op.getOutputs().at(out_tensor_idx);</div>
-<div class="line"><span class="lineno"> 1071</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno"> 1071</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno"> 1072</span> </div>
-<div class="line"><span class="lineno"> 1073</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno"> 1074</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1073</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno"> 1074</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1075</span>  }</div>
 <div class="line"><span class="lineno"> 1076</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_split_html_a41dfe95aebabac1971ac2b56183653fdaf1bd367883cebac093e375ef0ebf8a3e"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_split.html#a41dfe95aebabac1971ac2b56183653fdaf1bd367883cebac093e375ef0ebf8a3e">onert::ir::operation::Split::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_split_8h_source.html#l00033">Split.h:33</a></div></div>
@@ -2427,23 +2427,23 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01084">1084</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1085</span>{</div>
 <div class="line"><span class="lineno"> 1086</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_squeeze.html#aacfaaa715a12c57f37c4f4a22ee2d1fbab29bf0cc85a5c8a80d4e4b263476fdb5">ir::operation::Squeeze::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno"> 1087</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno"> 1087</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno"> 1088</span> </div>
-<div class="line"><span class="lineno"> 1089</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno"> 1089</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno"> 1090</span>  {</div>
 <div class="line"><span class="lineno"> 1091</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1092</span>  }</div>
 <div class="line"><span class="lineno"> 1093</span> </div>
-<div class="line"><span class="lineno"> 1094</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1094</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1095</span> </div>
 <div class="line"><span class="lineno"> 1096</span>  <span class="comment">// Squeeze output shpae</span></div>
 <div class="line"><span class="lineno"> 1097</span>  ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#aff0e4db6db66437c1e13ea667e4d708e">shape_inference::inferSqueezeShape</a>(input_shape, op.param());</div>
 <div class="line"><span class="lineno"> 1098</span> </div>
 <div class="line"><span class="lineno"> 1099</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno"> 1100</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno"> 1100</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno"> 1101</span> </div>
-<div class="line"><span class="lineno"> 1102</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno"> 1103</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1102</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno"> 1103</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1104</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_squeeze_html_aacfaaa715a12c57f37c4f4a22ee2d1fbab29bf0cc85a5c8a80d4e4b263476fdb5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_squeeze.html#aacfaaa715a12c57f37c4f4a22ee2d1fbab29bf0cc85a5c8a80d4e4b263476fdb5">onert::ir::operation::Squeeze::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_squeeze_8h_source.html#l00035">Squeeze.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_aff0e4db6db66437c1e13ea667e4d708e"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#aff0e4db6db66437c1e13ea667e4d708e">onert::shape_inference::inferSqueezeShape</a></div><div class="ttdeci">ir::Shape inferSqueezeShape(const ir::Shape &amp;in_shape, const ir::operation::Squeeze::Param &amp;param)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l00815">ShapeInference.cc:815</a></div></div>
@@ -2480,8 +2480,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno"> 1107</span>{</div>
 <div class="line"><span class="lineno"> 1108</span> </div>
 <div class="line"><span class="lineno"> 1109</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca">ir::operation::StridedSlice::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno"> 1110</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
-<div class="line"><span class="lineno"> 1111</span>  ir::Shape input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1110</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_index);</div>
+<div class="line"><span class="lineno"> 1111</span>  ir::Shape input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1112</span> </div>
 <div class="line"><span class="lineno"> 1113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> starts_index{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a4f4c2b83db5b555712301b9acbee271d">ir::operation::StridedSlice::Input::STARTS</a>)};</div>
 <div class="line"><span class="lineno"> 1114</span>  <span class="keyword">auto</span> starts = _tensor_registry-&gt;getITensor(starts_index);</div>
@@ -2492,7 +2492,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1119</span>  <span class="keyword">const</span> <span class="keyword">auto</span> strides_index{op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a65801f33e769279db84132fa54eb48b4">ir::operation::StridedSlice::Input::STRIDES</a>)};</div>
 <div class="line"><span class="lineno"> 1120</span>  <span class="keyword">auto</span> strides = _tensor_registry-&gt;getITensor(strides_index);</div>
 <div class="line"><span class="lineno"> 1121</span> </div>
-<div class="line"><span class="lineno"> 1122</span>  <span class="keywordflow">if</span> (!(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic() || starts-&gt;is_dynamic() || ends-&gt;is_dynamic() || strides-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno"> 1122</span>  <span class="keywordflow">if</span> (!(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic() || starts-&gt;is_dynamic() || ends-&gt;is_dynamic() || strides-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno"> 1123</span>  {</div>
 <div class="line"><span class="lineno"> 1124</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1125</span>  }</div>
@@ -2507,13 +2507,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1134</span>    <span class="keyword">reinterpret_cast&lt;</span>uint32_t *<span class="keyword">&gt;</span>(strides-&gt;buffer()), begin_mask, end_mask, shrink_axis_mask, rank);</div>
 <div class="line"><span class="lineno"> 1135</span> </div>
 <div class="line"><span class="lineno"> 1136</span>  <span class="keyword">auto</span> output_index = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno"> 1137</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
+<div class="line"><span class="lineno"> 1137</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_index);</div>
 <div class="line"><span class="lineno"> 1138</span> </div>
 <div class="line"><span class="lineno"> 1139</span>  ir::Shape <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> =</div>
 <div class="line"><span class="lineno"> 1140</span>    <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#af4359b3ad21cce8f406608664891f48f">onert::shape_inference::inferStridedSliceShape</a>(input_shape, op_params, rank);</div>
 <div class="line"><span class="lineno"> 1141</span> </div>
-<div class="line"><span class="lineno"> 1142</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno"> 1143</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1142</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1143</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1144</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_strided_slice_html_a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca">onert::ir::operation::StridedSlice::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_strided_slice_8h_source.html#l00036">StridedSlice.h:36</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_strided_slice_html_a274afa35b950a97fc522847a2e178b20a4f4c2b83db5b555712301b9acbee271d"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a4f4c2b83db5b555712301b9acbee271d">onert::ir::operation::StridedSlice::STARTS</a></div><div class="ttdeci">@ STARTS</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_strided_slice_8h_source.html#l00037">StridedSlice.h:37</a></div></div>
@@ -2553,18 +2553,18 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01146">1146</a> of file <a class="el" href="_dynamic_shape_inferer_8cc_source.html">DynamicShapeInferer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1147</span>{</div>
 <div class="line"><span class="lineno"> 1148</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno"> 1149</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno"> 1149</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno"> 1150</span> </div>
 <div class="line"><span class="lineno"> 1151</span>  <span class="keyword">auto</span> input_idx = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aaeb488a11bc488f540e83777f0836341f">ir::operation::Tile::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno"> 1152</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno"> 1152</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno"> 1153</span> </div>
 <div class="line"><span class="lineno"> 1154</span>  <span class="keyword">auto</span> multiplier_idx = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aa23b34ec2951617d519758a51a3956ec4">ir::operation::Tile::Input::MULTIPLES</a>);</div>
 <div class="line"><span class="lineno"> 1155</span>  <span class="keyword">auto</span> multiplier = _tensor_registry-&gt;getITensor(multiplier_idx);</div>
 <div class="line"><span class="lineno"> 1156</span> </div>
-<div class="line"><span class="lineno"> 1157</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno"> 1157</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno"> 1158</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1159</span> </div>
-<div class="line"><span class="lineno"> 1160</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1160</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1161</span>  <span class="keyword">auto</span> multiplier_buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(multiplier-&gt;buffer());</div>
 <div class="line"><span class="lineno"> 1162</span>  assert(multiplier_buffer);</div>
 <div class="line"><span class="lineno"> 1163</span> </div>
@@ -2573,8 +2573,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1166</span>    input_shape, multiplier_buffer, mult_shape.rank() == 0 ? 1 : mult_shape.dim(0));</div>
 <div class="line"><span class="lineno"> 1167</span> </div>
 <div class="line"><span class="lineno"> 1168</span>  <span class="comment">// set output shape and output buffer</span></div>
-<div class="line"><span class="lineno"> 1169</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno"> 1170</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1169</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1170</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1171</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_tile_html_a4db840f0ab5757f609c329fd8361489aaeb488a11bc488f540e83777f0836341f"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_tile.html#a4db840f0ab5757f609c329fd8361489aaeb488a11bc488f540e83777f0836341f">onert::ir::operation::Tile::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_tile_8h_source.html#l00036">Tile.h:36</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_ab57c15cda0b2773d238587ae777d4723"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#ab57c15cda0b2773d238587ae777d4723">onert::shape_inference::inferTileShape</a></div><div class="ttdeci">ir::Shape inferTileShape(const ir::Shape &amp;in_shape, const int32_t *multiplier_buf, const int32_t multiplier_size)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l01054">ShapeInference.cc:1054</a></div></div>
@@ -2611,12 +2611,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno"> 1174</span>{</div>
 <div class="line"><span class="lineno"> 1175</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno"> 1176</span>  <span class="keyword">auto</span> output_ind = op.getOutputs().at(0);</div>
-<div class="line"><span class="lineno"> 1177</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno"> 1177</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno"> 1178</span> </div>
 <div class="line"><span class="lineno"> 1179</span>  <span class="comment">// from op, access the buffer of second input to read new shape</span></div>
 <div class="line"><span class="lineno"> 1180</span>  <span class="keyword">auto</span> input_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e">ir::operation::Transpose::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno"> 1181</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
-<div class="line"><span class="lineno"> 1182</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1181</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_ind);</div>
+<div class="line"><span class="lineno"> 1182</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1183</span> </div>
 <div class="line"><span class="lineno"> 1184</span>  <span class="comment">/*</span></div>
 <div class="line"><span class="lineno"> 1185</span><span class="comment">    Here, the state after compilation (static shape inference) could be one of the following:</span></div>
@@ -2630,7 +2630,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1193</span><span class="comment"></span> </div>
 <div class="line"><span class="lineno"> 1194</span><span class="comment">    So, only when both input1 and ouput are static, we can skip dynamic shape inference.</span></div>
 <div class="line"><span class="lineno"> 1195</span><span class="comment">  */</span></div>
-<div class="line"><span class="lineno"> 1196</span>  <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;is_dynamic()))</div>
+<div class="line"><span class="lineno"> 1196</span>  <span class="keywordflow">if</span> ((!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic()) &amp;&amp; (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;is_dynamic()))</div>
 <div class="line"><span class="lineno"> 1197</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1198</span> </div>
 <div class="line"><span class="lineno"> 1199</span>  <span class="keyword">auto</span> perm_ind = op.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a0b1eedfbd812acdfaa14e874bfb4f933">ir::operation::Transpose::Input::PERMUTATION</a>);</div>
@@ -2646,7 +2646,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1209</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 1210</span>  {</div>
 <div class="line"><span class="lineno"> 1211</span>    <span class="comment">// Check rank</span></div>
-<div class="line"><span class="lineno"> 1212</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape().rank()) != perm-&gt;getShape().num_elements())</div>
+<div class="line"><span class="lineno"> 1212</span>    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape().rank()) != perm-&gt;getShape().num_elements())</div>
 <div class="line"><span class="lineno"> 1213</span>    {</div>
 <div class="line"><span class="lineno"> 1214</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;DynamicShapeInferer failed, bad rank size: &quot;</span> +</div>
 <div class="line"><span class="lineno"> 1215</span>                               std::to_string(perm-&gt;getShape().num_elements()));</div>
@@ -2657,8 +2657,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1220</span>    new_shape =</div>
 <div class="line"><span class="lineno"> 1221</span>      <a class="code hl_function" href="namespaceonert_1_1shape__inference.html#ad422f5f8c97d02f4768eafa9d13c379e">shape_inference::inferTransposeShape</a>(input_shape, perm_buffer, perm-&gt;getShape().dim(0));</div>
 <div class="line"><span class="lineno"> 1222</span>  }</div>
-<div class="line"><span class="lineno"> 1223</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
-<div class="line"><span class="lineno"> 1224</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1223</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno"> 1224</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1225</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_transpose_html_a5f68c89ddfce825ed43048745a495114a0b1eedfbd812acdfaa14e874bfb4f933"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a0b1eedfbd812acdfaa14e874bfb4f933">onert::ir::operation::Transpose::PERMUTATION</a></div><div class="ttdeci">@ PERMUTATION</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h_source.html#l00037">Transpose.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_transpose_html_a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e">onert::ir::operation::Transpose::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h_source.html#l00036">Transpose.h:36</a></div></div>
@@ -2696,12 +2696,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno"> 1228</span>{</div>
 <div class="line"><span class="lineno"> 1229</span>  <span class="comment">// check if output is not dynamic</span></div>
 <div class="line"><span class="lineno"> 1230</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_idx{op.getInputs().at(0)};</div>
-<div class="line"><span class="lineno"> 1231</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
+<div class="line"><span class="lineno"> 1231</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_registry-&gt;getITensor(input_idx);</div>
 <div class="line"><span class="lineno"> 1232</span> </div>
-<div class="line"><span class="lineno"> 1233</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno"> 1233</span>  <span class="keywordflow">if</span> (!<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno"> 1234</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1235</span> </div>
-<div class="line"><span class="lineno"> 1236</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno"> 1236</span>  <span class="keyword">auto</span> input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno"> 1237</span> </div>
 <div class="line"><span class="lineno"> 1238</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = input_shape.rank();</div>
 <div class="line"><span class="lineno"> 1239</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis = ((op.param().axis &lt; 0) ? rank + op.param().axis : op.param().axis);</div>
@@ -2714,11 +2714,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1246</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_tensor_idx = 0; out_tensor_idx &lt; num; out_tensor_idx++)</div>
 <div class="line"><span class="lineno"> 1247</span>  {</div>
 <div class="line"><span class="lineno"> 1248</span>    <span class="keyword">auto</span> output_ind = op.getOutputs().at(out_tensor_idx);</div>
-<div class="line"><span class="lineno"> 1249</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
+<div class="line"><span class="lineno"> 1249</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_registry-&gt;getITensor(output_ind);</div>
 <div class="line"><span class="lineno"> 1250</span> </div>
-<div class="line"><span class="lineno"> 1251</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;applyShape(new_shape);</div>
+<div class="line"><span class="lineno"> 1251</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(new_shape);</div>
 <div class="line"><span class="lineno"> 1252</span> </div>
-<div class="line"><span class="lineno"> 1253</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1253</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno"> 1254</span>  }</div>
 <div class="line"><span class="lineno"> 1255</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1shape__inference_html_a93f820849a82a4c2e57221560bed10c4"><div class="ttname"><a href="namespaceonert_1_1shape__inference.html#a93f820849a82a4c2e57221560bed10c4">onert::shape_inference::inferUnpackShape</a></div><div class="ttdeci">ir::Shape inferUnpackShape(const ir::Shape &amp;input_shape, int axis, int rank)</div><div class="ttdef"><b>Definition:</b> <a href="_shape_inference_8cc_source.html#l01123">ShapeInference.cc:1123</a></div></div>

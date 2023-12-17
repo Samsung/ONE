@@ -210,16 +210,16 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">auto</span> layers = qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">root</a>()[<span class="stringliteral">&quot;layers&quot;</span>];</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">// alternate names</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer : layers)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;layer : layers)</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  {</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keyword">const</span> std::string key_alt_names = <span class="stringliteral">&quot;alternate&quot;</span>;</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">if</span> (layer.isMember(key_alt_names))</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    {</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keyword">auto</span> alternate = layer[key_alt_names];</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> altkey : alternate.getMemberNames())</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;altkey : alternate.getMemberNames())</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      {</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> lps;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> altvalue : alternate[altkey])</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;altvalue : alternate[altkey])</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        {</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>          <span class="keyword">auto</span> l = std::make_shared&lt;LayerParam&gt;();</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>          {</div>
@@ -604,7 +604,7 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="ttc" id="a_circle_quantizer_8h_html"><div class="ttname"><a href="_circle_quantizer_8h.html">CircleQuantizer.h</a></div></div>
 <div class="ttc" id="a_importer_ex_8h_html"><div class="ttname"><a href="_importer_ex_8h.html">ImporterEx.h</a></div></div>
 <div class="ttc" id="a_internal_exn_8h_html"><div class="ttname"><a href="_internal_exn_8h.html">InternalExn.h</a></div></div>
-<div class="ttc" id="a_pattern_solver_8cpp_html_ace3dc99cb50ae96c59ff417cc078e766"><div class="ttname"><a href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a></div><div class="ttdeci">luci::CircleQuantizer::Options::LayerParams LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00026">PatternSolver.cpp:26</a></div></div>
+<div class="ttc" id="a_pattern_solver_8cpp_html_ace3dc99cb50ae96c59ff417cc078e766"><div class="ttname"><a href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a></div><div class="ttdeci">luci::CircleQuantizer::Options::LayerParams LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00027">PatternSolver.cpp:27</a></div></div>
 <div class="ttc" id="a_user_settings_8h_html"><div class="ttname"><a href="_user_settings_8h.html">UserSettings.h</a></div></div>
 <div class="ttc" id="a_validate_8h_html"><div class="ttname"><a href="_validate_8h.html">Validate.h</a></div></div>
 <div class="ttc" id="aarser_8h_html"><div class="ttname"><a href="arser_8h.html">arser.h</a></div></div>

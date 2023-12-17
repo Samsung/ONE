@@ -1,6 +1,12 @@
 var NAVTREEINDEX34 =
 {
-"_zeros_like_options_8h_source.html":[36,0,0,123,2,0,185],
+"_xp_sep_act_from_transpose_conv_pass_8h_source.html":[36,0,0,52,7,0,0,0,81],
+"_zeros_like_options_8cpp.html":[36,0,0,124,2,0,184],
+"_zeros_like_options_8cpp.html#a31d423c061f4b29f8f2650764f38466e":[36,0,0,124,2,0,184,0],
+"_zeros_like_options_8cpp_source.html":[36,0,0,124,2,0,184],
+"_zeros_like_options_8h.html":[36,0,0,124,2,0,185],
+"_zeros_like_options_8h.html#a31d423c061f4b29f8f2650764f38466e":[36,0,0,124,2,0,185,0],
+"_zeros_like_options_8h_source.html":[36,0,0,124,2,0,185],
 "_zipper_8h.html":[36,0,4,0,1,0,0,3,10],
 "_zipper_8h.html#a1a14c5627fd37433f742d28a854b6ced":[36,0,4,0,1,0,0,3,10,1],
 "_zipper_8h.html#ae816323a1119de39d502d07f8c12bf86":[36,0,4,0,1,0,0,3,10,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX34 =
 "backend_2gpu__cl_2_tensor_builder_8cc.html":[36,0,4,2,1,5,15],
 "backend_2gpu__cl_2_tensor_builder_8cc.html#a53dbe503e76e69a0eaeca8c245c03173":[36,0,4,2,1,5,15,0],
 "backend_2gpu__cl_2_tensor_builder_8cc_source.html":[36,0,4,2,1,5,15],
-"backend_2gpu__cl_2_tensor_builder_8h.html":[36,0,4,2,1,5,16],
-"backend_2gpu__cl_2_tensor_builder_8h_source.html":[36,0,4,2,1,5,16],
-"backend_2gpu__cl_2_tensor_registry_8h.html":[36,0,4,2,1,5,19],
-"backend_2gpu__cl_2_tensor_registry_8h_source.html":[36,0,4,2,1,5,19],
-"backend_2ruy_2_backend_context_8cc.html":[36,0,4,2,1,6,2],
-"backend_2ruy_2_backend_context_8cc_source.html":[36,0,4,2,1,6,2],
-"backend_2ruy_2_backend_context_8h.html":[36,0,4,2,1,6,3]
+"backend_2gpu__cl_2_tensor_builder_8h.html":[36,0,4,2,1,5,16]
 };

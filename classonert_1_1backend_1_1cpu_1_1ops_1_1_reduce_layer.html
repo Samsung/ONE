@@ -143,12 +143,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00160">160</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>  : _input(<span class="keyword">nullptr</span>), _axes(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _reduce_kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_reduce.html">nnfw::cker::Reduce</a>()),</div>
-<div class="line"><span class="lineno">  162</span>    _kernel(), _reduceType(<a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4">ReduceType::kInvalid</a>)</div>
-<div class="line"><span class="lineno">  163</span>{</div>
-<div class="line"><span class="lineno">  164</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  165</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00161">161</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>  : _input(<span class="keyword">nullptr</span>), _axes(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>), _reduce_kernel(<span class="keyword">new</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_reduce.html">nnfw::cker::Reduce</a>()),</div>
+<div class="line"><span class="lineno">  163</span>    _kernel(), _reduceType(<a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4">ReduceType::kInvalid</a>)</div>
+<div class="line"><span class="lineno">  164</span>{</div>
+<div class="line"><span class="lineno">  165</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  166</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_reduce_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_reduce.html">nnfw::cker::Reduce</a></div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00230">Reduce.h:231</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4">onert::backend::cpu::ops::ReduceType::kInvalid</a></div><div class="ttdeci">@ kInvalid</div></div>
 </div><!-- fragment -->
@@ -224,46 +224,46 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00169">169</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  171</span>{</div>
-<div class="line"><span class="lineno">  172</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
-<div class="line"><span class="lineno">  173</span>  _axes = axes;</div>
-<div class="line"><span class="lineno">  174</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
-<div class="line"><span class="lineno">  175</span>  _reduceType = reduceType;</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">switch</span> (_reduceType)</div>
-<div class="line"><span class="lineno">  178</span>  {</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a>:</div>
-<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">  181</span>      {</div>
-<div class="line"><span class="lineno">  182</span>        _kernel = std::bind(&amp;evalSumQuantized, std::placeholders::_1, std::placeholders::_2,</div>
-<div class="line"><span class="lineno">  183</span>                            std::placeholders::_3, keep_dims, *_reduce_kernel);</div>
-<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  185</span>      }</div>
-<div class="line"><span class="lineno">  186</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a>);</div>
-<div class="line"><span class="lineno">  187</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88">ReduceType::kProd</a>:</div>
-<div class="line"><span class="lineno">  189</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88">ReduceType::kProd</a>);</div>
-<div class="line"><span class="lineno">  190</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa0b1ac8aae6b1cfbbe89085c642b3b4b">ReduceType::kMax</a>:</div>
-<div class="line"><span class="lineno">  192</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa0b1ac8aae6b1cfbbe89085c642b3b4b">ReduceType::kMax</a>);</div>
-<div class="line"><span class="lineno">  193</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa8fbc2f6c44a6d70550df79903eb57d48">ReduceType::kMin</a>:</div>
-<div class="line"><span class="lineno">  195</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa8fbc2f6c44a6d70550df79903eb57d48">ReduceType::kMin</a>);</div>
-<div class="line"><span class="lineno">  196</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d">ReduceType::kAny</a>:</div>
-<div class="line"><span class="lineno">  198</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d">ReduceType::kAny</a>);</div>
-<div class="line"><span class="lineno">  199</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6">ReduceType::kAll</a>:</div>
-<div class="line"><span class="lineno">  201</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6">ReduceType::kAll</a>);</div>
-<div class="line"><span class="lineno">  202</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  204</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Reduce: Unsupported reduce type&quot;</span>};</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
-<div class="line"><span class="lineno">  206</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00170">170</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
+<div class="line"><span class="lineno">  173</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  174</span>  _axes = axes;</div>
+<div class="line"><span class="lineno">  175</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  176</span>  _reduceType = reduceType;</div>
+<div class="line"><span class="lineno">  177</span> </div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">switch</span> (_reduceType)</div>
+<div class="line"><span class="lineno">  179</span>  {</div>
+<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a>:</div>
+<div class="line"><span class="lineno">  181</span>      <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  182</span>      {</div>
+<div class="line"><span class="lineno">  183</span>        _kernel = std::bind(&amp;evalSumQuantized, std::placeholders::_1, std::placeholders::_2,</div>
+<div class="line"><span class="lineno">  184</span>                            std::placeholders::_3, keep_dims, *_reduce_kernel);</div>
+<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  186</span>      }</div>
+<div class="line"><span class="lineno">  187</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a>);</div>
+<div class="line"><span class="lineno">  188</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88">ReduceType::kProd</a>:</div>
+<div class="line"><span class="lineno">  190</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88">ReduceType::kProd</a>);</div>
+<div class="line"><span class="lineno">  191</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa0b1ac8aae6b1cfbbe89085c642b3b4b">ReduceType::kMax</a>:</div>
+<div class="line"><span class="lineno">  193</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa0b1ac8aae6b1cfbbe89085c642b3b4b">ReduceType::kMax</a>);</div>
+<div class="line"><span class="lineno">  194</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa8fbc2f6c44a6d70550df79903eb57d48">ReduceType::kMin</a>:</div>
+<div class="line"><span class="lineno">  196</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa8fbc2f6c44a6d70550df79903eb57d48">ReduceType::kMin</a>);</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d">ReduceType::kAny</a>:</div>
+<div class="line"><span class="lineno">  199</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d">ReduceType::kAny</a>);</div>
+<div class="line"><span class="lineno">  200</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6">ReduceType::kAll</a>:</div>
+<div class="line"><span class="lineno">  202</span>      _kernel = generateKernelGeneric(_input, keep_dims, *_reduce_kernel, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6">ReduceType::kAll</a>);</div>
+<div class="line"><span class="lineno">  203</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  204</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  205</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Reduce: Unsupported reduce type&quot;</span>};</div>
+<div class="line"><span class="lineno">  206</span>  }</div>
+<div class="line"><span class="lineno">  207</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa198158a4155a179dc73ad4bea1159c1d">onert::backend::cpu::ops::ReduceType::kAny</a></div><div class="ttdeci">@ kAny</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa34bdbffdb1c0e1b603f58fc0d49548b6">onert::backend::cpu::ops::ReduceType::kAll</a></div><div class="ttdeci">@ kAll</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88">onert::backend::cpu::ops::ReduceType::kProd</a></div><div class="ttdeci">@ kProd</div></div>
@@ -300,20 +300,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00208">208</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  209</span>{</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axes = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(_axes);</div>
-<div class="line"><span class="lineno">  211</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno">  212</span>  int32_t rank = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">getShape</a>().rank();</div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == ir::DataType::FLOAT32 &amp;&amp; _reduceType == <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a> &amp;&amp;</div>
-<div class="line"><span class="lineno">  214</span>      axes.size() == 1 &amp;&amp; (axes[0] == -1 || axes[0] == rank - 1))</div>
-<div class="line"><span class="lineno">  215</span>  {</div>
-<div class="line"><span class="lineno">  216</span>    OptimizedReduceSum(getBuffer&lt;float&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  218</span>  }</div>
-<div class="line"><span class="lineno">  219</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
-<div class="line"><span class="lineno">  220</span>  _kernel(_input, _output, axes);</div>
-<div class="line"><span class="lineno">  221</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00209">209</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  210</span>{</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axes = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(_axes);</div>
+<div class="line"><span class="lineno">  212</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno">  213</span>  int32_t rank = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">getShape</a>().rank();</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == ir::DataType::FLOAT32 &amp;&amp; _reduceType == <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617">ReduceType::kSum</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  215</span>      axes.size() == 1 &amp;&amp; (axes[0] == -1 || axes[0] == rank - 1))</div>
+<div class="line"><span class="lineno">  216</span>  {</div>
+<div class="line"><span class="lineno">  217</span>    OptimizedReduceSum(getBuffer&lt;float&gt;(_input), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(_input), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">  218</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  219</span>  }</div>
+<div class="line"><span class="lineno">  220</span><span class="preprocessor">#endif </span><span class="comment">// NEON</span></div>
+<div class="line"><span class="lineno">  221</span>  _kernel(_input, _output, axes);</div>
+<div class="line"><span class="lineno">  222</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_aca51cb2522739092a25ca8813bf5e2f5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#aca51cb2522739092a25ca8813bf5e2f5">onert::backend::ITensor::getShape</a></div><div class="ttdeci">virtual ir::Shape getShape() const =0</div><div class="ttdoc">Get ir::Shape of tensor.</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00094">OperationUtils.h:94</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a7e7833cbf36fc30162efb338e65922e8"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">onert::backend::cpu::ops::getReducerAxes</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; getReducerAxes(const IPortableTensor *axes)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00284">OperationUtils.cc:284</a></div></div>

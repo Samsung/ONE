@@ -119,6 +119,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a404e928748b22576ca0ee1b60b206fcb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_quantizer.html#a404e928748b22576ca0ee1b60b206fcb">fakeQuantize</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module, const std::string &amp;quant_dtype, <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layer_params)</td></tr>
 <tr class="memdesc:a404e928748b22576ca0ee1b60b206fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">fake_quantize recorded module (min/max initialized) with specified parameters returns true on success  <a href="classmpqsolver_1_1core_1_1_quantizer.html#a404e928748b22576ca0ee1b60b206fcb">More...</a><br /></td></tr>
 <tr class="separator:a404e928748b22576ca0ee1b60b206fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affbe02265541e638d3d6dc27491b3e2e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_quantizer.html#affbe02265541e638d3d6dc27491b3e2e">getContext</a> () const</td></tr>
+<tr class="separator:affbe02265541e638d3d6dc27491b3e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -202,6 +204,34 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantizer_8cpp_source.html#l00058">quantize()</a>.</p>
 
+</div>
+</div>
+<a id="affbe02265541e638d3d6dc27491b3e2e" name="affbe02265541e638d3d6dc27491b3e2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affbe02265541e638d3d6dc27491b3e2e">&#9670;&#160;</a></span>getContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">Context</a> &amp; mpqsolver::core::Quantizer::getContext </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2circle-mpqsolver_2src_2core_2_quantizer_8h_source.html#l00085">85</a> of file <a class="el" href="compiler_2circle-mpqsolver_2src_2core_2_quantizer_8h_source.html">Quantizer.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> _ctx; }</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a161da5bbe6a56b60e83ccd85f633a9b0" name="a161da5bbe6a56b60e83ccd85f633a9b0"></a>

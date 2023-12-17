@@ -321,16 +321,16 @@ $(document).ready(function(){initNavTree('_bisection_solver_8cpp_source.html',''
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  {</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    {</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onBeginIteration();</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    }</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordtype">int</span> cut_depth = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(0.5f * (min_depth + max_depth)));</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordtype">int</span> cut_depth = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(0.5f * (min_depth + max_depth)));</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keywordflow">if</span> (last_depth == cut_depth)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    {</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    }</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">if</span> (last_depth == cut_depth)</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onBeginIteration();</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;Looking for the optimal configuration in [&quot;</span> &lt;&lt; min_depth &lt;&lt; <span class="stringliteral">&quot; , &quot;</span></div>

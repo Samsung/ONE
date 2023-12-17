@@ -40,6 +40,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "FuseInstanceNormPassInternal.h", "_fuse_instance_norm_pass_internal_8h.html", "_fuse_instance_norm_pass_internal_8h" ],
     [ "FuseMeanWithMeanPass.cpp", "_fuse_mean_with_mean_pass_8cpp.html", null ],
     [ "FuseMulWithConvPass.cpp", "_fuse_mul_with_conv_pass_8cpp.html", "_fuse_mul_with_conv_pass_8cpp" ],
+    [ "FuseMulWithDivPass.cpp", "_fuse_mul_with_div_pass_8cpp.html", null ],
     [ "FusePreActivationBatchNormPass.cpp", "_fuse_pre_activation_batch_norm_pass_8cpp.html", "_fuse_pre_activation_batch_norm_pass_8cpp" ],
     [ "FusePreActivationBatchNormPassInternal.h", "_fuse_pre_activation_batch_norm_pass_internal_8h.html", "_fuse_pre_activation_batch_norm_pass_internal_8h" ],
     [ "FusePReluPass.cpp", "_fuse_p_relu_pass_8cpp.html", "_fuse_p_relu_pass_8cpp" ],

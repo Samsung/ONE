@@ -100,16 +100,16 @@ $(document).ready(function(){initNavTree('classmpqsolver_1_1core_1_1_solver_hook
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a22a55609986a582a554e7976e2e06560"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">onBeginSolver</a> (const std::string &amp;model_path, float q8error, float q16error)=0</td></tr>
-<tr class="memdesc:a22a55609986a582a554e7976e2e06560"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">More...</a><br /></td></tr>
+<tr class="memdesc:a22a55609986a582a554e7976e2e06560"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of mpq search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a22a55609986a582a554e7976e2e06560">More...</a><br /></td></tr>
 <tr class="separator:a22a55609986a582a554e7976e2e06560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20ca3c255fbfdd3a6cb5053810172416"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a20ca3c255fbfdd3a6cb5053810172416">onBeginIteration</a> ()=0</td></tr>
 <tr class="memdesc:a20ca3c255fbfdd3a6cb5053810172416"><td class="mdescLeft">&#160;</td><td class="mdescRight">called on the start of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a20ca3c255fbfdd3a6cb5053810172416">More...</a><br /></td></tr>
 <tr class="separator:a20ca3c255fbfdd3a6cb5053810172416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6406a0158543930eaa5c3d9ebdc92569"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a6406a0158543930eaa5c3d9ebdc92569">onEndIteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error) const =0</td></tr>
-<tr class="memdesc:a6406a0158543930eaa5c3d9ebdc92569"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a6406a0158543930eaa5c3d9ebdc92569">More...</a><br /></td></tr>
-<tr class="separator:a6406a0158543930eaa5c3d9ebdc92569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd049244e09e3d95c37ceada1df410b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#a2dd049244e09e3d95c37ceada1df410b">onEndIteration</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float error)=0</td></tr>
+<tr class="memdesc:a2dd049244e09e3d95c37ceada1df410b"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of current iteration  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#a2dd049244e09e3d95c37ceada1df410b">More...</a><br /></td></tr>
+<tr class="separator:a2dd049244e09e3d95c37ceada1df410b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">onEndSolver</a> (const <a class="el" href="namespacempqsolver_1_1core.html#a892993c11b14b0ecd5c8d3fd6b80e04c">LayerParams</a> &amp;layers, const std::string &amp;def_dtype, float qerror)=0</td></tr>
-<tr class="memdesc:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of iterative search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">More...</a><br /></td></tr>
+<tr class="memdesc:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="mdescLeft">&#160;</td><td class="mdescRight">called at the end of mpq search  <a href="classmpqsolver_1_1core_1_1_solver_hooks.html#ad5bb13b9420f313f4e6de3a76b5b075c">More...</a><br /></td></tr>
 <tr class="separator:ad5bb13b9420f313f4e6de3a76b5b075c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -185,12 +185,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>called on the start of iterative search </p>
+<p>called on the start of mpq search </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">model_path</td><td>path of original float model to quantize </td></tr>
-    <tr><td class="paramname">q8error</td><td>error of Q8 quantization </td></tr>
-    <tr><td class="paramname">q16error</td><td>error of Q16 quantization </td></tr>
+    <tr><td class="paramname">q8error</td><td>error of Q8 quantization (if NAN, then not applicable) </td></tr>
+    <tr><td class="paramname">q16error</td><td>error of Q16 quantization (if NAN, then not applicable) </td></tr>
   </table>
   </dd>
 </dl>
@@ -199,8 +199,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6406a0158543930eaa5c3d9ebdc92569" name="a6406a0158543930eaa5c3d9ebdc92569"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6406a0158543930eaa5c3d9ebdc92569">&#9670;&#160;</a></span>onEndIteration()</h2>
+<a id="a2dd049244e09e3d95c37ceada1df410b" name="a2dd049244e09e3d95c37ceada1df410b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dd049244e09e3d95c37ceada1df410b">&#9670;&#160;</a></span>onEndIteration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,7 +229,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -249,7 +249,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#a76f8137b8089a23097720dc1712ff600">mpqsolver::core::DumpingHooks</a>.</p>
+<p>Implemented in <a class="el" href="classmpqsolver_1_1core_1_1_dumping_hooks.html#ad162aa88a7f064672789cd542c1e8fbf">mpqsolver::core::DumpingHooks</a>.</p>
 
 </div>
 </div>
@@ -293,12 +293,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>called at the end of iterative search </p>
+<p>called at the end of mpq search </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">layers</td><td>model nodes with specific quantization parameters </td></tr>
     <tr><td class="paramname">def_dtype</td><td>default quantization dtype </td></tr>
-    <tr><td class="paramname">qerror</td><td>final error of quantization </td></tr>
+    <tr><td class="paramname">qerror</td><td>final error of quantization (if NAN, then not applicable) </td></tr>
   </table>
   </dd>
 </dl>

@@ -283,12 +283,24 @@ $(document).ready(function(){initNavTree('cpu_2ops_2_operation_utils_8h_source.h
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>} <span class="comment">// namespace ops</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>} <span class="comment">// namespace cpu</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a999ae4f2c6facf7f231d0594a1fcfc7a">  192</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> *<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0054916d6bc97916914b4b69c1a398e8">getBuffer</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>{</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a554a0d2d44ad80d670877316908742fe">  198</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">inline</span> <span class="keywordtype">bool</span> *<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0054916d6bc97916914b4b69c1a398e8">getBuffer</a>(<a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>{</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>}</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>} <span class="comment">// namespace ops</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>} <span class="comment">// namespace cpu</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__</span></div>
 <div class="ttc" id="a_calculate_activation_range_8h_html"><div class="ttname"><a href="_calculate_activation_range_8h.html">CalculateActivationRange.h</a></div></div>
 <div class="ttc" id="a_i_portable_tensor_8h_html"><div class="ttname"><a href="_i_portable_tensor_8h.html">IPortableTensor.h</a></div></div>
 <div class="ttc" id="a_operand_type_8h_html_aeb6507c1024b22251bb08c413044d1fd"><div class="ttname"><a href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fd">OperandType</a></div><div class="ttdeci">OperandType</div><div class="ttdef"><b>Definition:</b> <a href="_operand_type_8h_source.html#l00024">OperandType.h:24</a></div></div>

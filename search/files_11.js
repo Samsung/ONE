@@ -6,7 +6,7 @@ var searchData=
   ['qimplant_2ecpp_3',['QImplant.cpp',['../_q_implant_8cpp.html',1,'']]],
   ['qimplant_2eh_4',['QImplant.h',['../_q_implant_8h.html',1,'']]],
   ['quantization_2ecpp_5',['Quantization.cpp',['../_quantization_8cpp.html',1,'']]],
-  ['quantization_2eh_6',['Quantization.h',['../mir_2include_2mir_2_quantization_8h.html',1,'(Global Namespace)'],['../mir-interpreter_2src_2ops_2_quantization_8h.html',1,'(Global Namespace)']]],
+  ['quantization_2eh_6',['Quantization.h',['../mir-interpreter_2src_2ops_2_quantization_8h.html',1,'(Global Namespace)'],['../mir_2include_2mir_2_quantization_8h.html',1,'(Global Namespace)']]],
   ['quantizationhelpers_2eh_7',['QuantizationHelpers.h',['../_quantization_helpers_8h.html',1,'']]],
   ['quantizationparameters_2eh_8',['QuantizationParameters.h',['../_quantization_parameters_8h.html',1,'']]],
   ['quantizationutils_2ecpp_9',['QuantizationUtils.cpp',['../_quantization_utils_8cpp.html',1,'']]],

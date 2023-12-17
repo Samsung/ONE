@@ -25,7 +25,7 @@ var searchData=
   ['event_5ftype_22',['event_type',['../structtflite_1_1profiling_1_1_profile_event.html#a3929851513b499db0d58626a24cb00a6',1,'tflite::profiling::ProfileEvent']]],
   ['exclusive_23',['exclusive',['../structluci__interpreter_1_1_cum_sum_params.html#a2f94dee7182aeeb31cd8d3e08c400d35',1,'luci_interpreter::CumSumParams']]],
   ['executor_24',['executor',['../classonert_1_1compiler_1_1_compiler_options.html#aa0e2dc3382c9ccc47568497811249792',1,'onert::compiler::CompilerOptions']]],
-  ['expect_5fdir_25',['expect_dir',['../namespacecompare__tensors.html#a0c8ad03ef93aecb5cbd488c901ac1945',1,'compare_tensors']]],
+  ['expect_5fdir_25',['expect_dir',['../namespacecompare__tensors__all.html#adff713c71ed7c570a1c55cba7b85d142',1,'compare_tensors_all']]],
   ['expected_26',['expected',['../structnnfw_1_1misc_1_1tensor_1_1_diff.html#aeafb26eb3accb85bcd95b8e764e06ee2',1,'nnfw::misc::tensor::Diff']]],
   ['expected_5fcount_27',['expected_count',['../namespacepart__eval__one.html#a4fa2492500ba3826c0a4efde62510655',1,'part_eval_one']]],
   ['expected_5fcount_5fline_28',['expected_count_line',['../namespacepart__eval__one.html#a85c76bd03f1fdc0645d45f727d21b96d',1,'part_eval_one']]],

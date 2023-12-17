@@ -639,7 +639,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   67</span>    sorted_nodes.push_back(src_node);</div>
 <div class="line"><span class="lineno">   68</span>    <span class="keywordflow">for</span> (Operation::Output &amp;output : src_node-&gt;getOutputs())</div>
 <div class="line"><span class="lineno">   69</span>    {</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> use : <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.getUses())</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> use : <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.getUses())</div>
 <div class="line"><span class="lineno">   71</span>      {</div>
 <div class="line"><span class="lineno">   72</span>        <a class="code hl_struct" href="struct_operation.html">Operation</a> *dst_node = use.getNode();</div>
 <div class="line"><span class="lineno">   73</span>        <span class="keywordflow">if</span> (++num_visited_input_edges[dst_node] == dst_node-&gt;getNumInputs())</div>
@@ -653,7 +653,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>  <span class="keywordflow">return</span> sorted_nodes;</div>
 <div class="line"><span class="lineno">   82</span>}</div>
 <div class="ttc" id="aclassmir_1_1_operation_html"><div class="ttname"><a href="classmir_1_1_operation.html">mir::Operation</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00032">Operation.h:33</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="astruct_operation_html"><div class="ttname"><a href="struct_operation.html">Operation</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_operation_8h_source.html#l00026">Operation.h:26</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00128">mir::Operation::getNumInputs()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00134">mir::Operation::getOutputs()</a>.</p>

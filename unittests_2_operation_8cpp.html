@@ -279,14 +279,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   44</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> input_shape{1, 2, 3};</div>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>  <a class="code hl_class" href="classmir_1_1_tensor_type.html">mir::TensorType</a> input_type{mir::DataType::FLOAT32, input_shape};</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_input_op.html">ops::InputOp</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(input_type);</div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getOutput(0), 0);</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_input_op.html">ops::InputOp</a> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(input_type);</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getOutput(0), 0);</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  ASSERT_EQ(input_shape, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getOutputShape(0));</div>
+<div class="line"><span class="lineno">   50</span>  ASSERT_EQ(input_shape, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getOutputShape(0));</div>
 <div class="line"><span class="lineno">   51</span>  ASSERT_EQ(input_shape, op.getInputShape(0));</div>
 <div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_softmax_op_html"><div class="ttname"><a href="classmir_1_1ops_1_1_softmax_op.html">mir::ops::SoftmaxOp</a></div><div class="ttdoc">description of softmax operation.</div><div class="ttdef"><b>Definition:</b> <a href="_softmax_op_8h_source.html#l00030">SoftmaxOp.h:31</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00161">mir::Operation::getInputShape()</a>.</p>
 
@@ -359,15 +359,15 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> input_shape{1, 2, 3};</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>  <a class="code hl_class" href="classmir_1_1_tensor_type.html">mir::TensorType</a> input_type{mir::DataType::FLOAT32, input_shape};</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_input_op.html">ops::InputOp</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(input_type);</div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_input_op.html">ops::InputOp</a> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(input_type);</div>
 <div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_1(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getOutput(0), 1);</div>
+<div class="line"><span class="lineno">   61</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_1(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getOutput(0), 1);</div>
 <div class="line"><span class="lineno">   62</span>  ASSERT_EQ(op_1.getAxis(), 1);</div>
 <div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_n1(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getOutput(0), -1);</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_n1(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getOutput(0), -1);</div>
 <div class="line"><span class="lineno">   65</span>  ASSERT_EQ(op_n1.getAxis(), 2);</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_n3(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getOutput(0), -3);</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_class" href="classmir_1_1ops_1_1_softmax_op.html">ops::SoftmaxOp</a> op_n3(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getOutput(0), -3);</div>
 <div class="line"><span class="lineno">   68</span>  ASSERT_EQ(op_n3.getAxis(), 0);</div>
 <div class="line"><span class="lineno">   69</span>}</div>
 </div><!-- fragment -->

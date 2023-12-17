@@ -2,8 +2,8 @@ var classmpqsolver_1_1core_1_1_dumper =
 [
     [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html#a6a2bb15958da5f92204fe5eda97cb66c", null ],
     [ "Dumper", "classmpqsolver_1_1core_1_1_dumper.html#aa1cd2950e946fa3de201b8039ab4d375", null ],
-    [ "dumpFinalMPQ", "classmpqsolver_1_1core_1_1_dumper.html#ad9a27149f5707cd60b2ad499f35c279e", null ],
-    [ "dumpMPQConfiguration", "classmpqsolver_1_1core_1_1_dumper.html#aee588be98fa9017ea47b924983d237b7", null ],
+    [ "dumpFinalMPQ", "classmpqsolver_1_1core_1_1_dumper.html#acb4a44324ef0c4063697b14868e292ab", null ],
+    [ "dumpMPQConfiguration", "classmpqsolver_1_1core_1_1_dumper.html#a757d50c8f15c9cba5ceff9b01b54ed22", null ],
     [ "dumpMPQError", "classmpqsolver_1_1core_1_1_dumper.html#a93418d861f820d48296d3bbb9c41c011", null ],
     [ "dumpMPQError", "classmpqsolver_1_1core_1_1_dumper.html#a9def0a78bd2e8de63fd092a7e861982e", null ],
     [ "dumpQ16Error", "classmpqsolver_1_1core_1_1_dumper.html#a12f6d2e45841bd2ae929eb8b5f9f6500", null ],

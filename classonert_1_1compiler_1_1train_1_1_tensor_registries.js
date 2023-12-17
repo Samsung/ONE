@@ -6,5 +6,6 @@ var classonert_1_1compiler_1_1train_1_1_tensor_registries =
     [ "end", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a0e5e88ce6ba6c0137b769863e4515e9f", null ],
     [ "getBackPropITensor", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#adece68b6fd571ba832a1737b2f0ebf39", null ],
     [ "getBuiltinTensorRegistry", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#afafcf83bcd0d14e16472dafb12083eb1", null ],
-    [ "getITensor", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93", null ]
+    [ "getITensor", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93", null ],
+    [ "iterateTrainableTensors", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ada7e510de61bac72f49902902eca8c46", null ]
 ];

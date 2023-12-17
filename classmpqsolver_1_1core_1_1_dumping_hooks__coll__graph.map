@@ -1,6 +1,5 @@
 <map id="mpqsolver::core::DumpingHooks" name="mpqsolver::core::DumpingHooks">
-<area shape="rect" id="node1" title="DumpingHooks is intended to save intermediate results." alt="" coords="312,47,483,87"/>
+<area shape="rect" id="node1" title="DumpingHooks is intended to save intermediate results." alt="" coords="135,79,305,119"/>
 <area shape="rect" id="node2" href="$structmpqsolver_1_1core_1_1_quantizer_hook.html" title=" " alt="" coords="5,5,211,31"/>
-<area shape="rect" id="node3" href="$classmpqsolver_1_1core_1_1_solver_hooks.html" title=" " alt="" coords="11,55,205,80"/>
-<area shape="rect" id="node4" href="$classmpqsolver_1_1core_1_1_dumper.html" title=" " alt="" coords="26,104,190,129"/>
+<area shape="rect" id="node3" href="$classmpqsolver_1_1core_1_1_solver_hooks.html" title=" " alt="" coords="235,5,429,31"/>
 </map>

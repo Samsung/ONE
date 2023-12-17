@@ -1,4 +1,5 @@
 <map id="onert::backend::builtin::Backend" name="onert::backend::builtin::Backend">
-<area shape="rect" id="node1" title=" " alt="" coords="13,79,160,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_backend.html" title=" " alt="" coords="5,5,168,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="100,93,247,133"/>
+<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_backend.html" title=" " alt="" coords="5,13,168,38"/>
+<area shape="rect" id="node3" href="$structonert_1_1backend_1_1train_1_1_i_trainable_backend.html" title=" " alt="" coords="193,5,330,45"/>
 </map>

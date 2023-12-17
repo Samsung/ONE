@@ -199,6 +199,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:afff9e77cac191f4fcc8c447e4bea053c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade411191d6afc15a55a4384b8cea2ac9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ModelIndex</a> = <a class="el" href="classonert_1_1util_1_1_index.html">::onert::util::Index</a>&lt; uint16_t, ModelIndexTag &gt;</td></tr>
 <tr class="separator:ade411191d6afc15a55a4384b8cea2ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76eeea0b78e47a5b436d031fa784a672"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a> = <a class="el" href="classonert_1_1util_1_1_index.html">::onert::util::Index</a>&lt; uint32_t, OriginIndexTag &gt;</td></tr>
+<tr class="separator:a76eeea0b78e47a5b436d031fa784a672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a054e57a584412f9d194952596c7db844"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">IODesc</a> = std::tuple&lt; <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ModelIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a> &gt;</td></tr>
 <tr class="separator:a054e57a584412f9d194952596c7db844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a848101715c9a39a680ea2e8621f17b7b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a848101715c9a39a680ea2e8621f17b7b">ModelEdgeSet</a> = std::unordered_set&lt; <a class="el" href="structonert_1_1ir_1_1_model_edge.html">ir::ModelEdge</a>, <a class="el" href="structonert_1_1ir_1_1_model_edge_hash.html">ir::ModelEdgeHash</a>, <a class="el" href="structonert_1_1ir_1_1_model_edge_equal.html">ir::ModelEdgeEqual</a> &gt;</td></tr>
@@ -292,6 +294,8 @@ Functions</h2></td></tr>
 <tr class="separator:af872538cc8324eba9d534870bd023b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c207cf43797a3081e97518c9ef4eb6d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a3c207cf43797a3081e97518c9ef4eb6d">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ModelIndex</a> &amp;i)</td></tr>
 <tr class="separator:a3c207cf43797a3081e97518c9ef4eb6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeab04a99aaa854bb49818981b7c08b2f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#aeab04a99aaa854bb49818981b7c08b2f">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a> &amp;i)</td></tr>
+<tr class="separator:aeab04a99aaa854bb49818981b7c08b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d29d81f4314245455853d6cca405568"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">to_string</a> (<a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">Layout</a> layout)</td></tr>
 <tr class="separator:a9d29d81f4314245455853d6cca405568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad18ab9a9da0c13a9966cff69d34e63d1"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#ad18ab9a9da0c13a9966cff69d34e63d1">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844">IODesc</a> &amp;od)</td></tr>
@@ -352,7 +356,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
 
 </div>
 </div>
@@ -384,7 +388,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00042">42</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
 
 </div>
 </div>
@@ -400,7 +404,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00033">33</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +438,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00030">30</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
 
 </div>
 </div>
@@ -456,6 +460,22 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a76eeea0b78e47a5b436d031fa784a672" name="a76eeea0b78e47a5b436d031fa784a672"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76eeea0b78e47a5b436d031fa784a672">&#9670;&#160;</a></span>OriginIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">onert::ir::OriginIndex</a> = typedef <a class="el" href="classonert_1_1util_1_1_index.html">::onert::util::Index</a>&lt;uint32_t, OriginIndexTag&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+
+</div>
+</div>
 <a id="afff9e77cac191f4fcc8c447e4bea053c" name="afff9e77cac191f4fcc8c447e4bea053c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afff9e77cac191f4fcc8c447e4bea053c">&#9670;&#160;</a></span>SubgraphIndex</h2>
 
@@ -468,7 +488,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
 
 </div>
 </div>
@@ -681,12 +701,12 @@ template&lt;typename T &gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00036">36</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   42</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">STATIC</a>,</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">DYNAMIC</a></div>
-<div class="line"><span class="lineno">   49</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00037">37</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">STATIC</a>,</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   49</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">DYNAMIC</a></div>
+<div class="line"><span class="lineno">   50</span>};</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::MemAllocType::DYNAMIC</a></div><div class="ttdeci">@ DYNAMIC</div><div class="ttdoc">At kernel execution time, shape for a tensor is known, thus requried memory capacity can be calculate...</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::MemAllocType::STATIC</a></div><div class="ttdeci">@ STATIC</div><div class="ttdoc">At compile time, shape for a tensor is known, thus requried memory capacity can be calculated.</div></div>
 </div><!-- fragment -->
@@ -833,15 +853,17 @@ template&lt;typename IndexType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">45</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (index.undefined())</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> o &lt;&lt; prefix &lt;&lt; std::string(<span class="stringliteral">&quot;?&quot;</span>);</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> o &lt;&lt; prefix &lt;&lt; index.value();</div>
-<div class="line"><span class="lineno">   51</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">50</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
+<div class="line"><span class="lineno">   52</span>  std::ostringstream oss;</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (index.undefined())</div>
+<div class="line"><span class="lineno">   54</span>    oss &lt;&lt; prefix &lt;&lt; std::string(<span class="stringliteral">&quot;?&quot;</span>);</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   56</span>    oss &lt;&lt; prefix &lt;&lt; index.value();</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> o &lt;&lt; std::right &lt;&lt; std::setw(4) &lt;&lt; oss.str();</div>
+<div class="line"><span class="lineno">   58</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00053">operator&lt;&lt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00060">operator&lt;&lt;()</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1119,7 @@ template&lt;typename IndexType &gt; </div>
 </div>
 </div>
 <a id="ad18ab9a9da0c13a9966cff69d34e63d1" name="ad18ab9a9da0c13a9966cff69d34e63d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad18ab9a9da0c13a9966cff69d34e63d1">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[1/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad18ab9a9da0c13a9966cff69d34e63d1">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[1/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1139,7 +1161,7 @@ template&lt;typename IndexType &gt; </div>
 </div>
 </div>
 <a id="ab77ceec88ebc72f85b1e9b5dd5ee00cf" name="ab77ceec88ebc72f85b1e9b5dd5ee00cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab77ceec88ebc72f85b1e9b5dd5ee00cf">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab77ceec88ebc72f85b1e9b5dd5ee00cf">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1172,18 +1194,18 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00063">63</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;IO&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   66</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a9e02c69ad87810fa6eea11687cde298d"><div class="ttname"><a href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">onert::ir::_index_print_impl</a></div><div class="ttdeci">std::ostream &amp; _index_print_impl(std::ostream &amp;o, const std::string &amp;prefix, IndexType index)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">Index.h:45</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00070">70</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;IO&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   73</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a9e02c69ad87810fa6eea11687cde298d"><div class="ttname"><a href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">onert::ir::_index_print_impl</a></div><div class="ttdeci">std::ostream &amp; _index_print_impl(std::ostream &amp;o, const std::string &amp;prefix, IndexType index)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">Index.h:50</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">_index_print_impl()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
 
 </div>
 </div>
 <a id="a3c207cf43797a3081e97518c9ef4eb6d" name="a3c207cf43797a3081e97518c9ef4eb6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c207cf43797a3081e97518c9ef4eb6d">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[3/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c207cf43797a3081e97518c9ef4eb6d">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1216,17 +1238,17 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00073">73</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;MODEL&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   76</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00080">80</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;MODEL&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   83</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">_index_print_impl()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
 
 </div>
 </div>
 <a id="a2b3f8a415dd135d4cec8696cf075c389" name="a2b3f8a415dd135d4cec8696cf075c389"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b3f8a415dd135d4cec8696cf075c389">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[4/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b3f8a415dd135d4cec8696cf075c389">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[4/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1259,17 +1281,17 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00058">58</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;%&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00065">65</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;%&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">_index_print_impl()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
 
 </div>
 </div>
 <a id="a3690d12e8cfae8d876f809f73fecf090" name="a3690d12e8cfae8d876f809f73fecf090"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3690d12e8cfae8d876f809f73fecf090">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[5/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3690d12e8cfae8d876f809f73fecf090">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[5/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1308,7 +1330,7 @@ template&lt;typename IndexType &gt; </div>
 </div>
 </div>
 <a id="a355761868f40defdbcef748fdd3f1928" name="a355761868f40defdbcef748fdd3f1928"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a355761868f40defdbcef748fdd3f1928">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[6/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a355761868f40defdbcef748fdd3f1928">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[6/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1341,17 +1363,60 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;@&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00060">60</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;@&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">_index_print_impl()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
+
+</div>
+</div>
+<a id="aeab04a99aaa854bb49818981b7c08b2f" name="aeab04a99aaa854bb49818981b7c08b2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeab04a99aaa854bb49818981b7c08b2f">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[7/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; onert::ir::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672">OriginIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00085">85</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   88</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
 
 </div>
 </div>
 <a id="af872538cc8324eba9d534870bd023b22" name="af872538cc8324eba9d534870bd023b22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af872538cc8324eba9d534870bd023b22">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[7/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af872538cc8324eba9d534870bd023b22">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[8/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1384,12 +1449,12 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00068">68</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;SUBGRAPH&quot;</span>, i);</div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00075">75</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d">_index_print_impl</a>(o, <span class="stringliteral">&quot;SUBGRAPH&quot;</span>, i);</div>
+<div class="line"><span class="lineno">   78</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00045">_index_print_impl()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00050">_index_print_impl()</a>.</p>
 
 </div>
 </div>
@@ -1628,7 +1693,7 @@ template&lt;typename IndexType &gt; </div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="a_data_type_8cc_html_ad845fe51c10c9d162451b4572f79aef4"><div class="ttname"><a href="_data_type_8cc.html#ad845fe51c10c9d162451b4572f79aef4">float16</a></div><div class="ttdeci">Half float16</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_8cc_source.html#l00022">DataType.cc:22</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_user_tensor_8cc_source.html#l00041">onert::backend::builtin::UserTensor::applyShape()</a>, <a class="el" href="_tensor_8cc_source.html#l00048">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_n_n_a_p_i_convert_8cc_source.html#l00071">NNAPIConvert::calculateSizeFromType()</a>, <a class="el" href="_operand_8cc_source.html#l00024">onert::ir::Operand::operandSize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="core_2src_2exec_2_execution_8cc_source.html#l00048">onert::exec::Execution::setInput()</a>, and <a class="el" href="_operand_info_8h_source.html#l00117">onert::ir::OperandInfo::total_size()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_user_tensor_8cc_source.html#l00041">onert::backend::builtin::UserTensor::applyShape()</a>, <a class="el" href="_tensor_8cc_source.html#l00048">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_n_n_a_p_i_convert_8cc_source.html#l00071">NNAPIConvert::calculateSizeFromType()</a>, <a class="el" href="_operand_8cc_source.html#l00024">onert::ir::Operand::operandSize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00048">onert::exec::Execution::setInput()</a>, and <a class="el" href="_operand_info_8h_source.html#l00118">onert::ir::OperandInfo::total_size()</a>.</p>
 
 </div>
 </div>
@@ -1753,7 +1818,7 @@ template&lt;typename IndexType &gt; </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> map.at(str);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00899">nnfw_session::set_op_backend()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00900">nnfw_session::set_op_backend()</a>.</p>
 
 </div>
 </div>

@@ -309,14 +309,14 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
 <div class="line"><span class="lineno">  106</span>  ARM_COMPUTE_ERROR_ON_NULLPTR(input, output);</div>
 <div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), axis, op));</div>
+<div class="line"><span class="lineno">  108</span>  ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(), axis, op));</div>
 <div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
-<div class="line"><span class="lineno">  111</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">  110</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  111</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">  112</span>  _axis = axis;</div>
 <div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  std::unique_ptr&lt;ITensorInfo&gt; output_info = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;clone();</div>
-<div class="line"><span class="lineno">  115</span>  output_info-&gt;set_tensor_shape(inferOutputShape(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape(), axis));</div>
+<div class="line"><span class="lineno">  114</span>  std::unique_ptr&lt;ITensorInfo&gt; output_info = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;clone();</div>
+<div class="line"><span class="lineno">  115</span>  output_info-&gt;set_tensor_shape(inferOutputShape(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape(), axis));</div>
 <div class="line"><span class="lineno">  116</span> </div>
 <div class="line"><span class="lineno">  117</span>  <span class="comment">// Construct kernel name</span></div>
 <div class="line"><span class="lineno">  118</span>  std::string kernel_name;</div>
@@ -359,14 +359,14 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  155</span> </div>
 <div class="line"><span class="lineno">  156</span>  Coordinates coord;</div>
 <div class="line"><span class="lineno">  157</span>  coord.set_num_dimensions(output_info-&gt;num_dimensions());</div>
-<div class="line"><span class="lineno">  158</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;set_valid_region(ValidRegion(coord, output_info-&gt;tensor_shape()));</div>
+<div class="line"><span class="lineno">  158</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;set_valid_region(ValidRegion(coord, output_info-&gt;tensor_shape()));</div>
 <div class="line"><span class="lineno">  159</span> </div>
 <div class="line"><span class="lineno">  160</span>  ICLKernel::configure_internal(win);</div>
 <div class="line"><span class="lineno">  161</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a5f40c1c5ed75d0f2f31d2e795a8d8dd7"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a></div><div class="ttdeci">static CLKernelLibraryEx &amp; get()</div><div class="ttdoc">Get the KernelLibrary singleton.</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_kernel_library_8cpp_source.html#l00199">CLKernelLibrary.cpp:199</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a7a19617d6cd8a71b065ed077a4943d4f"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a7a19617d6cd8a71b065ed077a4943d4f">arm_compute::CLKernelLibraryEx::create_kernel</a></div><div class="ttdeci">Kernel create_kernel(const std::string &amp;kernel_name, const StringSet &amp;build_options_set={}) const</div><div class="ttdoc">Create a kernel from the kernel library.</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_kernel_library_8cpp_source.html#l00205">CLKernelLibrary.cpp:205</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00205">arm_compute::CLKernelLibraryEx::create_kernel()</a>, and <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00199">arm_compute::CLKernelLibraryEx::get()</a>.</p>
 

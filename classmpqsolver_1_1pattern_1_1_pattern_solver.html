@@ -173,12 +173,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>construct PatternSolver using qunatization context and patterns to apply </p>
 
-<p class="definition">Definition at line <a class="el" href="_pattern_solver_8cpp_source.html#l00028">28</a> of file <a class="el" href="_pattern_solver_8cpp_source.html">PatternSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>  : <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a63f5c4639c00c3a6483d198eb1ebc9db">MPQSolver</a>(ctx)</div>
-<div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_struct" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">MPQOptions</a> <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>{patterns};</div>
-<div class="line"><span class="lineno">   33</span>  setMPQOptions(options);</div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_pattern_solver_8cpp_source.html#l00029">29</a> of file <a class="el" href="_pattern_solver_8cpp_source.html">PatternSolver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>  : <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a63f5c4639c00c3a6483d198eb1ebc9db">MPQSolver</a>(ctx)</div>
+<div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_struct" href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">MPQOptions</a> <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>{patterns};</div>
+<div class="line"><span class="lineno">   34</span>  setMPQOptions(options);</div>
+<div class="line"><span class="lineno">   35</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a63f5c4639c00c3a6483d198eb1ebc9db"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a63f5c4639c00c3a6483d198eb1ebc9db">mpqsolver::MPQSolver::MPQSolver</a></div><div class="ttdeci">MPQSolver(const core::Quantizer::Context &amp;ctx)</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8cpp_source.html#l00024">MPQSolver.cpp:24</a></div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition:</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
 <div class="ttc" id="astructmpqsolver_1_1pattern_1_1_m_p_q_options_html"><div class="ttname"><a href="structmpqsolver_1_1pattern_1_1_m_p_q_options.html">mpqsolver::pattern::MPQOptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8h_source.html#l00038">PatternSolver.h:39</a></div></div>
@@ -214,27 +214,39 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classmpqsolver_1_1_m_p_q_solver.html#af854ab9e1030991ff049f31b904607f4">mpqsolver::MPQSolver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_pattern_solver_8cpp_source.html#l00036">36</a> of file <a class="el" href="_pattern_solver_8cpp_source.html">PatternSolver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a> = <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a0f991a552326da53628579ea9d308a9f">readModule</a>(module_path);</div>
-<div class="line"><span class="lineno">   39</span>  assert(module != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  resolvePatterns(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get());</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="keyword">auto</span> layer_params = getFrozenParams();</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), layer_params))</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_pattern_solver_8cpp_source.html#l00037">37</a> of file <a class="el" href="_pattern_solver_8cpp_source.html">PatternSolver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a> = <a class="code hl_function" href="classmpqsolver_1_1_m_p_q_solver.html#a0f991a552326da53628579ea9d308a9f">readModule</a>(module_path);</div>
+<div class="line"><span class="lineno">   40</span>  assert(module != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;setHook(<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>.get());</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
+<div class="line"><span class="lineno">   44</span>  {</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onBeginSolver(module_path, NAN, NAN);</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  resolvePatterns(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get());</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
-<div class="line"><span class="lineno">   51</span>}</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keyword">auto</span> layer_params = getFrozenParams();</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>)</div>
+<div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">_hooks</a>-&gt;onEndSolver(layer_params, <a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;getContext().output_model_dtype, NAN);</div>
+<div class="line"><span class="lineno">   55</span>  }</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">_quantizer</a>-&gt;quantize(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), layer_params))</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to quantize model&quot;</span>);</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>;</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a0f991a552326da53628579ea9d308a9f"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a0f991a552326da53628579ea9d308a9f">mpqsolver::MPQSolver::readModule</a></div><div class="ttdeci">std::unique_ptr&lt; luci::Module &gt; readModule(const std::string &amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8cpp_source.html#l00034">MPQSolver.cpp:34</a></div></div>
 <div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a85c835b7c8d1b1f5bc378a0c46d994d7"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a85c835b7c8d1b1f5bc378a0c46d994d7">mpqsolver::MPQSolver::_quantizer</a></div><div class="ttdeci">std::unique_ptr&lt; core::Quantizer &gt; _quantizer</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00054">MPQSolver.h:54</a></div></div>
+<div class="ttc" id="aclassmpqsolver_1_1_m_p_q_solver_html_a8a801eb1e84af6d450057011c2322589"><div class="ttname"><a href="classmpqsolver_1_1_m_p_q_solver.html#a8a801eb1e84af6d450057011c2322589">mpqsolver::MPQSolver::_hooks</a></div><div class="ttdeci">std::unique_ptr&lt; core::DumpingHooks &gt; _hooks</div><div class="ttdef"><b>Definition:</b> <a href="_m_p_q_solver_8h_source.html#l00055">MPQSolver.h:55</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition:</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00054">mpqsolver::MPQSolver::_quantizer</a>, and <a class="el" href="_m_p_q_solver_8cpp_source.html#l00034">mpqsolver::MPQSolver::readModule()</a>.</p>
+<p class="reference">References <a class="el" href="_m_p_q_solver_8h_source.html#l00055">mpqsolver::MPQSolver::_hooks</a>, <a class="el" href="_m_p_q_solver_8h_source.html#l00054">mpqsolver::MPQSolver::_quantizer</a>, and <a class="el" href="_m_p_q_solver_8cpp_source.html#l00034">mpqsolver::MPQSolver::readModule()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>.</p>
 

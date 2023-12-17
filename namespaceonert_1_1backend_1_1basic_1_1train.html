@@ -147,27 +147,24 @@ template&lt;typename <a class="el" href="classonert_1_1backend_1_1basic_1_1_tens
 <div class="line"><span class="lineno">   43</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   44</span>    <span class="comment">// NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)</span></div>
 <div class="line"><span class="lineno">   45</span>    assert(tgraph.layout() != ir::Layout::NCHW);</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_class" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),</div>
-<div class="line"><span class="lineno">   47</span>                                 obj.isConstant()};</div>
-<div class="line"><span class="lineno">   48</span>    tensor_builder-&gt;registerTensorInfo(ind, backend_info, ir::Layout::NHWC);</div>
-<div class="line"><span class="lineno">   49</span>  });</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="comment">// For the executors that does not have fixed linear execution order:</span></div>
-<div class="line"><span class="lineno">   52</span>  <span class="comment">// To make tensors never be deallocated, this is a workaround to use static memory planner</span></div>
-<div class="line"><span class="lineno">   53</span>  tgraph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;) {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (tensor_builder-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">   55</span>      tensor_builder-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">   56</span>  });</div>
+<div class="line"><span class="lineno">   46</span>    tensor_builder-&gt;registerTensorInfo(ind, obj.info(), ir::Layout::NHWC);</div>
+<div class="line"><span class="lineno">   47</span>  });</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  <span class="comment">// For the executors that does not have fixed linear execution order:</span></div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// To make tensors never be deallocated, this is a workaround to use static memory planner</span></div>
+<div class="line"><span class="lineno">   51</span>  tgraph.operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand.html">ir::Operand</a> &amp;) {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (tensor_builder-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">   53</span>      tensor_builder-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">   54</span>  });</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  tensor_builder-&gt;allocate();</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  tensor_builder-&gt;allocate();</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> ctx.<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>().get();</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> ctx.<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>().get();</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_backend_context_8h_source.html#l00077">TrainableBackendContext.h:77</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a92232674fa94aeefb5d16ebeafb42245"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">onert::backend::train::TrainableBackendContext::trainable_graph</a></div><div class="ttdeci">const ir::train::TrainableGraph * trainable_graph() const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_backend_context_8h_source.html#l00069">TrainableBackendContext.h:69</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_accaf48ec5c466b5cb26f2adb0e762944"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">onert::backend::train::TrainableBackendContext::external_operands</a></div><div class="ttdeci">const util::Set&lt; ir::OperandIndex &gt; &amp; external_operands() const</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_backend_context_8h_source.html#l00074">TrainableBackendContext.h:74</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html">onert::ir::Operand</a></div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00035">Operand.h:36</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html">onert::ir::OperandInfo</a></div><div class="ttdoc">Class to save tensor's shape and type.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00054">OperandInfo.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_aae91b113137f3e376bc71c8b13199bf6"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">onert::ir::train::TrainableGraph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition:</b> <a href="_trainable_graph_8h_source.html#l00119">TrainableGraph.h:119</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">ObjectManager.h:186</a></div></div>

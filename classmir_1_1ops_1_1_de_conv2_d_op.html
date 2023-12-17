@@ -221,11 +221,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_deconv2_d_op_8h_source.html#l00035">35</a> of file <a class="el" href="_deconv2_d_op_8h_source.html">Deconv2DOp.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>    : <a class="code hl_struct" href="struct_operation.html">Operation</a>(Type::deConv2D, {<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, kernel}), _attributes(attributes)</div>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>    : <a class="code hl_struct" href="struct_operation.html">Operation</a>(Type::deConv2D, {<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, kernel}), _attributes(attributes)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
 <div class="line"><span class="lineno">   38</span>    inferOutputTypes();</div>
 <div class="line"><span class="lineno">   39</span>  }</div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="astruct_operation_html"><div class="ttname"><a href="struct_operation.html">Operation</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_operation_8h_source.html#l00026">Operation.h:26</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -277,10 +277,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_deconv2_d_op_8h_source.html#l00041">41</a> of file <a class="el" href="_deconv2_d_op_8h_source.html">Deconv2DOp.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>    : <a class="code hl_struct" href="struct_operation.html">Operation</a>(Type::deConv2D, {<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, kernel}), _attributes(attributes)</div>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>    : <a class="code hl_struct" href="struct_operation.html">Operation</a>(Type::deConv2D, {<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, kernel}), _attributes(attributes)</div>
 <div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getElementType() == kernel-&gt;getElementType());</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_function" href="classmir_1_1_operation.html#ae42c83e62d66478caa86a1acbfcecbdb">setOutputType</a>(0, {<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;getElementType(), <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>});</div>
+<div class="line"><span class="lineno">   45</span>    assert(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getElementType() == kernel-&gt;getElementType());</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_function" href="classmir_1_1_operation.html#ae42c83e62d66478caa86a1acbfcecbdb">setOutputType</a>(0, {<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getElementType(), <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>});</div>
 <div class="line"><span class="lineno">   47</span>    inferPaddings();</div>
 <div class="line"><span class="lineno">   48</span>  }</div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>

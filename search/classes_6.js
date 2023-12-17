@@ -305,12 +305,13 @@ var searchData=
   ['fuseinstancenormpass_302',['FuseInstanceNormPass',['../structexo_1_1_fuse_instance_norm_pass.html',1,'exo::FuseInstanceNormPass'],['../structluci_1_1_fuse_instance_norm_pass.html',1,'luci::FuseInstanceNormPass']]],
   ['fusemeanwithmeanpass_303',['FuseMeanWithMeanPass',['../structluci_1_1_fuse_mean_with_mean_pass.html',1,'luci']]],
   ['fusemulwithconvpass_304',['FuseMulWithConvPass',['../structluci_1_1_fuse_mul_with_conv_pass.html',1,'luci']]],
-  ['fusepreactivationbatchnormpass_305',['FusePreActivationBatchNormPass',['../structluci_1_1_fuse_pre_activation_batch_norm_pass.html',1,'luci']]],
-  ['fuseprelupass_306',['FusePReluPass',['../structluci_1_1_fuse_p_relu_pass.html',1,'luci']]],
-  ['fuserelupass_307',['FuseReluPass',['../structexo_1_1_fuse_relu_pass.html',1,'exo']]],
-  ['fusersqrtpass_308',['FuseRsqrtPass',['../structexo_1_1_fuse_rsqrt_pass.html',1,'exo']]],
-  ['fuseslicewithtconvpass_309',['FuseSliceWithTConvPass',['../structluci_1_1_fuse_slice_with_t_conv_pass.html',1,'luci']]],
-  ['fusesquareddifferencepass_310',['FuseSquaredDifferencePass',['../structexo_1_1_fuse_squared_difference_pass.html',1,'exo']]],
-  ['fusetransposewithmeanpass_311',['FuseTransposeWithMeanPass',['../structluci_1_1_fuse_transpose_with_mean_pass.html',1,'luci']]],
-  ['fv_312',['FV',['../structnest_1_1_f_v.html',1,'nest']]]
+  ['fusemulwithdivpass_305',['FuseMulWithDivPass',['../structluci_1_1_fuse_mul_with_div_pass.html',1,'luci']]],
+  ['fusepreactivationbatchnormpass_306',['FusePreActivationBatchNormPass',['../structluci_1_1_fuse_pre_activation_batch_norm_pass.html',1,'luci']]],
+  ['fuseprelupass_307',['FusePReluPass',['../structluci_1_1_fuse_p_relu_pass.html',1,'luci']]],
+  ['fuserelupass_308',['FuseReluPass',['../structexo_1_1_fuse_relu_pass.html',1,'exo']]],
+  ['fusersqrtpass_309',['FuseRsqrtPass',['../structexo_1_1_fuse_rsqrt_pass.html',1,'exo']]],
+  ['fuseslicewithtconvpass_310',['FuseSliceWithTConvPass',['../structluci_1_1_fuse_slice_with_t_conv_pass.html',1,'luci']]],
+  ['fusesquareddifferencepass_311',['FuseSquaredDifferencePass',['../structexo_1_1_fuse_squared_difference_pass.html',1,'exo']]],
+  ['fusetransposewithmeanpass_312',['FuseTransposeWithMeanPass',['../structluci_1_1_fuse_transpose_with_mean_pass.html',1,'luci']]],
+  ['fv_313',['FV',['../structnest_1_1_f_v.html',1,'nest']]]
 ];

@@ -157,10 +157,10 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;padding_after = op.<a class="code hl_function" href="classmir_1_1ops_1_1_max_pool2_d_op.html#a2c916f56172344916cd0ee3a0e36eeaa">getPaddingAfter</a>();</div>
 <div class="line"><span class="lineno">   46</span>  (void)padding_after;</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="class_tensor.html">Tensor&lt;T&gt;</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(inputv);</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="class_tensor.html">Tensor&lt;T&gt;</a> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(inputv);</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  <span class="keyword">constexpr</span> <span class="keywordtype">int</span> num_spatial_dims = 2;</div>
-<div class="line"><span class="lineno">   51</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.getShape().rank() == 4);</div>
+<div class="line"><span class="lineno">   51</span>  assert(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.getShape().rank() == 4);</div>
 <div class="line"><span class="lineno">   52</span>  assert(window_size.size() == num_spatial_dims);</div>
 <div class="line"><span class="lineno">   53</span>  assert(strides.size() == num_spatial_dims);</div>
 <div class="line"><span class="lineno">   54</span>  assert(padding_before.size() == num_spatial_dims);</div>
@@ -188,7 +188,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>      <span class="keywordflow">if</span> (in_range.contains(in_index))</div>
 <div class="line"><span class="lineno">   78</span>      {</div>
-<div class="line"><span class="lineno">   79</span>        result = std::max(result, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.at(in_index));</div>
+<div class="line"><span class="lineno">   79</span>        result = std::max(result, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.at(in_index));</div>
 <div class="line"><span class="lineno">   80</span>      }</div>
 <div class="line"><span class="lineno">   81</span>    }</div>
 <div class="line"><span class="lineno">   82</span> </div>
@@ -203,7 +203,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_max_pool2_d_op_html_a2c916f56172344916cd0ee3a0e36eeaa"><div class="ttname"><a href="classmir_1_1ops_1_1_max_pool2_d_op.html#a2c916f56172344916cd0ee3a0e36eeaa">mir::ops::MaxPool2DOp::getPaddingAfter</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getPaddingAfter() const</div><div class="ttdef"><b>Definition:</b> <a href="_max_pool2_d_op_8h_source.html#l00051">MaxPool2DOp.h:51</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_max_pool2_d_op_html_a9b9daf05cb58871d645470e0c6f0ea77"><div class="ttname"><a href="classmir_1_1ops_1_1_max_pool2_d_op.html#a9b9daf05cb58871d645470e0c6f0ea77">mir::ops::MaxPool2DOp::getWindowSize</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getWindowSize() const</div><div class="ttdef"><b>Definition:</b> <a href="_max_pool2_d_op_8h_source.html#l00045">MaxPool2DOp.h:45</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_max_pool2_d_op_html_adf21a6702b6c92c92cc3eb27e060c6a1"><div class="ttname"><a href="classmir_1_1ops_1_1_max_pool2_d_op.html#adf21a6702b6c92c92cc3eb27e060c6a1">mir::ops::MaxPool2DOp::getStrides</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getStrides() const</div><div class="ttdef"><b>Definition:</b> <a href="_max_pool2_d_op_8h_source.html#l00047">MaxPool2DOp.h:47</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00071">training_ops.h:71</a></div></div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 </div><!-- fragment -->

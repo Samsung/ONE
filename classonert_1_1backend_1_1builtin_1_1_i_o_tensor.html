@@ -355,9 +355,9 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="line"><span class="lineno">   80</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_adae3cd8adf8bdf21ac3e24709f5218ae"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">onert::backend::IPortableTensor::_info</a></div><div class="ttdeci">ir::OperandInfo _info</div><div class="ttdef"><b>Definition:</b> <a href="_i_portable_tensor_8h_source.html#l00059">IPortableTensor.h:59</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_abde8d4d97e9220821e44c5fb8028b19d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">onert::backend::ITensor::applyShape</a></div><div class="ttdeci">virtual bool applyShape(const ir::Shape &amp;)</div><div class="ttdoc">Set the shape to shape and possibly re-allocate the buffer.</div><div class="ttdef"><b>Definition:</b> <a href="_i_tensor_8h_source.html#l00067">ITensor.h:67</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00094">OperandInfo.h:94</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00095">OperandInfo.h:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00067">onert::backend::ITensor::applyShape()</a>, and <a class="el" href="_operand_info_8h_source.html#l00094">onert::ir::OperandInfo::shape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00067">onert::backend::ITensor::applyShape()</a>, and <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>.</p>
 
 </div>
 </div>
@@ -569,9 +569,9 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> _is_dynamic || _orig_info.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() || (_tensor &amp;&amp; _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">is_dynamic</a>());</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a4202633be970298f135e2c00d217c0b0"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">onert::backend::ITensor::is_dynamic</a></div><div class="ttdeci">virtual bool is_dynamic() const =0</div><div class="ttdoc">Return true if the tensor needs dynamic allocation, meaning that during compile-time the outpus shape...</div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00136">OperandInfo.h:136</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition:</b> <a href="_operand_info_8h_source.html#l00137">OperandInfo.h:137</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">onert::backend::ITensor::is_dynamic()</a>, and <a class="el" href="_operand_info_8h_source.html#l00136">onert::ir::OperandInfo::isDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a4202633be970298f135e2c00d217c0b0">onert::backend::ITensor::is_dynamic()</a>, and <a class="el" href="_operand_info_8h_source.html#l00137">onert::ir::OperandInfo::isDynamic()</a>.</p>
 
 </div>
 </div>
@@ -735,7 +735,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <div class="line"><span class="lineno">   73</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_abd048b570efab98e99d690b6d542c6a2"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#abd048b570efab98e99d690b6d542c6a2">onert::backend::ITensor::setShape</a></div><div class="ttdeci">virtual void setShape(const ir::Shape &amp;new_shape)</div><div class="ttdoc">Set the shape of tenser to new_shape.</div><div class="ttdef"><b>Definition:</b> <a href="_i_tensor_8h_source.html#l00100">ITensor.h:100</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00100">onert::backend::ITensor::setShape()</a>, and <a class="el" href="_operand_info_8h_source.html#l00094">onert::ir::OperandInfo::shape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00100">onert::backend::ITensor::setShape()</a>, and <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>.</p>
 
 </div>
 </div>
@@ -766,7 +766,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 <p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00083">83</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   83</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(shape); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00094">onert::ir::OperandInfo::shape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>.</p>
 
 </div>
 </div>

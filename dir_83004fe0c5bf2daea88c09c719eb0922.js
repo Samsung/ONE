@@ -20,7 +20,7 @@ var dir_83004fe0c5bf2daea88c09c719eb0922 =
     [ "Placeholder.cpp", "_placeholder_8cpp.html", null ],
     [ "RealDiv.cpp", "_real_div_8cpp.html", null ],
     [ "Relu.cpp", "compiler_2moco_2import_2src_2_nodes_2_relu_8cpp.html", null ],
-    [ "Relu6.cpp", "compiler_2moco_2import_2src_2_nodes_2_re_l_u6_8cpp.html", null ],
+    [ "Relu6.cpp", "compiler_2moco_2import_2src_2_nodes_2_relu6_8cpp.html", null ],
     [ "Reshape.cpp", "compiler_2moco_2import_2src_2_nodes_2_reshape_8cpp.html", null ],
     [ "Rsqrt.cpp", "compiler_2moco_2import_2src_2_nodes_2_rsqrt_8cpp.html", null ],
     [ "Shape.cpp", "compiler_2moco_2import_2src_2_nodes_2_shape_8cpp.html", null ],

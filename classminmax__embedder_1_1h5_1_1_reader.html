@@ -188,7 +188,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> model_grp = run_grp.openGroup(std::string(<span class="stringliteral">&quot;model_&quot;</span>) + std::to_string(model_idx));</div>
 <div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> subg_grp = model_grp.openGroup(std::string(<span class="stringliteral">&quot;subg_&quot;</span>) + std::to_string(subg_idx));</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> op_dset = subg_grp.openDataSet(std::string(<span class="stringliteral">&quot;op_&quot;</span>) + std::to_string(op_idx));</div>
-<div class="line"><span class="lineno">   55</span>    H5::DataType <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = op_dset.getDataType();</div>
+<div class="line"><span class="lineno">   55</span>    H5::DataType <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = op_dset.getDataType();</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (not(dtype == H5::PredType::IEEE_F32BE || dtype == H5::PredType::IEEE_F32LE))</div>
 <div class="line"><span class="lineno">   57</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;dtype of min, max in h5 is not float.&quot;</span>};</div>
 <div class="line"><span class="lineno">   58</span>    op_dset.read(minmax, H5::PredType::NATIVE_FLOAT);</div>
@@ -197,7 +197,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>  }</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> mmv;</div>
 <div class="line"><span class="lineno">   63</span>}</div>
-<div class="ttc" id="anamespaceann_html_aae3a505782b54b21cb1168d3ca12c52f"><div class="ttname"><a href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">ann::dtype</a></div><div class="ttdeci">DType dtype(void)</div></div>
+<div class="ttc" id="anamespacecompare__tensors__all_html_aadd46f23b07171c5172769fa43fdae50"><div class="ttname"><a href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">compare_tensors_all.dtype</a></div><div class="ttdeci">dtype</div><div class="ttdef"><b>Definition:</b> <a href="compare__tensors__all_8py_source.html#l00160">compare_tensors_all.py:160</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2minmax-embedder_2src_2h5_2_reader_8h_source.html#l00056">minmax_embedder::h5::MinMaxVectors::max_vector</a>, and <a class="el" href="compiler_2minmax-embedder_2src_2h5_2_reader_8h_source.html#l00055">minmax_embedder::h5::MinMaxVectors::min_vector</a>.</p>
@@ -257,7 +257,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span> subg_grp = model_grp.openGroup(std::string(<span class="stringliteral">&quot;subg_&quot;</span>) + std::to_string(subg_idx));</div>
 <div class="line"><span class="lineno">   81</span>    <span class="keyword">auto</span> op_dset = subg_grp.openDataSet(std::string(<span class="stringliteral">&quot;input_&quot;</span>) + std::to_string(input_idx));</div>
 <div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    H5::DataType <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = op_dset.getDataType();</div>
+<div class="line"><span class="lineno">   83</span>    H5::DataType <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = op_dset.getDataType();</div>
 <div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> (not(dtype == H5::PredType::IEEE_F32BE || dtype == H5::PredType::IEEE_F32LE))</div>
 <div class="line"><span class="lineno">   85</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;dtype of min, max in h5 is not float.&quot;</span>};</div>
 <div class="line"><span class="lineno">   86</span>    op_dset.read(minmax, H5::PredType::NATIVE_FLOAT);</div>

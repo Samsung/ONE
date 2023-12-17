@@ -212,7 +212,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_ex_8cpp_source.html#l00055">55</a> of file <a class="el" href="_n_e_instance_normalization_layer_ex_8cpp_source.html">NEInstanceNormalizationLayerEx.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keyword">const</span> DataLayout data_layout = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_layout();</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keyword">const</span> DataLayout data_layout = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;data_layout();</div>
 <div class="line"><span class="lineno">   59</span> </div>
 <div class="line"><span class="lineno">   60</span>  <span class="comment">// Configure Kernels</span></div>
 <div class="line"><span class="lineno">   61</span>  _is_nchw = data_layout == DataLayout::NCHW;</div>
@@ -240,7 +240,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>  }</div>
 <div class="line"><span class="lineno">   84</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex_html_ab6c6e047b89ad38375c1b5f9eb03b881"><div class="ttname"><a href="classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#ab6c6e047b89ad38375c1b5f9eb03b881">arm_compute::NEInstanceNormalizationLayerKernelEx::configure</a></div><div class="ttdeci">void configure(ITensor *input, ITensor *output, ITensor *gamma=nullptr, ITensor *beta=nullptr, float epsilon=1e-12f)</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00247">NEInstanceNormalizationLayerKernelEx.cpp:247</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00247">arm_compute::NEInstanceNormalizationLayerKernelEx::configure()</a>.</p>
 
@@ -359,11 +359,11 @@ Static Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_ex_8cpp_source.html#l00086">86</a> of file <a class="el" href="_n_e_instance_normalization_layer_ex_8cpp_source.html">NEInstanceNormalizationLayerEx.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>{</div>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#a9a62750c66445fce5a6365060808be02">NEInstanceNormalizationLayerKernelEx::validate</a>(</div>
-<div class="line"><span class="lineno">   91</span>    &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;clone()-&gt;set_data_layout(DataLayout::NCHW),</div>
-<div class="line"><span class="lineno">   92</span>    &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;clone()-&gt;set_data_layout(DataLayout::NCHW), gamma, beta, epsilon);</div>
+<div class="line"><span class="lineno">   91</span>    &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone()-&gt;set_data_layout(DataLayout::NCHW),</div>
+<div class="line"><span class="lineno">   92</span>    &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;clone()-&gt;set_data_layout(DataLayout::NCHW), gamma, beta, epsilon);</div>
 <div class="line"><span class="lineno">   93</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex_html_a9a62750c66445fce5a6365060808be02"><div class="ttname"><a href="classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#a9a62750c66445fce5a6365060808be02">arm_compute::NEInstanceNormalizationLayerKernelEx::validate</a></div><div class="ttdeci">static Status validate(const ITensorInfo *input, const ITensorInfo *output, const ITensorInfo *gamma=nullptr, const ITensorInfo *beta=nullptr, float epsilon=1e-12f)</div><div class="ttdef"><b>Definition:</b> <a href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00283">NEInstanceNormalizationLayerKernelEx.cpp:283</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00283">arm_compute::NEInstanceNormalizationLayerKernelEx::validate()</a>.</p>
 

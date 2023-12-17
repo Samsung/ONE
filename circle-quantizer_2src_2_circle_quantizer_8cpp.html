@@ -740,7 +740,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  102</span> </div>
 <div class="line"><span class="lineno">  103</span>  <span class="keywordflow">return</span> p;</div>
 <div class="line"><span class="lineno">  104</span>}</div>
-<div class="ttc" id="a_pattern_solver_8cpp_html_ace3dc99cb50ae96c59ff417cc078e766"><div class="ttname"><a href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a></div><div class="ttdeci">luci::CircleQuantizer::Options::LayerParams LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00026">PatternSolver.cpp:26</a></div></div>
+<div class="ttc" id="a_pattern_solver_8cpp_html_ace3dc99cb50ae96c59ff417cc078e766"><div class="ttname"><a href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a></div><div class="ttdeci">luci::CircleQuantizer::Options::LayerParams LayerParams</div><div class="ttdef"><b>Definition:</b> <a href="_pattern_solver_8cpp_source.html#l00027">PatternSolver.cpp:27</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_aa7d22a1cfdc39ff0b719ed30286e16b2"><div class="ttname"><a href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">jpeg2hdf5.l</a></div><div class="ttdeci">l</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00148">jpeg2hdf5.py:148</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html"><div class="ttname"><a href="struct_q_conf_reader.html">QConfReader</a></div><div class="ttdef"><b>Definition:</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00039">CircleQuantizer.cpp:40</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html_a4060f52980919719972d863b94524f00"><div class="ttname"><a href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">QConfReader::root</a></div><div class="ttdeci">Json::Value &amp; root(void)</div><div class="ttdef"><b>Definition:</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00061">CircleQuantizer.cpp:61</a></div></div>
@@ -781,16 +781,16 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  116</span> </div>
 <div class="line"><span class="lineno">  117</span>  <span class="keyword">auto</span> layers = qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">root</a>()[<span class="stringliteral">&quot;layers&quot;</span>];</div>
 <div class="line"><span class="lineno">  118</span>  <span class="comment">// alternate names</span></div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer : layers)</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;layer : layers)</div>
 <div class="line"><span class="lineno">  120</span>  {</div>
 <div class="line"><span class="lineno">  121</span>    <span class="keyword">const</span> std::string key_alt_names = <span class="stringliteral">&quot;alternate&quot;</span>;</div>
 <div class="line"><span class="lineno">  122</span>    <span class="keywordflow">if</span> (layer.isMember(key_alt_names))</div>
 <div class="line"><span class="lineno">  123</span>    {</div>
 <div class="line"><span class="lineno">  124</span>      <span class="keyword">auto</span> alternate = layer[key_alt_names];</div>
-<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> altkey : alternate.getMemberNames())</div>
+<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;altkey : alternate.getMemberNames())</div>
 <div class="line"><span class="lineno">  126</span>      {</div>
 <div class="line"><span class="lineno">  127</span>        <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> lps;</div>
-<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> altvalue : alternate[altkey])</div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;altvalue : alternate[altkey])</div>
 <div class="line"><span class="lineno">  129</span>        {</div>
 <div class="line"><span class="lineno">  130</span>          <span class="keyword">auto</span> <a class="code hl_variable" href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">l</a> = std::make_shared&lt;LayerParam&gt;();</div>
 <div class="line"><span class="lineno">  131</span>          {</div>

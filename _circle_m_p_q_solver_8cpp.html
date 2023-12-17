@@ -264,7 +264,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  168</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceluci__eval__verifier.html#a14b2e61bb8eca86888a09cc9a1cefd84">input_dtype</a> = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input_dtype&quot;</span>);</div>
 <div class="line"><span class="lineno">  169</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a437637a3a56ead093cbe8383a9b66a9c">output_dtype</a> = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--output_dtype&quot;</span>);</div>
 <div class="line"><span class="lineno">  170</span>  <span class="keyword">auto</span> quantized_dtype = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--quantized_dtype&quot;</span>);</div>
-<div class="line"><span class="lineno">  171</span>  <span class="keyword">auto</span> granularity = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--granularity&quot;</span>);</div>
+<div class="line"><span class="lineno">  171</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacecompare__tensors__all.html#a187b41a53f6a4d10b1595e22bbaa334c">granularity</a> = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--granularity&quot;</span>);</div>
 <div class="line"><span class="lineno">  172</span>  <span class="keyword">auto</span> TF_style_maxpool = <a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--TF-style_maxpool&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--TF-style_maxpool&quot;</span>);</div>
 <div class="line"><span class="lineno">  173</span>  <span class="keyword">auto</span> save_min_max = <a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--save_min_max&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--save_min_max&quot;</span>);</div>
 <div class="line"><span class="lineno">  174</span> </div>
@@ -286,7 +286,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  190</span>                      &lt;&lt; <span class="stringliteral">&quot;model:&quot;</span> &lt;&lt; input_model_path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">  191</span>                      &lt;&lt; <span class="stringliteral">&quot;dataset: &quot;</span> &lt;&lt; data_path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">  192</span>                      &lt;&lt; <span class="stringliteral">&quot;quantized dtype: &quot;</span> &lt;&lt; quantized_dtype &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><span class="lineno">  193</span>                      &lt;&lt; <span class="stringliteral">&quot;granularity: &quot;</span> &lt;&lt; granularity &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><span class="lineno">  193</span>                      &lt;&lt; <span class="stringliteral">&quot;granularity: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacecompare__tensors__all.html#a187b41a53f6a4d10b1595e22bbaa334c">granularity</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">  194</span>                      &lt;&lt; <span class="stringliteral">&quot;input dtype: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceluci__eval__verifier.html#a14b2e61bb8eca86888a09cc9a1cefd84">input_dtype</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">  195</span>                      &lt;&lt; <span class="stringliteral">&quot;output dtype: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacepart__eval__one.html#a437637a3a56ead093cbe8383a9b66a9c">output_dtype</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><span class="lineno">  196</span>                      &lt;&lt; <span class="stringliteral">&quot;TF_style_maxpool: &quot;</span> &lt;&lt; (TF_style_maxpool ? <span class="stringliteral">&quot;True&quot;</span> : <span class="stringliteral">&quot;False&quot;</span>) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
@@ -298,7 +298,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  202</span>  <a class="code hl_struct" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html">mpqsolver::core::Quantizer::Context</a> ctx;</div>
 <div class="line"><span class="lineno">  203</span>  {</div>
 <div class="line"><span class="lineno">  204</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#a531c967efe35c7f612a9e5198ecfc349">output_model_dtype</a> = quantized_dtype;</div>
-<div class="line"><span class="lineno">  205</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#af3005bc6e0096f4a33cbe7e65a773ea4">granularity</a> = granularity;</div>
+<div class="line"><span class="lineno">  205</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#af3005bc6e0096f4a33cbe7e65a773ea4">granularity</a> = <a class="code hl_variable" href="namespacecompare__tensors__all.html#a187b41a53f6a4d10b1595e22bbaa334c">granularity</a>;</div>
 <div class="line"><span class="lineno">  206</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#a6def19cbd89a7e0f6c352dd7efe9f57c">input_type</a> = <a class="code hl_variable" href="namespaceluci__eval__verifier.html#a14b2e61bb8eca86888a09cc9a1cefd84">input_dtype</a>;</div>
 <div class="line"><span class="lineno">  207</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#ae9f8873b93082cf6f403b0e86684be18">output_type</a> = <a class="code hl_variable" href="namespacepart__eval__one.html#a437637a3a56ead093cbe8383a9b66a9c">output_dtype</a>;</div>
 <div class="line"><span class="lineno">  208</span>    ctx.<a class="code hl_variable" href="structmpqsolver_1_1core_1_1_quantizer_1_1_context.html#a9251c067d1a87dbcc88fcc648d872ffe">save_min_max</a> = save_min_max;</div>
@@ -345,40 +345,40 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  249</span>      }</div>
 <div class="line"><span class="lineno">  250</span>    }</div>
 <div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[save_intermediate_str])</div>
-<div class="line"><span class="lineno">  253</span>    {</div>
-<div class="line"><span class="lineno">  254</span>      <span class="keyword">auto</span> data_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(save_intermediate_str);</div>
-<div class="line"><span class="lineno">  255</span>      <span class="keywordflow">if</span> (!data_path.empty())</div>
-<div class="line"><span class="lineno">  256</span>      {</div>
-<div class="line"><span class="lineno">  257</span>        bi_solver-&gt;setSaveIntermediate(data_path);</div>
-<div class="line"><span class="lineno">  258</span>      }</div>
-<div class="line"><span class="lineno">  259</span>    }</div>
+<div class="line"><span class="lineno">  252</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;qerror metric: MAE\n&quot;</span></div>
+<div class="line"><span class="lineno">  253</span>                        &lt;&lt; <span class="stringliteral">&quot;target qerror ratio: &quot;</span> &lt;&lt; qerror_ratio &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>    solver.reset(bi_solver.release());</div>
+<div class="line"><span class="lineno">  256</span>  }</div>
+<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[patterns_str])</div>
+<div class="line"><span class="lineno">  258</span>  {</div>
+<div class="line"><span class="lineno">  259</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;Automatic mixed quantization using patterns\n&quot;</span>;</div>
 <div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;qerror metric: MAE\n&quot;</span></div>
-<div class="line"><span class="lineno">  262</span>                        &lt;&lt; <span class="stringliteral">&quot;target qerror ratio: &quot;</span> &lt;&lt; qerror_ratio &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>    solver.reset(bi_solver.release());</div>
-<div class="line"><span class="lineno">  265</span>  }</div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[patterns_str])</div>
-<div class="line"><span class="lineno">  267</span>  {</div>
-<div class="line"><span class="lineno">  268</span>    <a class="code hl_function" href="class_solver_output.html#a23a1f97aa11f55ea37ae77b79557a82e">SolverOutput::get</a>() &lt;&lt; <span class="stringliteral">&quot;Automatic mixed quantization using patterns\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>    std::vector&lt;mpqsolver::pattern::QuantizationPattern&gt; patterns;</div>
-<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[layernorm_str])</div>
-<div class="line"><span class="lineno">  272</span>    {</div>
-<div class="line"><span class="lineno">  273</span>      patterns.push_back(<a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d">mpqsolver::pattern::QuantizationPattern::Q8LayerNormWithQ16Variance</a>);</div>
-<div class="line"><span class="lineno">  274</span>    }</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[softmax_str])</div>
-<div class="line"><span class="lineno">  276</span>    {</div>
-<div class="line"><span class="lineno">  277</span>      patterns.push_back(<a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2">mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp</a>);</div>
-<div class="line"><span class="lineno">  278</span>    }</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>    solver = std::make_unique&lt;mpqsolver::pattern::PatternSolver&gt;(ctx, patterns);</div>
-<div class="line"><span class="lineno">  281</span>  }</div>
-<div class="line"><span class="lineno">  282</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  283</span>  {</div>
-<div class="line"><span class="lineno">  284</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Unrecognized solver&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">  261</span>    std::vector&lt;mpqsolver::pattern::QuantizationPattern&gt; patterns;</div>
+<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[layernorm_str])</div>
+<div class="line"><span class="lineno">  263</span>    {</div>
+<div class="line"><span class="lineno">  264</span>      patterns.push_back(<a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba46bdd3c0b5421476feacb7b7899ae31d">mpqsolver::pattern::QuantizationPattern::Q8LayerNormWithQ16Variance</a>);</div>
+<div class="line"><span class="lineno">  265</span>    }</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[softmax_str])</div>
+<div class="line"><span class="lineno">  267</span>    {</div>
+<div class="line"><span class="lineno">  268</span>      patterns.push_back(<a class="code hl_enumvalue" href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2">mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp</a>);</div>
+<div class="line"><span class="lineno">  269</span>    }</div>
+<div class="line"><span class="lineno">  270</span> </div>
+<div class="line"><span class="lineno">  271</span>    solver = std::make_unique&lt;mpqsolver::pattern::PatternSolver&gt;(ctx, patterns);</div>
+<div class="line"><span class="lineno">  272</span>  }</div>
+<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  274</span>  {</div>
+<div class="line"><span class="lineno">  275</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Unrecognized solver&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">  277</span>  }</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[save_intermediate_str])</div>
+<div class="line"><span class="lineno">  280</span>  {</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keyword">auto</span> data_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(save_intermediate_str);</div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> (!data_path.empty())</div>
+<div class="line"><span class="lineno">  283</span>    {</div>
+<div class="line"><span class="lineno">  284</span>      solver-&gt;setSaveIntermediate(data_path);</div>
+<div class="line"><span class="lineno">  285</span>    }</div>
 <div class="line"><span class="lineno">  286</span>  }</div>
 <div class="line"><span class="lineno">  287</span> </div>
 <div class="line"><span class="lineno">  288</span>  <span class="keyword">auto</span> optimized = solver-&gt;run(input_model_path);</div>
@@ -411,6 +411,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html"><div class="ttname"><a href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a></div><div class="ttdef"><b>Definition:</b> <a href="luci_2export_2include_2luci_2_circle_exporter_8h_source.html#l00029">CircleExporter.h:30</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html_a6fcbba96153e5d1582664e6e7f6dcb54"><div class="ttname"><a href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">luci::CircleExporter::invoke</a></div><div class="ttdeci">bool invoke(Contract *) const</div><div class="ttdef"><b>Definition:</b> <a href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00037">CircleExporter.cpp:37</a></div></div>
 <div class="ttc" id="anamespacearser_html"><div class="ttname"><a href="namespacearser.html">arser</a></div><div class="ttdef"><b>Definition:</b> <a href="arser_8h_source.html#l00037">arser.h:38</a></div></div>
+<div class="ttc" id="anamespacecompare__tensors__all_html_a187b41a53f6a4d10b1595e22bbaa334c"><div class="ttname"><a href="namespacecompare__tensors__all.html#a187b41a53f6a4d10b1595e22bbaa334c">compare_tensors_all.granularity</a></div><div class="ttdeci">granularity</div><div class="ttdef"><b>Definition:</b> <a href="compare__tensors__all_8py_source.html#l00159">compare_tensors_all.py:159</a></div></div>
 <div class="ttc" id="anamespaceluci__eval__verifier_html_a14b2e61bb8eca86888a09cc9a1cefd84"><div class="ttname"><a href="namespaceluci__eval__verifier.html#a14b2e61bb8eca86888a09cc9a1cefd84">luci_eval_verifier.input_dtype</a></div><div class="ttdeci">string input_dtype</div><div class="ttdef"><b>Definition:</b> <a href="luci__eval__verifier_8py_source.html#l00064">luci_eval_verifier.py:64</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1bisection_html"><div class="ttname"><a href="namespacempqsolver_1_1bisection.html">mpqsolver::bisection</a></div><div class="ttdef"><b>Definition:</b> <a href="_bisection_solver_8h_source.html#l00030">BisectionSolver.h:31</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1pattern_html_ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2"><div class="ttname"><a href="namespacempqsolver_1_1pattern.html#ac0c61157362860f53f8fd0035453774ba42ea8097b25b107ec0ecd6cff2db76a2">mpqsolver::pattern::QuantizationPattern::Q8SoftmaxWithQ16SubExp</a></div><div class="ttdeci">@ Q8SoftmaxWithQ16SubExp</div></div>

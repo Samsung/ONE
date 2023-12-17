@@ -156,7 +156,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   44</span> </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> reductor = [](T result, T x) { <span class="keywordflow">return</span> result + x; };</div>
 <div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;T&gt;</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(inputv);</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;T&gt;</a> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(inputv);</div>
 <div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;T&gt;</a> res_accessor(output);</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  erase&lt;T&gt;(output);</div>
@@ -188,7 +188,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   76</span>        }</div>
 <div class="line"><span class="lineno">   77</span>      }</div>
 <div class="line"><span class="lineno">   78</span>    }</div>
-<div class="line"><span class="lineno">   79</span>    res_accessor.at(out_index) = reductor(res_accessor.at(out_index), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.at(in_index));</div>
+<div class="line"><span class="lineno">   79</span>    res_accessor.at(out_index) = reductor(res_accessor.at(out_index), <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.at(in_index));</div>
 <div class="line"><span class="lineno">   80</span>  }</div>
 <div class="line"><span class="lineno">   81</span> </div>
 <div class="line"><span class="lineno">   82</span>  <span class="keyword">const</span> std::int32_t reduction_factor = input_shape.numElements() / <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.numElements();</div>
@@ -206,7 +206,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassmir_1_1_tensor_html"><div class="ttname"><a href="classmir_1_1_tensor.html">mir::Tensor</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00026">Tensor.h:27</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_reduce_op_html_a1dfc40fcfe8461709e59caab5e9f4f4f"><div class="ttname"><a href="classmir_1_1ops_1_1_reduce_op.html#a1dfc40fcfe8461709e59caab5e9f4f4f">mir::ops::ReduceOp::getReductionDims</a></div><div class="ttdeci">const std::vector&lt; int &gt; &amp; getReductionDims() const</div><div class="ttdef"><b>Definition:</b> <a href="_reduce_op_8h_source.html#l00038">ReduceOp.h:38</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_reduce_op_html_a5d33614292fcbfb8acd336e195ca81b6"><div class="ttname"><a href="classmir_1_1ops_1_1_reduce_op.html#a5d33614292fcbfb8acd336e195ca81b6">mir::ops::ReduceOp::getKeepDims</a></div><div class="ttdeci">bool getKeepDims() const</div><div class="ttdef"><b>Definition:</b> <a href="_reduce_op_8h_source.html#l00040">ReduceOp.h:40</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00031">mir::Tensor&lt; T &gt;::at()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_index_8h_source.html#l00064">mir::Index::at()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00161">mir::Operation::getInputShape()</a>, <a class="el" href="_reduce_op_8h_source.html#l00040">mir::ops::ReduceOp::getKeepDims()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00163">mir::Operation::getOutputShape()</a>, <a class="el" href="_reduce_op_8h_source.html#l00038">mir::ops::ReduceOp::getReductionDims()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 

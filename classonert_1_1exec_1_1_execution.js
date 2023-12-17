@@ -5,6 +5,7 @@ var classonert_1_1exec_1_1_execution =
     [ "execute", "classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5", null ],
     [ "getInputShape", "classonert_1_1exec_1_1_execution.html#ab59baec016c3eca8bd8d6d0c48ee8911", null ],
     [ "getInputTotalSize", "classonert_1_1exec_1_1_execution.html#aa41e5549fee5cbf8d25868c6342a68c2", null ],
+    [ "getLoss", "classonert_1_1exec_1_1_execution.html#a8c7a7f10c660a46513f8fef62e831087", null ],
     [ "getOutputShape", "classonert_1_1exec_1_1_execution.html#a8e1db01134e00044abe3b360260f47f9", null ],
     [ "getOutputTotalSize", "classonert_1_1exec_1_1_execution.html#aca14a1b34666395e567c795514ea7823", null ],
     [ "isFinished", "classonert_1_1exec_1_1_execution.html#a310972a702962562bd68fe87d9c27107", null ],
@@ -16,5 +17,6 @@ var classonert_1_1exec_1_1_execution =
     [ "setOutput", "classonert_1_1exec_1_1_execution.html#ae5bdcad8e6bdfb9f1fa5a6756c1cb11e", null ],
     [ "setOutputLayout", "classonert_1_1exec_1_1_execution.html#ab787a161da6ca4c33000768824451e6b", null ],
     [ "startExecute", "classonert_1_1exec_1_1_execution.html#ad58a31855844ee5df203d9f9dbef015d", null ],
+    [ "train", "classonert_1_1exec_1_1_execution.html#a0d2ecd07b986b6d1d7e879ac1aa80118", null ],
     [ "waitFinish", "classonert_1_1exec_1_1_execution.html#a244b13fe19ef5f07636b44a5d7c9e596", null ]
 ];

@@ -43,5 +43,6 @@ var nnfw__experimental_8h =
     [ "nnfw_train_input_tensorinfo", "nnfw__experimental_8h.html#ae2df9aba6b77d42a961ab26947663f12", null ],
     [ "nnfw_train_prepare", "nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175", null ],
     [ "nnfw_train_set_expected", "nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e", null ],
-    [ "nnfw_train_set_input", "nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e", null ]
+    [ "nnfw_train_set_input", "nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e", null ],
+    [ "nnfw_train_set_output", "nnfw__experimental_8h.html#abfbe814504a1985f6861c1da19d77c77", null ]
 ];

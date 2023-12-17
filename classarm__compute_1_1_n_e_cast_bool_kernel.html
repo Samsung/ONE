@@ -259,23 +259,23 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span> </div>
 <div class="line"><span class="lineno">   85</span>  <span class="comment">// Auto initialize output shape if not initialized (We can only auto-configure the shape, datatype</span></div>
 <div class="line"><span class="lineno">   86</span>  <span class="comment">// must be given)</span></div>
-<div class="line"><span class="lineno">   87</span>  set_shape_if_empty(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape());</div>
+<div class="line"><span class="lineno">   87</span>  set_shape_if_empty(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(), <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape());</div>
 <div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
-<div class="line"><span class="lineno">   90</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">   89</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   90</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()));</div>
+<div class="line"><span class="lineno">   92</span>  ARM_COMPUTE_ERROR_THROW_ON(validate_arguments(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()));</div>
 <div class="line"><span class="lineno">   93</span> </div>
 <div class="line"><span class="lineno">   94</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><span class="lineno">   95</span>  Window win = calculate_max_window(*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), Steps());</div>
+<div class="line"><span class="lineno">   95</span>  Window win = calculate_max_window(*<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), Steps());</div>
 <div class="line"><span class="lineno">   96</span>  Coordinates coord;</div>
-<div class="line"><span class="lineno">   97</span>  coord.set_num_dimensions(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;num_dimensions());</div>
-<div class="line"><span class="lineno">   98</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;set_valid_region(ValidRegion(coord, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;tensor_shape()));</div>
+<div class="line"><span class="lineno">   97</span>  coord.set_num_dimensions(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;num_dimensions());</div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;set_valid_region(ValidRegion(coord, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;tensor_shape()));</div>
 <div class="line"><span class="lineno">   99</span> </div>
 <div class="line"><span class="lineno">  100</span>  ICPPKernel::configure(win);</div>
 <div class="line"><span class="lineno">  101</span>}</div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -412,8 +412,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  121</span>  Window win{window};</div>
 <div class="line"><span class="lineno">  122</span>  win.set(Window::DimX, Window::Dimension(0, 1, 1));</div>
 <div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  Iterator <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(_input, win);</div>
-<div class="line"><span class="lineno">  125</span>  Iterator <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>(_output, win);</div>
+<div class="line"><span class="lineno">  124</span>  Iterator <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(_input, win);</div>
+<div class="line"><span class="lineno">  125</span>  Iterator <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>(_output, win);</div>
 <div class="line"><span class="lineno">  126</span> </div>
 <div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> uint8_t true_val = 1;</div>
 <div class="line"><span class="lineno">  128</span>  <span class="keyword">const</span> uint8x8_t mask_bool = vdup_n_u8(true_val);</div>
@@ -426,8 +426,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  135</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  136</span>        win,</div>
 <div class="line"><span class="lineno">  137</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  138</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  139</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  138</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  139</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  140</span> </div>
 <div class="line"><span class="lineno">  141</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  142</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -444,7 +444,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  153</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  154</span>          }</div>
 <div class="line"><span class="lineno">  155</span>        },</div>
-<div class="line"><span class="lineno">  156</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  156</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  157</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  158</span>    }</div>
 <div class="line"><span class="lineno">  159</span>    <span class="keywordflow">case</span> DataType::S16:</div>
@@ -453,8 +453,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  162</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  163</span>        win,</div>
 <div class="line"><span class="lineno">  164</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  165</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  166</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  165</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  166</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  169</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -475,7 +475,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  184</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  185</span>          }</div>
 <div class="line"><span class="lineno">  186</span>        },</div>
-<div class="line"><span class="lineno">  187</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  187</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  188</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  189</span>    }</div>
 <div class="line"><span class="lineno">  190</span>    <span class="keywordflow">case</span> DataType::S32:</div>
@@ -484,8 +484,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  193</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  194</span>        win,</div>
 <div class="line"><span class="lineno">  195</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  196</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  197</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  196</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  197</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>int32_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  198</span> </div>
 <div class="line"><span class="lineno">  199</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  200</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -508,7 +508,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  217</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  218</span>          }</div>
 <div class="line"><span class="lineno">  219</span>        },</div>
-<div class="line"><span class="lineno">  220</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  220</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  221</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  222</span>    }</div>
 <div class="line"><span class="lineno">  223</span>    <span class="keywordflow">case</span> DataType::F32:</div>
@@ -517,8 +517,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  226</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  227</span>        win,</div>
 <div class="line"><span class="lineno">  228</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  229</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  230</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  229</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  230</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  231</span> </div>
 <div class="line"><span class="lineno">  232</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  233</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -541,7 +541,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  250</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(in);</div>
 <div class="line"><span class="lineno">  251</span>          }</div>
 <div class="line"><span class="lineno">  252</span>        },</div>
-<div class="line"><span class="lineno">  253</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  253</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  254</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  255</span>    }</div>
 <div class="line"><span class="lineno">  256</span><span class="preprocessor">#ifdef __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
@@ -551,8 +551,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  260</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  261</span>        win,</div>
 <div class="line"><span class="lineno">  262</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  263</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  264</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>float16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  263</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  264</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>float16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  265</span> </div>
 <div class="line"><span class="lineno">  266</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  267</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -572,7 +572,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  281</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>float16_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  282</span>          }</div>
 <div class="line"><span class="lineno">  283</span>        },</div>
-<div class="line"><span class="lineno">  284</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  284</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  285</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  286</span>    }</div>
 <div class="line"><span class="lineno">  287</span><span class="preprocessor">#endif </span><span class="comment">// __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
@@ -582,8 +582,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  291</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  292</span>        win,</div>
 <div class="line"><span class="lineno">  293</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  294</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  295</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  294</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  295</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  296</span> </div>
 <div class="line"><span class="lineno">  297</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  298</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -599,7 +599,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  308</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  309</span>          }</div>
 <div class="line"><span class="lineno">  310</span>        },</div>
-<div class="line"><span class="lineno">  311</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  311</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  312</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  313</span>    }</div>
 <div class="line"><span class="lineno">  314</span>    <span class="keywordflow">case</span> DataType::U16:</div>
@@ -608,8 +608,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  317</span>      execute_window_loop(</div>
 <div class="line"><span class="lineno">  318</span>        win,</div>
 <div class="line"><span class="lineno">  319</span>        [&amp;](<span class="keyword">const</span> Coordinates &amp;) {</div>
-<div class="line"><span class="lineno">  320</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.ptr());</div>
-<div class="line"><span class="lineno">  321</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>uint16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.ptr());</div>
+<div class="line"><span class="lineno">  320</span>          <span class="keyword">const</span> <span class="keyword">auto</span> input_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.ptr());</div>
+<div class="line"><span class="lineno">  321</span>          <span class="keyword">const</span> <span class="keyword">auto</span> output_ptr = <span class="keyword">reinterpret_cast&lt;</span>uint16_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.ptr());</div>
 <div class="line"><span class="lineno">  322</span> </div>
 <div class="line"><span class="lineno">  323</span>          <span class="keywordtype">int</span> x = window_start_x;</div>
 <div class="line"><span class="lineno">  324</span>          <span class="keywordflow">for</span> (; x &lt;= (window_end_x - window_step_x); x += window_step_x)</div>
@@ -629,7 +629,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  338</span>            *(output_ptr + x) = <span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(*(input_ptr + x) &amp; true_val);</div>
 <div class="line"><span class="lineno">  339</span>          }</div>
 <div class="line"><span class="lineno">  340</span>        },</div>
-<div class="line"><span class="lineno">  341</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>);</div>
+<div class="line"><span class="lineno">  341</span>        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><span class="lineno">  342</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  343</span>    }</div>
 <div class="line"><span class="lineno">  344</span>    <span class="keywordflow">default</span>:</div>

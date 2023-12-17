@@ -9,6 +9,7 @@ var classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry =
     [ "getNativeIOTensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a239fc0a4a2dfa0c627cde29f5834c8ee", null ],
     [ "getNativeITensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a1bd9d38340139438d2e9fc96a8a8a6e5", null ],
     [ "getPortableTensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a83dd806cd3650293837e877a85eb8e4f", null ],
+    [ "iterateTrainableTensors", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a315a21f8a60731763470ff3d06273f6b", null ],
     [ "native_io_tensors", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#aeb0565ef9580beb24558b3163dd7af4f", null ],
     [ "setBackPropTensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a5f0a0e389e53dca5724ddf7f980a6417", null ],
     [ "setGradientTensor", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html#a3bbccd98f1f5234c6a19ac59241e5af8", null ],

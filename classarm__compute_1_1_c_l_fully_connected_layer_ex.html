@@ -301,13 +301,13 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  258</span> </div>
 <div class="line"><span class="lineno">  259</span>  <span class="comment">// Perform validate step</span></div>
 <div class="line"><span class="lineno">  260</span>  ARM_COMPUTE_ERROR_THROW_ON(<a class="code hl_function" href="classarm__compute_1_1_c_l_fully_connected_layer_ex.html#a9177b1b26bc0015c91a1d6eaa3a64928">CLFullyConnectedLayerEx::validate</a>(</div>
-<div class="line"><span class="lineno">  261</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info(), weights-&gt;info(), biases != <span class="keyword">nullptr</span> ? biases-&gt;info() : <span class="keyword">nullptr</span>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info(),</div>
+<div class="line"><span class="lineno">  261</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), weights-&gt;info(), biases != <span class="keyword">nullptr</span> ? biases-&gt;info() : <span class="keyword">nullptr</span>, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(),</div>
 <div class="line"><span class="lineno">  262</span>    fc_info));</div>
 <div class="line"><span class="lineno">  263</span> </div>
 <div class="line"><span class="lineno">  264</span>  _are_weights_converted = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  265</span>  _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  266</span>  _is_fc_after_conv = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  267</span>  _is_quantized = is_data_type_quantized_asymmetric(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_type());</div>
+<div class="line"><span class="lineno">  267</span>  _is_quantized = is_data_type_quantized_asymmetric(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;data_type());</div>
 <div class="line"><span class="lineno">  268</span>  _is_prepared = fc_info.retain_internal_weights;</div>
 <div class="line"><span class="lineno">  269</span>  _original_weights = weights;</div>
 <div class="line"><span class="lineno">  270</span> </div>
@@ -325,17 +325,17 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  282</span>  <span class="comment">//  4) Fully Connected layer -&gt; Fully Connected layer with batches</span></div>
 <div class="line"><span class="lineno">  283</span> </div>
 <div class="line"><span class="lineno">  284</span>  <span class="comment">// Check if we have a fully connected layer with batches</span></div>
-<div class="line"><span class="lineno">  285</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_batched_fc_layer = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;dimension(1) &gt; 1;</div>
+<div class="line"><span class="lineno">  285</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_batched_fc_layer = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;dimension(1) &gt; 1;</div>
 <div class="line"><span class="lineno">  286</span>  <span class="keywordflow">if</span> (is_batched_fc_layer)</div>
 <div class="line"><span class="lineno">  287</span>  {</div>
 <div class="line"><span class="lineno">  288</span>    _is_fc_after_conv =</div>
 <div class="line"><span class="lineno">  289</span>      (TensorShape::num_max_dimensions &gt;= 4) &amp;&amp;</div>
-<div class="line"><span class="lineno">  290</span>      (std::equal(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape().cbegin() + 3, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape().cend(),</div>
-<div class="line"><span class="lineno">  291</span>                  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;info()-&gt;tensor_shape().cbegin() + 1));</div>
+<div class="line"><span class="lineno">  290</span>      (std::equal(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape().cbegin() + 3, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape().cend(),</div>
+<div class="line"><span class="lineno">  291</span>                  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;tensor_shape().cbegin() + 1));</div>
 <div class="line"><span class="lineno">  292</span>  }</div>
 <div class="line"><span class="lineno">  293</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  294</span>  {</div>
-<div class="line"><span class="lineno">  295</span>    _is_fc_after_conv = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;num_dimensions() &gt; 1;</div>
+<div class="line"><span class="lineno">  295</span>    _is_fc_after_conv = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;num_dimensions() &gt; 1;</div>
 <div class="line"><span class="lineno">  296</span>  }</div>
 <div class="line"><span class="lineno">  297</span> </div>
 <div class="line"><span class="lineno">  298</span>  <span class="comment">// Reshape weights if needed</span></div>
@@ -356,11 +356,11 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  313</span>  }</div>
 <div class="line"><span class="lineno">  314</span> </div>
 <div class="line"><span class="lineno">  315</span>  <span class="comment">// Convert weights if needed</span></div>
-<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">if</span> (_is_fc_after_conv &amp;&amp; (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_layout() != fc_info.weights_trained_layout))</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">if</span> (_is_fc_after_conv &amp;&amp; (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;data_layout() != fc_info.weights_trained_layout))</div>
 <div class="line"><span class="lineno">  317</span>  {</div>
 <div class="line"><span class="lineno">  318</span>    <span class="keywordflow">if</span> (_weights_manager &amp;&amp; _weights_manager-&gt;are_weights_managed(weights_to_use))</div>
 <div class="line"><span class="lineno">  319</span>    {</div>
-<div class="line"><span class="lineno">  320</span>      _convert_weights_managed.configure(weights_to_use, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape(),</div>
+<div class="line"><span class="lineno">  320</span>      _convert_weights_managed.configure(weights_to_use, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape(),</div>
 <div class="line"><span class="lineno">  321</span>                                         fc_info.weights_trained_layout);</div>
 <div class="line"><span class="lineno">  322</span>      weights_to_use = utils::cast::polymorphic_downcast&lt;ICLTensor *&gt;(</div>
 <div class="line"><span class="lineno">  323</span>        _weights_manager-&gt;acquire(weights, &amp;_convert_weights_managed));</div>
@@ -369,7 +369,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  326</span>    {</div>
 <div class="line"><span class="lineno">  327</span>      <span class="comment">// Convert weights</span></div>
 <div class="line"><span class="lineno">  328</span>      _convert_weights.configure(weights_to_use, &amp;_converted_weights_output,</div>
-<div class="line"><span class="lineno">  329</span>                                 <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;tensor_shape(), fc_info.weights_trained_layout);</div>
+<div class="line"><span class="lineno">  329</span>                                 <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;tensor_shape(), fc_info.weights_trained_layout);</div>
 <div class="line"><span class="lineno">  330</span> </div>
 <div class="line"><span class="lineno">  331</span>      weights_to_use = &amp;_converted_weights_output;</div>
 <div class="line"><span class="lineno">  332</span>    }</div>
@@ -390,8 +390,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_fully_connected_layer_ex_html_a9177b1b26bc0015c91a1d6eaa3a64928"><div class="ttname"><a href="classarm__compute_1_1_c_l_fully_connected_layer_ex.html#a9177b1b26bc0015c91a1d6eaa3a64928">arm_compute::CLFullyConnectedLayerEx::validate</a></div><div class="ttdeci">static Status validate(const ITensorInfo *input, const ITensorInfo *weights, const ITensorInfo *biases, const ITensorInfo *output, FullyConnectedLayerInfo fc_info=FullyConnectedLayerInfo())</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00348">CLFullyConnectedLayerEx.cpp:348</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex_html_a944a8c553990873707254d35e72e9273"><div class="ttname"><a href="classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html#a944a8c553990873707254d35e72e9273">arm_compute::CLFullyConnectedLayerReshapeWeightsEx::configure</a></div><div class="ttdeci">void configure(const ICLTensor *input, ICLTensor *output)</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00142">CLFullyConnectedLayerEx.cpp:142</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed_html_a18c1a2a9e067de8df4dc7129ae88e294"><div class="ttname"><a href="classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html#a18c1a2a9e067de8df4dc7129ae88e294">arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged::configure</a></div><div class="ttdeci">void configure(const ICLTensor *input)</div><div class="ttdef"><b>Definition:</b> <a href="_c_l_fully_connected_layer_ex_8h_source.html#l00116">CLFullyConnectedLayerEx.h:116</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00116">arm_compute::weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged::configure()</a>, <a class="el" href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00142">arm_compute::CLFullyConnectedLayerReshapeWeightsEx::configure()</a>, and <a class="el" href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00348">validate()</a>.</p>
 
@@ -734,7 +734,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  358</span>  <span class="keywordtype">bool</span> weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  359</span>  <span class="keywordtype">bool</span> is_fc_after_conv = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  360</span> </div>
-<div class="line"><span class="lineno">  361</span>  <span class="keyword">const</span> ITensorInfo &amp;flatten_input = TensorInfo(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;clone()</div>
+<div class="line"><span class="lineno">  361</span>  <span class="keyword">const</span> ITensorInfo &amp;flatten_input = TensorInfo(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone()</div>
 <div class="line"><span class="lineno">  362</span>                                                  -&gt;set_is_resizable(<span class="keyword">true</span>)</div>
 <div class="line"><span class="lineno">  363</span>                                                  .reset_padding()</div>
 <div class="line"><span class="lineno">  364</span>                                                  .set_tensor_shape(compute_flatten_shape(input))</div>
@@ -752,20 +752,20 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  376</span>  <span class="comment">//  3) Convolution layer -&gt; Fully Connected layer with batches</span></div>
 <div class="line"><span class="lineno">  377</span>  <span class="comment">//  4) Fully Connected layer -&gt; Fully Connected layer with batches</span></div>
 <div class="line"><span class="lineno">  378</span> </div>
-<div class="line"><span class="lineno">  379</span>  <span class="keyword">const</span> ITensorInfo *input_to_use = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
+<div class="line"><span class="lineno">  379</span>  <span class="keyword">const</span> ITensorInfo *input_to_use = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
 <div class="line"><span class="lineno">  380</span>  <span class="keyword">const</span> ITensorInfo *weights_to_use = weights;</div>
 <div class="line"><span class="lineno">  381</span> </div>
 <div class="line"><span class="lineno">  382</span>  <span class="comment">// Check if we have a fully connected layer with batches</span></div>
-<div class="line"><span class="lineno">  383</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_batched_fc_layer = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;dimension(1) &gt; 1;</div>
+<div class="line"><span class="lineno">  383</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> is_batched_fc_layer = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;dimension(1) &gt; 1;</div>
 <div class="line"><span class="lineno">  384</span>  <span class="keywordflow">if</span> (is_batched_fc_layer)</div>
 <div class="line"><span class="lineno">  385</span>  {</div>
 <div class="line"><span class="lineno">  386</span>    is_fc_after_conv = (TensorShape::num_max_dimensions &gt;= 4) &amp;&amp;</div>
-<div class="line"><span class="lineno">  387</span>                       (std::equal(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;tensor_shape().cbegin() + 3, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;tensor_shape().cend(),</div>
-<div class="line"><span class="lineno">  388</span>                                   <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;tensor_shape().cbegin() + 1));</div>
+<div class="line"><span class="lineno">  387</span>                       (std::equal(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;tensor_shape().cbegin() + 3, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;tensor_shape().cend(),</div>
+<div class="line"><span class="lineno">  388</span>                                   <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;tensor_shape().cbegin() + 1));</div>
 <div class="line"><span class="lineno">  389</span>  }</div>
 <div class="line"><span class="lineno">  390</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  391</span>  {</div>
-<div class="line"><span class="lineno">  392</span>    is_fc_after_conv = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;num_dimensions() &gt; 1;</div>
+<div class="line"><span class="lineno">  392</span>    is_fc_after_conv = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;num_dimensions() &gt; 1;</div>
 <div class="line"><span class="lineno">  393</span>  }</div>
 <div class="line"><span class="lineno">  394</span> </div>
 <div class="line"><span class="lineno">  395</span>  <span class="keywordflow">if</span> (!weights_reshaped)</div>
@@ -776,11 +776,11 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  400</span>    weights_to_use = &amp;reshaped_weights;</div>
 <div class="line"><span class="lineno">  401</span>  }</div>
 <div class="line"><span class="lineno">  402</span> </div>
-<div class="line"><span class="lineno">  403</span>  <span class="keywordflow">if</span> (is_fc_after_conv &amp;&amp; (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;data_layout() != fc_info.weights_trained_layout))</div>
+<div class="line"><span class="lineno">  403</span>  <span class="keywordflow">if</span> (is_fc_after_conv &amp;&amp; (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_layout() != fc_info.weights_trained_layout))</div>
 <div class="line"><span class="lineno">  404</span>  {</div>
 <div class="line"><span class="lineno">  405</span>    <span class="comment">// Validate convert weights kernel</span></div>
 <div class="line"><span class="lineno">  406</span>    ARM_COMPUTE_RETURN_ON_ERROR(CLConvertFullyConnectedWeights::validate(</div>
-<div class="line"><span class="lineno">  407</span>      weights_to_use, &amp;converted_weights, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;tensor_shape(), fc_info.weights_trained_layout));</div>
+<div class="line"><span class="lineno">  407</span>      weights_to_use, &amp;converted_weights, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;tensor_shape(), fc_info.weights_trained_layout));</div>
 <div class="line"><span class="lineno">  408</span>    weights_to_use = &amp;converted_weights;</div>
 <div class="line"><span class="lineno">  409</span>  }</div>
 <div class="line"><span class="lineno">  410</span> </div>
@@ -789,7 +789,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  413</span>    <span class="comment">// Fully Connected layer after a Convolution Layer without batches</span></div>
 <div class="line"><span class="lineno">  414</span>    ARM_COMPUTE_RETURN_ERROR_ON(</div>
 <div class="line"><span class="lineno">  415</span>      (weights_to_use-&gt;dimension(1) !=</div>
-<div class="line"><span class="lineno">  416</span>       (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;dimension(0) * <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;dimension(1) * <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;dimension(2))));</div>
+<div class="line"><span class="lineno">  416</span>       (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dimension(0) * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dimension(1) * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dimension(2))));</div>
 <div class="line"><span class="lineno">  417</span> </div>
 <div class="line"><span class="lineno">  418</span>    <span class="comment">// Validate flatten kernel</span></div>
 <div class="line"><span class="lineno">  419</span>    ARM_COMPUTE_RETURN_ON_ERROR(CLFlattenLayer::validate(input, &amp;flatten_input));</div>
@@ -798,7 +798,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  422</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  423</span>  {</div>
 <div class="line"><span class="lineno">  424</span>    <span class="comment">// Fully Connected layer after a Fully Connected Layer without batches</span></div>
-<div class="line"><span class="lineno">  425</span>    ARM_COMPUTE_RETURN_ERROR_ON(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;dimension(0) != weights_to_use-&gt;dimension(1));</div>
+<div class="line"><span class="lineno">  425</span>    ARM_COMPUTE_RETURN_ERROR_ON(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dimension(0) != weights_to_use-&gt;dimension(1));</div>
 <div class="line"><span class="lineno">  426</span>  }</div>
 <div class="line"><span class="lineno">  427</span> </div>
 <div class="line"><span class="lineno">  428</span>  <span class="comment">// Validate matrix multiply kernel</span></div>

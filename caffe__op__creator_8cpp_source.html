@@ -211,16 +211,16 @@ $(document).ready(function(){initNavTree('caffe__op__creator_8cpp_source.html','
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>{</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">const</span> <span class="keywordtype">void</span> *src_data;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_enumeration" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3">mir::DataType</a> <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_enumeration" href="namespacemir.html#a07dec47866bd63b8e967cabdc82d39e3">mir::DataType</a> <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordflow">if</span> (blob.data_size() != 0)</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  {</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    assert(blob.double_data_size() == 0);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = mir::DataType::FLOAT32;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = mir::DataType::FLOAT32;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    src_data = blob.data().data();</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (blob.double_data_size() != 0)</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a> = mir::DataType::FLOAT64;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = mir::DataType::FLOAT64;</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    src_data = blob.double_data().data();</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  }</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">else</span></div>
@@ -229,7 +229,7 @@ $(document).ready(function(){initNavTree('caffe__op__creator_8cpp_source.html','
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  }</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keyword">const</span> <a class="code hl_class" href="classmir_1_1_shape.html">mir::Shape</a> shape = convertBlobShape(blob.shape());</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classmir_1_1_tensor_variant.html">TensorVariant</a>({<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>, shape}, src_data);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classmir_1_1_tensor_variant.html">TensorVariant</a>({<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>, shape}, src_data);</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>std::vector&lt;mir::Operation::Output *&gt;</div>
@@ -981,7 +981,7 @@ $(document).ready(function(){initNavTree('caffe__op__creator_8cpp_source.html','
 <div class="ttc" id="aclassmir__caffe_1_1_caffe_op_creator_html_afea79608bbbbf98ab241b42ddeaff1f7"><div class="ttname"><a href="classmir__caffe_1_1_caffe_op_creator.html#afea79608bbbbf98ab241b42ddeaff1f7">mir_caffe::CaffeOpCreator::convertConcat</a></div><div class="ttdeci">std::vector&lt; mir::Operation::Output * &gt; convertConcat(const caffe::LayerParameter &amp;layer, const std::vector&lt; mir::Operation::Output * &gt; &amp;inputs)</div><div class="ttdef"><b>Definition:</b> <a href="caffe__op__creator_8cpp_source.html#l00320">caffe_op_creator.cpp:320</a></div></div>
 <div class="ttc" id="acompiler_2mir_2include_2mir_2_index_8h_html"><div class="ttname"><a href="compiler_2mir_2include_2mir_2_index_8h.html">Index.h</a></div></div>
 <div class="ttc" id="acompiler_2mir_2include_2mir_2_tensor_8h_html"><div class="ttname"><a href="compiler_2mir_2include_2mir_2_tensor_8h.html">Tensor.h</a></div></div>
-<div class="ttc" id="anamespaceann_html_aae3a505782b54b21cb1168d3ca12c52f"><div class="ttname"><a href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">ann::dtype</a></div><div class="ttdeci">DType dtype(void)</div></div>
+<div class="ttc" id="anamespacecompare__tensors__all_html_aadd46f23b07171c5172769fa43fdae50"><div class="ttname"><a href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">compare_tensors_all.dtype</a></div><div class="ttdeci">dtype</div><div class="ttdef"><b>Definition:</b> <a href="compare__tensors__all_8py_source.html#l00160">compare_tensors_all.py:160</a></div></div>
 <div class="ttc" id="anamespaceinfer__testcases_html_a126aca5a441bec47fc7118a662076bbd"><div class="ttname"><a href="namespaceinfer__testcases.html#a126aca5a441bec47fc7118a662076bbd">infer_testcases.arg</a></div><div class="ttdeci">arg</div><div class="ttdef"><b>Definition:</b> <a href="infer__testcases_8py_source.html#l00046">infer_testcases.py:46</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html"><div class="ttname"><a href="namespacemir__caffe.html">mir_caffe</a></div><div class="ttdef"><b>Definition:</b> <a href="caffe__importer_8h_source.html#l00025">caffe_importer.h:26</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>

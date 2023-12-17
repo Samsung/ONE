@@ -240,7 +240,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to build tensor data. </p>
 <dl class="section note"><dt>Note</dt><dd>This will not be exported as a specific op </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html#_a4">/github/workspace/compiler/luci/pass/src/RemoveUnnecessaryTransposeNetPass.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html#_a5">/github/workspace/compiler/luci/pass/src/RemoveUnnecessaryTransposeNetPass.cpp</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">34</a> of file <a class="el" href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html">CircleConst.h</a>.</p>
@@ -265,11 +265,11 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00045">45</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   47</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   48</span>  assert(n &lt; size&lt;DT&gt;());</div>
 <div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> *(<span class="keyword">reinterpret_cast&lt;</span>typename <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a> *<span class="keyword">&gt;</span>(_data.data()) + n);</div>
 <div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="anamespaceann_html_aae3a505782b54b21cb1168d3ca12c52f"><div class="ttname"><a href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">ann::dtype</a></div><div class="ttdeci">DType dtype(void)</div></div>
+<div class="ttc" id="anamespacecompare__tensors__all_html_aadd46f23b07171c5172769fa43fdae50"><div class="ttname"><a href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">compare_tensors_all.dtype</a></div><div class="ttdeci">dtype</div><div class="ttdef"><b>Definition:</b> <a href="compare__tensors__all_8py_source.html#l00160">compare_tensors_all.py:160</a></div></div>
 <div class="ttc" id="astructloco_1_1_data_type_impl_html"><div class="ttname"><a href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl</a></div><div class="ttdoc">C++ scalar type corresponding to each DataType.</div><div class="ttdef"><b>Definition:</b> <a href="_data_type_traits_8h_source.html#l00032">DataTypeTraits.h:33</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -296,7 +296,7 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">38</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   40</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   41</span>  assert(n &lt; size&lt;DT&gt;());</div>
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>typename <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a> *<span class="keyword">&gt;</span>(_data.data()) + n);</div>
 <div class="line"><span class="lineno">   43</span>}</div>
@@ -325,7 +325,7 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00059">59</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   61</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> *(<span class="keyword">reinterpret_cast&lt;</span>typename <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a> *<span class="keyword">&gt;</span>(_data.data()));</div>
 <div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
@@ -351,7 +351,7 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00053">53</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
-<div class="line"><span class="lineno">   55</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   55</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">return</span> *(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>typename <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a> *<span class="keyword">&gt;</span>(_data.data()));</div>
 <div class="line"><span class="lineno">   57</span>}</div>
 </div><!-- fragment -->
@@ -377,7 +377,7 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00031">31</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   33</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   34</span>  _data.resize(l * <span class="keyword">sizeof</span>(<span class="keyword">typename</span> <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a>));</div>
 <div class="line"><span class="lineno">   35</span>}</div>
 </div><!-- fragment -->
@@ -405,7 +405,7 @@ template&lt;<a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb1
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">24</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  assert(<a class="code hl_function" href="namespaceann.html#aae3a505782b54b21cb1168d3ca12c52f">dtype</a>() == DT);</div>
+<div class="line"><span class="lineno">   26</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == DT);</div>
 <div class="line"><span class="lineno">   27</span>  assert(_data.size() % <span class="keyword">sizeof</span>(<span class="keyword">typename</span> <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a>) == 0);</div>
 <div class="line"><span class="lineno">   28</span>  <span class="keywordflow">return</span> _data.size() / <span class="keyword">sizeof</span>(<span class="keyword">typename</span> <a class="code hl_struct" href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl&lt;DT&gt;::Type</a>);</div>
 <div class="line"><span class="lineno">   29</span>}</div>

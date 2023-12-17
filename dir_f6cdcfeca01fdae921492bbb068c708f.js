@@ -24,7 +24,7 @@ var dir_f6cdcfeca01fdae921492bbb068c708f =
     [ "Pull.cpp", "_pull_8cpp.html", null ],
     [ "Push.cpp", "_push_8cpp.html", null ],
     [ "ReLU.cpp", "compiler_2locomotiv_2src_2_node_2_relu_8cpp.html", null ],
-    [ "ReLU6.cpp", "compiler_2locomotiv_2src_2_node_2_re_l_u6_8cpp.html", null ],
+    [ "ReLU6.cpp", "compiler_2locomotiv_2src_2_node_2_relu6_8cpp.html", null ],
     [ "Reshape.cpp", "compiler_2locomotiv_2src_2_node_2_reshape_8cpp.html", null ],
     [ "Softmax.cpp", "compiler_2locomotiv_2src_2_node_2_softmax_8cpp.html", null ],
     [ "Tanh.cpp", "compiler_2locomotiv_2src_2_node_2_tanh_8cpp.html", null ],

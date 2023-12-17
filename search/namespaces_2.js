@@ -15,7 +15,7 @@ var searchData=
   ['coco_12',['coco',['../namespacecoco.html',1,'']]],
   ['command_13',['Command',['../namespace_command.html',1,'']]],
   ['common_5fplace_14',['common_place',['../namespacecommon__place.html',1,'']]],
-  ['compare_5ftensors_15',['compare_tensors',['../namespacecompare__tensors.html',1,'']]],
+  ['compare_5ftensors_5fall_15',['compare_tensors_all',['../namespacecompare__tensors__all.html',1,'']]],
   ['compat_16',['compat',['../namespacecompat.html',1,'']]],
   ['concatenation_5f000_17',['Concatenation_000',['../namespace_concatenation__000.html',1,'']]],
   ['conftest_18',['conftest',['../namespaceconftest.html',1,'']]],

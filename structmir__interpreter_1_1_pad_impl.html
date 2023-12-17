@@ -150,7 +150,7 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_pad_8cpp_source.html#l00035">35</a> of file <a class="el" href="compiler_2mir-interpreter_2src_2ops_2_pad_8cpp_source.html">Pad.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
 <div class="line"><span class="lineno">   37</span>  <a class="code hl_class" href="class_tensor.html">Tensor&lt;T&gt;</a> result_accessor(result);</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_class" href="class_tensor.html">Tensor&lt;T&gt;</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(inputv);</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_class" href="class_tensor.html">Tensor&lt;T&gt;</a> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(inputv);</div>
 <div class="line"><span class="lineno">   39</span> </div>
 <div class="line"><span class="lineno">   40</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> out_shape = result_accessor.getShape();</div>
 <div class="line"><span class="lineno">   41</span> </div>
@@ -186,7 +186,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   71</span>    }</div>
 <div class="line"><span class="lineno">   72</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   73</span>    {</div>
-<div class="line"><span class="lineno">   74</span>      result_accessor.at(ind) = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.at(temp_index);</div>
+<div class="line"><span class="lineno">   74</span>      result_accessor.at(ind) = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.at(temp_index);</div>
 <div class="line"><span class="lineno">   75</span>    }</div>
 <div class="line"><span class="lineno">   76</span>  }</div>
 <div class="line"><span class="lineno">   77</span>}</div>
@@ -196,7 +196,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_pad_op_html_a5105bc1e764504c3fc7b37034ee66bfc"><div class="ttname"><a href="classmir_1_1ops_1_1_pad_op.html#a5105bc1e764504c3fc7b37034ee66bfc">mir::ops::PadOp::getPaddingValue</a></div><div class="ttdeci">float getPaddingValue() const</div><div class="ttdef"><b>Definition:</b> <a href="_pad_op_8h_source.html#l00047">PadOp.h:47</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_pad_op_html_a6ebe7d8e522fcc252cd0d1c618031383"><div class="ttname"><a href="classmir_1_1ops_1_1_pad_op.html#a6ebe7d8e522fcc252cd0d1c618031383">mir::ops::PadOp::getPaddingBefore</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getPaddingBefore() const</div><div class="ttdef"><b>Definition:</b> <a href="_pad_op_8h_source.html#l00043">PadOp.h:43</a></div></div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_pad_op_html_abf6157839f08ac9a66514773d631959b"><div class="ttname"><a href="classmir_1_1ops_1_1_pad_op.html#abf6157839f08ac9a66514773d631959b">mir::ops::PadOp::getPaddingAfter</a></div><div class="ttdeci">const std::vector&lt; std::int32_t &gt; &amp; getPaddingAfter() const</div><div class="ttdef"><b>Definition:</b> <a href="_pad_op_8h_source.html#l00045">PadOp.h:45</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1training__ops_html_a71315b19998df5f166543488ffe4033d"><div class="ttname"><a href="namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d">nnfw::cker::training_ops::Index</a></div><div class="ttdeci">Eigen::Index Index</div><div class="ttdef"><b>Definition:</b> <a href="training__ops_8h_source.html#l00071">training_ops.h:71</a></div></div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 </div><!-- fragment -->

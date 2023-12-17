@@ -46,6 +46,7 @@ var namespaceonert_1_1ir =
     [ "OperandIndexMap", "namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3", null ],
     [ "OperationIndex", "namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347", null ],
     [ "OperationIndexMap", "namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f", null ],
+    [ "OriginIndex", "namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672", null ],
     [ "SubgraphIndex", "namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c", null ],
     [ "Activation", "namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4", [
       [ "NONE", "namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693", null ],
@@ -110,6 +111,7 @@ var namespaceonert_1_1ir =
     [ "operator<<", "namespaceonert_1_1ir.html#a2b3f8a415dd135d4cec8696cf075c389", null ],
     [ "operator<<", "namespaceonert_1_1ir.html#a3690d12e8cfae8d876f809f73fecf090", null ],
     [ "operator<<", "namespaceonert_1_1ir.html#a355761868f40defdbcef748fdd3f1928", null ],
+    [ "operator<<", "namespaceonert_1_1ir.html#aeab04a99aaa854bb49818981b7c08b2f", null ],
     [ "operator<<", "namespaceonert_1_1ir.html#af872538cc8324eba9d534870bd023b22", null ],
     [ "operator==", "namespaceonert_1_1ir.html#a2ff5156baf7c263628243dd1304f2799", null ],
     [ "operator==", "namespaceonert_1_1ir.html#a556d7c5424d2bdf6bca6271e9bd94c6c", null ],

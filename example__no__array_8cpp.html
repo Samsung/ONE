@@ -208,7 +208,7 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="example__no__array_8cpp_source.html#l00051">51</a> of file <a class="el" href="example__no__array_8cpp_source.html">example_no_array.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
 <div class="line"><span class="lineno">   53</span>  std::array&lt;size_t, 3&gt; in_dims{3, 3, 4};</div>
-<div class="line"><span class="lineno">   54</span>  std::vector&lt;float&gt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>(3 * 3 * 4);</div>
+<div class="line"><span class="lineno">   54</span>  std::vector&lt;float&gt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>(3 * 3 * 4);</div>
 <div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 3 * 3 * 4; ++i)</div>
 <div class="line"><span class="lineno">   56</span>    input[i] = i;</div>
 <div class="line"><span class="lineno">   57</span> </div>
@@ -223,15 +223,15 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   66</span>  indices[5] = 2;</div>
 <div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span>  std::array&lt;size_t, 3&gt; output_dims{1, 3, 4};</div>
-<div class="line"><span class="lineno">   69</span>  std::vector&lt;float&gt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>(1 * 3 * 4);</div>
+<div class="line"><span class="lineno">   69</span>  std::vector&lt;float&gt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>(1 * 3 * 4);</div>
 <div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_function" href="example__no__array_8cpp.html#a824a6538ba181e56abca2600317dc5e1">gather_no_array</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>.data(), in_dims, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.data(), output_dims, indices.data(), indices_shape);</div>
+<div class="line"><span class="lineno">   71</span>  <a class="code hl_function" href="example__no__array_8cpp.html#a824a6538ba181e56abca2600317dc5e1">gather_no_array</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.data(), in_dims, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.data(), output_dims, indices.data(), indices_shape);</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; output_dims[0]; ++i)</div>
 <div class="line"><span class="lineno">   74</span>  {</div>
 <div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; output_dims[1]; ++j)</div>
 <div class="line"><span class="lineno">   76</span>    {</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keyword">auto</span> out_ptr = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>.data() + i * output_dims[1] * output_dims[2] + j * output_dims[2];</div>
+<div class="line"><span class="lineno">   77</span>      <span class="keyword">auto</span> out_ptr = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>.data() + i * output_dims[1] * output_dims[2] + j * output_dims[2];</div>
 <div class="line"><span class="lineno">   78</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; output_dims[2]; ++k)</div>
 <div class="line"><span class="lineno">   79</span>      {</div>
 <div class="line"><span class="lineno">   80</span>        std::cout &lt;&lt; out_ptr[k] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
@@ -241,8 +241,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span>  }</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 <div class="ttc" id="aexample__no__array_8cpp_html_a824a6538ba181e56abca2600317dc5e1"><div class="ttname"><a href="example__no__array_8cpp.html#a824a6538ba181e56abca2600317dc5e1">gather_no_array</a></div><div class="ttdeci">void gather_no_array(const float *in_data, const std::array&lt; size_t, 3 &gt; &amp;dims, float *out_data, const std::array&lt; size_t, 3 &gt; &amp;out_dims, const int *indices, const std::array&lt; size_t, 3 &gt; &amp;indices_dims)</div><div class="ttdef"><b>Definition:</b> <a href="example__no__array_8cpp_source.html#l00023">example_no_array.cpp:23</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="example__no__array_8cpp_source.html#l00023">gather_no_array()</a>.</p>
 

@@ -277,13 +277,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_reshaping_layer_8cpp_source.html#l00026">26</a> of file <a class="el" href="_c_l_fully_connected_reshaping_layer_8cpp_source.html">CLFullyConnectedReshapingLayer.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  _input = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
+<div class="line"><span class="lineno">   33</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
 <div class="line"><span class="lineno">   34</span>  _weights = weights;</div>
 <div class="line"><span class="lineno">   35</span>  _biases = biases;</div>
-<div class="line"><span class="lineno">   36</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>;</div>
+<div class="line"><span class="lineno">   36</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">   37</span>  _needs_reshape = needs_reshape;</div>
 <div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> ICLTensor *input_to_use = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>;</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> ICLTensor *input_to_use = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (_needs_reshape)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <span class="comment">// reshape</span></div>
@@ -303,8 +303,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>    }</div>
 <div class="line"><span class="lineno">   57</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html#a93880f6fd5f84763d9a6e6e1bc7ef121a3ff92be092bd363fc3b24fc65ec806ef">KernelType::PREPROCESSED_WEIGHTS</a>)</div>
 <div class="line"><span class="lineno">   58</span>    {</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordtype">bool</span> is_hybrid = (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_type() == DataType::F32 ||</div>
-<div class="line"><span class="lineno">   60</span>                        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">input</a>-&gt;info()-&gt;data_type() == DataType::F16) &amp;&amp;</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordtype">bool</span> is_hybrid = (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;data_type() == DataType::F32 ||</div>
+<div class="line"><span class="lineno">   60</span>                        <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info()-&gt;data_type() == DataType::F16) &amp;&amp;</div>
 <div class="line"><span class="lineno">   61</span>                       (weights-&gt;info()-&gt;data_type() == DataType::QSYMM8 ||</div>
 <div class="line"><span class="lineno">   62</span>                        weights-&gt;info()-&gt;data_type() == DataType::QASYMM8_SIGNED);</div>
 <div class="line"><span class="lineno">   63</span> </div>
@@ -339,8 +339,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_fully_connected_hybrid_layer_html"><div class="ttname"><a href="classarm__compute_1_1_c_l_fully_connected_hybrid_layer.html">arm_compute::CLFullyConnectedHybridLayer</a></div><div class="ttdef"><b>Definition:</b> <a href="_c_l_fully_connected_hybrid_layer_8h_source.html#l00099">CLFullyConnectedHybridLayer.h:100</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_fully_connected_layer_ex_html"><div class="ttname"><a href="classarm__compute_1_1_c_l_fully_connected_layer_ex.html">arm_compute::CLFullyConnectedLayerEx</a></div><div class="ttdef"><b>Definition:</b> <a href="_c_l_fully_connected_layer_ex_8h_source.html#l00136">CLFullyConnectedLayerEx.h:137</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_a48dd077479f23bb4552c2d7d6a7a4d37"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#a48dd077479f23bb4552c2d7d6a7a4d37">gen_h5_explicit_inputs.input</a></div><div class="ttdeci">input</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00034">gen_h5_explicit_inputs.py:34</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html#a93880f6fd5f84763d9a6e6e1bc7ef121ab61773b9b3968a9988d765d728985862">GENERAL</a>, and <a class="el" href="classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html#a93880f6fd5f84763d9a6e6e1bc7ef121a3ff92be092bd363fc3b24fc65ec806ef">PREPROCESSED_WEIGHTS</a>.</p>
 

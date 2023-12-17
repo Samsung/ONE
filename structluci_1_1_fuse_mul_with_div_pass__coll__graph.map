@@ -1,0 +1,4 @@
+<map id="luci::FuseMulWithDivPass" name="luci::FuseMulWithDivPass">
+<area shape="rect" id="node1" title="Class to fuse Mul operation with a Div operation." alt="" coords="5,79,179,104"/>
+<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="51,5,133,31"/>
+</map>

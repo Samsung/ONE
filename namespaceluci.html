@@ -1255,6 +1255,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_mul_with_conv_pass.html">FuseMulWithConvPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse Mul operation with a preceding Conv.  <a href="structluci_1_1_fuse_mul_with_conv_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_mul_with_div_pass.html">FuseMulWithDivPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse Mul operation with a Div operation.  <a href="structluci_1_1_fuse_mul_with_div_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_pre_activation_batch_norm_pass.html">FusePreActivationBatchNormPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse batch normalization of pre-activation.  <a href="structluci_1_1_fuse_pre_activation_batch_norm_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3143,14 +3146,14 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> (uint32_t out = 0; out &lt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;outputs()-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++out)</div>
 <div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a>(graph, out); <span class="comment">// output is CircleOutput</span></div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a>(graph, out); <span class="comment">// output is CircleOutput</span></div>
 <div class="line"><span class="lineno">   73</span>    assert(output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   74</span> </div>
 <div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> node_name = new_outputs.at(out);</div>
 <div class="line"><span class="lineno">   76</span>    <span class="keyword">auto</span> node = named_nodes[node_name];</div>
 <div class="line"><span class="lineno">   77</span>    assert(node != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;from(node);</div>
+<div class="line"><span class="lineno">   79</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;from(node);</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>    <span class="comment">// update GraphOutput shape, dtype to node</span></div>
 <div class="line"><span class="lineno">   82</span>    <span class="keyword">auto</span> graph_out = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>-&gt;outputs()-&gt;at(out);</div>
@@ -3171,7 +3174,7 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassoops_1_1_user_exn_html"><div class="ttname"><a href="classoops_1_1_user_exn.html">oops::UserExn</a></div><div class="ttdoc">Exception to user.</div><div class="ttdef"><b>Definition:</b> <a href="_user_exn_8h_source.html#l00041">UserExn.h:42</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs_html_acd1aa9ba45d45c6b619b723e6e34c576"><div class="ttname"><a href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">gen_h5_explicit_inputs.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs_8py_source.html#l00035">gen_h5_explicit_inputs.py:35</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition:</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ac7dd3da6e892c67c7db0f62c1001c61d"><div class="ttname"><a href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a></div><div class="ttdeci">CircleOutput * output_node(loco::Graph *g, const loco::GraphOutputIndex &amp;index)</div><div class="ttdoc">Find a CircleOutput node with a given output index.</div><div class="ttdef"><b>Definition:</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00028">CircleNodes.cpp:28</a></div></div>
 </div><!-- fragment -->
@@ -5766,7 +5769,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 <div class="line"><span class="lineno">   68</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   69</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html#l01403">luci::ConvertNCHWToNHWCPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html#l01426">luci::ConvertNCHWToNHWCPass::run()</a>.</p>
 
 </div>
 </div>
@@ -8489,11 +8492,11 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  119</span>      changed = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  120</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = pgroup-&gt;outputs.begin(); it != pgroup-&gt;outputs.end(); ++it)</div>
 <div class="line"><span class="lineno">  121</span>      {</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a> = *it;</div>
+<div class="line"><span class="lineno">  122</span>        <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = *it;</div>
 <div class="line"><span class="lineno">  123</span>        <span class="keyword">auto</span> oit = std::find(used_outputs.begin(), used_outputs.end(), output);</div>
 <div class="line"><span class="lineno">  124</span>        <span class="keywordflow">if</span> (oit == used_outputs.end())</div>
 <div class="line"><span class="lineno">  125</span>        {</div>
-<div class="line"><span class="lineno">  126</span>          <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup output &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs.html#acd1aa9ba45d45c6b619b723e6e34c576">output</a>-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
+<div class="line"><span class="lineno">  126</span>          <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;  Cleanup output &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;name() &lt;&lt; <span class="stringliteral">&quot; from group &quot;</span> &lt;&lt; pgroup-&gt;group;</div>
 <div class="line"><span class="lineno">  127</span>          pgroup-&gt;outputs.erase(it);</div>
 <div class="line"><span class="lineno">  128</span>          changed = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  129</span>          <span class="keywordflow">break</span>;</div>
@@ -9120,7 +9123,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00515">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00251">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00520">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>
