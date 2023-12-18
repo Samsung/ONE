@@ -177,9 +177,9 @@ private:
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
 
 public:
-  void add_metadata(const std::string &name, std::shared_ptr<const ir::Data> data)
+  void add_metadata(const std::string &name, std::unique_ptr<const ir::Data> data)
   {
-    _metadatas.emplace(name, data);
+    _metadatas.emplace(name, std::move(data));
   }
 
   bool is_metadata_exist(const std::string &name) const
@@ -187,13 +187,20 @@ public:
     return _metadatas.find(name) != _metadatas.end();
   }
 
-  std::shared_ptr<const ir::Data> get_metadata(const std::string name) const
+  std::unique_ptr<const ir::Data> get_metadata(const std::string name)
   {
-    return _metadatas.at(name);
+    auto m = _metadatas.find(name);
+
+    if (m == _metadatas.end())
+      throw std::out_of_range{"no meatdata named " + name};
+
+    auto data = std::move(m->second);
+    _metadatas.erase(m);
+    return data;
   }
 
 private:
-  std::unordered_map<std::string, std::shared_ptr<const ir::Data>> _metadatas;
+  std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
 };
 } // namespace ir
 } // namespace onert
