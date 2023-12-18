@@ -60,7 +60,8 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
       os << "sgd";
       break;
     default:
-      os << "unsupported optimzier";
+      os << "unsupported optimizer";
+      break;
   }
   return os;
 }
@@ -77,6 +78,7 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
       break;
     default:
       os << "unsupported loss";
+      break;
   }
   return os;
 }
@@ -103,7 +105,7 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss
 
 std::ostream &operator<<(std::ostream &os, const nnfw_loss_info &loss_info)
 {
-  os << "{loss= " << loss_info.loss << ", type= " << loss_info.reduction_type << "}";
+  os << "{loss = " << loss_info.loss << ", reduction = " << loss_info.reduction_type << "}";
   return os;
 }
 
