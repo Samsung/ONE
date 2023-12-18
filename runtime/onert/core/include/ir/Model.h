@@ -182,7 +182,7 @@ public:
     _metadatas.emplace(name, std::move(data));
   }
 
-  bool is_metadata_exist(const std::string &name) const
+  bool exists_metadata(const std::string &name) const
   {
     return _metadatas.find(name) != _metadatas.end();
   }
