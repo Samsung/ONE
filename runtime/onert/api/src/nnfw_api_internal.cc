@@ -37,6 +37,10 @@
 #include <dirent.h>
 #include <misc/string_helpers.h>
 
+#include <fcntl.h>    // O_RDONLY
+#include <sys/mman.h> // mmap, munmap
+#include <sys/stat.h> // fstat
+#include <unistd.h>   // close
 /*
  * API does not accept string argument longer than max length below
  */
@@ -1479,8 +1483,60 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // NYI
-  return NNFW_STATUS_ERROR;
+  class MMappedFile
+  {
+  public:
+    MMappedFile(const char *filename) { _fd = open(filename, O_RDWR); }
+
+    bool ensure_mmap()
+    {
+      struct stat file_stat;
+      if (fstat(_fd, &file_stat) != 0 || file_stat.st_size < 0 ||
+          static_cast<uint64_t>(file_stat.st_size) > SIZE_MAX)
+        return false;
+
+      _buf_sz = static_cast<size_t>(file_stat.st_size);
+      _buf = mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0);
+      return _buf != MAP_FAILED;
+    }
+
+    bool close()
+    {
+      bool ret = false;
+      if (_buf != MAP_FAILED)
+      {
+        ret = munmap(_buf, _buf_sz) == 0;
+        _buf = MAP_FAILED; // mark as cleaned up
+      }
+      if (_fd != -1)
+      {
+        ::close(_fd);
+        _fd = -1; // mark as cleaned up
+      }
+      return ret;
+    }
+
+    ~MMappedFile() { close(); }
+
+    uint8_t *buf() const { return static_cast<uint8_t *>(_buf); }
+    size_t buf_size() const { return _buf_sz; }
+
+  private:
+    int _fd;
+    void *_buf = MAP_FAILED;
+    size_t _buf_sz = 0;
+  };
+
+  MMappedFile mmapfile(path);
+  if (!mmapfile.ensure_mmap())
+    return NNFW_STATUS_ERROR;
+
+  // TODO: Update weights in mmapfile
+
+  if (mmapfile.close() == false)
+    return NNFW_STATUS_ERROR;
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 bool nnfw_session::isStatePreparedTraining()
