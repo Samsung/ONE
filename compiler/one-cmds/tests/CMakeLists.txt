@@ -123,6 +123,7 @@ endif(ENABLE_ONE_IMPORT_PYTORCH)
 get_filename_component(ONE_CMDS_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 set(ONE_PYTHON_DIR "onelib")
 set(CONSTANT_EXPORTING_SCRIPT "${ONE_CMDS_DIR}/${ONE_PYTHON_DIR}/export_constant.py")
+set(CONSTANT_SCRIPT "${ONE_CMDS_DIR}/${ONE_PYTHON_DIR}/constant.py")
 set(O1_OPTION "O1")
 set(O1_TXT_FILE "${O1_OPTION}.list")
 set(O1_TXT_FILE_BIN "${CMAKE_CURRENT_BINARY_DIR}/${O1_TXT_FILE}")
@@ -132,7 +133,7 @@ set(NON_O1_TXT_FILE_BIN "${CMAKE_CURRENT_BINARY_DIR}/${NON_O1_TXT_FILE}")
 add_custom_command(OUTPUT ${O1_TXT_FILE_BIN}
   COMMAND ${PYTHON_EXECUTABLE} ${CONSTANT_EXPORTING_SCRIPT} --constant ${O1_OPTION}
                                     --format txt --output_path ${O1_TXT_FILE_BIN}
-  DEPENDS ${CONSTANT_EXPORTING_SCRIPT}
+  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT}
   COMMENT "Generate ${O1_TXT_FILE}"
 )
 
@@ -140,7 +141,7 @@ add_custom_command(OUTPUT ${NON_O1_TXT_FILE_BIN}
   COMMAND ${PYTHON_EXECUTABLE} ${CONSTANT_EXPORTING_SCRIPT} --constant ${O1_OPTION}
                                     --format txt --output_path ${NON_O1_TXT_FILE_BIN}
                                     --exclusive
-  DEPENDS ${CONSTANT_EXPORTING_SCRIPT}
+  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT}
   COMMENT "Generate ${NON_O1_TXT_FILE}"
 )
 
