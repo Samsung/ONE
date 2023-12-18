@@ -207,6 +207,13 @@ float TrainableExecutor::getLoss(const ir::IOIndex &pred_io_ind) const
   return static_cast<float>(sum);
 }
 
+void TrainableExecutor::iterateTrainableTensors(
+  const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)> &fn)
+  const
+{
+  _tensor_regs.iterateTrainableTensors(fn);
+}
+
 } // namespace train
 } // namespace exec
 } // namespace onert
