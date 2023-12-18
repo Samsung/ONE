@@ -185,6 +185,7 @@ public:
   void visit(const luci::CircleBCQFullyConnected *) final;
   void visit(const luci::CircleBCQGather *) final;
   void visit(const luci::CircleInstanceNorm *) final;
+  void visit(const luci::CircleGRU *) final;
 
   // NOTE CircleInput and CircleOutput are not handled here as these need
   //      link with graph I/O

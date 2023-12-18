@@ -268,6 +268,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  CIR_GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
   INSTANCE_NORM = -2,
@@ -619,6 +620,7 @@ union BuiltinOptions {
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
+  CircleGRUOptions = 255,
 }
 
 union BuiltinOptions2{
@@ -1429,6 +1431,12 @@ table BucketizeOptions {
 
 table GeluOptions {
   approximate: bool;
+}
+
+table CircleGRUOptions {
+  fused_activation_function:ActivationFunctionType;
+  return_sequences : bool;
+  time_major : bool;
 }
 
 table DynamicUpdateSliceOptions {

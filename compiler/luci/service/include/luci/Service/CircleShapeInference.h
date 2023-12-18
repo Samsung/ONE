@@ -164,6 +164,7 @@ public:
   // loco::TensorShape visit(const luci::CircleBCQFullyConnected *node) final;
   // loco::TensorShape visit(const luci::CircleBCQGather *node) final;
   // loco::TensorShape visit(const luci::CircleInstanceNorm *node) final;
+  // loco::TensorShape visit(const luci::CircleGRU *node) final;
 
   // Virtual
   // loco::TensorShape visit(const luci::CircleCustomOut *node) final;
