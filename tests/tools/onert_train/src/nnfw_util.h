@@ -18,6 +18,7 @@
 #define __ONERT_TRAIN_NNFW_UTIL_H__
 
 #include "nnfw.h"
+#include "nnfw_experimental.h"
 
 #define NNPR_ENSURE_STATUS(a)        \
   do                                 \
@@ -32,6 +33,7 @@ namespace onert_train
 {
 uint64_t num_elems(const nnfw_tensorinfo *ti);
 uint64_t bufsize_for(const nnfw_tensorinfo *ti);
-} // end of namespace onert_train
 
+std::ostream &operator<<(std::ostream &os, const nnfw_train_info &info);
+} // end of namespace onert_train
 #endif // __ONERT_TRAIN_NNFW_UTIL_H__

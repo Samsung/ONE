@@ -16,7 +16,10 @@
 
 #include <cassert>
 #include <string>
+#include <iostream>
+
 #include "nnfw.h"
+#include "nnfw_experimental.h"
 
 namespace onert_train
 {
@@ -44,6 +47,75 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
     sizeof(int16_t), /* NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7 */
   };
   return elmsize[ti->dtype] * num_elems(ti);
+}
+
+std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
+{
+  switch (opt)
+  {
+    case NNFW_TRAIN_OPTIMIZER_ADAM:
+      os << "adam";
+      break;
+    case NNFW_TRAIN_OPTIMIZER_SGD:
+      os << "sgd";
+      break;
+    default:
+      os << "unsupported optimizer";
+      break;
+  }
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
+{
+  switch (loss)
+  {
+    case NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR:
+      os << "mean squared error";
+      break;
+    case NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY:
+      os << "categorical crossentropy";
+      break;
+    default:
+      os << "unsupported loss";
+      break;
+  }
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss_reduction)
+{
+  switch (loss_reduction)
+  {
+    case NNFW_TRAIN_LOSS_REDUCTION_INVALID:
+      os << "use default setting";
+      break;
+    case NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE:
+      os << "sum over batch size";
+      break;
+    case NNFW_TRAIN_LOSS_REDUCTION_SUM:
+      os << "sum";
+      break;
+    default:
+      os << "unsupported reduction type";
+      break;
+  }
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const nnfw_loss_info &loss_info)
+{
+  os << "{loss = " << loss_info.loss << ", reduction = " << loss_info.reduction_type << "}";
+  return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const nnfw_train_info &info)
+{
+  os << "- learning_rate   = " << info.learning_rate << "\n";
+  os << "- batch_size      = " << info.batch_size << "\n";
+  os << "- loss_info       = " << info.loss_info << "\n";
+  os << "- optimizer       = " << info.opt << "\n";
+  return os;
 }
 
 } // namespace onert_train
