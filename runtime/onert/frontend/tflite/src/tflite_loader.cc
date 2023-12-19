@@ -34,6 +34,7 @@ struct LoaderDomain
   using BuiltinOperator = onert_tflite::BuiltinOperator;
   using CustomOptionsFormat = onert_tflite::CustomOptionsFormat;
   using Model = onert_tflite::Model;
+  using Metadata = onert_tflite::Metadata;
   using Operator = onert_tflite::Operator;
   using Padding = onert_tflite::Padding;
   using Pool2DOptions = onert_tflite::Pool2DOptions;

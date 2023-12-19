@@ -175,8 +175,34 @@ public:
 
 private:
   std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
-};
 
+public:
+  void add_metadata(const std::string &name, std::unique_ptr<const ir::Data> data)
+  {
+    _metadatas.emplace(name, std::move(data));
+  }
+
+  bool exists_metadata(const std::string &name) const
+  {
+    return _metadatas.find(name) != _metadatas.end();
+  }
+
+  // NOTE The corresponding metadata is deleted from the model and returned
+  std::unique_ptr<const ir::Data> extract_metadata(const std::string name)
+  {
+    auto m = _metadatas.find(name);
+
+    if (m == _metadatas.end())
+      throw std::out_of_range{"no meatdata named " + name};
+
+    auto data = std::move(m->second);
+    _metadatas.erase(m);
+    return data;
+  }
+
+private:
+  std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
+};
 } // namespace ir
 } // namespace onert
 
