@@ -53,8 +53,7 @@ public:
    * @return std::future<typename std::result_of<F(uint32_t, Args...)>::type>
    */
   template <class F, class... Args>
-  std::future<typename std::result_of<F(uint32_t, Args...)>::type> enqueueJob(F &&f,
-                                                                              Args &&... args)
+  std::future<typename std::result_of<F(uint32_t, Args...)>::type> enqueueJob(F &&f, Args &&...args)
   {
     if (_stop_all)
     {

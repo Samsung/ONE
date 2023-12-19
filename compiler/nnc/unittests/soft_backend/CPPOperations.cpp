@@ -228,7 +228,7 @@ mir::TensorVariant getReferenceTensor(mir::Graph &g, mir::Operation *op)
  * @brief Run selected operation, used to make code in tests more compact and fit getReferenceTensor
  * format
  */
-template <typename Operation, typename... Args> Tensor run(Operation op, const Args &... args)
+template <typename Operation, typename... Args> Tensor run(Operation op, const Args &...args)
 {
   Tensor output;
   op(output, args...);
@@ -308,7 +308,7 @@ void createAndRunTestGraph(
   function<mir::Operation *(mir::Graph &, const std::vector<mir::Operation::Output *> &inputs)>
     op_generator,
   TestFunc artifactOperation, const vector<unique_ptr<mir::TensorVariant>> &input_ntensors,
-  Args &... input_atensors)
+  Args &...input_atensors)
 {
   mir::Graph g;
   mir::Operation *actual_operation = fillGraph(g, op_generator, input_ntensors);

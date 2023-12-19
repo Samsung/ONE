@@ -62,7 +62,7 @@ void compareQuant8(const IPortableTensor *lhs, const IPortableTensor *rhs, IPort
   params.is_broadcast = !HaveSameShapes(lhs, rhs);
 
   using CompareFunction = void (*)(
-    ComparisonParams & params, const Shape &input1_shape, const T *input1_data,
+    ComparisonParams &params, const Shape &input1_shape, const T *input1_data,
     const Shape &input2_shape, const T *input2_data, const Shape &output_shape, bool *output_data);
 
   static const CompareFunction broadcast_fns[] = {

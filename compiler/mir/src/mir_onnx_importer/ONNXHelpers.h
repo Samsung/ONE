@@ -38,7 +38,7 @@ mir::TensorVariant createTensor(const onnx::TensorProto *tensor);
 mir::Operation *foldConstants(mir::Graph *graph, mir::Operation *op);
 
 template <typename OpType, typename... Types>
-mir::Operation *createOp(mir::Graph *graph, Types &&... args)
+mir::Operation *createOp(mir::Graph *graph, Types &&...args)
 {
   auto op = graph->create<OpType>(std::forward<Types>(args)...);
   op = foldConstants(graph, op);

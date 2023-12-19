@@ -30,8 +30,8 @@ public:
                         float beta1, float beta2, float epsilon, bool use_nesterov,
                         uint32_t nums_step)
     : _trainable{trainable}, _gradient{gradient}, _m{m}, _v{v}, _learning_rate{learning_rate},
-      _beta1{beta1}, _beta2{beta2}, _epsilon{epsilon}, _use_nesterov{use_nesterov}, _nums_step{
-                                                                                      nums_step}
+      _beta1{beta1}, _beta2{beta2}, _epsilon{epsilon}, _use_nesterov{use_nesterov},
+      _nums_step{nums_step}
   {
     EXPECT_TRUE(trainable.size() == gradient.size());
     EXPECT_TRUE(trainable.size() == m.size());

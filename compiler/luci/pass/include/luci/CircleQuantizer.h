@@ -47,7 +47,7 @@ public:
     public:
       // some helper methods
       size_t size(void) const { return items.size(); }
-      template <class... Args> void emplace_back(Args &&... args) { items.emplace_back(args...); }
+      template <class... Args> void emplace_back(Args &&...args) { items.emplace_back(args...); }
       std::vector<LayerParams>::iterator begin() { return items.begin(); };
       std::vector<LayerParams>::iterator end() { return items.end(); };
 

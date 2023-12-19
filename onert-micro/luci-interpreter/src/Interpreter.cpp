@@ -38,7 +38,10 @@ Interpreter::Interpreter(const char *model_data_raw, const InterpreterConfigure 
     _memory_manager = std::make_unique<StaticMemoryManager>(
       configuration._input_buf_size, configuration._temp_buf_size, configuration._output_buf_size);
   }
-  else { _memory_manager = std::make_unique<SimpleMemoryManager>(); }
+  else
+  {
+    _memory_manager = std::make_unique<SimpleMemoryManager>();
+  }
 
   _memory_manager->is_allocate_input(configuration.getAllocateInputValue());
 

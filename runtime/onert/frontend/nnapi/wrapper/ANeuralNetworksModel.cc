@@ -27,8 +27,8 @@
 // ANeuralNetworksModel
 //
 ANeuralNetworksModel::ANeuralNetworksModel() noexcept
-  : _finished_building{false}, _optional_operands{}, _operand_usages{}, _allowFloat32toFloat16{
-                                                                          false}
+  : _finished_building{false}, _optional_operands{}, _operand_usages{},
+    _allowFloat32toFloat16{false}
 {
   _graph = std::make_shared<onert::ir::Graph>();
 }

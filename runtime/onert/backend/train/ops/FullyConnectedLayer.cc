@@ -55,8 +55,8 @@ namespace ops
 FullyConnectedLayer::FullyConnectedLayer()
   : cpu::ops::FullyConnectedLayer{}, _grad_weights{nullptr}, _grad_bias{nullptr},
     _back_prop_input{nullptr}, _back_prop_output{nullptr}, _transposed_weights{nullptr},
-    _transposed_input{nullptr}, _transposed_back_prop_output{nullptr}, _act_back_prop_output{
-                                                                         nullptr}
+    _transposed_input{nullptr}, _transposed_back_prop_output{nullptr},
+    _act_back_prop_output{nullptr}
 {
   // DO NOTHING
 }
