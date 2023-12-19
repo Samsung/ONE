@@ -36,9 +36,10 @@ float Metric::categoricalAccuracy(const T *output, const T *expected, uint32_t b
   int correct = 0;
   for (int b = 0; b < batch; ++b)
   {
-    int b_offset = b * size;
-    std::vector<T> boutput(output + b_offset, output + b_offset + size);
-    std::vector<T> bexpected(expected + b_offset, expected + b_offset + size);
+    int begin_offset = b * size;
+    int end_offset = begin_offset + size;
+    std::vector<T> boutput(output + begin_offset, output + end_offset);
+    std::vector<T> bexpected(expected + begin_offset, expected + end_offset);
     auto output_idx =
       std::distance(boutput.begin(), std::max_element(boutput.begin(), boutput.end()));
     auto expected_idx =
