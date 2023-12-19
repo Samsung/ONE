@@ -20,6 +20,8 @@
 #include "nnfw.h"
 #include "nnfw_experimental.h"
 
+#include <ostream>
+
 #define NNPR_ENSURE_STATUS(a)        \
   do                                 \
   {                                  \
