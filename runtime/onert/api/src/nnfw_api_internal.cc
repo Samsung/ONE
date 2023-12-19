@@ -1556,15 +1556,15 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
       if (!array)
         throw std::runtime_error("Data for trainable tensor's buffer is invalid");
 
-      uint8_t *org_buf = const_cast<uint8_t *>(array->Data());
-      if (!org_buf)
-        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
-
       auto org_buf_sz = array->size();
       if (org_buf_sz != tensor->total_size())
         throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
 
-      memcpy(org_buf, tensor->buffer(), org_buf_sz);
+      uint8_t *org_buf = const_cast<uint8_t *>(array->Data());
+      if (!org_buf)
+        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+
+      memcpy(const_cast<uint8_t *>(org_buf), tensor->buffer(), org_buf_sz);
     });
   }
   catch (const std::exception &e)
