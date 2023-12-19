@@ -58,7 +58,7 @@ public:
 
 private:
   ir::train::LossInfo _loss_info;
-  ir::train::OptimizerInfo _optimizer_info{ir::train::OptimizerCode::Invalid, 0};
+  ir::train::OptimizerInfo _optimizer_info;
   uint32_t _batch_size = 0;
 };
 
