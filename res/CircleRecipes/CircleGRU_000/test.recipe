@@ -41,7 +41,7 @@ operand {
 operation {
   type: "CircleGRU"
   circle_gru_options {
-    activation: TANH
+    activation: RELU
     return_sequences: false
     time_major: false
   }

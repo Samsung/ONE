@@ -807,6 +807,24 @@ public:
   }
 };
 
+class CircleGRUPrinter : public OpPrinter
+{
+public:
+  void options(const circle::Operator *op, std::ostream &os) const override
+  {
+    if (auto *params = op->builtin_options_as_CircleGRUOptions())
+    {
+      os << "    ";
+      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
+         << ") ";
+      os << "return_sequences(" << params->return_sequences() << ") ";
+      os << "time_major(" << params->time_major() << ") ";
+
+      os << std::endl;
+    }
+  }
+};
+
 OpPrinterRegistry::OpPrinterRegistry()
 {
   _op_map[circle::BuiltinOperator_ADD] = make_unique<AddPrinter>();
@@ -831,6 +849,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   // There is no Option for FLOOR_MOD
   _op_map[circle::BuiltinOperator_FULLY_CONNECTED] = make_unique<FullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_GATHER] = make_unique<GatherPrinter>();
+  _op_map[circle::BuiltinOperator_GELU] = make_unique<GeluPrinter>();
   _op_map[circle::BuiltinOperator_GELU] = make_unique<GeluPrinter>();
   _op_map[circle::BuiltinOperator_IF] = make_unique<IfPrinter>();
   _op_map[circle::BuiltinOperator_L2_NORMALIZATION] = make_unique<L2NormPrinter>();
@@ -892,6 +911,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique<BCQFullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique<BCQGatherPrinter>();
   _op_map[circle::BuiltinOperator_INSTANCE_NORM] = make_unique<InstanceNormPrinter>();
+  _op_map[circle::BuiltinOperator_CIR_GRU] = make_unique<CircleGRUPrinter>();
 }
 
 } // namespace circledump
