@@ -35,7 +35,7 @@ ARM32_BUILD_ITEMS+=;luci-interpreter
 ARM32_BUILD_ITEMS+=;tflite2circle
 ARM32_BUILD_ITEMS+=;tflchef;circlechef
 ARM32_BUILD_ITEMS+=;circle2circle;record-minmax;circle-quantizer
-ARM32_BUILD_ITEMS+=;luci-eval-driver;luci-value-test
+ARM32_BUILD_ITEMS+=;luci-eval-driver;luci-value-py-test
 
 ARM32_TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_armv7l-linux.cmake
 
@@ -54,7 +54,7 @@ ARM32_HOST_ITEMS+=;tflchef;circlechef
 ARM32_HOST_ITEMS+=;circle-tensordump
 ARM32_HOST_ITEMS+=;circle2circle
 ARM32_HOST_ITEMS+=;common-artifacts
-ARM32_HOST_ITEMS+=;luci-eval-driver;luci-value-test
+ARM32_HOST_ITEMS+=;luci-eval-driver;luci-value-py-test
 
 
 _EMPTY_:=
