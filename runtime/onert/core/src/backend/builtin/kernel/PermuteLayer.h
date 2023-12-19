@@ -72,8 +72,8 @@ private:
     PermuteWorkerTask(const uint8_t *src_buffer, uint8_t *dst_buffer, uint32_t src_start_offset,
                       uint32_t dst_start_offset, size_t size)
       : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
-        _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0},
-        _loop_shape{1}, _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
+        _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0}, _loop_shape{1},
+        _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
     {
       // DO NOTHING
     }

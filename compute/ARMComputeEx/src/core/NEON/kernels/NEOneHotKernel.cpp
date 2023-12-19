@@ -105,8 +105,8 @@ bool isOnValue(U index, U depth)
 } // namespace
 
 NEOneHotKernel::NEOneHotKernel()
-  : _indices{nullptr}, _depth{nullptr}, _on_value{nullptr},
-    _off_value{nullptr}, _axis{-1}, _output{nullptr}, _func{}
+  : _indices{nullptr}, _depth{nullptr}, _on_value{nullptr}, _off_value{nullptr}, _axis{-1},
+    _output{nullptr}, _func{}
 {
 }
 

@@ -38,7 +38,7 @@ public:
 
   virtual ~Graph();
 
-  template <typename T, typename... Args> Operation *create(Args &&... args)
+  template <typename T, typename... Args> Operation *create(Args &&...args)
   {
     auto op = new T(std::forward<Args>(args)...);
     op->setId(_last_node_id++);

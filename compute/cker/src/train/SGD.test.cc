@@ -25,8 +25,8 @@ template <typename T> class SGDOptimizerVerifier
 public:
   SGDOptimizerVerifier(const std::vector<T> &trainable, const std::vector<T> &gradient,
                        float learning_rate, uint32_t nums_step)
-    : _trainable{trainable}, _gradient{gradient}, _learning_rate{learning_rate}, _nums_step{
-                                                                                   nums_step}
+    : _trainable{trainable}, _gradient{gradient}, _learning_rate{learning_rate},
+      _nums_step{nums_step}
   {
     EXPECT_TRUE(trainable.size() == gradient.size());
 

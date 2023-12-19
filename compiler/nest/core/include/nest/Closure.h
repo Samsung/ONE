@@ -27,7 +27,7 @@ class Closure
 {
 public:
   template <typename... Args>
-  Closure(const DomainID &id, Args &&... indices) : _id{id}, _sub{std::forward<Args>(indices)...}
+  Closure(const DomainID &id, Args &&...indices) : _id{id}, _sub{std::forward<Args>(indices)...}
   {
     // DO NOTHING
   }

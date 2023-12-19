@@ -70,7 +70,7 @@ public:
     }
   }
 
-  template <typename... Args> void append(const Args &... args) { append(fmt(args...)); }
+  template <typename... Args> void append(const Args &...args) { append(fmt(args...)); }
 
 public:
   void append(const LinearDocument &doc);

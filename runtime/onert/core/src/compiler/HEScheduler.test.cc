@@ -206,7 +206,7 @@ void setPermutationsExecutionTime(const std::vector<const Backend *> &backends,
 using OIS = OperandIndexSequence;
 
 template <typename NodeT, typename... Types>
-OperationIndex create(std::shared_ptr<Graph> graph, Types &&... args)
+OperationIndex create(std::shared_ptr<Graph> graph, Types &&...args)
 {
   auto op = std::make_unique<NodeT>(std::forward<Types>(args)...);
   auto op_idx = graph->addOperation(std::move(op));

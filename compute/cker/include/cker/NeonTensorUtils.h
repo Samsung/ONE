@@ -157,11 +157,11 @@ inline const int8_t *ShuffleVectors(const int8_t *vectors, const int n_batch, co
         "st4 {v0.s, v1.s, v2.s, v3.s}[2], [%[shuffled_vectors_ptr]], #16\n"
         "st4 {v0.s, v1.s, v2.s, v3.s}[3], [%[shuffled_vectors_ptr]], #16\n"
 
-        : [ unshuffled_vec0_ptr ] "+r"(unshuffled_vec0_ptr),
-          [ unshuffled_vec1_ptr ] "+r"(unshuffled_vec1_ptr),
-          [ unshuffled_vec2_ptr ] "+r"(unshuffled_vec2_ptr),
-          [ unshuffled_vec3_ptr ] "+r"(unshuffled_vec3_ptr),
-          [ shuffled_vectors_ptr ] "+r"(shuffled_vectors_ptr)
+        : [unshuffled_vec0_ptr] "+r"(unshuffled_vec0_ptr),
+          [unshuffled_vec1_ptr] "+r"(unshuffled_vec1_ptr),
+          [unshuffled_vec2_ptr] "+r"(unshuffled_vec2_ptr),
+          [unshuffled_vec3_ptr] "+r"(unshuffled_vec3_ptr),
+          [shuffled_vectors_ptr] "+r"(shuffled_vectors_ptr)
         :
         : "v0", "v1", "v2", "v3", "cc", "memory");
     }
@@ -296,10 +296,10 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(const int8_t *__restr
         "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
         "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
         "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-        : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
-          [ result_ptr ] "+r"(result_ptr), [ mat_ptr2 ] "+r"(mat_ptr2), [ mat_ptr3 ] "+r"(mat_ptr3)
-        : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
-          [ wide_rows ] "r"(wide_rows)
+        : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
+          [result_ptr] "+r"(result_ptr), [mat_ptr2] "+r"(mat_ptr2), [mat_ptr3] "+r"(mat_ptr3)
+        : [mat_ptr0_end] "r"(mat_ptr0_end), [scaling_factors_ptr] "r"(scaling_factors_ptr),
+          [wide_rows] "r"(wide_rows)
         : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
           "v13", "cc", "memory");
     }
@@ -419,13 +419,13 @@ static void DotprodMatrixBatchFourVectorMultiplyAccumulate(
         "st2 {v9.s, v10.s}[1], [%[result_ptr]], %[wide_rows]\n"
         "st2 {v9.s, v10.s}[2], [%[result_ptr]], %[wide_rows]\n"
         "st2 {v9.s, v10.s}[3], [%[result_ptr]], %[wide_rows]\n"
-        : [ mat_ptr0 ] "+r"(mat_ptr0), [ mat_ptr1 ] "+r"(mat_ptr1), [ vec_ptr ] "+r"(vec_ptr),
-          [ result_ptr ] "+r"(result_ptr), [ row_sums_ptr ] "+r"(row_sums_ptr)
-        : [ mat_ptr0_end ] "r"(mat_ptr0_end), [ scaling_factors_ptr ] "r"(scaling_factors_ptr),
-          [ wide_rows ] "r"(wide_rows), [ channel_scales_ptr ] "r"(channel_scales_ptr),
-          [ batch_offsets_ptr ] "r"(batch_offsets_ptr),
-          [ is_channel_scale_nullptr ] "r"(is_channel_scale_nullptr),
-          [ is_row_sums_nullptr ] "r"(is_row_sums_nullptr)
+        : [mat_ptr0] "+r"(mat_ptr0), [mat_ptr1] "+r"(mat_ptr1), [vec_ptr] "+r"(vec_ptr),
+          [result_ptr] "+r"(result_ptr), [row_sums_ptr] "+r"(row_sums_ptr)
+        : [mat_ptr0_end] "r"(mat_ptr0_end), [scaling_factors_ptr] "r"(scaling_factors_ptr),
+          [wide_rows] "r"(wide_rows), [channel_scales_ptr] "r"(channel_scales_ptr),
+          [batch_offsets_ptr] "r"(batch_offsets_ptr),
+          [is_channel_scale_nullptr] "r"(is_channel_scale_nullptr),
+          [is_row_sums_nullptr] "r"(is_row_sums_nullptr)
         : "x0", "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12",
           "v13", "v14", "v15", "v16", "v17", "w0", "w1", "cc", "memory");
     }

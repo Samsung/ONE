@@ -35,7 +35,7 @@ namespace exec
 class FunctionSequence : public IFunction
 {
 public:
-  template <typename... Args> FunctionSequence(Args &&... args) { initialize(std::move(args)...); }
+  template <typename... Args> FunctionSequence(Args &&...args) { initialize(std::move(args)...); }
 
 private:
   void initialize()
@@ -43,7 +43,7 @@ private:
     // Template base case : do nothing
   }
 
-  template <typename T, typename... Args> void initialize(std::unique_ptr<T> &&fn, Args &&... args)
+  template <typename T, typename... Args> void initialize(std::unique_ptr<T> &&fn, Args &&...args)
   {
     _functions.emplace_back(std::move(fn));
     initialize(std::move(args)...);
@@ -64,7 +64,7 @@ public:
 
   void iterate(const std::function<void(IFunction &)> &fn);
 
-  template <typename T, typename... Args> void wrap(Args &&... args)
+  template <typename T, typename... Args> void wrap(Args &&...args)
   {
     for (auto &&function : _functions)
     {

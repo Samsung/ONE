@@ -149,11 +149,11 @@ private:
   mir::Operation::Output *addFusedActivation(mir::Operation::Output *input,
                                              tflite::ActivationFunctionType activation_type);
 
-  template <typename OpType, typename... Types> mir::Operation *createOp(Types &&... args);
+  template <typename OpType, typename... Types> mir::Operation *createOp(Types &&...args);
 };
 
 template <typename OpType, typename... Types>
-mir::Operation *TFLiteOpCreator::createOp(Types &&... args)
+mir::Operation *TFLiteOpCreator::createOp(Types &&...args)
 {
   return _graph->create<OpType>(std::forward<Types>(args)...);
 }

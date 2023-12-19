@@ -4,7 +4,7 @@ INVALID_EXIT=0
 FILES_TO_CHECK=()
 DIRECTORIES_TO_BE_TESTED=()
 DIRECTORIES_NOT_TO_BE_TESTED=()
-DEFAULT_CLANG_VERSION="8"
+DEFAULT_CLANG_VERSION="16"
 CLANG_FORMAT_CANDIDATE=clang-format-$DEFAULT_CLANG_VERSION
 PATCH_FILE=format.patch
 CHECK_DIFF_ONLY="0"
@@ -117,7 +117,8 @@ function check_cpp_files() {
   if [[ -z "${CLANG_FORMAT}" ]]; then
     echo "[ERROR] $CLANG_FORMAT_CANDIDATE is unavailable"
     echo
-    echo "        Please install $CLANG_FORMAT_CANDIDATE before running format check"
+    echo "        Please install $CLANG_FORMAT_MIGRATE before running format check (refer https://github.com/Samsung/ONE/issues/12311#issuecomment-1857503157)"
+    echo "        If you use docker for format checking, please pull or build latest version"
     exit 1
   fi
 

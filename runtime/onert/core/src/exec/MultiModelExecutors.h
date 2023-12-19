@@ -26,9 +26,8 @@ namespace std
 
 template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex>>
 {
-  size_t
-  operator()(const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const
-    noexcept
+  size_t operator()(
+    const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const noexcept
   {
     return (hash<uint32_t>()(pair.first.value()) << 16) ^ hash<uint32_t>()(pair.second.value());
   }

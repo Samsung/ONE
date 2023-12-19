@@ -68,7 +68,7 @@ bool is_number(const std::vector<std::string> &vec)
 {
   for (const auto &s : vec)
   {
-    if (not::is_number(s))
+    if (not ::is_number(s))
     {
       return false;
     }
@@ -270,7 +270,7 @@ OpSelector::select_by<SelectType::ID>(const std::vector<std::string> &comma_toke
   for (const auto &comma_token : comma_tokens)
   {
     auto dash_tokens = ::split_into_vector(comma_token, '-');
-    if (not::is_number(dash_tokens))
+    if (not ::is_number(dash_tokens))
     {
       throw std::runtime_error{
         "ERROR: To select operator by id, please use these args: [0-9], '-', ','"};

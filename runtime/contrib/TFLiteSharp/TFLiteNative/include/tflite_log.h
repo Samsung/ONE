@@ -47,11 +47,12 @@ extern "C" {
     }                                                 \
   } while (0)
 #else // __TIZEN__
-#define LEVEL_TO_STR(level)                  \
-  (((level) == ERROR) ? "ERROR"              \
-                      : ((level) == WARNING) \
-                          ? "WARNING"        \
-                          : ((level) == INFO) ? "INFO" : ((level) == DEBUG) ? "DEBUG" : "DEFAULT")
+#define LEVEL_TO_STR(level)           \
+  (((level) == ERROR)     ? "ERROR"   \
+   : ((level) == WARNING) ? "WARNING" \
+   : ((level) == INFO)    ? "INFO"    \
+   : ((level) == DEBUG)   ? "DEBUG"   \
+                          : "DEFAULT")
 #define TFLITE_NATIVE_LOG(log_level, format, args...)      \
   do                                                       \
   {                                                        \

@@ -28,7 +28,7 @@ struct ParamType
   Shape shape;
 
   template <typename... Args>
-  explicit ParamType(int32_t actual_len, Args &&... args)
+  explicit ParamType(int32_t actual_len, Args &&...args)
     : actual_length(actual_len), shape({static_cast<int32_t>(args)...})
   {
   }

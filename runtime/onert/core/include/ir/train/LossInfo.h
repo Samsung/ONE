@@ -48,8 +48,8 @@ struct LossInfo
   } loss_param;
 
   LossInfo()
-    : loss_code{LossCode::Undefined}, reduction_type{LossReductionType::Undefined}, loss_param{-1,
-                                                                                               0.0f}
+    : loss_code{LossCode::Undefined}, reduction_type{LossReductionType::Undefined},
+      loss_param{-1, 0.0f}
   {
   }
 };
