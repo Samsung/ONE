@@ -27,6 +27,7 @@
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
+#include "ir/train/TrainingInfo.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 #include "circle_schema_generated.h"
@@ -226,7 +227,7 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}, _quant_manager{nullptr}
+    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr}
 {
   // DO NOTHING
 }
@@ -316,6 +317,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     _model_path = std::string(model_file_path);
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    // TODO load TrainingInfo from model, using TraininfoLoader
+    _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -401,6 +404,9 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }
+
+    // TODO load TrainingInfo from model, using TraininfoLoader
+    _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
 
     auto toIODesc = [](std::string str) {
       auto indices = nnfw::misc::split(str, ':');
