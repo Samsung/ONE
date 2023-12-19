@@ -21,7 +21,7 @@
 #include <unordered_map>
 
 #include "ir/Graph.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/IOperation.h"
 
 namespace onert
 {
@@ -67,7 +67,7 @@ public:
    * @param operation Operation to be added
    * @return OperationIndex @c index if successful, UNDEFINED otherwise
    */
-  OperationIndex addOperation(std::unique_ptr<ITrainableOperation> &&operation);
+  OperationIndex addOperation(std::unique_ptr<IOperation> &&operation);
   /**
    * @brief Replace a trainable operation which the graph already has
    *
@@ -80,8 +80,7 @@ public:
    * @param operation Operation to be added
    * @return OperationIndex @c index if successful, UNDEFINED otherwise
    */
-  OperationIndex replaceOperation(OperationIndex index,
-                                  std::unique_ptr<ITrainableOperation> &&operation);
+  OperationIndex replaceOperation(OperationIndex index, std::unique_ptr<IOperation> &&operation);
 
   /**
    * @brief Add a operand for back propagation to the graph with the given index and object
@@ -125,7 +124,7 @@ public:
   const Graph &graph() const { return _graph; }
 
 public:
-  const ITrainableOperation &operation(OperationIndex index) const;
+  const IOperation &operation(OperationIndex index) const;
 
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;

@@ -29,7 +29,7 @@ namespace ir
 {
 
 // NOTE Virtual inheritance is introduced because trainable operations inherit
-//      `ITrainableOperation` and `Operation` which inherit `IOperation`.
+//      `IOperation` and `Operation` which inherit `IOperation`.
 class Operation : virtual public IOperation
 {
 public:

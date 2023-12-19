@@ -28,10 +28,10 @@ namespace operation
 
 void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs)
-  : Operation{OperandConstraint::createAtLeast(2u), inputs, outputs}
+Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+           const train::LossInfo &info)
+  : Operation{OperandConstraint::createAtLeast(2u), inputs, outputs}, _param{info}
 {
-  assert(inputs.size() == 2);
 }
 
 } // namespace operation

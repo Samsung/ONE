@@ -18,6 +18,8 @@
 #define __ONERT_IR_OPERATION_LOSS_H__
 
 #include "ir/Operation.h"
+#include "ir/train/LossCode.h"
+#include "ir/train/LossInfo.h"
 
 namespace onert
 {
@@ -37,11 +39,19 @@ public:
   };
 
 public:
-  Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs);
+  Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+       const train::LossInfo &info);
 
 public:
   void accept(OperationVisitor &v) const override;
   OpCode opcode() const final { return OpCode::Loss; }
+  std::string name() const override { return toString(_param.loss_code) + toString(opcode()); };
+
+public:
+  const train::LossInfo &param() const { return _param; }
+
+private:
+  train::LossInfo _param;
 };
 
 } // namespace operation

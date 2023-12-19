@@ -17,7 +17,6 @@
 #include "TrainingCompiler.h"
 
 #include "StaticBackPropShapeInferer.h"
-#include "TrainableOperationConverter.h"
 #include "pass/LossInsertionPass.h"
 #include "../CompilerHelpers.h"
 #include "../ExecutorFactory.h"
@@ -30,6 +29,7 @@
 #include "../../exec/train/TrainableExecutors.h"
 #include "../../ir/OperationDumper.h"
 #include "../../ir/verifier/Verifier.h"
+#include "../../ir/OperationCloner.h"
 
 #include <compiler/StaticShapeInferer.h>
 #include <compiler/train/LoweredTrainableGraph.h>
@@ -113,10 +113,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       auto trainable_subg = std::make_shared<ir::train::TrainableGraph>(subg);
 
       // Convert operations to trainable operations
-      auto converter = TrainableOperationConverter{*trainable_subg, &_training_info};
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
-          auto trainable_op = converter(op);
+          auto trainable_op = clone(op);
           auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           UNUSED_RELEASE(gen_index);
           assert(gen_index == op_index);
@@ -137,14 +136,13 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   // TODO Handle dump level for each model
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
-
   for (const auto &pair : trainable_subgraphs)
   {
-    const auto &subg_index = pair.first;
-    const auto &subg = pair.second;
-    dot_dumper.dump(*subg, nnfw::misc::str("before_loss_insertion-", subg_index.value()));
+    UNUSED_RELEASE(pair);
+    // const auto &subg_index = pair.first;
+    // const auto &subg = pair.second;
+    // dot_dumper.dump(*subg, nnfw::misc::str("before_loss_insertion-", subg_index.value()));
   }
-
   // Apply pass for trainable subgraphs
   for (auto &&pair : trainable_subgraphs)
   {

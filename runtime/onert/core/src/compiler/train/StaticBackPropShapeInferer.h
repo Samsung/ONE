@@ -17,8 +17,6 @@
 #ifndef __ONERT_COMPILER_STATIC_DERIVATIVE_SHAPE_INFERER_H__
 #define __ONERT_COMPILER_STATIC_DERIVATIVE_SHAPE_INFERER_H__
 
-#include "ir/train/TrainableOperationVisitor.h"
-
 #include "compiler/train/LoweredTrainableGraph.h"
 #include "ir/Index.h"
 
@@ -38,7 +36,7 @@ namespace train
  *        - if calculation cannot be done at compile time, mark the outputs to be dynamic, meaning
  *          shapes of outputs will be calculated during running kernels
  */
-class StaticBackPropShapeInferer : public ir::train::TrainableOperationVisitor
+class StaticBackPropShapeInferer : public ir::OperationVisitor
 {
 public:
   StaticBackPropShapeInferer(compiler::train::LoweredTrainableGraph *lowered_subg)
@@ -61,13 +59,13 @@ private:
   void setShape(const ir::OperandIndex &index, const ir::Shape &shape);
 
 private:
-  void visit(const ir::train::operation::Conv2D &op) override;
-  void visit(const ir::train::operation::ElementwiseActivation &op) override;
-  void visit(const ir::train::operation::Loss &op) override;
-  void visit(const ir::train::operation::Permute &op) override;
-  void visit(const ir::train::operation::Pool2D &op) override;
-  void visit(const ir::train::operation::Reshape &op) override;
-  void visit(const ir::train::operation::Softmax &op) override;
+  void visit(const ir::operation::Conv2D &op) override;
+  void visit(const ir::operation::ElementwiseActivation &op) override;
+  void visit(const ir::operation::Loss &op) override;
+  void visit(const ir::operation::Permute &op) override;
+  void visit(const ir::operation::Pool2D &op) override;
+  void visit(const ir::operation::Reshape &op) override;
+  void visit(const ir::operation::Softmax &op) override;
 
 private:
   compiler::train::LoweredTrainableGraph *_lowered_subg;

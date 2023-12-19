@@ -46,13 +46,13 @@ public:
 
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
-  void visit(const ir::train::operation::Conv2D &) override;
-  void visit(const ir::train::operation::ElementwiseActivation &) override;
-  void visit(const ir::train::operation::FullyConnected &) override;
-  void visit(const ir::train::operation::Loss &) override;
-  void visit(const ir::train::operation::Pool2D &) override;
-  void visit(const ir::train::operation::Reshape &node) override;
-  void visit(const ir::train::operation::Softmax &node) override;
+  void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::ElementwiseActivation &) override;
+  void visit(const ir::operation::FullyConnected &) override;
+  void visit(const ir::operation::Loss &) override;
+  void visit(const ir::operation::Pool2D &) override;
+  void visit(const ir::operation::Reshape &node) override;
+  void visit(const ir::operation::Softmax &node) override;
 
 private:
   ir::Layout _current_layout;
