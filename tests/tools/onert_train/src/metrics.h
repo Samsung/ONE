@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_TRAIN_METRIC_H__
-#define __ONERT_TRAIN_METRIC_H__
+#ifndef __ONERT_TRAIN_METRICS_H__
+#define __ONERT_TRAIN_METRICS_H__
 
 #include "allocation.h"
 #include "nnfw.h"
@@ -23,11 +23,11 @@
 
 namespace onert_train
 {
-class Metric
+class Metrics
 {
 public:
-  Metric(const std::vector<Allocation> &output, const std::vector<Allocation> &expected,
-         const std::vector<nnfw_tensorinfo> &infos);
+  Metrics(const std::vector<Allocation> &output, const std::vector<Allocation> &expected,
+          const std::vector<nnfw_tensorinfo> &infos);
 
 private:
   template <typename T>
@@ -44,4 +44,4 @@ private:
 
 } // namespace onert_train
 
-#endif // __ONERT_TRAIN_METRIC_H__
+#endif // __ONERT_TRAIN_METRICS_H__

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "metric.h"
+#include "metrics.h"
 #include "nnfw_util.h"
 
 #include <algorithm>
@@ -23,15 +23,16 @@
 namespace onert_train
 {
 
-Metric::Metric(const std::vector<Allocation> &output, const std::vector<Allocation> &expected,
-               const std::vector<nnfw_tensorinfo> &infos)
+Metrics::Metrics(const std::vector<Allocation> &output, const std::vector<Allocation> &expected,
+                 const std::vector<nnfw_tensorinfo> &infos)
   : _output{output}, _expected{expected}, _infos{infos}
 {
   // DO NOTHING
 }
 
 template <typename T>
-float Metric::categoricalAccuracy(const T *output, const T *expected, uint32_t batch, uint64_t size)
+float Metrics::categoricalAccuracy(const T *output, const T *expected, uint32_t batch,
+                                   uint64_t size)
 {
   int correct = 0;
   for (int b = 0; b < batch; ++b)
@@ -50,7 +51,7 @@ float Metric::categoricalAccuracy(const T *output, const T *expected, uint32_t b
   return static_cast<float>(correct) / batch;
 }
 
-float Metric::categoricalAccuracy(int32_t index)
+float Metrics::categoricalAccuracy(int32_t index)
 {
   auto batch = _infos[index].dims[0];
   auto size = num_elems(&_infos[index]) / batch;

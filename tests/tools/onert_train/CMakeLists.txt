@@ -12,7 +12,7 @@ list(APPEND ONERT_TRAIN_SRCS "src/nnfw_util.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/randomgen.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/rawformatter.cc")
 list(APPEND ONERT_TRAIN_SRCS "src/rawdataloader.cc")
-list(APPEND ONERT_TRAIN_SRCS "src/metric.cc")
+list(APPEND ONERT_TRAIN_SRCS "src/metrics.cc")
 
 nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(HDF5 QUIET)
