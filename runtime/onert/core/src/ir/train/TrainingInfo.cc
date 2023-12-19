@@ -67,10 +67,12 @@ bool TrainingInfo::isValid() const
   return true;
 }
 
+/*
 std::unique_ptr<TrainingInfo> TrainingInfo::clone() const
 {
   return std::make_unique<TrainingInfo>(*this);
 }
+*/
 
 } // namespace train
 } // namespace ir

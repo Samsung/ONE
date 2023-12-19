@@ -34,9 +34,9 @@ namespace train
 class TrainingInfo final
 {
 public:
-  TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
-  TrainingInfo(const TrainingInfo &) = default;
-  ~TrainingInfo() = default;
+  // TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
+  // TrainingInfo(const TrainingInfo &) = default;
+  // ~TrainingInfo() = default;
   static std::unique_ptr<TrainingInfo> createFromDefault();
 
   // getter
@@ -51,7 +51,7 @@ public:
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   void setEpoch(uint32_t epoch) { _epoch = epoch; }
 
-  std::unique_ptr<TrainingInfo> clone() const;
+  // std::unique_ptr<TrainingInfo> clone() const;
   bool isValid() const;
 
 private:
