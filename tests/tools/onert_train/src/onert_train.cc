@@ -24,6 +24,7 @@
 #include "nnfw_experimental.h"
 #include "randomgen.h"
 #include "rawformatter.h"
+#include "dataloader.h"
 #include "rawdataloader.h"
 
 #include <boost/program_options.hpp>
@@ -204,13 +205,15 @@ int main(const int argc, char **argv)
     uint32_t data_length;
 
     Generator generator;
-    RawDataLoader rawDataLoader;
+    std::unique_ptr<DataLoader> dataLoader;
 
     if (!args.getLoadRawInputFilename().empty() && !args.getLoadRawExpectedFilename().empty())
     {
-      std::tie(generator, data_length) =
-        rawDataLoader.loadData(args.getLoadRawInputFilename(), args.getLoadRawExpectedFilename(),
-                               input_infos, expected_infos, tri.batch_size);
+      dataLoader = std::make_unique<RawDataLoader>(args.getLoadRawInputFilename(),
+                                                   args.getLoadRawExpectedFilename(), input_infos,
+                                                   expected_infos);
+
+      std::tie(generator, data_length) = dataLoader->loadData(tri.batch_size);
       // TODO get data generator for validation
     }
     else

@@ -17,35 +17,20 @@
 #ifndef __ONERT_TRAIN_RAWDATALOADER_H__
 #define __ONERT_TRAIN_RAWDATALOADER_H__
 
-#include "allocation.h"
-#include "nnfw.h"
-
-#include <functional>
-#include <string>
-#include <vector>
-#include <tuple>
-#include <fstream>
+#include "dataloader.h"
 
 namespace onert_train
 {
 
-using Generator = std::function<bool(uint32_t,                  /** index **/
-                                     std::vector<Allocation> &, /** input **/
-                                     std::vector<Allocation> & /** expected **/)>;
-
-class RawDataLoader
+class RawDataLoader : public DataLoader
 {
 public:
-  RawDataLoader() = default;
-  std::tuple<Generator, uint32_t> loadData(const std::string &input_file,
-                                           const std::string &expected_file,
-                                           const std::vector<nnfw_tensorinfo> &input_infos,
-                                           const std::vector<nnfw_tensorinfo> &expected_infos,
-                                           const uint32_t batch_size);
+  RawDataLoader(const std::string &input_file, const std::string &expected_file,
+                const std::vector<nnfw_tensorinfo> &input_infos,
+                const std::vector<nnfw_tensorinfo> &expected_infos);
 
-private:
-  std::ifstream _input_file;
-  std::ifstream _expected_file;
+  std::tuple<Generator, uint32_t> loadData(const uint32_t batch_size, const float from = 0.0f,
+                                           const float to = 1.0f) override;
 };
 
 } // namespace onert_train
