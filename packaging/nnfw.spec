@@ -49,6 +49,12 @@ Source3020: NEON2SSE.tar.gz
 %define test_build 1
 %endif
 
+%ifarch riscv64
+# Disable npud on risc-v
+# TODO Enable on risc-v
+%define npud_build 0
+%endif
+
 BuildRequires:  cmake
 
 Requires(post): /sbin/ldconfig
@@ -241,7 +247,7 @@ tar -zcf test-suite.tar.gz infra/scripts
 %endif # arm armv7l armv7hl aarch64
 
 %install
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
