@@ -18,7 +18,6 @@
 #ifndef __ONERT_IR_TRAIN_TRAINING_INFO_H__
 #define __ONERT_IR_TRAIN_TRAINING_INFO_H__
 
-#include <memory>
 
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
