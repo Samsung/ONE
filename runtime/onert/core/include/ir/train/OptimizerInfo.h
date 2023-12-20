@@ -31,6 +31,8 @@ struct OptimizerInfo
   OptimizerCode optim_code;
   float learning_rate;
   // TODO Add properties
+
+  OptimizerInfo() : optim_code{OptimizerCode::Invalid}, learning_rate{0.0f} {}
 };
 
 } // namespace train
