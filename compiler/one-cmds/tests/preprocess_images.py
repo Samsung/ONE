@@ -15,15 +15,22 @@
 import os, shutil, PIL.Image, numpy as np
 
 input_dir = 'img_files'
-output_dir = 'raw_files'
-list_file = 'datalist.txt'
+raw_output_dir = 'raw_files'
+raw_list_file = 'datalist.txt'
+numpy_output_dir = 'numpy_files'
+numpy_list_file = 'datalist_numpy.txt'
 
-if os.path.exists(output_dir):
-    shutil.rmtree(output_dir, ignore_errors=True)
-os.makedirs(output_dir)
+if os.path.exists(raw_output_dir):
+    shutil.rmtree(raw_output_dir, ignore_errors=True)
+os.makedirs(raw_output_dir)
+
+if os.path.exists(numpy_output_dir):
+    shutil.rmtree(numpy_output_dir, ignore_errors=True)
+os.makedirs(numpy_output_dir)
 
 for (root, _, files) in os.walk(input_dir):
-    datalist = open(list_file, 'w')
+    raw_datalist = open(raw_list_file, 'w')
+    numpy_datalist = open(numpy_list_file, 'w')
     for f in files:
         with PIL.Image.open(root + '/' + f) as image:
             # To handle ANTIALIAS deprecation
@@ -32,7 +39,15 @@ for (root, _, files) in os.walk(input_dir):
 
             img = np.array(image.resize((299, 299), ANTIALIAS)).astype(np.float32)
             img = ((img / 255) - 0.5) * 2.0
-            output_file = output_dir + '/' + f.replace('jpg', 'data')
-            img.tofile(output_file)
-            datalist.writelines(os.path.abspath(output_file) + '\n')
-    datalist.close()
+            # To save in numpy format
+            output_numpy_file = numpy_output_dir + '/' + f.replace('jpg', 'npy')
+            np.save('./' + output_numpy_file, img)
+            numpy_datalist.writelines(os.path.abspath(output_numpy_file) + '\n')
+
+            # To save in raw data format
+            output_raw_file = raw_output_dir + '/' + f.replace('jpg', 'data')
+            img.tofile(output_raw_file)
+            raw_datalist.writelines(os.path.abspath(output_raw_file) + '\n')
+
+    raw_datalist.close()
+    numpy_datalist.close()
