@@ -185,6 +185,7 @@ int main(const int argc, char **argv)
     // prepare data buffers
     std::vector<Allocation> input_data(num_inputs);
     std::vector<Allocation> expected_data(num_expecteds);
+    std::vector<Allocation> output_data(num_expecteds);
 
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
@@ -198,13 +199,21 @@ int main(const int argc, char **argv)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-      expected_data[i].alloc(bufsize_for(&ti));
+
+      // For validation
+      uint64_t output_size_in_bytes = bufsize_for(&ti);
+      output_data[i].alloc(output_size_in_bytes);
+      NNPR_ENSURE_STATUS(
+        nnfw_train_set_output(session, i, ti.dtype, output_data[i].data(), output_size_in_bytes));
+
+      expected_data[i].alloc(output_size_in_bytes);
       expected_infos.emplace_back(std::move(ti));
     }
 
-    uint32_t data_length;
-
-    Generator generator;
+    uint32_t tdata_length;
+    Generator tdata_generator;
+    uint32_t vdata_length;
+    Generator vdata_generator;
     std::unique_ptr<DataLoader> dataLoader;
 
     if (!args.getLoadRawInputFilename().empty() && !args.getLoadRawExpectedFilename().empty())
@@ -213,8 +222,10 @@ int main(const int argc, char **argv)
                                                    args.getLoadRawExpectedFilename(), input_infos,
                                                    expected_infos);
 
-      std::tie(generator, data_length) = dataLoader->loadData(tri.batch_size);
-      // TODO get data generator for validation
+      auto train_to = 1.0f - args.getValidationSplit();
+      std::tie(tdata_generator, tdata_length) = dataLoader->loadData(tri.batch_size, 0.f, train_to);
+      std::tie(vdata_generator, vdata_length) =
+        dataLoader->loadData(tri.batch_size, train_to, 1.0f);
     }
     else
     {
@@ -223,9 +234,25 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
+    if (tdata_length < tri.batch_size)
+    {
+      std::cerr << "E: training data is not enough for training."
+                   "Reduce batch_size or add more data"
+                << std::endl;
+      exit(-1);
+    }
+
+    if (vdata_length < tri.batch_size)
+    {
+      std::cerr << "E: validation data is not enough for validation."
+                   "Reduce batch_size or adjust validation_split value"
+                << std::endl;
+      exit(-1);
+    }
+
     std::vector<float> losses(num_expecteds);
     measure.run(PhaseType::EXECUTE, [&]() {
-      const int num_step = data_length / tri.batch_size;
+      const int num_step = tdata_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_step);
       for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
@@ -238,7 +265,7 @@ int main(const int argc, char **argv)
           for (uint32_t n = 0; n < num_step; ++n)
           {
             // get batchsize data
-            if (!generator(n, input_data, expected_data))
+            if (!tdata_generator(n, input_data, expected_data))
               break;
 
             // prepare input
@@ -282,16 +309,14 @@ int main(const int argc, char **argv)
         //
         // VALIDATION
         //
-        // TODO Enable validation
-        if (false)
+        if (vdata_length > 0)
         {
           std::fill(losses.begin(), losses.end(), 0);
-          // TODO Use validation data length
-          const int num_valid_step = data_length / tri.batch_size;
+          const int num_valid_step = vdata_length / tri.batch_size;
           for (uint32_t n = 0; n < num_valid_step; ++n)
           {
-            // TODO get as much validation data as batchsize
-            if (!generator(n, input_data, expected_data))
+            // get batchsize validation data
+            if (!vdata_generator(n, input_data, expected_data))
               break;
 
             // prepare input
