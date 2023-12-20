@@ -41,7 +41,7 @@ class TypeInfo
 public:
   TypeInfo() = delete;
 
-  explicit TypeInfo(DataType type) : _type{type}, _sparsity{nullptr} {}
+  explicit TypeInfo(DataType type) : _type{type}, _sparsity{nullptr} { quantization(0.f, 0); }
 
   TypeInfo(DataType type, float scale, int32_t zero_point) : _type{type}, _sparsity{nullptr}
   {
