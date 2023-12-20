@@ -29,6 +29,7 @@
 #include "ir/OpCode.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
+#include "circle_schema_generated.h"
 
 #include <fstream>
 #include <iostream>
@@ -1500,6 +1501,8 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
       return _buf != MAP_FAILED;
     }
 
+    bool sync() { return msync(_buf, _buf_sz, MS_SYNC) == 0; }
+
     bool close()
     {
       bool ret = false;
@@ -1531,7 +1534,50 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
   if (!mmapfile.ensure_mmap())
     return NNFW_STATUS_ERROR;
 
-  // TODO: Update weights in mmapfile
+  // make sure the architecture is little endian before direct access to flatbuffers
+  assert(FLATBUFFERS_LITTLEENDIAN);
+
+  try
+  {
+    _execution->iterateTrainableTensors([&](const onert::ir::OperandIndex &idx,
+                                            const onert::backend::train::ITrainableTensor *tensor) {
+      auto model = ::circle::GetModel(mmapfile.buf());
+      auto subgs = model->subgraphs();
+      if (!model || !subgs || subgs->size() != 1)
+        throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
+
+      auto subg = subgs->Get(0); // Get 1st subgraph
+      if (!idx.valid() || idx.value() >= subg->tensors()->size())
+        throw std::runtime_error("Trainable tensor index is out of range");
+
+      auto buf_idx = subg->tensors()->Get(idx.value())->buffer();
+      const ::circle::Buffer *buffer = (*model->buffers())[buf_idx];
+      if (!buffer || !buffer->data())
+        throw std::runtime_error("Buffer for trainable tensors is invalid");
+
+      const flatbuffers::Vector<uint8_t> *array = buffer->data();
+      if (!array)
+        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+
+      auto org_buf_sz = array->size();
+      if (org_buf_sz != tensor->total_size())
+        throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
+
+      uint8_t *org_buf = const_cast<uint8_t *>(array->Data());
+      if (!org_buf)
+        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+
+      memcpy(const_cast<uint8_t *>(org_buf), tensor->buffer(), org_buf_sz);
+    });
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_export_circle : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  if (mmapfile.sync() == false)
+    return NNFW_STATUS_ERROR;
 
   if (mmapfile.close() == false)
     return NNFW_STATUS_ERROR;
