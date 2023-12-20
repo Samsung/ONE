@@ -35,8 +35,6 @@ class TrainingInfo final
 {
 public:
   TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _epoch(0) {}
-  // named constructor : create a default valid TrainingInfo
-  static std::unique_ptr<TrainingInfo> createDefaultInfo();
   TrainingInfo(const TrainingInfo &) = default;
   ~TrainingInfo() = default;
 

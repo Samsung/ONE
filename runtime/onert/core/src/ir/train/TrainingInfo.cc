@@ -23,29 +23,6 @@ namespace ir
 namespace train
 {
 
-std::unique_ptr<TrainingInfo> TrainingInfo::createDefaultInfo()
-{
-  auto info = std::make_unique<TrainingInfo>();
-
-  info->setBatchSize(1);
-
-  onert::ir::train::LossInfo loss_info;
-  {
-    loss_info.loss_code = ir::train::LossCode::MeanSquaredError;
-    loss_info.reduction_type = ir::train::LossReductionType::SumOverBatchSize;
-  }
-  info->setLossInfo(loss_info);
-
-  onert::ir::train::OptimizerInfo opt_info;
-  {
-    opt_info.optim_code = ir::train::OptimizerCode::SGD;
-    opt_info.learning_rate = 0.001f;
-  }
-  info->setOptimizerInfo(opt_info);
-
-  return info;
-}
-
 bool TrainingInfo::isValid() const
 {
   if (_batch_size == 0)
