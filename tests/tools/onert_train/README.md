@@ -6,6 +6,16 @@ The input models that can be supported by this tool are as follows.
 - circle
 - nnpackage
 
+## Prerequisites
+
+Required software tools:
+  - libhdf5-dev
+  - libboost-program-options-dev
+
+```
+sudo apt install -y libhdf5-dev libboost-program-options-dev
+```
+
 ## Usage
 
 ### Simple train
