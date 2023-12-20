@@ -19,6 +19,8 @@
 
 #include "pp/Format.h"
 
+#include <cstdint>
+
 namespace pp
 {
 
