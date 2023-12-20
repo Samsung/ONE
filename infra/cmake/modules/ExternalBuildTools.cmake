@@ -54,7 +54,7 @@ function(ExternalBuild_CMake)
                             -G "${CMAKE_GENERATOR}"
                             -DCMAKE_INSTALL_PREFIX=${ARG_INSTALL_DIR}
                             -DCMAKE_BUILD_TYPE=Release
-                            -DCMAKE_CXX_FLAGS=${ARG_BUILD_FLAGS}
+                            -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} ${ARG_BUILD_FLAGS}
                             ${ARG_EXTRA_OPTS}
                             ${ARG_CMAKE_DIR}
                   OUTPUT_FILE ${BUILD_LOG_PATH}

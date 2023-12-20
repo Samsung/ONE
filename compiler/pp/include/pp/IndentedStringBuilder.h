@@ -18,6 +18,7 @@
 #define __PP_INDENTED_STRING_BUILDER_H__
 
 #include "pp/Format.h"
+#include <cstdint>
 
 namespace pp
 {
