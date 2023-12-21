@@ -32,7 +32,7 @@ template <typename T>
 void MeanGrad(const Shape &incoming_shape, const T *incoming_data, const Shape &grad_shape,
               T *grad_data)
 {
-  BroadcastTo(incoming_shape, const_cast<T*>(incoming_data), grad_shape, grad_data);
+  BroadcastTo(incoming_shape, const_cast<T *>(incoming_data), grad_shape, grad_data);
   const auto incoming = MapAsMatrixWithLastDimAsRows(incoming_data, incoming_shape);
   auto grad = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
   grad /= (grad.size() / incoming.size());

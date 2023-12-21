@@ -38,7 +38,8 @@ public:
 
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
-                 bool keep_dims, IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
+                 bool keep_dims, IPortableTensor *back_prop_input,
+                 const IPortableTensor *back_prop_output);
   void forward(bool training) override;
   void backward() override;
 

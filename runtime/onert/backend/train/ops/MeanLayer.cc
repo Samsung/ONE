@@ -36,8 +36,9 @@ MeanLayer::MeanLayer()
   // DO NOTHING
 }
 
-void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
-                          bool keep_dims, IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
+void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,
+                          IPortableTensor *output, bool keep_dims, IPortableTensor *back_prop_input,
+                          const IPortableTensor *back_prop_output)
 {
   cpu::ops::MeanLayer::configure(input, axes, output, keep_dims);
 
@@ -56,7 +57,7 @@ void MeanLayer::backward()
     assert(getShape(_axes).DimensionsCount() == 1);
     for (int i = 0; i < getShape(_axes).Dims(0); ++i)
     {
-      temp_shape.SetDim(reinterpret_cast<int32_t*>(_axes->buffer())[i], 1);
+      temp_shape.SetDim(reinterpret_cast<int32_t *>(_axes->buffer())[i], 1);
     }
   }
   else

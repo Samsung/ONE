@@ -332,8 +332,8 @@ void KernelGenerator::visit(const ir::train::operation::Reduce &node)
   if (node.param().reduce_type == ir::operation::Reduce::ReduceType::MEAN)
   {
     auto fn = std::make_unique<ops::MeanLayer>();
-    fn->configure(input_tensor, axes_tensor, output_tensor, keep_dims,
-                  back_prop_input_tensor, back_prop_output_tensor);
+    fn->configure(input_tensor, axes_tensor, output_tensor, keep_dims, back_prop_input_tensor,
+                  back_prop_output_tensor);
     _return_fn = std::move(fn);
   }
   else
