@@ -172,8 +172,9 @@ public:
 
 #ifdef ONERT_TRAIN
   NNFW_STATUS train_get_traininfo(nnfw_train_info *info);
+  NNFW_STATUS train_set_traininfo(const nnfw_train_info *info);
   NNFW_STATUS train_get_batch_size(uint32_t *batch_size);
-  NNFW_STATUS train_prepare(const nnfw_train_info *info);
+  NNFW_STATUS train_prepare();
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
   NNFW_STATUS train_set_input(uint32_t index, const void *input,

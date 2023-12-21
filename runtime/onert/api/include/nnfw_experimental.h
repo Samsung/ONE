@@ -235,6 +235,19 @@ typedef struct nnfw_train_info
 NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *train_info);
 
 /**
+ * @brief Set train_info into session
+ * @note This function should called after {@link nnfw_load_model_from_file}
+ *       If user want to update some par
+ *
+ * @warning This function overwrite train_info in session.
+ *          So, If you want to update a part of train_info,
+ *          You have to get train_info first using {@link nnfw_train_get_train_info}
+ *
+ * @return @c NNFW_STATUS_NO_ERROR If successful
+ */
+NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *train_info);
+
+/**
  * @brief Get batch size from session
  * @note  This function should be called after {@link nnfw_load_model_from_file}
  *        If session doesn't have batch size, batch_size returned with 0.
@@ -258,7 +271,7 @@ NNFW_STATUS nnfw_tain_get_batch_size(nnfw_session *session, uint32_t *batch_size
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info);
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session);
 
 /**
  * @brief Set training input

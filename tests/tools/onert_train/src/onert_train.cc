@@ -124,6 +124,7 @@ int main(const int argc, char **argv)
     nnfw_train_info tri;
     NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
 
+    // TODO introduce Optional<T> here
     // update training parameter for the given parameter
     if (args.getBatchSize() != 0)
       tri.batch_size = args.getBatchSize();
@@ -140,9 +141,10 @@ int main(const int argc, char **argv)
     if (args.getOptimizerType() != NNFW_TRAIN_OPTIMIZER_UNDEF)
       tri.opt = args.getOptimizerType();
 
+    NNPR_ENSURE_STATUS(nnfw_train_set_traininfo(session, &tri));
+
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
-    measure.run(PhaseType::PREPARE,
-                [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
+    measure.run(PhaseType::PREPARE, [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session)); });
 
     std::cout << "== training parameter ==" << std::endl;
     std::cout << tri;

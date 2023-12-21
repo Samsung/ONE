@@ -1257,23 +1257,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::train_get_batch_size(uint32_t *batch_size)
-{
-  if (!isStateModelLoaded())
-  {
-    std::cerr << "Error during nnfw_session::train_get_traininfo : invalid state";
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  if (_train_info == nullptr)
-    return NNFW_STATUS_NO_ERROR;
-
-  *batch_size = _train_info->batchSize();
-
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
+NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
   if (!isStateModelLoaded())
@@ -1286,6 +1270,9 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     std::cerr << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
+
+  // If StateModelLoaded, session always has _train_info
+  assert(_train_info != nullptr);
 
   auto convertLossType = [](const int &type) {
     if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
@@ -1333,7 +1320,51 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
       _train_info->setLossInfo(loss_info);
       _train_info->setOptimizerInfo(opt_info);
     }
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_prepare : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_get_batch_size(uint32_t *batch_size)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::train_get_traininfo : invalid state";
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (_train_info == nullptr)
+    return NNFW_STATUS_NO_ERROR;
+
+  *batch_size = _train_info->batchSize();
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_prepare()
+{
+  // We may need different state to represent training model is loaded
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during model prepare training: ";
+    if (_state == State::PREPARED_TRAINING)
+      std::cerr << "prepare should be run once";
+    else
+      std::cerr << "invalid state";
+    std::cerr << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // If StateModelLoaded, session always has _train_info
+  assert(_train_info != nullptr);
+
+  try
+  {
     assert(_train_info != nullptr);
     if (not _train_info->isValid())
       throw std::runtime_error{"training info is not invalid"};
