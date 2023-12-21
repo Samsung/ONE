@@ -71,6 +71,11 @@ void TrainableOperationConverter::visit(const ir::operation::Pool2D &node)
   _return_op = std::make_unique<ir::train::operation::Pool2D>(node);
 }
 
+void TrainableOperationConverter::visit(const ir::operation::Reduce &node)
+{
+  _return_op = std::make_unique<ir::train::operation::Reduce>(node);
+}
+
 void TrainableOperationConverter::visit(const ir::operation::Reshape &node)
 {
   _return_op = std::make_unique<ir::train::operation::Reshape>(node);
