@@ -21,6 +21,7 @@
 #include "ops/FullyConnectedLayer.h"
 #include "ops/LossMeanSquaredErrorLayer.h"
 #include "ops/LossCategoricalCrossentropyLayer.h"
+#include "ops/MeanLayer.h"
 #include "ops/GradientApplier.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
@@ -309,6 +310,36 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
                 in_back_prop_tensor, out_back_prop_tensor);
 
   _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::train::operation::Reduce &node)
+{
+  using ir::train::operation::Reduce;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(Reduce::Input::INPUT)};
+  const auto axes_index{node.getInputs().at(Reduce::Input::AXES)};
+
+  const auto keep_dims = node.param().keep_dims;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto axes_tensor = _tensor_reg->getPortableTensor(axes_index);
+
+  auto back_prop_output_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto back_prop_input_tensor = _tensor_reg->getBackPropTensor(input_index);
+
+  if (node.param().reduce_type == ir::operation::Reduce::ReduceType::MEAN)
+  {
+    auto fn = std::make_unique<ops::MeanLayer>();
+    fn->configure(input_tensor, axes_tensor, output_tensor, keep_dims,
+                  back_prop_input_tensor, back_prop_output_tensor);
+    _return_fn = std::move(fn);
+  }
+  else
+  {
+    throw std::runtime_error("ReduceLayer: unsupported reduce type");
+  }
 }
 
 void KernelGenerator::visit(const ir::train::operation::Reshape &node)
