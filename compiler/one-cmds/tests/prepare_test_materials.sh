@@ -61,6 +61,10 @@ if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ]; then
     ../bin/venv/bin/python preprocess_images.py
 fi
 
+if [ ! -d "numpy_files" ] || [ ! -s "datalist_numpy.txt" ]; then
+    ../bin/venv/bin/python preprocess_images_numpy.py
+fi
+
 if [[ ! -s "inception_v3_test_data.h5" ]]; then
   ../bin/venv/bin/python ../bin/rawdata2hdf5 \
   --data_list datalist.txt \
