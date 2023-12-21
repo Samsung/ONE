@@ -82,9 +82,9 @@ private:
   // training parmater has invalid value by default
   int _batch_size = 0;
   float _learning_rate = 0.0f;
-  NNFW_TRAIN_LOSS _loss_type = NNFW_TRAIN_LOSS_INVALID;
-  NNFW_TRAIN_LOSS_REDUCTION _loss_reduction_type = NNFW_TRAIN_LOSS_REDUCTION_INVALID;
-  NNFW_TRAIN_OPTIMIZER _optimizer_type = NNFW_TRAIN_OPTIMIZER_INVALID;
+  NNFW_TRAIN_LOSS _loss_type = NNFW_TRAIN_LOSS_UNDEF;
+  NNFW_TRAIN_LOSS_REDUCTION _loss_reduction_type = NNFW_TRAIN_LOSS_REDUCTION_UNDEF;
+  NNFW_TRAIN_OPTIMIZER _optimizer_type = NNFW_TRAIN_OPTIMIZER_UNDEF;
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

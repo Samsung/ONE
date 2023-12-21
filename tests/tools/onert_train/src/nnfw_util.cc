@@ -53,7 +53,7 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
 {
   switch (opt)
   {
-    case NNFW_TRAIN_OPTIMIZER_INVALID:
+    case NNFW_TRAIN_OPTIMIZER_UNDEF:
       os << "invalid";
       break;
     case NNFW_TRAIN_OPTIMIZER_ADAM:
@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
 {
   switch (loss)
   {
-    case NNFW_TRAIN_LOSS_INVALID:
+    case NNFW_TRAIN_LOSS_UNDEF:
       os << "invalid";
       break;
     case NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR:
@@ -91,7 +91,7 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss
 {
   switch (loss_reduction)
   {
-    case NNFW_TRAIN_LOSS_REDUCTION_INVALID:
+    case NNFW_TRAIN_LOSS_REDUCTION_UNDEF:
       os << "invalid";
       break;
     case NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE:

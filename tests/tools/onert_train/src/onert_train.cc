@@ -131,13 +131,13 @@ int main(const int argc, char **argv)
     if (args.getLearningRate() != 0.0f)
       tri.learning_rate = args.getLearningRate();
 
-    if (args.getLossType() != NNFW_TRAIN_LOSS_INVALID)
+    if (args.getLossType() != NNFW_TRAIN_LOSS_UNDEF)
       tri.loss_info.loss = args.getLossType();
 
-    if (args.getLossReductionType() != NNFW_TRAIN_LOSS_REDUCTION_INVALID)
+    if (args.getLossReductionType() != NNFW_TRAIN_LOSS_REDUCTION_UNDEF)
       tri.loss_info.reduction_type = args.getLossReductionType();
 
-    if (args.getOptimizerType() != NNFW_TRAIN_OPTIMIZER_INVALID)
+    if (args.getOptimizerType() != NNFW_TRAIN_OPTIMIZER_UNDEF)
       tri.opt = args.getOptimizerType();
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time

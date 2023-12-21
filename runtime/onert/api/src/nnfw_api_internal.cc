@@ -1195,7 +1195,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (code)
     {
       case onert::ir::train::LossCode::Invalid:
-        return NNFW_TRAIN_LOSS_INVALID;
+        return NNFW_TRAIN_LOSS_UNDEF;
       case onert::ir::train::LossCode::MeanSquaredError:
         return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
       case onert::ir::train::LossCode::CategoricalCrossentropy:
@@ -1210,7 +1210,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (type)
     {
       case onert::ir::train::LossReductionType::Invalid:
-        return NNFW_TRAIN_LOSS_REDUCTION_INVALID;
+        return NNFW_TRAIN_LOSS_REDUCTION_UNDEF;
       case onert::ir::train::LossReductionType::SumOverBatchSize:
         return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
       case onert::ir::train::LossReductionType::Sum:
@@ -1226,7 +1226,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (code)
     {
       case onert::ir::train::OptimizerCode::Invalid:
-        return NNFW_TRAIN_OPTIMIZER_INVALID;
+        return NNFW_TRAIN_OPTIMIZER_UNDEF;
       case onert::ir::train::OptimizerCode::SGD:
         return NNFW_TRAIN_OPTIMIZER_SGD;
       case onert::ir::train::OptimizerCode::Adam:
@@ -1297,7 +1297,7 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
   };
 
   auto convertLossReductionType = [](const int &type) {
-    if (type == NNFW_TRAIN_LOSS_REDUCTION_INVALID)
+    if (type == NNFW_TRAIN_LOSS_REDUCTION_UNDEF)
       return onert::ir::train::LossReductionType::Invalid;
     else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
       return onert::ir::train::LossReductionType::SumOverBatchSize;

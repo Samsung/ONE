@@ -176,7 +176,7 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 typedef enum
 {
-  NNFW_TRAIN_LOSS_INVALID = -1,
+  NNFW_TRAIN_LOSS_UNDEF = -1,
   NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR = 0,
   NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY = 1,
 } NNFW_TRAIN_LOSS;
@@ -184,7 +184,7 @@ typedef enum
 typedef enum
 {
   /** Invalid */
-  NNFW_TRAIN_LOSS_REDUCTION_INVALID = 0,
+  NNFW_TRAIN_LOSS_REDUCTION_UNDEF = 0,
   /** Scalar sum divided by number of elements in losses */
   NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE = 1,
   /** Scalar sum of weighted losses */
@@ -193,7 +193,7 @@ typedef enum
 
 typedef enum
 {
-  NNFW_TRAIN_OPTIMIZER_INVALID = -1,
+  NNFW_TRAIN_OPTIMIZER_UNDEF = -1,
   NNFW_TRAIN_OPTIMIZER_SGD = 0,
   NNFW_TRAIN_OPTIMIZER_ADAM = 1,
 } NNFW_TRAIN_OPTIMIZER;
@@ -216,19 +216,16 @@ typedef struct nnfw_train_info
   /** Batch size */
   uint32_t batch_size = 0;
   /** loss info */
-  nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_INVALID,
-                           .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_INVALID};
+  nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_UNDEF,
+                           .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_UNDEF};
   /** optimizer type */
-  NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
+  NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_UNDEF;
 } nnfw_train_info;
 
 /**
- * @brief Get train info from session
+ * @brief Get train_info from session
  * @note  This function should be called after {@link nnfw_load_model_from_file}
- *        'train_info' in the session is usually from model file,
- *        If model doens't have train_info, return default train_info
- *        Default training information is {learning_rate = 0.001f, batch_size = 1,
- *          loss={MeanSquaredError, SumOverBatchSize}, optimizer=SGD}
+ *        If train_info has undefined value, nnfw_train_info also filled with NNFW_TRAIN_*_UNDEF.
  *
  * @param[in] session       The session to get training info
  * @param[out] train_info   The training infomation(parameters) in the session
@@ -240,6 +237,7 @@ NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *tra
 /**
  * @brief Get batch size from session
  * @note  This function should be called after {@link nnfw_load_model_from_file}
+ *        If session doesn't have batch size, batch_size returned with 0.
  *
  * @param[in] session       The session to get batch size
  * @param[out] batch_size   The batch size of model file's training info holds
@@ -254,11 +252,9 @@ NNFW_STATUS nnfw_tain_get_batch_size(nnfw_session *session, uint32_t *batch_size
  *
  * @param[in] session The session to be prepared for training
  * @param[in] info    Training information.
- *                    If info is nullptr, training info from the model is used.
- *                    If info is nullptr and model has not training information,
- *                      default training information is used.
- *                    Default training information is {learning_rate = 0.001f, batch_size = 1,
- *                    loss={MeanSquaredError, SumOverBatchSize}, optimizer=SGD}
+ *                    If info is nullptr, train_info in the session is used.
+ *                    If info isn't nullptr, session in train_info in the session is overwritten
+ *                      and the overwritten train_info is used.
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
