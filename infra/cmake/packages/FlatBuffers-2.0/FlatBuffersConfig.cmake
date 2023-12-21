@@ -22,6 +22,9 @@ function(_FlatBuffers_build)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
     set(ADDITIONAL_CXX_FLAGS "-Wno-error=class-memaccess")
   endif()
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 12.0)
+    set(ADDITIONAL_CXX_FLAGS "-Wno-error=stringop-overflow")
+  endif()
 
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${FlatBuffersSource_DIR}
