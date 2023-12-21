@@ -18,6 +18,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/Shape.h>
 #include <cker/train/operation/ReduceMean.h>
 
 namespace onert
@@ -48,12 +49,27 @@ void MeanLayer::forward(bool) { cpu::ops::MeanLayer::run(); }
 
 void MeanLayer::backward()
 {
+  nnfw::cker::Shape temp_shape;
+  if (_keep_dims == false)
+  {
+    temp_shape.ReplaceWith(getShape(_input));
+    assert(getShape(_axes).DimensionsCount() == 1);
+    for (int i = 0; i < getShape(_axes).Dims(0); ++i)
+    {
+      temp_shape.SetDim(reinterpret_cast<int32_t*>(_axes->buffer())[i], 1);
+    }
+  }
+  else
+  {
+    temp_shape.ReplaceWith(getShape(_back_prop_input));
+  }
+
   assert(_back_prop_output->data_type() == _input->data_type());
   switch (_back_prop_output->data_type())
   {
     case OperandType::FLOAT32:
     {
-      nnfw::cker::train::MeanGrad(getShape(_back_prop_output), getBuffer<float>(_back_prop_output),
+      nnfw::cker::train::MeanGrad(temp_shape, getBuffer<float>(_back_prop_output),
                                   getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
       break;
     }

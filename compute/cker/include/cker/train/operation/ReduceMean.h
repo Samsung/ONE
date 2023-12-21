@@ -28,19 +28,14 @@ namespace cker
 namespace train
 {
 
-template <typename In, typename Out>
-void MeanGrad(const Shape &incoming_shape, const In *incoming_data, const Shape &grad_shape,
-              Out *grad_data)
+template <typename T>
+void MeanGrad(const Shape &incoming_shape, const T *incoming_data, const Shape &grad_shape,
+              T *grad_data)
 {
-  // BroadcastTo(incoming_shape, incoming_data, grad_shape, grad_data);
-  
+  BroadcastTo(incoming_shape, const_cast<T*>(incoming_data), grad_shape, grad_data);
   const auto incoming = MapAsMatrixWithLastDimAsRows(incoming_data, incoming_shape);
   auto grad = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
-
-  grad = incoming.array() / incoming.cols();
-  // int num_elements = grad.cols();
-  // grad += incoming;
-  // grad /= num_elements;
+  grad /= (grad.size() / incoming.size());
 }
 
 } // namespace train
