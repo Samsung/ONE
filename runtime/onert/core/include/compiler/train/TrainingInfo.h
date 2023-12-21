@@ -29,6 +29,7 @@ namespace compiler
 namespace train
 {
 
+// TODO replace this with ir::train::TrainingInfo
 class TrainingInfo
 {
 public:
