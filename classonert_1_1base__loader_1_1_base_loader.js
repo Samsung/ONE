@@ -5,6 +5,7 @@ var classonert_1_1base__loader_1_1_base_loader =
     [ "BuiltinOperator", "classonert_1_1base__loader_1_1_base_loader.html#a345fbadc2b5de48741b8e3ac6d21a2e1", null ],
     [ "CustomOptionsFormat", "classonert_1_1base__loader_1_1_base_loader.html#ab53006661ffb84bec2cf3d1e36098181", null ],
     [ "DimensionType", "classonert_1_1base__loader_1_1_base_loader.html#a006c3eef430488a66cd9958e012740a4", null ],
+    [ "Metadata", "classonert_1_1base__loader_1_1_base_loader.html#af4297fac66d314870f97766e45d6844b", null ],
     [ "Model", "classonert_1_1base__loader_1_1_base_loader.html#a3a8d9179f114d33fe85d5fbcd862cfb6", null ],
     [ "Operator", "classonert_1_1base__loader_1_1_base_loader.html#ac8ac7b74cd37dbf54c21b3157dd1944e", null ],
     [ "Padding", "classonert_1_1base__loader_1_1_base_loader.html#aaa2616a898f017148b39071df11aaa8e", null ],

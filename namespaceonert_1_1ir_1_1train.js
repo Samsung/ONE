@@ -7,6 +7,7 @@ var namespaceonert_1_1ir_1_1train =
     [ "OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", "structonert_1_1ir_1_1train_1_1_optimizer_info" ],
     [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
     [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ],
+    [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ],
     [ "LossCode", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52", [
       [ "Invalid", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52a4bbb8f967da6d1a610596d7257179c2b", null ],
       [ "MeanSquaredError", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb", null ],

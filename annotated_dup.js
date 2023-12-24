@@ -3351,7 +3351,8 @@ var annotated_dup =
           [ "LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", "structonert_1_1ir_1_1train_1_1_loss_info" ],
           [ "OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", "structonert_1_1ir_1_1train_1_1_optimizer_info" ],
           [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
-          [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ]
+          [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ],
+          [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ]
         ] ],
         [ "verifier", "namespaceonert_1_1ir_1_1verifier.html", [
           [ "DAGChecker", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker.html", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker" ],
@@ -4041,8 +4042,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

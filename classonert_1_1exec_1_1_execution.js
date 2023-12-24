@@ -9,6 +9,7 @@ var classonert_1_1exec_1_1_execution =
     [ "getOutputShape", "classonert_1_1exec_1_1_execution.html#a8e1db01134e00044abe3b360260f47f9", null ],
     [ "getOutputTotalSize", "classonert_1_1exec_1_1_execution.html#aca14a1b34666395e567c795514ea7823", null ],
     [ "isFinished", "classonert_1_1exec_1_1_execution.html#a310972a702962562bd68fe87d9c27107", null ],
+    [ "iterateTrainableTensors", "classonert_1_1exec_1_1_execution.html#a48db58a150eed53317e08cb99de23823", null ],
     [ "primary_subgraph", "classonert_1_1exec_1_1_execution.html#a1ed64c33fce287c077b26d308ab054fe", null ],
     [ "setInput", "classonert_1_1exec_1_1_execution.html#a16b0b9dcb2d79e18ed3000820e8f03ee", null ],
     [ "setInput", "classonert_1_1exec_1_1_execution.html#a24f898fb7ef3ddb140fa03b924a67630", null ],

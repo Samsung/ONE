@@ -655,7 +655,7 @@ var searchData=
   ['trainableoperationvisitor_652',['TrainableOperationVisitor',['../structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html',1,'onert::ir::train']]],
   ['trainabletensor_653',['TrainableTensor',['../classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html',1,'onert::backend::basic::train']]],
   ['trainingcompiler_654',['TrainingCompiler',['../classonert_1_1compiler_1_1train_1_1_training_compiler.html',1,'onert::compiler::train']]],
-  ['traininginfo_655',['TrainingInfo',['../classonert_1_1compiler_1_1train_1_1_training_info.html',1,'onert::compiler::train']]],
+  ['traininginfo_655',['TrainingInfo',['../classonert_1_1compiler_1_1train_1_1_training_info.html',1,'onert::compiler::train::TrainingInfo'],['../classonert_1_1ir_1_1train_1_1_training_info.html',1,'onert::ir::train::TrainingInfo']]],
   ['trainingkernelregistry_656',['TrainingKernelRegistry',['../classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html',1,'onert::backend::train::ops']]],
   ['transformer_657',['Transformer',['../classmir2loco_1_1_transformer.html',1,'mir2loco']]],
   ['transformminmaxtorelu6pass_658',['TransformMinMaxToRelu6Pass',['../structluci_1_1_transform_min_max_to_relu6_pass.html',1,'luci']]],

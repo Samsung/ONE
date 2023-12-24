@@ -11,6 +11,7 @@ var classonert_1_1exec_1_1train_1_1_trainable_executors =
     [ "getLoss", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#add3b56ebaa92884a0e1d4f1f36eb4499", null ],
     [ "inputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a837b51df35c3f2ca088eef95e45509b4", null ],
     [ "inputSize", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#afd55934acaebf680a3e151cfc754b15e", null ],
+    [ "iterateTrainableTensors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#ab3dbdecb124aaa68533e6043dc134e9c", null ],
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#aef14342fc1876873d52394dbbc3bf169", null ],
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1f55128046859e3f3548d2192c6892ab", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a2c1e93db707599f40373b46df24fabdc", null ],

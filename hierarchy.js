@@ -3506,8 +3506,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -5571,6 +5571,7 @@ var hierarchy =
       [ "onert::compiler::train::StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", null ]
     ] ],
     [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
+    [ "onert::ir::train::TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", null ],
     [ "onert::backend::train::ops::TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],
     [ "nnfw::cker::TransposeConvParams", "structnnfw_1_1cker_1_1_transpose_conv_params.html", null ],
