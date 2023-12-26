@@ -26,6 +26,7 @@
 #include "rawformatter.h"
 #include "dataloader.h"
 #include "rawdataloader.h"
+#include "metrics.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -161,6 +162,18 @@ int main(const int argc, char **argv)
       }
     };
 
+    auto getMetricTypeStr = [](int type) {
+      if (type < 0)
+        return "";
+      // Metric type
+      // 0: Categorical Accuracy
+      std::vector<int> acc = {0};
+      auto it = std::find(acc.begin(), acc.end(), type);
+      if (it == acc.end())
+        return "metric";
+      return "accuracy";
+    };
+
     // prepare training info
     nnfw_train_info tri;
     tri.batch_size = args.getBatchSize();
@@ -251,6 +264,7 @@ int main(const int argc, char **argv)
     }
 
     std::vector<float> losses(num_expecteds);
+    std::vector<float> metrics(num_expecteds);
     measure.run(PhaseType::EXECUTE, [&]() {
       const int num_step = tdata_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
@@ -312,6 +326,7 @@ int main(const int argc, char **argv)
         if (vdata_length > 0)
         {
           std::fill(losses.begin(), losses.end(), 0);
+          std::fill(metrics.begin(), metrics.end(), 0);
           const int num_valid_step = vdata_length / tri.batch_size;
           for (uint32_t n = 0; n < num_valid_step; ++n)
           {
@@ -337,12 +352,14 @@ int main(const int argc, char **argv)
             NNPR_ENSURE_STATUS(nnfw_train(session, false));
 
             // get validation loss and accuracy
+            Metrics metric(output_data, expected_data, expected_infos);
             for (int32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
               losses[i] += temp;
-              // TODO get validation accuracy
+              if (args.getMetricType() == 0)
+                metrics[i] += metric.categoricalAccuracy(i);
             }
           }
 
@@ -354,7 +371,16 @@ int main(const int argc, char **argv)
           {
             std::cout << "[" << i << "] " << losses[i] / num_valid_step;
           }
-          // TODO print validation accuracy
+          // TODO use init-statement in selection statements (c++17)
+          std::string str;
+          if ((str = getMetricTypeStr(args.getMetricType())) != "")
+          {
+            std::cout << " - val_" << str << ": ";
+            for (uint32_t i = 0; i < num_expecteds; ++i)
+            {
+              std::cout << "[" << i << "] " << metrics[i] / num_valid_step;
+            }
+          }
         }
 
         std::cout << std::endl;

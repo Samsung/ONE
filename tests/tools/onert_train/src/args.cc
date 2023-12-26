@@ -239,7 +239,8 @@ void Args::Initialize(void)
       "1: Adam\n")
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
       "Metricy type\n"
-      "  Simply calculates the metric value using the variables (default: none)\n")
+      "  Simply calculates the metric value using the variables (default: none)\n"
+      "0: CATEGORICAL_ACCURACY\n")
     ("validation_split", po::value<float>()->default_value(0.0f)->notifier(process_validation_split),
          "Float between 0 and 1. Fraction of the training data to be used as validation data.")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
