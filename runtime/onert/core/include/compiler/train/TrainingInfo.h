@@ -47,8 +47,9 @@ public:
   {
     _loss_info = loss_info;
 
-    // If the reduction type is not specified, it uses SumOverBatchSize.
-    if (_loss_info.reduction_type == ir::train::LossReductionType::Invalid)
+    // Always use SumOverBatchSize type
+    // TODO Support different type
+    if (_loss_info.reduction_type == ir::train::LossReductionType::Auto)
       _loss_info.reduction_type = ir::train::LossReductionType::SumOverBatchSize;
   }
   const ir::train::OptimizerInfo &optimizerInfo() const { return _optimizer_info; }

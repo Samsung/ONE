@@ -137,7 +137,7 @@ int main(const int argc, char **argv)
       switch (type)
       {
         case 0:
-          return NNFW_TRAIN_LOSS_REDUCTION_INVALID;
+          return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
         case 1:
           return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
         case 2:
