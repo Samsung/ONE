@@ -81,7 +81,7 @@ void TensorManager::allocateTrainableTensors()
 void TensorManager::allocateBackPropTensors()
 {
   allocateMemory(_back_prop_mgr.get(), _tensors->back_prop_tensors(),
-                 std::string{"DERIVATIVE TENSOR "});
+                 std::string{"BACK_PROP TENSOR "});
 }
 
 void TensorManager::allocateGradientTensors()
