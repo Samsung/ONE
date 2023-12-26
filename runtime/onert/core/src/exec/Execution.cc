@@ -161,12 +161,8 @@ void Execution::train(uint32_t training_step)
     throw std::runtime_error{"Supported only TrainableExecutors"};
   }
 
-  VERBOSE(Execution) << "Start training" << std::endl;
-
   execs->train(_io_desc, training_step);
   finished = true;
-
-  VERBOSE(Execution) << "training finished" << std::endl;
 }
 
 float Execution::getLoss(const ir::IOIndex &ind)
