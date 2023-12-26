@@ -42,6 +42,10 @@ namespace ir
 struct IGraph;
 class Model;
 class NNPkg;
+namespace train
+{
+class TrainingInfo;
+}
 } // namespace ir
 namespace compiler
 {
@@ -206,6 +210,7 @@ private:
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
   uint32_t _training_step{0};
+  std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
   // Remember path to loaded original model
   // It may be used for on-device compiler / on-device training.
