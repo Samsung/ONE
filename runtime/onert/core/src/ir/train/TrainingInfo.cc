@@ -31,7 +31,7 @@ bool TrainingInfo::isValid() const
   if (_optimizer_info.optim_code == onert::ir::train::OptimizerCode::Invalid)
     return false;
 
-  if (_optimizer_info.learning_rate == 0.0f)
+  if (_optimizer_info.learning_rate <= 0.0f)
     return false;
 
   if (_loss_info.loss_code == onert::ir::train::LossCode::Invalid)
