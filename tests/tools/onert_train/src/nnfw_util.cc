@@ -87,8 +87,8 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss
 {
   switch (loss_reduction)
   {
-    case NNFW_TRAIN_LOSS_REDUCTION_INVALID:
-      os << "use default setting";
+    case NNFW_TRAIN_LOSS_REDUCTION_AUTO:
+      os << "use automatic reduction type";
       break;
     case NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE:
       os << "sum over batch size";
