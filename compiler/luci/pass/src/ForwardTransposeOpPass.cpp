@@ -289,6 +289,8 @@ public:
   bool visit(luci::CircleNode *) { return false; }
 
   bool visit(luci::CircleAbs *node) { return has_pattern_x(node); }
+
+  bool visit(luci::CircleLogistic *node) { return has_pattern_x(node); }
 };
 
 } // namespace
