@@ -47,7 +47,7 @@ namespace train
 
 TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                                    std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                                   const TrainingInfo &training_info)
+                                   const ir::train::TrainingInfo &training_info)
   : _model{nnpkg->primary_model()}, _options{copts[0].get()}, _training_info{training_info}
 {
   if (nnpkg->model_count() > 1)

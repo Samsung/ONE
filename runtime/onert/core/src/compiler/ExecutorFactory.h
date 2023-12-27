@@ -23,8 +23,8 @@
 #include "backend/train/TrainableBackendContext.h"
 #include "compiler/LoweredGraph.h"
 #include "compiler/train/LoweredTrainableGraph.h"
-#include "compiler/train/TrainingInfo.h"
 #include "exec/IExecutors.h"
+#include "ir/train/TrainingInfo.h"
 
 #include <deque>
 #include <unordered_map>
@@ -57,7 +57,7 @@ public:
   exec::IExecutor *create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args,
-                          const compiler::train::TrainingInfo &training_info);
+                          const ir::train::TrainingInfo &training_info);
 
 private:
   ExecutorFactory();
@@ -88,7 +88,7 @@ private:
   createTrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args,
-                          const compiler::train::TrainingInfo &training_info);
+                          const ir::train::TrainingInfo &training_info);
 
 private:
   std::unordered_map<

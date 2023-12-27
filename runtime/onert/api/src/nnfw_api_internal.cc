@@ -1230,7 +1230,7 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     opt_info.learning_rate = tinfo.learning_rate;
     opt_info.optim_code = convertOptType(tinfo.opt);
 
-    onert::compiler::train::TrainingInfo training_info;
+    onert::ir::train::TrainingInfo training_info;
     training_info.setBatchSize(tinfo.batch_size);
     training_info.setLossInfo(loss_info);
     training_info.setOptimizerInfo(opt_info);
