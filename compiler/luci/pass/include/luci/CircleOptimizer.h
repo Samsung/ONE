@@ -52,6 +52,7 @@ public:
       ResolveCustomOpMatMul,
       ResolveCustomOpMaxPoolWithArgmax,
       ResolveCustomOpSplitV,
+      ResolveFormerCustomOp,
       FoldAddV2,
       FoldCast,
       FoldDensify,

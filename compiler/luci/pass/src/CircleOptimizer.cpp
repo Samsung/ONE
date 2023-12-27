@@ -69,6 +69,7 @@
 #include "luci/Pass/ResolveCustomOpMatMulPass.h"
 #include "luci/Pass/ResolveCustomOpMaxPoolWithArgmaxPass.h"
 #include "luci/Pass/ResolveCustomOpSplitVPass.h"
+#include "luci/Pass/ResolveFormerCustomOpPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
@@ -164,6 +165,7 @@ void convert_nchw_to_nhwc(loco::Graph *g, bool preserve_input, bool preserve_out
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
   phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
+  phase.emplace_back(std::make_unique<luci::ResolveFormerCustomOpPass>());
 
   // Fuse FullyConnected with Add
   // Why we perform FuseAddWithFullyConnectedPass before ConvertNCHWToNHWCPass?
@@ -262,6 +264,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
   {
     phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
+  }
+  if (_options->query(Options::Algorithm::ResolveFormerCustomOp))
+  {
+    phase.emplace_back(std::make_unique<luci::ResolveFormerCustomOpPass>());
   }
   if (_options->query(Options::Algorithm::FuseMeanWithMean))
   {
