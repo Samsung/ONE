@@ -37,9 +37,6 @@ namespace compiler
 {
 namespace train
 {
-
-class TrainingInfo;
-
 namespace pass
 {
 
