@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# negative usage with invalid input_data_format (test without choosing between rawdata and numpy)
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+trap_err_onexit()
+{
+  if grep -q "argument -i/--input_data_format: invalid choice:" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
+
+  echo "${filename_ext} FAILED"
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+outputfile="./output_testdata.h5"
+
+rm -f ${filename}.log
+
+# run test
+one-create-quant-dataset \
+--input_data_format raw \
+--data_list datalist.txt \
+--output_path ${outputfile} > ${filename}.log 2>&1
+
+echo "${filename_ext} FAILED"
+exit 255

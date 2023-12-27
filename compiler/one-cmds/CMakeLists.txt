@@ -20,6 +20,7 @@ endif()
 #      below code will remove extension when copy and install.
 set(ONE_COMMAND_FILES
     one-build
+    one-create-quant-dataset
     one-import
     one-import-bcq
     one-import-tf
