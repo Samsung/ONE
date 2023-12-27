@@ -38,6 +38,14 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *node)
   if (shape->dtype() != loco::DataType::S32 && shape->dtype() != loco::DataType::S64)
     return false;
 
+  auto customOut = loco::succs(node);
+  assert(customOut.size() == 1);
+
+  // check if the data type of output is same with the one of the input feature map.
+  auto output = loco::must_cast<luci::CircleNode *>(*customOut.begin());
+  if (input->dtype() != output->dtype())
+    return false;
+
   auto name = node->name();
   assert(name.length() > 0);
 
@@ -46,15 +54,6 @@ bool resolve_with_BroadcastTo(luci::CircleCustom *node)
   broadcastTo->shape(shape);
   broadcastTo->name(name);
   luci::add_origin(broadcastTo, luci::get_origin(node));
-
-  auto customOut = loco::succs(node);
-
-  assert(customOut.size() == 1);
-
-  // check if the data type of output is same with the one of the input feature map.
-  auto output = loco::must_cast<luci::CircleNode *>(*customOut.begin());
-  if (input->dtype() != output->dtype())
-    return false;
 
   replace(*customOut.begin()).with(broadcastTo);
 
