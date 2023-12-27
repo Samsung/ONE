@@ -1369,11 +1369,10 @@ NNFW_STATUS nnfw_session::train_prepare()
     if (not _train_info->isValid())
       throw std::runtime_error{"training info is not invalid"};
 
-    // TODO replace compiler::train::TrainingInfo with ir::train::TrainingInfo
-    onert::compiler::train::TrainingInfo training_info;
-    training_info.setBatchSize(_train_info->batchSize());
-    training_info.setLossInfo(_train_info->lossInfo());
-    training_info.setOptimizerInfo(_train_info->optimizerInfo());
+    onert::ir::train::TrainingInfo training_info;
+    training_info.setBatchSize(tinfo.batch_size);
+    training_info.setLossInfo(loss_info);
+    training_info.setOptimizerInfo(opt_info);
 
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);

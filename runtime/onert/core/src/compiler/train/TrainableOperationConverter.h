@@ -19,7 +19,7 @@
 
 #include "UntrainableOperationConverter.h"
 
-#include "compiler/train/TrainingInfo.h"
+#include "ir/train/TrainingInfo.h"
 
 namespace onert
 {
@@ -32,7 +32,7 @@ class TrainableOperationConverter : public UntrainableOperationConverter
 {
 public:
   TrainableOperationConverter(ir::train::TrainableGraph &trainable_graph,
-                              const compiler::train::TrainingInfo *training_info);
+                              const ir::train::TrainingInfo *training_info);
 
   using UntrainableOperationConverter::operator();
 
@@ -47,7 +47,7 @@ private:
   void visit(const ir::operation::Softmax &) override;
 
 private:
-  const compiler::train::TrainingInfo *_training_info;
+  const ir::train::TrainingInfo *_training_info;
 };
 
 } // namespace train

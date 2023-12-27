@@ -27,7 +27,7 @@ namespace train
 {
 
 TrainableOperationConverter::TrainableOperationConverter(
-  ir::train::TrainableGraph &tgraph, const compiler::train::TrainingInfo *training_info)
+  ir::train::TrainableGraph &tgraph, const ir::train::TrainingInfo *training_info)
   : UntrainableOperationConverter{tgraph}, _training_info{training_info}
 {
   // Avoid unused-private-field error
