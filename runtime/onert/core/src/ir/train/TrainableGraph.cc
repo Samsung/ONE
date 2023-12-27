@@ -31,7 +31,7 @@ namespace train
 TrainableGraph::TrainableGraph() : _graph{} {}
 
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
-  : _graph{tgraph._graph}, _back_props{tgraph._back_props}, _losses{tgraph._losses}
+  : _graph{tgraph._graph}, _backward_operands{tgraph._backward_operands}, _losses{tgraph._losses}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
@@ -62,9 +62,10 @@ OperationIndex TrainableGraph::replaceOperation(OperationIndex index,
   return _graph.replaceOperation(index, std::move(operation));
 }
 
-OperandIndex TrainableGraph::addBackProp(OperandIndex index, std::unique_ptr<Operand> &&back_prop)
+OperandIndex TrainableGraph::addBackwardOperand(OperandIndex index,
+                                                std::unique_ptr<Operand> &&bwd_operand)
 {
-  return _back_props.push(std::move(back_prop), index);
+  return _backward_operands.push(std::move(bwd_operand), index);
 }
 
 IOIndex TrainableGraph::getInputIndex(const std::string &name) const
@@ -82,10 +83,10 @@ void TrainableGraph::changeShape(const OperandIndex &index, const ir::Shape &new
   _graph.changeShape(index, new_shape);
 }
 
-void TrainableGraph::changeBackPropShape(const OperandIndex &index, const ir::Shape &new_shape)
+void TrainableGraph::changeBackwardShape(const OperandIndex &index, const ir::Shape &new_shape)
 {
-  assert(_back_props.exist(index));
-  _back_props.at(index).info().shape(new_shape);
+  assert(_backward_operands.exist(index));
+  _backward_operands.at(index).info().shape(new_shape);
 }
 
 void TrainableGraph::addInput(const OperandIndex &ind, const std::string &name)

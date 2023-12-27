@@ -84,21 +84,21 @@ public:
                                   std::unique_ptr<ITrainableOperation> &&operation);
 
   /**
-   * @brief Add a operand for back propagation to the graph with the given index and object
+   * @brief Add a operand for backwarding to the graph with the given index and object
    *
-   * If the given index is available, it succeeds. And @c back_prop is moved which invalidates the
-   * caller's pointer. If the given index is already taken, it fails. And @c back_prop will not be
-   * moved so the caller's pointer will be still valid.
+   * If the given index is available, it succeeds. And @c bwd_operand is moved which invalidates
+   * the caller's pointer. If the given index is already taken, it fails. And @c bwd_operand will
+   * not be moved so the caller's pointer will be still valid.
    *
-   * @param[in] index     Index to be added
-   * @param[in] back_prop Back propagation operand to be added
+   * @param[in] index       Index to be added
+   * @param[in] bwd_operand Backward operand to be added
    * @return OperandIndex @c index if successful, UNDEFINED otherwise
    */
-  OperandIndex addBackProp(OperandIndex index, std::unique_ptr<Operand> &&back_prop);
+  OperandIndex addBackwardOperand(OperandIndex index, std::unique_ptr<Operand> &&bwd_operand);
 
 public:
   void changeShape(const OperandIndex &ind, const ir::Shape &new_shape) override;
-  void changeBackPropShape(const OperandIndex &ind, const ir::Shape &new_shape);
+  void changeBackwardShape(const OperandIndex &ind, const ir::Shape &new_shape);
   void addInput(const OperandIndex &ind, const std::string &name = "");
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void addLoss(const OperandIndex &loss_ind, const IOIndex &pred_io_ind);
@@ -119,7 +119,7 @@ public:
   const Operands &operands() const override { return _graph.operands(); }
   Operands &operands() { return _graph.operands(); } // TODO Remove this non-const accessor
   const Operations &operations() const override { return _graph.operations(); }
-  const Operands &back_props() const { return _back_props; }
+  const Operands &backward_operands() const { return _backward_operands; }
   OperandIndex getLossIndex(const IOIndex &pred_io_ind) const;
   Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
@@ -133,7 +133,7 @@ public:
 
 private:
   Graph _graph;
-  Operands _back_props;
+  Operands _backward_operands;
 
   std::unordered_map<IOIndex, OperandIndex> _losses;
 };

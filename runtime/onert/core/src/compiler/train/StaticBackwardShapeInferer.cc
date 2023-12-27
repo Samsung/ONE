@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "StaticBackPropShapeInferer.h"
+#include "StaticBackwardShapeInferer.h"
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 
@@ -30,7 +30,7 @@ namespace compiler
 namespace train
 {
 
-void StaticBackPropShapeInferer::infer()
+void StaticBackwardShapeInferer::infer()
 {
   // It is not determined to iterate in reverse order.
   auto sorted_ops = _lowered_subg->graph().topolSortOperations();
@@ -41,7 +41,7 @@ void StaticBackPropShapeInferer::infer()
     if (checkDynamicInput(op))
     {
       std::stringstream msg;
-      msg << "StaticBackPropShapeInferer does not support dynamic shape yet, ";
+      msg << "StaticBackwardShapeInferer does not support dynamic shape yet, ";
       msg << op.name() << "(op index: " << op_idx << ") has dynamic shape.";
       throw std::runtime_error(msg.str());
     }
@@ -52,12 +52,12 @@ void StaticBackPropShapeInferer::infer()
   }
 }
 
-void StaticBackPropShapeInferer::dump()
+void StaticBackwardShapeInferer::dump()
 {
   // TODO dump
 }
 
-bool StaticBackPropShapeInferer::checkDynamicInput(const ir::IOperation &op)
+bool StaticBackwardShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
   for (const auto &input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
@@ -71,58 +71,59 @@ bool StaticBackPropShapeInferer::checkDynamicInput(const ir::IOperation &op)
   return false;
 }
 
-void StaticBackPropShapeInferer::checkOutput(const ir::IOperation &op)
+void StaticBackwardShapeInferer::checkOutput(const ir::IOperation &op)
 {
-  const auto &back_props = _lowered_subg->trainable_graph().back_props();
+  const auto &bwd_operands = _lowered_subg->trainable_graph().backward_operands();
   for (const auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
-    if (!back_props.exist(output_idx))
+    if (!bwd_operands.exist(output_idx))
     {
       std::stringstream msg;
-      msg << "StaticBackPropShapeInferer : Invalid output, ";
+      msg << "StaticBackwardShapeInferer : Invalid output, ";
       msg << op.name() << "'s back propagation output(index: " << output_idx << ") does not exist.";
       throw std::runtime_error(msg.str());
     }
   }
 }
 
-void StaticBackPropShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
+void StaticBackwardShapeInferer::setShape(const ir::OperandIndex &index, const ir::Shape &shape)
 {
   auto &tgraph = _lowered_subg->trainable_graph();
 
-  if (tgraph.back_props().exist(index))
-    tgraph.changeBackPropShape(index, shape);
+  if (tgraph.backward_operands().exist(index))
+    tgraph.changeBackwardShape(index, shape);
   else
   {
     // NOTE This code assumes the types are always the same, but I'm not sure.
     const auto &type = tgraph.operands().at(index).typeInfo();
-    const auto new_index = tgraph.addBackProp(index, std::make_unique<ir::Operand>(shape, type));
+    const auto new_index =
+      tgraph.addBackwardOperand(index, std::make_unique<ir::Operand>(shape, type));
     assert(new_index == index);
     UNUSED_RELEASE(new_index);
   }
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Conv2D &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Conv2D &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::ElementwiseActivation &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Loss &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Loss &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Permute &op)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Permute &op)
 {
-  const auto &back_props = _lowered_subg->trainable_graph().back_props();
+  const auto &bwd_operands = _lowered_subg->trainable_graph().backward_operands();
 
   const auto &output_idx = op.getOutputs().at(0);
-  const auto &output = back_props.at(output_idx);
+  const auto &output = bwd_operands.at(output_idx);
 
   // re-sizing shape of back propagatation input
   const auto &input_idx = op.getInputs().at(0);
@@ -130,17 +131,17 @@ void StaticBackPropShapeInferer::visit(const ir::train::operation::Permute &op)
   setShape(input_idx, new_shape);
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Pool2D &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Pool2D &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Reshape &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Reshape &)
 {
   // NYI
 }
 
-void StaticBackPropShapeInferer::visit(const ir::train::operation::Softmax &)
+void StaticBackwardShapeInferer::visit(const ir::train::operation::Softmax &)
 {
   // NYI
 }
