@@ -234,15 +234,10 @@ NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_inf
  * @note  The session will be entered into training mode
  *
  * @param[in] session The session to be prepared for training
- * @param[in] info    Training information.
- *                    If info is nullptr, it will not change training information.
- *                    If it is nullptr and model has not training information,
- *                    it will use default training information.
- *                    Default training information is {learning_rate = 0.001f, batch_size = 1}
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info);
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session);
 
 /**
  * @brief Set training input

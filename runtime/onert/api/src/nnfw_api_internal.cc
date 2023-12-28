@@ -1242,7 +1242,7 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
+NNFW_STATUS nnfw_session::train_prepare()
 {
   // We may need different state to represent training model is loaded
   if (!isStateModelLoaded())
@@ -1256,56 +1256,16 @@ NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
+  // after model loaded, it ensures that _train_info is not nullptr
+  assert(_train_info != nullptr);
+
   try
   {
-    nnfw_train_info tinfo;
-    if (info != nullptr)
-    {
-      tinfo = *info;
-    }
-
-    auto convertLossType = [](const int &type) {
-      if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
-        return onert::ir::train::LossCode::MeanSquaredError;
-      if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
-        return onert::ir::train::LossCode::CategoricalCrossentropy;
-      else
-        throw std::runtime_error("not supported loss type");
-    };
-    auto convertLossReductionType = [](const int &type) {
-      if (type == NNFW_TRAIN_LOSS_REDUCTION_AUTO)
-        return onert::ir::train::LossReductionType::Auto;
-      else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
-        return onert::ir::train::LossReductionType::SumOverBatchSize;
-      else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM)
-        return onert::ir::train::LossReductionType::Sum;
-      else
-        throw std::runtime_error("not supported loss reduction type");
-    };
-    onert::ir::train::LossInfo loss_info;
-    loss_info.loss_code = convertLossType(tinfo.loss_info.loss);
-    // TODO Consider the reduction type of model file
-    loss_info.reduction_type = convertLossReductionType(tinfo.loss_info.reduction_type);
-
-    auto convertOptType = [](const int &type) {
-      if (type == NNFW_TRAIN_OPTIMIZER_SGD)
-        return onert::ir::train::OptimizerCode::SGD;
-      else if (type == NNFW_TRAIN_OPTIMIZER_ADAM)
-        return onert::ir::train::OptimizerCode::Adam;
-      else
-        throw std::runtime_error("not supported optimizer type");
-    };
-    onert::ir::train::OptimizerInfo opt_info;
-    opt_info.learning_rate = tinfo.learning_rate;
-    opt_info.optim_code = convertOptType(tinfo.opt);
-
-    onert::ir::train::TrainingInfo training_info;
-    training_info.setBatchSize(tinfo.batch_size);
-    training_info.setLossInfo(loss_info);
-    training_info.setOptimizerInfo(opt_info);
+    if (not _train_info->isValid())
+      throw std::runtime_error{"training info is not valid"};
 
     auto compiler =
-      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _train_info.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
