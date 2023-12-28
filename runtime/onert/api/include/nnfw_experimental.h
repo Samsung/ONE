@@ -222,8 +222,8 @@ typedef struct nnfw_train_info
 
 /**
  * @brief Set train_info into session
- * @note  This function should be called in MODEL_LOADED state,
- *        after {@link nnfw_load_model_from_file} before {@link nnfw_prepare}
+ * @note  This function should be called after calling {@link nnfw_load_model_from_file}
+ *        and before calling {@link nnfw_train_prepare}
  *
  *  @return @c NNFW_STATUS_NO_ERROR If successful
  */
