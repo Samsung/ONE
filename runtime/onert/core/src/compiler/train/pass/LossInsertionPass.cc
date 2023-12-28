@@ -17,6 +17,7 @@
 #include "LossInsertionPass.h"
 
 #include "ir/train/TrainableGraph.h"
+#include "ir/train/TrainingInfo.h"
 #include "ir/train/operation/Loss.h"
 
 namespace onert

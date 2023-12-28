@@ -34,7 +34,7 @@ CompilerFactory &CompilerFactory::get()
 std::unique_ptr<ICompiler>
 CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
                         std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                        const compiler::train::TrainingInfo *training_info)
+                        const ir::train::TrainingInfo *training_info)
 {
   // Returing compiler for training
   if (training_info)

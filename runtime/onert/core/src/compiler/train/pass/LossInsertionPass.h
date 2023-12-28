@@ -19,7 +19,7 @@
 
 #include "Pass.h"
 
-#include "compiler/train/TrainingInfo.h"
+#include "ir/Index.h"
 
 namespace onert
 {
@@ -33,7 +33,8 @@ namespace pass
 class LossInsertionPass : public Pass
 {
 public:
-  LossInsertionPass(ir::train::TrainableGraph &trainable_graph, const TrainingInfo *training_info,
+  LossInsertionPass(ir::train::TrainableGraph &trainable_graph,
+                    const ir::train::TrainingInfo *training_info,
                     const ir::SubgraphIndex &subg_index)
     : Pass{trainable_graph, training_info}, _subg_index{subg_index}
   {

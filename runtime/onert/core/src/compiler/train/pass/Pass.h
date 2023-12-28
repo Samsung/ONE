@@ -26,6 +26,7 @@ namespace ir
 namespace train
 {
 class TrainableGraph;
+class TrainingInfo;
 } // namespace train
 } // namespace ir
 } // namespace onert
@@ -36,16 +37,13 @@ namespace compiler
 {
 namespace train
 {
-
-class TrainingInfo;
-
 namespace pass
 {
 
 class Pass : public compiler::pass::IPass
 {
 public:
-  Pass(ir::train::TrainableGraph &trainable_graph, const TrainingInfo *training_info)
+  Pass(ir::train::TrainableGraph &trainable_graph, const ir::train::TrainingInfo *training_info)
     : _trainable_graph{trainable_graph}, _training_info{training_info}
   {
   }
@@ -53,7 +51,7 @@ public:
 
 protected:
   ir::train::TrainableGraph &_trainable_graph;
-  const TrainingInfo *_training_info;
+  const ir::train::TrainingInfo *_training_info;
 };
 
 } // namespace pass

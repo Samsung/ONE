@@ -608,7 +608,7 @@ exec::IExecutor *
 ExecutorFactory::create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                         const std::shared_ptr<exec::IExecutors> &executors,
                         const ExecutorFactoryArgs &args,
-                        const compiler::train::TrainingInfo &training_info)
+                        const ir::train::TrainingInfo &training_info)
 {
   assert(args.options != nullptr);
 
@@ -649,7 +649,7 @@ void ExecutorFactory::prepareMigrantTensors(
 exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
   const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
-  const compiler::train::TrainingInfo &training_info)
+  const ir::train::TrainingInfo &training_info)
 {
   const auto options = args.options;
   const auto tracing_ctx = args.tracing_ctx;

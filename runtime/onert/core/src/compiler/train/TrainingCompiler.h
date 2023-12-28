@@ -24,8 +24,8 @@
 
 #include "compiler/CompilerOptions.h"
 #include "compiler/ICompiler.h"
-#include "compiler/train/TrainingInfo.h"
 #include "ir/NNPkg.h"
+#include "ir/train/TrainingInfo.h"
 
 namespace onert
 {
@@ -48,7 +48,7 @@ public:
    */
   explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
                             std::vector<std::unique_ptr<CompilerOptions>> &copts,
-                            const TrainingInfo &training_info);
+                            const ir::train::TrainingInfo &training_info);
 
   /**
    * @brief Construct a TrainingCompiler object
@@ -72,7 +72,7 @@ public:
 private:
   std::shared_ptr<ir::Model> _model;
   CompilerOptions *_options;
-  const TrainingInfo _training_info;
+  const ir::train::TrainingInfo _training_info;
 };
 
 } // namespace train
