@@ -1548,8 +1548,11 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     _execution->iterateTrainableTensors([&](const onert::ir::OperandIndex &idx,
                                             const onert::backend::train::ITrainableTensor *tensor) {
       auto model = ::circle::GetModel(mmapfile.buf());
+      if (!model)
+        throw std::runtime_error("Failed to get model from circle");
+
       auto subgs = model->subgraphs();
-      if (!model || !subgs || subgs->size() != 1)
+      if (!subgs || subgs->size() != 1)
         throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
 
       auto subg = subgs->Get(0); // Get 1st subgraph
