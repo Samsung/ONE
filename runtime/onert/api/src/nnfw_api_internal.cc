@@ -1178,8 +1178,6 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
   if (not isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::train_set_traininfo : invalid state" << std::endl;
-    std::cerr << "nnfw_session::train_set_traininfo must be called in MODEL_LOADED state"
-              << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1191,12 +1189,11 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
 
   // after model loaded, it ensures that _train_info is not nullptr
   assert(_train_info != nullptr);
-  assert(info != nullptr);
 
   auto convertLossType = [](const int &type) {
     if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
       return onert::ir::train::LossCode::MeanSquaredError;
-    if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
+    else if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
       return onert::ir::train::LossCode::CategoricalCrossentropy;
     else
       throw std::runtime_error("not supported loss type");
@@ -1204,7 +1201,7 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
 
   auto convertLossReductionType = [](const int &type) {
     if (type == NNFW_TRAIN_LOSS_REDUCTION_AUTO)
-      return onert::ir::train::LossReductionType::Invalid;
+      return onert::ir::train::LossReductionType::Auto;
     else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
       return onert::ir::train::LossReductionType::SumOverBatchSize;
     else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM)
