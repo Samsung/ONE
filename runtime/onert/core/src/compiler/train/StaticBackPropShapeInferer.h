@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_STATIC_DERIVATIVE_SHAPE_INFERER_H__
-#define __ONERT_COMPILER_STATIC_DERIVATIVE_SHAPE_INFERER_H__
+#ifndef __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
+#define __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
 
 #include "ir/train/TrainableOperationVisitor.h"
 
@@ -77,4 +77,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_STATIC_DERIVATIVE_SHAPE_INFERER_H__
+#endif // __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
