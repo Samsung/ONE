@@ -255,7 +255,10 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
-    if (vdata_length < tri.batch_size)
+    // If the user does not give the validation_split value,
+    // the vdata_length is 0 by default and it does not execute
+    // validation loop.
+    if (vdata_length != 0 && vdata_length < tri.batch_size)
     {
       std::cerr << "E: validation data is not enough for validation."
                    "Reduce batch_size or adjust validation_split value"
