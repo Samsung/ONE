@@ -55,7 +55,7 @@ public:
 
     // Always use SumOverBatchSize type
     // TODO Support different type
-    if (_loss_info.reduction_type == LossReductionType::Auto)
+    if (_loss_info.reduction_type == LossReductionType::Invalid)
       _loss_info.reduction_type = LossReductionType::SumOverBatchSize;
   }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }

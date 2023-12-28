@@ -236,8 +236,7 @@ NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *tra
 
 /**
  * @brief Set train_info into session
- * @note This function should called after {@link nnfw_load_model_from_file}
- *       If user want to update some par
+ * @note This function should called before prepared
  *
  * @warning This function overwrite train_info in session.
  *          So, If you want to update a part of train_info,

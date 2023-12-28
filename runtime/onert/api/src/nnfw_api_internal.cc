@@ -323,7 +323,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     }
     else
     {
-      _train_info = onert::ir::train::TrainingInfo::createFromDefault();
+      _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
     }
 #endif // ONERT_TRAIN
 
@@ -1188,9 +1188,6 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  if (_train_info == nullptr)
-    return NNFW_STATUS_NO_ERROR;
-
   auto convertLossCode = [](const onert::ir::train::LossCode &code) -> NNFW_TRAIN_LOSS {
     switch (code)
     {
@@ -1259,20 +1256,13 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
 
 NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
 {
-  // We may need different state to represent training model is loaded
-  if (!isStateModelLoaded())
+
+  if (not(isStateModelLoaded() || isStateInitialized()))
   {
-    std::cerr << "Error during model prepare training: ";
-    if (_state == State::PREPARED_TRAINING)
-      std::cerr << "prepare should be run once";
-    else
-      std::cerr << "invalid state";
-    std::cerr << std::endl;
+    std::cerr << "Error during nnfw_session::train_get_traininfo : invalid state";
+    std::cerr << "You could set train_info only when ModelLoaded or StateInitialized state";
     return NNFW_STATUS_INVALID_STATE;
   }
-
-  // If StateModelLoaded, session always has _train_info
-  assert(_train_info != nullptr);
 
   auto convertLossType = [](const int &type) {
     if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
@@ -1303,27 +1293,28 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
       throw std::runtime_error("not supported optimizer type");
   };
 
+  if (_train_info == nullptr)
+    _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
+
+  assert(_train_info != nullptr);
+  assert(info != nullptr);
   try
   {
-    if (info != nullptr)
-    {
-      // If info is given, overwrite _train_info
-      onert::ir::train::LossInfo loss_info;
-      loss_info.loss_code = convertLossType(info->loss_info.loss);
-      loss_info.reduction_type = convertLossReductionType(info->loss_info.reduction_type);
+    onert::ir::train::LossInfo loss_info;
+    loss_info.loss_code = convertLossType(info->loss_info.loss);
+    loss_info.reduction_type = convertLossReductionType(info->loss_info.reduction_type);
 
-      onert::ir::train::OptimizerInfo opt_info;
-      opt_info.learning_rate = info->learning_rate;
-      opt_info.optim_code = convertOptType(info->opt);
+    onert::ir::train::OptimizerInfo opt_info;
+    opt_info.learning_rate = info->learning_rate;
+    opt_info.optim_code = convertOptType(info->opt);
 
-      _train_info->setBatchSize(info->batch_size);
-      _train_info->setLossInfo(loss_info);
-      _train_info->setOptimizerInfo(opt_info);
-    }
+    _train_info->setBatchSize(info->batch_size);
+    _train_info->setLossInfo(loss_info);
+    _train_info->setOptimizerInfo(opt_info);
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during nnfw_session::train_prepare : " << e.what() << std::endl;
+    std::cerr << "Error during nnfw_session::train_set_traininfo : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
@@ -1365,17 +1356,18 @@ NNFW_STATUS nnfw_session::train_prepare()
 
   try
   {
-    assert(_train_info != nullptr);
     if (not _train_info->isValid())
       throw std::runtime_error{"training info is not invalid"};
 
+    /*
     onert::ir::train::TrainingInfo training_info;
     training_info.setBatchSize(tinfo.batch_size);
     training_info.setLossInfo(loss_info);
     training_info.setOptimizerInfo(opt_info);
+    */
 
     auto compiler =
-      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, &training_info);
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _train_info.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
