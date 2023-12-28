@@ -67,7 +67,13 @@ public:
     nnfw::cker::train::MeanGrad(_out_shape, incoming.data(), _in_shape, grad.data());
 
     if (expect_eq)
-      EXPECT_EQ(grad, expected);
+    {
+      // consider the floating point error
+      for (int i = 0; i < grad.size(); ++i)
+      {
+        EXPECT_NEAR(grad[i], expected[i], 1e-3f);
+      }
+    }
     else
       EXPECT_NE(grad, expected);
   }
