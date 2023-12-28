@@ -692,11 +692,11 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       });
     data.graph->operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
       const auto &orig_tgraph = lowered_graph->trainable_graph();
-      if (orig_tgraph.back_props().exist(index))
+      if (orig_tgraph.backward_operands().exist(index))
       {
-        const auto &back_prop = orig_tgraph.back_props().at(index);
-        auto new_back_prop = std::make_unique<ir::Operand>(back_prop);
-        auto gen_index = tgraph->addBackProp(index, std::move(new_back_prop));
+        const auto &bwd_operand = orig_tgraph.backward_operands().at(index);
+        auto new_bwd_operand = std::make_unique<ir::Operand>(bwd_operand);
+        auto gen_index = tgraph->addBackwardOperand(index, std::move(new_bwd_operand));
         UNUSED_RELEASE(gen_index);
         assert(gen_index == index);
       }

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
-#define __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
+#ifndef __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__
+#define __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__
 
 #include "ir/train/TrainableOperationVisitor.h"
 
@@ -38,10 +38,10 @@ namespace train
  *        - if calculation cannot be done at compile time, mark the outputs to be dynamic, meaning
  *          shapes of outputs will be calculated during running kernels
  */
-class StaticBackPropShapeInferer : public ir::train::TrainableOperationVisitor
+class StaticBackwardShapeInferer : public ir::train::TrainableOperationVisitor
 {
 public:
-  StaticBackPropShapeInferer(compiler::train::LoweredTrainableGraph *lowered_subg)
+  StaticBackwardShapeInferer(compiler::train::LoweredTrainableGraph *lowered_subg)
     : _lowered_subg{lowered_subg}
   {
   }
@@ -77,4 +77,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_TRAIN_STATIC_BACK_PROP_SHAPE_INFERER_H__
+#endif // __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__

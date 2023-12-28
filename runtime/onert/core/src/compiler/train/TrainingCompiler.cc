@@ -16,7 +16,7 @@
 
 #include "TrainingCompiler.h"
 
-#include "StaticBackPropShapeInferer.h"
+#include "StaticBackwardShapeInferer.h"
 #include "TrainableOperationConverter.h"
 #include "pass/LossInsertionPass.h"
 #include "../CompilerHelpers.h"
@@ -220,8 +220,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
       if (!obj.isConstant())
       {
-        auto back_prop = std::make_unique<ir::Operand>(obj);
-        const auto gen_index = tgraph.addBackProp(index, std::move(back_prop));
+        auto bwd_operand = std::make_unique<ir::Operand>(obj);
+        const auto gen_index = tgraph.addBackwardOperand(index, std::move(bwd_operand));
         assert(gen_index == index);
         UNUSED_RELEASE(gen_index);
       }
@@ -244,12 +244,12 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       inferer->dump();
     }
 
-    // NOTE StaticBackPropShapeInferer is allocated for each subgraph,
+    // NOTE StaticBackwardShapeInferer is allocated for each subgraph,
     //      so it does not support models that have controlflow operations yet.
     for (auto &&pair : lowered_subgs)
     {
       auto &lowered_subg = pair.second;
-      auto inferer = std::make_unique<StaticBackPropShapeInferer>(lowered_subg.get());
+      auto inferer = std::make_unique<StaticBackwardShapeInferer>(lowered_subg.get());
       inferer->infer();
       inferer->dump();
     }
