@@ -84,7 +84,7 @@ public:
                                   std::unique_ptr<ITrainableOperation> &&operation);
 
   /**
-   * @brief Add a operand for backwarding to the graph with the given index and object
+   * @brief Add an operand for backwarding to the graph with the given index and object
    *
    * If the given index is available, it succeeds. And @c bwd_operand is moved which invalidates
    * the caller's pointer. If the given index is already taken, it fails. And @c bwd_operand will
