@@ -233,6 +233,9 @@ NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_inf
  * @brief Prepare session to be ready for training
  * @note  The session will be entered into training mode
  *
+ *        If training info is NOT set in session, this function returns @c NNFW_STATUS_ERROR .
+ *        You should set training info using {@link nnfw_train_set_traininfo}.
+ *
  * @param[in] session The session to be prepared for training
  *
  * @return  @c NNFW_STATUS_NO_ERROR if successful
