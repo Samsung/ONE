@@ -16,6 +16,7 @@ usr/bin/onecc.template.cfg usr/share/one/bin/
 usr/bin/one-build usr/share/one/bin/
 usr/bin/one-build.template.cfg usr/share/one/bin/
 usr/bin/one-codegen usr/share/one/bin/
+usr/bin/one-create-quant-dataset usr/share/one/bin/
 usr/bin/one-import usr/share/one/bin/
 usr/bin/one-import-bcq usr/share/one/bin/
 usr/bin/one-import-onnx usr/share/one/bin/
