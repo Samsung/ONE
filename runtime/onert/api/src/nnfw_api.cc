@@ -394,10 +394,10 @@ NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_inf
   return session->train_set_traininfo(info);
 }
 
-NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
+NNFW_STATUS nnfw_train_prepare(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_prepare(info);
+  return session->train_prepare();
 }
 
 NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,

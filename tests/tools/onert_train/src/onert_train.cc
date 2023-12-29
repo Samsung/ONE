@@ -185,11 +185,13 @@ int main(const int argc, char **argv)
     std::cout << "== training parameter ==" << std::endl;
     std::cout << tri;
     std::cout << "========================" << std::endl;
+
+    NNPR_ENSURE_STATUS(nnfw_train_set_traininfo(session, &tri));
+
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
-    measure.run(PhaseType::PREPARE,
-                [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session, &tri)); });
+    measure.run(PhaseType::PREPARE, [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session)); });
 
     // prepare input and expected tensor info lists
     std::vector<nnfw_tensorinfo> input_infos;
