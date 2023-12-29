@@ -388,6 +388,12 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
 
 // Training
 
+NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *info)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_set_traininfo(info);
+}
+
 NNFW_STATUS nnfw_train_prepare(nnfw_session *session, const nnfw_train_info *info)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);

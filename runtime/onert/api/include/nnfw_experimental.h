@@ -221,6 +221,15 @@ typedef struct nnfw_train_info
 } nnfw_train_info;
 
 /**
+ * @brief Set training info
+ * @note  This function should be called after calling {@link nnfw_load_model_from_file}
+ *        and before calling {@link nnfw_train_prepare}
+ *
+ *  @return @c NNFW_STATUS_NO_ERROR If successful
+ */
+NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *train_info);
+
+/**
  * @brief Prepare session to be ready for training
  * @note  The session will be entered into training mode
  *

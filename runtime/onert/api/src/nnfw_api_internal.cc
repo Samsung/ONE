@@ -1173,6 +1173,75 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
+{
+  if (not isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::train_set_traininfo : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (info == nullptr)
+  {
+    std::cerr << "nnfw_session::train_set_traininfo : info is nullptr" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // after model loaded, it ensures that _train_info is not nullptr
+  assert(_train_info != nullptr);
+
+  auto convertLossType = [](const int &type) {
+    if (type == NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR)
+      return onert::ir::train::LossCode::MeanSquaredError;
+    else if (type == NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY)
+      return onert::ir::train::LossCode::CategoricalCrossentropy;
+    else
+      throw std::runtime_error("not supported loss type");
+  };
+
+  auto convertLossReductionType = [](const int &type) {
+    if (type == NNFW_TRAIN_LOSS_REDUCTION_AUTO)
+      return onert::ir::train::LossReductionType::Auto;
+    else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
+      return onert::ir::train::LossReductionType::SumOverBatchSize;
+    else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM)
+      return onert::ir::train::LossReductionType::Sum;
+    else
+      throw std::runtime_error("not supported loss reduction type");
+  };
+
+  auto convertOptType = [](const int &type) {
+    if (type == NNFW_TRAIN_OPTIMIZER_SGD)
+      return onert::ir::train::OptimizerCode::SGD;
+    else if (type == NNFW_TRAIN_OPTIMIZER_ADAM)
+      return onert::ir::train::OptimizerCode::Adam;
+    else
+      throw std::runtime_error("not supported optimizer type");
+  };
+
+  try
+  {
+    onert::ir::train::LossInfo loss_info;
+    loss_info.loss_code = convertLossType(info->loss_info.loss);
+    loss_info.reduction_type = convertLossReductionType(info->loss_info.reduction_type);
+
+    onert::ir::train::OptimizerInfo opt_info;
+    opt_info.learning_rate = info->learning_rate;
+    opt_info.optim_code = convertOptType(info->opt);
+
+    _train_info->setBatchSize(info->batch_size);
+    _train_info->setLossInfo(loss_info);
+    _train_info->setOptimizerInfo(opt_info);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_set_traininfo : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_prepare(const nnfw_train_info *info)
 {
   // We may need different state to represent training model is loaded
