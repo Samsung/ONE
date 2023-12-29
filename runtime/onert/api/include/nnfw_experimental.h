@@ -228,7 +228,7 @@ typedef struct nnfw_train_info
  * @param[in] session The session to be set training information
  * @param[in] info    The training information
  *
- *  @return @c NNFW_STATUS_NO_ERROR If successful
+ *  @return @c NNFW_STATUS_NO_ERROR if successful
  */
 NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *info);
 
