@@ -210,7 +210,6 @@ private:
   std::unique_ptr<onert::exec::Execution> _execution;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
-  uint32_t _training_step{0};
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
   // Remember path to loaded original model

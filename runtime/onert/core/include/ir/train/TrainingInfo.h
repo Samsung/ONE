@@ -43,7 +43,7 @@ public:
   const LossInfo &lossInfo() const { return _loss_info; }
   const OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   uint32_t batchSize() const { return _batch_size; }
-  uint32_t epoch() const { return _epoch; }
+  uint32_t &epoch() { return _epoch; }
 
   // setter
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
@@ -57,7 +57,6 @@ public:
       _loss_info.reduction_type = LossReductionType::SumOverBatchSize;
   }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
-  void setEpoch(uint32_t epoch) { _epoch = epoch; }
 
   bool isValid() const;
 
