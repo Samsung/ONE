@@ -176,7 +176,7 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 typedef enum
 {
-  NNFW_TRAIN_LOSS_MEAN_UNDEF = -1,
+  NNFW_TRAIN_LOSS_UNDEF = -1,
   NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR = 0,
   NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY = 1,
 } NNFW_TRAIN_LOSS;
