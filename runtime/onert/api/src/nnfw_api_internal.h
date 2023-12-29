@@ -170,6 +170,7 @@ public:
    */
   NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
+  NNFW_STATUS train_get_traininfo(nnfw_train_info *info);
   NNFW_STATUS train_set_traininfo(const nnfw_train_info *info);
   NNFW_STATUS train_prepare();
   NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);

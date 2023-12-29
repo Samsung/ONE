@@ -176,12 +176,15 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 //////////////////////////////////////////////
 typedef enum
 {
+  NNFW_TRAIN_LOSS_MEAN_UNDEF = -1,
   NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR = 0,
   NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY = 1,
 } NNFW_TRAIN_LOSS;
 
 typedef enum
 {
+  /** Undefined */
+  NNFW_TRAIN_LOSS_REDUCTION_UNDEF = -1,
   /** Auto */
   NNFW_TRAIN_LOSS_REDUCTION_AUTO = 0,
   /** Scalar sum divided by number of elements in losses */
@@ -192,6 +195,7 @@ typedef enum
 
 typedef enum
 {
+  NNFW_TRAIN_OPTIMIZER_UNDEF = -1,
   NNFW_TRAIN_OPTIMIZER_SGD = 0,
   NNFW_TRAIN_OPTIMIZER_ADAM = 1,
 } NNFW_TRAIN_OPTIMIZER;
@@ -219,6 +223,21 @@ typedef struct nnfw_train_info
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 } nnfw_train_info;
+
+/**
+ * @brief Get training information
+ * @note  This function should be called after calling {@link nnfw_load_model_from_file}
+ *
+ *        For the field which is not set in training infomation, it returns training information
+ *        filled with default value. The default value of each field is as follows :
+ *        learning_rate = 0.0f, batch_size = 0, *_UNDEF for other enums
+ *
+ * @param[in]   session   The session to get training information
+ * @param[out]  info      Training information
+ *
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info);
 
 /**
  * @brief Set training info
