@@ -18,7 +18,7 @@ var nnfw__experimental_8h =
       [ "NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60", null ]
     ] ],
     [ "NNFW_TRAIN_LOSS_REDUCTION", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1", [
-      [ "NNFW_TRAIN_LOSS_REDUCTION_INVALID", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a130fcbb1818c8c3675ecd81db8ba2872", null ],
+      [ "NNFW_TRAIN_LOSS_REDUCTION_AUTO", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df", null ]
     ] ],
@@ -41,8 +41,9 @@ var nnfw__experimental_8h =
     [ "nnfw_train_export_circle", "nnfw__experimental_8h.html#af34150291cf5ff5d0d441ef73e623400", null ],
     [ "nnfw_train_get_loss", "nnfw__experimental_8h.html#a1cb00110d13d3a316db8e01bc7974243", null ],
     [ "nnfw_train_input_tensorinfo", "nnfw__experimental_8h.html#ae2df9aba6b77d42a961ab26947663f12", null ],
-    [ "nnfw_train_prepare", "nnfw__experimental_8h.html#a88b27ec96515990151ae0e31763b4175", null ],
+    [ "nnfw_train_prepare", "nnfw__experimental_8h.html#a711e8db4d5ff39cd1373652230aa6b16", null ],
     [ "nnfw_train_set_expected", "nnfw__experimental_8h.html#a2dcf5951cfb152a9f05dc8413cd9501e", null ],
     [ "nnfw_train_set_input", "nnfw__experimental_8h.html#ab1e5288018de3651ed27aa7333e3217e", null ],
-    [ "nnfw_train_set_output", "nnfw__experimental_8h.html#abfbe814504a1985f6861c1da19d77c77", null ]
+    [ "nnfw_train_set_output", "nnfw__experimental_8h.html#abfbe814504a1985f6861c1da19d77c77", null ],
+    [ "nnfw_train_set_traininfo", "nnfw__experimental_8h.html#af482b9a5f3ac6ed0f7bc7883ac67ef60", null ]
 ];

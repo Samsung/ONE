@@ -46,7 +46,7 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "PReLU.cc", "_p_re_l_u_8cc.html", null ],
     [ "Range.cc", "_range_8cc.html", null ],
     [ "Rank.cc", "_rank_8cc.html", null ],
-    [ "Reduce.cc", "_reduce_8cc.html", null ],
+    [ "Reduce.cc", "operation_2_reduce_8cc.html", null ],
     [ "Reshape.cc", "operation_2_reshape_8cc.html", null ],
     [ "ResizeBilinear.cc", "_resize_bilinear_8cc.html", null ],
     [ "ResizeNearestNeighbor.cc", "_resize_nearest_neighbor_8cc.html", null ],

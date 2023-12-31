@@ -1,10 +1,5 @@
 var NAVTREEINDEX168 =
 {
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a5e3e3f781db970d7c3e38a10b53990ce":[36,0,0,55,2,2,187,2],
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a8a9a24193bc38fd68fa6267c807bd354":[36,0,0,55,2,2,187,3],
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a91a8777c4f1154f256a768b6bbf54477":[36,0,0,55,2,2,187,8],
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a972dc14ee97042f40b0555b04b1d8815":[36,0,0,55,2,2,187,4],
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#ab64aa6825e373164e635202415339c4f":[36,0,0,55,2,2,187,1],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#adcf639b916825841b3f99d5f4fccff22":[36,0,0,55,2,2,187,7],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp_source.html":[36,0,0,55,2,2,187],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html":[36,0,0,55,2,2,188],
@@ -249,5 +244,10 @@ var NAVTREEINDEX168 =
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_rsqrt_8cpp_source.html":[36,0,0,55,2,3,0,68],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp.html":[36,0,0,55,2,3,0,86],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp.html#a0ca68c3bf2a22d7489d151e55f2b3f38":[36,0,0,55,2,3,0,86,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html":[36,0,0,55,2,3,0,86]
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_s_v_d_f_8cpp_source.html":[36,0,0,55,2,3,0,86],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_select_v2_8cpp.html":[36,0,0,55,2,3,0,70],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_select_v2_8cpp.html#a6bfb38d068bf49af2e7f316fe143e916":[36,0,0,55,2,3,0,70,0],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_select_v2_8cpp_source.html":[36,0,0,55,2,3,0,70],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_shape_8cpp.html":[36,0,0,55,2,3,0,71],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_shape_8cpp.html#a20877b0428bd8887c4b4bd2ede39a4a8":[36,0,0,55,2,3,0,71,0]
 };

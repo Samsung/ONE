@@ -204,7 +204,7 @@ var searchData=
   ['stack_201',['Stack',['../class_graph_builder_1_1_stack.html',1,'GraphBuilder']]],
   ['statelessrandomuniform_202',['StatelessRandomUniform',['../classonert_1_1ir_1_1operation_1_1_stateless_random_uniform.html',1,'onert::ir::operation']]],
   ['statelessrandomuniformlayer_203',['StatelessRandomUniformLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_stateless_random_uniform_layer.html',1,'onert::backend::cpu::ops']]],
-  ['staticbackpropshapeinferer_204',['StaticBackPropShapeInferer',['../classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html',1,'onert::compiler::train']]],
+  ['staticbackwardshapeinferer_204',['StaticBackwardShapeInferer',['../classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html',1,'onert::compiler::train']]],
   ['staticmemorymanager_205',['StaticMemoryManager',['../classluci__interpreter_1_1_static_memory_manager.html',1,'luci_interpreter']]],
   ['staticshapeinferer_206',['StaticShapeInferer',['../classonert_1_1compiler_1_1_static_shape_inferer.html',1,'onert::compiler']]],
   ['statictensormanager_207',['StaticTensorManager',['../classonert_1_1backend_1_1basic_1_1_static_tensor_manager.html',1,'onert::backend::basic']]],

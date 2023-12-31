@@ -1,9 +1,5 @@
 var NAVTREEINDEX188 =
 {
-"helpers_8h.html#a527bfdf5eeb306f1cf01c4a8e29f38e0":[36,0,1,0,1,0,0,0,2,50],
-"helpers_8h.html#a541f8db866a0fa93ee67d58ea31a7d0c":[36,0,1,0,1,0,0,0,2,42],
-"helpers_8h.html#a541f8db866a0fa93ee67d58ea31a7d0c":[36,0,1,0,1,0,0,0,2,41],
-"helpers_8h.html#a575bd961447ce6e36f524c9b8e572a3a":[36,0,1,0,1,0,0,0,2,23],
 "helpers_8h.html#a5878156bae86f026c6cf7f7186ca065d":[36,0,1,0,1,0,0,0,2,22],
 "helpers_8h.html#a5f6aa60826cae3fba29fa64d831ac59f":[36,0,1,0,1,0,0,0,2,56],
 "helpers_8h.html#a6083fd110e3a4572725f6a020c1681ae":[36,0,1,0,1,0,0,0,2,65],
@@ -249,5 +245,9 @@ var NAVTREEINDEX188 =
 "import_2include_2luci_2_import_2_nodes_2_circle_custom_8h_source.html":[36,0,0,52,2,0,0,0,0,19],
 "import_2include_2luci_2_import_2_nodes_2_circle_densify_8h.html":[36,0,0,52,2,0,0,0,0,20],
 "import_2include_2luci_2_import_2_nodes_2_circle_densify_8h_source.html":[36,0,0,52,2,0,0,0,0,20],
-"import_2include_2luci_2_import_2_nodes_2_circle_depth_to_space_8h.html":[36,0,0,52,2,0,0,0,0,21]
+"import_2include_2luci_2_import_2_nodes_2_circle_depth_to_space_8h.html":[36,0,0,52,2,0,0,0,0,21],
+"import_2include_2luci_2_import_2_nodes_2_circle_depth_to_space_8h_source.html":[36,0,0,52,2,0,0,0,0,21],
+"import_2include_2luci_2_import_2_nodes_2_circle_depthwise_conv2_d_8h.html":[36,0,0,52,2,0,0,0,0,22],
+"import_2include_2luci_2_import_2_nodes_2_circle_depthwise_conv2_d_8h_source.html":[36,0,0,52,2,0,0,0,0,22],
+"import_2include_2luci_2_import_2_nodes_2_circle_dequantize_8h.html":[36,0,0,52,2,0,0,0,0,23]
 };

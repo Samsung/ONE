@@ -53,10 +53,12 @@ var NAVTREEINDEX227 =
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_fully_connected_8h_source.html":[36,0,4,2,2,0,3,1,0,2],
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h.html":[36,0,4,2,2,0,3,1,0,3],
 "runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html":[36,0,4,2,2,0,3,1,0,3],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h.html":[36,0,4,2,2,0,3,1,0,6],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h_source.html":[36,0,4,2,2,0,3,1,0,6],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_soft_max_8h.html":[36,0,4,2,2,0,3,1,0,7],
-"runtime_2onert_2core_2include_2ir_2train_2operation_2_soft_max_8h_source.html":[36,0,4,2,2,0,3,1,0,7],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reduce_8h.html":[36,0,4,2,2,0,3,1,0,6],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reduce_8h_source.html":[36,0,4,2,2,0,3,1,0,6],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h.html":[36,0,4,2,2,0,3,1,0,7],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_reshape_8h_source.html":[36,0,4,2,2,0,3,1,0,7],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_soft_max_8h.html":[36,0,4,2,2,0,3,1,0,8],
+"runtime_2onert_2core_2include_2ir_2train_2operation_2_soft_max_8h_source.html":[36,0,4,2,2,0,3,1,0,8],
 "runtime_2onert_2core_2include_2util_2_index_8h.html":[36,0,4,2,2,0,5,3],
 "runtime_2onert_2core_2include_2util_2_index_8h_source.html":[36,0,4,2,2,0,5,3],
 "runtime_2onert_2core_2include_2util_2_logging_8h.html":[36,0,4,2,2,0,5,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX227 =
 "service_2npud_2core_2util_2_config_source_8cc.html#ad8d73abf62eda5617c69b7e2c3d5405b":[36,0,4,3,0,1,1,0,3],
 "service_2npud_2core_2util_2_config_source_8cc.html#af5e5e617f131b8f6f83bf109cc9abf32":[36,0,4,3,0,1,1,0,0],
 "service_2npud_2core_2util_2_config_source_8cc.html#af5e5e617f131b8f6f83bf109cc9abf32":[36,0,4,3,0,1,1,0,1],
-"service_2npud_2core_2util_2_config_source_8cc_source.html":[36,0,4,3,0,1,1,0],
-"service_2npud_2core_2util_2_config_source_8h.html":[36,0,4,3,0,1,1,1],
-"service_2npud_2core_2util_2_config_source_8h.html#a3a1f50978c5118eda99a1fb91890d509":[36,0,4,3,0,1,1,1,2]
+"service_2npud_2core_2util_2_config_source_8cc_source.html":[36,0,4,3,0,1,1,0]
 };

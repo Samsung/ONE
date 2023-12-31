@@ -1,5 +1,8 @@
 var NAVTREEINDEX31 =
 {
+"_t_flite_import_8h_source.html":[36,0,0,122,2,1,7],
+"_t_flite_op_chef_8h.html":[36,0,0,122,2,1,8],
+"_t_flite_op_chef_8h_source.html":[36,0,0,122,2,1,8],
 "_t_flite_op_chefs_8h.html":[36,0,0,122,2,1,9],
 "_t_flite_op_chefs_8h_source.html":[36,0,0,122,2,1,9],
 "_t_flite_op_registry_8h.html":[36,0,0,122,2,1,10],
@@ -246,8 +249,5 @@ var NAVTREEINDEX31 =
 "_test_data_resize_nearest_neighbor_base_8h_source.html":[36,0,3,4,0,0,1,61,2],
 "_test_data_round_base_8h.html":[36,0,3,4,0,0,1,62,2],
 "_test_data_round_base_8h_source.html":[36,0,3,4,0,0,1,62,2],
-"_test_data_rsqrt_base_8h.html":[36,0,3,4,0,0,1,63,2],
-"_test_data_rsqrt_base_8h_source.html":[36,0,3,4,0,0,1,63,2],
-"_test_data_s_v_d_f_base_8h.html":[36,0,3,4,0,0,1,79,2],
-"_test_data_s_v_d_f_base_8h_source.html":[36,0,3,4,0,0,1,79,2]
+"_test_data_rsqrt_base_8h.html":[36,0,3,4,0,0,1,63,2]
 };

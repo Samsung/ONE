@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/core/include/ir/train/TrainingInfo.h File Reference</title>
+<title>ONE - On-device Neural Engine: runtime/onert/core/src/ir/train/operation/Reduce.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('ir_2train_2_training_info_8h.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('train_2operation_2_reduce_8cc.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -90,22 +90,16 @@ $(document).ready(function(){initNavTree('ir_2train_2_training_info_8h.html','')
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
-  <div class="headertitle"><div class="title">TrainingInfo.h File Reference</div></div>
+  <div class="headertitle"><div class="title">Reduce.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_optimizer_code_8h_source.html">ir/train/OptimizerCode.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_optimizer_info_8h_source.html">ir/train/OptimizerInfo.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_loss_info_8h_source.html">ir/train/LossInfo.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_reduce_8h_source.html">ir/train/operation/Reduce.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_operation_visitor_8h_source.html">ir/OperationVisitor.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_trainable_operation_visitor_8h_source.html">ir/train/TrainableOperationVisitor.h</a>&quot;</code><br />
 </div>
-<p><a href="ir_2train_2_training_info_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="train_2operation_2_reduce_8cc_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">onert::ir::train::TrainingInfo</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
@@ -114,13 +108,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert_1_1ir_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html">onert::ir::train</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceonert_1_1ir_1_1train_1_1operation"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train_1_1operation.html">onert::ir::train::operation</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_640be38f35d8b71fc689df7f2a10eeb2.html">include</a></li><li class="navelem"><a class="el" href="dir_dd3c0406568f8b0ee717c5669f0c70f3.html">ir</a></li><li class="navelem"><a class="el" href="dir_7979116e1feb736c852dbb14a23da98b.html">train</a></li><li class="navelem"><a class="el" href="ir_2train_2_training_info_8h.html">TrainingInfo.h</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_8ea121fb9ddeebd13575ba6eec205704.html">src</a></li><li class="navelem"><a class="el" href="dir_a6e25b3747fd02a5be8f50c50d00a5db.html">ir</a></li><li class="navelem"><a class="el" href="dir_e4e0ac3c515543dce30bfdd2cc8168d5.html">train</a></li><li class="navelem"><a class="el" href="dir_6a580eb86831a11b5398ff2b0ad320e3.html">operation</a></li><li class="navelem"><a class="el" href="train_2operation_2_reduce_8cc.html">Reduce.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

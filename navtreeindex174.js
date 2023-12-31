@@ -1,12 +1,5 @@
 var NAVTREEINDEX174 =
 {
-"compiler_2tflite2circle_2driver_2_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[36,0,0,124,0,0,0],
-"compiler_2tflite2circle_2driver_2_driver_8cpp.html#ac6230d495fc909bb61195c45f703d492":[36,0,0,124,0,0,1],
-"compiler_2tflite2circle_2driver_2_driver_8cpp_source.html":[36,0,0,124,0,0],
-"compiler_2train_2_training_info_8h.html":[36,0,4,2,2,0,1,0,2],
-"compiler_2train_2_training_info_8h_source.html":[36,0,4,2,2,0,1,0,2],
-"compiler_2vconone_2driver_2_driver_8cpp.html":[36,0,0,125,0,0],
-"compiler_2vconone_2driver_2_driver_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97":[36,0,0,125,0,0,0],
 "compiler_2vconone_2driver_2_driver_8cpp_source.html":[36,0,0,125,0,0],
 "compute_2cker_2include_2cker_2_shape_8h.html":[36,0,1,1,0,0,9],
 "compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd":[36,0,1,1,0,0,9,2],
@@ -249,5 +242,12 @@ var NAVTREEINDEX174 =
 "compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html#a964f3c61b8ff5306670b7432fdb5334c":[36,0,1,1,0,0,3,38,1],
 "compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html#a96a47995ad33b9e3aef254cd666f0d1b":[36,0,1,1,0,0,3,38,3],
 "compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html#ae60dea0f6844a22a3ed03e20d8a00e78":[36,0,1,1,0,0,3,38,0],
-"compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html#ae6c06b361e57b13dd187ca45ed5fc737":[36,0,1,1,0,0,3,38,2]
+"compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html#ae6c06b361e57b13dd187ca45ed5fc737":[36,0,1,1,0,0,3,38,2],
+"compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h_source.html":[36,0,1,1,0,0,3,38],
+"compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h.html":[36,0,1,1,0,0,3,32],
+"compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h.html#a1f416c45aeab22a87622edbd864f92f8":[36,0,1,1,0,0,3,32,0],
+"compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html":[36,0,1,1,0,0,3,32],
+"compute_2cker_2include_2cker_2operation_2_log_soft_max_8h.html":[36,0,1,1,0,0,3,37],
+"compute_2cker_2include_2cker_2operation_2_log_soft_max_8h.html#ac4525c325c5109c91fea040d86032b5a":[36,0,1,1,0,0,3,37,0],
+"compute_2cker_2include_2cker_2operation_2_log_soft_max_8h.html#ad7470c8db58978e71109184fc5636739":[36,0,1,1,0,0,3,37,1]
 };

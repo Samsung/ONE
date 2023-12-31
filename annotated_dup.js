@@ -1470,6 +1470,7 @@ var annotated_dup =
       [ "ResolveCustomOpMatMulPass", "structluci_1_1_resolve_custom_op_mat_mul_pass.html", "structluci_1_1_resolve_custom_op_mat_mul_pass" ],
       [ "ResolveCustomOpMaxPoolWithArgmaxPass", "structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html", "structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass" ],
       [ "ResolveCustomOpSplitVPass", "structluci_1_1_resolve_custom_op_split_v_pass.html", "structluci_1_1_resolve_custom_op_split_v_pass" ],
+      [ "ResolveFormerCustomOpPass", "structluci_1_1_resolve_former_custom_op_pass.html", "structluci_1_1_resolve_former_custom_op_pass" ],
       [ "SerializedGraphData", "structluci_1_1_serialized_graph_data.html", "structluci_1_1_serialized_graph_data" ],
       [ "SerializedModelData", "structluci_1_1_serialized_model_data.html", "structluci_1_1_serialized_model_data" ],
       [ "ShapeDescription", "structluci_1_1_shape_description.html", "structluci_1_1_shape_description" ],
@@ -3157,12 +3158,11 @@ var annotated_dup =
             [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
           ] ],
           [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
-          [ "StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer" ],
+          [ "StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer" ],
           [ "TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", "classonert_1_1compiler_1_1train_1_1_tensor_registries" ],
           [ "TrainableCodeAndInfo", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info.html", "structonert_1_1compiler_1_1train_1_1_trainable_code_and_info" ],
           [ "TrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_trainable_operation_converter.html", "classonert_1_1compiler_1_1train_1_1_trainable_operation_converter" ],
           [ "TrainingCompiler", "classonert_1_1compiler_1_1train_1_1_training_compiler.html", "classonert_1_1compiler_1_1train_1_1_training_compiler" ],
-          [ "TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", "classonert_1_1compiler_1_1train_1_1_training_info" ],
           [ "UntrainableOperationConverter", "classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter.html", "classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter" ]
         ] ],
         [ "BackendManager", "classonert_1_1compiler_1_1_backend_manager.html", "classonert_1_1compiler_1_1_backend_manager" ],
@@ -3342,6 +3342,7 @@ var annotated_dup =
             [ "Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1train_1_1operation_1_1_loss" ],
             [ "Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", "classonert_1_1ir_1_1train_1_1operation_1_1_permute" ],
             [ "Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d" ],
+            [ "Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce" ],
             [ "Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape" ],
             [ "Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax" ],
             [ "UntrainableOperation", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation" ]

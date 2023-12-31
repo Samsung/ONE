@@ -142,6 +142,9 @@ Functions</h2></td></tr>
 <tr class="separator:a5383dd7006f6272ba54849c0bb709350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f474cf700e72f893fd4b9470d584db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ab1f474cf700e72f893fd4b9470d584db">MaxPool2DGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const int *arg_max_index, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
 <tr class="separator:ab1f474cf700e72f893fd4b9470d584db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52345a6f0694577d6369713c74e7d027"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a52345a6f0694577d6369713c74e7d027"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a52345a6f0694577d6369713c74e7d027">MeanGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const T *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, T *grad_data)</td></tr>
+<tr class="separator:a52345a6f0694577d6369713c74e7d027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56ba869240e3cb2e543a61e176115d8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">ReLUGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
 <tr class="separator:a56ba869240e3cb2e543a61e176115d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6afe0db84836d197f52230d77b913f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a8b6afe0db84836d197f52230d77b913f">SoftMaxGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
@@ -1174,6 +1177,59 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  155</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>.</p>
+
+</div>
+</div>
+<a id="a52345a6f0694577d6369713c74e7d027" name="a52345a6f0694577d6369713c74e7d027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52345a6f0694577d6369713c74e7d027">&#9670;&#160;</a></span>MeanGrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::MeanGrad </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>incoming_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>incoming_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>grad_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_reduce_mean_8h_source.html#l00032">32</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_reduce_mean_8h_source.html">ReduceMean.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a1e1dff7348ecb46fba0b6781f8183c6a">BroadcastTo</a>(incoming_shape, <span class="keyword">const_cast&lt;</span>T *<span class="keyword">&gt;</span>(incoming_data), grad_shape, grad_data);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(incoming_data, incoming_shape);</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">auto</span> grad = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(grad_data, grad_shape);</div>
+<div class="line"><span class="lineno">   38</span>  grad /= (grad.size() / incoming.size());</div>
+<div class="line"><span class="lineno">   39</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a1e1dff7348ecb46fba0b6781f8183c6a"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1e1dff7348ecb46fba0b6781f8183c6a">nnfw::cker::BroadcastTo</a></div><div class="ttdeci">void BroadcastTo(const Shape &amp;input_shape, T *input_data, const Shape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2operation_2_broadcast_to_8h_source.html#l00132">BroadcastTo.h:132</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2operation_2_broadcast_to_8h_source.html#l00132">nnfw::cker::BroadcastTo()</a>, and <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>.</p>
 
 </div>
 </div>

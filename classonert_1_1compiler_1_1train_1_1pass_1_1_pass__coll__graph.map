@@ -1,7 +1,7 @@
 <map id="onert::compiler::train::pass::Pass" name="onert::compiler::train::pass::Pass">
-<area shape="rect" id="node1" title=" " alt="" coords="465,69,603,109"/>
-<area shape="rect" id="node2" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="171,5,311,45"/>
-<area shape="rect" id="node3" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="164,69,319,109"/>
+<area shape="rect" id="node1" title=" " alt="" coords="480,69,617,109"/>
+<area shape="rect" id="node2" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="179,5,319,45"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="171,69,326,109"/>
 <area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="5,77,115,102"/>
-<area shape="rect" id="node5" href="$classonert_1_1compiler_1_1train_1_1_training_info.html" title=" " alt="" coords="173,133,310,173"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1train_1_1_training_info.html" title=" " alt="" coords="164,134,333,159"/>
 </map>

@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('train_2_tensor_manager_8cc_source.html
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a82f53e8ae34df70b62f104838073f1ed">   81</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a82f53e8ae34df70b62f104838073f1ed">TensorManager::allocateBackPropTensors</a>()</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>{</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  allocateMemory(_back_prop_mgr.get(), _tensors-&gt;back_prop_tensors(),</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                 std::string{<span class="stringliteral">&quot;DERIVATIVE TENSOR &quot;</span>});</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                 std::string{<span class="stringliteral">&quot;BACK_PROP TENSOR &quot;</span>});</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#adb195bfcf4187b366c4dd33f6a7cdaf7">   87</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#adb195bfcf4187b366c4dd33f6a7cdaf7">TensorManager::allocateGradientTensors</a>()</div>

@@ -1,5 +1,16 @@
 var NAVTREEINDEX260 =
 {
+"tflchef_2core_2src_2_op_2_sqrt_8h_source.html":[36,0,0,122,0,1,1,197],
+"tflchef_2core_2src_2_op_2_square_8h.html":[36,0,0,122,0,1,1,199],
+"tflchef_2core_2src_2_op_2_square_8h_source.html":[36,0,0,122,0,1,1,199],
+"tflchef_2core_2src_2_op_2_sub_8h.html":[36,0,0,122,0,1,1,207],
+"tflchef_2core_2src_2_op_2_sub_8h_source.html":[36,0,0,122,0,1,1,207],
+"tflchef_2core_2src_2_op_2_sum_8h.html":[36,0,0,122,0,1,1,209],
+"tflchef_2core_2src_2_op_2_sum_8h_source.html":[36,0,0,122,0,1,1,209],
+"tflchef_2core_2src_2_op_2_tile_8cpp.html":[36,0,0,122,0,1,1,214],
+"tflchef_2core_2src_2_op_2_tile_8cpp_source.html":[36,0,0,122,0,1,1,214],
+"tflchef_2core_2src_2_op_chef_8h.html":[36,0,0,122,0,1,5],
+"tflchef_2core_2src_2_op_chef_8h_source.html":[36,0,0,122,0,1,5],
 "tflchef_2core_2src_2_op_chefs_8h.html":[36,0,0,122,0,1,6],
 "tflchef_2core_2src_2_op_chefs_8h_source.html":[36,0,0,122,0,1,6],
 "tflchef_2log_2include_2_log_8h.html":[36,0,0,122,1,0,0],
@@ -238,16 +249,5 @@ var NAVTREEINDEX260 =
 "tflite__dot__dumper_2model__dump_8cpp.html#a217dbf8b442f20279ea00b898af96f52":[36,0,0,80,7,6,0,0],
 "tflite__dot__dumper_2model__dump_8cpp_source.html":[36,0,0,80,7,6,0],
 "tflite__importer_8cpp.html":[36,0,0,71,1,3,0],
-"tflite__importer_8cpp.html#ae422ccbe62feed5edd3e700ff8ba0a1a":[36,0,0,71,1,3,0,0],
-"tflite__importer_8cpp_source.html":[36,0,0,71,1,3,0],
-"tflite__importer_8h.html":[36,0,0,71,0,4,0],
-"tflite__importer_8h.html#ae422ccbe62feed5edd3e700ff8ba0a1a":[36,0,0,71,0,4,0,0],
-"tflite__importer_8h_source.html":[36,0,0,71,0,4,0],
-"tflite__loader_8cc.html":[36,0,4,2,3,3,1,0],
-"tflite__loader_8cc.html#aaeb6354a5eb1670b7fa1142d6b89ff13":[36,0,4,2,3,3,1,0,0],
-"tflite__loader_8cc_source.html":[36,0,4,2,3,3,1,0],
-"tflite__loader_8h.html":[36,0,4,2,3,3,0,0],
-"tflite__loader_8h.html#aaeb6354a5eb1670b7fa1142d6b89ff13":[36,0,4,2,3,3,0,0,0],
-"tflite__loader_8h_source.html":[36,0,4,2,3,3,0,0],
-"tflite__op__creator_8cpp.html":[36,0,0,71,1,3,1]
+"tflite__importer_8cpp.html#ae422ccbe62feed5edd3e700ff8ba0a1a":[36,0,0,71,1,3,0,0]
 };

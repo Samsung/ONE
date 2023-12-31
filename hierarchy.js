@@ -2760,7 +2760,9 @@ var hierarchy =
         [ "onert::ir::operation::RNN", "classonert_1_1ir_1_1operation_1_1_r_n_n.html", null ],
         [ "onert::ir::operation::Range", "classonert_1_1ir_1_1operation_1_1_range.html", null ],
         [ "onert::ir::operation::Rank", "classonert_1_1ir_1_1operation_1_1_rank.html", null ],
-        [ "onert::ir::operation::Reduce", "classonert_1_1ir_1_1operation_1_1_reduce.html", null ],
+        [ "onert::ir::operation::Reduce", "classonert_1_1ir_1_1operation_1_1_reduce.html", [
+          [ "onert::ir::train::operation::Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", null ]
+        ] ],
         [ "onert::ir::operation::Reshape", "classonert_1_1ir_1_1operation_1_1_reshape.html", [
           [ "onert::ir::train::operation::Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", null ]
         ] ],
@@ -2796,6 +2798,7 @@ var hierarchy =
         [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
         [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ],
         [ "onert::ir::train::operation::Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", null ],
+        [ "onert::ir::train::operation::Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", null ],
         [ "onert::ir::train::operation::Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", null ],
         [ "onert::ir::train::operation::Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", null ],
         [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
@@ -4455,6 +4458,7 @@ var hierarchy =
       [ "luci::ResolveCustomOpMatMulPass", "structluci_1_1_resolve_custom_op_mat_mul_pass.html", null ],
       [ "luci::ResolveCustomOpMaxPoolWithArgmaxPass", "structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html", null ],
       [ "luci::ResolveCustomOpSplitVPass", "structluci_1_1_resolve_custom_op_split_v_pass.html", null ],
+      [ "luci::ResolveFormerCustomOpPass", "structluci_1_1_resolve_former_custom_op_pass.html", null ],
       [ "luci::ShuffleWeightTo16x1Float32Pass", "structluci_1_1_shuffle_weight_to16x1_float32_pass.html", null ],
       [ "luci::SparsifyTensorPass", "structluci_1_1_sparsify_tensor_pass.html", null ],
       [ "luci::SubstitutePackToReshapePass", "structluci_1_1_substitute_pack_to_reshape_pass.html", null ],
@@ -5568,9 +5572,8 @@ var hierarchy =
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],
         [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ]
       ] ],
-      [ "onert::compiler::train::StaticBackPropShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_back_prop_shape_inferer.html", null ]
+      [ "onert::compiler::train::StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", null ]
     ] ],
-    [ "onert::compiler::train::TrainingInfo", "classonert_1_1compiler_1_1train_1_1_training_info.html", null ],
     [ "onert::ir::train::TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", null ],
     [ "onert::backend::train::ops::TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],

@@ -167,7 +167,7 @@ var searchData=
   ['_5ftimer_5fres_164',['_timer_res',['../classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b',1,'onert::util::ITimer']]],
   ['_5ftracing_5fctx_165',['_tracing_ctx',['../classonert_1_1exec_1_1_executor_base.html#ab8d8e36aae6516aebc8708514279ad1d',1,'onert::exec::ExecutorBase::_tracing_ctx()'],['../structonert_1_1compiler_1_1_compiler_artifact.html#a332e2e922d52650b4e23b864a002ccc1',1,'onert::compiler::CompilerArtifact::_tracing_ctx()']]],
   ['_5ftrainable_5fgraph_166',['_trainable_graph',['../classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html#a5bacb51d96483d33f5b4afcf9413e735',1,'onert::compiler::train::pass::Pass']]],
-  ['_5ftraining_5finfo_167',['_training_info',['../classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html#a0d6d17955951f1a0881a41a4b5ea8583',1,'onert::compiler::train::pass::Pass']]],
+  ['_5ftraining_5finfo_167',['_training_info',['../classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html#ae8ce718479964e3f0b5c58fefd7c701a',1,'onert::compiler::train::pass::Pass']]],
   ['_5ftype_168',['_type',['../classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html#ac75f57e91034e2414af1b3af7b3c972b',1,'onert::backend::gpu_cl::operand::ICLTensor']]],
   ['_5fuse_5fmmaped_5fdata_169',['_use_mmaped_data',['../classonert_1_1base__loader_1_1_base_loader.html#a922a4f8eb809524d45d0789a3386ba65',1,'onert::base_loader::BaseLoader']]],
   ['_5fuserdata_170',['_userdata',['../classonert_1_1api_1_1_custom_kernel.html#a501ce5f59a2d2d4a17de7bd3ba08e2f4',1,'onert::api::CustomKernel']]],

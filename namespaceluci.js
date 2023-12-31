@@ -564,6 +564,7 @@ var namespaceluci =
     [ "ResolveCustomOpMatMulPass", "structluci_1_1_resolve_custom_op_mat_mul_pass.html", "structluci_1_1_resolve_custom_op_mat_mul_pass" ],
     [ "ResolveCustomOpMaxPoolWithArgmaxPass", "structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html", "structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass" ],
     [ "ResolveCustomOpSplitVPass", "structluci_1_1_resolve_custom_op_split_v_pass.html", "structluci_1_1_resolve_custom_op_split_v_pass" ],
+    [ "ResolveFormerCustomOpPass", "structluci_1_1_resolve_former_custom_op_pass.html", "structluci_1_1_resolve_former_custom_op_pass" ],
     [ "SerializedGraphData", "structluci_1_1_serialized_graph_data.html", "structluci_1_1_serialized_graph_data" ],
     [ "SerializedModelData", "structluci_1_1_serialized_model_data.html", "structluci_1_1_serialized_model_data" ],
     [ "ShapeDescription", "structluci_1_1_shape_description.html", "structluci_1_1_shape_description" ],

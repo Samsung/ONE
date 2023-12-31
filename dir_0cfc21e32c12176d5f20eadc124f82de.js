@@ -70,6 +70,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "ResolveCustomOpMatMulPass.h", "_resolve_custom_op_mat_mul_pass_8h.html", "_resolve_custom_op_mat_mul_pass_8h" ],
     [ "ResolveCustomOpMaxPoolWithArgmaxPass.h", "_resolve_custom_op_max_pool_with_argmax_pass_8h.html", "_resolve_custom_op_max_pool_with_argmax_pass_8h" ],
     [ "ResolveCustomOpSplitVPass.h", "_resolve_custom_op_split_v_pass_8h.html", "_resolve_custom_op_split_v_pass_8h" ],
+    [ "ResolveFormerCustomOpPass.h", "_resolve_former_custom_op_pass_8h.html", "_resolve_former_custom_op_pass_8h" ],
     [ "ShuffleWeightTo16x1Float32Pass.h", "_shuffle_weight_to16x1_float32_pass_8h.html", "_shuffle_weight_to16x1_float32_pass_8h" ],
     [ "SparsifyTensorPass.h", "_sparsify_tensor_pass_8h.html", "_sparsify_tensor_pass_8h" ],
     [ "SubstitutePackToReshapePass.h", "_substitute_pack_to_reshape_pass_8h.html", "_substitute_pack_to_reshape_pass_8h" ],

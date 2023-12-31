@@ -1,11 +1,5 @@
 var NAVTREEINDEX192 =
 {
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h.html":[36,0,0,52,3,0,0,0,0,103],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h_source.html":[36,0,0,52,3,0,0,0,0,103],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_softmax_8h.html":[36,0,0,52,3,0,0,0,0,104],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_softmax_8h_source.html":[36,0,0,52,3,0,0,0,0,104],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_space_to_batch_n_d_8h.html":[36,0,0,52,3,0,0,0,0,105],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_space_to_batch_n_d_8h_source.html":[36,0,0,52,3,0,0,0,0,105],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_space_to_depth_8h.html":[36,0,0,52,3,0,0,0,0,106],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_space_to_depth_8h_source.html":[36,0,0,52,3,0,0,0,0,106],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_sparse_to_dense_8h.html":[36,0,0,52,3,0,0,0,0,107],
@@ -249,5 +243,11 @@ var NAVTREEINDEX192 =
 "luci-interpreter_2src_2kernels_2_l2_pool2_d_8h_source.html":[36,0,0,55,2,2,68],
 "luci-interpreter_2src_2kernels_2_less_8h.html":[36,0,0,55,2,2,72],
 "luci-interpreter_2src_2kernels_2_less_8h_source.html":[36,0,0,55,2,2,72],
-"luci-interpreter_2src_2kernels_2_less_equal_8h.html":[36,0,0,55,2,2,74]
+"luci-interpreter_2src_2kernels_2_less_equal_8h.html":[36,0,0,55,2,2,74],
+"luci-interpreter_2src_2kernels_2_less_equal_8h_source.html":[36,0,0,55,2,2,74],
+"luci-interpreter_2src_2kernels_2_log_8h.html":[36,0,0,55,2,2,78],
+"luci-interpreter_2src_2kernels_2_log_8h_source.html":[36,0,0,55,2,2,78],
+"luci-interpreter_2src_2kernels_2_max_pool2_d_8h.html":[36,0,0,55,2,2,92],
+"luci-interpreter_2src_2kernels_2_max_pool2_d_8h_source.html":[36,0,0,55,2,2,92],
+"luci-interpreter_2src_2kernels_2_maximum_8h.html":[36,0,0,55,2,2,90]
 };

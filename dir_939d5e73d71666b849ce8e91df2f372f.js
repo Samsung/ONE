@@ -94,6 +94,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "ResolveCustomOpMatMulPass.cpp", "_resolve_custom_op_mat_mul_pass_8cpp.html", "_resolve_custom_op_mat_mul_pass_8cpp" ],
     [ "ResolveCustomOpMaxPoolWithArgmaxPass.cpp", "_resolve_custom_op_max_pool_with_argmax_pass_8cpp.html", "_resolve_custom_op_max_pool_with_argmax_pass_8cpp" ],
     [ "ResolveCustomOpSplitVPass.cpp", "_resolve_custom_op_split_v_pass_8cpp.html", null ],
+    [ "ResolveFormerCustomOpPass.cpp", "_resolve_former_custom_op_pass_8cpp.html", null ],
     [ "ShuffleWeightTo16x1Float32Pass.cpp", "_shuffle_weight_to16x1_float32_pass_8cpp.html", null ],
     [ "Sparsifier.cpp", "_sparsifier_8cpp.html", null ],
     [ "Sparsifier.h", "_sparsifier_8h.html", "_sparsifier_8h" ],

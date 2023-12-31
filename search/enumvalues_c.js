@@ -24,7 +24,7 @@ var searchData=
   ['nnfw_5fstatus_5funexpected_5fnull_21',['NNFW_STATUS_UNEXPECTED_NULL',['../nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3',1,'nnfw.h']]],
   ['nnfw_5ftrain_5floss_5fcategorical_5fcrossentropy_22',['NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY',['../nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60',1,'nnfw_experimental.h']]],
   ['nnfw_5ftrain_5floss_5fmean_5fsquared_5ferror_23',['NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR',['../nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929',1,'nnfw_experimental.h']]],
-  ['nnfw_5ftrain_5floss_5freduction_5finvalid_24',['NNFW_TRAIN_LOSS_REDUCTION_INVALID',['../nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a130fcbb1818c8c3675ecd81db8ba2872',1,'nnfw_experimental.h']]],
+  ['nnfw_5ftrain_5floss_5freduction_5fauto_24',['NNFW_TRAIN_LOSS_REDUCTION_AUTO',['../nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5',1,'nnfw_experimental.h']]],
   ['nnfw_5ftrain_5floss_5freduction_5fsum_25',['NNFW_TRAIN_LOSS_REDUCTION_SUM',['../nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df',1,'nnfw_experimental.h']]],
   ['nnfw_5ftrain_5floss_5freduction_5fsum_5fover_5fbatch_5fsize_26',['NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE',['../nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17',1,'nnfw_experimental.h']]],
   ['nnfw_5ftrain_5foptimizer_5fadam_27',['NNFW_TRAIN_OPTIMIZER_ADAM',['../nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8',1,'nnfw_experimental.h']]],

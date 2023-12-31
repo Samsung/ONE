@@ -1,10 +1,5 @@
 var NAVTREEINDEX164 =
 {
-"compare__tensors__all_8py.html#ab0e9af256ad9cf724b347d9693e6b0fd":[36,0,0,104,0,9],
-"compare__tensors__all_8py.html#ab3f8a009c63986c9c26177b0668663b3":[36,0,0,104,0,26],
-"compare__tensors__all_8py.html#ab5085a92e2239aec36c48552188e4c48":[36,0,0,104,0,33],
-"compare__tensors__all_8py.html#ab6b74a2f5fafc1879136c4cd2f1fc5a9":[36,0,0,104,0,15],
-"compare__tensors__all_8py.html#ab70c5366202beed9e773725686752eb3":[36,0,0,104,0,5],
 "compare__tensors__all_8py.html#aba8198e954df0bd35c6da5cec7d4f390":[36,0,0,104,0,27],
 "compare__tensors__all_8py.html#ac07c792d64ead8255010c825a7a384de":[36,0,0,104,0,13],
 "compare__tensors__all_8py.html#ac0834026657d341c7f5bf8da94f4edb4":[36,0,0,104,0,29],
@@ -249,5 +244,10 @@ var NAVTREEINDEX164 =
 "compiler_2circlechef_2core_2src_2_op_2_b_c_q_fully_connected_8h.html":[36,0,0,24,1,1,0,3],
 "compiler_2circlechef_2core_2src_2_op_2_b_c_q_fully_connected_8h_source.html":[36,0,0,24,1,1,0,3],
 "compiler_2circlechef_2core_2src_2_op_2_b_c_q_gather_8h.html":[36,0,0,24,1,1,0,5],
-"compiler_2circlechef_2core_2src_2_op_2_b_c_q_gather_8h_source.html":[36,0,0,24,1,1,0,5]
+"compiler_2circlechef_2core_2src_2_op_2_b_c_q_gather_8h_source.html":[36,0,0,24,1,1,0,5],
+"compiler_2circlechef_2core_2src_2_op_2_batch_mat_mul_8cpp.html":[36,0,0,24,1,1,0,0],
+"compiler_2circlechef_2core_2src_2_op_2_batch_mat_mul_8cpp_source.html":[36,0,0,24,1,1,0,0],
+"compiler_2circlechef_2core_2src_2_op_2_batch_mat_mul_8h.html":[36,0,0,24,1,1,0,1],
+"compiler_2circlechef_2core_2src_2_op_2_batch_mat_mul_8h_source.html":[36,0,0,24,1,1,0,1],
+"compiler_2circlechef_2core_2src_2_op_2_instance_norm_8cpp.html":[36,0,0,24,1,1,0,6]
 };

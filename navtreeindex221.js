@@ -1,7 +1,5 @@
 var NAVTREEINDEX221 =
 {
-"onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_log_softmax_8h_source.html":[36,0,3,4,1,1,30],
-"onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_neg_8h.html":[36,0,3,4,1,1,37],
 "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_neg_8h.html#a7220b77b133923c1b9c4846511168a35":[36,0,3,4,1,1,37,0],
 "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_neg_8h_source.html":[36,0,3,4,1,1,37],
 "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_quantize_8h.html":[36,0,3,4,1,1,40],
@@ -204,9 +202,9 @@ var NAVTREEINDEX221 =
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a1efdf32fd3fbe30235ca3e2312d7d30c":[36,0,3,4,2,1,39,6],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a1efdf32fd3fbe30235ca3e2312d7d30ca6f6cb72d544962fa333e2e34ce64f719":[36,0,3,4,2,1,39,6,0],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,4,2,1,39,4],
+"onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,4,2,1,39,2],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,4,2,1,39,5],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,4,2,1,39,3],
-"onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,4,2,1,39,2],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#a6bcc0e0add6c86bcf559c0123631be52":[36,0,3,4,2,1,39,7],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#aaca25dba79731428ed6105fd609ca24b":[36,0,3,4,2,1,39,8],
 "onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h.html#ac54aa4be2cc4f48e3a9f3b3266963e83":[36,0,3,4,2,1,39,9],
@@ -249,5 +247,7 @@ var NAVTREEINDEX221 =
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8cpp_source.html":[36,0,3,4,2,1,48],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[36,0,3,4,2,1,49],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html#a6a13ac908aace42c38e56cef9be18f97":[36,0,3,4,2,1,49,0],
-"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html#a74a3c4cdd92c0ae04221ab40fe9c8ac2":[36,0,3,4,2,1,49,1]
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html#a74a3c4cdd92c0ae04221ab40fe9c8ac2":[36,0,3,4,2,1,49,1],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp_source.html":[36,0,3,4,2,1,49],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[36,0,3,4,2,1,50]
 };

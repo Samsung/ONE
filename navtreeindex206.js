@@ -1,11 +1,5 @@
 var NAVTREEINDEX206 =
 {
-"namespaceluci__interpreter.html#adf2a306c09dbe129f56aabe9c25c3da3":[34,0,79,203],
-"namespaceluci__interpreter.html#ae06dfc4d94da951be566365533a33851":[34,0,79,280],
-"namespaceluci__interpreter.html#ae1aad03eecc6a10490b96fb4c3920c37":[34,0,79,348],
-"namespaceluci__interpreter.html#ae1ed28847eae6c24ff4c31d64255a23a":[34,0,79,377],
-"namespaceluci__interpreter.html#ae23d62ecb0aadb5c812d704a59d4d9f8":[34,0,79,270],
-"namespaceluci__interpreter.html#ae4a432de91a1d5cb73450b76ecde20c1":[34,0,79,195],
 "namespaceluci__interpreter.html#ae4b0b391cad3bd4c8e823ce3facdcbec":[34,0,79,331],
 "namespaceluci__interpreter.html#ae6487bb4068eaaac30626a77e415ce2a":[34,0,79,288],
 "namespaceluci__interpreter.html#ae86fbeb4000bd2397cf2c75447ca0040":[34,0,79,135],
@@ -249,5 +243,11 @@ var NAVTREEINDEX206 =
 "namespaceluci__interpreter_1_1test__kernel_1_1equal__int__with__no__broadcasting.html#a8db666343906d8c8037d1bedfde94623":[34,0,79,2,30,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1equal__int__with__no__broadcasting.html#aa437f991c6d703562b475b7412a66156":[34,0,79,2,30,3],
 "namespaceluci__interpreter_1_1test__kernel_1_1equal__int__with__no__broadcasting.html#ac9ba0d99e581d161e3185683b6371e52":[34,0,79,2,30,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html":[34,0,79,2,31]
+"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html":[34,0,79,2,31],
+"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#a0a0a2d80f57c503f7245a97931cc2ed6":[34,0,79,2,31,2],
+"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#a1640f85036024ff0dd14d3497eadf4af":[34,0,79,2,31,1],
+"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#afebcdb679922aad1ee1d7999defbaeed":[34,0,79,2,31,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html":[34,0,79,2,32],
+"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#a3e4ad4c3a986ccbca4bcf233daf86ea2":[34,0,79,2,32,1],
+"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#ab8faba8570fb4ebbf4d6a3ad8d943a1b":[34,0,79,2,32,0]
 };

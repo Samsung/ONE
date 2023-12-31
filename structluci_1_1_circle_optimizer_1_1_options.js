@@ -19,6 +19,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "ResolveCustomOpMatMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea8984cc0c39fb4950a85413e40d03c30d", null ],
       [ "ResolveCustomOpMaxPoolWithArgmax", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea4a02a19b96a884f0ca127e6c9a42d258", null ],
       [ "ResolveCustomOpSplitV", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea7d699762a7444b8e42f728b721b0c467", null ],
+      [ "ResolveFormerCustomOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaed3efd311be8d8ec1a9ed506c53e0f9e", null ],
       [ "FoldAddV2", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2e541aaafd90ead89e96eeeab31a9923", null ],
       [ "FoldCast", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea4e17c932866cc171d1bc5dfe7934d844", null ],
       [ "FoldDensify", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aead343b7f79b824a05c2cad23697f17870", null ],

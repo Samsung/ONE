@@ -1,11 +1,5 @@
 var NAVTREEINDEX207 =
 {
-"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#a0a0a2d80f57c503f7245a97931cc2ed6":[34,0,79,2,31,2],
-"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#a1640f85036024ff0dd14d3497eadf4af":[34,0,79,2,31,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1exp__float.html#afebcdb679922aad1ee1d7999defbaeed":[34,0,79,2,31,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html":[34,0,79,2,32],
-"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#a3e4ad4c3a986ccbca4bcf233daf86ea2":[34,0,79,2,32,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#ab8faba8570fb4ebbf4d6a3ad8d943a1b":[34,0,79,2,32,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1expand__dims__kernel.html#ac312e236520e31c61552e1006d6f3a31":[34,0,79,2,32,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1fill__kernel.html":[34,0,79,2,33],
 "namespaceluci__interpreter_1_1test__kernel_1_1fill__kernel.html#a5f5f582079cc9b48189a6990cfaef9ed":[34,0,79,2,33,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX207 =
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__float.html#a04627271292bf9fd721e1cbc7cb50eb2":[34,0,79,2,94,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__float.html#ad4baa2c34ed6528bc64511b788a6e290":[34,0,79,2,94,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__float.html#af19e3745e99abfad0f7d99f8ad780dd2":[34,0,79,2,94,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__bias__shape.html":[34,0,79,2,95]
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__bias__shape.html":[34,0,79,2,95],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__bias__shape.html#a5849c20fad0567e871517a869ae5afc1":[34,0,79,2,95,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__shape.html":[34,0,79,2,96],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__shape.html#a70ca202b3f35cdf613d4743173a56b67":[34,0,79,2,96,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__type.html":[34,0,79,2,97],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__fully__connected__wrong__weight__type.html#aeef7f66db99b4b6d55cefce9dcf05b75":[34,0,79,2,97,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__gather__mismatch__input__output__type.html":[34,0,79,2,98]
 };

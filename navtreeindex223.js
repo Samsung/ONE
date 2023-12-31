@@ -1,7 +1,5 @@
 var NAVTREEINDEX223 =
 {
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#afd0d7e8134f1365f84ef40571dec5ea8":[36,0,3,4,2,1,114,23],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#afdd2b45a2055529250dfa7583b2c922c":[36,0,3,4,2,1,114,21],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h_source.html":[36,0,3,4,2,1,114],
 "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp.html":[36,0,3,4,2,1,115],
 "onert-micro_2luci-interpreter_2src_2kernels_2_while_8cpp.html#ad406f29fec659c397a500ce2a05bc93b":[36,0,3,4,2,1,115,0],
@@ -110,6 +108,8 @@ var NAVTREEINDEX223 =
 "operation_2_pool2_d_8cc_source.html":[36,0,4,2,2,1,4,0,41],
 "operation_2_pool2_d_8h.html":[36,0,4,2,2,0,3,0,41],
 "operation_2_pool2_d_8h_source.html":[36,0,4,2,2,0,3,0,41],
+"operation_2_reduce_8cc.html":[36,0,4,2,2,1,4,0,46],
+"operation_2_reduce_8cc_source.html":[36,0,4,2,2,1,4,0,46],
 "operation_2_reshape_8cc.html":[36,0,4,2,2,1,4,0,47],
 "operation_2_reshape_8cc_source.html":[36,0,4,2,2,1,4,0,47],
 "operation_2_shape_8cc.html":[36,0,4,2,2,1,4,0,53],
