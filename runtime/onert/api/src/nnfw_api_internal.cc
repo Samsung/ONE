@@ -1182,6 +1182,15 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     return NNFW_STATUS_INVALID_STATE;
   }
 
+  if (info == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_get_traininfo : info is nullptr" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // after model loaded, it ensures that _train_info is not nullptr
+  assert(_train_info != nullptr);
+
   auto convertLossCode = [](const onert::ir::train::LossCode &code) -> NNFW_TRAIN_LOSS {
     switch (code)
     {
@@ -1229,7 +1238,6 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     }
   };
 
-  assert(_train_info != nullptr);
   const auto loss = _train_info->lossInfo();
   const auto optim = _train_info->optimizerInfo();
 

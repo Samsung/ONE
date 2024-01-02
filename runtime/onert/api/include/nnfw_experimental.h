@@ -228,7 +228,7 @@ typedef struct nnfw_train_info
  * @brief Get training information
  * @note  This function should be called after calling {@link nnfw_load_model_from_file}
  *
- *        For the field which is not set in training infomation, it returns training information
+ *        For the field which is not set in training information, it returns training information
  *        filled with default value. The default value of each field is as follows :
  *        learning_rate = 0.0f, batch_size = 0, *_UNDEF for other enums
  *
