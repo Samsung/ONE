@@ -104,6 +104,9 @@ public:
     assert(back_prop_out->layout() == ir::Layout::NHWC);
 
     // activation bacward
+    back_prop_out =
+      getFusedActivationBackprop(_activation, _output, back_prop_out, _act_back_prop_output.get());
+    /*
     switch (_activation)
     {
       case ir::Activation::NONE:
@@ -118,6 +121,7 @@ public:
       default:
         throw std::runtime_error("PoolLayer: Unsupported activation type yet");
     }
+    */
 
     // maxpool baackward
     auto arg_max_index = _arg_max_index.get();

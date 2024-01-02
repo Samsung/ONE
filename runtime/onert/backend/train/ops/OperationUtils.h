@@ -36,6 +36,27 @@ using cpu::ops::getNumberOfDimensions;
 using cpu::ops::getNumberOfElements;
 using cpu::ops::getSizeOfDimension;
 
+/**
+ * @brief calcuate fused acitvation back propagation
+ *
+ *             -- forward direction -->
+ *
+ *   [ current layer ]   ----   [next layer ]
+ *   [ op    |  act  ]
+ *
+ *             <-- backward direction --
+ *
+ * @param activation      activation of current layer
+ * @param output          forward direction's output of current layer
+ * @param input_backprop  backward direction's from next layer, incoming gradient from next layer
+ * @param output_backprop backward direction's output of activation, outcoming gradient of
+ * acitvation
+ */
+const IPortableTensor *getFusedActivationBackprop(const ir::Activation &activation,
+                                                  const IPortableTensor *output,
+                                                  const IPortableTensor *input_backprop,
+                                                  IPortableTensor *output_backprop);
+
 } // namespace ops
 } // namespace train
 } // namespace backend
