@@ -115,7 +115,7 @@ void DepthwiseConvolutionLayer::backwardFloat32()
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
 
-  nnfw::cker::train::DepthwiseConvFilterGrad(
+  nnfw::cker::train::DepthwiseConvFilterGradRef(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
 
