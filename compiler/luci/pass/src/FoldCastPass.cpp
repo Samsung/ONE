@@ -28,16 +28,17 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
 
   auto name = node->name();
   assert(name.length() > 0);
+
   auto constant = node->graph()->nodes()->create<luci::CircleConst>();
   constant->dtype(to_dtype);
   constant->rank(node->rank());
   uint32_t num_elems = 1;
+
   for (uint32_t i = 0; i < node->rank(); i++)
   {
     constant->dim(i).set(node->dim(i).value());
     num_elems *= node->dim(i).value();
   }
-
   constant->shape_status(luci::ShapeStatus::VALID);
 
   // TODO: Support more data types
