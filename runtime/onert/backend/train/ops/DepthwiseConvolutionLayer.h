@@ -61,10 +61,10 @@ private:
   IPortableTensor *_back_prop_input;
   const IPortableTensor *_back_prop_output;
 
-  // // TODO Consider if these tensors should be built in TensorBuilder
+  // TODO Consider if these tensors should be built in TensorBuilder
+  std::unique_ptr<BackPropTensor> _act_back_prop_output;
   // std::unique_ptr<Tensor> _transposed_weights;
   // std::unique_ptr<BackPropTensor> _conv_back_prop_output;
-  // std::unique_ptr<BackPropTensor> _act_back_prop_output;
   // std::unique_ptr<GradientTensor> _transposed_grad_weights;
 };
 

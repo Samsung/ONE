@@ -18,7 +18,9 @@
 
 #include "OperationUtils.h"
 
-// #include <cker/operation/Conv.h>
+#include <cker/train/operation/DepthwiseConv.h>
+#include <cker/train/operation/ReLU.h>
+#include <cker/operation/Reduce.h>
 // #include <cker/operation/Reduce.h>
 // #include <cker/operation/Transpose.h>
 // #include <cker/train/operation/Conv.h>
@@ -59,7 +61,7 @@ namespace ops
 
 DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
   : cpu::ops::DepthwiseConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
-    _back_prop_input{nullptr}, _back_prop_output{nullptr} /*, _transposed_weights{nullptr}*/
+    _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr}
 {
   // DO NOTHING
 }
@@ -83,121 +85,67 @@ void DepthwiseConvolutionLayer::configure(
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
 
-  // if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
-  //   throw std::runtime_error("train DepthwiseConvolutionLayer: Unsupported dilation yet");
-
-  // // TODO Optimize transposed tensors
-  // _transposed_weights = createTransposedWeights<Tensor>(weights);
-  // _transposed_weights->setBuffer(
-  //   std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
-
-  // _conv_back_prop_output =
-  //   std::make_unique<BackPropTensor>(back_prop_output->get_info(), back_prop_output->layout());
-  // _conv_back_prop_output->setBuffer(
-  //   std::make_shared<basic::Allocator>(_conv_back_prop_output->total_size()));
-
-  // _transposed_grad_weights = createTransposedWeights<GradientTensor>(weights);
-  // _transposed_grad_weights->setBuffer(
-  //   std::make_shared<basic::Allocator>(_transposed_grad_weights->total_size()));
-
-  // if (activation != ir::Activation::NONE)
-  // {
-  //   _act_back_prop_output =
-  //     std::make_unique<BackPropTensor>(_back_prop_output->get_info(),
-  //     _back_prop_output->layout());
-  //   _act_back_prop_output->setBuffer(
-  //     std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
-  // }
+  if (activation != ir::Activation::NONE)
+  {
+    _act_back_prop_output =
+      std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output->setBuffer(
+      std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
+  }
 }
 
 void DepthwiseConvolutionLayer::forward(bool) { cpu::ops::DepthwiseConvolutionLayer::run(); }
 
 void DepthwiseConvolutionLayer::backward()
 {
-  // const auto data_type = _back_prop_output->data_type();
-  // assert(data_type == _input->data_type());
-  // switch (data_type)
-  // {
-  //   case OperandType::FLOAT32:
-  //   {
-  //     assert(data_type == _grad_bias->data_type());
-  //     backwardFloat32();
-  //     break;
-  //   }
-  //   default:
-  //     throw std::runtime_error{"train DepthwiseConvolutionLayer: unsupported data type"};
-  // }
+  const auto data_type = _back_prop_output->data_type();
+  assert(data_type == _input->data_type());
+  switch (data_type)
+  {
+    case OperandType::FLOAT32:
+    {
+      assert(data_type == _grad_bias->data_type());
+      backwardFloat32();
+      break;
+    }
+    default:
+      throw std::runtime_error{"train DepthwiseConvolutionLayer: unsupported data type"};
+  }
 }
 
 void DepthwiseConvolutionLayer::backwardFloat32()
 {
-  // // Calculate gradient for activation
-  // const IPortableTensor *backprop_act;
-  // switch (_activation)
-  // {
-  //   case ir::Activation::NONE:
-  //     backprop_act = _back_prop_output;
-  //     break;
-  //   case ir::Activation::RELU:
-  //     nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-  //                                 getShape(_back_prop_output),
-  //                                 getBuffer<float>(_back_prop_output),
-  //                                 getShape(_act_back_prop_output.get()),
-  //                                 getBuffer<float>(_act_back_prop_output.get()));
-  //     backprop_act = _act_back_prop_output.get();
-  //     break;
-  //   default:
-  //     throw std::runtime_error("train DepthwiseConvolutionLayer: Unsupported activation type
-  //     yet");
-  // }
+  // Calculate gradient for activation
+  const IPortableTensor *backprop_act;
+  switch (_activation)
+  {
+    case ir::Activation::NONE:
+      backprop_act = _back_prop_output;
+      break;
+    case ir::Activation::RELU:
+      nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
+                                  getShape(_back_prop_output), getBuffer<float>(_back_prop_output),
+                                  getShape(_act_back_prop_output.get()),
+                                  getBuffer<float>(_act_back_prop_output.get()));
+      backprop_act = _act_back_prop_output.get();
+      break;
+    default:
+      throw std::runtime_error("train DepthwiseConvolutionLayer: Unsupported activation type yet");
+  }
 
-  // // Initialize conv params for training kernels
-  // nnfw::cker::ConvParams conv_train_params;
-  // conv_train_params.padding_type = getPaddingType(_paddingType);
-  // conv_train_params.padding_values.width = _paddingLeft;
-  // conv_train_params.padding_values.height = _paddingTop;
-  // conv_train_params.stride_width = _strideWidth;
-  // conv_train_params.stride_height = _strideHeight;
-  // conv_train_params.dilation_width_factor = _dilationWidthFactor;
-  // conv_train_params.dilation_height_factor = _dilationHeightFactor;
+  nnfw::cker::DepthwiseConvParams dconv_params;
+  dconv_params.stride_width = _strideWidth;
+  dconv_params.stride_height = _strideHeight;
+  dconv_params.padding_values.width = _paddingLeft;
+  dconv_params.padding_values.height = _paddingTop;
+  dconv_params.depth_multiplier = _multiplier;
+  nnfw::cker::train::DepthwiseConvInputGrad(
+    dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
+    getBuffer<float>(_kernel), getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
 
-  // // Transpose weights from OHWI to HWIO
-  // auto transposed_weights = _transposed_weights.get();
-  // assert(transposed_weights->getShape().rank() == 4);
-  // nnfw::cker::TransposeParams transpose_param;
-  // transpose_param.perm_count = transposed_weights->getShape().rank();
-  // transpose_param.perm[0] = 1;
-  // transpose_param.perm[1] = 2;
-  // transpose_param.perm[2] = 3;
-  // transpose_param.perm[3] = 0;
-  // nnfw::cker::Transpose(transpose_param, getShape(_kernel), getBuffer<float>(_kernel),
-  //                       getShape(transposed_weights), getBuffer<float>(transposed_weights));
-
-  // // Calculate gradient for input
-  // nnfw::cker::train::ConvInputGrad(
-  //   conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act),
-  //   getShape(transposed_weights), getBuffer<float>(transposed_weights), _paddingBottom,
-  //   _paddingRight, getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
-
-  // // Calculate gradient for weights
-  // auto transposed_grad_weights = _transposed_grad_weights.get();
-  // assert(_grad_weights->getShape().rank() == 4);
-  // assert(transposed_grad_weights->getShape().rank() == 4);
-  // nnfw::cker::train::ConvFilterGrad(
-  //   conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
-  //   getBuffer<float>(_input), _paddingBottom, _paddingRight, getShape(transposed_grad_weights),
-  //   getBuffer<float>(transposed_grad_weights));
-
-  // // Transpose weights'gradient from HWIO to OHWI
-  // nnfw::cker::TransposeParams transpose_grad_param;
-  // transpose_grad_param.perm_count = transposed_grad_weights->getShape().rank();
-  // transpose_grad_param.perm[0] = 3;
-  // transpose_grad_param.perm[1] = 0;
-  // transpose_grad_param.perm[2] = 1;
-  // transpose_grad_param.perm[3] = 2;
-  // nnfw::cker::Transpose(transpose_grad_param, getShape(transposed_grad_weights),
-  //                       getBuffer<float>(transposed_grad_weights), getShape(_grad_weights),
-  //                       getBuffer<float>(_grad_weights));
+  nnfw::cker::train::DepthwiseConvFilterGrad(
+    dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
+    getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
 
   // // Calculate gradient for bias
   // if (_bias)
