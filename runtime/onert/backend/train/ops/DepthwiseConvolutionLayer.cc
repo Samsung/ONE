@@ -21,34 +21,6 @@
 #include <cker/train/operation/DepthwiseConv.h>
 #include <cker/train/operation/ReLU.h>
 #include <cker/operation/Reduce.h>
-// #include <cker/operation/Reduce.h>
-// #include <cker/operation/Transpose.h>
-// #include <cker/train/operation/Conv.h>
-// #include <cker/train/operation/ReLU.h>
-// #include <cker/operation/TransposeConv.h>
-
-// namespace
-// {
-
-// using namespace onert;
-
-// template <typename Tensor>
-// std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *origin_weights)
-// {
-//   const auto &origin_shape = origin_weights->getShape();
-//   assert(origin_shape.rank() == 4);
-
-//   auto transposed_info = origin_weights->get_info();
-//   // OHWI to HWIO
-//   auto transposed_shape =
-//     ir::Shape{origin_shape.dim(1), origin_shape.dim(2), origin_shape.dim(3),
-//     origin_shape.dim(0)};
-//   transposed_info.shape(transposed_shape);
-
-//   return std::make_unique<Tensor>(transposed_info, origin_weights->layout());
-// }
-
-// } // namespace
 
 namespace onert
 {
@@ -147,25 +119,24 @@ void DepthwiseConvolutionLayer::backwardFloat32()
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
 
-  // // Calculate gradient for bias
-  // if (_bias)
-  // {
-  //   // TODO Use optimized kernel
-  //   assert(_grad_bias);
-  //   std::vector<int32_t> axes{0, 1, 2};
-  //   nnfw::cker::Reduce reduce_kernel;
-  //   reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
-  //   bool result = reduce_kernel.ReduceGeneric<float>(
-  //     getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
-  //     getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
-  //     [](const float current, const float in) -> float { return in + current; });
+  // Calculate gradient for bias
+  if (_bias)
+  {
+    // TODO Use optimized kernel
+    assert(_grad_bias);
+    std::vector<int32_t> axes{0, 1, 2};
+    nnfw::cker::Reduce reduce_kernel;
+    reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
+    bool result = reduce_kernel.ReduceGeneric<float>(
+      getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
+      getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
+      [](const float current, const float in) -> float { return in + current; });
 
-  //   if (!result)
-  //   {
-  //     throw std::runtime_error{"train DepthwiseConvolutionLayer: Fail to caculate bias
-  //     gradient"};
-  //   }
-  // }
+    if (!result)
+    {
+      throw std::runtime_error{"train DepthwiseConvolutionLayer: Fail to caculate bias gradient"};
+    }
+  }
 }
 
 } // namespace ops
