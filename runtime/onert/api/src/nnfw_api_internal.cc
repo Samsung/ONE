@@ -1264,8 +1264,8 @@ NNFW_STATUS nnfw_session::train_prepare()
     if (not _train_info->isValid())
       throw std::runtime_error{"training info is not valid"};
 
-    // initialize epoch count
-    _train_info->epoch() = 0;
+    // initialize trainingStep count
+    _train_info->trainingStep() = 0;
 
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _train_info.get());
@@ -1452,7 +1452,7 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
   {
     if (update_weights)
     {
-      auto &training_step = _train_info->epoch();
+      auto &training_step = _train_info->trainingStep();
       _execution->train(training_step++);
     }
     else
