@@ -453,6 +453,23 @@ void StaticShapeInferer::visit(const ir::operation::Conv2D &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::DepthwiseConv2D &op)
+{
+  auto &operands = _lowered_subg->graph().operands();
+
+  const auto input_idx{op.getInputs().at(ir::operation::DepthwiseConv2D::Input::INPUT)};
+  const auto &input = operands.at(input_idx);
+  const auto ker_idx{op.getInputs().at(ir::operation::DepthwiseConv2D::Input::KERNEL)};
+  const auto &ker = operands.at(ker_idx);
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = operands.at(output_idx);
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferDepthwiseConv2DShape(input.info().shape(),
+                                                                   ker.info().shape(), op.param());
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT));
