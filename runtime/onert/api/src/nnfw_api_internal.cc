@@ -1195,7 +1195,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (code)
     {
       case onert::ir::train::LossCode::Invalid:
-        return NNFW_TRAIN_LOSS_UNDEF;
+        return NNFW_TRAIN_LOSS_UNDEFINED;
       case onert::ir::train::LossCode::MeanSquaredError:
         return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
       case onert::ir::train::LossCode::CategoricalCrossentropy:
@@ -1210,7 +1210,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (type)
     {
       case onert::ir::train::LossReductionType::Invalid:
-        return NNFW_TRAIN_LOSS_REDUCTION_UNDEF;
+        return NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED;
       case onert::ir::train::LossReductionType::Auto:
         return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
       case onert::ir::train::LossReductionType::SumOverBatchSize:
@@ -1228,7 +1228,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     switch (code)
     {
       case onert::ir::train::OptimizerCode::Invalid:
-        return NNFW_TRAIN_OPTIMIZER_UNDEF;
+        return NNFW_TRAIN_OPTIMIZER_UNDEFINED;
       case onert::ir::train::OptimizerCode::SGD:
         return NNFW_TRAIN_OPTIMIZER_SGD;
       case onert::ir::train::OptimizerCode::Adam:
