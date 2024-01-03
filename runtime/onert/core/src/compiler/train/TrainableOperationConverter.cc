@@ -39,6 +39,11 @@ void TrainableOperationConverter::visit(const ir::operation::Conv2D &node)
   _return_op = std::make_unique<ir::train::operation::Conv2D>(node);
 }
 
+void TrainableOperationConverter::visit(const ir::operation::DepthwiseConv2D &node)
+{
+  _return_op = std::make_unique<ir::train::operation::DepthwiseConv2D>(node);
+}
+
 void TrainableOperationConverter::visit(const ir::operation::ElementwiseActivation &node)
 {
   if (node.param().op_type == ir::operation::ElementwiseActivation::Type::RELU)
