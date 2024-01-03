@@ -28,7 +28,6 @@ namespace
 
 ir::train::OptimizerInfo loadOptimizerInfo(const circle::ModelTraining *circle_model)
 {
-
   // fill ir_opt from cirlce_opt
   ir::train::OptimizerInfo ir_opt;
   const circle::Optimizer circle_opt = circle_model->optimizer();
@@ -80,9 +79,7 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
   flatbuffers::Verifier v(buffer, size);
   bool verified = circle::VerifyModelTrainingBuffer(v);
   if (not verified)
-  {
     throw std::runtime_error{"TrainingInfo buffer is not accessible"};
-  }
 
   const circle::ModelTraining *circle_model = circle::GetModelTraining((void *)buffer);
 
