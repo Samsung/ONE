@@ -26,6 +26,16 @@ luci::CircleConst *cast_const(luci::CircleConst *node, loco::DataType from_dtype
 {
   assert(node->dtype() == from_dtype);
 
+  bool do_casting = false;
+  if (from_dtype == loco::DataType::S64)
+  {
+    if (to_dtype == loco::DataType::S32)
+      do_casting = true;
+  }
+  // TODO: Support more data types
+  if (not do_casting)
+    return nullptr;
+
   auto name = node->name();
   assert(name.length() > 0);
 
