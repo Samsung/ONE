@@ -1,5 +1,5 @@
 if (NOT VCONONE_VERSION)
-  set(VCONONE_VERSION 0x00000000001a0001)
+  set(VCONONE_VERSION 0x00000000001b0001)
   # NOTE order is [build patch minor major]
   # if VCONONE_VERSION is set with -D option, it will be cached
   # you may have to remove cache file if you remove -D option
