@@ -1346,8 +1346,9 @@ NNFW_STATUS nnfw_session::train_prepare()
 
   try
   {
-    if (not _train_info->isValid())
-      throw std::runtime_error{"training info is not valid"};
+    const auto res = _train_info->isValid();
+    if (not res.valid)
+      throw std::runtime_error{"training info is not valid \n" + res.error_msg};
 
     auto compiler =
       onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _train_info.get());

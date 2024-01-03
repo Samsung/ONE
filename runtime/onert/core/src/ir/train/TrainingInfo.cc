@@ -23,25 +23,43 @@ namespace ir
 namespace train
 {
 
-bool TrainingInfo::isValid() const
+TrainingInfo::ValidationResult TrainingInfo::isValid() const
 {
+  ValidationResult res;
+  res.valid = true;
+
   if (_batch_size == 0)
-    return false;
+  {
+    res.valid = false;
+    res.error_msg.append("batch size must not be zero\n");
+  }
 
   if (_optimizer_info.optim_code == OptimizerCode::Undefined)
-    return false;
+  {
+    res.valid = false;
+    res.error_msg.append("optimizer is undefined\n");
+  }
 
   if (_optimizer_info.learning_rate <= 0.0f)
-    return false;
+  {
+    res.valid = false;
+    res.error_msg.append("learning rate must be positive\n");
+  }
 
   if (_loss_info.loss_code == LossCode::Undefined)
-    return false;
+  {
+    res.valid = false;
+    res.error_msg.append("loss is undefined\n");
+  }
 
   if (_loss_info.reduction_type == LossReductionType::Undefined)
-    return false;
+  {
+    res.valid = false;
+    res.error_msg.append("loss reduction type is undefined\n");
+  }
 
   // If there are invalid combination, add more condition-check here
-  return true;
+  return res;
 }
 
 } // namespace train

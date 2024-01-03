@@ -59,7 +59,13 @@ public:
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   void setEpoch(uint32_t epoch) { _epoch = epoch; }
 
-  bool isValid() const;
+  struct ValidationResult
+  {
+    bool valid;
+    std::string error_msg;
+  };
+
+  ValidationResult isValid() const;
 
 private:
   LossInfo _loss_info;
