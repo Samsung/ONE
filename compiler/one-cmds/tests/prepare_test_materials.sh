@@ -57,7 +57,7 @@ if [[ ! -s "img_files" ]]; then
     # https://github.com/Samsung/ONE/issues/3213#issuecomment-722757499
 fi
 
-if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ]; then
+if [ ! -d "raw_files" ] || [ ! -s "datalist.txt" ] || [ ! -d "numpy_files" ] || [ ! -s "datalist_numpy.txt" ]; then
     ../bin/venv/bin/python preprocess_images.py
 fi
 
