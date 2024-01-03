@@ -28,16 +28,16 @@ bool TrainingInfo::isValid() const
   if (_batch_size == 0)
     return false;
 
-  if (_optimizer_info.optim_code == onert::ir::train::OptimizerCode::Undefined)
+  if (_optimizer_info.optim_code == OptimizerCode::Undefined)
     return false;
 
   if (_optimizer_info.learning_rate <= 0.0f)
     return false;
 
-  if (_loss_info.loss_code == onert::ir::train::LossCode::Undefined)
+  if (_loss_info.loss_code == LossCode::Undefined)
     return false;
 
-  if (_loss_info.reduction_type == onert::ir::train::LossReductionType::Undefined)
+  if (_loss_info.reduction_type == LossReductionType::Undefined)
     return false;
 
   // If there are invalid combination, add more condition-check here
