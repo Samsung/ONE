@@ -28,7 +28,7 @@ namespace train
 
 enum class LossReductionType
 {
-  Invalid,          //< Invalid
+  Undefined,        //< Undefined
   Auto,             //< Auto
   SumOverBatchSize, //< SumOverBatchSize loss reduction type
   Sum,              //< Sum loss reduction type
@@ -49,7 +49,8 @@ struct LossInfo
   } loss_param;
 
   LossInfo()
-    : loss_code{LossCode::Invalid}, reduction_type{LossReductionType::Invalid}, loss_param{-1, 0.0f}
+    : loss_code{LossCode::Undefined}, reduction_type{LossReductionType::Undefined}, loss_param{-1,
+                                                                                               0.0f}
   {
   }
 };

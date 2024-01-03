@@ -28,7 +28,7 @@ namespace train
 std::string toString(OptimizerCode code)
 {
   static const std::unordered_map<OptimizerCode, const char *> map{
-    {OptimizerCode::Invalid, "Invalid"},
+    {OptimizerCode::Undefined, "Undefined"},
     {OptimizerCode::SGD, "SGD"},
     {OptimizerCode::Adam, "Adam"}};
   return map.at(code);

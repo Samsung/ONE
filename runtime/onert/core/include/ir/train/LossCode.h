@@ -28,7 +28,7 @@ namespace train
 
 enum class LossCode
 {
-  Invalid,                //< Invalid
+  Undefined,              //< Undefined
   MeanSquaredError,       //< MeanSquaredError optimizer
   CategoricalCrossentropy //< CategoricalCrossentropy optimizer
 };

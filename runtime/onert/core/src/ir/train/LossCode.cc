@@ -28,7 +28,7 @@ namespace train
 std::string toString(LossCode code)
 {
   static const std::unordered_map<LossCode, const char *> map{
-    {LossCode::Invalid, "Invalid"},
+    {LossCode::Undefined, "Undefined"},
     {LossCode::MeanSquaredError, "MeanSquaredError"},
     {LossCode::CategoricalCrossentropy, "CategoricalCrossentropy"}};
   return map.at(code);

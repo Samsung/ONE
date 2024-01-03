@@ -30,9 +30,9 @@ namespace train
 
 enum class OptimizerCode
 {
-  Invalid, //< Invalid
-  SGD,     //< SGD optimizer
-  Adam     //< Adam optimizer
+  Undefined, //< Undefined
+  SGD,       //< SGD optimizer
+  Adam       //< Adam optimizer
 };
 
 /**
