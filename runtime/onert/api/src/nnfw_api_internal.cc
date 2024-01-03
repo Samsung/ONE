@@ -1194,7 +1194,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
   auto convertLossCode = [](const onert::ir::train::LossCode &code) -> NNFW_TRAIN_LOSS {
     switch (code)
     {
-      case onert::ir::train::LossCode::Invalid:
+      case onert::ir::train::LossCode::Undefined:
         return NNFW_TRAIN_LOSS_UNDEFINED;
       case onert::ir::train::LossCode::MeanSquaredError:
         return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
@@ -1209,7 +1209,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     [](const onert::ir::train::LossReductionType &type) -> NNFW_TRAIN_LOSS_REDUCTION {
     switch (type)
     {
-      case onert::ir::train::LossReductionType::Invalid:
+      case onert::ir::train::LossReductionType::Undefined:
         return NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED;
       case onert::ir::train::LossReductionType::Auto:
         return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
@@ -1227,7 +1227,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     [](const onert::ir::train::OptimizerCode &code) -> NNFW_TRAIN_OPTIMIZER {
     switch (code)
     {
-      case onert::ir::train::OptimizerCode::Invalid:
+      case onert::ir::train::OptimizerCode::Undefined:
         return NNFW_TRAIN_OPTIMIZER_UNDEFINED;
       case onert::ir::train::OptimizerCode::SGD:
         return NNFW_TRAIN_OPTIMIZER_SGD;
