@@ -24,6 +24,7 @@
 #include "circle_loader.h"
 #include "tflite_loader.h"
 #include "trix_loader.h"
+#include "traininfo_loader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -202,6 +203,18 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
+std::unique_ptr<onert::ir::train::TrainingInfo>
+loadTrainingInfo(std::shared_ptr<onert::ir::Model> &&model)
+{
+  const auto tinfo_name = onert::train::traininfo_loader::TRAININFO_METADATA_NAME;
+  if (model->exists_metadata(tinfo_name))
+  {
+    const auto buffer = model->extract_metadata(tinfo_name);
+    return onert::train::traininfo_loader::loadTrainingInfo(buffer->base(), buffer->size());
+  }
+  return std::make_unique<onert::ir::train::TrainingInfo>();
+}
+
 uint64_t getBufSize(const nnfw_tensorinfo *info)
 {
   static int elmsize[] = {
@@ -276,6 +289,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     // TODO: Update _model_path if necessary
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
+    _train_info = loadTrainingInfo(_nnpkg->primary_model());
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -317,8 +331,7 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     _model_path = std::string(model_file_path);
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
-    // TODO load TrainingInfo from model, using TraininfoLoader
-    _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
+    _train_info = loadTrainingInfo(_nnpkg->primary_model());
     _state = State::MODEL_LOADED;
   }
   catch (const std::exception &e)
@@ -404,9 +417,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
       _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }
-
-    // TODO load TrainingInfo from model, using TraininfoLoader
-    _train_info = std::make_unique<onert::ir::train::TrainingInfo>();
+    _train_info = loadTrainingInfo(_nnpkg->primary_model());
 
     auto toIODesc = [](std::string str) {
       auto indices = nnfw::misc::split(str, ':');
