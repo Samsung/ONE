@@ -22,14 +22,17 @@
 
 namespace onert
 {
+namespace train
+{
 namespace traininfo_loader
 {
 
-static constexpr const char *TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+static constexpr char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
 } // namespace traininfo_loader
+} // namespace train
 } // namespace onert
 
 #endif // __CIRCLE_TRAININFO_LOADER_H__

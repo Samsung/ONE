@@ -20,6 +20,8 @@
 
 namespace onert
 {
+namespace train
+{
 namespace traininfo_loader
 {
 
@@ -81,9 +83,10 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
   if (not verified)
     throw std::runtime_error{"TrainingInfo buffer is not accessible"};
 
-  const circle::ModelTraining *circle_model = circle::GetModelTraining((void *)buffer);
+  const circle::ModelTraining *circle_model =
+    circle::GetModelTraining(static_cast<const void *>(buffer));
 
-  std::unique_ptr<ir::train::TrainingInfo> tinfo(new ir::train::TrainingInfo);
+  auto tinfo = std::make_unique<ir::train::TrainingInfo>();
   {
     tinfo->setBatchSize(circle_model->batch_size());
     tinfo->setOptimizerInfo(loadOptimizerInfo(circle_model));
@@ -93,4 +96,5 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
 }
 
 } // namespace traininfo_loader
+} // namespace train
 } // namespace onert
