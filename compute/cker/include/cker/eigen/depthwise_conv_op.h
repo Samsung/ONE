@@ -71,9 +71,8 @@ namespace functor
 
 template <typename T> struct DepthwiseFilterPadOp
 {
-  void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
-                  int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
-                  int out_rows, int out_cols, int out_depth, const T *filter, T *padded_filter)
+  void operator()(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int, int,
+                  int, int out_depth, const T *filter, T *padded_filter)
   {
     typedef typename Eigen::internal::packet_traits<T>::type Packet;
     static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
@@ -153,8 +152,7 @@ using CPUDevice = Eigen::ThreadPoolDevice;
 //     [a00, a01, a10, a11] [a20, a21, 0, 0]   in_row = 1, in_col = 1
 //
 template <typename T>
-static void CopyOutputBackpropRegion(int batch, int in_rows, int in_cols, int in_depth,
-                                     int filter_rows_, int filter_cols_, int depth_multiplier,
+static void CopyOutputBackpropRegion(int, int, int, int, int filter_rows_, int filter_cols_, int,
                                      int stride_, int pad_rows_, int pad_cols_, int out_rows_,
                                      int out_cols_, int out_depth,
                                      const int64_t padded_filter_inner_dim_size, const int64_t in_r,
@@ -253,9 +251,8 @@ static void CopyOutputBackpropRegion(int batch, int in_rows, int in_cols, int in
 //
 
 template <typename T>
-static void ComputeBackpropInput(int batch, int in_rows, int in_cols, int in_depth_,
-                                 int filter_rows, int filter_cols, int depth_multiplier_,
-                                 int stride, int pad_rows, int pad_cols, int out_rows, int out_cols,
+static void ComputeBackpropInput(int, int, int in_cols, int in_depth_, int filter_rows,
+                                 int filter_cols, int depth_multiplier_, int, int, int, int, int,
                                  int out_depth_, const int64_t padded_filter_inner_dim_size,
                                  const int64_t in_r, const int64_t in_c, const T *filter,
                                  const T *buffer, T *out_buffer, T *output)
@@ -361,93 +358,102 @@ static void ComputeBackpropInput(int batch, int in_rows, int in_cols, int in_dep
   }
 }
 
-// // Computes the depthwise conv2d backprop input of 'out_backprop' by
-// // 'depthwise_filter' and stores the result in 'in_backprop'.
-// template <typename T>
-// struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T> {
-//   typedef typename Eigen::internal::packet_traits<T>::type Packet;
+// Computes the depthwise conv2d backprop input of 'out_backprop' by
+// 'depthwise_filter' and stores the result in 'in_backprop'.
+template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
+{
+  typedef typename Eigen::internal::packet_traits<T>::type Packet;
 
-//   void operator()(int batch, int in_rows, int in_cols, int in_depth, int out_rows,
-//                   int out_cols, int out_depth, int stride, int depth_multiplier,
-//                   int filter_rows, int filter_cols, int pad_rows, int pad_cols,
-//                   const T* out_backprop, const T* depthwise_filter,
-//                   T* in_backprop) {
-//     static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
+  void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
+                  int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
+                  int out_rows, int out_cols, int out_depth, const T *out_backprop,
+                  const T *depthwise_filter, T *in_backprop)
+  {
+    static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
-//     // Pad 'depthwise_filter' to vector register width (if needed).
-//     const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
-//     Tensor padded_filter;
-//     if (pad_filter) {
-//       // Allocate space for padded filter.
-//       const int64_t filter_spatial_size = filter_rows * filter_cols;
-//       const int64_t padded_filter_inner_dim_size =
-//           ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-//       OP_REQUIRES_OK(
-//           ctx, ctx->allocate_temp(DataTypeToEnum<T>::value,
-//                                   TensorShape({filter_spatial_size,
-//                                                padded_filter_inner_dim_size}),
-//                                   &padded_filter));
-//       // Write out padded filter.
-//       functor::DepthwiseFilterPadOp<T>()(
-//           args, depthwise_filter, padded_filter.template flat<T>().data());
-//     }
-//     const T* filter_data =
-//         pad_filter ? padded_filter.template flat<T>().data() : depthwise_filter;
+    // Pad 'depthwise_filter' to vector register width (if needed).
+    const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
+    Tensor padded_filter;
+    if (pad_filter)
+    {
+      // Allocate space for padded filter.
+      const int filter_spatial_size = filter_rows * filter_cols;
+      const int padded_filter_inner_dim_size =
+        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
+      std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
+      padded_filter.shape.ReplaceWith(padded_filter_shape);
+      padded_filter.buffer = padded_filter_vec.data();
+      // Write out padded filter.
+      functor::DepthwiseFilterPadOp<T>()(batch, in_rows, in_cols, in_depth, filter_rows,
+                                         filter_cols, depth_multiplier, stride, pad_rows, pad_cols,
+                                         out_rows, out_cols, out_depth, depthwise_filter,
+                                         static_cast<T *>(padded_filter.buffer));
+    }
+    const T *filter_data = pad_filter ? static_cast<T *>(padded_filter.buffer) : depthwise_filter;
 
-//     // Computes one shard of depthwise conv2d backprop input.
-//     auto shard = [&ctx, &args, &out_backprop, &filter_data, &in_backprop](
-//                      int64_t start, int64_t limit) {
-//       static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
+    // Computes one shard of depthwise conv2d backprop input.
+    auto shard = [&](int64_t start, int64_t limit) {
+      static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
-//       const int64_t input_image_size =
-//           in_rows * in_cols * in_depth;
-//       const int64_t output_image_size =
-//           out_rows * out_cols * out_depth;
-//       const int64_t filter_spatial_size = filter_rows * filter_cols;
-//       const int64_t padded_filter_inner_dim_size =
-//           ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      const int64_t input_image_size = in_rows * in_cols * in_depth;
+      const int64_t output_image_size = out_rows * out_cols * out_depth;
+      const int filter_spatial_size = filter_rows * filter_cols;
+      const int padded_filter_inner_dim_size =
+        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-//       // Allocate buffer to copy regions from 'out_backprop'.
-//       Tensor out_bprop_buffer;
-//       OP_REQUIRES_OK(
-//           ctx, ctx->allocate_temp(DataTypeToEnum<T>::value,
-//                                   TensorShape({filter_spatial_size,
-//                                                padded_filter_inner_dim_size}),
-//                                   &out_bprop_buffer));
-//       T* out_bprop_buf = out_bprop_buffer.template flat<T>().data();
+      // Allocate buffer to copy regions from 'out_backprop'.
+      Tensor out_bprop_buffer;
+      Shape out_bprop_shape({filter_spatial_size, padded_filter_inner_dim_size});
+      std::vector<T> out_bprop_vec(out_bprop_shape.FlatSize());
+      out_bprop_buffer.shape.ReplaceWith(out_bprop_shape);
+      out_bprop_buffer.buffer = out_bprop_vec.data();
+      ;
+      T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
 
-//       // Allocate buffer for intermediate results.
-//       Tensor in_bprop_buffer;
-//       OP_REQUIRES_OK(
-//           ctx, ctx->allocate_temp(DataTypeToEnum<T>::value,
-//                                   TensorShape({padded_filter_inner_dim_size}),
-//                                   &in_bprop_buffer));
-//       T* in_bprop_buf = in_bprop_buffer.template flat<T>().data();
+      // Allocate buffer for intermediate results.
+      Tensor in_bprop_buffer;
+      Shape in_bprop_shape({padded_filter_inner_dim_size});
+      std::vector<T> in_bprop_vec(in_bprop_shape.FlatSize());
+      in_bprop_buffer.shape.ReplaceWith(in_bprop_shape);
+      in_bprop_buffer.buffer = in_bprop_vec.data();
+      T *in_bprop_buf = static_cast<T *>(in_bprop_buffer.buffer);
 
-//       for (int64_t b = start; b < limit; ++b) {
-//         for (int64_t in_r = 0; in_r < in_rows; ++in_r) {
-//           for (int64_t in_c = 0; in_c < in_cols; ++in_c) {
-//             // Populate 'out_bprop_buf' from local 'out_backprop' region.
-//             CopyOutputBackpropRegion<T>(
-//                 args, padded_filter_inner_dim_size, in_r, in_c,
-//                 out_backprop + b * output_image_size, out_bprop_buf);
+      for (int64_t b = start; b < limit; ++b)
+      {
+        for (int64_t in_r = 0; in_r < in_rows; ++in_r)
+        {
+          for (int64_t in_c = 0; in_c < in_cols; ++in_c)
+          {
+            // Populate 'out_bprop_buf' from local 'out_backprop' region.
+            CopyOutputBackpropRegion<T>(batch, in_rows, in_cols, in_depth, filter_rows, filter_cols,
+                                        depth_multiplier, stride, pad_rows, pad_cols, out_rows,
+                                        out_cols, out_depth, padded_filter_inner_dim_size, in_r,
+                                        in_c, out_backprop + b * output_image_size, out_bprop_buf);
 
-//             // Compute depthwise backprop input.
-//             ComputeBackpropInput<T>(args, padded_filter_inner_dim_size, in_r,
-//                                     in_c, filter_data, out_bprop_buf,
-//                                     in_bprop_buf,
-//                                     in_backprop + b * input_image_size);
-//           }
-//         }
-//       }
-//     };
+            // Compute depthwise backprop input.
+            ComputeBackpropInput<T>(
+              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size, in_r,
+              in_c, filter_data, out_bprop_buf, in_bprop_buf, in_backprop + b * input_image_size);
+          }
+        }
+      }
+    };
 
-//     const int64_t shard_cost = in_rows * in_cols * out_depth;
-//     auto worker_threads = *(ctx->device()->tensorflow_cpu_worker_threads());
-//     Shard(worker_threads.num_threads, worker_threads.workers, batch,
-//           shard_cost, shard);
-//   }
-// };
+    // const int shard_cost = in_rows * in_cols * out_depth;
+    // auto worker_threads = *(ctx->device()->tensorflow_cpu_worker_threads());
+    // Shard(worker_threads.num_threads, worker_threads.workers, batch,
+    //       shard_cost, shard);
+
+    const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
+    int input_bytes = in_rows * in_cols * in_depth;
+    int output_bytes = out_rows * out_cols * out_depth;
+    int compute_cycles = in_rows * in_cols * out_depth * batch;
+    const Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);
+    d.parallelFor(batch, cost, shard);
+  }
+};
 
 template <typename T>
 static void

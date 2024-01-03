@@ -111,10 +111,13 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.padding_values.width = _paddingLeft;
   dconv_params.padding_values.height = _paddingTop;
   dconv_params.depth_multiplier = _multiplier;
+
+  // Calculate gradient for input
   nnfw::cker::train::DepthwiseConvInputGrad(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
 
+  // Calculate gradient for weights
   nnfw::cker::train::DepthwiseConvFilterGradRef(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
