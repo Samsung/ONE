@@ -1173,6 +1173,91 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
+{
+  if (isStateInitialized())
+  {
+    // There is no _train_info in INITIALIZED, since _train_info is set when a model loaded
+    std::cerr << "Error during nnfw_session::train_get_traininfo : invalid state";
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (info == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_get_traininfo : info is nullptr" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // after model loaded, it ensures that _train_info is not nullptr
+  assert(_train_info != nullptr);
+
+  auto convertLossCode = [](const onert::ir::train::LossCode &code) -> NNFW_TRAIN_LOSS {
+    switch (code)
+    {
+      case onert::ir::train::LossCode::Invalid:
+        return NNFW_TRAIN_LOSS_UNDEFINED;
+      case onert::ir::train::LossCode::MeanSquaredError:
+        return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+      case onert::ir::train::LossCode::CategoricalCrossentropy:
+        return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
+      default:
+        throw std::runtime_error{"fail to convert ir::train::LossCode"};
+    }
+  };
+
+  auto convertLossReduction =
+    [](const onert::ir::train::LossReductionType &type) -> NNFW_TRAIN_LOSS_REDUCTION {
+    switch (type)
+    {
+      case onert::ir::train::LossReductionType::Invalid:
+        return NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED;
+      case onert::ir::train::LossReductionType::Auto:
+        return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
+      case onert::ir::train::LossReductionType::SumOverBatchSize:
+        return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
+      case onert::ir::train::LossReductionType::Sum:
+        return NNFW_TRAIN_LOSS_REDUCTION_SUM;
+      default:
+        throw std::runtime_error{"fail to convert from ir::train::LossReductionType"};
+        break;
+    }
+  };
+
+  auto convertOptimizerCode =
+    [](const onert::ir::train::OptimizerCode &code) -> NNFW_TRAIN_OPTIMIZER {
+    switch (code)
+    {
+      case onert::ir::train::OptimizerCode::Invalid:
+        return NNFW_TRAIN_OPTIMIZER_UNDEFINED;
+      case onert::ir::train::OptimizerCode::SGD:
+        return NNFW_TRAIN_OPTIMIZER_SGD;
+      case onert::ir::train::OptimizerCode::Adam:
+        return NNFW_TRAIN_OPTIMIZER_ADAM;
+      default:
+        throw std::runtime_error{"fail to convert from ir::train::OptimizerCode"};
+    }
+  };
+
+  const auto loss = _train_info->lossInfo();
+  const auto optim = _train_info->optimizerInfo();
+
+  try
+  {
+    info->learning_rate = optim.learning_rate;
+    info->batch_size = _train_info->batchSize();
+    info->loss_info.loss = convertLossCode(loss.loss_code);
+    info->loss_info.reduction_type = convertLossReduction(loss.reduction_type);
+    info->opt = convertOptimizerCode(optim.optim_code);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_get_traininfo" << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
 {
   if (not isStateModelLoaded())
