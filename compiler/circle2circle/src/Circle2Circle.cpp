@@ -153,6 +153,8 @@ int entry(int argc, char **argv)
              "This will convert Custom(MaxPoolWithArgmax) to equivalent set of operators");
   add_switch(arser, "--resolve_customop_splitv",
              "This will convert Custom(SplitV) to SplitV operator");
+  add_switch(arser, "--resolve_former_customop",
+             "This will convert a former custom op to builtin in from schema version upgrade");
   add_switch(arser, "--shuffle_weight_to_16x1float32",
              "This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32. Note that "
              "it only converts weights whose row is a multiple of 16");
@@ -343,6 +345,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
   if (arser.get<bool>("--resolve_customop_splitv"))
     options->enable(Algorithms::ResolveCustomOpSplitV);
+  if (arser.get<bool>("--resolve_former_customop"))
+    options->enable(Algorithms::ResolveFormerCustomOp);
   if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
     options->enable(Algorithms::ShuffleWeightTo16x1Float32);
   if (arser.get<bool>("--replace_non_const_fc_with_batch_matmul"))
