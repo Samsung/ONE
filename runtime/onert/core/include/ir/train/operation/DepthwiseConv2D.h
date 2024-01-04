@@ -48,4 +48,4 @@ public:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPERATION_DEPTHWISECONV2D_H__
+#endif // __ONERT_IR_TRAIN_OPERATION_DEPTHWISE_CONV2D_H__
