@@ -374,16 +374,16 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
     // Pad 'depthwise_filter' to vector register width (if needed).
     const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
     Tensor padded_filter;
+    // Allocate space for padded filter.
+    const int filter_spatial_size = filter_rows * filter_cols;
+    const int padded_filter_inner_dim_size =
+      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+    Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
+    std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
+    padded_filter.shape.ReplaceWith(padded_filter_shape);
+    padded_filter.buffer = padded_filter_vec.data();
     if (pad_filter)
     {
-      // Allocate space for padded filter.
-      const int filter_spatial_size = filter_rows * filter_cols;
-      const int padded_filter_inner_dim_size =
-        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-      Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
-      std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
-      padded_filter.shape.ReplaceWith(padded_filter_shape);
-      padded_filter.buffer = padded_filter_vec.data();
       // Write out padded filter.
       functor::DepthwiseFilterPadOp<T>()(batch, in_rows, in_cols, in_depth, filter_rows,
                                          filter_cols, depth_multiplier, stride, pad_rows, pad_cols,
@@ -408,7 +408,6 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
       std::vector<T> out_bprop_vec(out_bprop_shape.FlatSize());
       out_bprop_buffer.shape.ReplaceWith(out_bprop_shape);
       out_bprop_buffer.buffer = out_bprop_vec.data();
-      ;
       T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
 
       // Allocate buffer for intermediate results.

@@ -55,15 +55,15 @@ inline void DepthwiseConvInputGrad(const DepthwiseConvParams &params, const Shap
   const int pad_height = params.padding_values.height;
   const int pad_width = params.padding_values.width;
 
-  // depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, float>()(
+  depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, float>()(
+    batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
+    stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
+    filter_data, grad_data);
+
+  // depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
   //   batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
   //   stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width, incoming_data,
   //   filter_data, grad_data);
-
-  depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
-    batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
-    stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width, incoming_data,
-    filter_data, grad_data);
 }
 
 inline void DepthwiseConvFilterGrad(const DepthwiseConvParams &params, const Shape &incoming_shape,
