@@ -30,6 +30,8 @@ namespace
 
 ir::train::OptimizerInfo loadOptimizerInfo(const circle::ModelTraining *circle_model)
 {
+  assert(circle_model != nullptr);
+
   // fill ir_opt from cirlce_opt
   ir::train::OptimizerInfo ir_opt;
   const circle::Optimizer circle_opt = circle_model->optimizer();
@@ -52,6 +54,8 @@ ir::train::OptimizerInfo loadOptimizerInfo(const circle::ModelTraining *circle_m
 
 ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
 {
+  assert(circle_model != nullptr);
+
   // fill ir_loss from circle_loss
   ir::train::LossInfo ir_loss;
   const circle::LossFn circle_loss = circle_model->lossfn();
@@ -78,6 +82,8 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size)
 {
+  assert(buffer != nullptr);
+
   flatbuffers::Verifier v(buffer, size);
   bool verified = circle::VerifyModelTrainingBuffer(v);
   if (not verified)
@@ -85,6 +91,8 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
 
   const circle::ModelTraining *circle_model =
     circle::GetModelTraining(static_cast<const void *>(buffer));
+
+  assert(circle_model != nullptr);
 
   auto tinfo = std::make_unique<ir::train::TrainingInfo>();
   {
