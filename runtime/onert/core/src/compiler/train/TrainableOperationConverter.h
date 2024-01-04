@@ -38,6 +38,7 @@ public:
 
 private:
   void visit(const ir::operation::Conv2D &) override;
+  void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::Loss &node) override;

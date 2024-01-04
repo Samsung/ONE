@@ -17,6 +17,7 @@
 #include "KernelGenerator.h"
 
 #include "ops/ConvolutionLayer.h"
+#include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/LossMeanSquaredErrorLayer.h"
@@ -161,6 +162,55 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
                 ker_grad_tensor, bias_grad_tensor, out_back_prop_tensor, param_padding.type,
                 padding.left, padding.right, padding.top, padding.bottom, stride.horizontal,
                 stride.vertical, dilation.width_factor, dilation.height_factor, activation);
+
+  _return_fn = std::move(fn);
+
+  // Generate GradientApplier
+  if (bias_tensor)
+    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
+  _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));
+}
+
+void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
+{
+  using ir::train::operation::DepthwiseConv2D;
+
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(DepthwiseConv2D::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
+  const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
+  auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
+
+  auto ofm_back_prop_tensor = _tensor_reg->getBackPropTensor(ofm_index);
+  auto ifm_back_prop_tensor = _tensor_reg->getBackPropTensor(ifm_index);
+  auto ker_grad_tensor = _tensor_reg->getGradientTensor(ker_index);
+  auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
+
+  const auto stride = node.param().stride;
+  const auto &operands = _tgraph.operands();
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(_current_layout);
+  // Kernel format is [1, kernel_height, kernel_width, depth_out].
+  const auto &ker_shape = operands.at(ker_index).shape();
+  const auto ker_height = ker_shape.dim(1);
+  const auto ker_width = ker_shape.dim(2);
+  const auto dilation_width = node.param().dilation.width_factor;
+  const auto dilation_height = node.param().dilation.height_factor;
+  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
+                                            ker_width, ker_height, dilation_width, dilation_height);
+  const auto multiplier = node.param().multiplier;
+  const auto activation = node.param().activation;
+
+  auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
+
+  fn->configure(ifm_tensor, ker_tensor, bias_tensor, ofm_tensor, ifm_back_prop_tensor,
+                ker_grad_tensor, bias_grad_tensor, ofm_back_prop_tensor, padding.left,
+                padding.right, padding.top, padding.bottom, stride.horizontal, stride.vertical,
+                multiplier, dilation_width, dilation_height, activation, _external_context);
 
   _return_fn = std::move(fn);
 

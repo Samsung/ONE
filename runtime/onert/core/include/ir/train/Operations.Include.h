@@ -18,6 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 
 #include "ir/train/operation/Conv2D.h"
+#include "ir/train/operation/DepthwiseConv2D.h"
 #include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/FullyConnected.h"
 #include "ir/train/operation/Loss.h"

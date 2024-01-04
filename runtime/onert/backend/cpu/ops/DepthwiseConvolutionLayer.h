@@ -62,7 +62,7 @@ private:
   void prepareQ8iHybridPerChannel();
   void ensureQ8iHybridPerChannel();
 
-private:
+protected:
   const IPortableTensor *_input{nullptr};
   const IPortableTensor *_kernel{nullptr};
   const IPortableTensor *_bias{nullptr};

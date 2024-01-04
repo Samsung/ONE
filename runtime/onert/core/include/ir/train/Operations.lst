@@ -19,6 +19,7 @@
 #endif
 
 OP(Conv2D)
+OP(DepthwiseConv2D)
 OP(ElementwiseActivation)
 OP(FullyConnected)
 OP(Loss)
