@@ -21,6 +21,6 @@
  * NNFW_VERSION is a uint32 value representing nnfw runtime version
  * in 0xMMmmmmPP, where MM = major, mmmm = minor, PP = patch
  */
-#define NNFW_VERSION 0x01001a00
+#define NNFW_VERSION 0x01001b00
 
 #endif // __NNFW_VERSION_H__
