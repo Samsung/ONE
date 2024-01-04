@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATION_DEPTHWISECONV2D_H__
-#define __ONERT_IR_TRAIN_OPERATION_DEPTHWISECONV2D_H__
+#ifndef __ONERT_IR_TRAIN_OPERATION_DEPTHWISE_CONV2D_H__
+#define __ONERT_IR_TRAIN_OPERATION_DEPTHWISE_CONV2D_H__
 
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/train/ITrainableOperation.h"
