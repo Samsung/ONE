@@ -60,6 +60,7 @@ eval(Softmax_001 decompose_softmax)
 eval(Softmax_002 decompose_softmax)
 eval(UnidirectionalSequenceLSTM_003 unroll_unidirseqlstm)
 eval(UnidirectionalSequenceLSTM_004 unroll_unidirseqlstm)
+eval(Net_Shape_Add_000 fold_shape)
 
 # test for limited support for FLOAT16
 eval(Net_Dequantize_Add_000 fold_dequantize)

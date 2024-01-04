@@ -29,6 +29,7 @@ class CONSTANT:
         'fold_dwconv',
         'fold_fully_connected',
         'fold_gather',
+        'fold_shape',
         'fold_sparse_to_dense',
 
         # Operator fusion

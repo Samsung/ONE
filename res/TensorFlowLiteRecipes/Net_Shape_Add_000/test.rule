@@ -1,0 +1,5 @@
+# To check if Shape op is folded
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_SHAPE"             $(op_count Shape) '=' 0

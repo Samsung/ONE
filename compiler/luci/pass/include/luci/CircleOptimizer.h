@@ -60,6 +60,7 @@ public:
       FoldFullyConnected,
       FoldDequantize,
       FoldGather,
+      FoldShape,
       FoldSparseToDense,
       ForwardReshapeToUnaryOp,
       ForwardTransposeOp,
