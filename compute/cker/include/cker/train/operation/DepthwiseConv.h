@@ -38,6 +38,9 @@ inline void DepthwiseConvInputGrad(const DepthwiseConvParams &params, const Shap
                                    const float *filter_data, const Shape &grad_shape,
                                    float *grad_data)
 {
+  if (params.stride_height != params.stride_width)
+    throw std::runtime_error("Not support different length strides");
+
   const int batch = MatchingDim(incoming_shape, 0, grad_shape, 0);
   const int input_depth = grad_shape.Dims(3);
   const int output_depth = incoming_shape.Dims(3);
@@ -45,7 +48,6 @@ inline void DepthwiseConvInputGrad(const DepthwiseConvParams &params, const Shap
   const int incoming_width = incoming_shape.Dims(2);
   const int grad_height = grad_shape.Dims(1);
   const int grad_width = grad_shape.Dims(2);
-  assert(params.stride_height == params.stride_width);
   const int stride = params.stride_height;
   const int depth_multiplier = params.depth_multiplier;
   const int filter_height = filter_shape.Dims(1);
@@ -64,11 +66,14 @@ inline void DepthwiseConvInputGrad(const DepthwiseConvParams &params, const Shap
     filter_data, grad_data);
 }
 
-inline void DepthwiseConvFilterGradRef(const DepthwiseConvParams &params,
-                                       const Shape &incoming_shape, const float *incoming_data,
-                                       const Shape &input_shape, const float *input_data,
-                                       const Shape &filter_grad_shape, float *filter_grad_data)
+inline void DepthwiseConvFilterGrad(const DepthwiseConvParams &params, const Shape &incoming_shape,
+                                    const float *incoming_data, const Shape &input_shape,
+                                    const float *input_data, const Shape &filter_grad_shape,
+                                    float *filter_grad_data)
 {
+  if (params.stride_height != params.stride_width)
+    throw std::runtime_error("Not support different length strides");
+
   const int batch = MatchingDim(incoming_shape, 0, input_shape, 0);
   const int input_depth = input_shape.Dims(3);
   const int output_depth = incoming_shape.Dims(3);
@@ -76,7 +81,6 @@ inline void DepthwiseConvFilterGradRef(const DepthwiseConvParams &params,
   const int incoming_width = incoming_shape.Dims(2);
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
-  assert(params.stride_height == params.stride_width);
   const int stride = params.stride_height;
   const int depth_multiplier = params.depth_multiplier;
   const int filter_height = filter_grad_shape.Dims(1);
