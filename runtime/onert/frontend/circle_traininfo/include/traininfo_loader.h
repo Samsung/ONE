@@ -27,7 +27,7 @@ namespace train
 namespace traininfo_loader
 {
 
-static constexpr char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+static const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
