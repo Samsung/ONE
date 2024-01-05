@@ -1,0 +1,6 @@
+# To check if BroadcastTo is Custom op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "BROADCAST_TO_EXIST"       $(op_count BROADCAST_TO) '=' 1
+RULE    "NO_CUSTOM_BROADCAST_TO"   $(op_count 'CUSTOM(BROADCAST_TO)') '=' 0
