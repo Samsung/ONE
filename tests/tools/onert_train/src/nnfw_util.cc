@@ -53,6 +53,9 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
 {
   switch (opt)
   {
+    case NNFW_TRAIN_OPTIMIZER_UNDEFINED:
+      os << "undefined";
+      break;
     case NNFW_TRAIN_OPTIMIZER_ADAM:
       os << "adam";
       break;
@@ -70,6 +73,9 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
 {
   switch (loss)
   {
+    case NNFW_TRAIN_LOSS_UNDEFINED:
+      os << "undefined";
+      break;
     case NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR:
       os << "mean squared error";
       break;
@@ -87,6 +93,9 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss
 {
   switch (loss_reduction)
   {
+    case NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED:
+      os << "undefined";
+      break;
     case NNFW_TRAIN_LOSS_REDUCTION_AUTO:
       os << "use automatic reduction type";
       break;
