@@ -16,6 +16,7 @@
 
 #include "args.h"
 
+#include <CLI11.hpp>
 #include <iostream>
 
 namespace TFLiteRun
@@ -30,60 +31,33 @@ Args::Args(const int argc, char **argv) noexcept
 void Args::Initialize(void)
 {
   // General options
-  po::options_description general("General options");
+  _app =
+    std::make_shared<CLI::App>("Load TFLite model by onert and TFLite, and compare their output");
 
-  // clang-format off
-  general.add_options()
-    ("help,h", "Display available options")
-    ("tflite", po::value<std::string>()->default_value("")->required(), "Input tflite model file for serialization")
-    ("data,d", po::value<std::vector<std::string>>()->multitoken()->default_value(std::vector<std::string>{}, ""), "Input data file for model");
-  // clang-format on
+  _app->add_option("--tflite", _tflite_filename, "Input tflite model file for serialization")
+    ->type_name("PATH")
+    ->check(CLI::ExistingFile);
+  _app->add_option("--data,-d", _data_filenames, "Input data file for model")
+    ->type_name("PATH")
+    ->check(CLI::ExistingFile);
 
-  _options.add(general);
-  _positional.add("tflite", 1);
+  // Positional (higher priority)
+  _app->add_option("modelfile", _tflite_filename, "Input tflite model file for serialization")
+    ->type_name("PATH")
+    ->check(CLI::ExistingFile);
 }
 
-void Args::print(char **argv)
-{
-  std::cout << "tflite_comparator" << std::endl << std::endl;
-  std::cout << "Load tflite model by onert and TFLite, and compare their output" << std::endl;
-  std::cout << "Usage:" << std::endl;
-  std::cout << argv[0] << " --tflite model_file.tflite --data input_data.dat" << std::endl;
-  std::cout << _options;
-  std::cout << std::endl;
-}
+void Args::print() { _app->exit(CLI::CallForHelp()); }
 
 void Args::Parse(const int argc, char **argv)
 {
-  po::variables_map vm;
-  po::store(po::command_line_parser(argc, argv).options(_options).positional(_positional).run(),
-            vm);
-  po::notify(vm);
-
-  if (vm.count("help"))
-  {
-    print(argv);
-
-    exit(0);
-  }
-
   try
   {
-    if (vm.count("tflite"))
-    {
-      _tflite_filename = vm["tflite"].as<std::string>();
-    }
-
-    if (vm.count("data"))
-    {
-      _data_filenames = vm["data"].as<std::vector<std::string>>();
-    }
+    _app->parse(argc, argv);
   }
-  catch (const std::bad_cast &e)
+  catch (const CLI::ParseError &e)
   {
-    std::cerr << e.what() << '\n';
-    print(argv);
-    exit(1);
+    exit(_app->exit(e));
   }
 }
 

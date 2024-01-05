@@ -26,10 +26,13 @@
 #include <tflite/Assert.h>
 #include <tflite/InterpreterSession.h>
 
+#include <CLI11.hpp>
+
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <string>
+#include <cstring>
 
 const int RUN_FAILED = 1;
 
@@ -197,7 +200,7 @@ int main(const int argc, char **argv)
 
   if (tflite_file.empty())
   {
-    args.print(argv);
+    args.print();
     return RUN_FAILED;
   }
 

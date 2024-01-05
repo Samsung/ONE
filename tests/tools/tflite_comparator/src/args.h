@@ -17,10 +17,14 @@
 #ifndef __TFLITE_LOADER_TOOLS_SRC_ARGS_H__
 #define __TFLITE_LOADER_TOOLS_SRC_ARGS_H__
 
+#include <memory>
 #include <string>
-#include <boost/program_options.hpp>
+#include <vector>
 
-namespace po = boost::program_options;
+namespace CLI
+{
+class App;
+}
 
 namespace TFLiteRun
 {
@@ -29,7 +33,7 @@ class Args
 {
 public:
   Args(const int argc, char **argv) noexcept;
-  void print(char **argv);
+  void print();
 
   const std::string &getTFLiteFilename(void) const { return _tflite_filename; }
   const std::vector<std::string> &getDataFilenames(void) const { return _data_filenames; }
@@ -39,8 +43,7 @@ private:
   void Parse(const int argc, char **argv);
 
 private:
-  po::options_description _options;
-  po::positional_options_description _positional;
+  std::shared_ptr<CLI::App> _app;
 
   std::string _tflite_filename;
   std::vector<std::string> _data_filenames;
