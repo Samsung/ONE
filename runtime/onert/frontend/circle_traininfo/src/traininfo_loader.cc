@@ -25,6 +25,8 @@ namespace train
 namespace traininfo_loader
 {
 
+const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+
 namespace
 {
 
