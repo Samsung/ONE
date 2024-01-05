@@ -49,6 +49,12 @@ Source3020: NEON2SSE.tar.gz
 %define test_build 1
 %endif
 
+%ifarch riscv64
+# Disable npud on risc-v
+# TODO Enable on risc-v
+%define npud_build 0
+%endif
+
 BuildRequires:  cmake
 
 Requires(post): /sbin/ldconfig
@@ -137,6 +143,9 @@ NPU daemon for optimal management of NPU hardware
 %ifarch %ix86
 %define target_arch i686
 %endif
+%ifarch riscv64
+%define target_arch riscv64
+%endif
 
 %define install_dir %{_prefix}
 %define install_path %{buildroot}%{install_dir}
@@ -206,7 +215,7 @@ tar -xf %{SOURCE3019} -C ./externals
 tar -xf %{SOURCE3020} -C ./externals
 
 %build
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 # nncc build
 %if %{odc_build} == 1
 %{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \
@@ -238,7 +247,7 @@ tar -zcf test-suite.tar.gz infra/scripts
 %endif # arm armv7l armv7hl aarch64
 
 %install
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
 mkdir -p %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_bindir}
@@ -312,7 +321,7 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
 %exclude %{_includedir}/CL/*
 %endif
@@ -320,7 +329,7 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %files devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
@@ -329,13 +338,13 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %files plugin-devel
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %endif
 
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %files minimal-app
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
@@ -356,7 +365,7 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %files npud
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_bindir}/npud
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86
 %endif # npud_build
@@ -365,7 +374,7 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %files odc
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %dir %{_libdir}/nnfw/odc
 %{_libdir}/nnfw/odc/*
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86
