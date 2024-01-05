@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# load input h5 data and dump output as h5 file
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+input_model='./simple_add.tflite'
+input_h5='simple'
+output_h5='simple_out'
+
+rm -rf ${output_npy}
+
+# run test
+tflite-infer -l ${input_model} --input-spec h5:${input_npy} --dump-output-npy ${output_npy} > ${filename}.log 2>&1
+
+if [[ ! -s "${output_npy}/output.0.npy" ]]; then
+  trap_err_onexit
+fi
+
+rm -rf ${output_npy}
+
+echo "${filename_ext} SUCCESS"
