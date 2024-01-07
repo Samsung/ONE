@@ -1,7 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"_matrix_diag_options_8h.html":[36,0,0,124,2,0,85],
-"_matrix_diag_options_8h.html#ac1508df1e5923d290bdfca4d175f3b18":[36,0,0,124,2,0,85,0],
 "_matrix_diag_options_8h_source.html":[36,0,0,124,2,0,85],
 "_matrix_encode_8cpp.html":[36,0,0,47,1,0,19],
 "_matrix_encode_8cpp_source.html":[36,0,0,47,1,0,19],
@@ -61,10 +59,6 @@ var NAVTREEINDEX17 =
 "_mean_canonicalizer_8cpp_source.html":[36,0,0,76,1,0,22],
 "_mean_canonicalizer_8h.html":[36,0,0,76,1,0,23],
 "_mean_canonicalizer_8h_source.html":[36,0,0,76,1,0,23],
-"_mean_layer_8cc.html":[36,0,4,2,1,4,0,50],
-"_mean_layer_8cc_source.html":[36,0,4,2,1,4,0,50],
-"_mean_layer_8h.html":[36,0,4,2,1,4,0,51],
-"_mean_layer_8h_source.html":[36,0,4,2,1,4,0,51],
 "_memory_8cpp.html":[36,0,0,3,0,11],
 "_memory_8cpp.html#a7ce0df38eb467e59f209470c8f5ac4e6":[36,0,0,3,0,11,0],
 "_memory_8cpp_source.html":[36,0,0,3,0,11],
@@ -249,5 +243,11 @@ var NAVTREEINDEX17 =
 "_multi_dialect_shape_inference_rule_8cpp.html":[36,0,0,45,1,2,3],
 "_multi_dialect_shape_inference_rule_8cpp_source.html":[36,0,0,45,1,2,3],
 "_multi_dialect_shape_inference_rule_8h.html":[36,0,0,45,0,0,2,1],
-"_multi_dialect_shape_inference_rule_8h_source.html":[36,0,0,45,0,0,2,1]
+"_multi_dialect_shape_inference_rule_8h_source.html":[36,0,0,45,0,0,2,1],
+"_multi_line_text_8h.html":[36,0,0,105,0,0,4],
+"_multi_line_text_8h_source.html":[36,0,0,105,0,0,4],
+"_multi_line_text_utils_8cpp.html":[36,0,0,105,1,3],
+"_multi_line_text_utils_8cpp.html#a57a5a472469dd68df29ce27dcab49f92":[36,0,0,105,1,3,0],
+"_multi_line_text_utils_8cpp_source.html":[36,0,0,105,1,3],
+"_multi_line_text_utils_8h.html":[36,0,0,105,0,0,5]
 };

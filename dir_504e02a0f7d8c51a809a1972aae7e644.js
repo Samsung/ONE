@@ -14,6 +14,8 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
     [ "LossLayer.h", "_loss_layer_8h.html", "_loss_layer_8h" ],
     [ "LossMeanSquaredErrorLayer.cc", "_loss_mean_squared_error_layer_8cc.html", null ],
     [ "LossMeanSquaredErrorLayer.h", "_loss_mean_squared_error_layer_8h.html", "_loss_mean_squared_error_layer_8h" ],
+    [ "MeanLayer.cc", "train_2ops_2_mean_layer_8cc.html", null ],
+    [ "MeanLayer.h", "train_2ops_2_mean_layer_8h.html", "train_2ops_2_mean_layer_8h" ],
     [ "OperationUtils.h", "train_2ops_2_operation_utils_8h.html", "train_2ops_2_operation_utils_8h" ],
     [ "PoolLayer.cc", "train_2ops_2_pool_layer_8cc.html", null ],
     [ "PoolLayer.h", "train_2ops_2_pool_layer_8h.html", "train_2ops_2_pool_layer_8h" ],

@@ -38,6 +38,7 @@ var nnfw__api_8cc =
     [ "nnfw_train_expected_tensorinfo", "nnfw__api_8cc.html#aede2b315e1e4cef364e5372f88827486", null ],
     [ "nnfw_train_export_circle", "nnfw__api_8cc.html#af34150291cf5ff5d0d441ef73e623400", null ],
     [ "nnfw_train_get_loss", "nnfw__api_8cc.html#a1cb00110d13d3a316db8e01bc7974243", null ],
+    [ "nnfw_train_get_traininfo", "nnfw__api_8cc.html#a802209c5d3a4261fd308dd34f5283b06", null ],
     [ "nnfw_train_input_tensorinfo", "nnfw__api_8cc.html#ae2df9aba6b77d42a961ab26947663f12", null ],
     [ "nnfw_train_prepare", "nnfw__api_8cc.html#a711e8db4d5ff39cd1373652230aa6b16", null ],
     [ "nnfw_train_set_expected", "nnfw__api_8cc.html#a2dcf5951cfb152a9f05dc8413cd9501e", null ],

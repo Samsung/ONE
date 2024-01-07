@@ -1,11 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"_shape_inference_8cc_source.html":[36,0,4,2,2,1,6,10],
-"_shape_inference_rule_8cpp.html":[36,0,0,45,1,2,5],
-"_shape_inference_rule_8cpp_source.html":[36,0,0,45,1,2,5],
-"_shape_inference_rule_8h.html":[36,0,0,45,0,0,2,3],
-"_shape_inference_rule_8h_source.html":[36,0,0,45,0,0,2,3],
-"_shape_kernel_8h.html":[36,0,3,4,0,0,1,65,1],
 "_shape_kernel_8h.html#a236147b07533796d22b709592a5df55a":[36,0,3,4,0,0,1,65,1,1],
 "_shape_kernel_8h.html#a37b2ba53422f54c9c10875a31bea17e2":[36,0,3,4,0,0,1,65,1,2],
 "_shape_kernel_8h.html#ac9fa0303d9af40095fa19cf375de956e":[36,0,3,4,0,0,1,65,1,3],
@@ -209,8 +203,8 @@ var NAVTREEINDEX28 =
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[36,0,0,52,7,1,0,15,8,1],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[36,0,0,52,7,1,0,15,8,2],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[36,0,0,52,7,1,0,15,8,0],
-"_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[36,0,0,52,7,1,0,15,8],
 "_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[36,0,0,52,7,1,0,15,5],
+"_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[36,0,0,52,7,1,0,15,8],
 "_sparsity_format_converter_8h_source.html":[36,0,0,52,7,1,0,15],
 "_sparsity_param_8h.html":[36,0,0,52,3,0,0,0,22],
 "_sparsity_param_8h.html#a75d1b28634c64ffe78d7ab4f307135c0":[36,0,0,52,3,0,0,0,22,3],
@@ -249,5 +243,11 @@ var NAVTREEINDEX28 =
 "_split_v_layer_8cc.html":[36,0,4,2,1,4,0,92],
 "_split_v_layer_8cc_source.html":[36,0,4,2,1,4,0,92],
 "_split_v_layer_8h.html":[36,0,4,2,1,4,0,93],
-"_split_v_layer_8h_source.html":[36,0,4,2,1,4,0,93]
+"_split_v_layer_8h_source.html":[36,0,4,2,1,4,0,93],
+"_split_v_options_8cpp.html":[36,0,0,124,2,0,152],
+"_split_v_options_8cpp.html#a9efb07829ac52c685b3ea8285cf6b3dc":[36,0,0,124,2,0,152,0],
+"_split_v_options_8cpp_source.html":[36,0,0,124,2,0,152],
+"_split_v_options_8h.html":[36,0,0,124,2,0,153],
+"_split_v_options_8h.html#a9efb07829ac52c685b3ea8285cf6b3dc":[36,0,0,124,2,0,153,0],
+"_split_v_options_8h_source.html":[36,0,0,124,2,0,153]
 };

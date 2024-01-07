@@ -1,0 +1,7 @@
+<map id="onert::ir::train::operation::DepthwiseConv2D" name="onert::ir::train::operation::DepthwiseConv2D">
+<area shape="rect" id="node1" title=" " alt="" coords="81,240,235,280"/>
+<area shape="rect" id="node2" href="$classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html" title=" " alt="" coords="5,152,140,192"/>
+<area shape="rect" id="node3" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="44,79,171,104"/>
+<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="93,5,223,31"/>
+<area shape="rect" id="node5" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="164,152,323,192"/>
+</map>

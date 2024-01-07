@@ -1,6 +1,7 @@
 var dir_493dafa432bd3866dc5079e395238c17 =
 [
     [ "Conv2D.h", "runtime_2onert_2core_2include_2ir_2train_2operation_2_conv2_d_8h.html", "runtime_2onert_2core_2include_2ir_2train_2operation_2_conv2_d_8h" ],
+    [ "DepthwiseConv2D.h", "runtime_2onert_2core_2include_2ir_2train_2operation_2_depthwise_conv2_d_8h.html", "runtime_2onert_2core_2include_2ir_2train_2operation_2_depthwise_conv2_d_8h" ],
     [ "ElementwiseActivation.h", "train_2operation_2_elementwise_activation_8h.html", "train_2operation_2_elementwise_activation_8h" ],
     [ "FullyConnected.h", "runtime_2onert_2core_2include_2ir_2train_2operation_2_fully_connected_8h.html", "runtime_2onert_2core_2include_2ir_2train_2operation_2_fully_connected_8h" ],
     [ "Loss.h", "runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h.html", "runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h" ],

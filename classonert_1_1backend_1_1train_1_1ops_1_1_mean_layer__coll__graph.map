@@ -1,0 +1,9 @@
+<map id="onert::backend::train::ops::MeanLayer" name="onert::backend::train::ops::MeanLayer">
+<area shape="rect" id="node1" title=" " alt="" coords="20,315,157,355"/>
+<area shape="rect" id="node2" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,225,140,265"/>
+<area shape="rect" id="node3" href="$classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html" title=" " alt="" coords="165,225,298,265"/>
+<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="103,101,247,126"/>
+<area shape="rect" id="node5" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="272,93,436,133"/>
+<area shape="rect" id="node6" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="189,5,345,31"/>
+<area shape="rect" id="node7" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="370,5,511,31"/>
+</map>

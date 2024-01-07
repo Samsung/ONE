@@ -16,6 +16,7 @@ var namespaceonert =
     [ "tflite_loader", "namespaceonert_1_1tflite__loader.html", [
       [ "loadModel", "namespaceonert_1_1tflite__loader.html#aaeb6354a5eb1670b7fa1142d6b89ff13", null ]
     ] ],
+    [ "train", "namespaceonert_1_1train.html", "namespaceonert_1_1train" ],
     [ "trix_loader", "namespaceonert_1_1trix__loader.html", "namespaceonert_1_1trix__loader" ],
     [ "util", "namespaceonert_1_1util.html", "namespaceonert_1_1util" ],
     [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ],

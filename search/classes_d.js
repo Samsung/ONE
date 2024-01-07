@@ -61,7 +61,7 @@ var searchData=
   ['meanchef_58',['MeanChef',['../class_mean_chef.html',1,'']]],
   ['meancheffactory_59',['MeanChefFactory',['../struct_mean_chef_factory.html',1,'']]],
   ['meangraphbuilder_60',['MeanGraphBuilder',['../classmoco_1_1_mean_graph_builder.html',1,'moco']]],
-  ['meanlayer_61',['MeanLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html',1,'onert::backend::cpu::ops']]],
+  ['meanlayer_61',['MeanLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html',1,'onert::backend::cpu::ops::MeanLayer'],['../classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html',1,'onert::backend::train::ops::MeanLayer']]],
   ['meanparams_62',['MeanParams',['../structluci__interpreter__pal_1_1_mean_params.html',1,'luci_interpreter_pal']]],
   ['memory_63',['Memory',['../struct_memory.html',1,'']]],
   ['memorycontext_64',['MemoryContext',['../classenco_1_1_memory_context.html',1,'enco']]],

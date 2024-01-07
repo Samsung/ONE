@@ -2532,7 +2532,9 @@ var hierarchy =
       [ "onert::backend::cpu::ops::LSTMLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l_s_t_m_layer.html", null ],
       [ "onert::backend::cpu::ops::LogSoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html", null ],
       [ "onert::backend::cpu::ops::MatrixBandPartLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_matrix_band_part_layer.html", null ],
-      [ "onert::backend::cpu::ops::MeanLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html", null ],
+      [ "onert::backend::cpu::ops::MeanLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html", [
+        [ "onert::backend::train::ops::MeanLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html", null ]
+      ] ],
       [ "onert::backend::cpu::ops::OneHotLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_one_hot_layer.html", null ],
       [ "onert::backend::cpu::ops::PackLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_pack_layer.html", null ],
       [ "onert::backend::cpu::ops::PadLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html", null ],
@@ -2719,7 +2721,9 @@ var hierarchy =
         [ "onert::ir::operation::ConvertFp32ToFp16", "classonert_1_1ir_1_1operation_1_1_convert_fp32_to_fp16.html", null ],
         [ "onert::ir::operation::Custom", "classonert_1_1ir_1_1operation_1_1_custom.html", null ],
         [ "onert::ir::operation::DepthToSpace", "classonert_1_1ir_1_1operation_1_1_depth_to_space.html", null ],
-        [ "onert::ir::operation::DepthwiseConv2D", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html", null ],
+        [ "onert::ir::operation::DepthwiseConv2D", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html", [
+          [ "onert::ir::train::operation::DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", null ]
+        ] ],
         [ "onert::ir::operation::DetectionPostProcess", "classonert_1_1ir_1_1operation_1_1_detection_post_process.html", null ],
         [ "onert::ir::operation::Einsum", "classonert_1_1ir_1_1operation_1_1_einsum.html", null ],
         [ "onert::ir::operation::ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", [
@@ -2793,6 +2797,7 @@ var hierarchy =
       ] ],
       [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
         [ "onert::ir::train::operation::Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", null ],
+        [ "onert::ir::train::operation::DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", null ],
         [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ],
         [ "onert::ir::train::operation::FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", null ],
         [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
@@ -2920,6 +2925,7 @@ var hierarchy =
         [ "onert::backend::train::ops::LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", null ],
         [ "onert::backend::train::ops::LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", null ]
       ] ],
+      [ "onert::backend::train::ops::MeanLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html", null ],
       [ "onert::backend::train::ops::PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", null ],
       [ "onert::backend::train::ops::ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", null ],
       [ "onert::backend::train::ops::SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", null ]
@@ -3509,8 +3515,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

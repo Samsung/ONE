@@ -3073,6 +3073,7 @@ var annotated_dup =
             [ "LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer" ],
             [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
             [ "LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer" ],
+            [ "MeanLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer" ],
             [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
             [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ],
             [ "SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer" ],
@@ -3337,6 +3338,7 @@ var annotated_dup =
         [ "train", "namespaceonert_1_1ir_1_1train.html", [
           [ "operation", "namespaceonert_1_1ir_1_1train_1_1operation.html", [
             [ "Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d" ],
+            [ "DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d" ],
             [ "ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation" ],
             [ "FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected" ],
             [ "Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1train_1_1operation_1_1_loss" ],
@@ -4043,8 +4045,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

@@ -16,7 +16,7 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "ConvertFp32ToFp16.cc", "_convert_fp32_to_fp16_8cc.html", null ],
     [ "Custom.cc", "_custom_8cc.html", null ],
     [ "DepthToSpace.cc", "_depth_to_space_8cc.html", null ],
-    [ "DepthwiseConv2D.cc", "_depthwise_conv2_d_8cc.html", null ],
+    [ "DepthwiseConv2D.cc", "operation_2_depthwise_conv2_d_8cc.html", null ],
     [ "DetectionPostProcess.cc", "_detection_post_process_8cc.html", null ],
     [ "Einsum.cc", "_einsum_8cc.html", null ],
     [ "ElementwiseActivation.cc", "operation_2_elementwise_activation_8cc.html", null ],

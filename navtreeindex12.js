@@ -1,7 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"_float_squared_difference_kernel_8h.html#a15db1d7328ac44e56d75692d6a468b7e":[36,0,3,4,0,0,1,74,0,1],
-"_float_squared_difference_kernel_8h.html#aaf22703ea7f75f7b9d348db23c4e0b04":[36,0,3,4,0,0,1,74,0,2],
 "_float_squared_difference_kernel_8h.html#ace9e3fb9c5360a390ecd8c51e7e81d69":[36,0,3,4,0,0,1,74,0,4],
 "_float_squared_difference_kernel_8h.html#ad32d7c8d34dd320a8f6bdb58708207aa":[36,0,3,4,0,0,1,74,0,3],
 "_float_squared_difference_kernel_8h_source.html":[36,0,3,4,0,0,1,74,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX12 =
 "_fuse_p_relu_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51":[36,0,0,52,7,1,43,0],
 "_fuse_p_relu_pass_8cpp_source.html":[36,0,0,52,7,1,43],
 "_fuse_p_relu_pass_8h.html":[36,0,0,52,7,0,0,0,35],
-"_fuse_p_relu_pass_8h_source.html":[36,0,0,52,7,0,0,0,35]
+"_fuse_p_relu_pass_8h_source.html":[36,0,0,52,7,0,0,0,35],
+"_fuse_pre_activation_batch_norm_pass_8cpp.html":[36,0,0,52,7,1,41],
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[36,0,0,52,7,1,41,0]
 };

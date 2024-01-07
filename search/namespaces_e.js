@@ -45,10 +45,11 @@ var searchData=
   ['shape_5finference_42',['shape_inference',['../namespaceonert_1_1shape__inference.html',1,'onert']]],
   ['text_43',['text',['../namespaceonert_1_1dumper_1_1text.html',1,'onert::dumper']]],
   ['tflite_5floader_44',['tflite_loader',['../namespaceonert_1_1tflite__loader.html',1,'onert']]],
-  ['train_45',['train',['../namespaceonert_1_1backend_1_1basic_1_1train.html',1,'onert::backend::basic::train'],['../namespaceonert_1_1backend_1_1builtin_1_1train.html',1,'onert::backend::builtin::train'],['../namespaceonert_1_1backend_1_1train.html',1,'onert::backend::train'],['../namespaceonert_1_1compiler_1_1train.html',1,'onert::compiler::train'],['../namespaceonert_1_1exec_1_1train.html',1,'onert::exec::train'],['../namespaceonert_1_1ir_1_1train.html',1,'onert::ir::train']]],
-  ['trix_46',['trix',['../namespaceonert_1_1backend_1_1trix.html',1,'onert::backend']]],
-  ['trix_5floader_47',['trix_loader',['../namespaceonert_1_1trix__loader.html',1,'onert']]],
-  ['util_48',['util',['../namespaceonert_1_1util.html',1,'onert']]],
-  ['verifier_49',['verifier',['../namespaceonert_1_1ir_1_1verifier.html',1,'onert::ir']]],
-  ['xnnpack_50',['xnnpack',['../namespaceonert_1_1backend_1_1xnnpack.html',1,'onert::backend']]]
+  ['train_45',['train',['../namespaceonert_1_1backend_1_1basic_1_1train.html',1,'onert::backend::basic::train'],['../namespaceonert_1_1backend_1_1builtin_1_1train.html',1,'onert::backend::builtin::train'],['../namespaceonert_1_1backend_1_1train.html',1,'onert::backend::train'],['../namespaceonert_1_1compiler_1_1train.html',1,'onert::compiler::train'],['../namespaceonert_1_1exec_1_1train.html',1,'onert::exec::train'],['../namespaceonert_1_1ir_1_1train.html',1,'onert::ir::train'],['../namespaceonert_1_1train.html',1,'onert::train']]],
+  ['traininfo_5floader_46',['traininfo_loader',['../namespaceonert_1_1train_1_1traininfo__loader.html',1,'onert::train']]],
+  ['trix_47',['trix',['../namespaceonert_1_1backend_1_1trix.html',1,'onert::backend']]],
+  ['trix_5floader_48',['trix_loader',['../namespaceonert_1_1trix__loader.html',1,'onert']]],
+  ['util_49',['util',['../namespaceonert_1_1util.html',1,'onert']]],
+  ['verifier_50',['verifier',['../namespaceonert_1_1ir_1_1verifier.html',1,'onert::ir']]],
+  ['xnnpack_51',['xnnpack',['../namespaceonert_1_1backend_1_1xnnpack.html',1,'onert::backend']]]
 ];

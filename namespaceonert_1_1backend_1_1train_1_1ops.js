@@ -7,6 +7,7 @@ var namespaceonert_1_1backend_1_1train_1_1ops =
     [ "LossCategoricalCrossentropyLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer" ],
     [ "LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer" ],
     [ "LossMeanSquaredErrorLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer" ],
+    [ "MeanLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer" ],
     [ "PoolLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer" ],
     [ "ReshapeLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer" ],
     [ "SoftMaxLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer" ],
