@@ -1211,8 +1211,6 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     {
       case onert::ir::train::LossReductionType::Undefined:
         return NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED;
-      case onert::ir::train::LossReductionType::Auto:
-        return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
       case onert::ir::train::LossReductionType::SumOverBatchSize:
         return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
       case onert::ir::train::LossReductionType::Sum:
@@ -1285,9 +1283,7 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
   };
 
   auto convertLossReductionType = [](const int &type) {
-    if (type == NNFW_TRAIN_LOSS_REDUCTION_AUTO)
-      return onert::ir::train::LossReductionType::Auto;
-    else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
+    if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE)
       return onert::ir::train::LossReductionType::SumOverBatchSize;
     else if (type == NNFW_TRAIN_LOSS_REDUCTION_SUM)
       return onert::ir::train::LossReductionType::Sum;

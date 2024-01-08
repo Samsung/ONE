@@ -137,8 +137,6 @@ int main(const int argc, char **argv)
     auto convertLossReductionType = [](int type) {
       switch (type)
       {
-        case 0:
-          return NNFW_TRAIN_LOSS_REDUCTION_AUTO;
         case 1:
           return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
         case 2:

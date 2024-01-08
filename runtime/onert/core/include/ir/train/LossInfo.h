@@ -29,7 +29,6 @@ namespace train
 enum class LossReductionType
 {
   Undefined,        //< Undefined
-  Auto,             //< Auto
   SumOverBatchSize, //< SumOverBatchSize loss reduction type
   Sum,              //< Sum loss reduction type
 };
