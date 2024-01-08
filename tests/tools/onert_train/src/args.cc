@@ -214,44 +214,44 @@ void Args::Initialize(void)
          "NN Model Raw Input data file\n"
          "The datafile must have data for each input number.\n"
          "If there are 3 inputs, the data of input0 must exist as much as data_length, "
-         "and the data for input1 and input2 must be held sequentially as data_length.\n"
+         "and the data for input1 and input2 must be held sequentially as data_length."
     )
     ("load_expected:raw", po::value<std::string>()->notifier(process_load_raw_expectedfile),
          "NN Model Raw Expected data file\n"
-         "(Same data policy with load_input:raw)\n"
+         "(Same data policy with load_input:raw)"
     )
-    ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling")
+    ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling (default: false)")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
     ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 0.001)")
     ("loss", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _loss_type = v; }),
         "Loss type\n"
         "0: MEAN_SQUARED_ERROR (default)\n"
-        "1: CATEGORICAL_CROSSENTROPY\n")
+        "1: CATEGORICAL_CROSSENTROPY")
     ("loss_reduction_type", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
         "Loss Reduction type\n"
         "0: AUTO (default)\n"
         "1: SUM_OVER_BATCH_SIZE\n"
-        "2: SUM\n")
+        "2: SUM")
     ("optimizer", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _optimizer_type = v; }),
       "Optimizer type\n"
       "0: SGD (default)\n"
-      "1: Adam\n")
+      "1: Adam")
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
-      "Metricy type\n"
-      "  Simply calculates the metric value using the variables (default: none)\n"
-      "0: CATEGORICAL_ACCURACY\n")
+      "Metric type\n"
+      "Simply calculates the metric value using the variables (default: none)\n"
+      "0: CATEGORICAL_ACCURACY")
     ("validation_split", po::value<float>()->default_value(0.0f)->notifier(process_validation_split),
-         "Float between 0 and 1. Fraction of the training data to be used as validation data.")
+         "Float between 0 and 1(0 < float < 1). Fraction of the training data to be used as validation data.")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
          "1: prints result and message btw run\n"
-         "2: prints all of messages to print\n")
+         "2: prints all of messages to print")
     ("output_sizes", po::value<std::string>()->notifier(process_output_sizes),
         "The output buffer size in JSON 1D array\n"
         "If not given, the model's output sizes are used\n"
-        "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
+        "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.")
     ;
   // clang-format on
 
@@ -267,8 +267,7 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("help"))
   {
-    std::cout << "onert_train\n\n";
-    std::cout << "Usage: " << argv[0] << "[model path] [<options>]\n\n";
+    std::cout << "Usage: " << argv[0] << " [model path] [<options>]\n";
     std::cout << _options;
     std::cout << "\n";
 
