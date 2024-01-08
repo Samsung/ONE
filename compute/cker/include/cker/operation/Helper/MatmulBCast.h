@@ -62,13 +62,13 @@ public:
     if (!_batch_bcast->IsValid())
       return;
 
-    auto x_reshaped = _batch_bcast->x_reshape();
-    auto y_reshaped = _batch_bcast->y_reshape();
+    const auto &x_reshaped = _batch_bcast->x_reshape();
+    const auto &y_reshaped = _batch_bcast->y_reshape();
     auto output_shape = _batch_bcast->output_shape();
 
     _x_batch_size = std::accumulate(x_reshaped.cbegin(), x_reshaped.cend(), INT32_C(1),
                                     std::multiplies<int32_t>());
-    _y_batch_size = std::accumulate(x_reshaped.cbegin(), x_reshaped.cend(), INT32_C(1),
+    _y_batch_size = std::accumulate(y_reshaped.cbegin(), y_reshaped.cend(), INT32_C(1),
                                     std::multiplies<int32_t>());
     _output_shape.ReplaceWith(output_shape.size(), output_shape.data());
     _output_batch_size = _output_shape.FlatSize();
