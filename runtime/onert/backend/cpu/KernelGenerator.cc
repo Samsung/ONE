@@ -309,7 +309,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
   const auto stride = node.param().stride;
   const auto activation = node.param().activation;
-  const auto param_padding = node.param().padding;
+  const auto &param_padding = node.param().padding;
   const auto dilation = node.param().dilation;
 
   const bool is_cacheable_weights = ker_tensor->is_constant();
@@ -635,7 +635,7 @@ void KernelGenerator::visit(const ir::operation::Einsum &node)
   for (const auto &ifm_idx : node.getInputs())
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
-  const auto equation = node.param().equation;
+  const auto &equation = node.param().equation;
 
   auto fn = std::make_unique<ops::EinsumLayer>();
 

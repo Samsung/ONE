@@ -811,7 +811,7 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
   }
 
   // re-sizing output shape
-  const auto new_shape = shape_inference::inferPadShape(
+  const auto &new_shape = shape_inference::inferPadShape(
     input.shape(), reinterpret_cast<const int32_t *>(pad.data()->base()),
     pad.shape().num_elements());
   output.info().shape(new_shape);

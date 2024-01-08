@@ -110,7 +110,7 @@ void KernelGenerator::get_operation(FunctionMap &Functions)
 absl::Status KernelGenerator::readConstTensor(const ir::OperandIndex &index,
                                               tflite::gpu::TensorOrScalar *param)
 {
-  const auto shape = _ctx.at(index).shape();
+  const auto &shape = _ctx.at(index).shape();
   if (shape.rank() == 0 && shape.num_elements() == 1)
   {
     tflite::gpu::Tensor<tflite::gpu::Scalar, tflite::gpu::DataType::FLOAT32> tensor;
@@ -514,7 +514,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
     {
       std::unique_ptr<tflite::gpu::GPUOperation> gpu_op_1;
       tflite::gpu::OperationDef op_def_1;
-      const auto shape = _ctx.at(ofm_index).shape();
+      const auto &shape = _ctx.at(ofm_index).shape();
       auto new_ind = _tensor_reg->addNewClTensor(shape);
 
       addClNode({ifm_index}, {new_ind}, std::move(gpu_op));
