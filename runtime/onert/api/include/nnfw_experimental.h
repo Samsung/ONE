@@ -186,9 +186,9 @@ typedef enum
   /** Undefined */
   NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED = 0,
   /** Scalar sum divided by number of elements in losses */
-  NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE = 2,
+  NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE = 1,
   /** Scalar sum of weighted losses */
-  NNFW_TRAIN_LOSS_REDUCTION_SUM = 3,
+  NNFW_TRAIN_LOSS_REDUCTION_SUM = 2,
 } NNFW_TRAIN_LOSS_REDUCTION;
 
 typedef enum
