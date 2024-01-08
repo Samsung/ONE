@@ -423,11 +423,11 @@ void DynamicShapeInferer::visit(const ir::operation::Fill &op)
   assert(dims_buf);
 
   const auto &dims_shape = shape->getShape();
-  auto output_shape = ((dims_type == ir::DataType::INT32)
-                         ? shape_inference::inferFillShape<int32_t>(
-                             dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
-                         : shape_inference::inferFillShape<int64_t>(
-                             dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+  const auto &output_shape = ((dims_type == ir::DataType::INT32)
+                                ? shape_inference::inferFillShape<int32_t>(
+                                    dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                                : shape_inference::inferFillShape<int64_t>(
+                                    dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
 
   output->applyShape(output_shape);
   assert(output->buffer() != nullptr);

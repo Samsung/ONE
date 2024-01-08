@@ -57,7 +57,7 @@ void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
   if (_tensor_info_map.find(ind) == _tensor_info_map.end()) // Do not proceed for user tensors
     return;
 
-  const auto tensor_info = _tensor_info_map.at(ind);
+  const auto &tensor_info = _tensor_info_map.at(ind);
 
   if (!nativeOwnTensorAt(ind)->is_dynamic())
   {

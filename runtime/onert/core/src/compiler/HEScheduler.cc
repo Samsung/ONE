@@ -409,7 +409,7 @@ int64_t HEScheduler::DFSChildrenMaxRank(const ir::OperationIndex &index)
 int64_t HEScheduler::backendAvailableTime(const backend::Backend *backend,
                                           const int64_t &starting_time, const int64_t &time_amount)
 {
-  const auto backend_times = _backends_avail_time.at(backend);
+  const auto &backend_times = _backends_avail_time.at(backend);
   // finishing and starting times of an op, that will come after current op
   auto next_op_fst = backend_times.upper_bound(starting_time);
   // finishing time of an op, that will come before current op

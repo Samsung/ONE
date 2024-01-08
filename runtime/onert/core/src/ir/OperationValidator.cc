@@ -214,7 +214,7 @@ void OperationValidator::visit(const operation::DepthToSpace &node)
 
 void OperationValidator::visit(const operation::DetectionPostProcess &node)
 {
-  auto param = node.param();
+  const auto &param = node.param();
 
   // FIXME: number of classes should be 1 for now.
   OP_REQUIRES(param.num_classes == 1);

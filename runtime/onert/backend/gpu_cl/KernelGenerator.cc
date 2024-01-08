@@ -166,7 +166,7 @@ absl::Status KernelGenerator::readConstTensor(
   absl::variant<tflite::gpu::Tensor<tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32>,
                 tflite::gpu::Tensor<tflite::gpu::HWC, tflite::gpu::DataType::FLOAT32>> *alpha)
 {
-  const auto shape = _ctx.at(index).shape();
+  const auto &shape = _ctx.at(index).shape();
   if (CheckIfLinearConvertible(&shape))
   {
     tflite::gpu::Tensor<tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32> tensor;
@@ -304,7 +304,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   auto kernel{node.getInputs().at(ir::operation::Conv2D::KERNEL)};
   auto bias{node.getInputs().at(ir::operation::Conv2D::BIAS)};
 
-  const auto param = node.param();
+  const auto &param = node.param();
 
   tflite::gpu::OperationDef op_def;
   op_def.precision = tflite::gpu::CalculationsPrecision::F32;
@@ -375,7 +375,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     {
       std::unique_ptr<tflite::gpu::GPUOperation> gpu_op_1;
       tflite::gpu::OperationDef op_def_1;
-      const auto shape = _ctx.at(output).shape();
+      const auto &shape = _ctx.at(output).shape();
       auto new_ind = _tensor_reg->addNewClTensor(shape);
 
       addClNode({input}, {new_ind}, std::move(gpu_op));
@@ -418,7 +418,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
 
   const auto stride = node.param().stride;
   const auto dilation = node.param().dilation;
-  const auto padding = node.param().padding;
+  const auto &padding = node.param().padding;
 
   const auto multiplier = node.param().multiplier;
 

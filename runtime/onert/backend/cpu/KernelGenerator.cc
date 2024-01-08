@@ -1272,7 +1272,7 @@ void KernelGenerator::visit(const ir::operation::FusedBatchNorm &node)
 
   const auto epsilon = node.param().epsilon;
   const auto is_training = node.param().is_training;
-  const auto data_format = node.param().data_format;
+  const auto &data_format = node.param().data_format;
 
   auto fn = std::make_unique<ops::FusedBatchNormLayer>();
 
