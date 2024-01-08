@@ -228,10 +228,10 @@ void Args::Initialize(void)
         "Loss type\n"
         "0: MEAN_SQUARED_ERROR (default)\n"
         "1: CATEGORICAL_CROSSENTROPY\n")
-    ("loss_reduction_type", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
+    ("loss_reduction_type", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
         "Loss Reduction type\n"
-        "1: SUM_OVER_BATCH_SIZE(default)\n"
-        "2: SUM\n")
+        "0: SUM_OVER_BATCH_SIZE(default)\n"
+        "1: SUM\n")
     ("optimizer", po::value<int>()->default_value(0)->notifier([&] (const auto &v) { _optimizer_type = v; }),
       "Optimizer type\n"
       "0: SGD (default)\n"
