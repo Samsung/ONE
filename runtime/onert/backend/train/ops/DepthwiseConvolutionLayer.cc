@@ -18,7 +18,6 @@
 
 #include "OperationUtils.h"
 
-#include <cker/train/operation/DepthwiseConv.h>
 #include <cker/train/operation/ReLU.h>
 #include <cker/operation/Reduce.h>
 
@@ -33,7 +32,8 @@ namespace ops
 
 DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
   : cpu::ops::DepthwiseConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
-    _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr}
+    _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr},
+    _use_padded_filter{false}, _dconv_kernel{new nnfw::cker::train::DepthwiseConv()}
 {
   // DO NOTHING
 }
@@ -57,12 +57,42 @@ void DepthwiseConvolutionLayer::configure(
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
 
+  int64_t kPacketSize;
+  const auto data_type = _back_prop_output->data_type();
+  assert(data_type == _input->data_type());
+  switch (data_type)
+  {
+    case OperandType::FLOAT32:
+    {
+      kPacketSize = _dconv_kernel->kPacketSize<float>();
+      break;
+    }
+    default:
+      throw std::runtime_error("train DepthwiseConvolutionLayer: unsupported data type");
+  }
+
   if (activation != ir::Activation::NONE)
   {
     _act_back_prop_output =
       std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
     _act_back_prop_output->setBuffer(
       std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
+  }
+
+  const int out_depth = getShape(_back_prop_output).Dims(3);
+  _use_padded_filter = (out_depth % kPacketSize) == 0 ? false : true;
+  if (_use_padded_filter)
+  {
+    const int filter_rows = getShape(_kernel).Dims(1);
+    const int filter_cols = getShape(_kernel).Dims(2);
+    const int filter_spatial_size = filter_rows * filter_cols;
+    const int padded_filter_inner_dim_size =
+      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+
+    auto kernel_info = ir::OperandInfo(_kernel->get_info());
+    kernel_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
+    _padded_filter = std::make_unique<Tensor>(kernel_info, _kernel->layout());
+    _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
   }
 }
 
@@ -113,12 +143,13 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.depth_multiplier = _multiplier;
 
   // Calculate gradient for input
-  nnfw::cker::train::DepthwiseConvInputGrad(
-    dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
-    getBuffer<float>(_kernel), getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
+  _dconv_kernel->backpropInput(dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act),
+                               getShape(_kernel), getBuffer<float>(_kernel),
+                               getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
+                               getBuffer<float>(_back_prop_input), _use_padded_filter);
 
   // Calculate gradient for weights
-  nnfw::cker::train::DepthwiseConvFilterGrad(
+  _dconv_kernel->backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
 

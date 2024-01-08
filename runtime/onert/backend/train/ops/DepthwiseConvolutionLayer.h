@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 
+#include <cker/train/operation/DepthwiseConv.h>
 #include <ops/DepthwiseConvolutionLayer.h>
 
 #include "../Tensor.h"
@@ -66,6 +67,10 @@ private:
   // std::unique_ptr<Tensor> _transposed_weights;
   // std::unique_ptr<BackPropTensor> _conv_back_prop_output;
   // std::unique_ptr<GradientTensor> _transposed_grad_weights;
+  std::unique_ptr<Tensor> _padded_filter;
+  bool _use_padded_filter;
+
+  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };
 
 } // namespace ops

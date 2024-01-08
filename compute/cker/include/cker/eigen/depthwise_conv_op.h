@@ -367,30 +367,29 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop,
-                  const T *depthwise_filter, T *in_backprop)
+                  const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter)
   {
-    static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
+    // static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
-    // Pad 'depthwise_filter' to vector register width (if needed).
-    const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
-    Tensor padded_filter;
-    // Allocate space for padded filter.
-    const int filter_spatial_size = filter_rows * filter_cols;
-    const int padded_filter_inner_dim_size =
-      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-    Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
-    std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
-    padded_filter.shape.ReplaceWith(padded_filter_shape);
-    padded_filter.buffer = padded_filter_vec.data();
+    // // Pad 'depthwise_filter' to vector register width (if needed).
+    // const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
+    // Tensor padded_filter;
+    // // Allocate space for padded filter.
+    // const int filter_spatial_size = filter_rows * filter_cols;
+    // const int padded_filter_inner_dim_size =
+    //   ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+    // Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
+    // std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
+    // padded_filter.shape.ReplaceWith(padded_filter_shape);
+    // padded_filter.buffer = padded_filter_vec.data();
     if (pad_filter)
     {
       // Write out padded filter.
-      functor::DepthwiseFilterPadOp<T>()(batch, in_rows, in_cols, in_depth, filter_rows,
-                                         filter_cols, depth_multiplier, stride, pad_rows, pad_cols,
-                                         out_rows, out_cols, out_depth, depthwise_filter,
-                                         static_cast<T *>(padded_filter.buffer));
+      functor::DepthwiseFilterPadOp<T>()(
+        batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+        pad_rows, pad_cols, out_rows, out_cols, out_depth, depthwise_filter, padded_filter_data);
     }
-    const T *filter_data = pad_filter ? static_cast<T *>(padded_filter.buffer) : depthwise_filter;
+    const T *filter_data = pad_filter ? padded_filter_data : depthwise_filter;
 
     // Computes one shard of depthwise conv2d backprop input.
     auto shard = [&](int64_t start, int64_t limit) {
