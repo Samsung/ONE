@@ -174,8 +174,11 @@ int main(const int argc, char **argv)
       return "accuracy";
     };
 
-    // prepare training info
+    // get training information
     nnfw_train_info tri;
+    NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
+
+    // overwrite training information using the arguments
     tri.batch_size = args.getBatchSize();
     tri.learning_rate = args.getLearningRate();
     tri.loss_info.loss = convertLossType(args.getLossType());
@@ -186,6 +189,7 @@ int main(const int argc, char **argv)
     std::cout << tri;
     std::cout << "========================" << std::endl;
 
+    // set training information
     NNPR_ENSURE_STATUS(nnfw_train_set_traininfo(session, &tri));
 
     // prepare execution
