@@ -157,16 +157,16 @@ namespace benchmark
 
 Result::Result(const Phases &phases)
 {
-  const auto option = phases.option();
+  const auto &option = phases.option();
   {
     for (int i = PhaseEnum::MODEL_LOAD; i <= PhaseEnum::PREPARE; ++i)
     {
-      auto phase = phases.at(gPhaseStrings[i]);
+      const auto &phase = phases.at(gPhaseStrings[i]);
       time[i][FigureType::MEAN] = averageTimeMs(phase);
     }
 
     int i = PhaseEnum::EXECUTE;
-    auto exec_phase = phases.at(gPhaseStrings[i]);
+    const auto &exec_phase = phases.at(gPhaseStrings[i]);
     time[i][FigureType::MEAN] = averageTimeMs(exec_phase);
     time[i][FigureType::MAX] = maxTimeMs(exec_phase);
     time[i][FigureType::MIN] = minTimeMs(exec_phase);
@@ -177,7 +177,7 @@ Result::Result(const Phases &phases)
     print_memory = true;
     for (int i = PhaseEnum::MODEL_LOAD; i < PhaseEnum::EXECUTE; ++i)
     {
-      auto phase = phases.at(gPhaseStrings[i]);
+      const auto &phase = phases.at(gPhaseStrings[i]);
       for (int j = MemoryType::RSS; j <= MemoryType::PSS; ++j)
       {
         memory[i][j] = averageMemoryKb(phase, j);
