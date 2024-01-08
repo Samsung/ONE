@@ -79,6 +79,18 @@ void BinaryArithmeticGrad(const Shape &lhs_shape, const T *lhs_data, const Shape
     break;
 
     case ArithmeticType::kDiv:
+    {
+      auto const in_map = MapAsVector(incoming_data, incoming_shape);
+      auto const lhs_map = MapAsVector(lhs_data, lhs_shape);
+      auto const rhs_map = MapAsVector(rhs_data, rhs_shape);
+      auto lhs_grad_map = MapAsVector(lhs_grad_data, lhs_grad_shape);
+      auto rhs_grad_map = MapAsVector(rhs_grad_data, rhs_grad_shape);
+
+      lhs_grad_map = in_map.array() / rhs_map.array();
+      rhs_grad_map = in_map.array() * -lhs_map.array() / rhs_map.array().square();
+    }
+    break;
+
     default:
       throw std::runtime_error{"Unsupported Binary Arithmetic Operation"};
   }
