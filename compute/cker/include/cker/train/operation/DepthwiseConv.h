@@ -139,10 +139,15 @@ public:
     const int pad_height = params.padding_values.height;
     const int pad_width = params.padding_values.width;
 
-    depthwise_conv_op::DepthwiseConvBackpropFilterReference<T>(
-      batch, input_height, input_width, input_depth, incoming_height, incoming_width, output_depth,
-      stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width, incoming_data,
+    depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
+      batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,
+      stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,
       input_data, filter_grad_data);
+
+    // depthwise_conv_op::DepthwiseConvBackpropFilterReference<T>(
+    //   batch, input_height, input_width, input_depth, incoming_height, incoming_width,
+    //   output_depth, stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width,
+    //   incoming_data, input_data, filter_grad_data);
   }
 };
 
