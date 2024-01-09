@@ -91,6 +91,8 @@ void DepthwiseConvolutionLayer::configure(
     ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
   auto kernel_info = ir::OperandInfo(_kernel->get_info());
   kernel_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
+  auto back_prop_input_info = ir::OperandInfo(_back_prop_input->get_info());
+  back_prop_input_info.shape({padded_filter_inner_dim_size});
 
   _use_padded_filter = (out_depth % kPacketSize) == 0 ? false : true;
   // prepare padded_filter buffer for cker
@@ -110,6 +112,11 @@ void DepthwiseConvolutionLayer::configure(
     out_bprop->setBuffer(std::make_shared<basic::Allocator>(out_bprop->total_size()));
     _out_bprop_buffer.emplace_back(out_bprop->buffer());
     _out_bprop.emplace_back(std::move(out_bprop));
+
+    auto in_bprop = std::make_unique<Tensor>(back_prop_input_info, _back_prop_input->layout());
+    in_bprop->setBuffer(std::make_shared<basic::Allocator>(in_bprop->total_size()));
+    _in_bprop_buffer.emplace_back(in_bprop->buffer());
+    _in_bprop.emplace_back(std::move(in_bprop));
   }
 
   auto end = std::chrono::high_resolution_clock::now();
@@ -168,7 +175,7 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   _dconv_kernel->backpropInput(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
     getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
-    getBuffer<float>(_back_prop_input), _use_padded_filter, _out_bprop_buffer);
+    getBuffer<float>(_back_prop_input), _use_padded_filter, _out_bprop_buffer, _in_bprop_buffer);
 
   // Calculate gradient for weights
   _dconv_kernel->backpropFilter(

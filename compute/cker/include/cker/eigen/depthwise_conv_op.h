@@ -369,7 +369,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop,
                   const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter,
-                  std::vector<uint8_t *> &out_bprop)
+                  std::vector<uint8_t *> &out_bprop, std::vector<uint8_t *> &in_bprop)
   {
     // static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
@@ -412,13 +412,14 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
       // T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
       T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[start]);
 
-      // Allocate buffer for intermediate results.
-      Tensor in_bprop_buffer;
-      Shape in_bprop_shape({padded_filter_inner_dim_size});
-      std::vector<T> in_bprop_vec(in_bprop_shape.FlatSize());
-      in_bprop_buffer.shape.ReplaceWith(in_bprop_shape);
-      in_bprop_buffer.buffer = in_bprop_vec.data();
-      T *in_bprop_buf = static_cast<T *>(in_bprop_buffer.buffer);
+      // // Allocate buffer for intermediate results.
+      // Tensor in_bprop_buffer;
+      // Shape in_bprop_shape({padded_filter_inner_dim_size});
+      // std::vector<T> in_bprop_vec(in_bprop_shape.FlatSize());
+      // in_bprop_buffer.shape.ReplaceWith(in_bprop_shape);
+      // in_bprop_buffer.buffer = in_bprop_vec.data();
+      // T *in_bprop_buf = static_cast<T *>(in_bprop_buffer.buffer);
+      T *in_bprop_buf = reinterpret_cast<T *>(in_bprop[start]);
 
       for (int64_t b = start; b < limit; ++b)
       {
