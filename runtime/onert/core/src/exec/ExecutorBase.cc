@@ -66,8 +66,8 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     assert(input_tensor != nullptr);
     if (input != nullptr)
     {
-      const auto orig_input_shape = input_tensor->orig_info().shape();
-      const auto changed_input_shape =
+      const auto &orig_input_shape = input_tensor->orig_info().shape();
+      const auto &changed_input_shape =
         convertShape(input->getShape(), input->layout(), input_tensor->orig_layout());
       if (input_tensor->get_info().shape() != changed_input_shape)
       {

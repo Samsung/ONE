@@ -64,7 +64,7 @@ bool ANeuralNetworksExecution::compareDataType(const ANeuralNetworksOperandType 
 {
   try
   {
-    const auto operand_type = _execution->primary_subgraph().operands().at(index).typeInfo();
+    const auto &operand_type = _execution->primary_subgraph().operands().at(index).typeInfo();
     const auto typeInfo = NNAPIConvert::getTypeInfo(type);
 
     if (operand_type != typeInfo)
@@ -111,7 +111,7 @@ bool ANeuralNetworksExecution::IsOptionalInput(const onert::ir::OperandIndex ind
 
 bool ANeuralNetworksExecution::hasUnspecifiedDims(const onert::ir::OperandIndex index) noexcept
 {
-  const auto operand_shape = _execution->primary_subgraph().operands().at(index).shape();
+  const auto &operand_shape = _execution->primary_subgraph().operands().at(index).shape();
 
   return operand_shape.hasUnspecifiedDims();
 }
@@ -138,7 +138,7 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
     onert::ir::IOIndex input_index{index};
     const auto operand_index = getInputOperandIndex(index);
 
-    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
+    const auto &type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
                          ? NNAPIConvert::getShape(type)
                          : _execution->primary_subgraph().operands().at(operand_index).shape();
@@ -171,7 +171,6 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
     onert::ir::IOIndex input_index{index};
     const auto operand_index = getInputOperandIndex(index);
 
-    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
                          ? NNAPIConvert::getShape(type)
                          : _execution->primary_subgraph().operands().at(operand_index).shape();
@@ -206,7 +205,7 @@ bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOp
     onert::ir::IOIndex output_index{index};
     const auto operand_index = getOutputOperandIndex(index);
 
-    const auto type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
+    const auto &type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
     const auto shape = (type != nullptr)
                          ? NNAPIConvert::getShape(type)
                          : _execution->primary_subgraph().operands().at(operand_index).shape();

@@ -60,7 +60,7 @@ void ICLTensor::writeConvertInit(tflite::gpu::TensorObjectConverterBuilder *conv
   TensorObjectDef permute_def = input_def;
   permute_def.object_def.object_type = ToObjectType(handle()->GetStorageType());
 
-  auto dims = permute_def.dimensions;
+  const auto &dims = permute_def.dimensions;
   const BHWC shape(dims.b, dims.h, dims.w, dims.c);
   const TensorDescriptor desc{
     permute_def.object_def.data_type,
@@ -105,7 +105,7 @@ void ICLTensor::readConvertInit(tflite::gpu::TensorObjectConverterBuilder *conve
   permute_def.object_def.data_type = DataType::FLOAT32;
   permute_def.object_def.user_provided = true;
 
-  auto dims = permute_def.dimensions;
+  const auto &dims = permute_def.dimensions;
   const BHWC shape(dims.b, dims.h, dims.w, dims.c);
   const TensorDescriptor desc{
     permute_def.object_def.data_type,

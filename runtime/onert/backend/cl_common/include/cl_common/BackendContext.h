@@ -121,7 +121,7 @@ protected:
       if (!tensor_builder->isRegistered(ind))
       {
         // These tensors do not exist in any operation (No use and def)
-        const auto info = obj.info();
+        const auto &info = obj.info();
         const auto layout = _data.operand_layouts.at(ind);
         // TODO Change tensor info to have permuted shape
         registerTensorInfo(ind, info, layout);

@@ -102,7 +102,7 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
 
   const auto stride = node.param().stride;
   const auto activation = node.param().activation;
-  const auto param_padding = node.param().padding;
+  const auto &param_padding = node.param().padding;
   const auto dilation = node.param().dilation;
   auto fn = std::make_unique<ops::ConvolutionLayer>(_external_context);
 
@@ -142,7 +142,7 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto ker_width = ker_shape.dim(2);
   const auto dilation_width = node.param().dilation.width_factor;
   const auto dilation_height = node.param().dilation.height_factor;
-  const auto param_padding = node.param().padding;
+  const auto &param_padding = node.param().padding;
   const auto padding = ir::calculatePadding(param_padding, ifm_shape, ofm_shape, stride, ker_width,
                                             ker_height, dilation_width, dilation_height);
   const auto multiplier = node.param().multiplier;

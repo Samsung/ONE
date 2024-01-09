@@ -39,7 +39,7 @@ template <typename T>
 static void Init(const onert::ir::Operand &model_obj, onert::backend::ITensor &obj, const bool copy,
                  const onert::ir::Layout frontend_layout = onert::ir::Layout::UNKNOWN)
 {
-  const auto shape = model_obj.shape();
+  const auto &shape = model_obj.shape();
   assert(model_obj.data());
   obj.access([&](::onert::backend::ITensor &tensor) {
     switch (shape.rank())

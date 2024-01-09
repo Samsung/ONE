@@ -62,7 +62,7 @@ void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::Op
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &ind)
 {
   assert(_tensor_info_map.find(ind) != _tensor_info_map.end());
-  const auto tensor_info = _tensor_info_map.at(ind);
+  const auto &tensor_info = _tensor_info_map.at(ind);
 
   if (!_tensor_reg->getNativeTensor(ind)->is_dynamic())
   {

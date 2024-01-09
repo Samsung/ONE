@@ -106,7 +106,7 @@ Array<const CornerBox> decodeBoxes(const Array<float> &raw_boxes, const Array<fl
 
     for (size_t i = 0; i < num_boxes; ++i)
     {
-      auto anchor = anchors.at(i);
+      const auto &anchor = anchors.at(i);
       auto &box = decoded_boxes_a.at(i);
       float yc = in_boxes.at(i).y / scales.y * anchor.h + anchor.y;
       float xc = in_boxes.at(i).x / scales.x * anchor.w + anchor.x;
@@ -121,7 +121,7 @@ Array<const CornerBox> decodeBoxes(const Array<float> &raw_boxes, const Array<fl
       assert(box.y2 > box.y1);
     }
 
-    auto decoded_boxes_a_shape = decoded_boxes_a.shape();
+    const auto &decoded_boxes_a_shape = decoded_boxes_a.shape();
 
     return array_cast<const CornerBox>(std::move(decoded_boxes_a), decoded_boxes_a_shape);
   }
