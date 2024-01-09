@@ -27,7 +27,8 @@ namespace train
 namespace traininfo_loader
 {
 
-static constexpr char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+// TODO change this line to use inline variable after C++17
+extern const char *const TRAININFO_METADATA_NAME;
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 

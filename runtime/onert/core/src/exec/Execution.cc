@@ -48,7 +48,7 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
                          ir::Layout layout)
 {
-  const auto info = _executors->inputInfo(index);
+  const auto &info = _executors->inputInfo(index);
 
   // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
 
@@ -88,7 +88,7 @@ void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, con
 // TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length, ir::Layout layout)
 {
-  const auto info = _executors->outputInfo(index);
+  const auto &info = _executors->outputInfo(index);
 
   if (length < info.total_size())
   {
@@ -102,7 +102,7 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length,
 void Execution::setOutput(const ir::IOIndex &index, const ir::TypeInfo &type,
                           const ir::Shape &shape, void *buffer, size_t length, ir::Layout layout)
 {
-  auto info = ir::OperandInfo::createStaticInfo(shape, type);
+  const auto &info = ir::OperandInfo::createStaticInfo(shape, type);
 
   if (length < info.total_size())
   {

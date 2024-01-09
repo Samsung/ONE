@@ -168,7 +168,7 @@ void Graph::verify(void) const
 void Graph::initializeUseDef()
 {
   operations().iterate([&](const OperationIndex &index, const IOperation &node) -> void {
-    auto outputs = node.getOutputs();
+    const auto &outputs = node.getOutputs();
     for (auto &&output : outputs | ir::Remove::UNDEFINED)
     {
       operands().at(output).setDef(index);

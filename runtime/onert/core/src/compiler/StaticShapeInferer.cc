@@ -541,11 +541,11 @@ void StaticShapeInferer::visit(const ir::operation::Fill &op)
   assert(dims_buf);
 
   const auto &dims_shape = shape.info().shape();
-  auto new_shape = ((dims_type == ir::DataType::INT32)
-                      ? shape_inference::inferFillShape<int32_t>(
-                          dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
-                      : shape_inference::inferFillShape<int64_t>(
-                          dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
+  const auto &new_shape = ((dims_type == ir::DataType::INT32)
+                             ? shape_inference::inferFillShape<int32_t>(
+                                 dims_shape, reinterpret_cast<const int32_t *>(dims_buf))
+                             : shape_inference::inferFillShape<int64_t>(
+                                 dims_shape, reinterpret_cast<const int64_t *>(dims_buf)));
 
   output.info().shape(new_shape);
 }
@@ -811,7 +811,7 @@ void StaticShapeInferer::visit(const ir::operation::Pad &op)
   }
 
   // re-sizing output shape
-  const auto new_shape = shape_inference::inferPadShape(
+  const auto &new_shape = shape_inference::inferPadShape(
     input.shape(), reinterpret_cast<const int32_t *>(pad.data()->base()),
     pad.shape().num_elements());
   output.info().shape(new_shape);
@@ -1136,8 +1136,8 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
 
   const auto output_index = op.getOutputs().at(0);
   const auto input_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::INPUT)};
-  const auto block_shape_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
-  const auto padding_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
+  const auto &block_shape_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
+  const auto &padding_idx{op.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
   ir::Operand &output = operands.at(output_index);
   const auto &input = operands.at(input_idx);
@@ -1151,9 +1151,9 @@ void StaticShapeInferer::visit(const ir::operation::SpaceToBatchND &op)
     return;
   }
 
-  auto input_shape = input.info().shape();
-  auto block_shape_shape = block_shape.info().shape();
-  auto padding_shape = padding.info().shape();
+  const auto &input_shape = input.info().shape();
+  const auto &block_shape_shape = block_shape.info().shape();
+  const auto &padding_shape = padding.info().shape();
 
   auto block_shape_data = reinterpret_cast<const int32_t *>(block_shape.data()->base());
   auto padding_data = reinterpret_cast<const int32_t *>(padding.data()->base());
@@ -1373,7 +1373,7 @@ void StaticShapeInferer::visit(const ir::operation::While &op)
   auto body_input_observer = _subg_input_observers.at(op.param().body_subg_index).get();
   auto cond_input_observer = _subg_input_observers.at(op.param().cond_subg_index).get();
   // re-sizing input shapes of body subgraph
-  const auto inputs = op.getInputs();
+  const auto &inputs = op.getInputs();
   std::vector<ir::OperandInfo> inputs_info;
   const auto &graph = _lowered_subg->graph();
   for (size_t i = 0; i < inputs.size(); ++i)
@@ -1449,9 +1449,7 @@ void StaticShapeInferer::visit(const ir::operation::Bulk &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = operands.at(output_idx);
 
-  auto cur_input_shape = input.info().shape();
-  auto origin_input_shape = op.param().origin_input_shapes[0];
-  auto cur_output_shape = output.info().shape();
+  const auto &cur_input_shape = input.info().shape();
   auto origin_output_shape = op.param().origin_output_shapes[0];
 
   // TODO: more check for valid batch request
