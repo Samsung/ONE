@@ -267,7 +267,8 @@ void Args::Parse(const int argc, char **argv)
 
   if (vm.count("help"))
   {
-    std::cout << "Usage: " << argv[0] << " [model path] [<options>]\n";
+    std::cout << "onert_train\n\n";
+    std::cout << "Usage: " << argv[0] << " [model path] [<options>]\n\n";
     std::cout << _options;
     std::cout << "\n";
 
