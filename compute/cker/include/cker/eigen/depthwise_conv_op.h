@@ -21,6 +21,7 @@
 // From tensorflow/core/kernels/depthwise_conv_grad_op.cc
 #define EIGEN_USE_THREADS
 
+#include <thread>
 #include "unsupported/Eigen/CXX11/Tensor"
 #include "cker/operation/Helper/Tensor.h"
 
@@ -367,7 +368,8 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop,
-                  const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter)
+                  const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter,
+                  std::vector<uint8_t *> &out_bprop)
   {
     // static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
@@ -397,17 +399,18 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
 
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
-      const int filter_spatial_size = filter_rows * filter_cols;
+      // const int filter_spatial_size = filter_rows * filter_cols;
       const int padded_filter_inner_dim_size =
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-      // Allocate buffer to copy regions from 'out_backprop'.
-      Tensor out_bprop_buffer;
-      Shape out_bprop_shape({filter_spatial_size, padded_filter_inner_dim_size});
-      std::vector<T> out_bprop_vec(out_bprop_shape.FlatSize());
-      out_bprop_buffer.shape.ReplaceWith(out_bprop_shape);
-      out_bprop_buffer.buffer = out_bprop_vec.data();
-      T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
+      // // Allocate buffer to copy regions from 'out_backprop'.
+      // Tensor out_bprop_buffer;
+      // Shape out_bprop_shape({filter_spatial_size, padded_filter_inner_dim_size});
+      // std::vector<T> out_bprop_vec(out_bprop_shape.FlatSize());
+      // out_bprop_buffer.shape.ReplaceWith(out_bprop_shape);
+      // out_bprop_buffer.buffer = out_bprop_vec.data();
+      // T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
+      T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[start]);
 
       // Allocate buffer for intermediate results.
       Tensor in_bprop_buffer;

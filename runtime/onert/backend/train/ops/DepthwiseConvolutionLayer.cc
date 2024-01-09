@@ -80,19 +80,32 @@ void DepthwiseConvolutionLayer::configure(
   }
 
   const int out_depth = getShape(_back_prop_output).Dims(3);
+  const int filter_rows = getShape(_kernel).Dims(1);
+  const int filter_cols = getShape(_kernel).Dims(2);
+  const int filter_spatial_size = filter_rows * filter_cols;
+  const int padded_filter_inner_dim_size =
+    ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+  auto kernel_info = ir::OperandInfo(_kernel->get_info());
+  kernel_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
+
   _use_padded_filter = (out_depth % kPacketSize) == 0 ? false : true;
+  // prepare padded_filter buffer for cker
   if (_use_padded_filter)
   {
-    const int filter_rows = getShape(_kernel).Dims(1);
-    const int filter_cols = getShape(_kernel).Dims(2);
-    const int filter_spatial_size = filter_rows * filter_cols;
-    const int padded_filter_inner_dim_size =
-      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-
-    auto kernel_info = ir::OperandInfo(_kernel->get_info());
-    kernel_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
     _padded_filter = std::make_unique<Tensor>(kernel_info, _kernel->layout());
     _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
+  }
+
+  // prepare out_bprop and in_bprop buffer for cker
+  // const int thread_count = _dconv_kernel->getThreadCount();
+  // for (auto i = 0; i < thread_count; ++i)
+  const int batch = getShape(_back_prop_output).Dims(0);
+  for (auto i = 0; i < batch; ++i)
+  {
+    auto out_bprop = std::make_unique<Tensor>(kernel_info, _kernel->layout());
+    out_bprop->setBuffer(std::make_shared<basic::Allocator>(out_bprop->total_size()));
+    _out_bprop_buffer.emplace_back(out_bprop->buffer());
+    _out_bprop.emplace_back(std::move(out_bprop));
   }
 }
 
@@ -143,10 +156,10 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.depth_multiplier = _multiplier;
 
   // Calculate gradient for input
-  _dconv_kernel->backpropInput(dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act),
-                               getShape(_kernel), getBuffer<float>(_kernel),
-                               getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
-                               getBuffer<float>(_back_prop_input), _use_padded_filter);
+  _dconv_kernel->backpropInput(
+    dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
+    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
+    getBuffer<float>(_back_prop_input), _use_padded_filter, _out_bprop_buffer);
 
   // Calculate gradient for weights
   _dconv_kernel->backpropFilter(

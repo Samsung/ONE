@@ -69,6 +69,9 @@ private:
   // std::unique_ptr<GradientTensor> _transposed_grad_weights;
   std::unique_ptr<Tensor> _padded_filter;
   bool _use_padded_filter;
+  std::vector<std::unique_ptr<Tensor>> _out_bprop;
+  std::vector<uint8_t *> _out_bprop_buffer;
+  std::vector<std::unique_ptr<Tensor>> _in_bprop;
 
   std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };
