@@ -20,8 +20,6 @@
 
 #include <cker/train/operation/ReLU.h>
 #include <cker/operation/Reduce.h>
-#include <chrono>
-#include <util/logging.h>
 
 namespace onert
 {
@@ -58,8 +56,6 @@ void DepthwiseConvolutionLayer::configure(
   _back_prop_output = back_prop_output;
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
-
-  auto beg = std::chrono::high_resolution_clock::now();
 
   int64_t kPacketSize;
   const auto data_type = _back_prop_output->data_type();
@@ -116,11 +112,6 @@ void DepthwiseConvolutionLayer::configure(
     _in_bprop_buffer.emplace_back(in_bprop->buffer());
     _in_bprop.emplace_back(std::move(in_bprop));
   }
-
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - beg);
-  VERBOSE(DepthwiseConvolutionLayer)
-    << "DepthwiseConvolutionLayer configure time = " << duration.count() << std::endl;
 }
 
 void DepthwiseConvolutionLayer::forward(bool) { cpu::ops::DepthwiseConvolutionLayer::run(); }
