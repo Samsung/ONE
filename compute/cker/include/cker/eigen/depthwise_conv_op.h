@@ -372,7 +372,6 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
                   std::vector<uint8_t *> &out_bprop, std::vector<uint8_t *> &in_bprop)
   {
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-    // static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
     // Pad 'depthwise_filter' to vector register width (if needed).
     if (pad_filter)
@@ -396,6 +395,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
       const int cur_id = d.currentThreadId();
+
       // Use out_bprop buffer to copy regions from 'out_backprop'.
       T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[cur_id]);
 
