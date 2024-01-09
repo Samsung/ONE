@@ -47,15 +47,7 @@ public:
 
   // setter
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
-  void setLossInfo(const LossInfo &loss_info)
-  {
-    _loss_info = loss_info;
-
-    // Always use SumOverBatchSize type
-    // TODO Support different type
-    if (_loss_info.reduction_type == LossReductionType::Auto)
-      _loss_info.reduction_type = LossReductionType::SumOverBatchSize;
-  }
+  void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   uint32_t &trainingStep() { return _training_step; }
 

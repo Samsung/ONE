@@ -96,9 +96,6 @@ std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss
     case NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED:
       os << "undefined";
       break;
-    case NNFW_TRAIN_LOSS_REDUCTION_AUTO:
-      os << "use automatic reduction type";
-      break;
     case NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE:
       os << "sum over batch size";
       break;
