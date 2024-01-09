@@ -103,10 +103,8 @@ void DepthwiseConvolutionLayer::configure(
   }
 
   // prepare out_bprop and in_bprop buffer for cker
-  // const int thread_count = _dconv_kernel->getThreadCount();
-  // for (auto i = 0; i < thread_count; ++i)
-  const int batch = getShape(_back_prop_output).Dims(0);
-  for (auto i = 0; i < batch; ++i)
+  const int thread_count = _dconv_kernel->getThreadCount();
+  for (auto i = 0; i < thread_count; ++i)
   {
     auto out_bprop = std::make_unique<Tensor>(kernel_info, _kernel->layout());
     out_bprop->setBuffer(std::make_shared<basic::Allocator>(out_bprop->total_size()));

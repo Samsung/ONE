@@ -371,19 +371,10 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
                   const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter,
                   std::vector<uint8_t *> &out_bprop, std::vector<uint8_t *> &in_bprop)
   {
+    const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
     // static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
-    // // Pad 'depthwise_filter' to vector register width (if needed).
-    // const bool pad_filter = (out_depth % kPacketSize) == 0 ? false : true;
-    // Tensor padded_filter;
-    // // Allocate space for padded filter.
-    // const int filter_spatial_size = filter_rows * filter_cols;
-    // const int padded_filter_inner_dim_size =
-    //   ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-    // Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
-    // std::vector<T> padded_filter_vec(padded_filter_shape.FlatSize());
-    // padded_filter.shape.ReplaceWith(padded_filter_shape);
-    // padded_filter.buffer = padded_filter_vec.data();
+    // Pad 'depthwise_filter' to vector register width (if needed).
     if (pad_filter)
     {
       // Write out padded filter.
@@ -394,32 +385,22 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
     const T *filter_data = pad_filter ? padded_filter_data : depthwise_filter;
 
     // Computes one shard of depthwise conv2d backprop input.
-    auto shard = [&](int64_t start, int64_t limit) {
+    auto shard = [d, in_rows, in_cols, in_depth, out_rows, out_cols, out_depth, batch, filter_rows,
+                  filter_cols, depth_multiplier, stride, pad_rows, pad_cols, out_backprop,
+                  filter_data, in_backprop, out_bprop, in_bprop](int64_t start, int64_t limit) {
       static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
-      // const int filter_spatial_size = filter_rows * filter_cols;
       const int padded_filter_inner_dim_size =
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-      // // Allocate buffer to copy regions from 'out_backprop'.
-      // Tensor out_bprop_buffer;
-      // Shape out_bprop_shape({filter_spatial_size, padded_filter_inner_dim_size});
-      // std::vector<T> out_bprop_vec(out_bprop_shape.FlatSize());
-      // out_bprop_buffer.shape.ReplaceWith(out_bprop_shape);
-      // out_bprop_buffer.buffer = out_bprop_vec.data();
-      // T *out_bprop_buf = static_cast<T *>(out_bprop_buffer.buffer);
-      T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[start]);
+      const int cur_id = d.currentThreadId();
+      // Use out_bprop buffer to copy regions from 'out_backprop'.
+      T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[cur_id]);
 
-      // // Allocate buffer for intermediate results.
-      // Tensor in_bprop_buffer;
-      // Shape in_bprop_shape({padded_filter_inner_dim_size});
-      // std::vector<T> in_bprop_vec(in_bprop_shape.FlatSize());
-      // in_bprop_buffer.shape.ReplaceWith(in_bprop_shape);
-      // in_bprop_buffer.buffer = in_bprop_vec.data();
-      // T *in_bprop_buf = static_cast<T *>(in_bprop_buffer.buffer);
-      T *in_bprop_buf = reinterpret_cast<T *>(in_bprop[start]);
+      // Use in_bprop buffer for intermediate results.
+      T *in_bprop_buf = reinterpret_cast<T *>(in_bprop[cur_id]);
 
       for (int64_t b = start; b < limit; ++b)
       {
@@ -443,14 +424,8 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
       }
     };
 
-    // const int shard_cost = in_rows * in_cols * out_depth;
-    // auto worker_threads = *(ctx->device()->tensorflow_cpu_worker_threads());
-    // Shard(worker_threads.num_threads, worker_threads.workers, batch,
-    //       shard_cost, shard);
-
-    const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-    int input_bytes = in_rows * in_cols * in_depth;
-    int output_bytes = out_rows * out_cols * out_depth;
+    int input_bytes = out_rows * out_cols * out_depth * sizeof(T);
+    int output_bytes = in_rows * in_cols * in_depth * sizeof(T);
     int compute_cycles = in_rows * in_cols * out_depth * batch;
     const Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);
     d.parallelFor(batch, cost, shard);
