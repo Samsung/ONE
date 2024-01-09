@@ -87,6 +87,7 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
       const auto op_layout = op_li->layout();
       const backend::Backend *backend = op_li->backend();
       assert(backend);
+      assert(operation.getInputs().contains(index));
 
       auto new_index = factor_to_index.at({backend, op_layout});
       if (index != new_index)
