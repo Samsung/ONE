@@ -206,7 +206,7 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
 std::unique_ptr<onert::ir::train::TrainingInfo>
 loadTrainingInfo(const std::shared_ptr<onert::ir::Model> &model)
 {
-  const auto tinfo_name = onert::train::traininfo_loader::TRAININFO_METADATA_NAME;
+  const auto &tinfo_name = onert::train::traininfo_loader::TRAININFO_METADATA_NAME;
   if (model->exists_metadata(tinfo_name))
   {
     const auto buffer = model->extract_metadata(tinfo_name);
