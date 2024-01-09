@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <luci_interpreter/Interpreter.h>
+#include "OMInterpreter.h"
 
 #include <stdexcept>
 #include <cstdlib>
@@ -94,7 +94,9 @@ int entry(int argc, char **argv)
   }
 
   // Create interpreter.
-  luci_interpreter::Interpreter interpreter(model_data.data(), true);
+  onert_micro::OMInterpreter interpreter;
+  onert_micro::OMConfig config;
+  interpreter.importModel(model_data.data(), config);
 
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
@@ -102,28 +104,31 @@ int entry(int argc, char **argv)
   int num_inference = 1;
   for (int j = 0; j < num_inference; ++j)
   {
+    interpreter.reset();
+    interpreter.allocateInputs();
     for (int32_t i = 0; i < num_inputs; i++)
     {
-      auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
+      auto input_data = reinterpret_cast<char *>(interpreter.getInputDataAt(i));
       readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
-                       interpreter.getInputDataSizeByIndex(i));
+                       interpreter.getInputSizeAt(i) * sizeof(float));
     }
 
     // Do inference.
-    interpreter.interpret();
+    interpreter.run();
   }
 
   // Get output.
   int num_outputs = 1;
   for (int i = 0; i < num_outputs; i++)
   {
-    auto data = interpreter.readOutputTensor(i);
+    auto data = interpreter.getOutputDataAt(i);
 
     // Output data is written in ${output_file}
     // (ex: Add.circle.output0)
     writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
-                    interpreter.getOutputDataSizeByIndex(i));
+                    interpreter.getOutputSizeAt(i) * sizeof(float));
   }
+  interpreter.reset();
   return EXIT_SUCCESS;
 }
 
