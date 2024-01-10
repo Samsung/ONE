@@ -121,6 +121,20 @@ function check_cpp_files() {
     exit 1
   fi
 
+  # TODO Remove after migration
+  CLANG_FORMAT_MIGRATE=clang-format-16
+  if ! command_exists $CLANG_FORMAT_MIGRATE ; then
+    echo "[ERROR] $CLANG_FORMAT_MIGRATE is unavailable"
+    echo
+    echo "        Cannot find $CLANG_FORMAT_MIGRATE"
+    echo "        Please refer https://github.com/Samsung/ONE/issues/12311#issuecomment-1857503157 to install $CLANG_FORMAT_MIGRATE"
+    echo "        If you use docker for format checking, please pull or build latest version"
+    exit 1
+  fi
+  for DIR_CLANG_FORMAT_MIGRATE in $(git ls-files -co --exclude-standard '*/.clang-format'); do
+    DIRECTORIES_USE_CLANG_FORMAT_MIGRATE+=($(dirname "${DIR_CLANG_FORMAT_MIGRATE}"))
+  done
+
   # Check c++ files: replace ' ' with newline, check with grep
   FILES_TO_CHECK_CPP=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$'`
   # Manually ignore style checking
@@ -133,8 +147,25 @@ function check_cpp_files() {
     FILES_TO_CHECK_CPP=(${FILES_TO_CHECK_CPP[*]/$s*/})
   done
 
+  # Divide for new version
+  # TODO Remove after migration
+  for s in ${DIRECTORIES_USE_CLANG_FORMAT_MIGRATE[@]}; do
+    FILES_TO_CHECK_CPP_NEW=(${FILES_TO_CHECK_CPP[*]/$s*/})
+  done
+  FILES_TO_CHECK_CPP_MIGRATE=(`echo ${FILES_TO_CHECK_CPP[@]} ${FILES_TO_CHECK_CPP_NEW[@]} | tr ' ' '\n' | sort | uniq -u`)
+  FILES_TO_CHECK_CPP=("${FILES_TO_CHECK_CPP_NEW[@]}")
+
   if [[ ${#FILES_TO_CHECK_CPP} -ne 0 ]]; then
     ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
+    EXIT_CODE=$?
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+      INVALID_EXIT=${EXIT_CODE}
+    fi
+  fi
+
+  # TODO Remove after migration
+  if [[ ${#FILES_TO_CHECK_CPP_MIGRATE} -ne 0 ]]; then
+    ${CLANG_FORMAT_MIGRATE} -i ${FILES_TO_CHECK_CPP_MIGRATE[@]}
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}
