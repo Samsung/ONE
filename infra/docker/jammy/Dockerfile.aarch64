@@ -39,6 +39,12 @@ RUN apt-get update && \
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install yapf==0.22.0 numpy flatbuffers
 
+# Install clang-format
+RUN apt-get install -qqy gnupg2
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
+RUN apt-get update && apt-get install -qqy clang-format-16
+
 # Install google test (source)
 RUN apt-get update && apt-get -qqy install libgtest-dev
 
