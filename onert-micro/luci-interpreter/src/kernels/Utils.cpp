@@ -86,6 +86,22 @@ void matrixScalarMultiplyAccumulate(const int8_t *matrix, int32_t scalar, int32_
   }
 }
 
+bool areShapesEqual(const luci_interpreter::RuntimeShape &input_shape1,
+                    const luci_interpreter::RuntimeShape &input_shape2)
+{
+  if (input_shape1.dimensionsCount() == input_shape2.dimensionsCount())
+  {
+    int N = input_shape1.dimensionsCount();
+    for (int i = 0; i < N; ++i)
+    {
+      if (input_shape1.dims(i) != input_shape2.dims(i))
+        return false;
+    }
+    return true;
+  }
+  return false;
+}
+
 template void calculateActivationRange(Activation activation, float *activation_min,
                                        float *activation_max);
 template void calculateActivationRange(Activation activation, int32_t *activation_min,
