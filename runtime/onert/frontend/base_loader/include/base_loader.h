@@ -123,7 +123,7 @@ protected:
   }
 
 private:
-  std::unique_ptr<ir::Data> loadMetadata(const uint32_t buffer_idx);
+  std::unique_ptr<ir::ExternalData> loadMetadata(const uint32_t buffer_idx);
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   template <typename OpIR, typename... Args>
@@ -246,7 +246,7 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_
 }
 
 template <typename LoaderDomain>
-std::unique_ptr<ir::Data>
+std::unique_ptr<ir::ExternalData>
 BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const uint32_t buffer_idx)
 {
   assert(_domain_model != nullptr);
@@ -1754,7 +1754,7 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
       if (metadata->name() == nullptr)
         continue; // metadata should have name
 
-      std::unique_ptr<const ir::Data> data = loadMetadata(metadata->buffer());
+      auto data = loadMetadata(metadata->buffer());
       model->add_metadata(metadata->name()->str(), std::move(data));
     }
   }
