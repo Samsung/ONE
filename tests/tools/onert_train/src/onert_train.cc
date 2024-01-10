@@ -124,9 +124,9 @@ int main(const int argc, char **argv)
     auto convertLossType = [](int type) {
       switch (type)
       {
-        case 0:
-          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
         case 1:
+          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+        case 2:
           return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
         default:
           std::cerr << "E: not supported loss type" << std::endl;
@@ -150,9 +150,9 @@ int main(const int argc, char **argv)
     auto convertOptType = [](int type) {
       switch (type)
       {
-        case 0:
-          return NNFW_TRAIN_OPTIMIZER_SGD;
         case 1:
+          return NNFW_TRAIN_OPTIMIZER_SGD;
+        case 2:
           return NNFW_TRAIN_OPTIMIZER_ADAM;
         default:
           std::cerr << "E: not supported optimizer type" << std::endl;
