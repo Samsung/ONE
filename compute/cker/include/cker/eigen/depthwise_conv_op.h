@@ -594,7 +594,9 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
       const int padded_filter_inner_dim_size =
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-      const int cur_id = d.currentThreadId();
+      int cur_id = d.currentThreadId();
+      if (cur_id < 0)
+        cur_id = 0;
 
       // Use out_bprop buffer to copy regions from 'out_backprop'.
       T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[cur_id]);

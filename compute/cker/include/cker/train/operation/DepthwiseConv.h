@@ -41,46 +41,13 @@ public:
   template <typename T> int64_t kPacketSize() const
   {
     typedef typename Eigen::internal::packet_traits<T>::type Packet;
-    return sizeof(Packet);
+    return sizeof(Packet) / sizeof(T);
   }
 
   int getThreadCount() const
   {
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
     return d.numThreads();
-  }
-
-  template <typename T>
-  void backpropInput(const DepthwiseConvParams &params, const Shape &incoming_shape,
-                     const T *incoming_data, const Shape &filter_shape, const T *filter_data,
-                     const Shape &grad_shape, T *grad_data)
-  {
-    if (params.stride_height != params.stride_width)
-      throw std::runtime_error("Not support different length strides");
-
-    const int batch = MatchingDim(incoming_shape, 0, grad_shape, 0);
-    const int input_depth = grad_shape.Dims(3);
-    const int output_depth = incoming_shape.Dims(3);
-    const int incoming_height = incoming_shape.Dims(1);
-    const int incoming_width = incoming_shape.Dims(2);
-    const int grad_height = grad_shape.Dims(1);
-    const int grad_width = grad_shape.Dims(2);
-    const int stride = params.stride_height;
-    const int depth_multiplier = params.depth_multiplier;
-    const int filter_height = filter_shape.Dims(1);
-    const int filter_width = filter_shape.Dims(2);
-    const int pad_height = params.padding_values.height;
-    const int pad_width = params.padding_values.width;
-
-    depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
-      batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
-      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
-      filter_data, grad_data);
-
-    // depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
-    //   batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
-    //   stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width,
-    //   incoming_data, filter_data, grad_data);
   }
 
   template <typename T>

@@ -57,6 +57,14 @@ void DepthwiseConvolutionLayer::configure(
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
 
+  if (activation != ir::Activation::NONE)
+  {
+    _act_back_prop_output =
+      std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output->setBuffer(
+      std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
+  }
+
   int64_t kPacketSize;
   const auto data_type = _back_prop_output->data_type();
   assert(data_type == _input->data_type());
@@ -69,14 +77,6 @@ void DepthwiseConvolutionLayer::configure(
     }
     default:
       throw std::runtime_error("train DepthwiseConvolutionLayer: unsupported data type");
-  }
-
-  if (activation != ir::Activation::NONE)
-  {
-    _act_back_prop_output =
-      std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
-    _act_back_prop_output->setBuffer(
-      std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
   }
 
   const int out_depth = getShape(_back_prop_output).Dims(3);
@@ -100,6 +100,7 @@ void DepthwiseConvolutionLayer::configure(
 
   // prepare out_bprop and in_bprop buffer for cker
   const int thread_count = _dconv_kernel->getThreadCount();
+  // TODO Use minimum value of thread_count and batch
   for (auto i = 0; i < thread_count; ++i)
   {
     auto out_bprop = std::make_unique<Tensor>(kernel_info, _kernel->layout());
