@@ -1,0 +1,48 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "out_shape"
+  type: INT32
+  shape { dim: 4 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 1 dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operation {
+  type: "Shape"
+  shape_options {
+    out_type: INT32
+  }
+  input: "ifm"
+  output: "out_shape"
+}
+operation {
+  type: "TransposeConv"
+  transpose_conv_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+  }
+  input: "out_shape"
+  input: "ker"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
