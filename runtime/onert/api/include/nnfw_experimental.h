@@ -390,16 +390,6 @@ NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index
 // NNFW_STATUS nnfw_set_training_mode(nnfw_session *session, bool train);
 
 /**
- * @brief Set training information after prepare training
- * @note  This function may be used after {@link nnfw_train_prepare}
- *
- * @param[in] session The session prepared for training
- * @param[in] info    Training information
- * @return  @c NNFW_STATUS_NO_ERROR if successful
- */
-// NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info info);
-
-/**
  *  On-Device Quantization APIs
  *
  * On-Device Quantization APIs are designed to be used in the following order
