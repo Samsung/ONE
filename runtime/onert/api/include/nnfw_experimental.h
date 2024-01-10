@@ -440,7 +440,7 @@ NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE
 /**
  * @brief Set exported quantized model path
  *
- * This function should be called before {@link nnfw_quantize} is invoked.
+ * This function should be called after {@link nnfw_quantize} is invoked.
  *
  * TODO: If this function is not called, quantized model will not be exported
  *
