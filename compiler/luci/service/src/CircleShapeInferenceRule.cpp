@@ -1607,7 +1607,9 @@ loco::NodeShape infer_transpose(const luci::CircleTranspose *node)
 loco::NodeShape infer_transpose_conv(const luci::CircleTransposeConv *node)
 {
   // TransposeConv's output shape is written in its 'inputSizes' argument
-  auto input_sizes_const = loco::must_cast<luci::CircleConst *>(node->inputSizes());
+  auto input_sizes_const = dynamic_cast<luci::CircleConst *>(node->inputSizes());
+  if (not input_sizes_const)
+    return use_own(node);
   // TODO support non-const type
   LUCI_ASSERT(input_sizes_const->dtype() == loco::DataType::S32, "Only support S32 dtype")
   LUCI_ASSERT(input_sizes_const->rank() == 1 && input_sizes_const->dim(0).value() == 4,
