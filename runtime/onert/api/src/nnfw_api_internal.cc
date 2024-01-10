@@ -15,35 +15,36 @@
  */
 
 #include "nnfw_api_internal.h"
-#include "CustomKernelRegistry.h"
+
 #include "compiler/CompilerFactory.h"
-#include "util/ConfigSource.h"
-#include "util/Exceptions.h"
-#include "util/logging.h"
-#include "exec/Execution.h"
+#include "CustomKernelRegistry.h"
 #include "circle_loader.h"
-#include "tflite_loader.h"
-#include "trix_loader.h"
-#include "traininfo_loader.h"
-#include "json/json.h"
+#include "circle_schema_generated.h"
+#include "exec/Execution.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
 #include "ir/train/TrainingInfo.h"
-#include "util/TracingCtx.h"
+#include "json/json.h"
 #include "odc/QuantizeManager.h"
-#include "circle_schema_generated.h"
+#include "tflite_loader.h"
+#include "traininfo_loader.h"
+#include "trix_loader.h"
+#include "util/ConfigSource.h"
+#include "util/Exceptions.h"
+#include "util/logging.h"
+#include "util/TracingCtx.h"
 
+#include <dirent.h>
+#include <fcntl.h> // O_RDONLY
 #include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
-#include <dirent.h>
 #include <misc/string_helpers.h>
-
-#include <fcntl.h>    // O_RDONLY
+#include <string>
 #include <sys/mman.h> // mmap, munmap
 #include <sys/stat.h> // fstat
 #include <unistd.h>   // close
+#include <vector>
+
 /*
  * API does not accept string argument longer than max length below
  */
