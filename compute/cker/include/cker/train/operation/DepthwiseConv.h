@@ -87,7 +87,8 @@ public:
   template <typename T>
   void backpropFilter(const DepthwiseConvParams &params, const Shape &incoming_shape,
                       const T *incoming_data, const Shape &input_shape, const T *input_data,
-                      const Shape &filter_grad_shape, T *filter_grad_data)
+                      const Shape &filter_grad_shape, T *filter_grad_data, T *padded_filter_data,
+                      std::vector<uint8_t *> &in_bprop)
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
@@ -109,7 +110,7 @@ public:
     depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
       batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,
       stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,
-      input_data, filter_grad_data);
+      input_data, filter_grad_data, padded_filter_data, in_bprop);
 
     // depthwise_conv_op::DepthwiseConvBackpropFilterReference<T>(
     //   batch, input_height, input_width, input_depth, incoming_height, incoming_width,

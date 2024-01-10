@@ -79,34 +79,37 @@ void DepthwiseConvolutionLayer::configure(
       throw std::runtime_error("train DepthwiseConvolutionLayer: unsupported data type");
   }
 
-  const int out_depth = getShape(_back_prop_output).Dims(3);
-  const int filter_rows = getShape(_kernel).Dims(1);
-  const int filter_cols = getShape(_kernel).Dims(2);
+  const auto incoming_shape = getShape(_back_prop_output);
+  const auto filter_shape = getShape(_kernel);
+  const int batch = incoming_shape.Dims(0);
+  const int out_depth = incoming_shape.Dims(3);
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
   const int filter_spatial_size = filter_rows * filter_cols;
   const int padded_filter_inner_dim_size =
     ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
-  auto kernel_info = ir::OperandInfo(_kernel->get_info());
-  kernel_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
-  auto back_prop_input_info = ir::OperandInfo(_back_prop_input->get_info());
-  back_prop_input_info.shape({padded_filter_inner_dim_size});
 
   _use_padded_filter = (out_depth % kPacketSize) == 0 ? false : true;
   // prepare padded_filter buffer for cker
-  if (_use_padded_filter)
   {
-    _padded_filter = std::make_unique<Tensor>(kernel_info, _kernel->layout());
+    auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+    padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
+    _padded_filter = std::make_unique<Tensor>(padded_filter_info, _kernel->layout());
     _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
   }
 
   // prepare out_bprop and in_bprop buffer for cker
-  const int thread_count = _dconv_kernel->getThreadCount();
-  // TODO Use minimum value of thread_count and batch
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  padded_filter_info.shape({filter_spatial_size, padded_filter_inner_dim_size});
+  auto back_prop_input_info = ir::OperandInfo(_back_prop_input->get_info());
+  back_prop_input_info.shape({padded_filter_inner_dim_size});
+  const int thread_count = _dconv_kernel->getThreadCount() + 1;
   for (auto i = 0; i < thread_count; ++i)
   {
-    auto out_bprop = std::make_unique<Tensor>(kernel_info, _kernel->layout());
+    auto out_bprop = std::make_unique<Tensor>(padded_filter_info, _kernel->layout());
     out_bprop->setBuffer(std::make_shared<basic::Allocator>(out_bprop->total_size()));
-    _out_bprop_buffer.emplace_back(out_bprop->buffer());
-    _out_bprop.emplace_back(std::move(out_bprop));
+    _padded_filter_buffers.emplace_back(out_bprop->buffer());
+    _padded_filters.emplace_back(std::move(out_bprop));
 
     auto in_bprop = std::make_unique<Tensor>(back_prop_input_info, _back_prop_input->layout());
     in_bprop->setBuffer(std::make_shared<basic::Allocator>(in_bprop->total_size()));
@@ -162,15 +165,17 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.depth_multiplier = _multiplier;
 
   // Calculate gradient for input
-  _dconv_kernel->backpropInput(
-    dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
-    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
-    getBuffer<float>(_back_prop_input), _use_padded_filter, _out_bprop_buffer, _in_bprop_buffer);
+  _dconv_kernel->backpropInput(dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act),
+                               getShape(_kernel), getBuffer<float>(_kernel),
+                               getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
+                               getBuffer<float>(_back_prop_input), _use_padded_filter,
+                               _padded_filter_buffers, _in_bprop_buffer);
 
   // Calculate gradient for weights
   _dconv_kernel->backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
-    getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights));
+    getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
+    getBuffer<float>(_padded_filter.get()), _padded_filter_buffers);
 
   // Calculate gradient for bias
   if (_bias)

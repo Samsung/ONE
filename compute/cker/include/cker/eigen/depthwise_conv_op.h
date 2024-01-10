@@ -797,7 +797,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop, const T *input,
-                  T *filter_backprop)
+                  T *filter_backprop, T *padded_filter_data, std::vector<uint8_t *> &in_bprop)
   {
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
 
@@ -806,14 +806,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
     const int filter_spatial_size = filter_rows * filter_cols;
     const int padded_out_depth_size = ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-    // Allocate output buffers for each image in 'batch' (padded to vector
-    // register boundaries).
-    Tensor output_buffer;
-    Shape output_buffer_shape({batch, filter_spatial_size, padded_out_depth_size});
-    std::vector<T> output_buffer_vec(output_buffer_shape.FlatSize());
-    output_buffer.shape.ReplaceWith(output_buffer_shape);
-    output_buffer.buffer = output_buffer_vec.data();
-    T *output_buffer_data = static_cast<T *>(output_buffer.buffer);
+    T *output_buffer_data = padded_filter_data;
 
     // Computes one shard of depthwise conv2d backprop filter.
     // auto shard = [&ctx, &args, &out_backprop, &input, &output_buffer_data](
@@ -822,13 +815,10 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
       const int filter_spatial_size = filter_rows * filter_cols;
       const int padded_out_depth_size = ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
 
-      // Allocate buffer for local input regions.
-      Tensor input_buffer;
-      Shape input_buffer_shape({filter_spatial_size, padded_out_depth_size});
-      std::vector<T> input_buffer_vec(input_buffer_shape.FlatSize());
-      input_buffer.shape.ReplaceWith(input_buffer_shape);
-      input_buffer.buffer = input_buffer_vec.data();
-      T *input_buffer_data = static_cast<T *>(input_buffer.buffer);
+      int cur_id = d.currentThreadId() + 1;
+      assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
+
+      T *input_buffer_data = reinterpret_cast<T *>(in_bprop[cur_id]);
 
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
@@ -858,10 +848,6 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
         }
       }
     };
-    // const int64_t shard_cost = out_rows * out_cols * out_depth;
-    // auto worker_threads = *(ctx->device()->tensorflow_cpu_worker_threads());
-    // Shard(worker_threads.num_threads, worker_threads.workers, batch,
-    //       shard_cost, shard);
 
     int input_bytes = in_rows * in_cols * in_depth * sizeof(T);
     int output_bytes = out_rows * out_cols * out_depth * sizeof(T);
