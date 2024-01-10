@@ -17,7 +17,7 @@
 #include "Args.h"
 
 #include <iostream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 namespace kbenchmark
 {
@@ -73,7 +73,7 @@ void Args::Initialize(const int argc, char **argv)
       exit(1);
     }
 
-    if (!boost::filesystem::exists(_config))
+    if (!std::filesystem::exists(_config))
     {
       std::cerr << _config << " file not found" << std::endl;
       exit(1);
@@ -84,7 +84,7 @@ void Args::Initialize(const int argc, char **argv)
   {
     for (auto &k : _kernel)
     {
-      if (!boost::filesystem::exists(k))
+      if (!std::filesystem::exists(k))
       {
         std::cerr << k << " file not found" << std::endl;
         exit(1);

@@ -18,10 +18,10 @@
 
 #include <iostream>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <opencv2/opencv.hpp>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 int main(const int argc, char **argv)
 {

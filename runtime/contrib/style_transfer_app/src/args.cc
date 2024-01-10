@@ -17,7 +17,7 @@
 #include "args.h"
 
 #include <iostream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 namespace StyleTransferApp
 {
@@ -80,7 +80,7 @@ void Args::Parse(const int argc, char **argv)
     {
       _package_filename = vm["nnpackage"].as<std::string>();
 
-      if (!boost::filesystem::exists(_package_filename))
+      if (!std::filesystem::exists(_package_filename))
       {
         std::cerr << "nnpackage not found: " << _package_filename << "\n";
       }
