@@ -18,7 +18,7 @@
 #ifndef __NNFW_CKER_EIGEN_EIGEN_SUPPORT_H__
 #define __NNFW_CKER_EIGEN_EIGEN_SUPPORT_H__
 
-//#if defined(CKER_OPTIMIZED_EIGEN)
+// #if defined(CKER_OPTIMIZED_EIGEN)
 
 #include <Eigen/Core>
 #include <thread>
@@ -117,6 +117,6 @@ inline const Eigen::ThreadPoolDevice *GetThreadPoolDevice()
 } // namespace cker
 } // namespace nnfw
 
-//#endif // defined(CKER_OPTIMIZED_EIGEN)
+// #endif // defined(CKER_OPTIMIZED_EIGEN)
 
 #endif // __NNFW_CKER_EIGEN_EIGEN_SUPPORT_H__

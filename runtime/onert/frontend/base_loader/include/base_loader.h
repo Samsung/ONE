@@ -127,7 +127,7 @@ private:
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
   template <typename OpIR, typename... Args>
-  const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&... args);
+  const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
   void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
@@ -653,7 +653,7 @@ void BaseLoader<LoaderDomain>::loadPool2DOptions(Param &param, const Pool2DOptio
 template <typename LoaderDomain>
 template <typename OpIR, typename... Args>
 const OpIR *BaseLoader<LoaderDomain>::loadOperationTo(const Operator *op, ir::Graph &subg,
-                                                      Args &&... args)
+                                                      Args &&...args)
 {
   static_assert(sizeof...(args) <= 1, "You can't have more than 1 arguments!");
   ir::OperandIndexSequence inputs;

@@ -2141,26 +2141,26 @@ __kernel void gemmlowp_offset_contribution_quantize_down(TENSOR3D_DECLARATION(mm
  * element in the output shifts vector
  */
 __kernel void
-  gemmlowp_offset_contribution_quantize_down_fixedpoint(TENSOR3D_DECLARATION(mm_result)
+gemmlowp_offset_contribution_quantize_down_fixedpoint(TENSOR3D_DECLARATION(mm_result)
 #if defined(A_OFFSET)
-                                                          ,
-                                                        IMAGE_DECLARATION(sum_col)
+                                                        ,
+                                                      IMAGE_DECLARATION(sum_col)
 #endif // defined(A_OFFSET)
 #if defined(B_OFFSET)
-                                                          ,
-                                                        IMAGE_DECLARATION(sum_row)
+                                                        ,
+                                                      IMAGE_DECLARATION(sum_row)
 #endif // defined(B_OFFSET)
-                                                          ,
+                                                        ,
 #if defined(ADD_BIAS)
-                                                        VECTOR_DECLARATION(biases),
+                                                      VECTOR_DECLARATION(biases),
 #endif // defined(ADD_BIAS)
-                                                        TENSOR3D_DECLARATION(dst)
+                                                      TENSOR3D_DECLARATION(dst)
 #if defined(PER_CHANNEL_QUANTIZATION)
-                                                          ,
-                                                        VECTOR_DECLARATION(result_multipliers),
-                                                        VECTOR_DECLARATION(result_shifts)
+                                                        ,
+                                                      VECTOR_DECLARATION(result_multipliers),
+                                                      VECTOR_DECLARATION(result_shifts)
 #endif // defined(PER_CHANNEL_QUANTIZATION)
-  )
+)
 {
   const int x = get_global_id(0) * 4;
   const int y = get_global_id(1);

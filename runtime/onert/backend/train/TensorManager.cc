@@ -60,8 +60,8 @@ namespace train
 TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
                              const std::string planner_id)
   : _nonconst_mgr{new MemoryManager(planner_id)}, _trainable_mgr{new MemoryManager(planner_id)},
-    _back_prop_mgr{new MemoryManager(planner_id)},
-    _gradient_mgr{new MemoryManager(planner_id)}, _tensors{reg}
+    _back_prop_mgr{new MemoryManager(planner_id)}, _gradient_mgr{new MemoryManager(planner_id)},
+    _tensors{reg}
 {
   // DO NOTHING
 }

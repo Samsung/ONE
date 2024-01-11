@@ -29,9 +29,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
                            backend::BackendContexts &&backend_contexts,
                            const compiler::TensorRegistries &tensor_regs,
                            const util::TracingCtx *tracing_ctx)
-  : _lowered_graph{std::move(lowered_graph)},
-    _backend_contexts{std::move(backend_contexts)}, _graph{_lowered_graph->graph()}, _mutex(),
-    _tracing_ctx(tracing_ctx)
+  : _lowered_graph{std::move(lowered_graph)}, _backend_contexts{std::move(backend_contexts)},
+    _graph{_lowered_graph->graph()}, _mutex(), _tracing_ctx(tracing_ctx)
 {
   auto build_tensor_list = [&](const auto &ind_seq, auto &tensors) {
     assert(tensors.empty());

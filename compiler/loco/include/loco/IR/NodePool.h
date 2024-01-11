@@ -34,7 +34,7 @@ public:
   ~NodePool();
 
 public:
-  template <typename Derived, typename... Args> Derived *create(Args &&... args)
+  template <typename Derived, typename... Args> Derived *create(Args &&...args)
   {
     std::unique_ptr<Derived> ptr{new Derived(std::forward<Args>(args)...)};
     ptr->graph(_graph);

@@ -202,8 +202,8 @@ public:
   }
   DimMetaData(DimensionType format, int32_t dense_size, const SparseIndexVector &array_segments,
               const SparseIndexVector &array_indices)
-    : _format{format}, _dense_size{dense_size}, _array_segments{array_segments}, _array_indices{
-                                                                                   array_indices}
+    : _format{format}, _dense_size{dense_size}, _array_segments{array_segments},
+      _array_indices{array_indices}
   {
     // DO NOTHING
   }

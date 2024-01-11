@@ -40,10 +40,7 @@ public:
   std::string build(const std::string &content);
 
 public:
-  template <typename... Args> std::string build(const Args &... args)
-  {
-    return build(fmt(args...));
-  }
+  template <typename... Args> std::string build(const Args &...args) { return build(fmt(args...)); }
 
 private:
   uint32_t _level;

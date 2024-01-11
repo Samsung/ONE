@@ -147,9 +147,9 @@ template <class Distribution> struct FillPhiloxRandomTask<Distribution, true>
 // Partial specialization for CPU to fill the entire region with randoms
 // It splits the work into several tasks and run them in parallel
 template <class Distribution>
-void FillPhiloxRandom<CPUDevice, Distribution>::
-operator()(random::PhiloxRandom gen, typename Distribution::ResultElementType *data, int64_t size,
-           Distribution dist)
+void FillPhiloxRandom<CPUDevice, Distribution>::operator()(
+  random::PhiloxRandom gen, typename Distribution::ResultElementType *data, int64_t size,
+  Distribution dist)
 {
   FillPhiloxRandomTask<Distribution, Distribution::kVariableSamplesPerOutput>::Run(gen, data, size,
                                                                                    dist);

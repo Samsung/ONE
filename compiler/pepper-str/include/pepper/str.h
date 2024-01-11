@@ -27,7 +27,7 @@ namespace pepper
 namespace details
 {
 
-template <typename... Arg> void str_impl(std::ostream &os, Arg &&... args);
+template <typename... Arg> void str_impl(std::ostream &os, Arg &&...args);
 
 template <> inline void str_impl(std::ostream &)
 {
@@ -41,7 +41,7 @@ template <typename Arg> inline void str_impl(std::ostream &os, Arg &&arg)
 }
 
 template <typename Arg, typename... Args>
-inline void str_impl(std::ostream &os, Arg &&arg, Args &&... args)
+inline void str_impl(std::ostream &os, Arg &&arg, Args &&...args)
 {
   str_impl(os, std::forward<Arg>(arg));
   str_impl(os, std::forward<Args>(args)...);
@@ -53,7 +53,7 @@ inline void str_impl(std::ostream &os, Arg &&arg, Args &&... args)
 namespace pepper
 {
 
-template <typename... Args> static inline std::string str(Args &&... args)
+template <typename... Args> static inline std::string str(Args &&...args)
 {
   std::stringstream ss;
   details::str_impl(ss, std::forward<Args>(args)...);

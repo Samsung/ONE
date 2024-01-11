@@ -45,7 +45,7 @@ void disableDimCorrection(IACLTensor *tensor)
 }
 
 template <typename Layer, typename... Args>
-std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&... args)
+std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&...args)
 {
   auto l = std::make_unique<Layer>();
 
@@ -56,7 +56,7 @@ std::unique_ptr<arm_compute::IFunction> generateLayer(Args &&... args)
 
 template <typename Layer, typename... Args>
 std::unique_ptr<arm_compute::IFunction>
-generateLayer(std::shared_ptr<arm_compute::IMemoryManager> memory_manager, Args &&... args)
+generateLayer(std::shared_ptr<arm_compute::IMemoryManager> memory_manager, Args &&...args)
 {
   auto l = std::make_unique<Layer>(memory_manager);
 
