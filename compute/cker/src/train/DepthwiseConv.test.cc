@@ -20,6 +20,19 @@
 #include <vector>
 #include <memory>
 
+#define MEASURE_TIME_START(name) \
+  do                             \
+  {                              \
+  auto beg_##name = std::chrono::steady_clock::now()
+
+#define MEASURE_TIME_END(name)                                                      \
+  auto end_##name = std::chrono::steady_clock::now();                               \
+  auto dur_##name =                                                                 \
+    std::chrono::duration_cast<std::chrono::microseconds>(end_##name - beg_##name); \
+  std::cerr << #name << " time = " << dur_##name.count() << std::endl;              \
+  }                                                                                 \
+  while (0)
+
 namespace
 {
 
@@ -73,13 +86,17 @@ public:
     std::vector<T> gradient(grad_shape.FlatSize(), static_cast<T>(0));
     std::vector<T> expected(grad_shape.FlatSize(), static_cast<T>(0));
 
+    MEASURE_TIME_START(InputGradExpected);
     calculateInputGradExpected(params, incoming_shape, incoming_data, filter_shape, filter_data,
                                grad_shape, expected.data());
+    MEASURE_TIME_END(InputGradExpected);
 
+    MEASURE_TIME_START(backpropInput);
     _dconv_kernel->backpropInput(params, incoming_shape, incoming_data, filter_shape, filter_data,
                                  _padded_filter.data(), grad_shape, gradient.data(),
                                  _use_padded_filter, _filter_buffers.data(),
                                  _filter_dim_buffers.data());
+    MEASURE_TIME_END(backpropInput);
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-4f);
@@ -106,12 +123,16 @@ public:
     std::vector<T> gradient(filter_grad_shape.FlatSize(), static_cast<T>(0));
     std::vector<T> expected(filter_grad_shape.FlatSize(), static_cast<T>(0));
 
+    MEASURE_TIME_START(FilterGradExpected);
     calculateFilterGradExpected(params, incoming_shape, incoming_data, input_shape, input_data,
                                 filter_grad_shape, expected.data());
+    MEASURE_TIME_END(FilterGradExpected);
 
+    MEASURE_TIME_START(backpropFilter);
     _dconv_kernel->backpropFilter(params, incoming_shape, incoming_data, input_shape, input_data,
                                   filter_grad_shape, gradient.data(), _padded_filter.data(),
                                   _filter_buffers.data());
+    MEASURE_TIME_END(backpropFilter);
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-3f);
@@ -205,116 +226,116 @@ private:
 TEST(CKer_Operation, DepthwiseConvGrad)
 {
   // No pad, No stride
-  // {
-  //   nnfw::cker::DepthwiseConvParams params;
-  //   params.padding_type = nnfw::cker::PaddingType::kNone;
-  //   params.padding_values.width = 0;
-  //   params.padding_values.height = 0;
-  //   params.stride_width = 1;
-  //   params.stride_height = 1;
-  //   params.dilation_width_factor = 1;
-  //   params.dilation_height_factor = 1;
-  //   params.depth_multiplier = 1;
+  {
+    nnfw::cker::DepthwiseConvParams params;
+    params.padding_type = nnfw::cker::PaddingType::kNone;
+    params.padding_values.width = 0;
+    params.padding_values.height = 0;
+    params.stride_width = 1;
+    params.stride_height = 1;
+    params.dilation_width_factor = 1;
+    params.dilation_height_factor = 1;
+    params.depth_multiplier = 1;
 
-  //   nnfw::cker::Shape incoming_shape{1, 2, 2, 3}; // n, h, w, c
-  //   std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4,  0.5, -0.6,
-  //                                  -0.7, 0.8, 0.9,  -1.0, 1.1, -1.2};
-  //   nnfw::cker::Shape filter_shape{1, 2, 2, 3}; // 1, h, w, c
-  //   std::vector<float> filter = {-1, 2, -3, 4, -5, 6, -7, 8, -9, 10, -11, 12};
-  //   nnfw::cker::Shape input_shape{1, 3, 3, 3}; // n, h, w, c
-  //   std::vector<float> input = {-1, 2,   -3,  4,  5,  -6,  -7, 8,   -9,  -10, 11,  -12, 13, -14,
-  //                               15, -16, -17, 18, 19, -20, 21, -22, -23, 24,  -25, -26, -27};
+    nnfw::cker::Shape incoming_shape{1, 2, 2, 3}; // n, h, w, c
+    std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4,  0.5, -0.6,
+                                   -0.7, 0.8, 0.9,  -1.0, 1.1, -1.2};
+    nnfw::cker::Shape filter_shape{1, 2, 2, 3}; // 1, h, w, c
+    std::vector<float> filter = {-1, 2, -3, 4, -5, 6, -7, 8, -9, 10, -11, 12};
+    nnfw::cker::Shape input_shape{1, 3, 3, 3}; // n, h, w, c
+    std::vector<float> input = {-1, 2,   -3,  4,  5,  -6,  -7, 8,   -9,  -10, 11,  -12, 13, -14,
+                                15, -16, -17, 18, 19, -20, 21, -22, -23, 24,  -25, -26, -27};
 
-  //   DepthwiseConvVerifier<float> verifier;
-  //   verifier.prepare(incoming_shape, filter_shape);
-  //   verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
-  //                                    filter.data(), input_shape);
-  //   verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
-  //                                     input.data(), filter_shape);
-  // }
+    DepthwiseConvVerifier<float> verifier;
+    verifier.prepare(incoming_shape, filter_shape);
+    verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
+                                     filter.data(), input_shape);
+    verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
+                                      input.data(), filter_shape);
+  }
 
-  // // 2 depth_multiplier, use_padded_filter false
-  // {
-  //   nnfw::cker::DepthwiseConvParams params;
-  //   params.padding_type = nnfw::cker::PaddingType::kNone;
-  //   params.padding_values.width = 0;
-  //   params.padding_values.height = 0;
-  //   params.stride_width = 1;
-  //   params.stride_height = 1;
-  //   params.dilation_width_factor = 1;
-  //   params.dilation_height_factor = 1;
-  //   params.depth_multiplier = 2;
+  // 2 depth_multiplier, use_padded_filter false
+  {
+    nnfw::cker::DepthwiseConvParams params;
+    params.padding_type = nnfw::cker::PaddingType::kNone;
+    params.padding_values.width = 0;
+    params.padding_values.height = 0;
+    params.stride_width = 1;
+    params.stride_height = 1;
+    params.dilation_width_factor = 1;
+    params.dilation_height_factor = 1;
+    params.depth_multiplier = 2;
 
-  //   nnfw::cker::Shape incoming_shape{1, 2, 2, 4}; // n, h, w, c
-  //   std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8,
-  //                                  -0.1, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8};
-  //   nnfw::cker::Shape filter_shape{1, 2, 2, 4}; // 1, h, w, c * depth_multiplier
-  //   std::vector<float> filter = {-1, 2, -3, 4, 5, -6, 7, -8, 9, -10, -11, 12, -13, 14, -15, 16};
-  //   nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
-  //   std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
-  //                               -10, 11, -12, 13, -14, 15, -16, -17, 18};
+    nnfw::cker::Shape incoming_shape{1, 2, 2, 4}; // n, h, w, c
+    std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8,
+                                   -0.1, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8};
+    nnfw::cker::Shape filter_shape{1, 2, 2, 4}; // 1, h, w, c * depth_multiplier
+    std::vector<float> filter = {-1, 2, -3, 4, 5, -6, 7, -8, 9, -10, -11, 12, -13, 14, -15, 16};
+    nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
+    std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
+                                -10, 11, -12, 13, -14, 15, -16, -17, 18};
 
-  //   DepthwiseConvVerifier<float> verifier;
-  //   verifier.prepare(incoming_shape, filter_shape);
-  //   verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
-  //                                    filter.data(), input_shape);
-  //   verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
-  //                                     input.data(), filter_shape);
-  // }
+    DepthwiseConvVerifier<float> verifier;
+    verifier.prepare(incoming_shape, filter_shape);
+    verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
+                                     filter.data(), input_shape);
+    verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
+                                      input.data(), filter_shape);
+  }
 
-  // // pad valid, stride 2
-  // {
-  //   nnfw::cker::DepthwiseConvParams params;
-  //   params.padding_type = nnfw::cker::PaddingType::kValid;
-  //   params.stride_width = 2;
-  //   params.stride_height = 2;
-  //   params.dilation_width_factor = 1;
-  //   params.dilation_height_factor = 1;
-  //   params.depth_multiplier = 1;
+  // pad valid, stride 2
+  {
+    nnfw::cker::DepthwiseConvParams params;
+    params.padding_type = nnfw::cker::PaddingType::kValid;
+    params.stride_width = 2;
+    params.stride_height = 2;
+    params.dilation_width_factor = 1;
+    params.dilation_height_factor = 1;
+    params.depth_multiplier = 1;
 
-  //   nnfw::cker::Shape incoming_shape{1, 3, 3, 2}; // n, h, w, c
-  //   std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4, 0.5,  -0.6, -0.7, 0.8, 0.9,
-  //                                  -1.0, 1.1, -1.2, 1.3, -1.4, -1.5, 1.6,  1.7, -1.8};
-  //   nnfw::cker::Shape filter_shape{1, 3, 3, 2}; // 1, h, w, c
-  //   std::vector<float> filter = {-1,  2,   -3, 4,   5,  -6,  -7, 8,  9,
-  //                                -10, -11, 12, -13, 14, -15, 16, 17, -18};
-  //   nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
-  //   std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
-  //                               -10, 11, -12, 13, -14, 15, -16, -17, 18};
+    nnfw::cker::Shape incoming_shape{1, 3, 3, 2}; // n, h, w, c
+    std::vector<float> incoming = {-0.1, 0.2, -0.3, 0.4, 0.5,  -0.6, -0.7, 0.8, 0.9,
+                                   -1.0, 1.1, -1.2, 1.3, -1.4, -1.5, 1.6,  1.7, -1.8};
+    nnfw::cker::Shape filter_shape{1, 3, 3, 2}; // 1, h, w, c
+    std::vector<float> filter = {-1,  2,   -3, 4,   5,  -6,  -7, 8,  9,
+                                 -10, -11, 12, -13, 14, -15, 16, 17, -18};
+    nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
+    std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
+                                -10, 11, -12, 13, -14, 15, -16, -17, 18};
 
-  //   DepthwiseConvVerifier<float> verifier;
-  //   verifier.prepare(incoming_shape, filter_shape);
-  //   verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
-  //                                    filter.data(), input_shape);
-  //   verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
-  //                                     input.data(), filter_shape);
-  // }
+    DepthwiseConvVerifier<float> verifier;
+    verifier.prepare(incoming_shape, filter_shape);
+    verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
+                                     filter.data(), input_shape);
+    verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
+                                      input.data(), filter_shape);
+  }
 
-  // // pad same, stride 2
-  // {
-  //   nnfw::cker::DepthwiseConvParams params;
-  //   params.padding_type = nnfw::cker::PaddingType::kSame;
-  //   params.stride_width = 2;
-  //   params.stride_height = 2;
-  //   params.dilation_width_factor = 1;
-  //   params.dilation_height_factor = 1;
-  //   params.depth_multiplier = 1;
+  // pad same, stride 2
+  {
+    nnfw::cker::DepthwiseConvParams params;
+    params.padding_type = nnfw::cker::PaddingType::kSame;
+    params.stride_width = 2;
+    params.stride_height = 2;
+    params.dilation_width_factor = 1;
+    params.dilation_height_factor = 1;
+    params.depth_multiplier = 1;
 
-  //   nnfw::cker::Shape incoming_shape{1, 1, 1, 2}; // n, h, w, c
-  //   std::vector<float> incoming = {-0.1, 0.2};
-  //   nnfw::cker::Shape filter_shape{1, 2, 2, 2}; // 1, h, w, c
-  //   std::vector<float> filter = {-1, 2, -3, 4, 5, -6, -7, 8};
-  //   nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
-  //   std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
-  //                               -10, 11, -12, 13, -14, 15, -16, -17, 18};
+    nnfw::cker::Shape incoming_shape{1, 1, 1, 2}; // n, h, w, c
+    std::vector<float> incoming = {-0.1, 0.2};
+    nnfw::cker::Shape filter_shape{1, 2, 2, 2}; // 1, h, w, c
+    std::vector<float> filter = {-1, 2, -3, 4, 5, -6, -7, 8};
+    nnfw::cker::Shape input_shape{1, 3, 3, 2}; // n, h, w, c
+    std::vector<float> input = {-1,  2,  -3,  4,  5,   -6, -7,  8,   -9,
+                                -10, 11, -12, 13, -14, 15, -16, -17, 18};
 
-  //   DepthwiseConvVerifier<float> verifier;
-  //   verifier.prepare(incoming_shape, filter_shape);
-  //   verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
-  //                                    filter.data(), input_shape);
-  //   verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
-  //                                     input.data(), filter_shape);
-  // }
+    DepthwiseConvVerifier<float> verifier;
+    verifier.prepare(incoming_shape, filter_shape);
+    verifier.verifyInputGradExpected(params, incoming_shape, incoming.data(), filter_shape,
+                                     filter.data(), input_shape);
+    verifier.verifyFilterGradExpected(params, incoming_shape, incoming.data(), input_shape,
+                                      input.data(), filter_shape);
+  }
 
   // multi thread case
   {
