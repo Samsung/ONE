@@ -222,7 +222,7 @@ void Args::Initialize(void)
     )
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling (default: false)")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
-    // TODO make model file parameter to be default, after circle+ file generating tool puslished
+    // TODO make model file parameter default, after training info include file generating tool introduced 
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), 
         "Batch size (default: 32), If 0 is given, use model parameter")
     ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), 
