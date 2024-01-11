@@ -15,6 +15,7 @@
  */
 
 #include "args.h"
+#include "nnfw_util.h"
 
 #include <functional>
 #include <iostream>
@@ -199,6 +200,40 @@ void Args::Initialize(void)
     }
   };
 
+  auto check_range = [](const std::initializer_list<int> arg_list, const int value,
+                        const std::string &arg_name = "") {
+    for (const auto &i : arg_list)
+    {
+      if (i == value)
+        return;
+    }
+    throw std::runtime_error{arg_name + " " + std::to_string(value) + " is unsupported argument"};
+  };
+
+  auto loss_help_msg = [](const std::initializer_list<int> arg_list) -> std::string {
+    std::string res = "Loss type (default: use model file parameter)\n";
+    for (const auto &i : arg_list)
+      res += std::to_string(i) + ": " + toString(static_cast<NNFW_TRAIN_LOSS>(i)) + "\n";
+    res.erase(res.length() - 1); // remove last \n
+    return res;
+  };
+
+  auto loss_reduction_type_help_msg = [](const std::initializer_list<int> arg_list) -> std::string {
+    std::string res = "Loss Reduction type (default: use model file parameter)\n";
+    for (const auto &i : arg_list)
+      res += std::to_string(i) + ": " + toString(static_cast<NNFW_TRAIN_LOSS_REDUCTION>(i)) + "\n";
+    res.erase(res.length() - 1); // remove last \n
+    return res;
+  };
+
+  auto optimizer_help_msg = [](const std::initializer_list<int> arg_list) -> std::string {
+    std::string res = "Optimizer (default: use model file parameter)\n";
+    for (const auto &i : arg_list)
+      res += std::to_string(i) + ": " + toString(static_cast<NNFW_TRAIN_OPTIMIZER>(i)) + "\n";
+    res.erase(res.length() - 1); // remove last \n
+    return res;
+  };
+
   // General options
   po::options_description general("General options", 100);
 
@@ -222,20 +257,17 @@ void Args::Initialize(void)
     )
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling (default: false)")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
-    ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
-    ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 0.001)")
-    ("loss", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_type = v; }),
-        "Loss type\n"
-        "1: MEAN_SQUARED_ERROR (default)\n"
-        "2: CATEGORICAL_CROSSENTROPY")
-    ("loss_reduction_type", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
-        "Loss Reduction type\n"
-        "1: SUM_OVER_BATCH_SIZE(default)\n"
-        "2: SUM")
-    ("optimizer", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _optimizer_type = v; }),
-      "Optimizer type\n"
-      "1: SGD (default)\n"
-      "2: Adam")
+    ("batch_size", po::value<int>()->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: use model file parameter)\n")
+    ("learning_rate", po::value<float>()->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: use model file parameter)") 
+    ("loss",
+        po::value<int>()->notifier([&] (const auto &v) { check_range({1, 2}, v, "loss"); _loss_type = static_cast<NNFW_TRAIN_LOSS>(v); }), 
+        loss_help_msg({1, 2}).c_str())
+    ("loss_reduction_type", 
+        po::value<int>()->notifier([&] (const auto &v) { check_range({1, 2}, v, "loss reduction type"); _loss_reduction_type = static_cast<NNFW_TRAIN_LOSS_REDUCTION>(v); }),
+        loss_reduction_type_help_msg({1, 2}).c_str())
+    ("optimizer", 
+        po::value<int>()->notifier([&] (const auto &v) { check_range({1, 2}, v, "optimizer"); _optimizer_type = static_cast<NNFW_TRAIN_OPTIMIZER>(v); }),
+        optimizer_help_msg({1, 2}).c_str())
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
       "Metric type\n"
       "Simply calculates the metric value using the variables (default: none)\n"

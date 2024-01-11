@@ -17,11 +17,13 @@
 #ifndef __ONERT_TRAIN_ARGS_H__
 #define __ONERT_TRAIN_ARGS_H__
 
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include <boost/program_options.hpp>
 
+#include "nnfw_experimental.h"
 #include "types.h"
 
 namespace po = boost::program_options;
@@ -54,11 +56,17 @@ public:
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const int getEpoch(void) const { return _epoch; }
-  const int getBatchSize(void) const { return _batch_size; }
-  const float getLearningRate(void) const { return _learning_rate; }
-  const int getLossType(void) const { return _loss_type; }
-  const int getLossReductionType(void) const { return _loss_reduction_type; }
-  const int getOptimizerType(void) const { return _optimizer_type; }
+  const std::optional<int> &getBatchSize(void) const { return _batch_size; }
+  const std::optional<float> &getLearningRate(void) const { return _learning_rate; }
+  const std::optional<NNFW_TRAIN_LOSS> &getLossType(void) const { return _loss_type; }
+  const std::optional<NNFW_TRAIN_LOSS_REDUCTION> &getLossReductionType(void) const
+  {
+    return _loss_reduction_type;
+  }
+  const std::optional<NNFW_TRAIN_OPTIMIZER> &getOptimizerType(void) const
+  {
+    return _optimizer_type;
+  }
   const int getMetricType(void) const { return _metric_type; }
   const float getValidationSplit(void) const { return _validation_split; }
   const bool printVersion(void) const { return _print_version; }
@@ -81,11 +89,11 @@ private:
   std::string _load_raw_expected_filename;
   bool _mem_poll;
   int _epoch;
-  int _batch_size;
-  float _learning_rate;
-  int _loss_type;
-  int _loss_reduction_type;
-  int _optimizer_type;
+  std::optional<int> _batch_size;
+  std::optional<float> _learning_rate;
+  std::optional<NNFW_TRAIN_LOSS> _loss_type;
+  std::optional<NNFW_TRAIN_LOSS_REDUCTION> _loss_reduction_type;
+  std::optional<NNFW_TRAIN_OPTIMIZER> _optimizer_type;
   int _metric_type;
   float _validation_split;
   bool _print_version = false;

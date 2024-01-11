@@ -9,7 +9,7 @@ function(_BoostSource_import)
 
   # EXTERNAL_DOWNLOAD_SERVER will be overwritten by CI server to use mirror server.
   envoption(EXTERNAL_DOWNLOAD_SERVER "http://sourceforge.net")
-  envoption(BOOST_URL ${EXTERNAL_DOWNLOAD_SERVER}/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz)
+  envoption(BOOST_URL ${EXTERNAL_DOWNLOAD_SERVER}/projects/boost/files/boost/1.84.0/boost_1_84_0.tar.gz)
   ExternalSource_Download(BOOST ${BOOST_URL})
 
   set(BoostSource_DIR ${BOOST_SOURCE_DIR} PARENT_SCOPE)

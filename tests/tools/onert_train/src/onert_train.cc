@@ -121,45 +121,6 @@ int main(const int argc, char **argv)
     verifyInputTypes();
     verifyOutputTypes();
 
-    auto convertLossType = [](int type) {
-      switch (type)
-      {
-        case 1:
-          return NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
-        case 2:
-          return NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY;
-        default:
-          std::cerr << "E: not supported loss type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    auto convertLossReductionType = [](int type) {
-      switch (type)
-      {
-        case 1:
-          return NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
-        case 2:
-          return NNFW_TRAIN_LOSS_REDUCTION_SUM;
-        default:
-          std::cerr << "E: not supported loss reduction type" << std::endl;
-          exit(-1);
-      }
-    };
-
-    auto convertOptType = [](int type) {
-      switch (type)
-      {
-        case 1:
-          return NNFW_TRAIN_OPTIMIZER_SGD;
-        case 2:
-          return NNFW_TRAIN_OPTIMIZER_ADAM;
-        default:
-          std::cerr << "E: not supported optimizer type" << std::endl;
-          exit(-1);
-      }
-    };
-
     auto getMetricTypeStr = [](int type) {
       if (type < 0)
         return "";
@@ -177,11 +138,12 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
 
     // overwrite training information using the arguments
-    tri.batch_size = args.getBatchSize();
-    tri.learning_rate = args.getLearningRate();
-    tri.loss_info.loss = convertLossType(args.getLossType());
-    tri.loss_info.reduction_type = convertLossReductionType(args.getLossReductionType());
-    tri.opt = convertOptType(args.getOptimizerType());
+    tri.batch_size = args.getBatchSize().value_or(tri.batch_size);
+    tri.learning_rate = args.getLearningRate().value_or(tri.learning_rate);
+    tri.loss_info.loss = args.getLossType().value_or(tri.loss_info.loss);
+    tri.loss_info.reduction_type =
+      args.getLossReductionType().value_or(tri.loss_info.reduction_type);
+    tri.opt = args.getOptimizerType().value_or(tri.opt);
 
     std::cout << "== training parameter ==" << std::endl;
     std::cout << tri;
