@@ -569,7 +569,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop,
                   const T *depthwise_filter, T *padded_filter_data, T *in_backprop, bool pad_filter,
-                  std::vector<uint8_t *> &out_bprop, std::vector<uint8_t *> &in_bprop)
+                  T *out_bprop, T *in_bprop)
   {
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
 
@@ -591,18 +591,19 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
 
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
+      const int64_t filter_spatial_size = filter_rows * filter_cols;
       const int padded_filter_inner_dim_size =
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      const int64_t out_bprop_size = filter_spatial_size * padded_filter_inner_dim_size;
 
-      int cur_id = d.currentThreadId();
-      if (cur_id < 0)
-        cur_id = 0;
+      int cur_id = d.currentThreadId() + 1;
+      assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
 
       // Use out_bprop buffer to copy regions from 'out_backprop'.
-      T *out_bprop_buf = reinterpret_cast<T *>(out_bprop[cur_id]);
+      T *out_bprop_buf = out_bprop + cur_id * out_bprop_size;
 
       // Use in_bprop buffer for intermediate results.
-      T *in_bprop_buf = reinterpret_cast<T *>(in_bprop[cur_id]);
+      T *in_bprop_buf = in_bprop + cur_id * padded_filter_inner_dim_size;
 
       for (int64_t b = start; b < limit; ++b)
       {
@@ -797,7 +798,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
                   int out_rows, int out_cols, int out_depth, const T *out_backprop, const T *input,
-                  T *filter_backprop, T *padded_filter_data, std::vector<uint8_t *> &in_bprop)
+                  T *filter_backprop, T *padded_filter_data, T *in_bprop)
   {
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
 
@@ -818,11 +819,11 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
       int cur_id = d.currentThreadId() + 1;
       assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
 
-      T *input_buffer_data = reinterpret_cast<T *>(in_bprop[cur_id]);
-
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
       const int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;
+
+      T *input_buffer_data = in_bprop + cur_id * padded_filter_size;
 
       for (int b = start; b < limit; ++b)
       {

@@ -19,6 +19,7 @@
 
 #include <cker/train/operation/DepthwiseConv.h>
 #include <ops/DepthwiseConvolutionLayer.h>
+#include <backend/basic/Allocator.h>
 
 #include "../Tensor.h"
 #include "../ExternalContext.h"
@@ -64,15 +65,10 @@ private:
 
   // TODO Consider if these tensors should be built in TensorBuilder
   std::unique_ptr<BackPropTensor> _act_back_prop_output;
-  // std::unique_ptr<Tensor> _transposed_weights;
-  // std::unique_ptr<BackPropTensor> _conv_back_prop_output;
-  // std::unique_ptr<GradientTensor> _transposed_grad_weights;
-  std::unique_ptr<Tensor> _padded_filter;
   bool _use_padded_filter;
-  std::vector<std::unique_ptr<Tensor>> _padded_filters;
-  std::vector<uint8_t *> _padded_filter_buffers;
-  std::vector<std::unique_ptr<Tensor>> _in_bprop;
-  std::vector<uint8_t *> _in_bprop_buffer;
+  std::unique_ptr<Tensor> _padded_filter;
+  std::unique_ptr<Tensor> _filter_buffers;
+  std::unique_ptr<Tensor> _filter_dim_buffers;
 
   std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };

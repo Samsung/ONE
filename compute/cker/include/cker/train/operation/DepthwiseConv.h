@@ -54,7 +54,7 @@ public:
   void backpropInput(const DepthwiseConvParams &params, const Shape &incoming_shape,
                      const T *incoming_data, const Shape &filter_shape, const T *filter_data,
                      T *padded_filter_data, const Shape &grad_shape, T *grad_data, bool pad_filter,
-                     std::vector<uint8_t *> &out_bprop, std::vector<uint8_t *> &in_bprop)
+                     T *filter_buffers_data, T *filter_dim_buffers_data)
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
@@ -76,7 +76,8 @@ public:
     depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
       batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
       stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
-      filter_data, padded_filter_data, grad_data, pad_filter, out_bprop, in_bprop);
+      filter_data, padded_filter_data, grad_data, pad_filter, filter_buffers_data,
+      filter_dim_buffers_data);
 
     // depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
     //   batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
@@ -88,7 +89,7 @@ public:
   void backpropFilter(const DepthwiseConvParams &params, const Shape &incoming_shape,
                       const T *incoming_data, const Shape &input_shape, const T *input_data,
                       const Shape &filter_grad_shape, T *filter_grad_data, T *padded_filter_data,
-                      std::vector<uint8_t *> &in_bprop)
+                      T *filter_buffers_data)
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
@@ -110,7 +111,7 @@ public:
     depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
       batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,
       stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,
-      input_data, filter_grad_data, padded_filter_data, in_bprop);
+      input_data, filter_grad_data, padded_filter_data, filter_buffers_data);
 
     // depthwise_conv_op::DepthwiseConvBackpropFilterReference<T>(
     //   batch, input_height, input_width, input_depth, incoming_height, incoming_width,

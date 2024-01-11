@@ -49,13 +49,19 @@ public:
       _padded_filter.resize(padded_filter_shape.FlatSize());
     }
 
-    nnfw::cker::Shape padded_filter_shape({filter_spatial_size, padded_filter_inner_dim_size});
-    nnfw::cker::Shape in_bprop_shape({padded_filter_inner_dim_size});
-    const int thread_count = _dconv_kernel->getThreadCount() + 1;
-    for (auto i = 0; i < thread_count; ++i)
     {
-      _out_bprop.emplace_back(new uint8_t[padded_filter_shape.FlatSize() * sizeof(T)]);
-      _in_bprop.emplace_back(new uint8_t[in_bprop_shape.FlatSize() * sizeof(T)]);
+      const int thread_count = _dconv_kernel->getThreadCount() + 1;
+      nnfw::cker::Shape filter_buffer_shape(
+        {thread_count, filter_spatial_size, padded_filter_inner_dim_size});
+      _filter_buffers.resize(filter_buffer_shape.FlatSize());
+
+      nnfw::cker::Shape filter_dim_buffer_shape({thread_count, padded_filter_inner_dim_size});
+      _filter_dim_buffers.resize(filter_dim_buffer_shape.FlatSize());
+      // for (auto i = 0; i < thread_count; ++i)
+      // {
+      //   _out_bprop.emplace_back(new uint8_t[padded_filter_shape.FlatSize() * sizeof(T)]);
+      //   _in_bprop.emplace_back(new uint8_t[in_bprop_shape.FlatSize() * sizeof(T)]);
+      // }
     }
   }
 
@@ -72,7 +78,8 @@ public:
 
     _dconv_kernel->backpropInput(params, incoming_shape, incoming_data, filter_shape, filter_data,
                                  _padded_filter.data(), grad_shape, gradient.data(),
-                                 _use_padded_filter, _out_bprop, _in_bprop);
+                                 _use_padded_filter, _filter_buffers.data(),
+                                 _filter_dim_buffers.data());
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-4f);
@@ -87,7 +94,8 @@ public:
 
     EXPECT_ANY_THROW(_dconv_kernel->backpropInput(
       params, incoming_shape, incoming_data, filter_shape, filter_data, _padded_filter.data(),
-      grad_shape, gradient.data(), _use_padded_filter, _out_bprop, _in_bprop));
+      grad_shape, gradient.data(), _use_padded_filter, _filter_buffers.data(),
+      _filter_dim_buffers.data()));
   }
 
   void verifyFilterGradExpected(const nnfw::cker::DepthwiseConvParams &params,
@@ -103,7 +111,7 @@ public:
 
     _dconv_kernel->backpropFilter(params, incoming_shape, incoming_data, input_shape, input_data,
                                   filter_grad_shape, gradient.data(), _padded_filter.data(),
-                                  _out_bprop);
+                                  _filter_buffers.data());
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-3f);
@@ -118,7 +126,7 @@ public:
 
     EXPECT_ANY_THROW(_dconv_kernel->backpropFilter(
       params, incoming_shape, incoming_data, input_shape, input_data, filter_grad_shape,
-      gradient.data(), _padded_filter.data(), _out_bprop));
+      gradient.data(), _padded_filter.data(), _filter_buffers.data()));
   }
 
 private:
@@ -186,8 +194,10 @@ private:
   std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
   bool _use_padded_filter;
   std::vector<T> _padded_filter;
-  std::vector<uint8_t *> _out_bprop;
-  std::vector<uint8_t *> _in_bprop;
+  std::vector<T> _filter_buffers;
+  std::vector<T> _filter_dim_buffers;
+  // std::vector<uint8_t *> _out_bprop;
+  // std::vector<uint8_t *> _in_bprop;
 };
 
 } // namespace
