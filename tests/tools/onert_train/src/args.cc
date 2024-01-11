@@ -222,18 +222,24 @@ void Args::Initialize(void)
     )
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling (default: false)")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
-    ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
-    ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 0.001)")
+    // TODO make model file parameter to be default, after circle+ file generating tool puslished
+    ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), 
+        "Batch size (default: 32), If 0 is given, use model parameter")
+    ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), 
+        "Learning rate (default: 0.001), If 0.0 is given, use model file parameter")
     ("loss", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_type = v; }),
         "Loss type\n"
+        "0: use model file parameter\n"
         "1: MEAN_SQUARED_ERROR (default)\n"
         "2: CATEGORICAL_CROSSENTROPY")
     ("loss_reduction_type", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
         "Loss Reduction type\n"
+        "0: use model file parameter\n"
         "1: SUM_OVER_BATCH_SIZE(default)\n"
         "2: SUM")
     ("optimizer", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _optimizer_type = v; }),
       "Optimizer type\n"
+      "0: use model file parameter\n"
       "1: SGD (default)\n"
       "2: Adam")
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),

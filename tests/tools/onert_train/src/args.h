@@ -65,6 +65,9 @@ public:
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
 
+  static constexpr int USE_MODEL_PARAM = 0;
+  static constexpr float USE_MODEL_PARAM_F = 0;
+
 private:
   void Initialize();
   void Parse(const int argc, char **argv);
