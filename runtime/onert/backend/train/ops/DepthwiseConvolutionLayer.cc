@@ -133,6 +133,8 @@ void DepthwiseConvolutionLayer::forward(bool) { cpu::ops::DepthwiseConvolutionLa
 
 void DepthwiseConvolutionLayer::backward()
 {
+  MEASURE_TIME_START(backward);
+
   const auto data_type = _back_prop_output->data_type();
   assert(data_type == _input->data_type());
   switch (data_type)
@@ -146,6 +148,8 @@ void DepthwiseConvolutionLayer::backward()
     default:
       throw std::runtime_error{"train DepthwiseConvolutionLayer: unsupported data type"};
   }
+
+  MEASURE_TIME_END(backward);
 }
 
 void DepthwiseConvolutionLayer::backwardFloat32()
@@ -175,6 +179,8 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.padding_values.height = _paddingTop;
   dconv_params.depth_multiplier = _multiplier;
 
+  MEASURE_TIME_START(backpropInput);
+
   // Calculate gradient for input
   _dconv_kernel->backpropInput(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
@@ -182,11 +188,17 @@ void DepthwiseConvolutionLayer::backwardFloat32()
     getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
     getBuffer<float>(_filter_dim_buffers.get()));
 
+  MEASURE_TIME_END(backpropInput);
+
+  MEASURE_TIME_START(backpropFilter);
+
   // Calculate gradient for weights
   _dconv_kernel->backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
     getBuffer<float>(_padded_filter.get()), getBuffer<float>(_filter_buffers.get()));
+
+  MEASURE_TIME_END(backpropFilter);
 
   // Calculate gradient for bias
   if (_bias)

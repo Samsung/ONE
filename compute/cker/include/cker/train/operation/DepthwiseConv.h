@@ -73,16 +73,21 @@ public:
     const int pad_height = params.padding_values.height;
     const int pad_width = params.padding_values.width;
 
-    depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
-      batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
-      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
-      filter_data, padded_filter_data, grad_data, pad_filter, filter_buffers_data,
-      filter_dim_buffers_data);
+    // depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
+    //   batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
+    //   stride, pad_height, pad_width, incoming_height, incoming_width, output_depth,
+    //   incoming_data, filter_data, padded_filter_data, grad_data, pad_filter, filter_buffers_data,
+    //   filter_dim_buffers_data);
 
-    // depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
-    //   batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
-    //   stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width,
-    //   incoming_data, filter_data, grad_data);
+    UNUSED_RELEASE(pad_filter);
+    UNUSED_RELEASE(padded_filter_data);
+    UNUSED_RELEASE(filter_buffers_data);
+    UNUSED_RELEASE(filter_dim_buffers_data);
+
+    depthwise_conv_op::DepthwiseConvBackpropInputReference<float>(
+      batch, grad_height, grad_width, input_depth, incoming_height, incoming_width, output_depth,
+      stride, depth_multiplier, filter_height, filter_width, pad_height, pad_width, incoming_data,
+      filter_data, grad_data);
   }
 
   template <typename T>
@@ -112,6 +117,9 @@ public:
       batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,
       stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,
       input_data, filter_grad_data, padded_filter_data, filter_buffers_data);
+
+    // UNUSED_RELEASE(padded_filter_data);
+    // UNUSED_RELEASE(filter_buffers_data);
 
     // depthwise_conv_op::DepthwiseConvBackpropFilterReference<T>(
     //   batch, input_height, input_width, input_depth, incoming_height, incoming_width,
