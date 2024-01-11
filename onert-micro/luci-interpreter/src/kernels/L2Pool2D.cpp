@@ -39,7 +39,7 @@ void execute_kernel_CircleL2Pool2D(const circle::Operator *cur_op, BaseRuntimeGr
 
   const DataType input_type = Tensor::element_type(input);
 
-  const auto params = createPoolParams(cur_op, runtime_graph);
+  const auto params = createPoolParams(cur_op, siso_kernel);
 
   switch (input_type)
   {

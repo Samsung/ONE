@@ -54,16 +54,10 @@ inline void configure_kernel_CirclePool2DCommon(const circle::Operator *cur_op,
 }
 
 inline luci_interpreter_pal::PoolParams createPoolParams(const circle::Operator *cur_op,
-                                                         BaseRuntimeGraph *runtime_graph)
+                                                         const kernels::SISOKernel &siso_kernel)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto output_index = cur_op->outputs()->operator[](0);
-
-  assert(input_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  auto output = runtime_graph->getCircleTensorByIndex(output_index);
+  const auto input = siso_kernel.input();
+  const auto output = siso_kernel.output();
 
   const auto *options = cur_op->builtin_options_as_Pool2DOptions();
 
