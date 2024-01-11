@@ -25,8 +25,6 @@
 
 #include <cassert>
 
-#include <boost/format.hpp>
-
 namespace
 {
 
@@ -72,7 +70,7 @@ std::string OperationCodeResolver::resolve(int code) const
 
   if (it == _table.end())
   {
-    return boost::str(boost::format("unknown(%d)") % code);
+    return "unknown(" + std::to_string(code) + ")";
   }
 
   return it->second;
@@ -120,7 +118,7 @@ std::string OperandCodeResolver::resolve(int code) const
 
   if (it == _table.end())
   {
-    return boost::str(boost::format("unknown(%d)") % code);
+    return "unknown(" + std::to_string(code) + ")";
   }
 
   return it->second;
