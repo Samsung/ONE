@@ -1595,10 +1595,11 @@ private:
   template <typename T> static Type GetScalarType()
   {
     static_assert(flatbuffers::is_scalar<T>::value, "Unrelated types");
-    return flatbuffers::is_floating_point<T>::value ? FBT_FLOAT
-           : flatbuffers::is_same<T, bool>::value
-             ? FBT_BOOL
-             : (flatbuffers::is_unsigned<T>::value ? FBT_UINT : FBT_INT);
+    return flatbuffers::is_floating_point<T>::value
+             ? FBT_FLOAT
+             : flatbuffers::is_same<T, bool>::value
+                 ? FBT_BOOL
+                 : (flatbuffers::is_unsigned<T>::value ? FBT_UINT : FBT_INT);
   }
 
 public:
