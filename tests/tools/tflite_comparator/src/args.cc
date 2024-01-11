@@ -18,8 +18,6 @@
 
 #include <iostream>
 
-#include <boost/filesystem.hpp>
-
 namespace TFLiteRun
 {
 
