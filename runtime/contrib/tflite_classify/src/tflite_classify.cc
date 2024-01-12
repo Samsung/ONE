@@ -17,11 +17,11 @@
 #include "ImageClassifier.h"
 
 #include <iostream>
+#include <filesystem>
 
-#include <boost/filesystem.hpp>
 #include <opencv2/opencv.hpp>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 int main(const int argc, char **argv)
 {
