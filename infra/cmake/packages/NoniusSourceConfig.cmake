@@ -16,7 +16,7 @@ function(_NoniusSource_import)
     # This header file is modified to show the html summary view according to the layer in kbenchmark.
     execute_process(COMMAND ${CMAKE_COMMAND} -E copy
                     "${CMAKE_CURRENT_LIST_DIR}/Nonius/html_report_template.g.h++"
-                    "${NoniusSource_DIR}/include/nonius/detail")
+                    "${Nonius_Source_DIR}/include/nonius/detail")
   endif(BUILD_KBENCHMARK)
 
   set(NoniusSource_DIR ${NONIUS_SOURCE_DIR} PARENT_SCOPE)
