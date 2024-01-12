@@ -18,8 +18,9 @@
 #include "AclCppOpGenerator.h"
 #include "backends/acl_soft_backend/AclCppException.h"
 
-#include <boost/filesystem.hpp>
+// #include <boost/filesystem.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <utility>
 
@@ -27,7 +28,7 @@ namespace nnc
 {
 
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 AclCppCodeGenerator::AclCppCodeGenerator(string output_dir, string artifact_name)
   : _output_dir(std::move(output_dir)), _artifact_name(std::move(artifact_name))

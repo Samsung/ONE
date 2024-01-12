@@ -50,9 +50,10 @@
 #include "cpp_gather.generated.h"
 #include "cpp_broadcast.generated.h"
 
-#include <boost/filesystem.hpp>
+// #include <boost/filesystem.hpp>
 
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <stdexcept>
 #include <utility>
@@ -62,7 +63,7 @@ namespace nnc
 
 using namespace sir;
 using namespace std;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 /**
  * @brief Creates pointer to some output stream to encapsulate resource management into deleter
