@@ -17,6 +17,7 @@
 #include "Builders.h"
 #include "kernels/Utils.h"
 #include "PALLogistic.h"
+#include "SISOKernel.h"
 
 namespace luci_interpreter
 {
@@ -24,41 +25,25 @@ namespace luci_interpreter
 void configure_kernel_CircleLogistic(const circle::Operator *cur_op,
                                      BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto output_index = cur_op->outputs()->operator[](0);
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  assert(input_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(output != nullptr);
-
-  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
+  LUCI_INTERPRETER_CHECK(Tensor::element_type(kernel.input()) ==
+                         Tensor::element_type(kernel.output()))
 
 #ifndef DIS_QUANT
-  if (Tensor::element_type(input) == DataType::U8)
+  if (Tensor::element_type(kernel.input()) == DataType::U8)
   {
-    LUCI_INTERPRETER_CHECK(Tensor::scale(output) == 1. / 256);
+    LUCI_INTERPRETER_CHECK(Tensor::scale(kernel.output()) == 1. / 256);
   }
 #endif // DIS_QUANT
 }
 
 void execute_kernel_CircleLogistic(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto output_index = cur_op->outputs()->operator[](0);
+  kernels::SISOKernel kernel(cur_op, runtime_graph);
 
-  assert(input_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(output != nullptr);
+  const auto input = kernel.input();
+  const auto output = kernel.output();
 
   bool is_inplace = runtime_graph->is_inplace_op(cur_op);
 
