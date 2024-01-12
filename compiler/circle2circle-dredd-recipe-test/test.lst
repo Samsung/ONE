@@ -10,6 +10,7 @@
 
 ## TFLITE RECIPE
 
+Add(BroadcastTo_000 PASS resolve_former_customop)
 Add(Net_Preactivation_BN_000 PASS fuse_preactivation_batchnorm)
 Add(Net_BroadcastTo_AddV2_000 PASS resolve_customop_add)
 Add(Net_BroadcastTo_AddV2_001 PASS resolve_customop_add)
