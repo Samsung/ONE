@@ -43,7 +43,7 @@ int JpegHelper::readJpeg(const std::string filename, std::vector<float> &raw_ima
 
   if (!infile)
   {
-    printf("Error opening jpeg file %s\n!", filename);
+    printf("Error opening jpeg file %s\n!", filename.c_str());
     return -1;
   }
 
@@ -93,7 +93,7 @@ int JpegHelper::writeJpeg(const std::string filename, std::vector<float> &raw_im
 
   if (!outfile)
   {
-    printf("Error opening output jpeg file %s\n!", filename);
+    printf("Error opening output jpeg file %s\n!", filename.c_str());
     return -1;
   }
   cinfo.err = jpeg_std_error(&jerr);
