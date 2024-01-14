@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('_op_selector_8cpp_source.html',''); in
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;s : vec)</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">if</span> (not::is_number(s))</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">if</span> (not ::is_number(s))</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
@@ -351,7 +351,7 @@ $(document).ready(function(){initNavTree('_op_selector_8cpp_source.html',''); in
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;comma_token : comma_tokens)</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>  {</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keyword">auto</span> dash_tokens = ::split_into_vector(comma_token, <span class="charliteral">&#39;-&#39;</span>);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keywordflow">if</span> (not::is_number(dash_tokens))</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keywordflow">if</span> (not ::is_number(dash_tokens))</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    {</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="stringliteral">&quot;ERROR: To select operator by id, please use these args: [0-9], &#39;-&#39;, &#39;,&#39;&quot;</span>};</div>

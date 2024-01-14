@@ -133,9 +133,8 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:ade1163c5c3fe306a3abad6b83a4d9660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dcccd7c4d3a96de46f79311ee050ae1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a> { <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a> = 0
-, <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5">NNFW_TRAIN_LOSS_REDUCTION_AUTO</a> = 1
-, <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 2
-, <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 3
+, <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 1
+, <a class="el" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 2
  }</td></tr>
 <tr class="separator:a2dcccd7c4d3a96de46f79311ee050ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66ead5bca803075bd7324609b3388bf4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a> { <a class="el" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a> = 0
@@ -283,15 +282,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful</dd></dl>
-<p>Set training information after prepare training </p><dl class="section note"><dt>Note</dt><dd>This function may be used after <code><a class="el" href="nnfw__experimental_8h.html#a711e8db4d5ff39cd1373652230aa6b16">nnfw_train_prepare</a></code></dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session prepared for training </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td>Training information </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful On-Device Quantization APIs</dd></dl>
 <p>On-Device Quantization APIs are designed to be used in the following order</p><ol type="1">
 <li>nnfw_set_quantization_type</li>
@@ -309,16 +299,16 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00419">419</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
-<div class="line"><span class="lineno">  422</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a>,</div>
-<div class="line"><span class="lineno">  424</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>,</div>
-<div class="line"><span class="lineno">  426</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>,</div>
-<div class="line"><span class="lineno">  427</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a></div><div class="ttdeci">NNFW_QUANTIZE_TYPE</div><div class="ttdoc">Convert between training mode and inference mode.</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00419">nnfw_experimental.h:420</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00424">nnfw_experimental.h:424</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00426">nnfw_experimental.h:426</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_NOT_SET</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00422">nnfw_experimental.h:422</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00407">407</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  408</span>{</div>
+<div class="line"><span class="lineno">  410</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a>,</div>
+<div class="line"><span class="lineno">  412</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>,</div>
+<div class="line"><span class="lineno">  414</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>,</div>
+<div class="line"><span class="lineno">  415</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a></div><div class="ttdeci">NNFW_QUANTIZE_TYPE</div><div class="ttdoc">Convert between training mode and inference mode.</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00407">nnfw_experimental.h:408</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00412">nnfw_experimental.h:412</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00414">nnfw_experimental.h:414</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_NOT_SET</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00410">nnfw_experimental.h:410</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -378,8 +368,6 @@ Functions</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60" name="a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60"></a>NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED&#160;</td><td class="fielddoc"><p >Undefined </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5" name="a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5"></a>NNFW_TRAIN_LOSS_REDUCTION_AUTO&#160;</td><td class="fielddoc"><p >Auto </p>
-</td></tr>
 <tr><td class="fieldname"><a id="a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17" name="a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"></a>NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE&#160;</td><td class="fielddoc"><p >Scalar sum divided by number of elements in losses </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df" name="a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df"></a>NNFW_TRAIN_LOSS_REDUCTION_SUM&#160;</td><td class="fielddoc"><p >Scalar sum of weighted losses </p>
@@ -389,15 +377,13 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00184">184</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
 <div class="line"><span class="lineno">  187</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a> = 0,</div>
-<div class="line"><span class="lineno">  189</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5">NNFW_TRAIN_LOSS_REDUCTION_AUTO</a> = 1,</div>
-<div class="line"><span class="lineno">  191</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 2,</div>
-<div class="line"><span class="lineno">  193</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 3,</div>
-<div class="line"><span class="lineno">  194</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a>;</div>
+<div class="line"><span class="lineno">  189</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 1,</div>
+<div class="line"><span class="lineno">  191</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 2,</div>
+<div class="line"><span class="lineno">  192</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a>;</div>
 <div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a></div><div class="ttdeci">NNFW_TRAIN_LOSS_REDUCTION</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00184">nnfw_experimental.h:185</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00187">nnfw_experimental.h:187</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5">NNFW_TRAIN_LOSS_REDUCTION_AUTO</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_AUTO</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00189">nnfw_experimental.h:189</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00193">nnfw_experimental.h:193</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00191">nnfw_experimental.h:191</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00191">nnfw_experimental.h:191</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00189">nnfw_experimental.h:189</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -418,16 +404,16 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8" name="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"></a>NNFW_TRAIN_OPTIMIZER_ADAM&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00196">196</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  197</span>{</div>
-<div class="line"><span class="lineno">  198</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a> = 0,</div>
-<div class="line"><span class="lineno">  199</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 1,</div>
-<div class="line"><span class="lineno">  200</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 2,</div>
-<div class="line"><span class="lineno">  201</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></div><div class="ttdeci">NNFW_TRAIN_OPTIMIZER</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00196">nnfw_experimental.h:197</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_ADAM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00200">nnfw_experimental.h:200</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_SGD</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00199">nnfw_experimental.h:199</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_UNDEFINED</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00198">nnfw_experimental.h:198</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00194">194</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
+<div class="line"><span class="lineno">  196</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a> = 0,</div>
+<div class="line"><span class="lineno">  197</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 1,</div>
+<div class="line"><span class="lineno">  198</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 2,</div>
+<div class="line"><span class="lineno">  199</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></div><div class="ttdeci">NNFW_TRAIN_OPTIMIZER</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00194">nnfw_experimental.h:195</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_ADAM</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00198">nnfw_experimental.h:198</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_SGD</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00197">nnfw_experimental.h:197</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_UNDEFINED</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__experimental_8h_source.html#l00196">nnfw_experimental.h:196</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -15,7 +15,6 @@ var namespaceonert_1_1ir_1_1train =
     ] ],
     [ "LossReductionType", "namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226d", [
       [ "Undefined", "namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360", null ],
-      [ "Auto", "namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da06b9281e396db002010bde1de57262eb", null ],
       [ "SumOverBatchSize", "namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc", null ],
       [ "Sum", "namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5", null ]
     ] ],

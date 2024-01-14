@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>absl::Status KernelGenerator::readConstTensor(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;index,</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                                              tflite::gpu::TensorOrScalar *param)</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index).shape();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index).shape();</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">if</span> (shape.rank() == 0 &amp;&amp; shape.num_elements() == 1)</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  {</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    tflite::gpu::Tensor&lt;tflite::gpu::Scalar, tflite::gpu::DataType::FLOAT32&gt; tensor;</div>
@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  absl::variant&lt;tflite::gpu::Tensor&lt;tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32&gt;,</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                tflite::gpu::Tensor&lt;tflite::gpu::HWC, tflite::gpu::DataType::FLOAT32&gt;&gt; *alpha)</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>{</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index).shape();</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index).shape();</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceonert_1_1backend_1_1gpu__cl.html#a06cb2bd85b358d996dc69f83f2000c1e">CheckIfLinearConvertible</a>(&amp;shape))</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  {</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    tflite::gpu::Tensor&lt;tflite::gpu::Linear, tflite::gpu::DataType::FLOAT32&gt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
@@ -304,9 +304,9 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph, <span class="keyword">const</span> std::shared_ptr&lt;TensorBuilder&gt; &amp;tensor_builder,</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keyword">const</span> std::shared_ptr&lt;TensorRegistry&gt; &amp;tensor_reg,</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="keyword">const</span> std::shared_ptr&lt;tflite::gpu::cl::CreationContext&gt; &amp;creation_context)</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()),</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    _operations_ctx(graph.operations()), _current_layout{graph.layout()},</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    _tensor_builder(tensor_builder), _tensor_reg(tensor_reg), _creation_context(creation_context)</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx(graph.operations()),</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    _current_layout{graph.layout()}, _tensor_builder(tensor_builder), _tensor_reg(tensor_reg),</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    _creation_context(creation_context)</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>{</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>}</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
@@ -398,7 +398,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keyword">auto</span> kernel{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086aed43a2c4f1ee11e7446e6adbb8b1161b">ir::operation::Conv2D::KERNEL</a>)};</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_conv2_d.html#a48b1f6f4294be2d2184d02f7ad474086a216eabbe2b8439c80abceff5091da73f">ir::operation::Conv2D::BIAS</a>)};</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keyword">auto</span> param = node.param();</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;param = node.param();</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  tflite::gpu::OperationDef op_def;</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  op_def.precision = tflite::gpu::CalculationsPrecision::F32;</div>
@@ -469,7 +469,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    {</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>      std::unique_ptr&lt;tflite::gpu::GPUOperation&gt; gpu_op_1;</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>      tflite::gpu::OperationDef op_def_1;</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      <span class="keyword">const</span> <span class="keyword">auto</span> shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output).shape();</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output).shape();</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>      <span class="keyword">auto</span> new_ind = _tensor_reg-&gt;addNewClTensor(shape);</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>      addClNode({<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>}, {new_ind}, std::move(gpu_op));</div>
@@ -512,7 +512,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
 <div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  <span class="keyword">const</span> <span class="keyword">auto</span> dilation = node.param().dilation;</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  <span class="keyword">const</span> <span class="keyword">auto</span> padding = node.param().padding;</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;padding = node.param().padding;</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="keyword">const</span> <span class="keyword">auto</span> multiplier = node.param().multiplier;</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
@@ -608,7 +608,7 @@ $(document).ready(function(){initNavTree('backend_2gpu__cl_2_kernel_generator_8c
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>    {</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>      std::unique_ptr&lt;tflite::gpu::GPUOperation&gt; gpu_op_1;</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>      tflite::gpu::OperationDef op_def_1;</div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>      <span class="keyword">const</span> <span class="keyword">auto</span> shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ofm_index).shape();</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape = _ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ofm_index).shape();</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>      <span class="keyword">auto</span> new_ind = _tensor_reg-&gt;addNewClTensor(shape);</div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span> </div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>      addClNode({ifm_index}, {new_ind}, std::move(gpu_op));</div>

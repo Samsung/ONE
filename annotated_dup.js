@@ -112,14 +112,6 @@ var annotated_dup =
     [ "AveragePool2D_000", "namespace_average_pool2_d__000.html", [
       [ "AveragePool2D_000_Q8", "class_average_pool2_d__000_1_1_average_pool2_d__000___q8.html", "class_average_pool2_d__000_1_1_average_pool2_d__000___q8" ]
     ] ],
-    [ "benchmark", "namespacebenchmark.html", [
-      [ "CsvWriter", "classbenchmark_1_1_csv_writer.html", "classbenchmark_1_1_csv_writer" ],
-      [ "MemoryPoller", "classbenchmark_1_1_memory_poller.html", "classbenchmark_1_1_memory_poller" ],
-      [ "Phase", "structbenchmark_1_1_phase.html", "structbenchmark_1_1_phase" ],
-      [ "PhaseOption", "structbenchmark_1_1_phase_option.html", "structbenchmark_1_1_phase_option" ],
-      [ "Phases", "classbenchmark_1_1_phases.html", "classbenchmark_1_1_phases" ],
-      [ "Result", "classbenchmark_1_1_result.html", "classbenchmark_1_1_result" ]
-    ] ],
     [ "bino", "namespacebino.html", [
       [ "UniformTransform", "classbino_1_1_uniform_transform.html", "classbino_1_1_uniform_transform" ]
     ] ],
@@ -3556,7 +3548,6 @@ var annotated_dup =
       [ "TfLiteSparsity", "structsparsity_1_1_tf_lite_sparsity.html", "structsparsity_1_1_tf_lite_sparsity" ]
     ] ],
     [ "std", "namespacestd.html", [
-      [ "hash< benchmark::PhaseEnum >", "structstd_1_1hash_3_01benchmark_1_1_phase_enum_01_4.html", "structstd_1_1hash_3_01benchmark_1_1_phase_enum_01_4" ],
       [ "hash< exo::circle_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1circle__detail_1_1_op_code_01_4.html", "structstd_1_1hash_3_01exo_1_1circle__detail_1_1_op_code_01_4" ],
       [ "hash< exo::tflite_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4.html", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4" ],
       [ "hash< luci::OpCode >", "structstd_1_1hash_3_01luci_1_1_op_code_01_4.html", "structstd_1_1hash_3_01luci_1_1_op_code_01_4" ],
@@ -4045,8 +4036,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

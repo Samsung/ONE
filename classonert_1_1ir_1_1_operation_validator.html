@@ -744,7 +744,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00215">215</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keyword">auto</span> param = node.param();</div>
+<div class="line"><span class="lineno">  217</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;param = node.param();</div>
 <div class="line"><span class="lineno">  218</span> </div>
 <div class="line"><span class="lineno">  219</span>  <span class="comment">// FIXME: number of classes should be 1 for now.</span></div>
 <div class="line"><span class="lineno">  220</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(param.num_classes == 1);</div>

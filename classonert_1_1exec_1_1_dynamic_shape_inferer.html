@@ -1043,11 +1043,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  423</span>  assert(dims_buf);</div>
 <div class="line"><span class="lineno">  424</span> </div>
 <div class="line"><span class="lineno">  425</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dims_shape = shape-&gt;getShape();</div>
-<div class="line"><span class="lineno">  426</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = ((dims_type == ir::DataType::INT32)</div>
-<div class="line"><span class="lineno">  427</span>                         ? shape_inference::inferFillShape&lt;int32_t&gt;(</div>
-<div class="line"><span class="lineno">  428</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(dims_buf))</div>
-<div class="line"><span class="lineno">  429</span>                         : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
-<div class="line"><span class="lineno">  430</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
+<div class="line"><span class="lineno">  426</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = ((dims_type == ir::DataType::INT32)</div>
+<div class="line"><span class="lineno">  427</span>                                ? shape_inference::inferFillShape&lt;int32_t&gt;(</div>
+<div class="line"><span class="lineno">  428</span>                                    dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(dims_buf))</div>
+<div class="line"><span class="lineno">  429</span>                                : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
+<div class="line"><span class="lineno">  430</span>                                    dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
 <div class="line"><span class="lineno">  431</span> </div>
 <div class="line"><span class="lineno">  432</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  433</span>  assert(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>

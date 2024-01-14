@@ -15,6 +15,5 @@ var searchData=
   ['hits_12',['HITS',['../classonert_1_1ir_1_1operation_1_1_hashtable_lookup.html#a6ee6d8eb7a4d2515b6d134b118f1a537aa7e70546b717fb2068b6b1ba9bef2b7f',1,'onert::ir::operation::HashtableLookup']]],
   ['hw_13',['HW',['../namespaceexo.html#aa7675f323f9220979774977e80c61c9fa4bd2241a3a809d3cc2bb28e951cc183a',1,'exo']]],
   ['hwcm_14',['HWCM',['../namespaceexo.html#a02102d34572ab4b37ff937cb6eaaa5a6aee29afe43a48d5be5e4302ebccde69b9',1,'exo']]],
-  ['hwio_15',['HWIO',['../namespaceexo.html#acba105ae33f26ab64fc46e85f6d1a1fca0228fb00ddb0770f144d5482519d5bf2',1,'exo']]],
-  ['hwm_16',['HWM',['../namespacebenchmark.html#a680595cbf36bfd8f2f3ce1000b6d1b03a9ad25beaacba353d70331cb88cbb9407',1,'benchmark']]]
+  ['hwio_15',['HWIO',['../namespaceexo.html#acba105ae33f26ab64fc46e85f6d1a1fca0228fb00ddb0770f144d5482519d5bf2',1,'exo']]]
 ];

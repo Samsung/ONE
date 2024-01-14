@@ -3,7 +3,7 @@ var classonert_1_1util_1_1_object_manager =
     [ "ObjectManager", "classonert_1_1util_1_1_object_manager.html#ad3617741bb4419abebad524b7b6d0f30", null ],
     [ "at", "classonert_1_1util_1_1_object_manager.html#a50434f9676e96b58f2ca6b8a27da74f8", null ],
     [ "at", "classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be", null ],
-    [ "emplace", "classonert_1_1util_1_1_object_manager.html#ad61addfa8f8b6c055360a25811da84a3", null ],
+    [ "emplace", "classonert_1_1util_1_1_object_manager.html#a6e5688273dce5e6f65e205df6db079ed", null ],
     [ "exist", "classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e", null ],
     [ "getRawPtr", "classonert_1_1util_1_1_object_manager.html#ab674901b0c3dc6d154f0815c140c2bf3", null ],
     [ "getRawPtr", "classonert_1_1util_1_1_object_manager.html#addee3d554fcf1b7b47e896e345a7632d", null ],

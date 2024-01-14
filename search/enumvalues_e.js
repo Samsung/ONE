@@ -27,13 +27,11 @@ var searchData=
   ['predefinedtanh_24',['PreDefinedTanh',['../namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea551ed5b1d634eb11bc594598f33cce83',1,'luci']]],
   ['preincr_25',['preIncr',['../namespacennc.html#a51d6e802cefbaa573eb8be96865a85f1afa45356199691c235f1594391c6ffaf0',1,'nnc']]],
   ['prelu_26',['PReLU',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a474e0c94ac3a455d2b98a72feba8fba4',1,'mir_caffe']]],
-  ['prepare_27',['PREPARE',['../namespacebenchmark.html#a5503f73998f97955061004fc8c5a5a2da1e97bc2fe32371d53b835212f7f8910b',1,'benchmark']]],
-  ['preprocessed_5fweights_28',['PREPROCESSED_WEIGHTS',['../classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html#a93880f6fd5f84763d9a6e6e1bc7ef121a3ff92be092bd363fc3b24fc65ec806ef',1,'arm_compute::CLFullyConnectedReshapingLayer::PREPROCESSED_WEIGHTS()'],['../classarm__compute_1_1_n_e_fully_connected_reshaping_layer.html#ad1bd30e6e051e8f5dea97530894a72b5a3ff92be092bd363fc3b24fc65ec806ef',1,'arm_compute::NEFullyConnectedReshapingLayer::PREPROCESSED_WEIGHTS()']]],
-  ['prod_29',['PROD',['../classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed',1,'onert::ir::operation::Reduce']]],
-  ['profilingdatagen_30',['ProfilingDataGen',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8bab5771d9a76de659e6d3c476e8d97b5de',1,'luci::UserSettings']]],
-  ['projection_5fbias_31',['PROJECTION_BIAS',['../classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486ac76d65abf7243ccbcb7b18c10bef442d',1,'onert::ir::operation::LSTM']]],
-  ['projection_5fweights_32',['PROJECTION_WEIGHTS',['../classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486aec23d3029f9d90f96b73ff9114c344f1',1,'onert::ir::operation::LSTM']]],
-  ['pss_33',['PSS',['../namespacebenchmark.html#a680595cbf36bfd8f2f3ce1000b6d1b03a42c5cd89eb685dc9b8ff90caeaf037f1',1,'benchmark']]],
-  ['puple_34',['PUPLE',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bea21e15fc8ebe40523f9ea8195fd1b856f',1,'onert::dumper::dot']]],
-  ['python_35',['python',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a23eeeb4347bdd26bfc6b7ee9a3b755dd',1,'mir_caffe']]]
+  ['preprocessed_5fweights_27',['PREPROCESSED_WEIGHTS',['../classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html#a93880f6fd5f84763d9a6e6e1bc7ef121a3ff92be092bd363fc3b24fc65ec806ef',1,'arm_compute::CLFullyConnectedReshapingLayer::PREPROCESSED_WEIGHTS()'],['../classarm__compute_1_1_n_e_fully_connected_reshaping_layer.html#ad1bd30e6e051e8f5dea97530894a72b5a3ff92be092bd363fc3b24fc65ec806ef',1,'arm_compute::NEFullyConnectedReshapingLayer::PREPROCESSED_WEIGHTS()']]],
+  ['prod_28',['PROD',['../classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ac8074bb318fb85693233e64acc64c1ed',1,'onert::ir::operation::Reduce']]],
+  ['profilingdatagen_29',['ProfilingDataGen',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8bab5771d9a76de659e6d3c476e8d97b5de',1,'luci::UserSettings']]],
+  ['projection_5fbias_30',['PROJECTION_BIAS',['../classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486ac76d65abf7243ccbcb7b18c10bef442d',1,'onert::ir::operation::LSTM']]],
+  ['projection_5fweights_31',['PROJECTION_WEIGHTS',['../classonert_1_1ir_1_1operation_1_1_l_s_t_m.html#a63ad28d28e9c109a7928663b56775486aec23d3029f9d90f96b73ff9114c344f1',1,'onert::ir::operation::LSTM']]],
+  ['puple_32',['PUPLE',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bea21e15fc8ebe40523f9ea8195fd1b856f',1,'onert::dumper::dot']]],
+  ['python_33',['python',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a23eeeb4347bdd26bfc6b7ee9a3b755dd',1,'mir_caffe']]]
 ];

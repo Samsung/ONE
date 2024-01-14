@@ -276,7 +276,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00062">62</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
 <div class="line"><span class="lineno">   64</span>  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_info = _tensor_info_map.at(ind);</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_info = _tensor_info_map.at(ind);</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">   68</span>  {</div>

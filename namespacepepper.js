@@ -2,9 +2,9 @@ var namespacepepper =
 [
     [ "details", "namespacepepper_1_1details.html", [
       [ "str_impl", "namespacepepper_1_1details.html#a7c94766d738ab1150a6d242ece3c83ea", null ],
-      [ "str_impl", "namespacepepper_1_1details.html#a536a2cc0bab7ddf9e70ae92098062295", null ],
+      [ "str_impl", "namespacepepper_1_1details.html#a296d994e0518b71ab5bdfa36b34bd15c", null ],
       [ "str_impl", "namespacepepper_1_1details.html#a918ca0bef9971360bf0d4d268cae7f99", null ],
-      [ "str_impl", "namespacepepper_1_1details.html#a1d3115a580214e7835127b3a56971454", null ]
+      [ "str_impl", "namespacepepper_1_1details.html#a8e6667d394f2d6e978cbc868a4be7f38", null ]
     ] ],
     [ "KVStoreInterface", "classpepper_1_1_k_v_store_interface.html", null ],
     [ "KVStoreInterface< KVStoreTrait::Queryable >", "classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4.html", "classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4" ],

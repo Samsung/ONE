@@ -132,9 +132,9 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8cc_s
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                                 <span class="keyword">const</span> std::shared_ptr&lt;TensorBuilder&gt; &amp;tensor_builder,</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                                 <span class="keyword">const</span> std::shared_ptr&lt;basic::TensorRegistry&gt; &amp;tensor_reg,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                                 <span class="keyword">const</span> std::shared_ptr&lt;DevContext&gt; &amp;dev_context)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  : basic::KernelGeneratorBase{graph},</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    _ctx(graph.operands()), _operations_ctx{graph.operations()}, _current_layout{graph.layout()},</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _dev_context{dev_context}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx{graph.operations()},</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    _current_layout{graph.layout()}, _tensor_builder(tensor_builder), _tensor_reg{tensor_reg},</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    _dev_context{dev_context}</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>

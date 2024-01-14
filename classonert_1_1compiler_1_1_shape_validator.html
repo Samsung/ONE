@@ -985,9 +985,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  516</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa980db81808e146c9d8c6ce8ddd2500a8">ir::operation::Gather::Input::INPUT</a>)};</div>
 <div class="line"><span class="lineno">  517</span>  <span class="keyword">const</span> <span class="keyword">auto</span> indices_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_gather.html#a970b669de6b75eea1ea60c330c674e6aa75545c588c17aad469af48e95a53c079">ir::operation::Gather::Input::INDICES</a>)};</div>
 <div class="line"><span class="lineno">  518</span> </div>
-<div class="line"><span class="lineno">  519</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_shape = operands.at(ifm_index).shape();</div>
-<div class="line"><span class="lineno">  520</span>  <span class="keyword">const</span> <span class="keyword">auto</span> indices_shape = operands.at(indices_index).shape();</div>
-<div class="line"><span class="lineno">  521</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_shape = operands.at(ofm_index).shape();</div>
+<div class="line"><span class="lineno">  519</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ifm_shape = operands.at(ifm_index).shape();</div>
+<div class="line"><span class="lineno">  520</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;indices_shape = operands.at(indices_index).shape();</div>
+<div class="line"><span class="lineno">  521</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ofm_shape = operands.at(ofm_index).shape();</div>
 <div class="line"><span class="lineno">  522</span> </div>
 <div class="line"><span class="lineno">  523</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(ifm_shape.rank() &lt;= 4);</div>
 <div class="line"><span class="lineno">  524</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(indices_shape.rank() &lt;= 3);</div>
@@ -1622,7 +1622,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  566</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_rank = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.rank());</div>
 <div class="line"><span class="lineno">  567</span> </div>
 <div class="line"><span class="lineno">  568</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input1_index{node.getInputs().at(0)};</div>
-<div class="line"><span class="lineno">  569</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = operands.at(input1_index).shape();</div>
+<div class="line"><span class="lineno">  569</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_shape = operands.at(input1_index).shape();</div>
 <div class="line"><span class="lineno">  570</span> </div>
 <div class="line"><span class="lineno">  571</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(axis &gt;= -output_rank &amp;&amp; axis &lt; output_rank);</div>
 <div class="line"><span class="lineno">  572</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;index : node.getInputs())</div>
@@ -1846,9 +1846,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  227</span>  <span class="keywordflow">if</span> (operands.at(output_index).info().isDynamic())</div>
 <div class="line"><span class="lineno">  228</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">ir::operation::Reduce::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = operands.at(input_index).shape();</div>
-<div class="line"><span class="lineno">  232</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = operands.at(output_index).shape();</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">ir::operation::Reduce::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  231</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_shape = operands.at(input_index).shape();</div>
+<div class="line"><span class="lineno">  232</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = operands.at(output_index).shape();</div>
 <div class="line"><span class="lineno">  233</span> </div>
 <div class="line"><span class="lineno">  234</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(input_shape.rank() &lt;= 4);</div>
 <div class="line"><span class="lineno">  235</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.rank() &lt;= input_shape.rank());</div>

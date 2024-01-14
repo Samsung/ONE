@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('_detection_post_process_layer_8cc_sour
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_boxes; ++i)</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keyword">auto</span> anchor = anchors.<a class="code hl_function" href="classndarray_1_1_array.html#a2bc41e2ef5db1269e4bbe63b2d3a2990">at</a>(i);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;anchor = anchors.<a class="code hl_function" href="classndarray_1_1_array.html#a2bc41e2ef5db1269e4bbe63b2d3a2990">at</a>(i);</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keyword">auto</span> &amp;box = decoded_boxes_a.at(i);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keywordtype">float</span> yc = in_boxes.at(i).y / scales.y * anchor.h + anchor.y;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="keywordtype">float</span> xc = in_boxes.at(i).x / scales.x * anchor.w + anchor.x;</div>
@@ -215,7 +215,7 @@ $(document).ready(function(){initNavTree('_detection_post_process_layer_8cc_sour
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      assert(box.y2 &gt; box.y1);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">auto</span> decoded_boxes_a_shape = decoded_boxes_a.shape();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;decoded_boxes_a_shape = decoded_boxes_a.shape();</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> array_cast&lt;const CornerBox&gt;(std::move(decoded_boxes_a), decoded_boxes_a_shape);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>

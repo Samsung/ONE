@@ -153,12 +153,12 @@ Functions</h2></td></tr>
 <tr class="separator:aaca940dbd0cd08c93b1d5894ac31f426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa07a0978c17cee0f44ae9aa25fae385"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">disableDimCorrection</a> (<a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html">IACLTensor</a> *tensor)</td></tr>
 <tr class="separator:afa07a0978c17cee0f44ae9aa25fae385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb97e78443f052c20d3ceeed46492cac"><td class="memTemplParams" colspan="2">template&lt;typename Layer , typename... Args&gt; </td></tr>
-<tr class="memitem:adb97e78443f052c20d3ceeed46492cac"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; arm_compute::IFunction &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#adb97e78443f052c20d3ceeed46492cac">generateLayer</a> (Args &amp;&amp;... args)</td></tr>
-<tr class="separator:adb97e78443f052c20d3ceeed46492cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b067dc344b14fbb1ddfec6b2c0b48eb"><td class="memTemplParams" colspan="2">template&lt;typename Layer , typename... Args&gt; </td></tr>
-<tr class="memitem:a0b067dc344b14fbb1ddfec6b2c0b48eb"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; arm_compute::IFunction &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#a0b067dc344b14fbb1ddfec6b2c0b48eb">generateLayer</a> (std::shared_ptr&lt; arm_compute::IMemoryManager &gt; memory_manager, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a0b067dc344b14fbb1ddfec6b2c0b48eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f91a1cc75de110a46e0c20fe3574d8f"><td class="memTemplParams" colspan="2">template&lt;typename Layer , typename... Args&gt; </td></tr>
+<tr class="memitem:a5f91a1cc75de110a46e0c20fe3574d8f"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; arm_compute::IFunction &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#a5f91a1cc75de110a46e0c20fe3574d8f">generateLayer</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a5f91a1cc75de110a46e0c20fe3574d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae01b9cf5c91395b526c4a308b186936a"><td class="memTemplParams" colspan="2">template&lt;typename Layer , typename... Args&gt; </td></tr>
+<tr class="memitem:ae01b9cf5c91395b526c4a308b186936a"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; arm_compute::IFunction &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#ae01b9cf5c91395b526c4a308b186936a">generateLayer</a> (std::shared_ptr&lt; arm_compute::IMemoryManager &gt; memory_manager, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:ae01b9cf5c91395b526c4a308b186936a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28534c23a8eb620c02fa2176f9f356a2"><td class="memTemplParams" colspan="2">template&lt;typename T_FunctionWrapper , typename T_Tensor , typename T_ACLLayer , typename T_TensorRegistry &gt; </td></tr>
 <tr class="memitem:a28534c23a8eb620c02fa2176f9f356a2"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_function.html">exec::IFunction</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1acl__common.html#a28534c23a8eb620c02fa2176f9f356a2">kernelGenLSTM</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_l_s_t_m.html">ir::operation::LSTM</a> &amp;node, const <a class="el" href="classonert_1_1ir_1_1_operands.html">ir::Operands</a> &amp;operands, const std::shared_ptr&lt; T_TensorRegistry &gt; &amp;tensor_reg)</td></tr>
 <tr class="separator:a28534c23a8eb620c02fa2176f9f356a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1224,8 +1224,8 @@ template&lt;typename T_MemoryManager , typename T_PoolManager , typename T_Lifet
 </div><!-- fragment -->
 </div>
 </div>
-<a id="adb97e78443f052c20d3ceeed46492cac" name="adb97e78443f052c20d3ceeed46492cac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb97e78443f052c20d3ceeed46492cac">&#9670;&#160;</a></span>generateLayer() <span class="overload">[1/2]</span></h2>
+<a id="a5f91a1cc75de110a46e0c20fe3574d8f" name="a5f91a1cc75de110a46e0c20fe3574d8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f91a1cc75de110a46e0c20fe3574d8f">&#9670;&#160;</a></span>generateLayer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1253,8 +1253,8 @@ template&lt;typename Layer , typename... Args&gt; </div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a0b067dc344b14fbb1ddfec6b2c0b48eb" name="a0b067dc344b14fbb1ddfec6b2c0b48eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b067dc344b14fbb1ddfec6b2c0b48eb">&#9670;&#160;</a></span>generateLayer() <span class="overload">[2/2]</span></h2>
+<a id="ae01b9cf5c91395b526c4a308b186936a" name="ae01b9cf5c91395b526c4a308b186936a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae01b9cf5c91395b526c4a308b186936a">&#9670;&#160;</a></span>generateLayer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

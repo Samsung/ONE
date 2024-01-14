@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('string__helpers_8h_source.html',''); i
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg&gt; <span class="keywordtype">void</span> _str(std::ostream &amp;os, Arg &amp;&amp;arg) { os &lt;&lt; std::forward&lt;Arg&gt;(arg); }</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg, <span class="keyword">typename</span>... Args&gt; <span class="keywordtype">void</span> _str(std::ostream &amp;os, Arg &amp;&amp;arg, Args &amp;&amp;... args)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Arg, <span class="keyword">typename</span>... Args&gt; <span class="keywordtype">void</span> _str(std::ostream &amp;os, Arg &amp;&amp;arg, Args &amp;&amp;...args)</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  _str(os, std::forward&lt;Arg&gt;(arg));</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  _str(os, std::forward&lt;Args&gt;(args)...);</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('string__helpers_8h_source.html',''); i
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">return</span> elems;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">   58</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt; std::string <a class="code hl_function" href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">str</a>(Args &amp;&amp;... args)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacennfw_1_1misc.html#a89f8c5b0515884b5971d433e4f184f29">   58</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt; std::string <a class="code hl_function" href="namespacennfw_1_1misc.html#a89f8c5b0515884b5971d433e4f184f29">str</a>(Args &amp;&amp;...args)</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>{</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  std::stringstream ss;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  _str(ss, std::forward&lt;Args&gt;(args)...);</div>
@@ -167,8 +167,8 @@ $(document).ready(function(){initNavTree('string__helpers_8h_source.html',''); i
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>} <span class="comment">// namespace misc</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="ttc" id="anamespacennfw_1_1misc_html_a36f85b0534626eeaea6d15897e571171"><div class="ttname"><a href="namespacennfw_1_1misc.html#a36f85b0534626eeaea6d15897e571171">nnfw::misc::str</a></div><div class="ttdeci">std::string str(Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00058">string_helpers.h:58</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_a61c7e738bcc4d89ec864577736cc0e8f"><div class="ttname"><a href="namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f">nnfw::misc::join</a></div><div class="ttdeci">std::string join(InputIt first, InputIt last, const std::string &amp;concat)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00065">string_helpers.h:65</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1misc_html_a89f8c5b0515884b5971d433e4f184f29"><div class="ttname"><a href="namespacennfw_1_1misc.html#a89f8c5b0515884b5971d433e4f184f29">nnfw::misc::str</a></div><div class="ttdeci">std::string str(Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00058">string_helpers.h:58</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1misc_html_af87ba1392e59046fb1899eff53629c24"><div class="ttname"><a href="namespacennfw_1_1misc.html#af87ba1392e59046fb1899eff53629c24">nnfw::misc::split</a></div><div class="ttdeci">std::vector&lt; std::string &gt; split(const std::string &amp;s, char delim)</div><div class="ttdef"><b>Definition:</b> <a href="string__helpers_8h_source.html#l00046">string_helpers.h:46</a></div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition:</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

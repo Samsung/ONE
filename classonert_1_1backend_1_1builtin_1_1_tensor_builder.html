@@ -278,7 +278,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (_tensor_info_map.find(ind) == _tensor_info_map.end()) <span class="comment">// Do not proceed for user tensors</span></div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_info = _tensor_info_map.at(ind);</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_info = _tensor_info_map.at(ind);</div>
 <div class="line"><span class="lineno">   61</span> </div>
 <div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ae50f3838fd20568bffa0d27236386284">nativeOwnTensorAt</a>(ind)-&gt;is_dynamic())</div>
 <div class="line"><span class="lineno">   63</span>  {</div>

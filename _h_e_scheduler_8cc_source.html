@@ -503,7 +503,7 @@ $(document).ready(function(){initNavTree('_h_e_scheduler_8cc_source.html',''); i
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>int64_t HEScheduler::backendAvailableTime(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend,</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>                                          <span class="keyword">const</span> int64_t &amp;starting_time, <span class="keyword">const</span> int64_t &amp;time_amount)</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>{</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backend_times = _backends_avail_time.at(backend);</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;backend_times = _backends_avail_time.at(backend);</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>  <span class="comment">// finishing and starting times of an op, that will come after current op</span></div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  <span class="keyword">auto</span> next_op_fst = backend_times.upper_bound(starting_time);</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>  <span class="comment">// finishing time of an op, that will come before current op</span></div>

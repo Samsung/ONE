@@ -131,8 +131,8 @@ $(document).ready(function(){initNavTree('train_2kernel_2_permute_layer_8cc_sour
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                           <span class="keyword">const</span> std::shared_ptr&lt;ExternalContext&gt; &amp;external_context)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  : builtin::kernel::<a class="code hl_class" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html">PermuteLayer</a>{src_tensors, dst_tensors, external_context},</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    _input_back_prop_tensors{input_back_prop_tensors},</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    _output_back_prop_tensors{output_back_prop_tensors}, _ignore_forward_in_training{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                                           ignore_forward_in_training}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    _output_back_prop_tensors{output_back_prop_tensors},</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    _ignore_forward_in_training{ignore_forward_in_training}</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  assert(input_back_prop_tensors.size() == output_back_prop_tensors.size());</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  assert(src_tensors.size() == dst_tensors.size());</div>

@@ -20,7 +20,6 @@ var nnfw__experimental_8h =
     ] ],
     [ "NNFW_TRAIN_LOSS_REDUCTION", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1", [
       [ "NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60", null ],
-      [ "NNFW_TRAIN_LOSS_REDUCTION_AUTO", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a55232d6b2b5e302679101b9ffc1e6bc5", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df", null ]
     ] ],

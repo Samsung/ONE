@@ -1207,7 +1207,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  105</span>  permute_def.object_def.data_type = DataType::FLOAT32;</div>
 <div class="line"><span class="lineno">  106</span>  permute_def.object_def.user_provided = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  <span class="keyword">auto</span> dims = permute_def.dimensions;</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dims = permute_def.dimensions;</div>
 <div class="line"><span class="lineno">  109</span>  <span class="keyword">const</span> BHWC shape(dims.b, dims.h, dims.w, dims.c);</div>
 <div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> TensorDescriptor desc{</div>
 <div class="line"><span class="lineno">  111</span>    permute_def.object_def.data_type,</div>
@@ -1343,7 +1343,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   60</span>  TensorObjectDef permute_def = input_def;</div>
 <div class="line"><span class="lineno">   61</span>  permute_def.object_def.object_type = ToObjectType(<a class="code hl_function" href="classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html#a2c6868d7cde4764003cfa21e238a5c62">handle</a>()-&gt;GetStorageType());</div>
 <div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>  <span class="keyword">auto</span> dims = permute_def.dimensions;</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dims = permute_def.dimensions;</div>
 <div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> BHWC shape(dims.b, dims.h, dims.w, dims.c);</div>
 <div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> TensorDescriptor desc{</div>
 <div class="line"><span class="lineno">   66</span>    permute_def.object_def.data_type,</div>

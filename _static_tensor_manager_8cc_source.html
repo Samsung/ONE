@@ -123,8 +123,8 @@ $(document).ready(function(){initNavTree('_static_tensor_manager_8cc_source.html
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_static_tensor_manager.html#ae4974a7f3f6862cf92ce30d94c113e02">   30</a></span><a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_static_tensor_manager.html#ae4974a7f3f6862cf92ce30d94c113e02">StaticTensorManager::StaticTensorManager</a>(<span class="keyword">const</span> std::shared_ptr&lt;TensorRegistry&gt; &amp;reg,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                         <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html">DynamicTensorManager</a> *dynamic_tensor_manager)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  : _nonconst_mgr{new <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html">MemoryManager</a>()}, _tensors{reg}, _dynamic_tensor_manager{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                                         dynamic_tensor_manager}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  : _nonconst_mgr{new <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html">MemoryManager</a>()}, _tensors{reg},</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    _dynamic_tensor_manager{dynamic_tensor_manager}</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
@@ -132,8 +132,8 @@ $(document).ready(function(){initNavTree('_static_tensor_manager_8cc_source.html
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_static_tensor_manager.html#adf59110a68a55ed7060e890297366aab">   38</a></span><a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_static_tensor_manager.html#ae4974a7f3f6862cf92ce30d94c113e02">StaticTensorManager::StaticTensorManager</a>(<span class="keyword">const</span> std::shared_ptr&lt;TensorRegistry&gt; &amp;reg,</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                                         <span class="keyword">const</span> std::string planner_id,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                                         <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html">DynamicTensorManager</a> *dynamic_tensor_manager)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  : _nonconst_mgr{new <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html">MemoryManager</a>(planner_id)}, _tensors{reg}, _dynamic_tensor_manager{</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                                                   dynamic_tensor_manager}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  : _nonconst_mgr{new <a class="code hl_class" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html">MemoryManager</a>(planner_id)}, _tensors{reg},</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    _dynamic_tensor_manager{dynamic_tensor_manager}</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>

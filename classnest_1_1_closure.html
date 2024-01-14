@@ -99,9 +99,9 @@ $(document).ready(function(){initNavTree('classnest_1_1_closure.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a352bb2ab8312bc453d00b2a9f620bf59"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
-<tr class="memitem:a352bb2ab8312bc453d00b2a9f620bf59"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classnest_1_1_closure.html#a352bb2ab8312bc453d00b2a9f620bf59">Closure</a> (const <a class="el" href="classnest_1_1_domain_i_d.html">DomainID</a> &amp;<a class="el" href="classnest_1_1_closure.html#a7c73de00d6a529f6e826463433829a94">id</a>, Args &amp;&amp;... indices)</td></tr>
-<tr class="separator:a352bb2ab8312bc453d00b2a9f620bf59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a3d326d50fca63fefde7d802da69ed"><td class="memTemplParams" colspan="2">template&lt;typename... Args&gt; </td></tr>
+<tr class="memitem:a05a3d326d50fca63fefde7d802da69ed"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classnest_1_1_closure.html#a05a3d326d50fca63fefde7d802da69ed">Closure</a> (const <a class="el" href="classnest_1_1_domain_i_d.html">DomainID</a> &amp;<a class="el" href="classnest_1_1_closure.html#a7c73de00d6a529f6e826463433829a94">id</a>, Args &amp;&amp;...indices)</td></tr>
+<tr class="separator:a05a3d326d50fca63fefde7d802da69ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a028a4f33664bd53300c136b7c109f46e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnest_1_1_closure.html#a028a4f33664bd53300c136b7c109f46e">operator Expr</a> () const</td></tr>
 <tr class="separator:a028a4f33664bd53300c136b7c109f46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c73de00d6a529f6e826463433829a94"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classnest_1_1_domain_i_d.html">DomainID</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnest_1_1_closure.html#a7c73de00d6a529f6e826463433829a94">id</a> (void) const</td></tr>
@@ -113,8 +113,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_closure_8h_source.html#l00026">26</a> of file <a class="el" href="_closure_8h_source.html">Closure.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a352bb2ab8312bc453d00b2a9f620bf59" name="a352bb2ab8312bc453d00b2a9f620bf59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a352bb2ab8312bc453d00b2a9f620bf59">&#9670;&#160;</a></span>Closure()</h2>
+<a id="a05a3d326d50fca63fefde7d802da69ed" name="a05a3d326d50fca63fefde7d802da69ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05a3d326d50fca63fefde7d802da69ed">&#9670;&#160;</a></span>Closure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,7 +150,7 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_closure_8h_source.html#l00030">30</a> of file <a class="el" href="_closure_8h_source.html">Closure.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>                                                  : _id{<span class="keywordtype">id</span>}, _sub{std::forward&lt;Args&gt;(indices)...}</div>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>                                                 : _id{<span class="keywordtype">id</span>}, _sub{std::forward&lt;Args&gt;(indices)...}</div>
 <div class="line"><span class="lineno">   31</span>  {</div>
 <div class="line"><span class="lineno">   32</span>    <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   33</span>  }</div>

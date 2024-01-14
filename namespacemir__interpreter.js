@@ -61,7 +61,7 @@ var namespacemir__interpreter =
     [ "DeConv2D", "namespacemir__interpreter.html#a5b5099a35ff519548f7e9dd4ffa774b1", null ],
     [ "DepthwiseConv2D", "namespacemir__interpreter.html#ae9a23d6ef7d8535ff8cd4d149807d037", null ],
     [ "Dequantize", "namespacemir__interpreter.html#af631852d7b741aa30b1e283a3287a614", null ],
-    [ "dispatch", "namespacemir__interpreter.html#a05cb86d29764ec2c12aafa1629df379f", null ],
+    [ "dispatch", "namespacemir__interpreter.html#aec740fd1f6e7bcfaa1f7aada300705ab", null ],
     [ "Div", "namespacemir__interpreter.html#ad07dcb4b3918eef672bb43b978646cbf", null ],
     [ "ELU", "namespacemir__interpreter.html#abfc0a12039df388f4ef7f38f563ccdd5", null ],
     [ "Equal", "namespacemir__interpreter.html#a9bd86b4ec9a896dd31e1695d52accfdf", null ],

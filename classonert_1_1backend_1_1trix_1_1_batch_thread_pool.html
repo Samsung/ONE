@@ -106,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2fff37165b9304fc15e9bcaa053d5fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae560f524d80067144683b048f0cca161"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html#ae560f524d80067144683b048f0cca161">~BatchThreadPool</a> ()</td></tr>
 <tr class="separator:ae560f524d80067144683b048f0cca161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cbd8eaeb2b2e1a5a1f1b050d680163d"><td class="memTemplParams" colspan="2">template&lt;class F , class... Args&gt; </td></tr>
-<tr class="memitem:a0cbd8eaeb2b2e1a5a1f1b050d680163d"><td class="memTemplItemLeft" align="right" valign="top">std::future&lt; typename std::result_of&lt; F(uint32_t, Args...)&gt;::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html#a0cbd8eaeb2b2e1a5a1f1b050d680163d">enqueueJob</a> (F &amp;&amp;f, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a0cbd8eaeb2b2e1a5a1f1b050d680163d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1208c9acd3431f943d6afc529e877fe3"><td class="memTemplParams" colspan="2">template&lt;class F , class... Args&gt; </td></tr>
+<tr class="memitem:a1208c9acd3431f943d6afc529e877fe3"><td class="memTemplItemLeft" align="right" valign="top">std::future&lt; typename std::result_of&lt; F(uint32_t, Args...)&gt;::type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html#a1208c9acd3431f943d6afc529e877fe3">enqueueJob</a> (F &amp;&amp;f, Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a1208c9acd3431f943d6afc529e877fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class that has a threadpool for batch-by-batch multi-threading. </p>
@@ -172,8 +172,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0cbd8eaeb2b2e1a5a1f1b050d680163d" name="a0cbd8eaeb2b2e1a5a1f1b050d680163d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cbd8eaeb2b2e1a5a1f1b050d680163d">&#9670;&#160;</a></span>enqueueJob()</h2>
+<a id="a1208c9acd3431f943d6afc529e877fe3" name="a1208c9acd3431f943d6afc529e877fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1208c9acd3431f943d6afc529e877fe3">&#9670;&#160;</a></span>enqueueJob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,27 +224,27 @@ template&lt;class F , class... Args&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>std::future&lt;typename std::result_of&lt;F(uint32_t, Args...)&gt;::type&gt; </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8h_source.html#l00056">56</a> of file <a class="el" href="_batch_thread_pool_8h_source.html">BatchThreadPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (_stop_all)</div>
-<div class="line"><span class="lineno">   60</span>    {</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Stop all threads in BatchThreadPool&quot;</span>);</div>
-<div class="line"><span class="lineno">   62</span>    }</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    <span class="keyword">using </span>return_type = <span class="keyword">typename</span> std::result_of&lt;F(uint32_t, Args...)&gt;::type;</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span> job = std::make_shared&lt;std::packaged_task&lt;return_type(uint32_t)&gt;&gt;(</div>
-<div class="line"><span class="lineno">   66</span>      std::bind(std::forward&lt;F&gt;(f), std::placeholders::_1, std::forward&lt;Args&gt;(args)...));</div>
-<div class="line"><span class="lineno">   67</span>    std::future&lt;return_type&gt; job_result_future = job-&gt;get_future();</div>
-<div class="line"><span class="lineno">   68</span>    {</div>
-<div class="line"><span class="lineno">   69</span>      <span class="comment">// Push job in the assigned queue</span></div>
-<div class="line"><span class="lineno">   70</span>      std::lock_guard&lt;std::mutex&gt; lock(_m_job_queue);</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>      <span class="comment">// Push job</span></div>
-<div class="line"><span class="lineno">   73</span>      _job_queue.push([job](uint32_t thread_num) { (*job)(thread_num); });</div>
-<div class="line"><span class="lineno">   74</span>    }</div>
-<div class="line"><span class="lineno">   75</span>    _cv_job_queue.notify_one();</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> job_result_future;</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (_stop_all)</div>
+<div class="line"><span class="lineno">   59</span>    {</div>
+<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Stop all threads in BatchThreadPool&quot;</span>);</div>
+<div class="line"><span class="lineno">   61</span>    }</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="keyword">using </span>return_type = <span class="keyword">typename</span> std::result_of&lt;F(uint32_t, Args...)&gt;::type;</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keyword">auto</span> job = std::make_shared&lt;std::packaged_task&lt;return_type(uint32_t)&gt;&gt;(</div>
+<div class="line"><span class="lineno">   65</span>      std::bind(std::forward&lt;F&gt;(f), std::placeholders::_1, std::forward&lt;Args&gt;(args)...));</div>
+<div class="line"><span class="lineno">   66</span>    std::future&lt;return_type&gt; job_result_future = job-&gt;get_future();</div>
+<div class="line"><span class="lineno">   67</span>    {</div>
+<div class="line"><span class="lineno">   68</span>      <span class="comment">// Push job in the assigned queue</span></div>
+<div class="line"><span class="lineno">   69</span>      std::lock_guard&lt;std::mutex&gt; lock(_m_job_queue);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>      <span class="comment">// Push job</span></div>
+<div class="line"><span class="lineno">   72</span>      _job_queue.push([job](uint32_t thread_num) { (*job)(thread_num); });</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
+<div class="line"><span class="lineno">   74</span>    _cv_job_queue.notify_one();</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> job_result_future;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

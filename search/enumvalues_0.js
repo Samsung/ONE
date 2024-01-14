@@ -215,7 +215,7 @@ var searchData=
   ['any_212',['ANY',['../classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a8e1bde3c3d303163521522cf1d62f21f',1,'onert::ir::operation::Reduce']]],
   ['argmax_213',['argMax',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a74bc1b36d76c1a58ae42b2864a83e596',1,'mir_caffe']]],
   ['assign_214',['assign',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a4de8aa8803f1d41cf317eb0eadc2eb3c',1,'nnc']]],
-  ['auto_215',['Auto',['../classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a7699d45117db27338191cc266f18c05b',1,'mpqsolver::bisection::BisectionSolver::Auto()'],['../namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da06b9281e396db002010bde1de57262eb',1,'onert::ir::train::Auto()']]],
+  ['auto_215',['Auto',['../classmpqsolver_1_1bisection_1_1_bisection_solver.html#a1a63b99de33ce524cbc339ae545caf46a7699d45117db27338191cc266f18c05b',1,'mpqsolver::bisection::BisectionSolver']]],
   ['average_5fpool_5f2d_216',['AVERAGE_POOL_2D',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a528a0a88b19c607886f05015973211d6',1,'OperationType.h']]],
   ['averagepool_217',['averagePool',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8ab7c44fe6bf20c90deeeb0e3a812b5667',1,'mir_caffe2']]],
   ['avg_218',['AVG',['../classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a',1,'onert::ir::operation::Pool2D']]],

@@ -258,30 +258,29 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   87</span>      <span class="keyword">const</span> <span class="keyword">auto</span> op_layout = op_li-&gt;layout();</div>
 <div class="line"><span class="lineno">   88</span>      <span class="keyword">const</span> backend::Backend *backend = op_li-&gt;backend();</div>
 <div class="line"><span class="lineno">   89</span>      assert(backend);</div>
-<div class="line"><span class="lineno">   90</span>      <span class="keyword">auto</span> use_node_inputs = operation.getInputs();</div>
-<div class="line"><span class="lineno">   91</span>      assert(use_node_inputs.contains(index));</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>      <span class="keyword">auto</span> new_index = factor_to_index.at({backend, op_layout});</div>
-<div class="line"><span class="lineno">   94</span>      <span class="keywordflow">if</span> (index != new_index)</div>
-<div class="line"><span class="lineno">   95</span>      {</div>
-<div class="line"><span class="lineno">   96</span>        <span class="comment">// Update from operation</span></div>
-<div class="line"><span class="lineno">   97</span>        <span class="comment">// Replace the same inputs of an operation at once for the following reasons:</span></div>
-<div class="line"><span class="lineno">   98</span>        <span class="comment">// No. 2 and 3 above</span></div>
-<div class="line"><span class="lineno">   99</span>        operation.replaceInputs(index, new_index);</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>        <span class="comment">// Update from operand</span></div>
-<div class="line"><span class="lineno">  102</span>        remove_list.push_back(</div>
-<div class="line"><span class="lineno">  103</span>          use); <span class="comment">// Removal should be done in another loop since we are in the loop</span></div>
-<div class="line"><span class="lineno">  104</span>        <a class="code hl_variable" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a4dc6ceb0842c58f3caaa1bd16cd4b978">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(new_index).insertUse(use);</div>
-<div class="line"><span class="lineno">  105</span>      }</div>
-<div class="line"><span class="lineno">  106</span>    }</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;operation_index : remove_list)</div>
-<div class="line"><span class="lineno">  109</span>    {</div>
-<div class="line"><span class="lineno">  110</span>      <span class="keywordtype">object</span>.removeUse(operation_index);</div>
-<div class="line"><span class="lineno">  111</span>    }</div>
-<div class="line"><span class="lineno">  112</span>  }</div>
-<div class="line"><span class="lineno">  113</span>}</div>
+<div class="line"><span class="lineno">   90</span>      assert(operation.getInputs().contains(index));</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>      <span class="keyword">auto</span> new_index = factor_to_index.at({backend, op_layout});</div>
+<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">if</span> (index != new_index)</div>
+<div class="line"><span class="lineno">   94</span>      {</div>
+<div class="line"><span class="lineno">   95</span>        <span class="comment">// Update from operation</span></div>
+<div class="line"><span class="lineno">   96</span>        <span class="comment">// Replace the same inputs of an operation at once for the following reasons:</span></div>
+<div class="line"><span class="lineno">   97</span>        <span class="comment">// No. 2 and 3 above</span></div>
+<div class="line"><span class="lineno">   98</span>        operation.replaceInputs(index, new_index);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>        <span class="comment">// Update from operand</span></div>
+<div class="line"><span class="lineno">  101</span>        remove_list.push_back(</div>
+<div class="line"><span class="lineno">  102</span>          use); <span class="comment">// Removal should be done in another loop since we are in the loop</span></div>
+<div class="line"><span class="lineno">  103</span>        <a class="code hl_variable" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a4dc6ceb0842c58f3caaa1bd16cd4b978">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(new_index).insertUse(use);</div>
+<div class="line"><span class="lineno">  104</span>      }</div>
+<div class="line"><span class="lineno">  105</span>    }</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;operation_index : remove_list)</div>
+<div class="line"><span class="lineno">  108</span>    {</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordtype">object</span>.removeUse(operation_index);</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>  }</div>
+<div class="line"><span class="lineno">  112</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_lowered_operand_pass_html_ac36645714328db83618311d33e49284e"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html#ac36645714328db83618311d33e49284e">onert::compiler::pass::LoweredOperandPass::_lowered_graph</a></div><div class="ttdeci">compiler::ILoweredGraph &amp; _lowered_graph</div><div class="ttdef"><b>Definition:</b> <a href="_lowered_operand_pass_8h_source.html#l00045">LoweredOperandPass.h:45</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_html_a4dc6ceb0842c58f3caaa1bd16cd4b978"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass.html#a4dc6ceb0842c58f3caaa1bd16cd4b978">onert::compiler::pass::Pass::_graph</a></div><div class="ttdeci">ir::Graph &amp; _graph</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00050">Pass.h:50</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aa6d6d361a7ebe1452e55d8789d6f36f7"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">onert::ir::Graph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">Graph.h:113</a></div></div>

@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('core_2src_2backend_2basic_2_tensor_bui
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#aeaac3efa19acb78718bcdd8bde09dc2e">   62</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#aeaac3efa19acb78718bcdd8bde09dc2e">TensorBuilder::notifyFirstUse</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind)</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_info = _tensor_info_map.at(ind);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_info = _tensor_info_map.at(ind);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>

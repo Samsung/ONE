@@ -1,13 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"_float_squared_difference_kernel_8h.html#ace9e3fb9c5360a390ecd8c51e7e81d69":[36,0,3,4,0,0,1,74,0,4],
-"_float_squared_difference_kernel_8h.html#ad32d7c8d34dd320a8f6bdb58708207aa":[36,0,3,4,0,0,1,74,0,3],
-"_float_squared_difference_kernel_8h_source.html":[36,0,3,4,0,0,1,74,0],
-"_float_squeeze_kernel_8h.html":[36,0,3,4,0,0,1,75,0],
-"_float_squeeze_kernel_8h.html#a184b210474370bfad2570c34491f0c9c":[36,0,3,4,0,0,1,75,0,4],
-"_float_squeeze_kernel_8h.html#a1c5d7b8e58657f62706da45c304bfb47":[36,0,3,4,0,0,1,75,0,2],
-"_float_squeeze_kernel_8h.html#a47f38ad04bdec0f49fd11565e150f978":[36,0,3,4,0,0,1,75,0,6],
-"_float_squeeze_kernel_8h.html#a5ba21cf1a1a43093a9220891f9ead415":[36,0,3,4,0,0,1,75,0,1],
 "_float_squeeze_kernel_8h.html#ad6ac478c9ad0d5810627218fa50561cd":[36,0,3,4,0,0,1,75,0,5],
 "_float_squeeze_kernel_8h.html#aeb76f4a6e5f3447010506cd79a91740d":[36,0,3,4,0,0,1,75,0,3],
 "_float_squeeze_kernel_8h_source.html":[36,0,3,4,0,0,1,75,0],
@@ -249,5 +241,13 @@ var NAVTREEINDEX12 =
 "_fuse_p_relu_pass_8h.html":[36,0,0,52,7,0,0,0,35],
 "_fuse_p_relu_pass_8h_source.html":[36,0,0,52,7,0,0,0,35],
 "_fuse_pre_activation_batch_norm_pass_8cpp.html":[36,0,0,52,7,1,41],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[36,0,0,52,7,1,41,0]
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[36,0,0,52,7,1,41,0],
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#aa86d64f893f58edeff3a15b2e82ae9e8":[36,0,0,52,7,1,41,2],
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#ab46996da8c5c407bc43ef70e0ae4e955":[36,0,0,52,7,1,41,3],
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#ac0e231ce93ce072850190c6787d5c3ee":[36,0,0,52,7,1,41,1],
+"_fuse_pre_activation_batch_norm_pass_8cpp_source.html":[36,0,0,52,7,1,41],
+"_fuse_pre_activation_batch_norm_pass_8h.html":[36,0,0,52,7,0,0,0,34],
+"_fuse_pre_activation_batch_norm_pass_8h_source.html":[36,0,0,52,7,0,0,0,34],
+"_fuse_pre_activation_batch_norm_pass_internal_8h.html":[36,0,0,52,7,1,42],
+"_fuse_pre_activation_batch_norm_pass_internal_8h.html#a1d061913b6426cbfc3a74cf8f7bd2545":[36,0,0,52,7,1,42,0]
 };

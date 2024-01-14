@@ -125,6 +125,10 @@ Macros</h2></td></tr>
 <tr class="separator:aa34e3d11287d2717ced5899f8e48f983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed861bfa370db79dd4bd632479cb515f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a>(METHOD)</td></tr>
 <tr class="separator:aed861bfa370db79dd4bd632479cb515f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38cf9e54a19fff300e25fe6c76926555"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#a38cf9e54a19fff300e25fe6c76926555">MEASURE_TIME_START</a>(name)</td></tr>
+<tr class="separator:a38cf9e54a19fff300e25fe6c76926555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aa970765b566e155b23c4249f5cd85c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#a6aa970765b566e155b23c4249f5cd85c">MEASURE_TIME_END</a>(name)</td></tr>
+<tr class="separator:a6aa970765b566e155b23c4249f5cd85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -132,6 +136,58 @@ Functions</h2></td></tr>
 <tr class="separator:ab82c05096fcf69c9faefe23e6fd230b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a6aa970765b566e155b23c4249f5cd85c" name="a6aa970765b566e155b23c4249f5cd85c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aa970765b566e155b23c4249f5cd85c">&#9670;&#160;</a></span>MEASURE_TIME_END</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MEASURE_TIME_END</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">auto</span> end_##name = std::chrono::steady_clock::now();                               \</div>
+<div class="line">  <span class="keyword">auto</span> dur_##name =                                                                 \</div>
+<div class="line">    std::chrono::duration_cast&lt;std::chrono::microseconds&gt;(end_##name - beg_##name); \</div>
+<div class="line">  if (::onert::util::logging::ctx.enabled())                                        \</div>
+<div class="line">    std::cout &lt;&lt; <a class="code hl_function" href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">::onert::util::logging::decorated_name</a>(__func__) &lt;&lt; #name          \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot; time = &quot;</span> &lt;&lt; dur_##name.count() &lt;&lt; std::endl;                     \</div>
+<div class="line">  }                                                                                 \</div>
+<div class="line">  while (0)</div>
+<div class="ttc" id="anamespaceonert_1_1util_1_1logging_html_ab82c05096fcf69c9faefe23e6fd230b5"><div class="ttname"><a href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">onert::util::logging::decorated_name</a></div><div class="ttdeci">std::string decorated_name(const char *input)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00056">logging.h:56</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00091">91</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+
+</div>
+</div>
+<a id="a38cf9e54a19fff300e25fe6c76926555" name="a38cf9e54a19fff300e25fe6c76926555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38cf9e54a19fff300e25fe6c76926555">&#9670;&#160;</a></span>MEASURE_TIME_START</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MEASURE_TIME_START</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">do</span>                             \</div>
+<div class="line">  {                              \</div>
+<div class="line">  <span class="keyword">auto</span> beg_##name = std::chrono::steady_clock::now()</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00086">86</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+
+</div>
+</div>
 <a id="aca0521fea514606c641e14a4c611b60d" name="aca0521fea514606c641e14a4c611b60d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aca0521fea514606c641e14a4c611b60d">&#9670;&#160;</a></span>VERBOSE</h2>
 
@@ -149,7 +205,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (::onert::util::logging::ctx.enabled()) \</div>
 <div class="line">  std::cout &lt;&lt; <a class="code hl_function" href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">::onert::util::logging::decorated_name</a>(#name)</div>
-<div class="ttc" id="anamespaceonert_1_1util_1_1logging_html_ab82c05096fcf69c9faefe23e6fd230b5"><div class="ttname"><a href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">onert::util::logging::decorated_name</a></div><div class="ttdeci">std::string decorated_name(const char *input)</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00056">logging.h:56</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00071">71</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 

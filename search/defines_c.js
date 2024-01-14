@@ -402,11 +402,13 @@ var searchData=
   ['mbed_5fstack_5fdump_5fenabled_399',['MBED_STACK_DUMP_ENABLED',['../mbed__config_8h.html#a9262b737582434a8964e6a05e1920752',1,'mbed_config.h']]],
   ['mbed_5ftrace_5fcolor_5ftheme_400',['MBED_TRACE_COLOR_THEME',['../mbed__config_8h.html#aeb35cf32d4d2c9044e051f81f629ec6f',1,'mbed_config.h']]],
   ['mbedtls_5fcipher_5fmode_5fctr_401',['MBEDTLS_CIPHER_MODE_CTR',['../mbed__config_8h.html#a5bc21fd94f62fae79688ad096ef5c2d8',1,'mbed_config.h']]],
-  ['mem_5falloc_402',['MEM_ALLOC',['../mbed__config_8h.html#a5bf10c8030a1e9fe6e177cfca6d995c6',1,'mbed_config.h']]],
-  ['mem_5ffree_403',['MEM_FREE',['../mbed__config_8h.html#a21f10b90cb8155283812fdfdd618eaa3',1,'mbed_config.h']]],
-  ['min_5fconst_5fvar_5fdef_404',['MIN_CONST_VAR_DEF',['../repeat_8h.html#ac059d94be1a167be33c57fa3af805821',1,'repeat.h']]],
-  ['mla_405',['MLA',['../activation__float__helpers_8h.html#a8df78bbafb6073319466ffe69a01931f',1,'activation_float_helpers.h']]],
-  ['mla_5fvar_5fwith_5fconst_5fvec_5fdef_406',['MLA_VAR_WITH_CONST_VEC_DEF',['../repeat_8h.html#a7e8e64b0ce4440786059b63459106467',1,'repeat.h']]],
-  ['multiply_5fby_5fquantized_5fmultiplier_407',['MULTIPLY_BY_QUANTIZED_MULTIPLIER',['../helpers__asymm_8h.html#ac05728fbe1ea6dbeebbd1b8e87a78b02',1,'helpers_asymm.h']]],
-  ['multiply_5fby_5fquantized_5fmultiplier_5fimpl_408',['MULTIPLY_BY_QUANTIZED_MULTIPLIER_IMPL',['../helpers__asymm_8h.html#a97dbfbc016c553b482f2664f2a5ded30',1,'helpers_asymm.h']]]
+  ['measure_5ftime_5fend_402',['MEASURE_TIME_END',['../runtime_2onert_2core_2include_2util_2_logging_8h.html#a6aa970765b566e155b23c4249f5cd85c',1,'logging.h']]],
+  ['measure_5ftime_5fstart_403',['MEASURE_TIME_START',['../runtime_2onert_2core_2include_2util_2_logging_8h.html#a38cf9e54a19fff300e25fe6c76926555',1,'logging.h']]],
+  ['mem_5falloc_404',['MEM_ALLOC',['../mbed__config_8h.html#a5bf10c8030a1e9fe6e177cfca6d995c6',1,'mbed_config.h']]],
+  ['mem_5ffree_405',['MEM_FREE',['../mbed__config_8h.html#a21f10b90cb8155283812fdfdd618eaa3',1,'mbed_config.h']]],
+  ['min_5fconst_5fvar_5fdef_406',['MIN_CONST_VAR_DEF',['../repeat_8h.html#ac059d94be1a167be33c57fa3af805821',1,'repeat.h']]],
+  ['mla_407',['MLA',['../activation__float__helpers_8h.html#a8df78bbafb6073319466ffe69a01931f',1,'activation_float_helpers.h']]],
+  ['mla_5fvar_5fwith_5fconst_5fvec_5fdef_408',['MLA_VAR_WITH_CONST_VEC_DEF',['../repeat_8h.html#a7e8e64b0ce4440786059b63459106467',1,'repeat.h']]],
+  ['multiply_5fby_5fquantized_5fmultiplier_409',['MULTIPLY_BY_QUANTIZED_MULTIPLIER',['../helpers__asymm_8h.html#ac05728fbe1ea6dbeebbd1b8e87a78b02',1,'helpers_asymm.h']]],
+  ['multiply_5fby_5fquantized_5fmultiplier_5fimpl_410',['MULTIPLY_BY_QUANTIZED_MULTIPLIER_IMPL',['../helpers__asymm_8h.html#a97dbfbc016c553b482f2664f2a5ded30',1,'helpers_asymm.h']]]
 ];

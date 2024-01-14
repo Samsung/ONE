@@ -174,13 +174,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (!_batch_bcast-&gt;IsValid())</div>
 <div class="line"><span class="lineno">   63</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span> x_reshaped = _batch_bcast-&gt;x_reshape();</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keyword">auto</span> y_reshaped = _batch_bcast-&gt;y_reshape();</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;x_reshaped = _batch_bcast-&gt;x_reshape();</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;y_reshaped = _batch_bcast-&gt;y_reshape();</div>
 <div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = _batch_bcast-&gt;output_shape();</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>    _x_batch_size = std::accumulate(x_reshaped.cbegin(), x_reshaped.cend(), INT32_C(1),</div>
 <div class="line"><span class="lineno">   70</span>                                    std::multiplies&lt;int32_t&gt;());</div>
-<div class="line"><span class="lineno">   71</span>    _y_batch_size = std::accumulate(x_reshaped.cbegin(), x_reshaped.cend(), INT32_C(1),</div>
+<div class="line"><span class="lineno">   71</span>    _y_batch_size = std::accumulate(y_reshaped.cbegin(), y_reshaped.cend(), INT32_C(1),</div>
 <div class="line"><span class="lineno">   72</span>                                    std::multiplies&lt;int32_t&gt;());</div>
 <div class="line"><span class="lineno">   73</span>    _output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a3eb902ab9d3bade541a06bb4320d14b3">ReplaceWith</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.size(), <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.data());</div>
 <div class="line"><span class="lineno">   74</span>    _output_batch_size = _output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>

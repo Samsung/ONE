@@ -214,42 +214,42 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a975bc5e9a469c3c53dbf9b73fc350aa7">onert::backend::basic::KernelGeneratorBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="backend_2xnnpack_2_kernel_generator_8cc_source.html#l00052">52</a> of file <a class="el" href="backend_2xnnpack_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::FunctionSequence&gt;();</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>  assert(_tensor_builder-&gt;dynamicTensorManager());</div>
-<div class="line"><span class="lineno">   57</span>  assert(_tensor_reg);</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>  <span class="comment">// Prepare to handle dynamic tensors later</span></div>
-<div class="line"><span class="lineno">   60</span>  <span class="keyword">auto</span> dyn_ctx = std::make_shared&lt;exec::FunctionSequence::DynamicTensorCtx&gt;();</div>
-<div class="line"><span class="lineno">   61</span>  {</div>
-<div class="line"><span class="lineno">   62</span>    dyn_ctx-&gt;op = &amp;_operations_ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
-<div class="line"><span class="lineno">   63</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_ctx, _tensor_reg);</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="line"><span class="lineno">   65</span>  ret-&gt;dynamic_tensor_ctx(dyn_ctx);</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a29cddc54b65af74bb49a7179bbf24b7e">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
-<div class="line"><span class="lineno">   68</span>  op.accept(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   69</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a>); <span class="comment">// _return_fn must have been generated</span></div>
-<div class="line"><span class="lineno">   70</span>  ret-&gt;append(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a>));</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : (op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>) + op.getOutputs())</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keyword">auto</span> portable_tensor = _tensor_reg-&gt;getPortableTensor(ind);</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> (portable_tensor)</div>
-<div class="line"><span class="lineno">   76</span>    {</div>
-<div class="line"><span class="lineno">   77</span>      assert(portable_tensor-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">   78</span>    }</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_reg-&gt;getNativeTensor(ind);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (tensor)</div>
-<div class="line"><span class="lineno">   82</span>    {</div>
-<div class="line"><span class="lineno">   83</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;increase_ref();</div>
-<div class="line"><span class="lineno">   84</span>    }</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   87</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2xnnpack_2_kernel_generator_8cc_source.html#l00051">51</a> of file <a class="el" href="backend_2xnnpack_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::FunctionSequence&gt;();</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  assert(_tensor_builder-&gt;dynamicTensorManager());</div>
+<div class="line"><span class="lineno">   56</span>  assert(_tensor_reg);</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  <span class="comment">// Prepare to handle dynamic tensors later</span></div>
+<div class="line"><span class="lineno">   59</span>  <span class="keyword">auto</span> dyn_ctx = std::make_shared&lt;exec::FunctionSequence::DynamicTensorCtx&gt;();</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    dyn_ctx-&gt;op = &amp;_operations_ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
+<div class="line"><span class="lineno">   62</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_ctx, _tensor_reg);</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span>  ret-&gt;dynamic_tensor_ctx(dyn_ctx);</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a29cddc54b65af74bb49a7179bbf24b7e">_graph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
+<div class="line"><span class="lineno">   67</span>  op.accept(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   68</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a>); <span class="comment">// _return_fn must have been generated</span></div>
+<div class="line"><span class="lineno">   69</span>  ret-&gt;append(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a>));</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : (op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>) + op.getOutputs())</div>
+<div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> portable_tensor = _tensor_reg-&gt;getPortableTensor(ind);</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (portable_tensor)</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      assert(portable_tensor-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
+<div class="line"><span class="lineno">   77</span>    }</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_reg-&gt;getNativeTensor(ind);</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (tensor)</div>
+<div class="line"><span class="lineno">   81</span>    {</div>
+<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;increase_ref();</div>
+<div class="line"><span class="lineno">   83</span>    }</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   86</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_kernel_generator_base_html_a0641657bea8e14881f1ed6e604ee7e19"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">onert::backend::basic::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::IFunction &gt; _return_fn</div><div class="ttdef"><b>Definition:</b> <a href="basic_2_kernel_generator_base_8h_source.html#l00064">KernelGeneratorBase.h:64</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_kernel_generator_base_html_a29cddc54b65af74bb49a7179bbf24b7e"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a29cddc54b65af74bb49a7179bbf24b7e">onert::backend::basic::KernelGeneratorBase::_graph</a></div><div class="ttdeci">const ir::Graph &amp; _graph</div><div class="ttdef"><b>Definition:</b> <a href="basic_2_kernel_generator_base_8h_source.html#l00063">KernelGeneratorBase.h:63</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">Graph.h:115</a></div></div>

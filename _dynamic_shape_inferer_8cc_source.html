@@ -517,11 +517,11 @@ $(document).ready(function(){initNavTree('_dynamic_shape_inferer_8cc_source.html
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  assert(dims_buf);</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dims_shape = shape-&gt;getShape();</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = ((dims_type == ir::DataType::INT32)</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                         ? shape_inference::inferFillShape&lt;int32_t&gt;(</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(dims_buf))</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                         : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                             dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = ((dims_type == ir::DataType::INT32)</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                                ? shape_inference::inferFillShape&lt;int32_t&gt;(</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                                    dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(dims_buf))</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                                : shape_inference::inferFillShape&lt;int64_t&gt;(</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                                    dims_shape, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int64_t *<span class="keyword">&gt;</span>(dims_buf)));</div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span> </div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  output-&gt;applyShape(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>  assert(output-&gt;buffer() != <span class="keyword">nullptr</span>);</div>

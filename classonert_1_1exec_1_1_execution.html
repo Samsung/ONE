@@ -674,7 +674,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00048">48</a> of file <a class="el" href="core_2src_2exec_2execution_8cc_source.html">Execution.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = _executors-&gt;inputInfo(index);</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = _executors-&gt;inputInfo(index);</div>
 <div class="line"><span class="lineno">   52</span> </div>
 <div class="line"><span class="lineno">   53</span>  <span class="comment">// TODO handle when (!buffer &amp;&amp; length != 0) : setting the input as an optional tensor</span></div>
 <div class="line"><span class="lineno">   54</span> </div>
@@ -813,7 +813,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00102">102</a> of file <a class="el" href="core_2src_2exec_2execution_8cc_source.html">Execution.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ab39b4dc8b653dfd21ca6a837a7b140df">ir::OperandInfo::createStaticInfo</a>(shape, type);</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ab39b4dc8b653dfd21ca6a837a7b140df">ir::OperandInfo::createStaticInfo</a>(shape, type);</div>
 <div class="line"><span class="lineno">  106</span> </div>
 <div class="line"><span class="lineno">  107</span>  <span class="keywordflow">if</span> (length &lt; <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size())</div>
 <div class="line"><span class="lineno">  108</span>  {</div>
@@ -878,7 +878,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00089">89</a> of file <a class="el" href="core_2src_2exec_2execution_8cc_source.html">Execution.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = _executors-&gt;outputInfo(index);</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = _executors-&gt;outputInfo(index);</div>
 <div class="line"><span class="lineno">   92</span> </div>
 <div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (length &lt; <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.total_size())</div>
 <div class="line"><span class="lineno">   94</span>  {</div>

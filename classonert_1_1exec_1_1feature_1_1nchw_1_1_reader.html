@@ -217,12 +217,11 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>    : _shape{shape}, _strides{strides}, _ptr{<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(ptr)}, _len{len}</div>
 <div class="line"><span class="lineno">   43</span>  {</div>
 <div class="line"><span class="lineno">   44</span>    <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(len); <span class="comment">// Workaround for unused variable in release mode</span></div>
-<div class="line"><span class="lineno">   45</span>    assert(len == <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(strides.N != 0</div>
-<div class="line"><span class="lineno">   46</span>                                        ? shape.N * strides.N</div>
-<div class="line"><span class="lineno">   47</span>                                        : strides.C != 0 ? shape.C * strides.C</div>
-<div class="line"><span class="lineno">   48</span>                                                         : strides.H != 0 ? shape.H * strides.H</div>
-<div class="line"><span class="lineno">   49</span>                                                                          : shape.W * strides.W));</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   45</span>    assert(len == <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(strides.N != 0   ? shape.N * strides.N</div>
+<div class="line"><span class="lineno">   46</span>                                      : strides.C != 0 ? shape.C * strides.C</div>
+<div class="line"><span class="lineno">   47</span>                                      : strides.H != 0 ? shape.H * strides.H</div>
+<div class="line"><span class="lineno">   48</span>                                                       : shape.W * strides.W));</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00038">onert::ir::FeatureShape::C</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00039">onert::ir::FeatureShape::H</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00037">onert::ir::FeatureShape::N</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00040">onert::ir::FeatureShape::W</a>.</p>
@@ -255,23 +254,23 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>    : _ptr{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer() + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 0})}, _len{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size()}</div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">ir::Layout::NCHW</a>);</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> start_offset = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 0});</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> shape = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape();</div>
-<div class="line"><span class="lineno">   60</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34">W</a> = shape.dim(3) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 1}) - start_offset;</div>
-<div class="line"><span class="lineno">   61</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a39d33bf776c934f785e854645b8be413">H</a> = shape.dim(2) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 1, 0}) - start_offset;</div>
-<div class="line"><span class="lineno">   62</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a51755622a676f3e27edbb6b406a040b3">C</a> = shape.dim(1) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 1, 0, 0}) - start_offset;</div>
-<div class="line"><span class="lineno">   63</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#abf02d174c444c8c8607a226367eebab1">N</a> = shape.dim(0) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({1, 0, 0, 0}) - start_offset;</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34">W</a> = shape.dim(3);</div>
-<div class="line"><span class="lineno">   66</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a39d33bf776c934f785e854645b8be413">H</a> = shape.dim(2);</div>
-<div class="line"><span class="lineno">   67</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a51755622a676f3e27edbb6b406a040b3">C</a> = shape.dim(1);</div>
-<div class="line"><span class="lineno">   68</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#abf02d174c444c8c8607a226367eebab1">N</a> = shape.dim(0);</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>    : _ptr{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer() + <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 0})}, _len{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size()}</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;layout() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">ir::Layout::NCHW</a>);</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">const</span> <span class="keyword">auto</span> start_offset = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 0});</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> shape = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">   59</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34">W</a> = shape.dim(3) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 0, 1}) - start_offset;</div>
+<div class="line"><span class="lineno">   60</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a39d33bf776c934f785e854645b8be413">H</a> = shape.dim(2) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 0, 1, 0}) - start_offset;</div>
+<div class="line"><span class="lineno">   61</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a51755622a676f3e27edbb6b406a040b3">C</a> = shape.dim(1) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({0, 1, 0, 0}) - start_offset;</div>
+<div class="line"><span class="lineno">   62</span>    _strides.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#abf02d174c444c8c8607a226367eebab1">N</a> = shape.dim(0) == 1 ? 0 : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;calcOffset({1, 0, 0, 0}) - start_offset;</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#ab1fd4de58e6a8991b916c3c25b1b3b34">W</a> = shape.dim(3);</div>
+<div class="line"><span class="lineno">   65</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a39d33bf776c934f785e854645b8be413">H</a> = shape.dim(2);</div>
+<div class="line"><span class="lineno">   66</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#a51755622a676f3e27edbb6b406a040b3">C</a> = shape.dim(1);</div>
+<div class="line"><span class="lineno">   67</span>    _shape.<a class="code hl_variable" href="structonert_1_1ir_1_1_feature_shape.html#abf02d174c444c8c8607a226367eebab1">N</a> = shape.dim(0);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition:</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_feature_shape_html_a39d33bf776c934f785e854645b8be413"><div class="ttname"><a href="structonert_1_1ir_1_1_feature_shape.html#a39d33bf776c934f785e854645b8be413">onert::ir::FeatureShape::H</a></div><div class="ttdeci">int32_t H</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00039">Shape.h:39</a></div></div>
@@ -344,11 +343,11 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1feature_1_1_reader.html#a022fce3afb0b21da84b29945aaa2ce53">onert::exec::feature::Reader&lt; T &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00072">72</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">getRef</a>(batch, ch, row, col);</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1feature_1_1nchw_1_1_reader_html_a63963e3b5080059810c9104d0d93ae12"><div class="ttname"><a href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">onert::exec::feature::nchw::Reader::getRef</a></div><div class="ttdeci">const T &amp; getRef(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00079">Reader.h:79</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00071">71</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">getRef</a>(batch, ch, row, col);</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1feature_1_1nchw_1_1_reader_html_a63963e3b5080059810c9104d0d93ae12"><div class="ttname"><a href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">onert::exec::feature::nchw::Reader::getRef</a></div><div class="ttdeci">const T &amp; getRef(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const</div><div class="ttdef"><b>Definition:</b> <a href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00078">Reader.h:78</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -407,8 +406,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1feature_1_1_reader.html#a196216575737dd1178bda0c264e4826c">onert::exec::feature::Reader&lt; T &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00076">76</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">getRef</a>(0, ch, row, col); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00075">75</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html#a63963e3b5080059810c9104d0d93ae12">getRef</a>(0, ch, row, col); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -460,14 +459,14 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00079">79</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = feature_index_to_byte_offset(batch, ch, row, col);</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    <span class="keyword">const</span> T *ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(_ptr + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> *ptr;</div>
-<div class="line"><span class="lineno">   86</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html#l00078">78</a> of file <a class="el" href="runtime_2onert_2core_2src_2exec_2feature_2nchw_2_reader_8h_source.html">Reader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>  {</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = feature_index_to_byte_offset(batch, ch, row, col);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">const</span> T *ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(_ptr + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> *ptr;</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition:</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>

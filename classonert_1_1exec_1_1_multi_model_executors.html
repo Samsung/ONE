@@ -179,7 +179,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Class to gather executors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_multi_model_executors_8h_source.html#l00047">47</a> of file <a class="el" href="_multi_model_executors_8h_source.html">MultiModelExecutors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_multi_model_executors_8h_source.html#l00046">46</a> of file <a class="el" href="_multi_model_executors_8h_source.html">MultiModelExecutors.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac1fc90fa9109da1208ace71bd7d5bdf1" name="ac1fc90fa9109da1208ace71bd7d5bdf1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1fc90fa9109da1208ace71bd7d5bdf1">&#9670;&#160;</a></span>MultiModelExecutors() <span class="overload">[1/4]</span></h2>
@@ -231,17 +231,17 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_multi_model_executors_8h_source.html#l00051">51</a> of file <a class="el" href="_multi_model_executors_8h_source.html">MultiModelExecutors.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>    : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},</div>
-<div class="line"><span class="lineno">   53</span>      _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{<span class="keyword">false</span>},</div>
-<div class="line"><span class="lineno">   54</span>      _pkg_input_quant_layers{}, _pkg_output_quant_layers{}, _pkg_input_quant_tensors{},</div>
-<div class="line"><span class="lineno">   55</span>      _pkg_output_quant_tensors{}, _pkg_input_tensors{}, _pkg_output_tensors{}</div>
-<div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
-<div class="line"><span class="lineno">   58</span>    {</div>
-<div class="line"><span class="lineno">   59</span>      _edge_map[edge.from].emplace_back(edge.to);</div>
-<div class="line"><span class="lineno">   60</span>    }</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_multi_model_executors_8h_source.html#l00050">50</a> of file <a class="el" href="_multi_model_executors_8h_source.html">MultiModelExecutors.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>    : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},</div>
+<div class="line"><span class="lineno">   52</span>      _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{<span class="keyword">false</span>},</div>
+<div class="line"><span class="lineno">   53</span>      _pkg_input_quant_layers{}, _pkg_output_quant_layers{}, _pkg_input_quant_tensors{},</div>
+<div class="line"><span class="lineno">   54</span>      _pkg_output_quant_tensors{}, _pkg_input_tensors{}, _pkg_output_tensors{}</div>
+<div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;edge : _model_edges-&gt;edges)</div>
+<div class="line"><span class="lineno">   57</span>    {</div>
+<div class="line"><span class="lineno">   58</span>      _edge_map[edge.from].emplace_back(edge.to);</div>
+<div class="line"><span class="lineno">   59</span>    }</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

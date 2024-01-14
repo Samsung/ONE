@@ -403,7 +403,7 @@ template&lt;typename T_BackendContext &gt; </div>
 <div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (!tensor_builder-&gt;isRegistered(ind))</div>
 <div class="line"><span class="lineno">   64</span>    {</div>
 <div class="line"><span class="lineno">   65</span>      <span class="comment">// These tensors do not exist in any  (No use and def)</span></div>
-<div class="line"><span class="lineno">   66</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = obj.info();</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = obj.info();</div>
 <div class="line"><span class="lineno">   67</span>      <span class="comment">// NOTE Currently we only support NHWC tensors for cpu-common tensors.</span></div>
 <div class="line"><span class="lineno">   68</span>      <span class="comment">//      There is no way to get the layout info from the backend context for now.</span></div>
 <div class="line"><span class="lineno">   69</span>      <span class="comment">//      When we support NCHW tensors as well, we also need to change tensor info to be</span></div>

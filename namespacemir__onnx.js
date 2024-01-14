@@ -81,7 +81,7 @@ var namespacemir__onnx =
     [ "convertUpsampleV1", "namespacemir__onnx.html#a4acc647db060600e0a82013747ba057f", null ],
     [ "convertUpsampleV7", "namespacemir__onnx.html#a636e9901ac35385825a89bfbf29a66f9", null ],
     [ "convertUpsampleV9", "namespacemir__onnx.html#aa941bd75eab52a04833871634cb2f6df", null ],
-    [ "createOp", "namespacemir__onnx.html#aa031ae4047c1f6530f396b7ba2cbafb8", null ],
+    [ "createOp", "namespacemir__onnx.html#af2089e55b5ae1fd92ac917832c0aa357", null ],
     [ "createTensor", "namespacemir__onnx.html#a2977903f9fc760729f8c8b2dfe84be93", null ],
     [ "findAttribute", "namespacemir__onnx.html#a97ae4672ad1ac8c6003478142d1a6350", null ],
     [ "fixPads", "namespacemir__onnx.html#a0b7c4f194977e0f23816782df46f5583", null ],

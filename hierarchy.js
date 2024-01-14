@@ -1757,7 +1757,6 @@ var hierarchy =
     [ "cpu::kernels::CpuComparisonKernel", null, [
       [ "arm_compute::NEBinaryLogicalOperationKernel", "classarm__compute_1_1_n_e_binary_logical_operation_kernel.html", null ]
     ] ],
-    [ "benchmark::CsvWriter", "classbenchmark_1_1_csv_writer.html", null ],
     [ "luci_interpreter::CumSumParams", "structluci__interpreter_1_1_cum_sum_params.html", null ],
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", null ],
     [ "onert::backend::custom::CustomKernelConfigParams", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html", null ],
@@ -2378,7 +2377,6 @@ var hierarchy =
     [ "mir_interpreter::HardSwishImpl< T >", "structmir__interpreter_1_1_hard_swish_impl.html", null ],
     [ "mir_interpreter::HardSwishImpl< uint8_t >", "structmir__interpreter_1_1_hard_swish_impl_3_01uint8__t_01_4.html", null ],
     [ "luci::pass::Expression::Hash", "structluci_1_1pass_1_1_expression_1_1_hash.html", null ],
-    [ "std::hash< benchmark::PhaseEnum >", "structstd_1_1hash_3_01benchmark_1_1_phase_enum_01_4.html", null ],
     [ "std::hash< exo::circle_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1circle__detail_1_1_op_code_01_4.html", null ],
     [ "std::hash< exo::tflite_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4.html", null ],
     [ "std::hash< luci::OpCode >", "structstd_1_1hash_3_01luci_1_1_op_code_01_4.html", null ],
@@ -3255,7 +3253,6 @@ var hierarchy =
     [ "onert::backend::basic::MemoryManager", "classonert_1_1backend_1_1basic_1_1_memory_manager.html", null ],
     [ "onert::backend::gpu_cl::MemoryManager", "classonert_1_1backend_1_1gpu__cl_1_1_memory_manager.html", null ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
-    [ "benchmark::MemoryPoller", "classbenchmark_1_1_memory_poller.html", null ],
     [ "rua::MemoryService", "structrua_1_1_memory_service.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
     [ "flatbuffers::grpc::Message< T >", "classflatbuffers_1_1grpc_1_1_message.html", null ],
@@ -3515,8 +3512,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4524,7 +4521,6 @@ var hierarchy =
     [ "loco::PermutingEncoder< D >", "classloco_1_1_permuting_encoder.html", null ],
     [ "luci::PGroup", "structluci_1_1_p_group.html", null ],
     [ "luci::PGroups", "structluci_1_1_p_groups.html", null ],
-    [ "benchmark::Phase", "structbenchmark_1_1_phase.html", null ],
     [ "logo::PhaseEventInfo< E >", "structlogo_1_1_phase_event_info.html", null ],
     [ "logo::PhaseEventInfo< PhaseEvent::PassBegin >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_begin_01_4.html", null ],
     [ "logo::PhaseEventInfo< PhaseEvent::PassEnd >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_end_01_4.html", null ],
@@ -4537,7 +4533,6 @@ var hierarchy =
       [ "luci::ProgressReporter", "classluci_1_1_progress_reporter.html", null ],
       [ "moco::tf::ProgressReporter", "classmoco_1_1tf_1_1_progress_reporter.html", null ]
     ] ],
-    [ "benchmark::PhaseOption", "structbenchmark_1_1_phase_option.html", null ],
     [ "logo::PhaseRunner< S >", "classlogo_1_1_phase_runner.html", null ],
     [ "luci::PhaseRunner< S >", "classluci_1_1_phase_runner.html", null ],
     [ "logo::PhaseRunnerMixinObservable", "classlogo_1_1_phase_runner_mixin_observable.html", [
@@ -4546,7 +4541,6 @@ var hierarchy =
       [ "luci::PhaseRunner< logo::PhaseStrategy::Restart >", "classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html", null ],
       [ "luci::PhaseRunner< logo::PhaseStrategy::Saturate >", "classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_saturate_01_4.html", null ]
     ] ],
-    [ "benchmark::Phases", "classbenchmark_1_1_phases.html", null ],
     [ "nnfw::cker::random::PhiloxRandom", "classnnfw_1_1cker_1_1random_1_1_philox_random.html", null ],
     [ "enco::Pipeline", "classenco_1_1_pipeline.html", null ],
     [ "coco::PlainWeightContext< T >", "structcoco_1_1_plain_weight_context.html", null ],
@@ -4680,7 +4674,6 @@ var hierarchy =
     [ "nnfw::cker::ResizeBilinearParams", "structnnfw_1_1cker_1_1_resize_bilinear_params.html", null ],
     [ "luci_interpreter::ResizeNearestNeighborParams", "structluci__interpreter_1_1_resize_nearest_neighbor_params.html", null ],
     [ "luci_interpreter_pal::ResizeNearestNeighborParams", "structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html", null ],
-    [ "benchmark::Result", "classbenchmark_1_1_result.html", null ],
     [ "nest::Ret", "classnest_1_1_ret.html", null ],
     [ "ConstGenLayer::Return", "class_const_gen_layer_1_1_return.html", null ],
     [ "DepthwiseConv2DLayer::Return", "class_depthwise_conv2_d_layer_1_1_return.html", null ],
