@@ -40,8 +40,8 @@ template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T
     throw std::runtime_error("flat array is nullptr");
   }
 
-  std::vector<T> ret(flat_array->Length());
-  for (uint32_t i = 0; i < flat_array->Length(); i++)
+  std::vector<T> ret(flat_array->size());
+  for (uint32_t i = 0; i < flat_array->size(); i++)
   {
     ret[i] = flat_array->Get(i);
   }
