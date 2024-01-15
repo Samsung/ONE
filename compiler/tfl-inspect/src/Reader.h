@@ -28,8 +28,8 @@ namespace tflinspect
 
 template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
 {
-  std::vector<T> ret(flat_array->Length());
-  for (uint32_t i = 0; i < flat_array->Length(); i++)
+  std::vector<T> ret(flat_array->size());
+  for (uint32_t i = 0; i < flat_array->size(); i++)
   {
     ret[i] = flat_array->Get(i);
   }
@@ -60,7 +60,7 @@ public:
   const std::vector<int32_t> &inputs() const { return _inputs; }
   const std::vector<int32_t> &outputs() const { return _outputs; }
 
-  uint32_t num_subgraph() const { return _subgraphs->Length(); }
+  uint32_t num_subgraph() const { return _subgraphs->size(); }
 
   size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
   tflite::BuiltinOperator builtin_code(const tflite::Operator *op) const;

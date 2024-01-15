@@ -36,7 +36,7 @@ void DumpOperators::run(std::ostream &os, const tflite::Model *model)
     auto ops = reader.operators();
 
     // dump operators
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops->size(); ++i)
     {
       const auto op = ops->Get(i);
 
@@ -56,7 +56,7 @@ const tflite::Operator *operator_match_output(tflinspect::Reader &reader, const 
 {
   auto ops = reader.operators();
 
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t i = 0; i < ops->size(); ++i)
   {
     const auto op = ops->Get(i);
 
@@ -75,7 +75,7 @@ size_t tensor_buffer_size(tflinspect::Reader &reader, const int32_t tensor_id)
 {
   auto tensors = reader.tensors();
 
-  if (tensor_id < 0 || tensor_id >= tensors->Length())
+  if (tensor_id < 0 || tensor_id >= tensors->size())
   {
     throw std::runtime_error("Invalid Tensor ID");
   }
@@ -105,7 +105,7 @@ void DumpConv2DWeight::run(std::ostream &os, const tflite::Model *model)
     auto ops = reader.operators();
 
     // dump Conv2D, DepthwiseConv2D and its weight input operator
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops->size(); ++i)
     {
       const auto op = ops->Get(i);
       auto bc = reader.builtin_code(op);
@@ -159,7 +159,7 @@ void DumpOperatorVersion::run(std::ostream &os, const tflite::Model *model)
     auto ops = reader.operators();
 
     // dump Conv2D, DepthwiseConv2D and its weight input operator
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops->size(); ++i)
     {
       const auto op = ops->Get(i);
 
