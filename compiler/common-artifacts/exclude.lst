@@ -165,5 +165,6 @@ tcgenerate(ZerosLike_000)
 tcgenerate(BCQFullyConnected_000)
 tcgenerate(BCQFullyConnected_001)
 tcgenerate(BCQGather_000)
+tcgenerate(CircleGRU_000) # luci-interpreter does not support custom CircleGRU
 tcgenerate(InstanceNorm_000)
 tcgenerate(InstanceNorm_001)

@@ -617,10 +617,10 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  CircleGRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
-  CircleGRUOptions = 255,
 }
 
 union BuiltinOptions2{

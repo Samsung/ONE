@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CIRCLE_GRU_H__
-#define __CIRCLE_OP_CIRCLE_GRU_H__
+#ifndef __LUCI_FUSE_GRU_PASS_H__
+#define __LUCI_FUSE_GRU_PASS_H__
 
-#include "CircleOpChef.h"
+#include <logo/Pass.h>
 
-namespace circlechef
+namespace luci
 {
 
 /**
- * @brief circlechef operator builder for CircleGRU
+ * @brief  Class to fuse certain pattern of subgraph into CircleGRU
+ *
+ * For detailed subgraph pattern to be fused, please check its implementation.
  */
-class CircleOpCircleGRU : public CircleOpChef
+struct FuseGRUPass final : public logo::Pass
 {
-public:
-  void filler(const circle::Operator *op, CircleImport *import,
-              circlechef::ModelRecipe *model_recipe) const override;
-  circlechef::Operation *build(const circle::Operator *op, CircleImport *import,
-                               circlechef::ModelRecipe *model_recipe) const override;
+  const char *name(void) const final { return "luci::FuseGRUPass"; }
+
+  bool run(loco::Graph *g) final;
 };
 
-} // namespace circlechef
+} // namespace luci
 
-#endif // __CIRCLE_OP_CIRCLE_GRU_H__
+#endif // __LUCI_FUSE_GRU_PASS_H__

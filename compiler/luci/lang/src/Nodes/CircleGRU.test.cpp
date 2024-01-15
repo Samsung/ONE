@@ -30,7 +30,9 @@ TEST(CircleGRUTest, constructor_P)
 
   ASSERT_EQ(nullptr, gru_node.input());
   ASSERT_EQ(nullptr, gru_node.hidden_hidden());
+  ASSERT_EQ(nullptr, gru_node.hidden_hidden_bias());
   ASSERT_EQ(nullptr, gru_node.hidden_input());
+  ASSERT_EQ(nullptr, gru_node.hidden_input_bias());
   ASSERT_EQ(nullptr, gru_node.state());
 }
 
@@ -54,7 +56,9 @@ TEST(CircleGRUTest, arity_NEG)
   ASSERT_NO_THROW(gru_node.arg(1));
   ASSERT_NO_THROW(gru_node.arg(2));
   ASSERT_NO_THROW(gru_node.arg(3));
-  ASSERT_THROW(gru_node.arg(5), std::out_of_range);
+  ASSERT_NO_THROW(gru_node.arg(4));
+  ASSERT_NO_THROW(gru_node.arg(5));
+  ASSERT_THROW(gru_node.arg(6), std::out_of_range);
 }
 
 TEST(CircleGRUTest, visit_mutable_NEG)

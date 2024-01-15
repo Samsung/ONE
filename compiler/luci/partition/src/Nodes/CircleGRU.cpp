@@ -25,12 +25,18 @@ void connect(luci::ConnectNode *cn, const luci::CircleGRU *node)
 
   luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(node->input());
   luci::CircleNode *hidden_input = loco::must_cast<luci::CircleNode *>(node->hidden_input());
+  luci::CircleNode *hidden_input_bias =
+    loco::must_cast<luci::CircleNode *>(node->hidden_input_bias());
   luci::CircleNode *hidden_hidden = loco::must_cast<luci::CircleNode *>(node->hidden_hidden());
+  luci::CircleNode *hidden_hidden_bias =
+    loco::must_cast<luci::CircleNode *>(node->hidden_hidden_bias());
   luci::CircleNode *state = loco::must_cast<luci::CircleNode *>(node->state());
 
   cloned->input(cn->find_clone(input));
   cloned->hidden_input(cn->find_clone(hidden_input));
+  cloned->hidden_input_bias(cn->find_clone(hidden_input_bias));
   cloned->hidden_hidden(cn->find_clone(hidden_hidden));
+  cloned->hidden_hidden_bias(cn->find_clone(hidden_hidden_bias));
   cloned->state(cn->find_clone(state));
 }
 

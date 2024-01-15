@@ -14,9 +14,29 @@ operand {
   }
 }
 operand {
+  name: "hidden_hidden_bias"
+  type: FLOAT32
+  shape { dim: 12 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
   name: "hidden_input"
   type: FLOAT32
   shape { dim: 12 dim: 2 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "hidden_input_bias"
+  type: FLOAT32
+  shape { dim: 12 }
   filler {
       tag: "gaussian"
       arg: "0.0"
@@ -41,13 +61,15 @@ operand {
 operation {
   type: "CircleGRU"
   circle_gru_options {
-    activation: RELU
-    return_sequences: false
+    activation: NONE
+    return_sequences: true
     time_major: false
   }
   input: "ifm"
   input: "hidden_hidden"
+  input: "hidden_hidden_bias"
   input: "hidden_input"
+  input: "hidden_input_bias"
   input: "state"
   output: "ofm"
 }

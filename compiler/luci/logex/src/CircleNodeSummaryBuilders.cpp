@@ -345,7 +345,8 @@ void CircleBidirectionalSequenceLSTMSummaryBuilder::build_attributes(const luci:
 
 std::vector<std::string> CircleGRUSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
-  return {"input", "hidden_hidden", "hidden_input", "state"};
+  return {"input",        "hidden_hidden",     "hidden_hidden_bias",
+          "hidden_input", "hidden_input_bias", "state"};
 }
 
 void CircleGRUSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)

@@ -41,7 +41,7 @@ public:
   }
 };
 
-class TestNodeGraph : public TestIsOGraph<4>, public NodeGraphlet
+class TestNodeGraph : public TestIsOGraph<6>, public NodeGraphlet
 {
 public:
   TestNodeGraph() = default;
@@ -49,13 +49,15 @@ public:
 public:
   void init(const ShapeU32 shape)
   {
-    TestIsOGraph<4>::init({shape, shape, shape, shape}, shape);
+    TestIsOGraph<6>::init({shape, shape, shape, shape, shape, shape}, shape);
     NodeGraphlet::init(g());
 
     node()->input(input(0));
     node()->hidden_hidden(input(1));
-    node()->hidden_input(input(2));
-    node()->state(input(3));
+    node()->hidden_hidden_bias(input(2));
+    node()->hidden_input(input(3));
+    node()->hidden_input_bias(input(4));
+    node()->state(input(5));
 
     output()->from(node());
   }
@@ -79,9 +81,9 @@ TEST(ConnectNodeTest, connect_CIRCLE_GRU)
 
   cth.clone_connect(node, clone);
 
-  ASSERT_EQ(4, clone->arity());
+  ASSERT_EQ(6, clone->arity());
   // 24 separate checks is too much
-  for (uint32_t i = 0; i < 4; ++i)
+  for (uint32_t i = 0; i < 6; ++i)
     ASSERT_EQ(cth.inputs(i), clone->arg(i));
 }
 

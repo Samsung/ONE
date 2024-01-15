@@ -25,7 +25,7 @@ namespace luci
 
 bool CircleGRUGraphBuilder::validate(const ValidateArgs &args) const
 {
-  return GraphBuilder::validate(args, 4);
+  return GraphBuilder::validate(args, 6);
 }
 
 CircleNode *CircleGRUGraphBuilder::build_node(const circle::OperatorT &,
@@ -35,8 +35,10 @@ CircleNode *CircleGRUGraphBuilder::build_node(const circle::OperatorT &,
   auto *node = graph->nodes()->create<CircleGRU>();
   node->input(inputs.at(0));
   node->hidden_hidden(inputs.at(1));
-  node->hidden_input(inputs.at(2));
-  node->state(inputs.at(3));
+  node->hidden_hidden_bias(inputs.at(2));
+  node->hidden_input(inputs.at(3));
+  node->hidden_input_bias(inputs.at(4));
+  node->state(inputs.at(5));
 
   return node;
 }

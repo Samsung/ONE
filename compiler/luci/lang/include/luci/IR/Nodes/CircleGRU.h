@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief GRU in Circle
  */
-class CircleGRU final : public FixedArityNode<4, CircleNodeImpl<CircleOpcode::CIR_GRU>>
+class CircleGRU final : public FixedArityNode<6, CircleNodeImpl<CircleOpcode::CIR_GRU>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
@@ -37,11 +37,17 @@ public:
   loco::Node *hidden_hidden(void) const { return at(1)->node(); }
   void hidden_hidden(loco::Node *node) { at(1)->node(node); }
 
-  loco::Node *hidden_input(void) const { return at(2)->node(); }
-  void hidden_input(loco::Node *node) { at(2)->node(node); }
+  loco::Node *hidden_hidden_bias(void) const { return at(2)->node(); }
+  void hidden_hidden_bias(loco::Node *node) { at(2)->node(node); }
 
-  loco::Node *state(void) const { return at(3)->node(); }
-  void state(loco::Node *node) { at(3)->node(node); }
+  loco::Node *hidden_input(void) const { return at(3)->node(); }
+  void hidden_input(loco::Node *node) { at(3)->node(node); }
+
+  loco::Node *hidden_input_bias(void) const { return at(4)->node(); }
+  void hidden_input_bias(loco::Node *node) { at(4)->node(node); }
+
+  loco::Node *state(void) const { return at(5)->node(); }
+  void state(loco::Node *node) { at(5)->node(node); }
 
 public:
   FusedActFunc fusedActivationFunction() const { return _fused_act_fun; }
@@ -54,7 +60,7 @@ public:
   void timeMajor(bool time_major) { _time_major = time_major; }
 
 private:
-  FusedActFunc _fused_act_fun = FusedActFunc::UNDEFINED;
+  FusedActFunc _fused_act_fun = FusedActFunc::NONE;
   bool _return_sequences = false;
   bool _time_major = false;
 };

@@ -24,13 +24,15 @@ namespace circlechef
 void CircleOpCircleGRU::filler(const circle::Operator *op, CircleImport *import,
                                circlechef::ModelRecipe *model_recipe) const
 {
-  // index 1, 2 and 3 maybe constant
+  // index 1, 2, 3, 4, 5 maybe constant
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  assert(inputs.size() == 4);
+  assert(inputs.size() == 6);
 
   import->set_tensor_filler(inputs[1]); // set gaussian filler
   import->set_tensor_filler(inputs[2]);
   import->set_tensor_filler(inputs[3]);
+  import->set_tensor_filler(inputs[4]);
+  import->set_tensor_filler(inputs[5]);
 }
 
 circlechef::Operation *CircleOpCircleGRU::build(const circle::Operator *op, CircleImport *import,

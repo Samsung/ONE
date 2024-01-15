@@ -28,7 +28,9 @@ TEST(ShapeRuleTest, simple_circle_gru)
 {
   luci::CircleInput input;
   luci::CircleConst hidden_hidden;
+  luci::CircleConst hidden_hidden_bias;
   luci::CircleConst hidden_input;
+  luci::CircleConst hidden_input_bias;
   luci::CircleConst state;
   luci::CircleGRU circle_gru;
 
@@ -38,15 +40,23 @@ TEST(ShapeRuleTest, simple_circle_gru)
   hidden_hidden.shape({7, 32});
   hidden_hidden.shape_status(luci::ShapeStatus::VALID);
 
+  hidden_hidden_bias.shape({7});
+  hidden_hidden_bias.shape_status(luci::ShapeStatus::VALID);
+
   hidden_input.shape({7, 4});
   hidden_input.shape_status(luci::ShapeStatus::VALID);
+
+  hidden_input_bias.shape({7});
+  hidden_input_bias.shape_status(luci::ShapeStatus::VALID);
 
   state.shape({1, 32});
   state.shape_status(luci::ShapeStatus::VALID);
 
   circle_gru.input(&input);
   circle_gru.hidden_hidden(&hidden_hidden);
+  circle_gru.hidden_hidden_bias(&hidden_hidden_bias);
   circle_gru.hidden_input(&hidden_input);
+  circle_gru.hidden_input_bias(&hidden_input_bias);
   circle_gru.state(&state);
 
   loco::TensorShape shape;
@@ -63,18 +73,24 @@ TEST(DataTypeRuleTest, simple_circle_gru)
 {
   luci::CircleInput input;
   luci::CircleConst hidden_hidden;
+  luci::CircleConst hidden_hidden_bias;
   luci::CircleConst hidden_input;
+  luci::CircleConst hidden_input_bias;
   luci::CircleConst state;
   luci::CircleGRU circle_gru;
 
   input.dtype(loco::DataType::FLOAT32);
   hidden_hidden.dtype(loco::DataType::FLOAT32);
+  hidden_hidden_bias.dtype(loco::DataType::FLOAT32);
   hidden_input.dtype(loco::DataType::FLOAT32);
+  hidden_input_bias.dtype(loco::DataType::FLOAT32);
   state.dtype(loco::DataType::FLOAT32);
 
   circle_gru.input(&input);
   circle_gru.hidden_hidden(&hidden_hidden);
+  circle_gru.hidden_hidden_bias(&hidden_hidden_bias);
   circle_gru.hidden_input(&hidden_input);
+  circle_gru.hidden_input_bias(&hidden_input_bias);
   circle_gru.state(&state);
 
   loco::DataType dtype;
