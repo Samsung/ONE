@@ -36,7 +36,7 @@ void DumpOperators::run(std::ostream &os, const circle::Model *model)
     auto ops = reader.operators();
 
     // dump operators
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops->size(); ++i)
     {
       const auto op = ops->Get(i);
 
@@ -56,7 +56,7 @@ const circle::Operator *operator_match_output(mio::circle::Reader &reader, const
 {
   auto ops = reader.operators();
 
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t i = 0; i < ops->size(); ++i)
   {
     const auto op = ops->Get(i);
 
@@ -75,7 +75,7 @@ size_t tensor_buffer_size(mio::circle::Reader &reader, const int32_t tensor_id)
 {
   auto tensors = reader.tensors();
 
-  if (tensor_id < 0 || tensor_id >= tensors->Length())
+  if (tensor_id < 0 || tensor_id >= tensors->size())
   {
     throw std::runtime_error("Invalid Tensor ID");
   }
@@ -105,7 +105,7 @@ void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
     auto ops = reader.operators();
 
     // dump Conv2D, DepthwiseConv2D and its weight input operator
-    for (uint32_t i = 0; i < ops->Length(); ++i)
+    for (uint32_t i = 0; i < ops->size(); ++i)
     {
       const auto op = ops->Get(i);
       auto bc = reader.builtin_code(op);
@@ -158,7 +158,7 @@ void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model)
   auto ops = reader.operators();
 
   // Dump operators' version
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t i = 0; i < ops->size(); ++i)
   {
     const auto op = ops->Get(i);
 
@@ -192,7 +192,7 @@ void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
     reader.select_subgraph(g);
     auto tensors = reader.tensors();
 
-    for (uint32_t i = 0; i < tensors->Length(); ++i)
+    for (uint32_t i = 0; i < tensors->size(); ++i)
     {
       const auto tensor = tensors->Get(i);
 
@@ -217,7 +217,7 @@ void DumpConstants::run(std::ostream &os, const circle::Model *model)
     reader.select_subgraph(g);
     auto tensors = reader.tensors();
 
-    for (uint32_t i = 0; i < tensors->Length(); ++i)
+    for (uint32_t i = 0; i < tensors->size(); ++i)
     {
       const auto tensor = tensors->Get(i);
       if (tensor->is_variable())
