@@ -130,7 +130,7 @@ void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
   // dump operands(tensors)
   os << "Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) "
      << "B(buffer index) (variable) OperandName" << std::endl;
-  for (uint32_t i = 0; i < tensors->Length(); ++i)
+  for (uint32_t i = 0; i < tensors->size(); ++i)
   {
     // TODO refactor to some better structure
     auto tensor = tensors->Get(i);
@@ -281,7 +281,7 @@ void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
   os << "    Option(values) ... <-- depending on OpCode" << std::endl;
   os << "    I T(tensor index) OperandName <-- as input" << std::endl;
   os << "    O T(tensor index) OperandName <-- as output" << std::endl;
-  for (uint32_t i = 0; i < operators->Length(); ++i)
+  for (uint32_t i = 0; i < operators->size(); ++i)
   {
     const auto op = operators->Get(i);
     circle::BuiltinOperator builtincode = reader.builtin_code(op);
@@ -379,7 +379,7 @@ void dump_model(std::ostream &os, const circle::Model *model)
 
   // dump buffer
   os << "Buffers: B(index) (length) values, if any" << std::endl;
-  for (uint32_t i = 0; i < buffers->Length(); ++i)
+  for (uint32_t i = 0; i < buffers->size(); ++i)
   {
     const uint8_t *buff_data;
     size_t size = reader.buffer_info(i, &buff_data);
@@ -397,7 +397,7 @@ void dump_model(std::ostream &os, const circle::Model *model)
   if (metadata != nullptr)
   {
     os << "metadata : B(index) name" << std::endl;
-    for (uint32_t i = 0; i < metadata->Length(); ++i)
+    for (uint32_t i = 0; i < metadata->size(); ++i)
     {
       const auto buff_id = metadata->Get(i)->buffer();
       const auto metadata_name = metadata->Get(i)->name()->str();
@@ -417,14 +417,14 @@ void dump_model(std::ostream &os, const circle::Model *model)
   if (signaturedefs != nullptr)
   {
     os << "SignatureDef" << std::endl;
-    for (uint32_t i = 0; i < signaturedefs->Length(); ++i)
+    for (uint32_t i = 0; i < signaturedefs->size(); ++i)
     {
       auto sign_i = signaturedefs->Get(i);
       os << "S(" << i << ") signature_key(" << sign_i->signature_key()->c_str() << "), sub_graph("
          << sign_i->subgraph_index() << ")" << std::endl;
 
       auto inputs_i = sign_i->inputs();
-      for (uint32_t t = 0; t < inputs_i->Length(); ++t)
+      for (uint32_t t = 0; t < inputs_i->size(); ++t)
       {
         auto inputs_i_t = inputs_i->Get(t);
         os << "    I(" << t << ")"
@@ -433,7 +433,7 @@ void dump_model(std::ostream &os, const circle::Model *model)
       }
 
       auto outputs_i = sign_i->outputs();
-      for (uint32_t t = 0; t < outputs_i->Length(); ++t)
+      for (uint32_t t = 0; t < outputs_i->size(); ++t)
       {
         auto outputs_i_t = outputs_i->Get(t);
         os << "    O(" << t << ")"
