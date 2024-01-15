@@ -62,7 +62,7 @@ public:
   const CircleMetadata_t *metadata() const { return _metadata; }
   const CircleSignatureDef_t *signature_defs() const { return _signature_defs; }
 
-  uint32_t num_subgraph() const { return _subgraphs->Length(); }
+  uint32_t num_subgraph() const { return _subgraphs->size(); }
 
   size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
   ::circle::BuiltinOperator builtin_code(const ::circle::Operator *op) const;
