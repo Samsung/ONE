@@ -29,17 +29,6 @@ using namespace nnfw::cker;
 template <typename T> class Relu6OpVerifier
 {
 public:
-  void verifyForward(const std::vector<T> &input, const std::vector<T> &expected_output)
-  {
-    assert(input.size() == expected_output.size());
-
-    std::vector<T> calc_output(input.size()); // calcuated output
-    ReLU6(Shape{static_cast<int>(input.size())}, input.data(), calc_output.data());
-
-    for (size_t i = 0; i < calc_output.size(); ++i)
-      ASSERT_EQ(expected_output[i], calc_output[i]);
-  }
-
   void verifyBackward(const std::vector<T> &output, const std::vector<T> &input_bwd,
                       const std::vector<T> &expected_output_bwd, bool expect_eq = true)
   {
