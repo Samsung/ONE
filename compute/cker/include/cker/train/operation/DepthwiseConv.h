@@ -41,8 +41,10 @@ public:
 
   int getThreadCount() const
   {
+    // NOTE The Eigen library uses both main thread as well as a thread pool.
+    // Therefore, it needs to add an additional memory buffer for main thread.
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-    return d.numThreads();
+    return d.numThreads() + 1;
   }
 
   template <typename T>

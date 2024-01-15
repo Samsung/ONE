@@ -49,7 +49,7 @@ public:
     }
 
     {
-      const int thread_count = _dconv_kernel->getThreadCount() + 1;
+      const int thread_count = _dconv_kernel->getThreadCount();
 
       nnfw::cker::Shape filter_buffer_shape(
         {thread_count, filter_spatial_size, padded_filter_inner_dim_size});

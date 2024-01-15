@@ -353,11 +353,11 @@ using CPUDevice = Eigen::ThreadPoolDevice;
 //     [a00, a01, a10, a11] [a20, a21, 0, 0]   in_row = 1, in_col = 1
 //
 template <typename T>
-static void CopyOutputBackpropRegion(int, int, int, int, int filter_rows_, int filter_cols_, int,
-                                     int stride_, int pad_rows_, int pad_cols_, int out_rows_,
-                                     int out_cols_, int out_depth,
-                                     const int64_t padded_filter_inner_dim_size, const int64_t in_r,
-                                     const int64_t in_c, const T *out_backprop, T *buffer)
+void CopyOutputBackpropRegion(int, int, int, int, int filter_rows_, int filter_cols_, int,
+                              int stride_, int pad_rows_, int pad_cols_, int out_rows_,
+                              int out_cols_, int out_depth,
+                              const int64_t padded_filter_inner_dim_size, const int64_t in_r,
+                              const int64_t in_c, const T *out_backprop, T *buffer)
 {
   typedef typename Eigen::internal::packet_traits<T>::type Packet;
   static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
@@ -452,11 +452,11 @@ static void CopyOutputBackpropRegion(int, int, int, int, int filter_rows_, int f
 //
 
 template <typename T>
-static void ComputeBackpropInput(int, int, int in_cols, int in_depth_, int filter_rows,
-                                 int filter_cols, int depth_multiplier_, int, int, int, int, int,
-                                 int out_depth_, const int64_t padded_filter_inner_dim_size,
-                                 const int64_t in_r, const int64_t in_c, const T *filter,
-                                 const T *buffer, T *out_buffer, T *output)
+void ComputeBackpropInput(int, int, int in_cols, int in_depth_, int filter_rows, int filter_cols,
+                          int depth_multiplier_, int, int, int, int, int, int out_depth_,
+                          const int64_t padded_filter_inner_dim_size, const int64_t in_r,
+                          const int64_t in_c, const T *filter, const T *buffer, T *out_buffer,
+                          T *output)
 {
   typedef typename Eigen::internal::packet_traits<T>::type Packet;
   static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
@@ -636,11 +636,11 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
 };
 
 template <typename T>
-static void
-DepthwiseConvBackpropInputReference(int batch, int in_rows, int in_cols, int in_depth, int out_rows,
-                                    int out_cols, int out_depth, int stride, int depth_multiplier,
-                                    int filter_rows, int filter_cols, int pad_rows, int pad_cols,
-                                    const T *out_backprop, const T *filter, T *in_backprop)
+void DepthwiseConvBackpropInputReference(int batch, int in_rows, int in_cols, int in_depth,
+                                         int out_rows, int out_cols, int out_depth, int stride,
+                                         int depth_multiplier, int filter_rows, int filter_cols,
+                                         int pad_rows, int pad_cols, const T *out_backprop,
+                                         const T *filter, T *in_backprop)
 {
   // Naive for loop as a reference point without concerns about performance.
   for (int b = 0; b < batch; ++b)
@@ -714,11 +714,11 @@ DepthwiseConvBackpropInputReference(int batch, int in_rows, int in_cols, int in_
 //     [u0, v0, w0, x0] += ([f00, f01, f10, f11] x [q00, q01, q10, q11])
 //
 template <typename T>
-static void ComputeBackpropFilter(int, int, int, int, int filter_rows, int filter_cols, int, int,
-                                  int, int, int out_rows, int out_cols, int out_depth_,
-                                  const int64_t padded_out_depth_size, const int64_t out_r,
-                                  const int64_t out_c, const T *out_backprop, const T *input_buffer,
-                                  T *output_buffer)
+void ComputeBackpropFilter(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int,
+                           int out_rows, int out_cols, int out_depth_,
+                           const int64_t padded_out_depth_size, const int64_t out_r,
+                           const int64_t out_c, const T *out_backprop, const T *input_buffer,
+                           T *output_buffer)
 {
   typedef typename Eigen::internal::packet_traits<T>::type Packet;
   static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
@@ -901,12 +901,11 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
 };
 
 template <typename T>
-static void DepthwiseConvBackpropFilterReference(int batch, int in_rows, int in_cols, int in_depth,
-                                                 int out_rows, int out_cols, int out_depth,
-                                                 int stride, int depth_multiplier, int filter_rows,
-                                                 int filter_cols, int pad_rows, int pad_cols,
-                                                 const T *out_backprop, const T *input,
-                                                 T *filter_backprop)
+void DepthwiseConvBackpropFilterReference(int batch, int in_rows, int in_cols, int in_depth,
+                                          int out_rows, int out_cols, int out_depth, int stride,
+                                          int depth_multiplier, int filter_rows, int filter_cols,
+                                          int pad_rows, int pad_cols, const T *out_backprop,
+                                          const T *input, T *filter_backprop)
 {
   int num_filter_backprop = filter_rows * filter_cols * in_depth * depth_multiplier;
   memset(filter_backprop, 0, num_filter_backprop * sizeof(T));
