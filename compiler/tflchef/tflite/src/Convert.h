@@ -46,8 +46,8 @@ template <typename DT> std::vector<DT> extract_buffer(const tflite::Buffer *buff
 
 template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
 {
-  std::vector<T> ret(flat_array->Length());
-  for (uint32_t i = 0; i < flat_array->Length(); i++)
+  std::vector<T> ret(flat_array->size());
+  for (uint32_t i = 0; i < flat_array->size(); i++)
   {
     ret[i] = flat_array->Get(i);
   }
