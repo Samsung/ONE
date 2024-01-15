@@ -1,0 +1,7 @@
+ To check if BroadcastTo and AddV2 are fused to Add op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "ADD_EXIST"               $(op_count ADD) '=' 1
+RULE    "NO_BroadcastTo"          $(op_count 'BroadcastTo') '=' 0
+RULE    "NO_AddV2"                $(op_count 'CUSTOM(AddV2)') '=' 0
