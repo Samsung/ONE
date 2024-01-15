@@ -56,7 +56,7 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_execution_plan_table()
     const auto id = kv.first;
     write_u32(data, id);
 
-    const auto plan_vector = kv.second;
+    const auto &plan_vector = kv.second;
     const auto size = plan_vector.size();
     write_u32(data, size);
 
@@ -81,7 +81,7 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_source_table(void)
     const auto id = kv.first;
     write_u32(data, id);
 
-    const auto origin_name = kv.second;
+    const auto &origin_name = kv.second;
     const auto length = origin_name.length();
     write_u32(data, length + 1); // name + '\0
 
@@ -107,7 +107,7 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_op_table(void)
     const auto id = kv.first;
     write_u32(data, id);
 
-    const auto origins = kv.second;
+    const auto &origins = kv.second;
     const auto node_num = origins.size();
     write_u32(data, node_num);
 

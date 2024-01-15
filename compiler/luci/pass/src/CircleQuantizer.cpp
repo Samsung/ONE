@@ -331,7 +331,7 @@ bool is_valid_params(loco::Graph *g, LayerParams &lps)
   // all name should be found in graph
   for (auto &lp : lps)
   {
-    auto name = lp->name;
+    auto &name = lp->name;
     bool found = false;
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {

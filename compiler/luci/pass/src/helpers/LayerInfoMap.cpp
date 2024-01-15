@@ -145,7 +145,7 @@ LayerInfoMap layer_info_map(loco::Graph *g, std::vector<LayerInfo> &layers_info)
 
   for (auto &&info : layers_info)
   {
-    auto name = info.name;
+    auto &name = info.name;
     bool found = false;
     for (auto node : loco::active_nodes(loco::output_nodes(g)))
     {

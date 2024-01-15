@@ -72,7 +72,7 @@ void change_outputs(loco::Graph *graph, const std::vector<std::string> &new_outp
     auto output = luci::output_node(graph, out); // output is CircleOutput
     assert(output != nullptr);
 
-    auto node_name = new_outputs.at(out);
+    auto &node_name = new_outputs.at(out);
     auto node = named_nodes[node_name];
     assert(node != nullptr);
 
