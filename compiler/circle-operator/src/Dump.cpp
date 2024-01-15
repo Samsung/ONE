@@ -27,7 +27,7 @@ namespace
 void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpOption &option)
 {
   auto ops = reader.operators();
-  for (uint32_t i = 0; i < ops->Length(); ++i)
+  for (uint32_t i = 0; i < ops->size(); ++i)
   {
     const auto op = ops->Get(i);
     const auto op_name = reader.opcode_name(op);
