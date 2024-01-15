@@ -82,7 +82,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
   auto operators = tflite_import.operators();
 
   // operand fillers for adding all operators
-  for (uint32_t i = 0; i < operators->Length(); ++i)
+  for (uint32_t i = 0; i < operators->size(); ++i)
   {
     const auto *op = operators->Get(i);
     tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
@@ -99,7 +99,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
   }
 
   // add all operands(tensors)
-  for (uint32_t i = 0; i < tensors->Length(); ++i)
+  for (uint32_t i = 0; i < tensors->size(); ++i)
   {
     auto tensor = tensors->Get(i);
 
@@ -285,7 +285,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
   }
 
   // add all operators
-  for (uint32_t i = 0; i < operators->Length(); ++i)
+  for (uint32_t i = 0; i < operators->size(); ++i)
   {
     const auto *op = operators->Get(i);
     tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
