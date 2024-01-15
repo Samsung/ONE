@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/ReLU.h>
+#include <cker/train/operation/ReLU6.h>
 
 namespace onert
 {
@@ -54,22 +55,27 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
     case ElementwiseActivationType::kReLU:
       if (input->data_type() == OperandType::FLOAT32)
       {
-        if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
+        // configure
+        if ((alpha == std::numeric_limits<float>::infinity() || alpha == 6.0f) && beta == 0.f)
         {
           cpu::ops::ElementwiseActivationLayer::configure(
             input, output, alpha, beta, cpu::ops::ElementwiseActivationType::kReLU);
 
-          _backward_kernel = [](const IPortableTensor *output, const IPortableTensor *incoming,
-                                IPortableTensor *outgoing) {
-            nnfw::cker::train::ReLUGrad(getShape(output), getBuffer<float>(output),
-                                        getShape(incoming), getBuffer<float>(incoming),
-                                        getShape(outgoing), getBuffer<float>(outgoing));
+          auto relu_cker = nnfw::cker::train::ReLUGrad;
+          if (alpha == 6.0)
+            relu_cker = nnfw::cker::train::ReLU6Grad;
+
+          _backward_kernel = [&relu_cker](const IPortableTensor *output,
+                                          const IPortableTensor *incoming,
+                                          IPortableTensor *outgoing) {
+            relu_cker(getShape(output), getBuffer<float>(output), getShape(incoming),
+                      getBuffer<float>(incoming), getShape(outgoing), getBuffer<float>(outgoing));
           };
         }
         else
         {
           throw std::runtime_error("train ElementwiseActivationLayer : This layer does not "
-                                   "suppport other ReLU except for ReLU(0-inf)");
+                                   "suppport other ReLU except for ReLU(0-inf) and ReLU6(0-6)");
         }
       }
       else
