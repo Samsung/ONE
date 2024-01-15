@@ -56,7 +56,7 @@ void dump(std::ostream &os, const PGroups *pgroups)
   for (auto it = pgroups->node2group.begin(); it != pgroups->node2group.end(); ++it)
   {
     auto node = it->first;
-    auto group = it->second;
+    auto &group = it->second;
     os << "  Node: " << node << "(" << luci::opcode_name(node) << "," << node->name()
        << "): " << group << std::endl;
   }

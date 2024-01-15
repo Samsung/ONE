@@ -236,7 +236,7 @@ const OriginTable CircleImportMetadata::origin_table(void)
       std::vector<std::shared_ptr<CircleNodeOrigin>> origins;
       for (auto source_id : source_ids)
       {
-        const auto source_name = _source_table.at(source_id);
+        const auto &source_name = _source_table.at(source_id);
         origins.push_back(single_origin(source_id, source_name));
       }
 

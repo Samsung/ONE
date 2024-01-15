@@ -119,7 +119,7 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
   if (squeeze->shape_status() != luci::ShapeStatus::VALID)
     return false;
 
-  auto squeeze_dims = squeeze->squeeze_dims();
+  auto &squeeze_dims = squeeze->squeeze_dims();
   if (not is_valid_input(input, squeeze_dims))
     throw std::runtime_error("Invalid values in squeeze_dims: " + squeeze->name());
 

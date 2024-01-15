@@ -398,7 +398,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
 
   StridedSliceContext op_context(node);
   auto op_params = BuildStridedSliceParams(&op_context);
-  auto effective_input_shape = op_context.effective_input_shape;
+  auto &effective_input_shape = op_context.effective_input_shape;
   std::vector<int64_t> output_shape_vector;
 
   for (int32_t idx = effective_input_shape.rank() - 1; idx >= 0; --idx)

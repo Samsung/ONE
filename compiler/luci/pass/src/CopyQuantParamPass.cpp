@@ -59,8 +59,8 @@ bool CopyQuantParamPass::run(loco::Graph *g)
 
   for (uint32_t i = 0; i < _src_tensors.size(); i++)
   {
-    auto src = _src_tensors[i];
-    auto dst = _dst_tensors[i];
+    auto &src = _src_tensors[i];
+    auto &dst = _dst_tensors[i];
 
     auto nodes = get_src_dst(src, dst);
     if (not nodes.src)
