@@ -54,7 +54,7 @@ public:
   const std::vector<int32_t> &inputs() const { return _inputs; }
   const std::vector<int32_t> &outputs() const { return _outputs; }
 
-  uint32_t num_subgraph() const { return _subgraphs->Length(); }
+  uint32_t num_subgraph() const { return _subgraphs->size(); }
 
   circle::BuiltinOperator builtin_code(const circle::Operator *op) const;
   std::string opcode_name(const circle::Operator *op) const;
