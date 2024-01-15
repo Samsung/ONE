@@ -32,16 +32,16 @@ public:
 
   void prepare(const nnfw::cker::Shape &incoming_shape, const nnfw::cker::Shape &filter_shape)
   {
-    const int kPacketSize = _dconv_kernel->kPacketSize<T>();
+    const int k_packet_size = _dconv_kernel->kPacketSize<T>();
     const int batch = incoming_shape.Dims(0);
     const int out_depth = incoming_shape.Dims(3);
     const int filter_rows = filter_shape.Dims(1);
     const int filter_cols = filter_shape.Dims(2);
     const int filter_spatial_size = filter_rows * filter_cols;
     const int padded_filter_inner_dim_size =
-      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
 
-    _use_padded_filter = (out_depth % kPacketSize) == 0 ? false : true;
+    _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
     {
       nnfw::cker::Shape padded_filter_shape(
         {batch, filter_spatial_size, padded_filter_inner_dim_size});
