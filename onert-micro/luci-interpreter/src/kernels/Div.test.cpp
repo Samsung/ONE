@@ -15,11 +15,17 @@
  * limitations under the License.
  */
 
+#include "BinaryOpCommon.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/div/FloatDivKernel.h"
 #include "luci_interpreter/test_models/div/NegDivKernel.h"
 
 #include "loader/ModuleLoader.h"
+
+#include "PALDiv.h"
+
+#include <array>
+#include <numeric>
 
 namespace luci_interpreter
 {
@@ -120,13 +126,6 @@ TEST_F(DivTest, Wrong_Input2_Type_NEG)
 
 } // namespace
 } // namespace luci_interpreter
-
-#include "PALDiv.h"
-
-#include "BinaryOpCommon.h"
-
-#include <array>
-#include <numeric>
 
 namespace luci_interpreter
 {

@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
+#include "BinaryOpCommon.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/add/FloatAddKernel.h"
 #include "luci_interpreter/test_models/add/IntAddKernel.h"
 #include "luci_interpreter/test_models/add/NegAddKernel.h"
 
 #include "loader/ModuleLoader.h"
+
+#include "PALAdd.h"
+
+#include <array>
+#include <numeric>
 
 namespace luci_interpreter
 {
@@ -164,13 +170,6 @@ TEST_F(AddTest, No_quant_params_NEG)
 
 } // namespace
 } // namespace luci_interpreter
-
-#include "PALAdd.h"
-
-#include "BinaryOpCommon.h"
-
-#include <array>
-#include <numeric>
 
 namespace luci_interpreter
 {

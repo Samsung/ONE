@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
+#include "BinaryOpCommon.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/sub/FloatSubKernel.h"
 #include "luci_interpreter/test_models/sub/IntSubKernel.h"
 #include "luci_interpreter/test_models/sub/NegSubKernel.h"
 
 #include "loader/ModuleLoader.h"
+
+#include "PALSub.h"
+
+#include <array>
+#include <numeric>
 
 namespace luci_interpreter
 {
@@ -150,13 +156,6 @@ TEST_F(SubTest, No_quant_params_NEG)
 
 } // namespace
 } // namespace luci_interpreter
-
-#include "PALSub.h"
-
-#include "BinaryOpCommon.h"
-
-#include <array>
-#include <numeric>
 
 namespace luci_interpreter
 {

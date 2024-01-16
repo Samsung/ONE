@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
+#include "BinaryOpCommon.h"
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/test_models/mul/FloatMulKernel.h"
 #include "luci_interpreter/test_models/mul/IntMulKernel.h"
 #include "luci_interpreter/test_models/mul/NegMulKernel.h"
 
 #include "loader/ModuleLoader.h"
+
+#include "PALMul.h"
+
+#include <array>
+#include <numeric>
 
 namespace luci_interpreter
 {
@@ -153,13 +159,6 @@ TEST_F(MulTest, Wrong_Ouput_Type_NEG)
 
 } // namespace
 } // namespace luci_interpreter
-
-#include "PALMul.h"
-
-#include "BinaryOpCommon.h"
-
-#include <array>
-#include <numeric>
 
 namespace luci_interpreter
 {
