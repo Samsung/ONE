@@ -24,6 +24,7 @@ import numpy as np
 import argparse
 import glob
 import os
+import warnings
 
 
 def get_parser():
@@ -105,6 +106,7 @@ def create_hdf5(data_list, output_path):
 
 
 def main():
+    warnings.warn("rawdata2hdf5 will be deprecated. Please use one-create-quant-dataset.");
     parser = get_parser()
 
     args = parser.parse_args()
