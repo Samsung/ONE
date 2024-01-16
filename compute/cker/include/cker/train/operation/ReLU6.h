@@ -36,12 +36,12 @@ inline void ReLU6Grad(const Shape &output_shape, const float *output_data,
   const auto incoming_map = MapAsVector(incoming_data, incoming_shape);
   auto grad_map = MapAsVector(grad_data, grad_shape);
 
-  if (output_shape == incoming_shape && output_shape == grad_shape)
-    grad_map.array() =
-      incoming_map.array() *
-      (0.0f < output_map.array() && output_map.array() < 6.0f).template cast<float>();
-  else
-    throw std::runtime_error("cker::ReLU6Grad: Unsupported shape");
+  if (output_shape != incoming_shape || output_shape != grad_shape)
+    throw std::runtime_error{"cker::ReLU6Grad: Unsupported shape"};
+
+  grad_map.array() =
+    incoming_map.array() *
+    (0.0f < output_map.array() && output_map.array() < 6.0f).template cast<float>();
 }
 
 } // namespace train

@@ -53,7 +53,7 @@ TEST(CKer_Operation, ReLU6)
 
     // clang-format off
     // std::vector<float> input_fwd         = {-2.0,  -1.0,  2.0,  3.0,  6.0,  7.0};
-    std::vector<float> output_fwd           = { 0.0,   0.0,  2.0,  3.0,  6.0,  7.0};  
+    std::vector<float> output_fwd           = { 0.0,   0.0,  2.0,  3.0,  6.0,  6.0};  
     std::vector<float> input_bwd            = {-0.1,  -0.2,  0.3,  0.4, -0.1,  0.5};
     std::vector<float> expected_output_bwd  = { 0.0,   0.0,  0.3,  0.4,  0.0,  0.0};
     // clang-format on
