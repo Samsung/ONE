@@ -29,6 +29,7 @@ namespace
 // NOTE This function assumes there is only one BroadcastTo node among its inputs.
 int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
 {
+  int32_t bc_idx = -1;
   for (uint32_t idx = 0; idx < cop->numInputs(); idx++)
   {
     auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
@@ -36,11 +37,18 @@ int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
     {
       auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
       if (broadcastTo->custom_code() == "BroadcastTo")
-        return idx;
+      {
+        // check if there is only one BroadcastTo node
+        if (bc_idx != -1)
+        {
+          return -1;
+        }
+        bc_idx = static_cast<int32_t>(idx);
+      }
     }
   }
 
-  return -1;
+  return bc_idx;
 }
 
 /** BEFORE
