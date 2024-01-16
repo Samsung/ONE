@@ -541,11 +541,10 @@ public:
                                              to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
-  flatbuffers::Offset<void> visit(luci::CircleGRU *node)
+  flatbuffers::Offset<void> visit(luci::CircleCirGru *node)
   {
-    return circle::CreateCircleGRUOptions(_builder,
-                                          to_circle_actfunc(node->fusedActivationFunction()),
-                                          node->returnSequences(), node->timeMajor())
+    return circle::CreateCirGruOptions(_builder, to_circle_actfunc(node->fusedActivationFunction()),
+                                       node->returnSequences(), node->timeMajor())
       .Union();
   }
 

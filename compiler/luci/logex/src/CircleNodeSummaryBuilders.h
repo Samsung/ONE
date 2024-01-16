@@ -307,7 +307,7 @@ class CircleGreaterEqualSummaryBuilder final : public CircleNodeWithXYSummaryBui
 {
 };
 
-class CircleGRUSummaryBuilder final : public CircleNodeSummaryBuilder
+class CircleCirGruSummaryBuilder final : public CircleNodeSummaryBuilder
 {
 private:
   std::vector<std::string> get_input_names(const luci::CircleNode *);

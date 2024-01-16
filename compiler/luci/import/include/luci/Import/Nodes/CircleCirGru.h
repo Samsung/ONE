@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CIRCLE_GRU_H__
-#define __CIRCLE_OP_CIRCLE_GRU_H__
+#ifndef __LUCI_IMPORT_OP_CIRCLE_GRU_H__
+#define __LUCI_IMPORT_OP_CIRCLE_GRU_H__
 
-#include "CircleOpChef.h"
+#include "luci/Import/GraphBuilder.h"
 
-namespace circlechef
+namespace luci
 {
 
-/**
- * @brief circlechef operator builder for CircleGRU
- */
-class CircleOpCircleGRU : public CircleOpChef
+class CircleCirGruGraphBuilder : public GraphBuilder
 {
 public:
-  void filler(const circle::Operator *op, CircleImport *import,
-              circlechef::ModelRecipe *model_recipe) const override;
-  circlechef::Operation *build(const circle::Operator *op, CircleImport *import,
-                               circlechef::ModelRecipe *model_recipe) const override;
+  bool validate(const ValidateArgs &args) const final;
+
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const final;
 };
 
-} // namespace circlechef
+} // namespace luci
 
-#endif // __CIRCLE_OP_CIRCLE_GRU_H__
+#endif // __LUCI_IMPORT_OP_CIRCLE_GRU_H__

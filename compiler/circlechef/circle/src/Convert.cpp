@@ -54,10 +54,9 @@ circlechef::Activation as_circlechef_activation(const circle::ActivationFunction
       return circlechef::RELU;
     case circle::ActivationFunctionType_RELU6:
       return circlechef::RELU6;
-    case circle::ActivationFunctionType_TANH:
-      return circlechef::TANH;
     // TODO handle other types
     // ActivationFunctionType_RELU_N1_TO_1
+    // ActivationFunctionType_TANH
     // ActivationFunctionType_SIGN_BIT
     default:
       throw std::runtime_error{"unsupported activation type"};

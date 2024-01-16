@@ -27,7 +27,7 @@ namespace
 
 using namespace luci::test;
 
-class NodeGraphlet : public NodeGraphletT<luci::CircleGRU>
+class NodeGraphlet : public NodeGraphletT<luci::CircleCirGru>
 {
 public:
   NodeGraphlet() = default;
@@ -35,9 +35,9 @@ public:
 public:
   void init(loco::Graph *g) override
   {
-    NodeGraphletT<luci::CircleGRU>::init(g);
+    NodeGraphletT<luci::CircleCirGru>::init(g);
 
-    _node->fusedActivationFunction(luci::FusedActFunc::TANH);
+    _node->fusedActivationFunction(luci::FusedActFunc::NONE);
   }
 };
 
@@ -74,10 +74,10 @@ TEST(ConnectNodeTest, connect_CIRCLE_GRU)
   cth.prepare_inputs(&tng);
 
   auto *node = tng.node();
-  ASSERT_NO_THROW(loco::must_cast<luci::CircleGRU *>(node));
+  ASSERT_NO_THROW(loco::must_cast<luci::CircleCirGru *>(node));
 
   auto *clone = luci::clone_node(node, cth.graph_clone());
-  ASSERT_NO_THROW(loco::must_cast<luci::CircleGRU *>(clone));
+  ASSERT_NO_THROW(loco::must_cast<luci::CircleCirGru *>(clone));
 
   cth.clone_connect(node, clone);
 
@@ -96,10 +96,10 @@ TEST(ConnectNodeTest, connect_CIRCLE_GRU_NEG)
   cth.prepare_inputs_miss(&tng);
 
   auto *node = tng.node();
-  ASSERT_NO_THROW(loco::must_cast<luci::CircleGRU *>(node));
+  ASSERT_NO_THROW(loco::must_cast<luci::CircleCirGru *>(node));
 
   auto *clone = luci::clone_node(node, cth.graph_clone());
-  ASSERT_NO_THROW(loco::must_cast<luci::CircleGRU *>(clone));
+  ASSERT_NO_THROW(loco::must_cast<luci::CircleCirGru *>(clone));
 
   EXPECT_ANY_THROW(cth.clone_connect(node, clone));
 }

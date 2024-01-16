@@ -59,10 +59,10 @@ operand {
   shape { dim: 1 dim: 1 dim: 4 }
 }
 operation {
-  type: "CircleGRU"
+  type: "CirGru"
   circle_gru_options {
     activation: NONE
-    return_sequences: true
+    return_sequences: false
     time_major: false
   }
   input: "ifm"

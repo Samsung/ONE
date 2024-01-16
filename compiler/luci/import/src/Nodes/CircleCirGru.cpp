@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Import/Nodes/CircleGRU.h"
+#include "luci/Import/Nodes/CircleCirGru.h"
 
 #include <luci/IR/Nodes/CircleHardSwish.h>
 
@@ -23,16 +23,16 @@
 namespace luci
 {
 
-bool CircleGRUGraphBuilder::validate(const ValidateArgs &args) const
+bool CircleCirGruGraphBuilder::validate(const ValidateArgs &args) const
 {
   return GraphBuilder::validate(args, 6);
 }
 
-CircleNode *CircleGRUGraphBuilder::build_node(const circle::OperatorT &,
-                                              const std::vector<CircleNode *> &inputs,
-                                              loco::Graph *graph) const
+CircleNode *CircleCirGruGraphBuilder::build_node(const circle::OperatorT &,
+                                                 const std::vector<CircleNode *> &inputs,
+                                                 loco::Graph *graph) const
 {
-  auto *node = graph->nodes()->create<CircleGRU>();
+  auto *node = graph->nodes()->create<CircleCirGru>();
   node->input(inputs.at(0));
   node->hidden_hidden(inputs.at(1));
   node->hidden_hidden_bias(inputs.at(2));

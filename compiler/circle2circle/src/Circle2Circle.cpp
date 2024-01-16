@@ -122,7 +122,7 @@ int entry(int argc, char **argv)
              "This will fuse BatchNorm operators of pre-activations to Convolution operator");
   add_switch(arser, "--fuse_prelu", "This will fuse operators to PReLU operator");
   add_switch(arser, "--fuse_gelu", "This will fuse operators to GeLU operator");
-  add_switch(arser, "--fuse_gru", "This will fuse operators to GRU operator");
+  add_switch(arser, "--fuse_gru", "This will fuse operators to CirGru operator");
   add_switch(arser, "--remove_duplicate_const", "This will remove all duplicate constant nodes");
   add_switch(arser, "--remove_fakequant", "This will remove FakeQuant operators");
   add_switch(arser, "--remove_quantdequant", "This will remove Quantize-Dequantize sequence");
@@ -308,7 +308,7 @@ int entry(int argc, char **argv)
   if (arser.get<bool>("--fuse_gelu"))
     options->enable(Algorithms::FuseGelu);
   if (arser.get<bool>("--fuse_gru"))
-    options->enable(Algorithms::FuseGRU);
+    options->enable(Algorithms::FuseCirGru);
   if (arser.get<bool>("--fuse_transpose_with_mean"))
     options->enable(Algorithms::FuseTransposeWithMean);
   if (arser.get<bool>("--remove_duplicate_const"))

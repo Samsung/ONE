@@ -32,7 +32,7 @@ TEST(ShapeRuleTest, simple_circle_gru)
   luci::CircleConst hidden_input;
   luci::CircleConst hidden_input_bias;
   luci::CircleConst state;
-  luci::CircleGRU circle_gru;
+  luci::CircleCirGru circle_gru;
 
   input.shape({10, 1, 4});
   input.shape_status(luci::ShapeStatus::VALID);
@@ -77,7 +77,7 @@ TEST(DataTypeRuleTest, simple_circle_gru)
   luci::CircleConst hidden_input;
   luci::CircleConst hidden_input_bias;
   luci::CircleConst state;
-  luci::CircleGRU circle_gru;
+  luci::CircleCirGru circle_gru;
 
   input.dtype(loco::DataType::FLOAT32);
   hidden_hidden.dtype(loco::DataType::FLOAT32);
@@ -103,14 +103,14 @@ TEST(DataTypeRuleTest, simple_circle_gru)
 TEST(CloneNodeTest, clone_circel_gru)
 {
   auto g = loco::make_graph();
-  auto node_circle_gru = g->nodes()->create<luci::CircleGRU>();
-  node_circle_gru->fusedActivationFunction(luci::FusedActFunc::TANH);
+  auto node_circle_gru = g->nodes()->create<luci::CircleCirGru>();
+  node_circle_gru->fusedActivationFunction(luci::FusedActFunc::NONE);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_circle_gru, gc.get());
   ASSERT_NE(nullptr, cloned);
   ASSERT_EQ(gc.get(), cloned->graph());
 
-  auto cloned_circle_gru = dynamic_cast<luci::CircleGRU *>(cloned);
+  auto cloned_circle_gru = dynamic_cast<luci::CircleCirGru *>(cloned);
   ASSERT_NE(nullptr, cloned_circle_gru);
 }

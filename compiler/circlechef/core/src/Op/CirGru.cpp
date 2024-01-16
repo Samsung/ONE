@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include "CircleGRU.h"
+#include "CirGru.h"
 
 #include "Convert.h"
 
-flatbuffers::Offset<void> CircleGRUChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+flatbuffers::Offset<void> CirGruChef::value(flatbuffers::FlatBufferBuilder &fbb) const
 {
   auto &operation = (*_operation);
 
@@ -27,7 +27,7 @@ flatbuffers::Offset<void> CircleGRUChef::value(flatbuffers::FlatBufferBuilder &f
   auto return_sequences = operation.circle_gru_options().return_sequences();
   auto time_major = operation.circle_gru_options().time_major();
 
-  circle::CircleGRUOptionsBuilder options_builder{fbb};
+  circle::CirGruOptionsBuilder options_builder{fbb};
   options_builder.add_fused_activation_function(circle_activation);
   options_builder.add_return_sequences(return_sequences);
   options_builder.add_time_major(time_major);
@@ -35,7 +35,7 @@ flatbuffers::Offset<void> CircleGRUChef::value(flatbuffers::FlatBufferBuilder &f
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef> CircleGRUChefFactory::create(const circlechef::Operation *operation) const
+std::unique_ptr<OpChef> CirGruChefFactory::create(const circlechef::Operation *operation) const
 {
-  return std::unique_ptr<OpChef>{new CircleGRUChef{operation}};
+  return std::unique_ptr<OpChef>{new CirGruChef{operation}};
 }

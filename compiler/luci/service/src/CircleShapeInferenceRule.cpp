@@ -1744,7 +1744,7 @@ loco::NodeShape infer_bcq_gather(const luci::CircleBCQGather *node)
   return loco::NodeShape{output_shape};
 }
 
-loco::NodeShape infer_circle_gru(const luci::CircleGRU *node)
+loco::NodeShape infer_circle_gru(const luci::CircleCirGru *node)
 {
   loco::TensorShape output_shape;
 
@@ -2501,7 +2501,7 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleGRU *node) final { return infer_circle_gru(node); }
+  loco::NodeShape visit(const luci::CircleCirGru *node) final { return infer_circle_gru(node); }
 
   // Virtual
   loco::NodeShape visit(const luci::CircleInput *node) final { return infer_input(node); }

@@ -64,7 +64,6 @@ enum Activation {
   NONE = 0;
   RELU = 1;
   RELU6 = 3;
-  TANH = 4;
 }
 
 message BatchMatMulOptions {
@@ -77,7 +76,7 @@ message InstanceNormOptions {
   optional Activation activation = 2 [default = NONE];
 }
 
-message CircleGRUOptions {
+message CirGruOptions {
   optional Activation activation = 1 [default = NONE];
   optional bool return_sequences = 2 [default = false];
   optional bool time_major = 3 [default = false];
@@ -104,7 +103,7 @@ message Operation {
   optional InstanceNormOptions instance_norm_options = 101;
   optional BCQFullyConnectedOptions bcq_fully_connected_options = 102;
   optional BCQGatherOptions bcq_gather_options = 103;
-  optional CircleGRUOptions circle_gru_options = 104;
+  optional CirGruOptions circle_gru_options = 104;
 }
 
 // For additional subgraphs

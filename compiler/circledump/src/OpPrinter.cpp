@@ -807,12 +807,12 @@ public:
   }
 };
 
-class CircleGRUPrinter : public OpPrinter
+class CirGruPrinter : public OpPrinter
 {
 public:
   void options(const circle::Operator *op, std::ostream &os) const override
   {
-    if (auto *params = op->builtin_options_as_CircleGRUOptions())
+    if (auto *params = op->builtin_options_as_CirGruOptions())
     {
       os << "    ";
       os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
@@ -911,7 +911,7 @@ OpPrinterRegistry::OpPrinterRegistry()
   _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique<BCQFullyConnectedPrinter>();
   _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique<BCQGatherPrinter>();
   _op_map[circle::BuiltinOperator_INSTANCE_NORM] = make_unique<InstanceNormPrinter>();
-  _op_map[circle::BuiltinOperator_CIR_GRU] = make_unique<CircleGRUPrinter>();
+  _op_map[circle::BuiltinOperator_CIR_GRU] = make_unique<CirGruPrinter>();
 }
 
 } // namespace circledump

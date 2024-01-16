@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-#include "CircleCloneNode.h"
+#ifndef __LUCI_FUSE_CIR_GRU_PASS_H__
+#define __LUCI_FUSE_CIR_GRU_PASS_H__
+
+#include <logo/Pass.h>
 
 namespace luci
 {
 
-luci::CircleNode *CloneNode::visit(const luci::CircleGRU *node)
+/**
+ * @brief  Class to fuse certain pattern of subgraph into CircleCirGru
+ *
+ * For detailed subgraph pattern to be fused, please check its implementation.
+ */
+struct FuseCirGruPass final : public logo::Pass
 {
-  if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
-    return nullptr;
+  const char *name(void) const final { return "luci::FuseCirGruPass"; }
 
-  auto *cloned = _graph->nodes()->create<luci::CircleGRU>();
-  if (cloned != nullptr)
-  {
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
-    cloned->returnSequences(node->returnSequences());
-    cloned->timeMajor(node->timeMajor());
-  }
-  return cloned;
-}
+  bool run(loco::Graph *g) final;
+};
 
 } // namespace luci
+
+#endif // __LUCI_FUSE_CIR_GRU_PASS_H__

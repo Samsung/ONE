@@ -617,7 +617,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
-  CircleGRUOptions = 251,
+  CirGruOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
@@ -1433,7 +1433,7 @@ table GeluOptions {
   approximate: bool;
 }
 
-table CircleGRUOptions {
+table CirGruOptions {
   fused_activation_function:ActivationFunctionType;
   return_sequences : bool;
   time_major : bool;

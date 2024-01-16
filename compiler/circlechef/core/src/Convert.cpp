@@ -43,8 +43,6 @@ circle::ActivationFunctionType as_circle_activation(const circlechef::Activation
       return circle::ActivationFunctionType_RELU;
     case circlechef::RELU6:
       return circle::ActivationFunctionType_RELU6;
-    case circlechef::TANH:
-      return circle::ActivationFunctionType_TANH;
     default:
       break;
   }

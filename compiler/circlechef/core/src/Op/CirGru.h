@@ -19,10 +19,10 @@
 
 #include "OpChef.h"
 
-class CircleGRUChef final : public OpChef
+class CirGruChef final : public OpChef
 {
 public:
-  explicit CircleGRUChef(const circlechef::Operation *operation) : _operation{operation}
+  explicit CirGruChef(const circlechef::Operation *operation) : _operation{operation}
   {
     // DO NOTHING
   }
@@ -30,10 +30,7 @@ public:
 public:
   circle::BuiltinOperator code(void) const override { return circle::BuiltinOperator_CIR_GRU; }
 
-  circle::BuiltinOptions type(void) const override
-  {
-    return circle::BuiltinOptions_CircleGRUOptions;
-  }
+  circle::BuiltinOptions type(void) const override { return circle::BuiltinOptions_CirGruOptions; }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 
@@ -41,7 +38,7 @@ private:
   const circlechef::Operation *_operation;
 };
 
-struct CircleGRUChefFactory final : public OpChefFactory
+struct CirGruChefFactory final : public OpChefFactory
 {
   std::unique_ptr<OpChef> create(const circlechef::Operation *operation) const override;
 };

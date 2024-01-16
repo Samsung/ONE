@@ -343,15 +343,16 @@ void CircleBidirectionalSequenceLSTMSummaryBuilder::build_attributes(const luci:
   s.args().append("asymmetric_quantize_inputs", to_str(lstm->asymmetric_quantize_inputs()));
 }
 
-std::vector<std::string> CircleGRUSummaryBuilder::get_input_names(const luci::CircleNode *)
+std::vector<std::string> CircleCirGruSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"input",        "hidden_hidden",     "hidden_hidden_bias",
           "hidden_input", "hidden_input_bias", "state"};
 }
 
-void CircleGRUSummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+void CircleCirGruSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                  locop::NodeSummary &s)
 {
-  auto gru = loco::must_cast<const luci::CircleGRU *>(node);
+  auto gru = loco::must_cast<const luci::CircleCirGru *>(node);
   s.args().append("fused_act_function", to_str(gru->fusedActivationFunction()));
   s.args().append("return_sequence", to_str(gru->returnSequences()));
   s.args().append("time_major", to_str(gru->timeMajor()));

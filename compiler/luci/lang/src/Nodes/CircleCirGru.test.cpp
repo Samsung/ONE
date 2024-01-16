@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include "luci/IR/Nodes/CircleGRU.h"
+#include "luci/IR/Nodes/CircleCirGru.h"
 
 #include "luci/IR/CircleDialect.h"
 #include "luci/IR/CircleNodeVisitor.h"
 
 #include <gtest/gtest.h>
 
-TEST(CircleGRUTest, constructor_P)
+TEST(CircleCirGruTest, constructor_P)
 {
-  luci::CircleGRU gru_node;
+  luci::CircleCirGru gru_node;
 
   ASSERT_EQ(luci::CircleDialect::get(), gru_node.dialect());
   ASSERT_EQ(luci::CircleOpcode::CIR_GRU, gru_node.opcode());
@@ -36,10 +36,10 @@ TEST(CircleGRUTest, constructor_P)
   ASSERT_EQ(nullptr, gru_node.state());
 }
 
-TEST(CircleGRUTest, input_NEG)
+TEST(CircleCirGruTest, input_NEG)
 {
-  luci::CircleGRU gru_node;
-  luci::CircleGRU node;
+  luci::CircleCirGru gru_node;
+  luci::CircleCirGru node;
 
   gru_node.input(&node);
   ASSERT_NE(nullptr, gru_node.input());
@@ -48,9 +48,9 @@ TEST(CircleGRUTest, input_NEG)
   ASSERT_EQ(nullptr, gru_node.input());
 }
 
-TEST(CircleGRUTest, arity_NEG)
+TEST(CircleCirGruTest, arity_NEG)
 {
-  luci::CircleGRU gru_node;
+  luci::CircleCirGru gru_node;
 
   ASSERT_NO_THROW(gru_node.arg(0));
   ASSERT_NO_THROW(gru_node.arg(1));
@@ -61,25 +61,25 @@ TEST(CircleGRUTest, arity_NEG)
   ASSERT_THROW(gru_node.arg(6), std::out_of_range);
 }
 
-TEST(CircleGRUTest, visit_mutable_NEG)
+TEST(CircleCirGruTest, visit_mutable_NEG)
 {
   struct TestVisitor final : public luci::CircleNodeMutableVisitor<void>
   {
   };
 
-  luci::CircleGRU gru_node;
+  luci::CircleCirGru gru_node;
 
   TestVisitor tv;
   ASSERT_THROW(gru_node.accept(&tv), std::exception);
 }
 
-TEST(CircleGRUTest, visit_NEG)
+TEST(CircleCirGruTest, visit_NEG)
 {
   struct TestVisitor final : public luci::CircleNodeVisitor<void>
   {
   };
 
-  luci::CircleGRU gru_node;
+  luci::CircleCirGru gru_node;
 
   TestVisitor tv;
   ASSERT_THROW(gru_node.accept(&tv), std::exception);

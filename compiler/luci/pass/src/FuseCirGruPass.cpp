@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "luci/Pass/FuseGRUPass.h"
+#include "luci/Pass/FuseCirGruPass.h"
 #include "helpers/NodeFiller.h"
 
 #include <luci/IR/CircleNodes.h>
@@ -281,16 +281,16 @@ bool GRUPattern1::matched()
   return true;
 }
 
-class FuseGRU final
+class FuseCirGru final
 {
 public:
-  FuseGRU(const GRUPatternBase *p) : _p(p) {}
+  FuseCirGru(const GRUPatternBase *p) : _p(p) {}
 
 public:
   void apply(void);
 
 private:
-  luci::CircleGRU *create_circle_gru(loco::Graph *graph);
+  luci::CircleCirGru *create_circle_gru(loco::Graph *graph);
 
 private:
   const GRUPatternBase *_p;
@@ -318,46 +318,16 @@ luci::CircleConst *clone_circleconst(luci::CircleConst *node, loco::Graph *graph
     cloned->dtype(node->dtype());
     cloned->rank(node->rank());
 
+    assert(node->dtype() == loco::DataType::FLOAT32);
+
     // values
-    switch (node->dtype())
-    {
-      case loco::DataType::FLOAT32:
-        copy_values<loco::DataType::FLOAT32>(node, cloned);
-        break;
-
-      case loco::DataType::U8:
-        copy_values<loco::DataType::U8>(node, cloned);
-        break;
-
-      case loco::DataType::S8:
-        copy_values<loco::DataType::S8>(node, cloned);
-        break;
-
-      case loco::DataType::S16:
-        copy_values<loco::DataType::S16>(node, cloned);
-        break;
-
-      case loco::DataType::S32:
-        copy_values<loco::DataType::S32>(node, cloned);
-        break;
-
-      case loco::DataType::S64:
-        copy_values<loco::DataType::S64>(node, cloned);
-        break;
-
-      case loco::DataType::BOOL:
-        copy_values<loco::DataType::BOOL>(node, cloned);
-        break;
-
-      default:
-        assert(false);
-    }
+    copy_values<loco::DataType::FLOAT32>(node, cloned);
   }
 
   return cloned;
 }
 
-luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
+luci::CircleCirGru *FuseCirGru::create_circle_gru(loco::Graph *graph)
 {
   assert(graph);
 
@@ -392,8 +362,8 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   auto hidden_input_cloned = clone_circleconst(_p->_hidden_input, graph);
   luci::copy_common_attributes(_p->_hidden_input, hidden_input_cloned);
 
-  // Create and configure new CircleGRU
-  auto circle_gru = _p->_while_node->graph()->nodes()->create<luci::CircleGRU>();
+  // Create and configure new CircleCirGru
+  auto circle_gru = _p->_while_node->graph()->nodes()->create<luci::CircleCirGru>();
 
   circle_gru->input(_p->_ifm);
   circle_gru->hidden_input(weight_ih_cloned);
@@ -406,7 +376,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   circle_gru->returnSequences(_p->_return_sequences);
   circle_gru->timeMajor(_p->_time_major);
 
-  circle_gru->name("CircleGRU");
+  circle_gru->name("CircleCirGru");
 
   circle_gru->shape_status(luci::ShapeStatus::UNDEFINED);
 
@@ -415,7 +385,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   return circle_gru;
 }
 
-void FuseGRU::apply()
+void FuseCirGru::apply()
 {
   auto graph = _p->_pattern_last_node->graph();
 
@@ -444,7 +414,7 @@ bool fuse_gru(luci::CircleWhileOut *while_out_node)
   GRUPattern1 pattern(while_out_node);
   if (pattern.matched())
   {
-    FuseGRU fuse(&pattern);
+    FuseCirGru fuse(&pattern);
     fuse.apply();
     return true;
   }
@@ -457,7 +427,7 @@ bool fuse_gru(luci::CircleWhileOut *while_out_node)
 namespace luci
 {
 
-bool FuseGRUPass::run(loco::Graph *g)
+bool FuseCirGruPass::run(loco::Graph *g)
 {
   bool changed = false;
 

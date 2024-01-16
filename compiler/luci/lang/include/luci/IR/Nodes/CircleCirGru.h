@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IR_CIRCLEGRU_H__
-#define __LUCI_IR_CIRCLEGRU_H__
+#ifndef __LUCI_IR_CIRCLE_CIR_GRU_H__
+#define __LUCI_IR_CIRCLE_CIR_GRU_H__
 
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief GRU in Circle
  */
-class CircleGRU final : public FixedArityNode<6, CircleNodeImpl<CircleOpcode::CIR_GRU>>
+class CircleCirGru final : public FixedArityNode<6, CircleNodeImpl<CircleOpcode::CIR_GRU>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
@@ -67,4 +67,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_IR_CIRCLEGRU_H__
+#endif // __LUCI_IR_CIRCLE_CIR_GRU_H__

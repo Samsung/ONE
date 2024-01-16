@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "CircleGRU.h"
+#include "CirGru.h"
 
 #include "Convert.h"
 
 namespace circlechef
 {
 
-void CircleOpCircleGRU::filler(const circle::Operator *op, CircleImport *import,
-                               circlechef::ModelRecipe *model_recipe) const
+void CircleOpCirGru::filler(const circle::Operator *op, CircleImport *import,
+                            circlechef::ModelRecipe *model_recipe) const
 {
   // index 1, 2, 3, 4, 5 maybe constant
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
@@ -35,15 +35,15 @@ void CircleOpCircleGRU::filler(const circle::Operator *op, CircleImport *import,
   import->set_tensor_filler(inputs[5]);
 }
 
-circlechef::Operation *CircleOpCircleGRU::build(const circle::Operator *op, CircleImport *import,
-                                                circlechef::ModelRecipe *model_recipe) const
+circlechef::Operation *CircleOpCirGru::build(const circle::Operator *op, CircleImport *import,
+                                             circlechef::ModelRecipe *model_recipe) const
 {
-  auto op_params = op->builtin_options_as_CircleGRUOptions();
+  auto op_params = op->builtin_options_as_CirGruOptions();
   assert(op_params != nullptr);
 
   auto operation = model_recipe->add_operation();
 
-  operation->set_type("CircleGRU");
+  operation->set_type("CirGru");
 
   auto op_options = operation->mutable_circle_gru_options();
 

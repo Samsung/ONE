@@ -20,7 +20,7 @@
 #include "Op/BatchMatMul.h"
 #include "Op/BCQFullyConnected.h"
 #include "Op/BCQGather.h"
-#include "Op/CircleGRU.h"
+#include "Op/CirGru.h"
 #include "Op/InstanceNorm.h"
 
 #endif // __OP_CHEFS_H__

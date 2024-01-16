@@ -19,9 +19,9 @@
 namespace
 {
 
-void connect(luci::ConnectNode *cn, const luci::CircleGRU *node)
+void connect(luci::ConnectNode *cn, const luci::CircleCirGru *node)
 {
-  auto *cloned = loco::must_cast<luci::CircleGRU *>(cn->find_clone(node));
+  auto *cloned = loco::must_cast<luci::CircleCirGru *>(cn->find_clone(node));
 
   luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(node->input());
   luci::CircleNode *hidden_input = loco::must_cast<luci::CircleNode *>(node->hidden_input());
@@ -45,6 +45,6 @@ void connect(luci::ConnectNode *cn, const luci::CircleGRU *node)
 namespace luci
 {
 
-void ConnectNode::visit(const luci::CircleGRU *node) { connect(this, node); }
+void ConnectNode::visit(const luci::CircleCirGru *node) { connect(this, node); }
 
 } // namespace luci
