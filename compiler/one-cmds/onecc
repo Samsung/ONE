@@ -47,6 +47,9 @@ subtool_list = {
         'profile': 'Profile backend model file',
         'infer': 'Infer backend model file'
     },
+    'tool': {
+        'create-quant-dataset': 'Create quantize dataset for our toolchain'
+    },
 }
 
 
@@ -102,6 +105,10 @@ def _get_parser():
     backend_group = parser.add_argument_group('run backend tools')
     for tool, desc in subtool_list['backend'].items():
         backend_group.add_argument(tool, action='store_true', help=desc)
+
+    tool_group = parser.add_argument_group('run tool for our toolchain')
+    for tool, desc in subtool_list['tool'].items():
+        tool_group.add_argument(tool, action='store_true', help=desc)
 
     return parser
 
