@@ -19,8 +19,8 @@
 #define LUCI_INTERPRETER_KERNELS_BINARYOPUTILS_H
 
 #include "TISOKernel.h"
+#include "Params.h"
 #include "ProcessBroadcastShapes.h"
-
 #include "Utils.h"
 
 namespace luci_interpreter
