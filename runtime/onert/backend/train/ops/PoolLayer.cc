@@ -103,21 +103,17 @@ public:
   {
     assert(back_prop_out->layout() == ir::Layout::NHWC);
 
-    // activation bacward
-    switch (_activation)
+    // activation backward
+    try
     {
-      case ir::Activation::NONE:
-        break;
-      case ir::Activation::RELU:
-        nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-                                    getShape(back_prop_out), getBuffer<float>(back_prop_out),
-                                    getShape(_act_back_prop_output.get()),
-                                    getBuffer<float>(_act_back_prop_output.get()));
-        back_prop_out = _act_back_prop_output.get();
-        break;
-      default:
-        throw std::runtime_error("PoolLayer: Unsupported activation type yet");
+      back_prop_out =
+        backpropActivation(_activation, _output, back_prop_out, _act_back_prop_output.get());
     }
+    catch (const std::exception &e)
+    {
+      throw std::runtime_error{"train PoolLayer: " + std::string(e.what())};
+    }
+    assert(back_prop_out != nullptr);
 
     // maxpool baackward
     auto arg_max_index = _arg_max_index.get();
