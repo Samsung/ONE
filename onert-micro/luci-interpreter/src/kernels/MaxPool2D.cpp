@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-#include "Builders.h"
+#include "Pool2DCommon.h"
 
-#include "kernels/Utils.h"
 #include "PALMaxPool2D.h"
 
 namespace luci_interpreter
@@ -24,99 +23,22 @@ namespace luci_interpreter
 void configure_kernel_CircleMaxPool2D(const circle::Operator *cur_op,
                                       BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto output_index = cur_op->outputs()->operator[](0);
-
-  assert(input_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  LUCI_INTERPRETER_CHECK(Tensor::element_type(input) == Tensor::element_type(output));
-  LUCI_INTERPRETER_CHECK(Tensor::num_dims(input) == 4);
-
-#ifndef DIS_QUANT
-  if (Tensor::element_type(input) == DataType::U8)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(Tensor::scale(output) - Tensor::scale(input)) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(Tensor::zero_point(output) == Tensor::zero_point(input));
-  }
-  else if (Tensor::element_type(input) == DataType::S16)
-  {
-    LUCI_INTERPRETER_CHECK(std::abs(Tensor::scale(output) - Tensor::scale(input)) <= 1.0e-6);
-    LUCI_INTERPRETER_CHECK(Tensor::zero_point(input) == 0 && Tensor::zero_point(output) == 0);
-  }
-#endif // DIS_QUANT
+  configure_kernel_CirclePool2DCommon(cur_op, runtime_graph);
 }
 
 void execute_kernel_CircleMaxPool2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto output_index = cur_op->outputs()->operator[](0);
+  const kernels::SISOKernel siso_kernel(cur_op, runtime_graph);
 
-  assert(input_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  const auto *options = cur_op->builtin_options_as_Pool2DOptions();
-
-  const int32_t input_height = Tensor::dim(input, 1);
-  const int32_t input_width = Tensor::dim(input, 2);
-
-  const int32_t output_height = kernels::computeOutputSize(
-    luci_padding(options->padding()), input_height, options->filter_height(), options->stride_h());
-  const int32_t output_width = kernels::computeOutputSize(
-    luci_padding(options->padding()), input_width, options->filter_width(), options->stride_w());
-
-  const auto padding_height = kernels::computePadding(options->stride_h(), 1, input_height,
-                                                      options->filter_height(), output_height);
-  const auto padding_width = kernels::computePadding(options->stride_w(), 1, input_width,
-                                                     options->filter_width(), output_width);
+  const auto input = siso_kernel.input();
+  const auto output = siso_kernel.output();
 
   const auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
 
   const DataType input_type = Tensor::element_type(input);
 
-  float activation_min{};
-  float activation_max{};
-  int32_t quantized_activation_min{};
-  int32_t quantized_activation_max{};
-
-  if (input_type == DataType::S8 or input_type == DataType::S16)
-  {
-#ifndef DIS_QUANT
-    kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
-                                               output, &quantized_activation_min,
-                                               &quantized_activation_max);
-#endif // DIS_QUANT
-  }
-  else if (input_type == DataType::FLOAT32)
-  {
-#ifndef DIS_FLOAT
-    kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
-                                      &activation_min, &activation_max);
-#endif // DIS_FLOAT
-  }
-  else
-  {
-    assert(false && "Not supported type");
-  }
-
-  luci_interpreter_pal::PoolParams params{};
-  params.padding_values.height = padding_height;
-  params.padding_values.width = padding_width;
-  params.stride_height = options->stride_h();
-  params.stride_width = options->stride_w();
-  params.filter_height = options->filter_height();
-  params.filter_width = options->filter_width();
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
-  params.quantized_activation_max = quantized_activation_max;
-  params.quantized_activation_min = quantized_activation_min;
+  const auto params = createPoolParams(cur_op, siso_kernel);
 
   switch (input_type)
   {
