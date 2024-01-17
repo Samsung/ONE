@@ -36,6 +36,31 @@ using cpu::ops::getNumberOfDimensions;
 using cpu::ops::getNumberOfElements;
 using cpu::ops::getSizeOfDimension;
 
+/**
+ * @brief backpropagate acitvation
+ *
+ *             -- forward direction -->
+ *
+ *   [ current layer ]   ----   [ next layer ]
+ *   [ op    |  act  ]
+ *
+ *             <-- backward direction --
+ *
+ * @param activation      activation of current layer
+ * @param output          forward direction's output of current layer
+ * @param input_backprop  backward direction's output of next layer
+ *                        In other words, incoming gradient to current layer
+ * @param output_backprop backward direction's output of activation,
+ *                        In other words, outcoming gradient of current layer's acitvation
+ *                        If activation is NONE, this param isn't necessary
+ * @return tensor that holds backpropagation result of activation
+ *         If activation is NONE, just return input_backprop
+ */
+const IPortableTensor *backpropActivation(const ir::Activation &activation,
+                                          const IPortableTensor *output,
+                                          const IPortableTensor *input_backprop,
+                                          IPortableTensor *output_backprop = nullptr);
+
 } // namespace ops
 } // namespace train
 } // namespace backend
