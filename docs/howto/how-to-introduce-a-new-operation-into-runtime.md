@@ -243,7 +243,7 @@ This module generates IR from a model. There are two kinds of frontend: Loader a
 This is where the common parts of loaders are implemented.
 
 1. Add to base_loader to load new operation and to generate IR from it
-- [base_loader](/runtime/onert/frontend/base_loader/include/base_loader.h)
+- [base_loader](/runtime/onert/core/src/loader/base_loader.h)
 
 ```cpp
     case BuiltinOperator::BuiltinOperator_SELECT:
@@ -470,4 +470,3 @@ void ConstantInitializer::visit(const ir::operation::Conv2D &node)
 - `Select` operation
   - Simple explanation : `Output[i] = Condition[i] ? input1[i] : input2[i]`
   - PR : https://github.com/Samsung/ONE/pull/XXX
-

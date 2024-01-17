@@ -18,6 +18,11 @@ set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 # private target_include_directories scope for src/ directory.
 target_include_directories(onert_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+# Flatbuffer for loader
+nnfw_find_package(FlatBuffers REQUIRED)
+target_link_libraries(onert_core PRIVATE flatbuffers::flatbuffers)
+target_link_libraries(onert_core PRIVATE circle_schema)
+
 target_link_libraries(onert_core PRIVATE jsoncpp half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_misc nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)

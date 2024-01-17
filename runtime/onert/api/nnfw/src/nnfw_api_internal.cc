@@ -21,10 +21,9 @@
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
-#include "circle_loader.h"
-#include "tflite_loader.h"
-#include "trix_loader.h"
-#include "traininfo_loader.h"
+#include "loader/circle_loader.h"
+#include "loader/tflite_loader.h"
+#include "loader/traininfo_loader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -32,6 +31,7 @@
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 #include "circle_schema_generated.h"
+#include "trix_loader.h"
 
 #include <fstream>
 #include <iostream>
