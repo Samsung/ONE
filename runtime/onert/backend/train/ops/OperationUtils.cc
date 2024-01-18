@@ -33,14 +33,18 @@ const IPortableTensor *backpropActivation(const ir::Activation &activation,
                                           const IPortableTensor *input_backprop,
                                           IPortableTensor *output_backprop)
 {
+  assert(output != nullptr);
+  assert(input_backprop != nullptr);
+
   // handle NONE - just propagate incoming gradient
   if (activation == ir::Activation::NONE)
   {
     return input_backprop;
   }
 
-  // handle other activation
   assert(output_backprop != nullptr);
+
+  // handle other activation
   switch (activation)
   {
     case ir::Activation::RELU:

@@ -52,14 +52,14 @@ using cpu::ops::getSizeOfDimension;
  *                        In other words, incoming gradient to current layer
  * @param output_backprop backward direction's output of activation,
  *                        In other words, outcoming gradient of current layer's acitvation
- *                        If activation is NONE, this param isn't necessary
+ *                        If activation is NONE, this param can be nullptr
  * @return tensor that holds backpropagate result of activation
  *         If activation is NONE, just return input_backprop
  */
 const IPortableTensor *backpropActivation(const ir::Activation &activation,
                                           const IPortableTensor *output,
                                           const IPortableTensor *input_backprop,
-                                          IPortableTensor *output_backprop = nullptr);
+                                          IPortableTensor *output_backprop);
 
 } // namespace ops
 } // namespace train
