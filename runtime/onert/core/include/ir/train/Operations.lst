@@ -18,6 +18,7 @@
 #error Define OP before including this file
 #endif
 
+OP(BinaryArithmetic)
 OP(Conv2D)
 OP(DepthwiseConv2D)
 OP(ElementwiseActivation)

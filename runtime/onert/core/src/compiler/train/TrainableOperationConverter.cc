@@ -34,6 +34,11 @@ TrainableOperationConverter::TrainableOperationConverter(
   UNUSED_RELEASE(_training_info);
 }
 
+void TrainableOperationConverter::visit(const ir::operation::BinaryArithmetic &node)
+{
+  _return_op = std::make_unique<ir::train::operation::BinaryArithmetic>(node);
+}
+
 void TrainableOperationConverter::visit(const ir::operation::Conv2D &node)
 {
   _return_op = std::make_unique<ir::train::operation::Conv2D>(node);
