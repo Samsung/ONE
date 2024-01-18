@@ -21,6 +21,12 @@
 namespace luci
 {
 
+void Module::remove(size_t idx)
+{
+  _graphs.at(idx).release();
+  _graphs.erase(_graphs.begin() + idx);
+}
+
 void Module::add(std::unique_ptr<loco::Graph> &&g)
 {
   if (g.get() == nullptr)

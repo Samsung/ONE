@@ -92,6 +92,8 @@ int entry(int argc, char **argv)
              "This will fuse horizontal FullyConnected layers");
   add_switch(arser, "--fuse_add_with_fully_connected",
              "This will fuse Add operator to FullyConnected operator");
+  add_switch(arser, "--fuse_unrolled_gru_as_custom_gru",
+             "This will fuse unrolled GRU as custom gru operation");
   add_switch(arser, "--fuse_add_with_tconv",
              "This will fuse Add operator to Transposed Convolution operator");
   add_switch(arser, "--fuse_batchnorm_with_conv",
@@ -277,6 +279,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBatchNormWithConv);
   if (arser.get<bool>("--fuse_add_with_fully_connected"))
     options->enable(Algorithms::FuseAddWithFullyConnected);
+  if (arser.get<bool>("--fuse_unrolled_gru_as_custom_gru"))
+    options->enable(Algorithms::FuseUnrolledGRUAsCustomGRU);
   if (arser.get<bool>("--fuse_add_with_tconv"))
     options->enable(Algorithms::FuseAddWithTConv);
   if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
@@ -501,7 +505,8 @@ int entry(int argc, char **argv)
 
   // Export to output Circle file
   luci::CircleExporter exporter;
-
+  module->remove(1);
+  module->remove(1);
   luci::CircleFileExpContract contract(module.get(), output_path);
 
   if (!exporter.invoke(&contract))

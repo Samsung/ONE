@@ -86,6 +86,37 @@ bool isSingleUsageOfTensor(CircleReader *reader, const int32_t tensor_index)
 
 } // namespace
 
+void GraphLoader::checkWhileOps(CircleReader *reader, RuntimeModule *runtime_module)
+{
+  auto main_runtime_graph = runtime_module->getMainGraph();
+  main_runtime_graph->selectOwnSubgraph();
+  const auto operators = reader->operators();
+
+  for (uint32_t i = 0; i < operators.size(); ++i)
+  {
+    const auto *op = operators.at(i);
+    assert(op != nullptr);
+
+    if (reader->builtin_code(op) != circle::BuiltinOperator_WHILE)
+      continue;
+
+    const auto op_options = op->builtin_options_as_WhileOptions();
+    const auto cond_subgraph_index = op_options->cond_subgraph_index();
+
+    auto cond_runtime_graph = runtime_module->getRuntimeGraphAt(cond_subgraph_index);
+    cond_runtime_graph->selectOwnSubgraph();
+
+    const auto cond_operators = reader->operators();
+    if (cond_operators.size() != 1)
+      continue;
+
+    const auto cond_op = cond_operators.at(0);
+    if (reader->builtin_code(cond_op) != circle::BuiltinOperator_LESS)
+      continue;
+    cond_runtime_graph->setRunnableGraph(false);
+  }
+}
+
 void GraphLoader::checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph)
 {
   const auto operators = reader->operators();

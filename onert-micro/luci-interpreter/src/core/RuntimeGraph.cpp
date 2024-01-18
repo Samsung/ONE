@@ -457,6 +457,11 @@ void RuntimeGraph::setDataToTensor(const circle::Tensor *tensor, uint8_t *data)
   _tensor_to_data[tensor] = data;
 }
 
+const circle::Operator *RuntimeGraph::getOpAt(uint32_t index)
+{
+  return _reader->operators().at(index);
+}
+
 void RuntimeGraph::execute()
 {
   selectOwnSubgraph();
