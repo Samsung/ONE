@@ -8,7 +8,7 @@ function(_Pybind11Source_import)
   nnas_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(PYBIND11_URL ${EXTERNAL_DOWNLOAD_SERVER}/pybind/pybind11/archive/v2.5.0.tar.gz)
+  envoption(PYBIND11_URL ${EXTERNAL_DOWNLOAD_SERVER}/pybind/pybind11/archive/v2.11.1.tar.gz)
 
   ExternalSource_Download(PYBIND11 ${PYBIND11_URL})
 

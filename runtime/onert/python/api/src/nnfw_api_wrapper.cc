@@ -16,6 +16,8 @@
 
 #include "nnfw_api_wrapper.h"
 
+#include <iostream>
+
 void ensure_status(NNFW_STATUS status)
 {
   switch (status)
