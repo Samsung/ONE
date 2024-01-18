@@ -34,7 +34,8 @@ DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
   : cpu::ops::DepthwiseConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
     _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr},
     _use_padded_filter{false}, _padded_filter{nullptr}, _filter_buffers{nullptr},
-    _filter_dim_buffers{nullptr}, _dconv_kernel{new nnfw::cker::train::DepthwiseConv()}
+    _filter_dim_buffers{nullptr},
+    _dconv_kernel{std::make_unique<nnfw::cker::train::DepthwiseConv>()}
 {
   // DO NOTHING
 }
