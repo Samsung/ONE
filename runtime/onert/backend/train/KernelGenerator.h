@@ -50,6 +50,7 @@ public:
   void visit(const ir::train::operation::ElementwiseActivation &) override;
   void visit(const ir::train::operation::FullyConnected &) override;
   void visit(const ir::train::operation::Loss &) override;
+  void visit(const ir::train::operation::Pad &) override;
   void visit(const ir::train::operation::Pool2D &) override;
   void visit(const ir::train::operation::Reduce &node) override;
   void visit(const ir::train::operation::Reshape &node) override;

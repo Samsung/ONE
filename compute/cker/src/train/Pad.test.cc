@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef OP
-#error Define OP before including this file
-#endif
+#include <cker/train/operation/Pad.h>
+#include <gtest/gtest.h>
 
-OP(Conv2D)
-OP(DepthwiseConv2D)
-OP(ElementwiseActivation)
-OP(FullyConnected)
-OP(Loss)
-OP(Pad)
-OP(Permute)
-OP(Pool2D)
-OP(Reduce)
-OP(Reshape)
-OP(Softmax)
+TEST(CKer_Operation, Pad)
+{
+  // build check
+  SUCCEED();
+}

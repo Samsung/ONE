@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
-#define __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
+#include "ir/train/operation/Pad.h"
 
-#include <ops/OperationUtils.h>
+#include "ir/OperationVisitor.h"
+#include "ir/train/TrainableOperationVisitor.h"
 
 namespace onert
 {
-namespace backend
+namespace ir
 {
 namespace train
 {
-namespace ops
+namespace operation
 {
 
-using OperandType = onert::ir::DataType;
-using cpu::ops::getBuffer;
-using cpu::ops::getPaddingType;
-using cpu::ops::getShape;
-using cpu::ops::getNumberOfDimensions;
-using cpu::ops::getNumberOfElements;
-using cpu::ops::getSizeOfDimension;
-using cpu::ops::ConstDataPtr;
+std::unique_ptr<ITrainableOperation> Pad::clone() const
+{
+  return std::make_unique<Pad>(*this);
+}
 
-} // namespace ops
+void Pad::accept(OperationVisitor &v) const { v.visit(*this); }
+
+void Pad::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
+
+Pad::Pad(const OperationType &operation)
+  : OperationType{operation.getInputs(), operation.getOutputs()}
+{
+  // DO NOTHING
+}
+
+} // namespace operation
 } // namespace train
-} // namespace backend
+} // namespace ir
 } // namespace onert
-
-#endif // __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__

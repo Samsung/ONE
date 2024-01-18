@@ -23,6 +23,7 @@
 #include "ops/LossCategoricalCrossentropyLayer.h"
 #include "ops/MeanLayer.h"
 #include "ops/GradientApplier.h"
+#include "ops/PadLayer.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
 #include "ops/SoftMaxLayer.h"
@@ -268,6 +269,37 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
       throw std::runtime_error("LossLayer: unsupported loss type");
       break;
   }
+}
+
+void KernelGenerator::visit(const ir::train::operation::Pad &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
+  const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
+  const auto output_index{node.getOutputs().at(0)};
+  const auto operands = _tgraph.operands();
+  assert(operands.at(pad_index).data());
+
+  auto input = _tensor_reg->getPortableTensor(input_index);
+  auto output = _tensor_reg->getPortableTensor(output_index);
+  auto pad_rank = operands.at(pad_index).shape().dim(0);
+  auto pad_base = reinterpret_cast<const int32_t *>(operands.at(pad_index).data()->base());
+
+  auto fn = std::make_unique<ops::PadLayer>();
+
+  bool isPadV2 = node.getInputs().size() == 3 ? true : false;
+  const void *value = nullptr;
+
+  if (isPadV2)
+  {
+    const auto value_index{node.getInputs().at(ir::operation::Pad::Input::VALUE)};
+    value = reinterpret_cast<const void *>(operands.at(value_index).data()->base());
+  }
+
+  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
+
+  fn->configure(input, output, pad_base, pad_rank, value, in_back_prop_tensor, out_back_prop_tensor);
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
