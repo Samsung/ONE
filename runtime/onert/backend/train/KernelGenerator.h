@@ -47,6 +47,7 @@ public:
   std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::train::operation::Conv2D &) override;
+  void visit(const ir::train::operation::DepthwiseConv2D &) override;
   void visit(const ir::train::operation::ElementwiseActivation &) override;
   void visit(const ir::train::operation::FullyConnected &) override;
   void visit(const ir::train::operation::Loss &) override;
