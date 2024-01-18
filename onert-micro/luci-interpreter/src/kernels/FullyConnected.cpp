@@ -102,6 +102,7 @@ void evalFloat(const circle::Tensor *input, const circle::Tensor *weights,
       // Hybrid mode
       params.weights_scales =
         reinterpret_cast<const float *>(weights->quantization()->scale()->data());
+      params.is_channel_wise_quant = weights->quantization()->scale()->size() > 1;
       luci_interpreter_pal::FullyConnected(
         params, input_shape, kernels::getTensorData<float>(input_data), weight_shape,
         kernels::getTensorData<int8_t>(weights_data), kernels::getTensorData<float>(bias_data),
@@ -249,8 +250,7 @@ void configure_kernel_CircleFullyConnected(const circle::Operator *cur_op,
     {
       // Check it is channel wise quantization
       LUCI_INTERPRETER_CHECK(weights->quantization() != nullptr);
-      LUCI_INTERPRETER_CHECK(weights->quantization()->scale()->size() ==
-                             weights->shape()->operator[](0));
+      LUCI_INTERPRETER_CHECK(weights->quantization()->scale() != nullptr);
     }
   }
 #endif // DIS_QUANT
