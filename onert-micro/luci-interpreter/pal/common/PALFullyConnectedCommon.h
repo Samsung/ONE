@@ -110,7 +110,11 @@ inline void FullyConnected(const FullyConnectedParams &params, const int32_t *in
       }
       output_data[out_c + output_depth * b] =
         std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
-      weight_scale_ptr++;
+      if (std::is_same<WeightType, int8_t>::value)
+      {
+        if (params.is_channel_wise_quant)
+          weight_scale_ptr++;
+      }
     }
   }
 }
