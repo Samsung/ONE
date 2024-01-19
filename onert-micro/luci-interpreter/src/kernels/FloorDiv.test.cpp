@@ -121,3 +121,69 @@ TEST_F(FloorDivTest, Wrong_Input2_Type_NEG)
 
 } // namespace
 } // namespace luci_interpreter
+
+#include "PALFloorDiv.h"
+
+#include <array>
+#include <numeric>
+
+namespace luci_interpreter
+{
+namespace
+{
+
+class PALFloorDivTest : public ::testing::Test
+{
+  // Do nothing
+};
+
+TEST_F(PALFloorDivTest, Float_P)
+{
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_kernel::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
+
+    const auto &input1 = test_data_kernel.get_input_data_by_index(0);
+    const auto &input2 = test_data_kernel.get_input_data_by_index(1);
+
+    const auto num_elements = input1.size();
+    EXPECT_EQ(num_elements, input2.size());
+
+    std::vector<float> output = std::vector<float>(num_elements);
+    luci_interpreter_pal::FloorDiv(num_elements, input1.data(), input2.data(),
+                                   const_cast<float *>(output.data()));
+
+    EXPECT_THAT(output, kernels::testing::FloatArrayNear(
+                          test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
+
+  // With broadcast
+  {
+    const bool is_with_broadcast = true;
+    test_kernel::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
+
+    const auto &input1 = test_data_kernel.get_input_data_by_index(0);
+    const auto &input2 = test_data_kernel.get_input_data_by_index(1);
+
+    const int32_t shape[2] = {2, 5};
+    const int32_t shape_broadcast[2] = {2, 1};
+
+    assert(input1.size() ==
+           std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<float>()));
+    assert(input2.size() == std::accumulate(std::begin(shape_broadcast), std::end(shape_broadcast),
+                                            1, std::multiplies<float>()));
+
+    std::vector<float> output = std::vector<float>(
+      std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<float>()));
+    luci_interpreter_pal::BroadcastFloorDiv4DSlow(
+      RuntimeShape{2, shape}, input1.data(), RuntimeShape{2, shape_broadcast}, input2.data(),
+      RuntimeShape{2, shape}, const_cast<float *>(output.data()));
+
+    EXPECT_THAT(output, kernels::testing::FloatArrayNear(
+                          test_data_kernel.get_output_data_by_index(0), 0.0001f));
+  }
+}
+
+} // namespace
+} // namespace luci_interpreter
