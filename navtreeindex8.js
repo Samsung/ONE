@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"_div_8float_8cpp.html#aec14ce157bada4b01683df75ae1515a3":[36,0,0,3,0,0,22,1],
-"_div_8float_8cpp.html#af6dc01ea3024f158c5f6cf58c6eaa00b":[36,0,0,3,0,0,22,4],
 "_div_8float_8cpp_source.html":[36,0,0,3,0,0,22],
 "_div_8float_8h.html":[36,0,0,3,0,0,23],
 "_div_8float_8h.html#af6dc01ea3024f158c5f6cf58c6eaa00b":[36,0,0,3,0,0,23,0],
@@ -119,13 +117,13 @@ var NAVTREEINDEX8 =
 "_dynamic_shape_inferer_8h_source.html":[36,0,4,2,2,0,2,1],
 "_dynamic_tensor_manager_8cc.html":[36,0,4,2,2,1,0,0,3],
 "_dynamic_tensor_manager_8cc_source.html":[36,0,4,2,2,1,0,0,3],
-"_eigen_support_8h.html":[36,0,1,1,0,0,0,6],
-"_eigen_support_8h.html#a47d5fc0e946a35bb5a67b2ecb86f52f3":[36,0,1,1,0,0,0,6,3],
-"_eigen_support_8h.html#a78670a103d0a007ffe0e739ce262ac62":[36,0,1,1,0,0,0,6,6],
-"_eigen_support_8h.html#acf6afdea948d2e16237e5acbc1f7e40b":[36,0,1,1,0,0,0,6,5],
-"_eigen_support_8h.html#ad3d8188ac35aa1743753227da5d291c2":[36,0,1,1,0,0,0,6,7],
-"_eigen_support_8h.html#adef6074f5f6bd57fd4a603a41790ddc1":[36,0,1,1,0,0,0,6,4],
-"_eigen_support_8h_source.html":[36,0,1,1,0,0,0,6],
+"_eigen_support_8h.html":[36,0,1,1,0,0,0,7],
+"_eigen_support_8h.html#a47d5fc0e946a35bb5a67b2ecb86f52f3":[36,0,1,1,0,0,0,7,3],
+"_eigen_support_8h.html#a78670a103d0a007ffe0e739ce262ac62":[36,0,1,1,0,0,0,7,6],
+"_eigen_support_8h.html#acf6afdea948d2e16237e5acbc1f7e40b":[36,0,1,1,0,0,0,7,5],
+"_eigen_support_8h.html#ad3d8188ac35aa1743753227da5d291c2":[36,0,1,1,0,0,0,7,7],
+"_eigen_support_8h.html#adef6074f5f6bd57fd4a603a41790ddc1":[36,0,1,1,0,0,0,7,4],
+"_eigen_support_8h_source.html":[36,0,1,1,0,0,0,7],
 "_einsum_8cc.html":[36,0,4,2,2,1,4,0,18],
 "_einsum_8cc_source.html":[36,0,4,2,2,1,4,0,18],
 "_einsum_layer_8cc.html":[36,0,4,2,1,4,0,24],
@@ -249,5 +247,7 @@ var NAVTREEINDEX8 =
 "_entity_8h.html":[36,0,0,27,0,0,0,1,13],
 "_entity_8h_source.html":[36,0,0,27,0,0,0,1,13],
 "_entity_builder_8h.html":[36,0,0,27,0,0,0,1,14],
-"_entity_builder_8h_source.html":[36,0,0,27,0,0,0,1,14]
+"_entity_builder_8h_source.html":[36,0,0,27,0,0,0,1,14],
+"_entity_manager_8cpp.html":[36,0,0,27,0,1,1,11],
+"_entity_manager_8cpp_source.html":[36,0,0,27,0,1,1,11]
 };

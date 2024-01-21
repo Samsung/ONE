@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('tfl-inspect_2src_2_reader_8cpp_source.
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  _inputs.clear();</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  _outputs.clear();</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;Length() &lt;= sgindex)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &lt;= sgindex)</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  {</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -210,6 +210,7 @@ $(document).ready(function(){initNavTree('tfl-inspect_2src_2_reader_8cpp_source.
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>} <span class="comment">// namespace tflinspect</span></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 <div class="ttc" id="aclasstflinspect_1_1_reader_html_a028383d60769787b521a7d97e3a95a10"><div class="ttname"><a href="classtflinspect_1_1_reader.html#a028383d60769787b521a7d97e3a95a10">tflinspect::Reader::select_subgraph</a></div><div class="ttdeci">bool select_subgraph(uint32_t subgraph)</div><div class="ttdef"><b>Definition:</b> <a href="tfl-inspect_2src_2_reader_8cpp_source.html#l00093">Reader.cpp:93</a></div></div>
 <div class="ttc" id="aclasstflinspect_1_1_reader_html_a66fb7af09e51b57a32114c7462691de7"><div class="ttname"><a href="classtflinspect_1_1_reader.html#a66fb7af09e51b57a32114c7462691de7">tflinspect::Reader::builtin_code</a></div><div class="ttdeci">tflite::BuiltinOperator builtin_code(const tflite::Operator *op) const</div><div class="ttdef"><b>Definition:</b> <a href="tfl-inspect_2src_2_reader_8cpp_source.html#l00068">Reader.cpp:68</a></div></div>
 <div class="ttc" id="aclasstflinspect_1_1_reader_html_a8e7521513c5fb19c68515e02d8de0c43"><div class="ttname"><a href="classtflinspect_1_1_reader.html#a8e7521513c5fb19c68515e02d8de0c43">tflinspect::Reader::Reader</a></div><div class="ttdeci">Reader()=delete</div></div>

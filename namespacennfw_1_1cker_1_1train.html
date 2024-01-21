@@ -104,6 +104,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html">DepthwiseConv</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html">LaunchConv2DBackpropFilterOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html">LaunchConv2DBackpropInputOp</a></td></tr>
@@ -147,6 +149,8 @@ Functions</h2></td></tr>
 <tr class="separator:a52345a6f0694577d6369713c74e7d027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56ba869240e3cb2e543a61e176115d8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">ReLUGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
 <tr class="separator:a56ba869240e3cb2e543a61e176115d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe5949773bbbe4ca31565a0eacbd11c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">ReLU6Grad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
+<tr class="separator:abe5949773bbbe4ca31565a0eacbd11c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6afe0db84836d197f52230d77b913f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a8b6afe0db84836d197f52230d77b913f">SoftMaxGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, const float *output_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
 <tr class="separator:a8b6afe0db84836d197f52230d77b913f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abad94c85023d66d3bc85d6a460750b41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41">Adam</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;trainable_shape, float *trainable_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, const float *grad_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;m_shape, float *m_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;v_shape, float *v_data, float beta1_power, float beta2_power, float learning_rate, float beta1, float beta2, float epsilon, bool use_nesterov)</td></tr>
@@ -1407,6 +1411,84 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="abe5949773bbbe4ca31565a0eacbd11c2" name="abe5949773bbbe4ca31565a0eacbd11c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe5949773bbbe4ca31565a0eacbd11c2">&#9670;&#160;</a></span>ReLU6Grad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::ReLU6Grad </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>incoming_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>incoming_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">31</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html">ReLU6.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(output_data, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(incoming_data, incoming_shape);</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">auto</span> grad_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(grad_data, grad_shape);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != incoming_shape || <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> != grad_shape)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;cker::ReLU6Grad: Unsupported shape&quot;</span>};</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  grad_map.array() =</div>
+<div class="line"><span class="lineno">   43</span>    incoming_map.array() *</div>
+<div class="line"><span class="lineno">   44</span>    (0.0f &lt; output_map.array() &amp;&amp; output_map.array() &lt; 6.0f).<span class="keyword">template</span> cast&lt;float&gt;();</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">nnfw::cker::MapAsVector()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00038">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
+
+</div>
+</div>
 <a id="a56ba869240e3cb2e543a61e176115d8f" name="a56ba869240e3cb2e543a61e176115d8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56ba869240e3cb2e543a61e176115d8f">&#9670;&#160;</a></span>ReLUGrad()</h2>
 
@@ -1479,7 +1561,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">nnfw::cker::MapAsVector()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00038">onert::backend::train::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>

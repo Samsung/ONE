@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structmpqsolver_1_1core_1_1_quantizer_hook.html" title=" " alt="" coords="5,5,211,31"/>
-<area shape="rect" id="node2" href="$classmpqsolver_1_1core_1_1_dumping_hooks.html" title="DumpingHooks is intended to save intermediate results." alt="" coords="259,23,429,63"/>
-<area shape="rect" id="node3" href="$classmpqsolver_1_1core_1_1_solver_hooks.html" title=" " alt="" coords="11,55,205,80"/>
+<area shape="rect" id="node1" href="$classmpqsolver_1_1bisection_1_1_v_i_s_q_error_approximator.html" title=" " alt="" coords="5,5,168,45"/>
 </map>

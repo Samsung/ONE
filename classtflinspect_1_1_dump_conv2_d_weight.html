@@ -196,7 +196,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  105</span>    <span class="keyword">auto</span> <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a> = reader.operators();</div>
 <div class="line"><span class="lineno">  106</span> </div>
 <div class="line"><span class="lineno">  107</span>    <span class="comment">// dump Conv2D, DepthwiseConv2D and its weight input operator</span></div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Length(); ++i)</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;size(); ++i)</div>
 <div class="line"><span class="lineno">  109</span>    {</div>
 <div class="line"><span class="lineno">  110</span>      <span class="keyword">const</span> <span class="keyword">auto</span> op = <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Get(i);</div>
 <div class="line"><span class="lineno">  111</span>      <span class="keyword">auto</span> bc = reader.builtin_code(op);</div>

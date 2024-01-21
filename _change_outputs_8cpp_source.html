@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('_change_outputs_8cpp_source.html','');
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">auto</span> output = <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a>(graph, out); <span class="comment">// output is CircleOutput</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    assert(output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> node_name = new_outputs.at(out);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> &amp;node_name = new_outputs.at(out);</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">auto</span> node = named_nodes[node_name];</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    assert(node != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>

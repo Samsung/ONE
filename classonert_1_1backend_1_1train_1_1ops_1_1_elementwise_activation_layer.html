@@ -178,11 +178,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>                                                       : cpu::ops::ElementwiseActivationLayer()</div>
-<div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00033">33</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>                                                       : cpu::ops::ElementwiseActivationLayer()</div>
+<div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -212,10 +212,10 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  _backward_kernel(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>, _back_prop_output, _back_prop_input);</div>
-<div class="line"><span class="lineno">   90</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00097">97</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
+<div class="line"><span class="lineno">   99</span>  _backward_kernel(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">_output</a>, _back_prop_output, _back_prop_input);</div>
+<div class="line"><span class="lineno">  100</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adc2658e4b0528bc6b7ce4071276bdcde"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adc2658e4b0528bc6b7ce4071276bdcde">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">ElementwiseActivationLayer.h:59</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8h_source.html#l00059">onert::backend::cpu::ops::ElementwiseActivationLayer::_output</a>.</p>
@@ -278,59 +278,69 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span>  assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   43</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   44</span>  assert(back_prop_input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   45</span>  assert(back_prop_output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  _back_prop_input = back_prop_input;</div>
-<div class="line"><span class="lineno">   48</span>  _back_prop_output = back_prop_output;</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  _op_type = op_type;</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">ElementwiseActivationType::kReLU</a>:</div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   56</span>      {</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">if</span> (alpha == std::numeric_limits&lt;float&gt;::infinity() &amp;&amp; beta == 0.f)</div>
-<div class="line"><span class="lineno">   58</span>        {</div>
-<div class="line"><span class="lineno">   59</span>          <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">cpu::ops::ElementwiseActivationLayer::configure</a>(</div>
-<div class="line"><span class="lineno">   60</span>            input, output, alpha, beta, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">cpu::ops::ElementwiseActivationType::kReLU</a>);</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>          _backward_kernel = [](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>, <span class="keyword">const</span> IPortableTensor *incoming,</div>
-<div class="line"><span class="lineno">   63</span>                                IPortableTensor *outgoing) {</div>
-<div class="line"><span class="lineno">   64</span>            <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output), getBuffer&lt;float&gt;(output),</div>
-<div class="line"><span class="lineno">   65</span>                                        <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(incoming), getBuffer&lt;float&gt;(incoming),</div>
-<div class="line"><span class="lineno">   66</span>                                        <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(outgoing), getBuffer&lt;float&gt;(outgoing));</div>
-<div class="line"><span class="lineno">   67</span>          };</div>
-<div class="line"><span class="lineno">   68</span>        }</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   70</span>        {</div>
-<div class="line"><span class="lineno">   71</span>          <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer : This layer does not &quot;</span></div>
-<div class="line"><span class="lineno">   72</span>                                   <span class="stringliteral">&quot;suppport other ReLU except for ReLU(0-inf)&quot;</span>);</div>
-<div class="line"><span class="lineno">   73</span>        }</div>
-<div class="line"><span class="lineno">   74</span>      }</div>
-<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   76</span>      {</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported datatype&quot;</span>);</div>
-<div class="line"><span class="lineno">   78</span>      }</div>
-<div class="line"><span class="lineno">   79</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   81</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported activation type yet&quot;</span>);</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
-<div class="line"><span class="lineno">   83</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00038">38</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
+<div class="line"><span class="lineno">   43</span>  assert(input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span>  assert(back_prop_input != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span>  assert(back_prop_output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   49</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  _op_type = op_type;</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">switch</span> (op_type)</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">ElementwiseActivationType::kReLU</a>:</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;data_type() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   57</span>      {</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">if</span> ((alpha == std::numeric_limits&lt;float&gt;::infinity() || alpha == 6.0f) &amp;&amp; beta == 0.f)</div>
+<div class="line"><span class="lineno">   59</span>        {</div>
+<div class="line"><span class="lineno">   60</span>          <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">cpu::ops::ElementwiseActivationLayer::configure</a>(</div>
+<div class="line"><span class="lineno">   61</span>            input, output, alpha, beta, <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">cpu::ops::ElementwiseActivationType::kReLU</a>);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>          <span class="keyword">auto</span> relu_cker = [&amp;alpha]() {</div>
+<div class="line"><span class="lineno">   64</span>            <span class="keywordflow">if</span> (alpha == std::numeric_limits&lt;float&gt;::infinity())</div>
+<div class="line"><span class="lineno">   65</span>              <span class="keywordflow">return</span> <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>;</div>
+<div class="line"><span class="lineno">   66</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (alpha == 6.0f)</div>
+<div class="line"><span class="lineno">   67</span>              <span class="keywordflow">return</span> <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a>;</div>
+<div class="line"><span class="lineno">   68</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   69</span>              <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;no supported relu kernel&quot;</span>};</div>
+<div class="line"><span class="lineno">   70</span>          }();</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>          _backward_kernel = [relu_cker](<span class="keyword">const</span> IPortableTensor *<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>,</div>
+<div class="line"><span class="lineno">   73</span>                                         <span class="keyword">const</span> IPortableTensor *incoming,</div>
+<div class="line"><span class="lineno">   74</span>                                         IPortableTensor *outgoing) {</div>
+<div class="line"><span class="lineno">   75</span>            relu_cker(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(output), getBuffer&lt;float&gt;(output), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(incoming),</div>
+<div class="line"><span class="lineno">   76</span>                      getBuffer&lt;float&gt;(incoming), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(outgoing), getBuffer&lt;float&gt;(outgoing));</div>
+<div class="line"><span class="lineno">   77</span>          };</div>
+<div class="line"><span class="lineno">   78</span>        }</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   80</span>        {</div>
+<div class="line"><span class="lineno">   81</span>          <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">   82</span>            <span class="stringliteral">&quot;train ElementwiseActivationLayer : Unsupported ReLU activation type&quot;</span>);</div>
+<div class="line"><span class="lineno">   83</span>        }</div>
+<div class="line"><span class="lineno">   84</span>      }</div>
+<div class="line"><span class="lineno">   85</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   86</span>      {</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported datatype&quot;</span>);</div>
+<div class="line"><span class="lineno">   88</span>      }</div>
+<div class="line"><span class="lineno">   89</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   91</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;train ElementwiseActivationLayer: Unsupported activation type yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
+<div class="line"><span class="lineno">   93</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_a73f8168869f5f1cfea633cffee41dd39"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#a73f8168869f5f1cfea633cffee41dd39">onert::backend::cpu::ops::ElementwiseActivationLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta, const ElementwiseActivationType op_type)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">ElementwiseActivationLayer.cc:87</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition:</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a56ba869240e3cb2e543a61e176115d8f"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a></div><div class="ttdeci">void ReLUGrad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">ReLU.h:32</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_abe5949773bbbe4ca31565a0eacbd11c2"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a></div><div class="ttdeci">void ReLU6Grad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">ReLU6.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00094">OperationUtils.h:94</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::ElementwiseActivationType::kReLU</a></div><div class="ttdeci">@ kReLU</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::ElementwiseActivationType::kReLU</a></div><div class="ttdeci">@ kReLU</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::kReLU</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4">onert::backend::cpu::ops::kReLU</a>, <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25acd272990c8697bac168e2b0fb9b54ae4">onert::backend::train::ops::kReLU</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">nnfw::cker::train::ReLU6Grad()</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>.</p>
 
 </div>
 </div>
@@ -360,8 +370,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00085">85</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">cpu::ops::ElementwiseActivationLayer::run</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00095">95</a> of file <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html">ElementwiseActivationLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">cpu::ops::ElementwiseActivationLayer::run</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer_html_adadc612d674216bb9613d52abbd0b89e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html#adadc612d674216bb9613d52abbd0b89e">onert::backend::cpu::ops::ElementwiseActivationLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition:</b> <a href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">ElementwiseActivationLayer.cc:193</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00193">onert::backend::cpu::ops::ElementwiseActivationLayer::run()</a>.</p>

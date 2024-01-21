@@ -3,6 +3,7 @@ var structluci__interpreter__pal_1_1_fully_connected_params =
     [ "float_activation_max", "structluci__interpreter__pal_1_1_fully_connected_params.html#adabe90b963f223493bb91e01275b02a2", null ],
     [ "float_activation_min", "structluci__interpreter__pal_1_1_fully_connected_params.html#a8595c595cee0fd1125fb91707468c924", null ],
     [ "input_offset", "structluci__interpreter__pal_1_1_fully_connected_params.html#a71dadd4c9fd5d191f5f7b196f5baf4ba", null ],
+    [ "is_channel_wise_quant", "structluci__interpreter__pal_1_1_fully_connected_params.html#a04f8d439281b7cdc98750f309d2dc4c8", null ],
     [ "lhs_cacheable", "structluci__interpreter__pal_1_1_fully_connected_params.html#a63bee903d94a659a8ebc3c0ff299e7c4", null ],
     [ "output_multiplier", "structluci__interpreter__pal_1_1_fully_connected_params.html#aeb9d99860efc13fc3f6e6d1c830b6e3e", null ],
     [ "output_offset", "structluci__interpreter__pal_1_1_fully_connected_params.html#ad47aa023a4740c06678a3ae7c2eaad84", null ],

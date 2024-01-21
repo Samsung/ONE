@@ -287,8 +287,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   59</span> </div>
 <div class="line"><span class="lineno">   60</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _src_tensors.size(); i++)</div>
 <div class="line"><span class="lineno">   61</span>  {</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> src = _src_tensors[i];</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keyword">auto</span> dst = _dst_tensors[i];</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> &amp;src = _src_tensors[i];</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keyword">auto</span> &amp;dst = _dst_tensors[i];</div>
 <div class="line"><span class="lineno">   64</span> </div>
 <div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span> nodes = get_src_dst(src, dst);</div>
 <div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (not nodes.src)</div>

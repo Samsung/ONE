@@ -3152,7 +3152,7 @@ template&lt;<a class="el" href="namespaceluci.html#a72816c6f4e80aaae25316b4b606f
 <div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = <a class="code hl_function" href="namespaceluci.html#ac7dd3da6e892c67c7db0f62c1001c61d">luci::output_node</a>(graph, out); <span class="comment">// output is CircleOutput</span></div>
 <div class="line"><span class="lineno">   73</span>    assert(output != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> node_name = new_outputs.at(out);</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> &amp;node_name = new_outputs.at(out);</div>
 <div class="line"><span class="lineno">   76</span>    <span class="keyword">auto</span> node = named_nodes[node_name];</div>
 <div class="line"><span class="lineno">   77</span>    assert(node != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   78</span> </div>
@@ -4563,7 +4563,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = pgroups-&gt;<a class="code hl_variable" href="structluci_1_1_p_groups.html#aadfa660a4d7fc7f86ae957ddc1d22d34">node2group</a>.begin(); it != pgroups-&gt;<a class="code hl_variable" href="structluci_1_1_p_groups.html#aadfa660a4d7fc7f86ae957ddc1d22d34">node2group</a>.end(); ++it)</div>
 <div class="line"><span class="lineno">   57</span>  {</div>
 <div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> node = it-&gt;first;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> group = it-&gt;second;</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> &amp;group = it-&gt;second;</div>
 <div class="line"><span class="lineno">   60</span>    os &lt;&lt; <span class="stringliteral">&quot;  Node: &quot;</span> &lt;&lt; node &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a3ecf4be562fa9dde5bbc387ea5a26e0a">luci::opcode_name</a>(node) &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; node-&gt;name()</div>
 <div class="line"><span class="lineno">   61</span>       &lt;&lt; <span class="stringliteral">&quot;): &quot;</span> &lt;&lt; group &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   62</span>  }</div>
@@ -5945,7 +5945,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 <div class="line"><span class="lineno">  398</span> </div>
 <div class="line"><span class="lineno">  399</span>  StridedSliceContext op_context(node);</div>
 <div class="line"><span class="lineno">  400</span>  <span class="keyword">auto</span> op_params = BuildStridedSliceParams(&amp;op_context);</div>
-<div class="line"><span class="lineno">  401</span>  <span class="keyword">auto</span> effective_input_shape = op_context.effective_input_shape;</div>
+<div class="line"><span class="lineno">  401</span>  <span class="keyword">auto</span> &amp;effective_input_shape = op_context.effective_input_shape;</div>
 <div class="line"><span class="lineno">  402</span>  std::vector&lt;int64_t&gt; output_shape_vector;</div>
 <div class="line"><span class="lineno">  403</span> </div>
 <div class="line"><span class="lineno">  404</span>  <span class="keywordflow">for</span> (int32_t idx = effective_input_shape.rank() - 1; idx &gt;= 0; --idx)</div>
@@ -6753,7 +6753,7 @@ template&lt;typename Permutation &gt; </div>
 <div class="line"><span class="lineno">  145</span> </div>
 <div class="line"><span class="lineno">  146</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> : layers_info)</div>
 <div class="line"><span class="lineno">  147</span>  {</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keyword">auto</span> name = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name;</div>
+<div class="line"><span class="lineno">  148</span>    <span class="keyword">auto</span> &amp;name = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.name;</div>
 <div class="line"><span class="lineno">  149</span>    <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  150</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
 <div class="line"><span class="lineno">  151</span>    {</div>
@@ -6920,7 +6920,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">NONE</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ad346bb4679d29be241279f15d7795c1c">RELU</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ac014a3d2b85dcb087a709b9b2a3b8e6b">RELU6</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a3d1350ef81160c32cf3605ab32159c2b">RELU_N1_TO_1</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a44e6f47f77ff75eb42fec482870912ad">SIGN_BIT</a>, <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a143c8c6f51b9bb893ce71e38702e3cc1">TANH</a>, and <a class="el" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945a0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00083">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00060">luci_interpreter::kernels::evalTISOKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00118">luci_interpreter::kernels::evalTISOQuantizedKernel()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00042">luci_interpreter::execute_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleL2Pool2D()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp_source.html#l00083">luci_interpreter::configure_kernel_CircleConcatenation()</a>, <a class="el" href="_pool2_d_common_8h_source.html#l00056">luci_interpreter::createPoolParams()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00061">luci_interpreter::kernels::evalTISOKernel()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html#l00127">luci_interpreter::kernels::evalTISOQuantizedKernel()</a>.</p>
 
 </div>
 </div>
@@ -7074,7 +7074,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcbac706ffd80b0ad0a4ef605c581e95252b">SAME</a>, <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcba0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>, and <a class="el" href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcbac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html#l00042">luci_interpreter::execute_kernel_CircleAveragePool2D()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp_source.html#l00037">luci_interpreter::execute_kernel_CircleL2Pool2D()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html#l00053">luci_interpreter::execute_kernel_CircleMaxPool2D()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_pool2_d_common_8h_source.html#l00056">luci_interpreter::createPoolParams()</a>.</p>
 
 </div>
 </div>

@@ -492,7 +492,7 @@ $(document).ready(function(){initNavTree('_shape_infer___strided_slice_8cpp_sour
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  StridedSliceContext op_context(node);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="keyword">auto</span> op_params = BuildStridedSliceParams(&amp;op_context);</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keyword">auto</span> effective_input_shape = op_context.effective_input_shape;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keyword">auto</span> &amp;effective_input_shape = op_context.effective_input_shape;</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  std::vector&lt;int64_t&gt; output_shape_vector;</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="keywordflow">for</span> (int32_t idx = effective_input_shape.rank() - 1; idx &gt;= 0; --idx)</div>

@@ -2002,12 +2002,19 @@ var annotated_dup =
         [ "LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info" ],
         [ "LstmStepManager", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager.html", "classluci__interpreter__pal_1_1lstm__internal_1_1_lstm_step_manager" ]
       ] ],
+      [ "AddFn", "structluci__interpreter__pal_1_1_add_fn.html", "structluci__interpreter__pal_1_1_add_fn" ],
       [ "ArithmeticParams", "structluci__interpreter__pal_1_1_arithmetic_params.html", "structluci__interpreter__pal_1_1_arithmetic_params" ],
       [ "ComparisonParams", "structluci__interpreter__pal_1_1_comparison_params.html", "structluci__interpreter__pal_1_1_comparison_params" ],
       [ "ConcatenationParams", "structluci__interpreter__pal_1_1_concatenation_params.html", "structluci__interpreter__pal_1_1_concatenation_params" ],
       [ "ConvParams", "structluci__interpreter__pal_1_1_conv_params.html", "structluci__interpreter__pal_1_1_conv_params" ],
+      [ "DivFn", "structluci__interpreter__pal_1_1_div_fn.html", "structluci__interpreter__pal_1_1_div_fn" ],
+      [ "FloorDivFn", "structluci__interpreter__pal_1_1_floor_div_fn.html", "structluci__interpreter__pal_1_1_floor_div_fn" ],
+      [ "FloorModFn", "structluci__interpreter__pal_1_1_floor_mod_fn.html", "structluci__interpreter__pal_1_1_floor_mod_fn" ],
       [ "FullyConnectedParams", "structluci__interpreter__pal_1_1_fully_connected_params.html", "structluci__interpreter__pal_1_1_fully_connected_params" ],
+      [ "MaximumFn", "structluci__interpreter__pal_1_1_maximum_fn.html", "structluci__interpreter__pal_1_1_maximum_fn" ],
       [ "MeanParams", "structluci__interpreter__pal_1_1_mean_params.html", "structluci__interpreter__pal_1_1_mean_params" ],
+      [ "MinimumFn", "structluci__interpreter__pal_1_1_minimum_fn.html", "structluci__interpreter__pal_1_1_minimum_fn" ],
+      [ "MulFn", "structluci__interpreter__pal_1_1_mul_fn.html", "structluci__interpreter__pal_1_1_mul_fn" ],
       [ "NdArrayDesc", "structluci__interpreter__pal_1_1_nd_array_desc.html", "structluci__interpreter__pal_1_1_nd_array_desc" ],
       [ "PaddingValues", "structluci__interpreter__pal_1_1_padding_values.html", "structluci__interpreter__pal_1_1_padding_values" ],
       [ "PadParams", "structluci__interpreter__pal_1_1_pad_params.html", "structluci__interpreter__pal_1_1_pad_params" ],
@@ -2017,6 +2024,7 @@ var annotated_dup =
       [ "ResizeNearestNeighborParams", "structluci__interpreter__pal_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter__pal_1_1_resize_nearest_neighbor_params" ],
       [ "SoftmaxParams", "structluci__interpreter__pal_1_1_softmax_params.html", "structluci__interpreter__pal_1_1_softmax_params" ],
       [ "StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", "structluci__interpreter__pal_1_1_strided_slice_params" ],
+      [ "SubFn", "structluci__interpreter__pal_1_1_sub_fn.html", "structluci__interpreter__pal_1_1_sub_fn" ],
       [ "TransposeParams", "structluci__interpreter__pal_1_1_transpose_params.html", "structluci__interpreter__pal_1_1_transpose_params" ]
     ] ],
     [ "MaxPool2D_000", "namespace_max_pool2_d__000.html", [
@@ -2560,6 +2568,16 @@ var annotated_dup =
     ] ],
     [ "nnfw", "namespacennfw.html", [
       [ "cker", "namespacennfw_1_1cker.html", [
+        [ "depthwise_conv_op", "namespacennfw_1_1cker_1_1depthwise__conv__op.html", [
+          [ "functor", "namespacennfw_1_1cker_1_1depthwise__conv__op_1_1functor.html", [
+            [ "DepthwiseFilterPadOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op" ],
+            [ "DepthwiseInputCopyOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op" ]
+          ] ],
+          [ "LaunchDepthwiseConvBackpropFilterOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op" ],
+          [ "LaunchDepthwiseConvBackpropFilterOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4" ],
+          [ "LaunchDepthwiseConvBackpropInputOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op" ],
+          [ "LaunchDepthwiseConvBackpropInputOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4" ]
+        ] ],
         [ "detail", "namespacennfw_1_1cker_1_1detail.html", [
           [ "GemmImplUsingEigen", "structnnfw_1_1cker_1_1detail_1_1_gemm_impl_using_eigen.html", null ]
         ] ],
@@ -2637,6 +2655,7 @@ var annotated_dup =
             [ "SpatialConvolutionBackwardInputFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func" ],
             [ "SpatialConvolutionBackwardInputWithExplicitPaddingFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func" ]
           ] ],
+          [ "DepthwiseConv", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv" ],
           [ "LaunchConv2DBackpropFilterOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op" ],
           [ "LaunchConv2DBackpropInputOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op" ],
           [ "LaunchConv2DBackpropInputOpImpl", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl" ]

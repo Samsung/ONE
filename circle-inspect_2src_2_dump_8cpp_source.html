@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">auto</span> <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a645b2c5b8d2d42393a4ab7e381095d3a">operators</a>();</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="comment">// dump operators</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;size(); ++i)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="keyword">const</span> <span class="keyword">auto</span> op = <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Get(i);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
@@ -150,7 +150,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">auto</span> <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a645b2c5b8d2d42393a4ab7e381095d3a">operators</a>();</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;size(); ++i)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Get(i);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">auto</span> tensors = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a10d614ba78384b7f88b3a5c892f58128">tensors</a>();</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">if</span> (tensor_id &lt; 0 || tensor_id &gt;= tensors-&gt;Length())</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">if</span> (tensor_id &lt; 0 || tensor_id &gt;= tensors-&gt;size())</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid Tensor ID&quot;</span>);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">auto</span> <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a645b2c5b8d2d42393a4ab7e381095d3a">operators</a>();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">// dump Conv2D, DepthwiseConv2D and its weight input operator</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;size(); ++i)</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    {</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keyword">const</span> <span class="keyword">auto</span> op = <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Get(i);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      <span class="keyword">auto</span> bc = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#aa8689f9c49fce18c0d9cf71dd80b1b73">builtin_code</a>(op);</div>
@@ -252,7 +252,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keyword">auto</span> <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a645b2c5b8d2d42393a4ab7e381095d3a">operators</a>();</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="comment">// Dump operators&#39; version</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;size(); ++i)</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  {</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = <a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a>-&gt;Get(i);</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1">select_subgraph</a>(g);</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keyword">auto</span> tensors = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a10d614ba78384b7f88b3a5c892f58128">tensors</a>();</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;size(); ++i)</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    {</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <span class="keyword">const</span> <span class="keyword">auto</span> tensor = tensors-&gt;Get(i);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
@@ -311,7 +311,7 @@ $(document).ready(function(){initNavTree('circle-inspect_2src_2_dump_8cpp_source
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1">select_subgraph</a>(g);</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keyword">auto</span> tensors = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a10d614ba78384b7f88b3a5c892f58128">tensors</a>();</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;size(); ++i)</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    {</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      <span class="keyword">const</span> <span class="keyword">auto</span> tensor = tensors-&gt;Get(i);</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>      <span class="keywordflow">if</span> (tensor-&gt;is_variable())</div>

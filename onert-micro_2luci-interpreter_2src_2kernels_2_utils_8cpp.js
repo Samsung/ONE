@@ -1,5 +1,6 @@
 var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8cpp =
 [
+    [ "areShapesEqual", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a466169c12565ac8721258271aac3c535", null ],
     [ "calculateActivationRange", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a142754e51305f6b9df5a8d08e216465c", null ],
     [ "calculateActivationRange", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#ab64aa6825e373164e635202415339c4f", null ],
     [ "calculateActivationRange", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html#a5e3e3f781db970d7c3e38a10b53990ce", null ],

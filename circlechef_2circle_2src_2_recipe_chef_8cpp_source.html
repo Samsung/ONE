@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('circlechef_2circle_2src_2_recipe_chef_
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">auto</span> operators = circle_import.<a class="code hl_function" href="classcirclechef_1_1_circle_import.html#a44185d49030faf21fac0a4cc1efacb3d">operators</a>();</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// operand fillers for adding all operators</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;size(); ++i)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  {</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(i);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    circle::BuiltinOperator builtincode = circle_import.<a class="code hl_function" href="classcirclechef_1_1_circle_import.html#adf8926beac1e2ec37302fbdf99ac365f">builtin_code</a>(op);</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('circlechef_2circle_2src_2_recipe_chef_
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// add all operands(tensors)</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;size(); ++i)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  {</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">auto</span> tensor = tensors-&gt;Get(i);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('circlechef_2circle_2src_2_recipe_chef_
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  }</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// add all operators</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;size(); ++i)</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  {</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op = operators-&gt;Get(i);</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    circle::BuiltinOperator builtincode = circle_import.<a class="code hl_function" href="classcirclechef_1_1_circle_import.html#adf8926beac1e2ec37302fbdf99ac365f">builtin_code</a>(op);</div>

@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="comment">// dump operands(tensors)</span></div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  os &lt;&lt; <span class="stringliteral">&quot;Operands: T(subgraph index : tensor index) TYPE (shape) (shape_signature) &quot;</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>     &lt;&lt; <span class="stringliteral">&quot;B(buffer index) (variable) OperandName&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensors-&gt;size(); ++i)</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  {</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// TODO refactor to some better structure</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">auto</span> tensor = tensors-&gt;Get(i);</div>
@@ -375,7 +375,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  os &lt;&lt; <span class="stringliteral">&quot;    Option(values) ... &lt;-- depending on OpCode&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  os &lt;&lt; <span class="stringliteral">&quot;    I T(tensor index) OperandName &lt;-- as input&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  os &lt;&lt; <span class="stringliteral">&quot;    O T(tensor index) OperandName &lt;-- as output&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; operators-&gt;size(); ++i)</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  {</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keyword">const</span> <span class="keyword">auto</span> op = operators-&gt;Get(i);</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    circle::BuiltinOperator builtincode = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#aa8689f9c49fce18c0d9cf71dd80b1b73">builtin_code</a>(op);</div>
@@ -473,7 +473,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <span class="comment">// dump buffer</span></div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  os &lt;&lt; <span class="stringliteral">&quot;Buffers: B(index) (length) values, if any&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; buffers-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; buffers-&gt;size(); ++i)</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  {</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keyword">const</span> uint8_t *buff_data;</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796">buffer_info</a>(i, &amp;buff_data);</div>
@@ -491,7 +491,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="keywordflow">if</span> (metadata != <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  {</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    os &lt;&lt; <span class="stringliteral">&quot;metadata : B(index) name&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata-&gt;size(); ++i)</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    {</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="keyword">const</span> <span class="keyword">auto</span> buff_id = metadata-&gt;Get(i)-&gt;buffer();</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>      <span class="keyword">const</span> <span class="keyword">auto</span> metadata_name = metadata-&gt;Get(i)-&gt;name()-&gt;str();</div>
@@ -511,14 +511,14 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keywordflow">if</span> (signaturedefs != <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  {</div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    os &lt;&lt; <span class="stringliteral">&quot;SignatureDef&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; signaturedefs-&gt;Length(); ++i)</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; signaturedefs-&gt;size(); ++i)</div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    {</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>      <span class="keyword">auto</span> sign_i = signaturedefs-&gt;Get(i);</div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      os &lt;&lt; <span class="stringliteral">&quot;S(&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;) signature_key(&quot;</span> &lt;&lt; sign_i-&gt;signature_key()-&gt;c_str() &lt;&lt; <span class="stringliteral">&quot;), sub_graph(&quot;</span></div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>         &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      <span class="keyword">auto</span> inputs_i = sign_i-&gt;inputs();</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; inputs_i-&gt;Length(); ++t)</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; inputs_i-&gt;size(); ++t)</div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>      {</div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <span class="keyword">auto</span> inputs_i_t = inputs_i-&gt;Get(t);</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        os &lt;&lt; <span class="stringliteral">&quot;    I(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
@@ -527,7 +527,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>      }</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>      <span class="keyword">auto</span> outputs_i = sign_i-&gt;outputs();</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; outputs_i-&gt;Length(); ++t)</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; outputs_i-&gt;size(); ++t)</div>
 <div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      {</div>
 <div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>        <span class="keyword">auto</span> outputs_i_t = outputs_i-&gt;Get(t);</div>
 <div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>        os &lt;&lt; <span class="stringliteral">&quot;    O(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>

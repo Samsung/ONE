@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_read_8cpp_source.html',
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  _inputs.clear();</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  _outputs.clear();</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;Length() &lt;= sgindex)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &lt;= sgindex)</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  {</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -210,6 +210,7 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_read_8cpp_source.html',
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>} <span class="comment">// namespace tflread</span></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 <div class="ttc" id="aclasstflread_1_1_reader_html_a3ce3817aecc4daad9cb8010d8a2846c4"><div class="ttname"><a href="classtflread_1_1_reader.html#a3ce3817aecc4daad9cb8010d8a2846c4">tflread::Reader::opcodes</a></div><div class="ttdeci">const std::vector&lt; const tflite::OperatorCode * &gt; &amp; opcodes()</div><div class="ttdef"><b>Definition:</b> <a href="tfldump_2src_2_read_8h_source.html#l00060">Read.h:60</a></div></div>
 <div class="ttc" id="aclasstflread_1_1_reader_html_a3e9513a4873f25a4ecad7dbcbd922262"><div class="ttname"><a href="classtflread_1_1_reader.html#a3e9513a4873f25a4ecad7dbcbd922262">tflread::Reader::builtin_code</a></div><div class="ttdeci">tflite::BuiltinOperator builtin_code(const tflite::Operator *op) const</div><div class="ttdef"><b>Definition:</b> <a href="tfldump_2src_2_read_8cpp_source.html#l00064">Read.cpp:64</a></div></div>
 <div class="ttc" id="aclasstflread_1_1_reader_html_a470e761cd4894d64ed7d0775b1c78a20"><div class="ttname"><a href="classtflread_1_1_reader.html#a470e761cd4894d64ed7d0775b1c78a20">tflread::Reader::buffer_info</a></div><div class="ttdeci">size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data)</div><div class="ttdef"><b>Definition:</b> <a href="tfldump_2src_2_read_8cpp_source.html#l00042">Read.cpp:42</a></div></div>

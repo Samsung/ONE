@@ -368,8 +368,11 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="compiler_2tfl-inspect_2src_2_reader_8h_source.html#l00063">63</a> of file <a class="el" href="compiler_2tfl-inspect_2src_2_reader_8h_source.html">Reader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> _subgraphs-&gt;Length(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> _subgraphs-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>(); }</div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition:</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00027">tflinspect::DumpOperators::run()</a>, <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00096">tflinspect::DumpConv2DWeight::run()</a>, and <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00148">tflinspect::DumpOperatorVersion::run()</a>.</p>
 
 </div>
@@ -528,7 +531,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   98</span>  _inputs.clear();</div>
 <div class="line"><span class="lineno">   99</span>  _outputs.clear();</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;Length() &lt;= sgindex)</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (_subgraphs-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &lt;= sgindex)</div>
 <div class="line"><span class="lineno">  102</span>  {</div>
 <div class="line"><span class="lineno">  103</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -546,7 +549,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  116</span>}</div>
 <div class="ttc" id="anamespacetflinspect_html_a015f9fc04d964935486147e4567af1a5"><div class="ttname"><a href="namespacetflinspect.html#a015f9fc04d964935486147e4567af1a5">tflinspect::as_index_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; as_index_vector(const flatbuffers::Vector&lt; T &gt; *flat_array)</div><div class="ttdef"><b>Definition:</b> <a href="compiler_2tfl-inspect_2src_2_reader_8h_source.html#l00029">Reader.h:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2tfl-inspect_2src_2_reader_8h_source.html#l00029">tflinspect::as_index_vector()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2tfl-inspect_2src_2_reader_8h_source.html#l00029">tflinspect::as_index_vector()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00027">tflinspect::DumpOperators::run()</a>, <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00096">tflinspect::DumpConv2DWeight::run()</a>, and <a class="el" href="tfl-inspect_2src_2_dump_8cpp_source.html#l00148">tflinspect::DumpOperatorVersion::run()</a>.</p>
 

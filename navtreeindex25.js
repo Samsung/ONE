@@ -1,5 +1,16 @@
 var NAVTREEINDEX25 =
 {
+"_quantization_helpers_8h_source.html":[36,0,0,72,1,0,47],
+"_quantization_parameters_8h.html":[36,0,0,52,7,0,0,0,41],
+"_quantization_parameters_8h.html#a1dbbe7778504a3210934cf9f1415315a":[36,0,0,52,7,0,0,0,41,1],
+"_quantization_parameters_8h.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a":[36,0,0,52,7,0,0,0,41,1,0],
+"_quantization_parameters_8h.html#a1dbbe7778504a3210934cf9f1415315aacf412d006a6d6229f10554753b62b9b2":[36,0,0,52,7,0,0,0,41,1,1],
+"_quantization_parameters_8h_source.html":[36,0,0,52,7,0,0,0,41],
+"_quantization_utils_8cpp.html":[36,0,0,52,7,1,54],
+"_quantization_utils_8cpp.html#a18cc394d8cc1def0bd5426a8e9e8328d":[36,0,0,52,7,1,54,4],
+"_quantization_utils_8cpp.html#a1ef77fe953130949713bdae6c170b133":[36,0,0,52,7,1,54,14],
+"_quantization_utils_8cpp.html#a2250a670bdd1f2f8db677a4080758347":[36,0,0,52,7,1,54,6],
+"_quantization_utils_8cpp.html#a2794836a87d2212005d9ef7b7ef3498a":[36,0,0,52,7,1,54,2],
 "_quantization_utils_8cpp.html#a3a93288835d5987bf66c18340aa2498d":[36,0,0,52,7,1,54,1],
 "_quantization_utils_8cpp.html#a45fe577e9e1a457fe33918624cd4a9a5":[36,0,0,52,7,1,54,11],
 "_quantization_utils_8cpp.html#a4f572f265dd92ec416a29e155f3e60c6":[36,0,0,52,7,1,54,7],
@@ -238,16 +249,5 @@ var NAVTREEINDEX25 =
 "_record_function_8h_source.html":[36,0,0,108,1,3],
 "_record_min_max_8cpp.html":[36,0,0,108,2,3],
 "_record_min_max_8cpp.html#a60fe2dd4ed605a6b0eb5965a7f0339d8":[36,0,0,108,2,3,1],
-"_record_min_max_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8":[36,0,0,108,2,3,0],
-"_record_min_max_8cpp_source.html":[36,0,0,108,2,3],
-"_record_min_max_8h.html":[36,0,0,108,1,4],
-"_record_min_max_8h.html#a3d03f63a604eb9c053ce1c9578a7d30f":[36,0,0,108,1,4,2],
-"_record_min_max_8h.html#a436fa9e67582bd0c9c1d18b500d3c1be":[36,0,0,108,1,4,1],
-"_record_min_max_8h.html#aa3e8d73eea6edc6f570d5102da1d2fa0":[36,0,0,108,1,4,3],
-"_record_min_max_8h_source.html":[36,0,0,108,1,4],
-"_reduce_common_8cpp.html":[36,0,3,4,2,1,73],
-"_reduce_common_8cpp.html#a7562b0ff36ccec0b499fa72f226175ed":[36,0,3,4,2,1,73,0],
-"_reduce_common_8cpp.html#a86694119f60566a75be4c92fd9584575":[36,0,3,4,2,1,73,1],
-"_reduce_common_8cpp_source.html":[36,0,3,4,2,1,73],
-"_reduce_layer_8cc.html":[36,0,4,2,1,4,0,70]
+"_record_min_max_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8":[36,0,0,108,2,3,0]
 };

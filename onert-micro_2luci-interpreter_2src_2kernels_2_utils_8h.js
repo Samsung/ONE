@@ -6,6 +6,7 @@ var onert_micro_2luci_interpreter_2src_2kernels_2_utils_8h =
     [ "luci_interpreter::kernels::VectorOfQuantizedTensors< is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors.html", "classluci__interpreter_1_1kernels_1_1_vector_of_quantized_tensors" ],
     [ "LUCI_INTERPRETER_CHECK", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d", null ],
     [ "Activation", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a7e6d0f8aa60d2f54876de5b83cb2238c", null ],
+    [ "areShapesEqual", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a466169c12565ac8721258271aac3c535", null ],
     [ "calcOffset", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a98a3bc29bb49235d704aea9373bdb866", null ],
     [ "calculateActivationRange", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a8a9a24193bc38fd68fa6267c807bd354", null ],
     [ "calculateActivationRangeQuantized", "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a477eb643e22685b5fbaae14f1c981ddc", null ],

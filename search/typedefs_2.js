@@ -31,6 +31,6 @@ var searchData=
   ['consumerset_28',['ConsumerSet',['../classcoco_1_1_object.html#a60c6335673ed9c9f9bd912b361171c3e',1,'coco::Object']]],
   ['contextid_29',['ContextID',['../namespacenpud_1_1core.html#a84d2910055c8dff564140b2f5bfc9b50',1,'npud::core']]],
   ['converterfunc_30',['ConverterFunc',['../classmir__onnx_1_1_node_converter_registry.html#abe63d6844673750e09acc6e115edc8ff',1,'mir_onnx::NodeConverterRegistry']]],
-  ['cpudevice_31',['CPUDevice',['../namespacennfw_1_1cker_1_1training__ops.html#a667a5d591e975225bf026521f5af79d0',1,'nnfw::cker::training_ops::CPUDevice()'],['../namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929',1,'nnfw::cker::functor::CPUDevice()'],['../namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1',1,'nnfw::cker::CPUDevice()']]],
+  ['cpudevice_31',['CPUDevice',['../namespacennfw_1_1cker_1_1depthwise__conv__op.html#a59e3ee0b0d7cafe5a2bc7217c5b8eb4f',1,'nnfw::cker::depthwise_conv_op::CPUDevice()'],['../namespacennfw_1_1cker_1_1training__ops.html#a667a5d591e975225bf026521f5af79d0',1,'nnfw::cker::training_ops::CPUDevice()'],['../namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929',1,'nnfw::cker::functor::CPUDevice()'],['../namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1',1,'nnfw::cker::CPUDevice()']]],
   ['customoptionsformat_32',['CustomOptionsFormat',['../classonert_1_1base__loader_1_1_base_loader.html#ab53006661ffb84bec2cf3d1e36098181',1,'onert::base_loader::BaseLoader']]]
 ];

@@ -425,7 +425,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_circle_quantizer_8cp
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <span class="comment">// all name should be found in graph</span></div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;lp : lps)</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  {</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="keyword">auto</span> name = lp-&gt;name;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="keyword">auto</span> &amp;name = lp-&gt;name;</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="keywordtype">bool</span> found = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    {</div>

@@ -15,7 +15,7 @@ var dir_4d6511aec63f0104ba12c7c66d891cab =
     [ "Concatenation.h", "compute_2cker_2include_2cker_2operation_2_concatenation_8h.html", "compute_2cker_2include_2cker_2operation_2_concatenation_8h" ],
     [ "Conv.h", "compute_2cker_2include_2cker_2operation_2_conv_8h.html", "compute_2cker_2include_2cker_2operation_2_conv_8h" ],
     [ "DepthToSpace.h", "compute_2cker_2include_2cker_2operation_2_depth_to_space_8h.html", "compute_2cker_2include_2cker_2operation_2_depth_to_space_8h" ],
-    [ "DepthwiseConv.h", "_depthwise_conv_8h.html", "_depthwise_conv_8h" ],
+    [ "DepthwiseConv.h", "operation_2_depthwise_conv_8h.html", "operation_2_depthwise_conv_8h" ],
     [ "Dequantize.h", "compute_2cker_2include_2cker_2operation_2_dequantize_8h.html", "compute_2cker_2include_2cker_2operation_2_dequantize_8h" ],
     [ "Einsum.h", "compute_2cker_2include_2cker_2operation_2_einsum_8h.html", "compute_2cker_2include_2cker_2operation_2_einsum_8h" ],
     [ "Elementwise.h", "compute_2cker_2include_2cker_2operation_2_elementwise_8h.html", "compute_2cker_2include_2cker_2operation_2_elementwise_8h" ],

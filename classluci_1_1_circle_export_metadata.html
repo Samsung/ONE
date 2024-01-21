@@ -234,7 +234,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
 <div class="line"><span class="lineno">   57</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> plan_vector = kv.second;</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;plan_vector = kv.second;</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = plan_vector.size();</div>
 <div class="line"><span class="lineno">   61</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   62</span> </div>
@@ -282,7 +282,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  107</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
 <div class="line"><span class="lineno">  108</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="keyword">const</span> <span class="keyword">auto</span> origins = kv.second;</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;origins = kv.second;</div>
 <div class="line"><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> node_num = origins.size();</div>
 <div class="line"><span class="lineno">  112</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, node_num);</div>
 <div class="line"><span class="lineno">  113</span> </div>
@@ -328,7 +328,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <span class="keywordtype">id</span> = kv.first;</div>
 <div class="line"><span class="lineno">   82</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, <span class="keywordtype">id</span>);</div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">const</span> <span class="keyword">auto</span> origin_name = kv.second;</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;origin_name = kv.second;</div>
 <div class="line"><span class="lineno">   85</span>    <span class="keyword">const</span> <span class="keyword">auto</span> length = origin_name.length();</div>
 <div class="line"><span class="lineno">   86</span>    write_u32(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, length + 1); <span class="comment">// name + &#39;\0</span></div>
 <div class="line"><span class="lineno">   87</span> </div>

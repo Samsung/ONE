@@ -1,6 +1,7 @@
 var namespacennfw_1_1cker_1_1train =
 [
     [ "functor", "namespacennfw_1_1cker_1_1train_1_1functor.html", "namespacennfw_1_1cker_1_1train_1_1functor" ],
+    [ "DepthwiseConv", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv" ],
     [ "LaunchConv2DBackpropFilterOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op" ],
     [ "LaunchConv2DBackpropInputOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op" ],
     [ "LaunchConv2DBackpropInputOpImpl", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl" ],
@@ -17,6 +18,7 @@ var namespacennfw_1_1cker_1_1train =
     [ "MeanGrad", "namespacennfw_1_1cker_1_1train.html#a52345a6f0694577d6369713c74e7d027", null ],
     [ "MSE", "namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0", null ],
     [ "MSEGrad", "namespacennfw_1_1cker_1_1train.html#a23fc8a7fd2e8068b5bb1b07a581e0936", null ],
+    [ "ReLU6Grad", "namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2", null ],
     [ "ReLUGrad", "namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f", null ],
     [ "SoftMaxGrad", "namespacennfw_1_1cker_1_1train.html#a8b6afe0db84836d197f52230d77b913f", null ],
     [ "square", "namespacennfw_1_1cker_1_1train.html#ab73263e409724ca45f5cf2dba525d4b0", null ]

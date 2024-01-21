@@ -1,5 +1,6 @@
 var dir_2a498922dfc6ace616ed486a6a5bbe00 =
 [
+    [ "depthwise_conv_op.h", "depthwise__conv__op_8h.html", "depthwise__conv__op_8h" ],
     [ "eigen_backward_spatial_convolutions.h", "eigen__backward__spatial__convolutions_8h.html", "eigen__backward__spatial__convolutions_8h" ],
     [ "eigen_convolution_helpers.h", "eigen__convolution__helpers_8h.html", "eigen__convolution__helpers_8h" ],
     [ "eigen_gemm_eigen.h", "eigen__gemm__eigen_8h.html", "eigen__gemm__eigen_8h" ],

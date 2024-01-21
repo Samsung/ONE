@@ -1,7 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"_neg_mean_kernel_8h.html":[36,0,3,4,0,0,1,44,1],
-"_neg_mean_kernel_8h.html#a9a6b303ff042b2f4f5e26f9f4866f225":[36,0,3,4,0,0,1,44,1,1],
 "_neg_mean_kernel_8h_source.html":[36,0,3,4,0,0,1,44,1],
 "_neg_minimum_kernel_8h.html":[36,0,3,4,0,0,1,45,1],
 "_neg_minimum_kernel_8h_source.html":[36,0,3,4,0,0,1,45,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "_node_as_8h.html":[36,0,0,74,4,0,0,0,0],
 "_node_as_8h.html#ac169a7192721f8400c9a5660ca84b808":[36,0,0,74,4,0,0,0,0,0],
 "_node_as_8h_source.html":[36,0,0,74,4,0,0,0,0],
-"_node_builder_8h.html":[36,0,0,52,2,0,0,0,7]
+"_node_builder_8h.html":[36,0,0,52,2,0,0,0,7],
+"_node_builder_8h.html#ad2a8941614b11ceb2bee2c1cfdc2adaa":[36,0,0,52,2,0,0,0,7,2],
+"_node_builder_8h.html#ad2a8941614b11ceb2bee2c1cfdc2adaaa17de626bcae5109bb2f7a66dfc4a8a1d":[36,0,0,52,2,0,0,0,7,2,0]
 };
