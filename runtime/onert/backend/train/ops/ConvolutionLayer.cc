@@ -134,21 +134,16 @@ void ConvolutionLayer::backwardFloat32()
 {
   // Calculate gradient for activation
   const IPortableTensor *backprop_act;
-  switch (_activation)
+  try
   {
-    case ir::Activation::NONE:
-      backprop_act = _back_prop_output;
-      break;
-    case ir::Activation::RELU:
-      nnfw::cker::train::ReLUGrad(getShape(_output), getBuffer<float>(_output),
-                                  getShape(_back_prop_output), getBuffer<float>(_back_prop_output),
-                                  getShape(_act_back_prop_output.get()),
-                                  getBuffer<float>(_act_back_prop_output.get()));
-      backprop_act = _act_back_prop_output.get();
-      break;
-    default:
-      throw std::runtime_error("train ConvolutionLayer: Unsupported activation type yet");
+    backprop_act =
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
   }
+  catch (const std::exception &e)
+  {
+    throw std::runtime_error{"train ConvolutionLayer: " + std::string(e.what())};
+  }
+  assert(backprop_act != nullptr);
 
   // Initialize conv params for training kernels
   nnfw::cker::ConvParams conv_train_params;
