@@ -188,6 +188,10 @@ public:
   NNFW_STATUS set_quantized_model_path(const char *path);
   NNFW_STATUS quantize();
 
+  NNFW_STATUS set_compile_preference(NNFW_COMPILE_PREF pref);
+  NNFW_STATUS set_compiled_model_path(const char *path);
+  NNFW_STATUS compile();
+
 private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();

@@ -1833,3 +1833,68 @@ NNFW_STATUS nnfw_session::quantize()
 
   return NNFW_STATUS_NO_ERROR;
 }
+
+NNFW_STATUS nnfw_session::set_compile_preference(NNFW_COMPILE_PREF pref)
+{
+  try
+  {
+    if (!isStateModelLoaded())
+    {
+      std::cerr << "invalid state" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    // TODO Set preference to compile manager
+    UNUSED_RELEASE(pref);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_compile_preference : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
+{
+  try
+  {
+    if (!isStateModelLoaded())
+    {
+      std::cerr << "invalid state" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    // TODO Set model path for compiled file
+    UNUSED_RELEASE(path);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_compiled_model_path : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::compile()
+{
+  try
+  {
+    if (!isStateModelLoaded())
+    {
+      std::cerr << "invalid state" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    // TODO Compile model
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::compile : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}

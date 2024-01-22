@@ -448,6 +448,51 @@ NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *pat
  */
 NNFW_STATUS nnfw_quantize(nnfw_session *session);
 
+/**
+ * @brief Preference for compilation
+ */
+typedef enum
+{
+  /** Use the default configuration */
+  NNFW_COMPILE_PREF_DEFAULT,
+  /** Do best efforts to compile model for performance */
+  NNFW_COMPILE_PREF_PERFORMANCE_FIRST,
+  /** Do best efforts to compile model for reducing host memory usage */
+  NNFW_COMPILE_PREF_MEMORY_FIRST,
+  /** Do best efforts to compile model for reducing compilation time */
+  NNFW_COMPILE_PREF_COMPILE_TIME_FIRST,
+} NNFW_COMPILE_PREF;
+
+/**
+ * @brief Set preference for backend compilation
+ *
+ * @param[in] session nnfw_session the session to set preference
+ * @param[in] pref @c NNFW_COMPILE_PREF
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_compile_preference(nnfw_session *session, NNFW_COMPILE_PREF pref);
+
+/**
+ * @brief Set exported compiled model path
+ *
+ * This function should be called before {@link nnfw_compile} is invoked.
+ *
+ * TODO: If this function is not called, compiled model will not be exported
+ *
+ * @param[in] session nnfw_session to set compiled model path
+ * @param[in] path    Compiled model path
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path);
+
+/**
+ * @brief Compile the model
+ *
+ * @param[in] session nnfw_session the session which contains information about compilation
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_compile(nnfw_session *session);
+
 #ifdef __cplusplus
 }
 #endif
