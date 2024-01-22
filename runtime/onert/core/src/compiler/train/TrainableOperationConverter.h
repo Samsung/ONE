@@ -37,6 +37,7 @@ public:
   using UntrainableOperationConverter::operator();
 
 private:
+  void visit(const ir::operation::BinaryArithmetic &) override;
   void visit(const ir::operation::Conv2D &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;

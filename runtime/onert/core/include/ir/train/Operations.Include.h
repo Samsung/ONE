@@ -17,6 +17,7 @@
 #ifndef __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 #define __ONERT_IR_TRAIN_OPERATIONS_OPERATION_INCLUDE_H__
 
+#include "ir/train/operation/BinaryArithmetic.h"
 #include "ir/train/operation/Conv2D.h"
 #include "ir/train/operation/DepthwiseConv2D.h"
 #include "ir/train/operation/ElementwiseActivation.h"
