@@ -88,43 +88,6 @@ RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_3.1.4_ubu
 RUN unzip -d tmp sdb.zip && rm sdb.zip
 RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 
-# Install java
-RUN apt-get install -y --no-install-recommends openjdk-8-jdk
-
-# download and install Gradle
-# https://services.gradle.org/distributions/
-ARG GRADLE_VERSION=6.4.1
-ARG GRADLE_DIST=bin
-RUN cd /opt && \
-    wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-${GRADLE_DIST}.zip && \
-    unzip gradle*.zip && \
-    ls -d */ | sed 's/\/*$//g' | xargs -I{} mv {} gradle && \
-    rm gradle*.zip
-
-# download and install Android SDK
-# https://developer.android.com/studio#command-tools
-ARG ANDROID_SDK_VERSION=6514223
-ENV ANDROID_SDK_ROOT /opt/android-sdk
-RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
-    wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
-    unzip *tools*linux*.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools && \
-    rm *tools*linux*.zip
-
-# accept the license agreements of the SDK components
-RUN mkdir -p ${ANDROID_SDK_ROOT}/licenses
-RUN echo 24333f8a63b6825ea9c5514f83c2829b004d1fee > ${ANDROID_SDK_ROOT}/licenses/android-sdk-license
-RUN echo d56f5187479451eabf01fb78af6dfcb131a6481e >> ${ANDROID_SDK_ROOT}/licenses/android-sdk-license
-
-# Env variable for gradle build
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV GRADLE_HOME /opt/gradle
-ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin:${ANDROID_SDK_ROOT}/platform-tools
-ENV ANDROID_HOME ${ANDROID_SDK_ROOT}
-
-# Install NDK
-RUN sdkmanager --install "ndk;20.0.5594570"
-RUN sdkmanager "platform-tools"
-
 # Env for ko encoding build
 ENV LC_ALL "C.UTF-8"
 
