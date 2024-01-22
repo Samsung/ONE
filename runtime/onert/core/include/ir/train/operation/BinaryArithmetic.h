@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATION_BinaryArithmetic_H__
-#define __ONERT_IR_TRAIN_OPERATION_BinaryArithmetic_H__
+#ifndef __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
+#define __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
 
 #include "ir/operation/BinaryArithmetic.h"
 #include "ir/train/ITrainableOperation.h"
@@ -48,4 +48,4 @@ public:
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPERATION_BinaryArithmetic_H__
+#endif // __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
