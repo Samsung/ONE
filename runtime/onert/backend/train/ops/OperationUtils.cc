@@ -52,7 +52,12 @@ const IPortableTensor *backpropActivation(const ir::Activation &activation,
                                   getShape(input_backprop), getBuffer<float>(input_backprop),
                                   getShape(output_backprop), getBuffer<float>(output_backprop));
       break;
-    // TODO: Add ReLU6
+    case ir::Activation::RELU6:
+      nnfw::cker::train::ReLU6Grad(getShape(output), getBuffer<float>(output),
+                                   getShape(input_backprop), getBuffer<float>(input_backprop),
+                                   getShape(output_backprop), getBuffer<float>(output_backprop));
+      break;
+    // TODO: Add other activation backpropagation here
     default:
       throw std::runtime_error("Unsupported activation type yet");
   }
