@@ -207,7 +207,8 @@ void Args::Initialize(void)
       if (i == value)
         return;
     }
-    throw std::runtime_error{arg_name + " " + std::to_string(value) + " is unsupported argument"};
+    std::cerr << arg_name + " " + std::to_string(value) + " is unsupported argument\n";
+    exit(1);
   };
 
   auto loss_help_msg = [](const std::initializer_list<int> arg_list) -> std::string {
