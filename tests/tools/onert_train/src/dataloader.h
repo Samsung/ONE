@@ -41,6 +41,7 @@ public:
   {
     // DO NOTHING
   }
+  virtual ~DataLoader() = default;
 
   virtual std::tuple<Generator, uint32_t>
   loadData(const uint32_t batch_size, const float from = 0.0f, const float to = 1.0f) = 0;
