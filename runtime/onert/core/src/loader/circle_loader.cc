@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include "circle_loader.h"
+#include "loader/circle_loader.h"
+
 #include "base_loader.h"
 #include "circle_schema_generated.h"
 
