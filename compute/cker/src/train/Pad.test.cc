@@ -34,8 +34,10 @@ private:
   T _constant_value;
 
 public:
-  PadOpVerifier(const PadParams &op_params, const Shape &in_shape, const Shape &out_shape, T constant_value)
-    : _op_params(op_params), _in_shape(in_shape), _out_shape(out_shape), _constant_value(constant_value)
+  PadOpVerifier(const PadParams &op_params, const Shape &in_shape, const Shape &out_shape,
+                T constant_value)
+    : _op_params(op_params), _in_shape(in_shape), _out_shape(out_shape),
+      _constant_value(constant_value)
   {
     // DO NOTHING
   }
@@ -48,10 +50,8 @@ public:
     assert(expected_output.size() == _out_shape.FlatSize());
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
-    nnfw::cker::train::Pad(_op_params.data, _op_params.rank,
-                           _in_shape, input.data(),
-                           _out_shape, cacluated_output.data(),
-                           &_constant_value);
+    nnfw::cker::train::Pad(_op_params.data, _op_params.rank, _in_shape, input.data(), _out_shape,
+                           cacluated_output.data(), &_constant_value);
 
     if (expect_eq)
       EXPECT_EQ(expected_output, cacluated_output);
@@ -59,16 +59,14 @@ public:
       EXPECT_NE(expected_output, cacluated_output);
   }
 
-
-  void verifyBackward(const std::vector<T> backward_output, const std::vector<T> expected_backward_input,
-                      bool expect_eq = true)
+  void verifyBackward(const std::vector<T> backward_output,
+                      const std::vector<T> expected_backward_input, bool expect_eq = true)
   {
     assert(backward_output.size() == _out_shape.FlatSize());
     assert(expected_backward_input.size() == _in_shape.FlatSize());
 
     std::vector<T> backward_input(_in_shape.FlatSize());
-    nnfw::cker::train::Depad(_op_params.data, _op_params.rank,
-                             _out_shape, backward_output.data(),
+    nnfw::cker::train::Depad(_op_params.data, _op_params.rank, _out_shape, backward_output.data(),
                              _in_shape, backward_input.data());
 
     if (expect_eq)
@@ -103,7 +101,7 @@ TEST(CKer_Operation, Pad)
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     std::vector<float> input = {1.f};
-    std::vector<float> expected_output = {3.f,1.f,3.f};
+    std::vector<float> expected_output = {3.f, 1.f, 3.f};
     verifier.verifyForward(input, expected_output);
     verifier.verifyBackward(expected_output, input);
   }
@@ -139,15 +137,15 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 3.f;
 
-    nnfw::cker::Shape in = {1,1};
-    nnfw::cker::Shape out = {3,3};
+    nnfw::cker::Shape in = {1, 1};
+    nnfw::cker::Shape out = {3, 3};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 1.f;
     std::vector<float> input = {init_value};
-    std::vector<float> expected_output(3*3, constant_value);
-    expected_output[expected_output.size()/2] = init_value;
+    std::vector<float> expected_output(3 * 3, constant_value);
+    expected_output[expected_output.size() / 2] = init_value;
     verifier.verifyForward(input, expected_output);
     verifier.verifyBackward(expected_output, input);
   }
@@ -162,19 +160,19 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 1.f;
 
-    nnfw::cker::Shape in = {3,3};
-    nnfw::cker::Shape out = {9,9};
+    nnfw::cker::Shape in = {3, 3};
+    nnfw::cker::Shape out = {9, 9};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 1.f;
-    std::vector<float> input(3*3, init_value);
-    std::vector<float> expected_output(9*9, constant_value);
+    std::vector<float> input(3 * 3, init_value);
+    std::vector<float> expected_output(9 * 9, constant_value);
     for (auto i = -1; i <= 1; ++i)
     {
       for (auto j = -1; j <= 1; ++j)
       {
-        size_t ind = (9 * i) + (expected_output.size()/2 + j);
+        size_t ind = (9 * i) + (expected_output.size() / 2 + j);
         expected_output[ind] = init_value;
       }
     }
@@ -196,15 +194,15 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 3.f;
 
-    nnfw::cker::Shape in = {1,1,1};
-    nnfw::cker::Shape out = {3,3,3};
+    nnfw::cker::Shape in = {1, 1, 1};
+    nnfw::cker::Shape out = {3, 3, 3};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 1.f;
     std::vector<float> input = {init_value};
-    std::vector<float> expected_output(3*3*3, constant_value);
-    expected_output[expected_output.size()/2] = init_value;
+    std::vector<float> expected_output(3 * 3 * 3, constant_value);
+    expected_output[expected_output.size() / 2] = init_value;
     verifier.verifyForward(input, expected_output);
     verifier.verifyBackward(expected_output, input);
   }
@@ -221,21 +219,21 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 7.f;
 
-    nnfw::cker::Shape in = {3,3,3};
-    nnfw::cker::Shape out = {13,13,13};
+    nnfw::cker::Shape in = {3, 3, 3};
+    nnfw::cker::Shape out = {13, 13, 13};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 5.f;
-    std::vector<float> input(3*3*3, init_value);
-    std::vector<float> expected_output(13*13*13, constant_value);
+    std::vector<float> input(3 * 3 * 3, init_value);
+    std::vector<float> expected_output(13 * 13 * 13, constant_value);
     for (auto i = -1; i <= 1; ++i)
     {
       for (auto j = -1; j <= 1; ++j)
       {
         for (auto k = -1; k <= 1; ++k)
         {
-          size_t ind = (13 * 13 * i) + (13 * j) + (expected_output.size()/2 + k);
+          size_t ind = (13 * 13 * i) + (13 * j) + (expected_output.size() / 2 + k);
           expected_output[ind] = init_value;
         }
       }
@@ -260,15 +258,15 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 3.f;
 
-    nnfw::cker::Shape in = {1,1,1,1};
-    nnfw::cker::Shape out = {3,3,3,3};
+    nnfw::cker::Shape in = {1, 1, 1, 1};
+    nnfw::cker::Shape out = {3, 3, 3, 3};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 1.f;
     std::vector<float> input = {init_value};
-    std::vector<float> expected_output(3*3*3*3, constant_value);
-    expected_output[expected_output.size()/2] = init_value;
+    std::vector<float> expected_output(3 * 3 * 3 * 3, constant_value);
+    expected_output[expected_output.size() / 2] = init_value;
     verifier.verifyForward(input, expected_output);
     verifier.verifyBackward(expected_output, input);
   }
@@ -287,14 +285,14 @@ TEST(CKer_Operation, Pad)
     }
     float constant_value = 9.f;
 
-    nnfw::cker::Shape in = {5,5,5,5};
-    nnfw::cker::Shape out = {19,19,19,19};
+    nnfw::cker::Shape in = {5, 5, 5, 5};
+    nnfw::cker::Shape out = {19, 19, 19, 19};
 
     PadOpVerifier<float> verifier(op_param, in, out, constant_value);
 
     float init_value = 2.f;
-    std::vector<float> input(5*5*5*5, init_value);
-    std::vector<float> expected_output(19*19*19*19, constant_value);
+    std::vector<float> input(5 * 5 * 5 * 5, init_value);
+    std::vector<float> expected_output(19 * 19 * 19 * 19, constant_value);
     for (auto i = -2; i <= 2; ++i)
     {
       for (auto j = -2; j <= 2; ++j)
@@ -303,7 +301,8 @@ TEST(CKer_Operation, Pad)
         {
           for (auto l = -2; l <= 2; ++l)
           {
-            size_t ind = (19 * 19 * 19 * i) + (19 * 19 * j) + (19 * k) + (expected_output.size()/2 + l);
+            size_t ind =
+              (19 * 19 * 19 * i) + (19 * 19 * j) + (19 * k) + (expected_output.size() / 2 + l);
             expected_output[ind] = init_value;
           }
         }
