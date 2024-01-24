@@ -1,3 +1,7 @@
+if(NOT BUILD_PYTHON_BINDING)
+  return()
+endif(NOT BUILD_PYTHON_BINDING)
+
 # CMakeLists.txt
 
 # refer to https://github.com/Samsung/ONE/issues/11368
