@@ -40,6 +40,7 @@ public:
 
 public:
   template <typename T> void padImpl(const T *constant_value_data);
+  template <typename T> void depad();
 
   void configure(const IPortableTensor *input, IPortableTensor *output,
                          const int32_t *padData, int32_t padRank, const void *constantValueData,

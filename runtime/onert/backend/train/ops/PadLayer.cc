@@ -37,8 +37,17 @@ PadLayer::PadLayer()
 template <typename T> void PadLayer::padImpl(const T *constant_value_data)
 {
   // TODO: Use nnfw::cker::Pad
-  nnfw::cker::train::Pad<T>(_padData, _padRank, getShape(_input), getBuffer<T>(_input), getShape(_output),
-                       getBuffer<T>(_output), constant_value_data);
+  nnfw::cker::train::Pad<T>(_padData, _padRank,
+                            getShape(_input), getBuffer<T>(_input),
+                            getShape(_output), getBuffer<T>(_output),
+                            constant_value_data);
+}
+
+template <typename T> void PadLayer::depad()
+{
+  nnfw::cker::train::Depad<T>(_padData, _padRank,
+                              getShape(_back_prop_output), getBuffer<T>(_back_prop_output),
+                              getShape(_back_prop_input), getBuffer<T>(_back_prop_input));
 }
 
 void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
@@ -90,7 +99,20 @@ void PadLayer::forward(bool)
 
 void PadLayer::backward()
 {
-  // DO NOTHING
+  switch (_back_prop_output->data_type())
+  {
+    case OperandType::FLOAT32:
+      depad<float>();
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      depad<uint8_t>();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      depad<int8_t>();
+      break;
+    default:
+      throw std::runtime_error{"Pad: unsupported data type"};
+  }
 }
 
 } // namespace ops
