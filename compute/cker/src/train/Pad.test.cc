@@ -50,8 +50,8 @@ public:
     assert(expected_output.size() == _out_shape.FlatSize());
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
-    nnfw::cker::train::Pad(_op_params.data, _op_params.rank, _in_shape, input.data(), _out_shape,
-                           cacluated_output.data(), &_constant_value);
+    nnfw::cker::Pad(_op_params.data, _op_params.rank, _in_shape, input.data(), _out_shape,
+                    cacluated_output.data(), &_constant_value);
 
     if (expect_eq)
       EXPECT_EQ(expected_output, cacluated_output);

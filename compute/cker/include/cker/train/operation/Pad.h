@@ -36,19 +36,9 @@ namespace train
  *             ->    [C,2,3,C]
  *             ->    [C,C,C,C]
  */
-template <typename T>
-inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &input_shape,
-                const T *input_data, const Shape &output_shape, T *output_data,
-                const T *constant_value_data)
-{
-  // Use nnfw::cker::Pad directly
-  nnfw::cker::Pad<T>(padding_data, pad_rank, input_shape, input_data, output_shape, output_data,
-                     constant_value_data);
-}
-
 /*
- * input_data(backward_output_data) will be transformed by backward of PAD operation with padding
- * options to output_data(backward_input_data)
+ * input_data(backward_output_data) will be transformed by backward of PAD operation (Depad) with
+ * padding options to output_data(backward_input_data)
  *
  * input_data(backward_output_data)  ->  output_data(backward_input_data)
  *   [C,C,C,C]                       ->    [0,1]
@@ -119,10 +109,9 @@ inline void Depad(const int32_t *padding_data, int32_t pad_rank, const Shape &in
       {
         for (auto h = 0; h < out_height; ++h)
         {
-          // TODO: Remove unnecessary literal value 0
           const auto in_offset =
-            (d + padding_depth) * in_plain_size + (h + padding_top) * in_width + (0 + padding_left);
-          const auto out_offset = (d * out_plain_size) + (h * out_width) + (0);
+            (d + padding_depth) * in_plain_size + (h + padding_top) * in_width + (padding_left);
+          const auto out_offset = (d * out_plain_size) + (h * out_width);
           // copy a row of input data to output data
           std::memcpy(output_data + out_offset, input_data + in_offset, out_width * sizeof(T));
         }
@@ -152,12 +141,10 @@ inline void Depad(const int32_t *padding_data, int32_t pad_rank, const Shape &in
         {
           for (auto h = 0; h < out_height; ++h)
           {
-            // TODO: Remove unnecessary literal value 0
             const auto in_offset = (c + padding_cube) * in_cube_size +
                                    (d + padding_depth) * in_plain_size +
-                                   (h + padding_top) * in_width + (0 + padding_left);
-            const auto out_offset =
-              (c * out_cube_size) + (d * out_plain_size) + (h * out_width) + (0);
+                                   (h + padding_top) * in_width + (padding_left);
+            const auto out_offset = (c * out_cube_size) + (d * out_plain_size) + (h * out_width);
             // copy a row of input data to output data
             std::memcpy(output_data + out_offset, input_data + in_offset, out_width * sizeof(T));
           }
