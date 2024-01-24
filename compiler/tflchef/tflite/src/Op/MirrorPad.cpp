@@ -34,10 +34,11 @@ void TFliteOpMirrorPad::filler(const tflite::Operator *op, TFliteImport *import,
   import->set_tensor_filler(inputs[1], vec);
 }
 
-tflchef::Operation *TFliteOpMirrorPad::build(const tflite::Operator *op, TFliteImport *import,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpMirrorPad::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
   operation->set_type("MirrorPad");
 
   auto op_options = operation->mutable_mirrorpad_options();

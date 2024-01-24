@@ -27,11 +27,11 @@ void TFliteOpSquaredDifference::filler(const tflite::Operator *op, TFliteImport 
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpSquaredDifference::build(const tflite::Operator *op,
-                                                     TFliteImport *import,
-                                                     tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpSquaredDifference::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("SquaredDifference");
 

@@ -33,10 +33,11 @@ void TFliteOpTranspose::filler(const tflite::Operator *op, TFliteImport *import,
   import->set_tensor_filler(inputs[1], vec);
 }
 
-tflchef::Operation *TFliteOpTranspose::build(const tflite::Operator *op, TFliteImport *import,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpTranspose::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("Transpose");
 

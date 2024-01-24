@@ -168,6 +168,7 @@ private:
     REG_TFL_OP(UNIQUE, TFliteOpUnique);
     REG_TFL_OP(UNPACK, TFliteOpUnpack);
     REG_TFL_OP(WHERE, TFliteOpWhere);
+    REG_TFL_OP(WHILE, TFliteOpWhile);
     REG_TFL_OP(ZEROS_LIKE, TFliteOpZerosLike);
 
 #undef REG_TFL_OP

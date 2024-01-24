@@ -26,10 +26,11 @@ void TFliteOpTanh::filler(const tflite::Operator *, TFliteImport *, tflchef::Mod
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpTanh::build(const tflite::Operator *, TFliteImport *,
-                                        tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpTanh::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("Tanh");
 

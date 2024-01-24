@@ -37,13 +37,14 @@ void TFliteOpSVDF::filler(const tflite::Operator *op, TFliteImport *import,
     import->set_tensor_filler(inputs.at(3));
 }
 
-tflchef::Operation *TFliteOpSVDF::build(const tflite::Operator *op, TFliteImport *import,
-                                        tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpSVDF::build(RecipeChefContext *ctx) const
+
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   const auto op_params = op->builtin_options_as_SVDFOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("SVDF");
 

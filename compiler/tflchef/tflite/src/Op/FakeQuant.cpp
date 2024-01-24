@@ -27,13 +27,14 @@ void TFliteOpFakeQuant::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpFakeQuant::build(const tflite::Operator *op, TFliteImport *import,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpFakeQuant::build(RecipeChefContext *ctx) const
+
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_FakeQuantOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("FakeQuant");
 

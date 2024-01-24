@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __TFLITE_OP_ROUND_H__
-#define __TFLITE_OP_ROUND_H__
+#ifndef __TFLITE_OP_WHILE_H__
+#define __TFLITE_OP_WHILE_H__
 
 #include "TFliteOpChef.h"
 
@@ -23,9 +23,9 @@ namespace tflchef
 {
 
 /**
- * @brief tflchef operator builder for Round
+ * @brief tflchef operator builder for While
  */
-class TFliteOpRound : public TFliteOpChef
+class TFliteOpWhile : public TFliteOpChef
 {
 public:
   void filler(const tflite::Operator *op, TFliteImport *import,
@@ -35,4 +35,4 @@ public:
 
 } // namespace tflchef
 
-#endif // __TFLITE_OP_ROUND_H__
+#endif // __TFLITE_OP_WHILE_H__

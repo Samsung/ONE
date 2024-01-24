@@ -32,10 +32,11 @@ void TFliteOpPadV2::filler(const tflite::Operator *op, TFliteImport *import,
   fill_tensor_to_import(inputs[2], import);
 }
 
-tflchef::Operation *TFliteOpPadV2::build(const tflite::Operator *op, TFliteImport *import,
-                                         tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpPadV2::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("PadV2");
 

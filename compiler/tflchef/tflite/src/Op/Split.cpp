@@ -35,10 +35,10 @@ void TFliteOpSplit::filler(const tflite::Operator *op, TFliteImport *import,
   import->set_tensor_filler(inputs[0], vec);
 }
 
-tflchef::Operation *TFliteOpSplit::build(const tflite::Operator *op, TFliteImport *import,
-                                         tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpSplit::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("Split");
 

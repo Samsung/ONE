@@ -40,10 +40,11 @@ void TFliteOpBatchToSpaceND::filler(const tflite::Operator *op, TFliteImport *im
   import->set_tensor_filler(inputs[2], vec);
 }
 
-tflchef::Operation *TFliteOpBatchToSpaceND::build(const tflite::Operator *op, TFliteImport *import,
-                                                  tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpBatchToSpaceND::build(RecipeChefContext *ctx) const
+
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("BatchToSpaceND");
 
