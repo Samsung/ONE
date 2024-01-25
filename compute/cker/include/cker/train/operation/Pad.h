@@ -54,11 +54,13 @@ inline void Depad(const int32_t *padding_data, int32_t pad_rank, const Shape &in
   using PaddingList = std::vector<PaddingInfo>;
 
   assert(output_shape.DimensionsCount() == input_shape.DimensionsCount());
+  assert(output_shape.DimensionsCount() == pad_rank);
 
   PaddingList padding_list(pad_rank);
   for (int32_t n = 0; n < pad_rank; ++n)
   {
     const int32_t *from = padding_data + (n * 2);
+    assert(from[0] >= 0 && from[1] >= 0);
     padding_list[n] = {from[0], from[1]};
   }
   for (int32_t i = 0; i < pad_rank; ++i)
@@ -118,6 +120,7 @@ inline void Depad(const int32_t *padding_data, int32_t pad_rank, const Shape &in
       }
       break;
     }
+    // NOTE: Assume that tensors' memory format is NHWC. In cker, it cannot be checked.
     case 4:
     {
       const int32_t out_cube = output_shape.Dims(0);
