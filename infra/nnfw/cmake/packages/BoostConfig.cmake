@@ -19,7 +19,7 @@ function(_Boost_Build Boost_PREFIX)
   set(INSTALL_STAMP_PATH "${BoostInstall_DIR}/BOOST.stamp")
   set(BUILD_LOG_PATH "${BoostBuild_DIR}/BOOST.log")
   set(PKG_NAME "BOOST")
-  set(PKG_IDENTIFIER "1.58.0")
+  set(PKG_IDENTIFIER "1.84.0")
 
   if(EXISTS ${INSTALL_STAMP_PATH})
     file(READ ${INSTALL_STAMP_PATH} READ_IDENTIFIER)
