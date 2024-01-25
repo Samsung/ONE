@@ -30,6 +30,7 @@
 #include "ir/train/TrainingInfo.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
+#include "odc/CodegenManager.h"
 #include "circle_schema_generated.h"
 #include "trix_loader.h"
 
@@ -240,7 +241,8 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr}
+    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr},
+    _codegen_manager{nullptr}
 {
   // DO NOTHING
 }
@@ -313,6 +315,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
 
   // Create quantize manager
   _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path));
+  // Create codegen manager
+  _codegen_manager = std::make_unique<onert::odc::CodegenManager>(std::string{model_file_path});
 
   std::string filename{model_file_path};
   // TODO: Use std::filesystem::path when we can use c++17.
@@ -404,6 +408,9 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     // TODO Support multiple models
     auto const model_filename = package_path + std::string("/") + models[0].asString();
     _quant_manager = std::make_unique<onert::odc::QuantizeManager>(model_filename);
+    // Create codegen manager
+    // TODO Support multiple models
+    _codegen_manager = std::make_unique<onert::odc::CodegenManager>(model_filename);
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
@@ -1834,28 +1841,6 @@ NNFW_STATUS nnfw_session::quantize()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_compile_preference(NNFW_COMPILE_PREF pref)
-{
-  try
-  {
-    if (!isStateModelLoaded())
-    {
-      std::cerr << "invalid state" << std::endl;
-      return NNFW_STATUS_INVALID_STATE;
-    }
-
-    // TODO Set preference to compile manager
-    UNUSED_RELEASE(pref);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during nnfw_session::set_compile_preference : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  return NNFW_STATUS_NO_ERROR;
-}
-
 NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
 {
   try
@@ -1866,8 +1851,7 @@ NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
       return NNFW_STATUS_INVALID_STATE;
     }
 
-    // TODO Set model path for compiled file
-    UNUSED_RELEASE(path);
+    _codegen_manager->exportModelPath(std::string(path));
   }
   catch (const std::exception &e)
   {
@@ -1878,7 +1862,7 @@ NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::compile()
+NNFW_STATUS nnfw_session::compile(const char *target, NNFW_COMPILE_PREF pref)
 {
   try
   {
@@ -1888,7 +1872,33 @@ NNFW_STATUS nnfw_session::compile()
       return NNFW_STATUS_INVALID_STATE;
     }
 
-    // TODO Compile model
+    if (target == nullptr)
+    {
+      std::cerr << "undefined target" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    onert::odc::CodegenPreference codegen_pref;
+    switch (pref)
+    {
+      case NNFW_COMPILE_PREF_DEFAULT:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_DEFAULT;
+        break;
+      case NNFW_COMPILE_PREF_PERFORMANCE_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_PERFORMANCE_FIRST;
+        break;
+      case NNFW_COMPILE_PREF_MEMORY_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_MEMORY_FIRST;
+        break;
+      case NNFW_COMPILE_PREF_COMPILE_TIME_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST;
+        break;
+      default:
+        std::cerr << "invalid preference" << std::endl;
+        return NNFW_STATUS_ERROR;
+    }
+
+    _codegen_manager->codegen(target, codegen_pref);
   }
   catch (const std::exception &e)
   {

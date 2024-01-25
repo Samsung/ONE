@@ -17,15 +17,12 @@
 #ifndef __ONERT_ODC_CODEGEN_MANAGER_H__
 #define __ONERT_ODC_CODEGEN_MANAGER_H__
 
-#include <functional>
-#include <memory>
+#include <string>
 
 namespace onert
 {
 namespace odc
 {
-
-class Codegen;
 
 enum class CodegenPreference
 {
@@ -60,28 +57,16 @@ public:
   std::string &exportModelPath() { return _export_model_path; }
 
   /**
-   * @brief Set compilation preference
-   *
-   * @param pref @c CodegenPreference
-   */
-  void preference(CodegenPreference pref) { _pref = pref; }
-
-  /**
-   * @brief Get compilation preference
-   *
-   * @return @c CodegenPreference
-   */
-  CodegenPreference preference() { return _pref; }
-
-  /**
    * @brief Execute code generator
+   *
+   * @param target  Target backend name
+   * @param pref    Codegen preference
    */
-  bool codegen();
+  bool codegen(const char *target, CodegenPreference pref);
 
 private:
   std::string _model_path = "";
   std::string _export_model_path = "";
-  CodegenPreference _pref = CodegenPreference::CODEGEN_PREF_DEFAULT;
 };
 
 } // namespace odc

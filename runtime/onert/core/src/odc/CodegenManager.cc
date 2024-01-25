@@ -16,6 +16,7 @@
 
 #include "CodegenLoader.h"
 #include "odc/CodegenManager.h"
+#include "util/Utils.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +27,7 @@ namespace onert
 namespace odc
 {
 
-bool CodegenManager::codegen()
+bool CodegenManager::codegen(const char *target, CodegenPreference pref)
 {
   // codegen function is thread-unsafe
   static std::mutex lock;
@@ -40,9 +41,11 @@ bool CodegenManager::codegen()
     throw std::runtime_error("Model path does not exist");
 
   auto &codegen_loader = CodegenLoader::instance();
-  codegen_loader.loadLibrary();
+  codegen_loader.loadLibrary(target);
   const auto codegen = codegen_loader.get();
-  const auto result = codegen->codegen(_model_path.c_str(), _export_model_path.c_str());
+  // TODO Use compile preference
+  UNUSED_RELEASE(pref);
+  const auto result = codegen(_model_path.c_str(), _export_model_path.c_str());
   codegen_loader.unloadLibrary();
 
   return (result == 0);

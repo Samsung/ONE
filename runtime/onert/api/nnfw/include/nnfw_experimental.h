@@ -464,15 +464,6 @@ typedef enum
 } NNFW_COMPILE_PREF;
 
 /**
- * @brief Set preference for backend compilation
- *
- * @param[in] session nnfw_session the session to set preference
- * @param[in] pref @c NNFW_COMPILE_PREF
- * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
- */
-NNFW_STATUS nnfw_set_compile_preference(nnfw_session *session, NNFW_COMPILE_PREF pref);
-
-/**
  * @brief Set exported compiled model path
  *
  * This function should be called before {@link nnfw_compile} is invoked.
@@ -489,9 +480,11 @@ NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path
  * @brief Compile the model
  *
  * @param[in] session nnfw_session the session which contains information about compilation
+ * @param[in] target  Target backend to compile
+ * @param[in] pref @c NNFW_COMPILE_PREF
  * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
  */
-NNFW_STATUS nnfw_compile(nnfw_session *session);
+NNFW_STATUS nnfw_compile(nnfw_session *session, const char *target, NNFW_COMPILE_PREF pref);
 
 #ifdef __cplusplus
 }

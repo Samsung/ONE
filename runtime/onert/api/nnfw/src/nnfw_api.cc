@@ -479,20 +479,14 @@ NNFW_STATUS nnfw_quantize(nnfw_session *session)
   return session->quantize();
 }
 
-NNFW_STATUS nnfw_set_compile_preference(nnfw_session *session, NNFW_COMPILE_PREF pref)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_compile_preference(pref);
-}
-
 NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_compiled_model_path(path);
 }
 
-NNFW_STATUS nnfw_compile(nnfw_session *session)
+NNFW_STATUS nnfw_compile(nnfw_session *session, const char *target, NNFW_COMPILE_PREF pref)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->compile();
+  return session->compile(target, pref);
 }

@@ -38,18 +38,16 @@ CodegenLoader &CodegenLoader::instance()
   return singleton;
 }
 
-void CodegenLoader::loadLibrary()
+void CodegenLoader::loadLibrary(const char *target)
 {
   if (get() != nullptr)
     return;
 
-  const auto findPlugin = []() { return "codegen"; };
-  const std::string id = findPlugin();
-  const std::string codegen_so = "lib" + id + SHARED_LIB_EXT;
+  const std::string codegen_so = "lib" + std::string{target} + SHARED_LIB_EXT;
   void *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
   if (handle == nullptr)
   {
-    throw std::runtime_error("CodegenLoader: Failed to load " + codegen_so + dlerror());
+    throw std::runtime_error("CodegenLoader: " + dlerror());
   }
 
   const char *compile_impl_func_name = "generate_tvn_file";
@@ -62,7 +60,7 @@ void CodegenLoader::loadLibrary()
                              std::string{compile_impl_func_name} + dlerror_msg);
   }
 
-  _codegen = std::unique_ptr<ICodegen>(compile());
+  _codegen = compile;
 
   // Save backend handle (avoid warning by handle lost without dlclose())
   // clang-format off
@@ -77,8 +75,16 @@ void CodegenLoader::unloadLibrary()
   if (get() == nullptr)
     return;
 
-  _codegen.reset(nullptr);
+  // _codegen.reset(nullptr);
   _dlhandle.reset(nullptr);
+}
+
+int CodegenLoader::codegen(const char *in, const char *out)
+{
+  if (get() == nullptr)
+    return -1;
+
+  return _codegen(in, out);
 }
 
 } // namespace odc

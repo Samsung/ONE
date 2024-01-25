@@ -55,6 +55,7 @@ class CompilerOptions;
 namespace odc
 {
 class QuantizeManager;
+class CodegenManager;
 } // namespace odc
 } // namespace onert
 
@@ -188,9 +189,8 @@ public:
   NNFW_STATUS set_quantized_model_path(const char *path);
   NNFW_STATUS quantize();
 
-  NNFW_STATUS set_compile_preference(NNFW_COMPILE_PREF pref);
   NNFW_STATUS set_compiled_model_path(const char *path);
-  NNFW_STATUS compile();
+  NNFW_STATUS compile(const char *target, NNFW_COMPILE_PREF pref);
 
 private:
   const onert::ir::IGraph *primary_subgraph();
@@ -217,6 +217,7 @@ private:
   std::vector<std::thread> _threads;
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
+  std::unique_ptr<onert::odc::CodegenManager> _codegen_manager;
   // Remember path to loaded original model
   // It may be used for on-device compiler / on-device training.
   //

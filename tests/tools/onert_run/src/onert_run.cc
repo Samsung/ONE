@@ -144,6 +144,14 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_quantize(session));
     }
 
+    // Compile model
+    auto compile = args.getCompile();
+    if (!compile.empty())
+    {
+      NNPR_ENSURE_STATUS(nnfw_set_compiled_model_path(session, args.getCompiledModelPath().c_str()));
+      NNPR_ENSURE_STATUS(nnfw_compile(session, compile.c_str(), NNFW_COMPILE_PREF_DEFAULT));
+    }
+
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
