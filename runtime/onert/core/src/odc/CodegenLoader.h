@@ -39,9 +39,13 @@ public:
    */
   using dlhandle_destroy_t = std::function<void(void *)>;
   /**
-   * @brief Typedef for function pointer to compile model
+   * @brief Typedef for function pointer to create instance of ICodegen
    */
-  using codegen_t = int (*)(const char *, const char *);
+  using factory_t = ICodegen *(*)();
+  /**
+   * @brief Typedef for function pointer to destroy instance of ICodegen
+   */
+  using codegen_destory_t = void (*)(ICodegen *);
 
   /**
    * @brief Get singleton instance of CodegenLoader
@@ -66,18 +70,15 @@ public:
    */
   void unloadLibrary();
   /**
-   * @brief   Get instance of IQuantizer created through factory method
+   * @brief   Get instance of ICodegen created through factory method
    * @return  Pointer to instance of ICodegen
    */
-  codegen_t get() const { return _codegen; }
-  int codegen(const char *in, const char *out);
+  ICodegen *get() const { return _codegen.get(); }
 
 private:
   // Note: Keep handle to avoid svace warning of "handle lost without dlclose()"
   std::unique_ptr<void, dlhandle_destroy_t> _dlhandle;
-  // Assumption there is only 1 codegen. It is created and owned by CodegenLoader after
-  // loadLibrary().
-  codegen_t _codegen{nullptr};
+  std::unique_ptr<ICodegen, codegen_destory_t> _codegen{nullptr, nullptr};
 };
 
 } // namespace odc

@@ -50,16 +50,21 @@ void CodegenLoader::loadLibrary(const char *target)
     throw std::runtime_error("CodegenLoader: " + std::string{dlerror()});
   }
 
-  const char *compile_impl_func_name = "generate_tvn_file";
-  const auto compile = (codegen_t)dlsym(handle, compile_impl_func_name);
-  if (compile == nullptr)
+  const auto factory = (factory_t)dlsym(handle, "create_codegen");
+  if (factory == nullptr)
   {
     const std::string dlerror_msg = dlerror();
     dlclose(handle);
     throw std::runtime_error("CodegenLoader: " + dlerror_msg);
   }
 
-  _codegen = compile;
+  const auto destroyer = (codegen_destory_t)dlsym(handle, "destroy_codegen");
+  _codegen = std::unique_ptr<ICodegen, codegen_destory_t>(factory(), destroyer);
+  if (_codegen == nullptr)
+  {
+    dlclose(handle);
+    throw std::runtime_error("CodegenLoader: unable to create codegen");
+  }
 
   // Save backend handle (avoid warning by handle lost without dlclose())
   _dlhandle = std::unique_ptr<void, dlhandle_destroy_t>{
@@ -74,16 +79,8 @@ void CodegenLoader::unloadLibrary()
   if (get() == nullptr)
     return;
 
-  // _codegen.reset(nullptr);
+  _codegen.reset(nullptr);
   _dlhandle.reset(nullptr);
-}
-
-int CodegenLoader::codegen(const char *in, const char *out)
-{
-  if (get() == nullptr)
-    return -1;
-
-  return _codegen(in, out);
 }
 
 } // namespace odc

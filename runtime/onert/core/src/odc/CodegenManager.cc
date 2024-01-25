@@ -42,10 +42,10 @@ bool CodegenManager::codegen(const char *target, CodegenPreference pref)
 
   auto &codegen_loader = CodegenLoader::instance();
   codegen_loader.loadLibrary(target);
-  const auto codegen = codegen_loader.get();
+  const auto code_generator = codegen_loader.get();
   // TODO Use compile preference
   UNUSED_RELEASE(pref);
-  const auto result = codegen(_model_path.c_str(), _export_model_path.c_str());
+  const auto result = code_generator->codegen(_model_path.c_str(), _export_model_path.c_str());
   codegen_loader.unloadLibrary();
 
   return (result == 0);
