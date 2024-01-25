@@ -304,6 +304,11 @@ void Args::Initialize(void)
     ("qpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _quantized_model_path = v; }),
          "Path to export quantized model.\n"
          "If it is not set, the quantized model will be exported to the same directory of the original model/package with q8/q16 suffix.")
+    ("compile,c", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _compile = v; }),
+         "Target backend name to compile model")
+    ("cpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _compiled_model_path = v; }),
+         "Path to export compiled model.\n"
+         "If it is not set, the compiled model will be exported to the same directory of the original model/package with target backend suffix.")
     ;
   // clang-format on
 

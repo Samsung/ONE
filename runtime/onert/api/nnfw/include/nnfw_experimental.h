@@ -448,6 +448,54 @@ NNFW_STATUS nnfw_set_quantized_model_path(nnfw_session *session, const char *pat
  */
 NNFW_STATUS nnfw_quantize(nnfw_session *session);
 
+/**
+ * @brief Preference for compilation
+ */
+typedef enum
+{
+  /** Use the default configuration */
+  NNFW_COMPILE_PREF_DEFAULT,
+  /** Do best efforts to compile model for performance */
+  NNFW_COMPILE_PREF_PERFORMANCE_FIRST,
+  /** Do best efforts to compile model for reducing host memory usage */
+  NNFW_COMPILE_PREF_MEMORY_FIRST,
+  /** Do best efforts to compile model for reducing compilation time */
+  NNFW_COMPILE_PREF_COMPILE_TIME_FIRST,
+} NNFW_COMPILE_PREF;
+
+/**
+ * @brief Set exported compiled model path
+ *
+ * This function should be called before {@link nnfw_compile} is invoked.
+ *
+ * TODO: If this function is not called, compiled model will not be exported
+ *
+ * @param[in] session nnfw_session to set compiled model path
+ * @param[in] path    Compiled model path
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path);
+
+/**
+ * @brief Compile the model
+ *
+ * This function opens a dynamic shared object. It searches for the object as flollows
+ * ld.so(8) search rules.
+ *
+ * @param[in] session nnfw_session the session which contains information about compilation
+ * @param[in] target  Target backend to compile
+ *                    This target string will be used to find a backend library.
+ *                    The name of target backend library should follow the following rules:
+ *                      library name: 'lib' +  {backend extension} + '-gen' + {lib extension}
+ *                    And the target string should be a name except 'lib' and {lib extension}.
+ *                      target string: {backend extension} + '-gen'
+ *                    For example, if the backend extension is 'aaa', the backend library should
+ *                    be 'libaaa-gen.so'. And the target string should be 'aaa-gen'.
+ * @param[in] pref @c NNFW_COMPILE_PREF
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_compile(nnfw_session *session, const char *target, NNFW_COMPILE_PREF pref);
+
 #ifdef __cplusplus
 }
 #endif
