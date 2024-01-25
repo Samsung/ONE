@@ -17,6 +17,7 @@
 #include <cassert>
 #include <string>
 #include <iostream>
+#include <unordered_map>
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
@@ -49,63 +50,50 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
+std::string toString(const NNFW_TRAIN_OPTIMIZER &opt)
+{
+  static const std::unordered_map<NNFW_TRAIN_OPTIMIZER, std::string> name_map{
+    {NNFW_TRAIN_OPTIMIZER_UNDEFINED, "undefined"},
+    {NNFW_TRAIN_OPTIMIZER_SGD, "sgd"},
+    {NNFW_TRAIN_OPTIMIZER_ADAM, "adam"},
+  };
+  return name_map.at(opt);
+}
+
+std::string toString(const NNFW_TRAIN_LOSS &loss)
+{
+  static const std::unordered_map<NNFW_TRAIN_LOSS, std::string> name_map{
+    {NNFW_TRAIN_LOSS_UNDEFINED, "undefined"},
+    {NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR, "mean squared error"},
+    {NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY, "categorical crossentropy"},
+  };
+  return name_map.at(loss);
+}
+
+std::string toString(const NNFW_TRAIN_LOSS_REDUCTION &loss_rdt)
+{
+  static const std::unordered_map<NNFW_TRAIN_LOSS_REDUCTION, std::string> name_map{
+    {NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED, "undefined"},
+    {NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE, "sum over batch size"},
+    {NNFW_TRAIN_LOSS_REDUCTION_SUM, "sum"}};
+  return name_map.at(loss_rdt);
+}
+
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
 {
-  switch (opt)
-  {
-    case NNFW_TRAIN_OPTIMIZER_UNDEFINED:
-      os << "undefined";
-      break;
-    case NNFW_TRAIN_OPTIMIZER_ADAM:
-      os << "adam";
-      break;
-    case NNFW_TRAIN_OPTIMIZER_SGD:
-      os << "sgd";
-      break;
-    default:
-      os << "unsupported optimizer";
-      break;
-  }
+  os << toString(opt);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
 {
-  switch (loss)
-  {
-    case NNFW_TRAIN_LOSS_UNDEFINED:
-      os << "undefined";
-      break;
-    case NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR:
-      os << "mean squared error";
-      break;
-    case NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY:
-      os << "categorical crossentropy";
-      break;
-    default:
-      os << "unsupported loss";
-      break;
-  }
+  os << toString(loss);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss_reduction)
 {
-  switch (loss_reduction)
-  {
-    case NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED:
-      os << "undefined";
-      break;
-    case NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE:
-      os << "sum over batch size";
-      break;
-    case NNFW_TRAIN_LOSS_REDUCTION_SUM:
-      os << "sum";
-      break;
-    default:
-      os << "unsupported reduction type";
-      break;
-  }
+  os << toString(loss_reduction);
   return os;
 }
 
