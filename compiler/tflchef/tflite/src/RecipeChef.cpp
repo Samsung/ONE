@@ -85,7 +85,7 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
     auto buffers = tflite_import.buffers();
     auto operators = tflite_import.operators();
 
-    tflchef::Graph *graph;
+    tflchef::Graph *graph = nullptr;
     if (n != 0)
       graph = model_recipe->add_graph();
 
