@@ -47,27 +47,26 @@ void CodegenLoader::loadLibrary(const char *target)
   void *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
   if (handle == nullptr)
   {
-    throw std::runtime_error("CodegenLoader: " + dlerror());
+    throw std::runtime_error("CodegenLoader: " + std::string{dlerror()});
   }
 
   const char *compile_impl_func_name = "generate_tvn_file";
   const auto compile = (codegen_t)dlsym(handle, compile_impl_func_name);
   if (compile == nullptr)
   {
-    const auto dlerror_msg = dlerror();
+    const std::string dlerror_msg = dlerror();
     dlclose(handle);
-    throw std::runtime_error("CodegenLoader: Unable to find function " +
-                             std::string{compile_impl_func_name} + dlerror_msg);
+    throw std::runtime_error("CodegenLoader: " + dlerror_msg);
   }
 
   _codegen = compile;
 
   // Save backend handle (avoid warning by handle lost without dlclose())
-  // clang-format off
-  _dlhandle = std::unique_ptr<void, dlhandle_destroy_t>{handle, [filename = codegen_so](void *h) {
-      std::cerr << "CodegenLoader: " << (!dlclose(h) ? "Successfully unloaded " : "Failed to unload backend ") << filename << std::endl;
-  }};
-  // clang-format on
+  _dlhandle = std::unique_ptr<void, dlhandle_destroy_t>{
+    handle, [filename = codegen_so](void *h) {
+      if (dlclose(h))
+        throw std::runtime_error("CodegenLoader: Failed to unload backend " + filename);
+    }};
 }
 
 void CodegenLoader::unloadLibrary()

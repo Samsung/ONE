@@ -479,8 +479,18 @@ NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path
 /**
  * @brief Compile the model
  *
+ * This function opens a dynamic shared object. It searches for the object as flollows
+ * ld.so(8) search rules.
+ *
  * @param[in] session nnfw_session the session which contains information about compilation
  * @param[in] target  Target backend to compile
+ *                    This target string will be used to find a backend library.
+ *                    The name of target backend library should follow the following rules:
+ *                      library name: 'lib' +  {backend extension} + '-gen' + {lib extension}
+ *                    And the target string should be a name except 'lib' and {lib extension}.
+ *                      target string: {backend extension} + '-gen'
+ *                    For example, if the backend extension is 'aaa', the backend library should
+ *                    be 'libaaa-gen.so'. And the target string should be 'aaa-gen'.
  * @param[in] pref @c NNFW_COMPILE_PREF
  * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
  */

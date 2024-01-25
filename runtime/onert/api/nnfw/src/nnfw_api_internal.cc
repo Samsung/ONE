@@ -1872,9 +1872,10 @@ NNFW_STATUS nnfw_session::compile(const char *target, NNFW_COMPILE_PREF pref)
       return NNFW_STATUS_INVALID_STATE;
     }
 
-    if (target == nullptr)
+    std::string target_str{target};
+    if (target_str.empty() || target_str.substr(target_str.size() - 4) != "-gen")
     {
-      std::cerr << "undefined target" << std::endl;
+      std::cerr << "invalid target" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -1898,7 +1899,36 @@ NNFW_STATUS nnfw_session::compile(const char *target, NNFW_COMPILE_PREF pref)
         return NNFW_STATUS_ERROR;
     }
 
+    auto export_model_path = _codegen_manager->exportModelPath();
+    if (export_model_path.empty())
+    {
+      // model path always has a dot. (valid extension)
+      auto dotidx = _model_path.rfind('.');
+      assert(dotidx != std::string::npos);
+      const std::string target_str{target};
+      auto genidx = std::string{target}.rfind("-gen");
+      assert(genidx != std::string::npos);
+      export_model_path = _model_path.substr(0, dotidx + 1) + target_str.substr(0, genidx);
+      _codegen_manager->exportModelPath(export_model_path);
+    }
+
     _codegen_manager->codegen(target, codegen_pref);
+
+    // Replace model
+    // TODO Support buffer replace, not file reload
+    // TODO: Use std::filesystem::path when we can use c++17.
+    auto dotidx = export_model_path.rfind('.');
+    if (dotidx == std::string::npos)
+    {
+      std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+    std::string model_type = export_model_path.substr(dotidx + 1); // + 1 to exclude dot
+    auto model = loadModel(export_model_path, model_type);
+    if (model == nullptr)
+      return NNFW_STATUS_ERROR;
+    // TODO: Update _model_path if necessary
+    _nnpkg->replaceModel(std::move(model));
   }
   catch (const std::exception &e)
   {

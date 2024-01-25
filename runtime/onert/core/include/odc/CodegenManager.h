@@ -54,7 +54,7 @@ public:
    *
    * @return Model path to export compiled model
    */
-  std::string &exportModelPath() { return _export_model_path; }
+  const std::string &exportModelPath() const { return _export_model_path; }
 
   /**
    * @brief Execute code generator
