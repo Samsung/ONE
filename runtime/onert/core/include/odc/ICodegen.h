@@ -17,6 +17,20 @@
 #ifndef __ONERT_ODC_ICODEGEN_H__
 #define __ONERT_ODC_ICODEGEN_H__
 
+// NOTE
+// Backend code generator must implement the following two functions.
+// #ifdef __cplusplus
+// extern "C"
+// {
+// #endif
+
+//   ICodegen *create_codegen();
+//   void destroy_codegen(ICodegen *codegen);
+
+// #ifdef __cplusplus
+// }
+// #endif
+
 namespace onert
 {
 namespace odc
