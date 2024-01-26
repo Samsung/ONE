@@ -15,6 +15,8 @@
  */
 
 #include "args.h"
+#include "nnfw_util.h"
+#include "misc/to_underlying.h"
 
 #include <functional>
 #include <iostream>
@@ -94,6 +96,33 @@ void checkPackage(const std::string &package_filename)
       exit(1);
     }
   }
+}
+
+// check the value is in the valid_args list and return the corresponded enum
+template <typename T>
+T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args, int value)
+{
+  for (const auto arg : valid_args)
+  {
+    if (value == nnfw::misc::to_underlying(arg))
+      return arg;
+  }
+  std::cerr << arg_name + " " + std::to_string(value) + " is unsupported argument\n";
+  exit(1);
+}
+
+// generate a help message based on the valid_args and default_arg
+template <typename T>
+std::string genHelpMsg(const std::string &arg_name, const std::vector<T> &valid_args, T default_arg)
+{
+  std::string msg = arg_name + " (default: " + onert_train::to_string(default_arg) + ")\n";
+  for (const auto arg : valid_args)
+  {
+    const auto num = nnfw::misc::to_underlying(arg);
+    msg += std::to_string(num) + ": " + onert_train::to_string(arg) + "\n";
+  }
+  msg.erase(msg.length() - 1); // remove last \n
+  return msg;
 }
 
 } // namespace
@@ -224,18 +253,21 @@ void Args::Initialize(void)
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
     ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
     ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 0.001)")
-    ("loss", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_type = v; }),
-        "Loss type\n"
-        "1: MEAN_SQUARED_ERROR (default)\n"
-        "2: CATEGORICAL_CROSSENTROPY")
-    ("loss_reduction_type", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _loss_reduction_type = v; }),
-        "Loss Reduction type\n"
-        "1: SUM_OVER_BATCH_SIZE(default)\n"
-        "2: SUM")
-    ("optimizer", po::value<int>()->default_value(1)->notifier([&] (const auto &v) { _optimizer_type = v; }),
-      "Optimizer type\n"
-      "1: SGD (default)\n"
-      "2: Adam")
+    ("loss", po::value<int>()
+      ->default_value(default_loss)
+      ->notifier([&](const auto& v){_loss_type = checkValidation("loss", valid_loss, v);}),
+      genHelpMsg("loss", valid_loss, default_loss).c_str()
+    )
+    ("loss_reduction_type", po::value<int>()
+      ->default_value(default_loss_rdt)
+      ->notifier([&](const auto &v){_loss_reduction_type = checkValidation("loss_reduction_type", valid_loss_rdt, v);}),
+      genHelpMsg("loss_reduction_tye", valid_loss_rdt, default_loss_rdt).c_str()
+    )
+    ("optimizer", po::value<int>()
+      ->default_value(default_optim)
+      ->notifier([&](const auto& v){_optimizer_type = checkValidation("optimizer", valid_optim, v);}),
+      genHelpMsg("optimizer", valid_optim, default_optim).c_str()
+    )
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
       "Metric type\n"
       "Simply calculates the metric value using the variables (default: none)\n"
