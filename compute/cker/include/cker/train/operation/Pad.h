@@ -69,87 +69,87 @@ inline void Depad(const int32_t *padding_data, int32_t pad_rank, const Shape &in
            input_shape.Dims(i) - padding_list[i].first - padding_list[i].second);
   }
 
+  // logical axis: row -> col -> plain -> cube
   switch (pad_rank)
   {
     case 0:
     case 1:
     {
-      const int32_t out_width = output_shape.Dims(0);
+      const int32_t out_row_len = output_shape.Dims(0);
       const int32_t padding_left = padding_list[0].first;
-      std::memcpy(output_data, input_data + padding_left, out_width * sizeof(T));
+      std::memcpy(output_data, input_data + padding_left, out_row_len * sizeof(T));
       break;
     }
     case 2: // HW
     {
-      const int32_t out_height = output_shape.Dims(0);
-      const int32_t out_width = output_shape.Dims(1);
-      const int32_t in_width = input_shape.Dims(1);
+      const int32_t out_col_len = output_shape.Dims(0);
+      const int32_t out_row_len = output_shape.Dims(1);
+      const int32_t in_row_len = input_shape.Dims(1);
       const int32_t padding_top = padding_list[0].first;
       const int32_t padding_left = padding_list[1].first;
-      for (auto h = 0; h < out_height; ++h)
+      for (auto i = 0; i < out_col_len; ++i)
       {
-        const auto in_offset = (h + padding_top) * in_width + padding_left;
-        const auto out_offset = h * out_width;
+        const auto in_offset = (i + padding_top) * in_row_len + padding_left;
+        const auto out_offset = i * out_row_len;
         // copy a row of input data to output data
-        std::memcpy(output_data + out_offset, input_data + in_offset, out_width * sizeof(T));
+        std::memcpy(output_data + out_offset, input_data + in_offset, out_row_len * sizeof(T));
       }
       break;
     }
     case 3: // HWC
     {
-      const int32_t out_depth = output_shape.Dims(0);
-      const int32_t out_height = output_shape.Dims(1);
-      const int32_t out_width = output_shape.Dims(2);
-      const int32_t out_plain_size = out_height * out_width;
-      const int32_t in_height = input_shape.Dims(1);
-      const int32_t in_width = input_shape.Dims(2);
-      const int32_t in_plain_size = in_height * in_width;
+      const int32_t out_plain_len = output_shape.Dims(0);
+      const int32_t out_col_len = output_shape.Dims(1);
+      const int32_t out_row_len = output_shape.Dims(2);
+      const int32_t out_plain_size = out_col_len * out_row_len;
+      const int32_t in_col_len = input_shape.Dims(1);
+      const int32_t in_row_len = input_shape.Dims(2);
+      const int32_t in_plain_size = in_col_len * in_row_len;
       const int32_t padding_depth = padding_list[0].first;
       const int32_t padding_top = padding_list[1].first;
       const int32_t padding_left = padding_list[2].first;
-      for (auto d = 0; d < out_depth; ++d)
+      for (auto d = 0; d < out_plain_len; ++d)
       {
-        for (auto h = 0; h < out_height; ++h)
+        for (auto h = 0; h < out_col_len; ++h)
         {
           const auto in_offset =
-            (d + padding_depth) * in_plain_size + (h + padding_top) * in_width + (padding_left);
-          const auto out_offset = (d * out_plain_size) + (h * out_width);
+            (d + padding_depth) * in_plain_size + (h + padding_top) * in_row_len + (padding_left);
+          const auto out_offset = (d * out_plain_size) + (h * out_row_len);
           // copy a row of input data to output data
-          std::memcpy(output_data + out_offset, input_data + in_offset, out_width * sizeof(T));
+          std::memcpy(output_data + out_offset, input_data + in_offset, out_row_len * sizeof(T));
         }
       }
       break;
     }
-    // NOTE: Assume that tensors' memory format is NHWC. In cker, it cannot be checked.
-    case 4:
+    case 4: // NHWC
     {
-      const int32_t out_cube = output_shape.Dims(0);
-      const int32_t out_depth = output_shape.Dims(1);
-      const int32_t out_height = output_shape.Dims(2);
-      const int32_t out_width = output_shape.Dims(3);
-      const int32_t out_plain_size = out_height * out_width;
-      const int32_t out_cube_size = out_depth * out_plain_size;
-      const int32_t in_depth = input_shape.Dims(1);
-      const int32_t in_height = input_shape.Dims(2);
-      const int32_t in_width = input_shape.Dims(3);
-      const int32_t in_plain_size = in_height * in_width;
-      const int32_t in_cube_size = in_depth * in_plain_size;
+      const int32_t out_cube_len = output_shape.Dims(0);
+      const int32_t out_plain_len = output_shape.Dims(1);
+      const int32_t out_col_len = output_shape.Dims(2);
+      const int32_t out_row_len = output_shape.Dims(3);
+      const int32_t out_plain_size = out_col_len * out_row_len;
+      const int32_t out_cube_size = out_plain_len * out_plain_size;
+      const int32_t in_plain_len = input_shape.Dims(1);
+      const int32_t in_col_len = input_shape.Dims(2);
+      const int32_t in_row_len = input_shape.Dims(3);
+      const int32_t in_plain_size = in_col_len * in_row_len;
+      const int32_t in_cube_size = in_plain_len * in_plain_size;
       const int32_t padding_cube = padding_list[0].first;
       const int32_t padding_depth = padding_list[1].first;
       const int32_t padding_top = padding_list[2].first;
       const int32_t padding_left = padding_list[3].first;
-      for (auto c = 0; c < out_cube; ++c)
+      for (auto c = 0; c < out_cube_len; ++c)
       {
-        for (auto d = 0; d < out_depth; ++d)
+        for (auto d = 0; d < out_plain_len; ++d)
         {
-          for (auto h = 0; h < out_height; ++h)
+          for (auto h = 0; h < out_col_len; ++h)
           {
             const auto in_offset = (c + padding_cube) * in_cube_size +
                                    (d + padding_depth) * in_plain_size +
-                                   (h + padding_top) * in_width + (padding_left);
-            const auto out_offset = (c * out_cube_size) + (d * out_plain_size) + (h * out_width);
+                                   (h + padding_top) * in_row_len + (padding_left);
+            const auto out_offset = (c * out_cube_size) + (d * out_plain_size) + (h * out_row_len);
             // copy a row of input data to output data
-            std::memcpy(output_data + out_offset, input_data + in_offset, out_width * sizeof(T));
+            std::memcpy(output_data + out_offset, input_data + in_offset, out_row_len * sizeof(T));
           }
         }
       }
