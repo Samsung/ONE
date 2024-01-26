@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#ifndef DIS_QUANT
-
 #include "Builders.h"
 #include "kernels/Utils.h"
 #include "SISOKernel.h"
@@ -28,6 +26,7 @@ namespace luci_interpreter
 void configure_kernel_CircleDequantize(const circle::Operator *cur_op,
                                        BaseRuntimeGraph *runtime_graph)
 {
+#ifndef DIS_QUANT
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 
   LUCI_INTERPRETER_CHECK(Tensor::num_elements(kernel.input()) ==
@@ -35,11 +34,15 @@ void configure_kernel_CircleDequantize(const circle::Operator *cur_op,
   LUCI_INTERPRETER_CHECK(Tensor::num_dims(kernel.input()) == Tensor::num_dims(kernel.output()));
   LUCI_INTERPRETER_CHECK(!Tensor::scales(kernel.input()).empty());
   LUCI_INTERPRETER_CHECK(!Tensor::zero_points(kernel.input()).empty());
+#else
+  assert(false && "Remove DIS_QUANT flag");
+#endif // DIS_QUANT
 }
 
 void execute_kernel_CircleDequantize(const circle::Operator *cur_op,
                                      BaseRuntimeGraph *runtime_graph)
 {
+#ifndef DIS_QUANT
   kernels::SISOKernel kernel(cur_op, runtime_graph);
 
   const auto *input_data = runtime_graph->getDataByTensor(kernel.input());
@@ -84,8 +87,9 @@ void execute_kernel_CircleDequantize(const circle::Operator *cur_op,
     default:
       assert(false && "Unsupported type");
   }
+#else
+  assert(false && "Remove DIS_QUANT flag");
+#endif // DIS_QUANT
 }
 
 } // namespace luci_interpreter
-
-#endif // DIS_QUANT

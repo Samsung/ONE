@@ -230,6 +230,7 @@ void execute_kernel_CircleAdd(const circle::Operator *cur_op, BaseRuntimeGraph *
       }
     }
     break;
+#ifndef DIS_QUANT
     case DataType::S8:
     case DataType::S16:
     {
@@ -237,6 +238,7 @@ void execute_kernel_CircleAdd(const circle::Operator *cur_op, BaseRuntimeGraph *
                     type);
     }
     break;
+#endif
     default:
       assert(false && "Unsupported type.");
   }
