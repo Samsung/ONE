@@ -36,17 +36,15 @@ PadLayer::PadLayer()
 
 template <typename T> void PadLayer::padImpl(const T *constant_value_data)
 {
-  nnfw::cker::Pad<T>(_padData, _padRank,
-                            getShape(_input), getBuffer<T>(_input),
-                            getShape(_output), getBuffer<T>(_output),
-                            constant_value_data);
+  nnfw::cker::Pad<T>(_padData, _padRank, getShape(_input), getBuffer<T>(_input), getShape(_output),
+                     getBuffer<T>(_output), constant_value_data);
 }
 
 template <typename T> void PadLayer::depad()
 {
-  nnfw::cker::train::Depad<T>(_padData, _padRank,
-                              getShape(_back_prop_output), getBuffer<T>(_back_prop_output),
-                              getShape(_back_prop_input), getBuffer<T>(_back_prop_input));
+  nnfw::cker::train::Depad<T>(_padData, _padRank, getShape(_back_prop_output),
+                              getBuffer<T>(_back_prop_output), getShape(_back_prop_input),
+                              getBuffer<T>(_back_prop_input));
 }
 
 void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
