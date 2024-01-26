@@ -397,6 +397,12 @@ struct LeakyReluParams
   float alpha;
 };
 
+struct PadParams
+{
+  int32_t data[8];
+  int32_t rank;
+};
+
 enum class Order
 {
   kColMajor,
