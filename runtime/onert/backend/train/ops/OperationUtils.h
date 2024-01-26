@@ -35,6 +35,7 @@ using cpu::ops::getShape;
 using cpu::ops::getNumberOfDimensions;
 using cpu::ops::getNumberOfElements;
 using cpu::ops::getSizeOfDimension;
+using cpu::ops::ConstDataPtr;
 
 /**
  * @brief backpropagate acitvation
