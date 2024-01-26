@@ -72,6 +72,8 @@ public:
   const int getVerboseLevel(void) const { return _verbose_level; }
   const std::string &getQuantize(void) const { return _quantize; }
   const std::string &getQuantizedModelPath(void) const { return _quantized_model_path; }
+  const std::string &getCompile(void) const { return _compile; }
+  const std::string &getCompiledModelPath(void) const { return _compiled_model_path; }
 
 private:
   void Initialize();
@@ -105,6 +107,8 @@ private:
   bool _use_single_model = false;
   std::string _quantize;
   std::string _quantized_model_path;
+  std::string _compile;
+  std::string _compiled_model_path;
 };
 
 } // end of namespace onert_run
