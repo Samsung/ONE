@@ -50,7 +50,7 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-std::string toString(const NNFW_TRAIN_OPTIMIZER &opt)
+std::string toString(NNFW_TRAIN_OPTIMIZER opt)
 {
   static const std::unordered_map<NNFW_TRAIN_OPTIMIZER, std::string> name_map{
     {NNFW_TRAIN_OPTIMIZER_UNDEFINED, "undefined"},
@@ -60,7 +60,7 @@ std::string toString(const NNFW_TRAIN_OPTIMIZER &opt)
   return name_map.at(opt);
 }
 
-std::string toString(const NNFW_TRAIN_LOSS &loss)
+std::string toString(NNFW_TRAIN_LOSS loss)
 {
   static const std::unordered_map<NNFW_TRAIN_LOSS, std::string> name_map{
     {NNFW_TRAIN_LOSS_UNDEFINED, "undefined"},
@@ -70,7 +70,7 @@ std::string toString(const NNFW_TRAIN_LOSS &loss)
   return name_map.at(loss);
 }
 
-std::string toString(const NNFW_TRAIN_LOSS_REDUCTION &loss_rdt)
+std::string toString(NNFW_TRAIN_LOSS_REDUCTION loss_rdt)
 {
   static const std::unordered_map<NNFW_TRAIN_LOSS_REDUCTION, std::string> name_map{
     {NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED, "undefined"},
