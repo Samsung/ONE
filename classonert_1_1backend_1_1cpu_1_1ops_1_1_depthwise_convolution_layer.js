@@ -7,5 +7,19 @@ var classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer =
     [ "convQ8iHybridPerChannel", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#aca1ee80426c565273e25edadfb3ebe6a", null ],
     [ "convQ8uPerChannel", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a654cc565d8c2acd89cca6e15854af6f4", null ],
     [ "convQ8uPerTensor", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a830d3da207764d1da1d94f752b1bc82d", null ],
-    [ "run", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abc8a0d3a4dc04ecbaac4f917d94332ae", null ]
+    [ "run", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abc8a0d3a4dc04ecbaac4f917d94332ae", null ],
+    [ "_activation", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a6c46625bc297fd99e68193c9f5a9b00e", null ],
+    [ "_bias", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a5c9b7c1e5da7a4ba837b3809c11a7135", null ],
+    [ "_dilationHeight", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a110ee63767218d761691ef8326e33e8b", null ],
+    [ "_dilationWidth", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a96e18a6dde0d969e37ed1f2eab8a42c3", null ],
+    [ "_input", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a30a149604bc335bbae48b8fe053f8579", null ],
+    [ "_kernel", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a8222552687bea72ea7228551fd2d1c82", null ],
+    [ "_multiplier", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a3568e84ea4fafccad0650f3578dc9e19", null ],
+    [ "_output", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#ae13cd2d9e4f2fe8eadd77c9f1e6508e8", null ],
+    [ "_paddingBottom", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#ab42f75848ee3c069dcdb96e904b04636", null ],
+    [ "_paddingLeft", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a2fa673e5ad1e25ee29c07e65e3403f27", null ],
+    [ "_paddingRight", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#aa3a86dab9b6d62798391d6a6688a3c08", null ],
+    [ "_paddingTop", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a674275c0bb3d38feb4ed92f817541d39", null ],
+    [ "_strideHeight", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abeb830b8e8e7f412e04e0461df635f87", null ],
+    [ "_strideWidth", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a8792705b6bb324f2b1bc619bf492a3a9", null ]
 ];

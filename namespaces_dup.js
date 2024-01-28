@@ -483,6 +483,7 @@ var namespaces_dup =
     [ "nnsuite", "namespacennsuite.html", "namespacennsuite" ],
     [ "npud", "namespacenpud.html", "namespacenpud" ],
     [ "onert", "namespaceonert.html", "namespaceonert" ],
+    [ "onert_micro", "namespaceonert__micro.html", "namespaceonert__micro" ],
     [ "onert_test", "namespaceonert__test.html", "namespaceonert__test" ],
     [ "onnx-dump", "namespaceonnx-dump.html", [
       [ "main", "namespaceonnx-dump.html#add020f7324a0ab45c8af864772588c77", null ]

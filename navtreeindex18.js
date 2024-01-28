@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"_n_e_binary_logical_operation_kernel_8h_source.html":[36,0,1,0,0,0,1,0,0],
-"_n_e_cast_bool_8cpp.html":[36,0,1,0,1,1,1,0,1],
 "_n_e_cast_bool_8cpp_source.html":[36,0,1,0,1,1,1,0,1],
 "_n_e_cast_bool_8h.html":[36,0,1,0,0,1,1,0,1],
 "_n_e_cast_bool_8h_source.html":[36,0,1,0,0,1,1,0,1],
@@ -110,10 +108,10 @@ var NAVTREEINDEX18 =
 "_n_h_w_c_layout_8cpp_source.html":[36,0,0,1,1,0,1,3],
 "_n_h_w_c_layout_8h.html":[36,0,0,1,0,1,0,0,1,5],
 "_n_h_w_c_layout_8h_source.html":[36,0,0,1,0,1,0,0,1,5],
-"_n_n_a_p_i_convert_8cc.html":[36,0,4,2,3,3,0,10],
-"_n_n_a_p_i_convert_8cc_source.html":[36,0,4,2,3,3,0,10],
-"_n_n_a_p_i_convert_8h.html":[36,0,4,2,3,3,0,11],
-"_n_n_a_p_i_convert_8h_source.html":[36,0,4,2,3,3,0,11],
+"_n_n_a_p_i_convert_8cc.html":[36,0,4,2,0,0,0,10],
+"_n_n_a_p_i_convert_8cc_source.html":[36,0,4,2,0,0,0,10],
+"_n_n_a_p_i_convert_8h.html":[36,0,4,2,0,0,0,11],
+"_n_n_a_p_i_convert_8h_source.html":[36,0,4,2,0,0,0,11],
 "_n_n_pkg_8h.html":[36,0,4,2,2,0,3,12],
 "_n_n_pkg_8h.html#a054e57a584412f9d194952596c7db844":[36,0,4,2,2,0,3,12,6],
 "_n_n_pkg_8h.html#a848101715c9a39a680ea2e8621f17b7b":[36,0,4,2,2,0,3,12,7],
@@ -249,5 +247,7 @@ var NAVTREEINDEX18 =
 "_neg_maximum_kernel_8h.html":[36,0,3,4,0,0,1,42,1],
 "_neg_maximum_kernel_8h_source.html":[36,0,3,4,0,0,1,42,1],
 "_neg_mean_kernel_8h.html":[36,0,3,4,0,0,1,44,1],
-"_neg_mean_kernel_8h.html#a9a6b303ff042b2f4f5e26f9f4866f225":[36,0,3,4,0,0,1,44,1,1]
+"_neg_mean_kernel_8h.html#a9a6b303ff042b2f4f5e26f9f4866f225":[36,0,3,4,0,0,1,44,1,1],
+"_neg_mean_kernel_8h_source.html":[36,0,3,4,0,0,1,44,1],
+"_neg_minimum_kernel_8h.html":[36,0,3,4,0,0,1,45,1]
 };

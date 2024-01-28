@@ -51,7 +51,7 @@ var searchData=
   ['bidirectionalsequencelstmchef_48',['BidirectionalSequenceLSTMChef',['../class_bidirectional_sequence_l_s_t_m_chef.html',1,'']]],
   ['bidirectionalsequencelstmcheffactory_49',['BidirectionalSequenceLSTMChefFactory',['../struct_bidirectional_sequence_l_s_t_m_chef_factory.html',1,'']]],
   ['bidirectionalsequencelstmprinter_50',['BidirectionalSequenceLSTMPrinter',['../classcircledump_1_1_bidirectional_sequence_l_s_t_m_printer.html',1,'circledump::BidirectionalSequenceLSTMPrinter'],['../classtfldump_1_1_bidirectional_sequence_l_s_t_m_printer.html',1,'tfldump::BidirectionalSequenceLSTMPrinter']]],
-  ['binaryarithmetic_51',['BinaryArithmetic',['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html',1,'onert::ir::operation']]],
+  ['binaryarithmetic_51',['BinaryArithmetic',['../classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html',1,'onert::ir::operation::BinaryArithmetic'],['../classonert_1_1ir_1_1train_1_1operation_1_1_binary_arithmetic.html',1,'onert::ir::train::operation::BinaryArithmetic']]],
   ['binaryarithmeticlayer_52',['BinaryArithmeticLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_binary_arithmetic_layer.html',1,'onert::backend::cpu::ops']]],
   ['binaryarithmeticopparam_53',['BinaryArithmeticOpParam',['../structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html',1,'nnfw::cker']]],
   ['binaryelementwiseop_54',['BinaryElementwiseOp',['../classmir_1_1ops_1_1_binary_elementwise_op.html',1,'mir::ops']]],

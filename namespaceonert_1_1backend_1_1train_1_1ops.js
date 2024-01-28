@@ -1,6 +1,7 @@
 var namespaceonert_1_1backend_1_1train_1_1ops =
 [
     [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
+    [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer" ],
     [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
     [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
     [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
@@ -21,5 +22,6 @@ var namespaceonert_1_1backend_1_1train_1_1ops =
     ] ],
     [ "PoolType", "namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab", [
       [ "kMax", "namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b", null ]
-    ] ]
+    ] ],
+    [ "backpropActivation", "namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc", null ]
 ];

@@ -17,6 +17,6 @@ var searchData=
   ['exp_14',['EXP',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7',1,'onert::ir::operation::ElementwiseUnary']]],
   ['exp_15',['exp',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb',1,'mir_caffe']]],
   ['expandbroadcastconst_16',['ExpandBroadcastConst',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaafb594aed7792f32b5e84ef852102fb0',1,'luci::CircleOptimizer::Options']]],
-  ['explicit_17',['Explicit',['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops']]],
-  ['explicit_18',['EXPLICIT',['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir']]]
+  ['explicit_17',['EXPLICIT',['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir']]],
+  ['explicit_18',['Explicit',['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops']]]
 ];

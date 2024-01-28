@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/python/api/src/nnfw_api_wrapper.cc File Reference</title>
+<title>ONE - On-device Neural Engine: runtime/onert/api/python/src/nnfw_api_wrapper.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,6 +95,7 @@ $(document).ready(function(){initNavTree('nnfw__api__wrapper_8cc.html',''); init
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>&quot;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
 </div>
 <p><a href="nnfw__api__wrapper_8cc_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -145,29 +146,29 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00019">19</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   20</span>{</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">switch</span> (status)</div>
-<div class="line"><span class="lineno">   22</span>  {</div>
-<div class="line"><span class="lineno">   23</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS::NNFW_STATUS_NO_ERROR</a>:</div>
-<div class="line"><span class="lineno">   24</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS::NNFW_STATUS_ERROR</a>:</div>
-<div class="line"><span class="lineno">   26</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_ERROR\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   27</span>      exit(1);</div>
-<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL</a>:</div>
-<div class="line"><span class="lineno">   29</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_UNEXPECTED_NULL\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   30</span>      exit(1);</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS::NNFW_STATUS_INVALID_STATE</a>:</div>
-<div class="line"><span class="lineno">   32</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INVALID_STATE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   33</span>      exit(1);</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453">NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY</a>:</div>
-<div class="line"><span class="lineno">   35</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_OUT_OF_MEMORY\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   36</span>      exit(1);</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693">NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>:</div>
-<div class="line"><span class="lineno">   38</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   39</span>      exit(1);</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00021">21</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
+<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">switch</span> (status)</div>
+<div class="line"><span class="lineno">   24</span>  {</div>
+<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS::NNFW_STATUS_NO_ERROR</a>:</div>
+<div class="line"><span class="lineno">   26</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS::NNFW_STATUS_ERROR</a>:</div>
+<div class="line"><span class="lineno">   28</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_ERROR\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   29</span>      exit(1);</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL</a>:</div>
+<div class="line"><span class="lineno">   31</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_UNEXPECTED_NULL\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   32</span>      exit(1);</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS::NNFW_STATUS_INVALID_STATE</a>:</div>
+<div class="line"><span class="lineno">   34</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INVALID_STATE\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   35</span>      exit(1);</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453">NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY</a>:</div>
+<div class="line"><span class="lineno">   37</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_OUT_OF_MEMORY\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   38</span>      exit(1);</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693">NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>:</div>
+<div class="line"><span class="lineno">   40</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   41</span>      exit(1);</div>
+<div class="line"><span class="lineno">   42</span>  }</div>
+<div class="line"><span class="lineno">   43</span>}</div>
 <div class="ttc" id="annfw_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53"><div class="ttname"><a href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a></div><div class="ttdeci">@ NNFW_STATUS_INVALID_STATE</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00121">nnfw.h:121</a></div></div>
 <div class="ttc" id="annfw_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3"><div class="ttname"><a href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a></div><div class="ttdeci">@ NNFW_STATUS_UNEXPECTED_NULL</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00119">nnfw.h:119</a></div></div>
 <div class="ttc" id="annfw_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363"><div class="ttname"><a href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00112">nnfw.h:112</a></div></div>
@@ -177,7 +178,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00125">NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00123">NNFW_STATUS_OUT_OF_MEMORY</a>, and <a class="el" href="nnfw_8h_source.html#l00119">NNFW_STATUS_UNEXPECTED_NULL</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00198">NNFW_SESSION::await()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00180">NNFW_SESSION::close_session()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00199">NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00223">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">NNFW_SESSION::NNFW_SESSION()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00206">NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00236">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00196">NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00197">NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00131">NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00213">NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00145">NNFW_SESSION::set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00218">NNFW_SESSION::set_output_layout()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00200">NNFW_SESSION::await()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00182">NNFW_SESSION::close_session()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00201">NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00158">NNFW_SESSION::NNFW_SESSION()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00198">NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00199">NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00131">NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00215">NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00145">NNFW_SESSION::set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00220">NNFW_SESSION::set_output_layout()</a>.</p>
 
 </div>
 </div>
@@ -207,15 +208,15 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>python list of dims </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00137">137</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span>{</div>
-<div class="line"><span class="lineno">  139</span>  py::list dims_list;</div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  141</span>  {</div>
-<div class="line"><span class="lineno">  142</span>    dims_list.append(tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i]);</div>
-<div class="line"><span class="lineno">  143</span>  }</div>
-<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">return</span> dims_list;</div>
-<div class="line"><span class="lineno">  145</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00139">139</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
+<div class="line"><span class="lineno">  141</span>  py::list dims_list;</div>
+<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
+<div class="line"><span class="lineno">  143</span>  {</div>
+<div class="line"><span class="lineno">  144</span>    dims_list.append(tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i]);</div>
+<div class="line"><span class="lineno">  145</span>  }</div>
+<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">return</span> dims_list;</div>
+<div class="line"><span class="lineno">  147</span>}</div>
 <div class="ttc" id="astructtensorinfo_html_a25c6bf8c245bd6807f1f75eff2ac30c4"><div class="ttname"><a href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__wrapper_8h_source.html#l00041">nnfw_api_wrapper.h:41</a></div></div>
 <div class="ttc" id="astructtensorinfo_html_aedcd04b3829c5ab50d13c41efcea8cc8"><div class="ttname"><a href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition:</b> <a href="nnfw__api__wrapper_8h_source.html#l00046">nnfw_api_wrapper.h:46</a></div></div>
 </div><!-- fragment -->
@@ -249,33 +250,33 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>proper layout if exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00043">43</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NCHW&quot;</span>))</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST</a>;</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NHWC&quot;</span>))</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST</a>;</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NONE&quot;</span>))</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6">NNFW_LAYOUT::NNFW_LAYOUT_NONE</a>;</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tLAYOUT_TYPE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   60</span>    exit(1);</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00045">45</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NCHW&quot;</span>))</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST</a>;</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NHWC&quot;</span>))</div>
+<div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST</a>;</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NONE&quot;</span>))</div>
+<div class="line"><span class="lineno">   56</span>  {</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6">NNFW_LAYOUT::NNFW_LAYOUT_NONE</a>;</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tLAYOUT_TYPE\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   62</span>    exit(1);</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 <div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a">NNFW_LAYOUT_CHANNELS_LAST</a></div><div class="ttdeci">@ NNFW_LAYOUT_CHANNELS_LAST</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00139">nnfw.h:139</a></div></div>
 <div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353">NNFW_LAYOUT_CHANNELS_FIRST</a></div><div class="ttdeci">@ NNFW_LAYOUT_CHANNELS_FIRST</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00144">nnfw.h:144</a></div></div>
 <div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6">NNFW_LAYOUT_NONE</a></div><div class="ttdeci">@ NNFW_LAYOUT_NONE</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00134">nnfw.h:134</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00144">NNFW_LAYOUT_CHANNELS_FIRST</a>, <a class="el" href="nnfw_8h_source.html#l00139">NNFW_LAYOUT_CHANNELS_LAST</a>, and <a class="el" href="nnfw_8h_source.html#l00134">NNFW_LAYOUT_NONE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00213">NNFW_SESSION::set_input_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00218">NNFW_SESSION::set_output_layout()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00215">NNFW_SESSION::set_input_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00220">NNFW_SESSION::set_output_layout()</a>.</p>
 
 </div>
 </div>
@@ -303,30 +304,30 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>proper type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00102">102</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>{</div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">  105</span>  {</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>:</div>
-<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;float32&quot;</span>;</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>:</div>
-<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int32&quot;</span>;</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ad669fc119bda92c01f72edd607fc7e8d">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM</a>:</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757adf9b166c503f2472d7cc854cc5730f83">NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8</a>:</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;uint8&quot;</span>;</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757aaecd4fea1172bb0f2ede5f7d7ed2fef8">NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL</a>:</div>
-<div class="line"><span class="lineno">  114</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;bool&quot;</span>;</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602">NNFW_TYPE::NNFW_TYPE_TENSOR_INT64</a>:</div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int64&quot;</span>;</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>:</div>
-<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int8&quot;</span>;</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>:</div>
-<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int16&quot;</span>;</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  122</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] NNFW_TYPE to String Failure\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  123</span>      exit(1);</div>
-<div class="line"><span class="lineno">  124</span>  }</div>
-<div class="line"><span class="lineno">  125</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00104">104</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  107</span>  {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>:</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;float32&quot;</span>;</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>:</div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int32&quot;</span>;</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ad669fc119bda92c01f72edd607fc7e8d">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM</a>:</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757adf9b166c503f2472d7cc854cc5730f83">NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8</a>:</div>
+<div class="line"><span class="lineno">  114</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;uint8&quot;</span>;</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757aaecd4fea1172bb0f2ede5f7d7ed2fef8">NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL</a>:</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;bool&quot;</span>;</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602">NNFW_TYPE::NNFW_TYPE_TENSOR_INT64</a>:</div>
+<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int64&quot;</span>;</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>:</div>
+<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int8&quot;</span>;</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>:</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int16&quot;</span>;</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  124</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] NNFW_TYPE to String Failure\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  125</span>      exit(1);</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span>}</div>
 <div class="ttc" id="annfw_8h_html_ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602"><div class="ttname"><a href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602">NNFW_TYPE_TENSOR_INT64</a></div><div class="ttdeci">@ NNFW_TYPE_TENSOR_INT64</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00086">nnfw.h:86</a></div></div>
 <div class="ttc" id="annfw_8h_html_ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010"><div class="ttname"><a href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010">NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a></div><div class="ttdeci">@ NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00102">nnfw.h:102</a></div></div>
 <div class="ttc" id="annfw_8h_html_ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f"><div class="ttname"><a href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f">NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a></div><div class="ttdeci">@ NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00093">nnfw.h:93</a></div></div>
@@ -338,7 +339,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00080">NNFW_TYPE_TENSOR_BOOL</a>, <a class="el" href="nnfw_8h_source.html#l00070">NNFW_TYPE_TENSOR_FLOAT32</a>, <a class="el" href="nnfw_8h_source.html#l00072">NNFW_TYPE_TENSOR_INT32</a>, <a class="el" href="nnfw_8h_source.html#l00086">NNFW_TYPE_TENSOR_INT64</a>, <a class="el" href="nnfw_8h_source.html#l00102">NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>, <a class="el" href="nnfw_8h_source.html#l00078">NNFW_TYPE_TENSOR_QUANT8_ASYMM</a>, <a class="el" href="nnfw_8h_source.html#l00093">NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>, and <a class="el" href="nnfw_8h_source.html#l00083">NNFW_TYPE_TENSOR_UINT8</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00223">NNFW_SESSION::input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00236">NNFW_SESSION::output_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>.</p>
 
 </div>
 </div>
@@ -366,47 +367,47 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>proper type if exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00064">64</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;float32&quot;</span>))</div>
-<div class="line"><span class="lineno">   67</span>  {</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>;</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int32&quot;</span>))</div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>;</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;uint8&quot;</span>))</div>
-<div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757adf9b166c503f2472d7cc854cc5730f83">NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8</a>;</div>
-<div class="line"><span class="lineno">   77</span>    <span class="comment">// return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM;</span></div>
-<div class="line"><span class="lineno">   78</span>  }</div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;bool&quot;</span>))</div>
-<div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757aaecd4fea1172bb0f2ede5f7d7ed2fef8">NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL</a>;</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int64&quot;</span>))</div>
-<div class="line"><span class="lineno">   84</span>  {</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602">NNFW_TYPE::NNFW_TYPE_TENSOR_INT64</a>;</div>
-<div class="line"><span class="lineno">   86</span>  }</div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int8&quot;</span>))</div>
-<div class="line"><span class="lineno">   88</span>  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>;</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int16&quot;</span>))</div>
-<div class="line"><span class="lineno">   92</span>  {</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>;</div>
-<div class="line"><span class="lineno">   94</span>  }</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   96</span>  {</div>
-<div class="line"><span class="lineno">   97</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] String to NNFW_TYPE Failure\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   98</span>    exit(1);</div>
-<div class="line"><span class="lineno">   99</span>  }</div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00066">66</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
+<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;float32&quot;</span>))</div>
+<div class="line"><span class="lineno">   69</span>  {</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>;</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int32&quot;</span>))</div>
+<div class="line"><span class="lineno">   73</span>  {</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>;</div>
+<div class="line"><span class="lineno">   75</span>  }</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;uint8&quot;</span>))</div>
+<div class="line"><span class="lineno">   77</span>  {</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757adf9b166c503f2472d7cc854cc5730f83">NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8</a>;</div>
+<div class="line"><span class="lineno">   79</span>    <span class="comment">// return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM;</span></div>
+<div class="line"><span class="lineno">   80</span>  }</div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;bool&quot;</span>))</div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757aaecd4fea1172bb0f2ede5f7d7ed2fef8">NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL</a>;</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int64&quot;</span>))</div>
+<div class="line"><span class="lineno">   86</span>  {</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a567e9969eed6b6e4c9cb3ca6859db602">NNFW_TYPE::NNFW_TYPE_TENSOR_INT64</a>;</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int8&quot;</span>))</div>
+<div class="line"><span class="lineno">   90</span>  {</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a5bc56a77fdea6779448462e7659da17f">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>;</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int16&quot;</span>))</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757a56c418345a62eec2e613441c78ef9010">NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>;</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] String to NNFW_TYPE Failure\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  100</span>    exit(1);</div>
+<div class="line"><span class="lineno">  101</span>  }</div>
+<div class="line"><span class="lineno">  102</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00080">NNFW_TYPE_TENSOR_BOOL</a>, <a class="el" href="nnfw_8h_source.html#l00070">NNFW_TYPE_TENSOR_FLOAT32</a>, <a class="el" href="nnfw_8h_source.html#l00072">NNFW_TYPE_TENSOR_INT32</a>, <a class="el" href="nnfw_8h_source.html#l00086">NNFW_TYPE_TENSOR_INT64</a>, <a class="el" href="nnfw_8h_source.html#l00102">NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED</a>, <a class="el" href="nnfw_8h_source.html#l00093">NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED</a>, and <a class="el" href="nnfw_8h_source.html#l00083">NNFW_TYPE_TENSOR_UINT8</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_expand_8cpp_source.html#l00026">mir_onnx::convertExpandV8()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00098">mir::Operation::Output::getElementType()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00099">mir::Operation::Output::getShape()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_expand_8cpp_source.html#l00026">mir_onnx::convertExpandV8()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00098">mir::Operation::Output::getElementType()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00099">mir::Operation::Output::getShape()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>
@@ -436,15 +437,15 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>total number of elements </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00127">127</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
-<div class="line"><span class="lineno">  129</span>  uint64_t n = 1;</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  131</span>  {</div>
-<div class="line"><span class="lineno">  132</span>    n *= tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a702458a1d73a5c90f00b7214d0fce0ce">dims</a>[i];</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">return</span> n;</div>
-<div class="line"><span class="lineno">  135</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">129</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>{</div>
+<div class="line"><span class="lineno">  131</span>  uint64_t n = 1;</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
+<div class="line"><span class="lineno">  133</span>  {</div>
+<div class="line"><span class="lineno">  134</span>    n *= tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a702458a1d73a5c90f00b7214d0fce0ce">dims</a>[i];</div>
+<div class="line"><span class="lineno">  135</span>  }</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">return</span> n;</div>
+<div class="line"><span class="lineno">  137</span>}</div>
 <div class="ttc" id="astructnnfw__tensorinfo_html_a702458a1d73a5c90f00b7214d0fce0ce"><div class="ttname"><a href="structnnfw__tensorinfo.html#a702458a1d73a5c90f00b7214d0fce0ce">nnfw_tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00185">nnfw.h:185</a></div></div>
 <div class="ttc" id="astructnnfw__tensorinfo_html_a87b52cdfd8e93c94e21e7cba235fedab"><div class="ttname"><a href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">nnfw_tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition:</b> <a href="nnfw_8h_source.html#l00180">nnfw.h:180</a></div></div>
 </div><!-- fragment -->
@@ -486,14 +487,14 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00147">147</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  148</span>{</div>
-<div class="line"><span class="lineno">  149</span>  tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a> = py::len(array);</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  151</span>  {</div>
-<div class="line"><span class="lineno">  152</span>    tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i] = py::cast&lt;int32_t&gt;(array[i]);</div>
-<div class="line"><span class="lineno">  153</span>  }</div>
-<div class="line"><span class="lineno">  154</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00149">149</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
+<div class="line"><span class="lineno">  151</span>  tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a> = py::len(array);</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
+<div class="line"><span class="lineno">  153</span>  {</div>
+<div class="line"><span class="lineno">  154</span>    tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i] = py::cast&lt;int32_t&gt;(array[i]);</div>
+<div class="line"><span class="lineno">  155</span>  }</div>
+<div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00046">tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00041">tensorinfo::rank</a>.</p>
 
@@ -506,7 +507,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_614c5ec450b37923c964fab5fef82a62.html">python</a></li><li class="navelem"><a class="el" href="dir_1b132b5944f4fd550a13144388da6501.html">api</a></li><li class="navelem"><a class="el" href="dir_ab69e71a1b63efce63ee2803aaf0878c.html">src</a></li><li class="navelem"><a class="el" href="nnfw__api__wrapper_8cc.html">nnfw_api_wrapper.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_b620a079c486362998f4e991c5bfc221.html">api</a></li><li class="navelem"><a class="el" href="dir_52dfe05db77a34a54e967cf3a7ec81b5.html">python</a></li><li class="navelem"><a class="el" href="dir_f94c2b910390012aaeeafbfa6ef6d325.html">src</a></li><li class="navelem"><a class="el" href="nnfw__api__wrapper_8cc.html">nnfw_api_wrapper.cc</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

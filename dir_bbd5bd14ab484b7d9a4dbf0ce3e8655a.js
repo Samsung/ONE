@@ -43,7 +43,7 @@ var dir_bbd5bd14ab484b7d9a4dbf0ce3e8655a =
     [ "ReLU.float.cpp", "_re_l_u_8float_8cpp.html", "_re_l_u_8float_8cpp" ],
     [ "ReLU.float.h", "_re_l_u_8float_8h.html", "_re_l_u_8float_8h" ],
     [ "ReLU.h", "compiler_2ann-ref_2src_2ops_2_re_l_u_8h.html", "compiler_2ann-ref_2src_2ops_2_re_l_u_8h" ],
-    [ "ReLU6.cpp", "compiler_2ann-ref_2src_2ops_2_relu6_8cpp.html", "compiler_2ann-ref_2src_2ops_2_relu6_8cpp" ],
+    [ "ReLU6.cpp", "compiler_2ann-ref_2src_2ops_2_re_l_u6_8cpp.html", "compiler_2ann-ref_2src_2ops_2_re_l_u6_8cpp" ],
     [ "ReLU6.float.cpp", "_re_l_u6_8float_8cpp.html", "_re_l_u6_8float_8cpp" ],
     [ "ReLU6.float.h", "_re_l_u6_8float_8h.html", "_re_l_u6_8float_8h" ],
     [ "ReLU6.h", "compiler_2ann-ref_2src_2ops_2_re_l_u6_8h.html", "compiler_2ann-ref_2src_2ops_2_re_l_u6_8h" ],

@@ -2432,6 +2432,7 @@ var hierarchy =
       [ "arm_compute::CLInstanceNormalizationLayerEx", "classarm__compute_1_1_c_l_instance_normalization_layer_ex.html", null ],
       [ "arm_compute::CLNeg", "classarm__compute_1_1_c_l_neg.html", null ]
     ] ],
+    [ "onert::odc::ICodegen", "classonert_1_1odc_1_1_i_codegen.html", null ],
     [ "onert::compiler::ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", [
       [ "onert::compiler::Compiler", "classonert_1_1compiler_1_1_compiler.html", null ],
       [ "onert::compiler::MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", null ],
@@ -2518,7 +2519,9 @@ var hierarchy =
         [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ]
       ] ],
       [ "onert::backend::cpu::ops::DepthToSpaceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depth_to_space_layer.html", null ],
-      [ "onert::backend::cpu::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html", null ],
+      [ "onert::backend::cpu::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html", [
+        [ "onert::backend::train::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", null ]
+      ] ],
       [ "onert::backend::cpu::ops::DetectionPostProcessLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html", null ],
       [ "onert::backend::cpu::ops::EinsumLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_einsum_layer.html", null ],
       [ "onert::backend::cpu::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", [
@@ -2714,7 +2717,9 @@ var hierarchy =
         [ "onert::ir::operation::BCQGather", "classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html", null ],
         [ "onert::ir::operation::BatchMatMul", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html", null ],
         [ "onert::ir::operation::BatchToSpaceND", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html", null ],
-        [ "onert::ir::operation::BinaryArithmetic", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html", null ],
+        [ "onert::ir::operation::BinaryArithmetic", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html", [
+          [ "onert::ir::train::operation::BinaryArithmetic", "classonert_1_1ir_1_1train_1_1operation_1_1_binary_arithmetic.html", null ]
+        ] ],
         [ "onert::ir::operation::BroadcastTo", "classonert_1_1ir_1_1operation_1_1_broadcast_to.html", null ],
         [ "onert::ir::operation::Bulk", "classonert_1_1ir_1_1operation_1_1_bulk.html", null ],
         [ "onert::ir::operation::Comparison", "classonert_1_1ir_1_1operation_1_1_comparison.html", null ],
@@ -2758,7 +2763,9 @@ var hierarchy =
         [ "onert::ir::operation::OneHot", "classonert_1_1ir_1_1operation_1_1_one_hot.html", null ],
         [ "onert::ir::operation::PReLU", "classonert_1_1ir_1_1operation_1_1_p_re_l_u.html", null ],
         [ "onert::ir::operation::Pack", "classonert_1_1ir_1_1operation_1_1_pack.html", null ],
-        [ "onert::ir::operation::Pad", "classonert_1_1ir_1_1operation_1_1_pad.html", null ],
+        [ "onert::ir::operation::Pad", "classonert_1_1ir_1_1operation_1_1_pad.html", [
+          [ "onert::ir::train::operation::Pad", "classonert_1_1ir_1_1train_1_1operation_1_1_pad.html", null ]
+        ] ],
         [ "onert::ir::operation::Permute", "classonert_1_1ir_1_1operation_1_1_permute.html", [
           [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ]
         ] ],
@@ -2801,11 +2808,13 @@ var hierarchy =
         [ "onert_test::ir::SimpleMock", "classonert__test_1_1ir_1_1_simple_mock.html", null ]
       ] ],
       [ "onert::ir::train::ITrainableOperation", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html", [
+        [ "onert::ir::train::operation::BinaryArithmetic", "classonert_1_1ir_1_1train_1_1operation_1_1_binary_arithmetic.html", null ],
         [ "onert::ir::train::operation::Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", null ],
         [ "onert::ir::train::operation::DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", null ],
         [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ],
         [ "onert::ir::train::operation::FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", null ],
         [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ],
+        [ "onert::ir::train::operation::Pad", "classonert_1_1ir_1_1train_1_1operation_1_1_pad.html", null ],
         [ "onert::ir::train::operation::Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", null ],
         [ "onert::ir::train::operation::Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", null ],
         [ "onert::ir::train::operation::Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", null ],
@@ -2924,6 +2933,7 @@ var hierarchy =
     [ "onert::exec::train::ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", [
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
+      [ "onert::backend::train::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", null ],
       [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ],
       [ "onert::backend::train::ops::FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::train::ops::LossLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html", [
@@ -3657,6 +3667,8 @@ var hierarchy =
     [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
+    [ "onert_micro::OMConfig", "structonert__micro_1_1_o_m_config.html", null ],
+    [ "onert_micro::OMInterpreter", "classonert__micro_1_1_o_m_interpreter.html", null ],
     [ "luci_interpreter::OneHotParams", "structluci__interpreter_1_1_one_hot_params.html", null ],
     [ "validate_onnx2circle.OnnxRunner", "classvalidate__onnx2circle_1_1_onnx_runner.html", null ],
     [ "OpBuilder", "class_op_builder.html", null ],
@@ -4165,6 +4177,7 @@ var hierarchy =
     [ "nnop::PadInfo", "classnnop_1_1_pad_info.html", null ],
     [ "mir::PadOpAttributes", "structmir_1_1_pad_op_attributes.html", null ],
     [ "luci_interpreter_pal::PadParams", "structluci__interpreter__pal_1_1_pad_params.html", null ],
+    [ "nnfw::cker::PadParams", "structnnfw_1_1cker_1_1_pad_params.html", null ],
     [ "Palette.Palette", "class_palette_1_1_palette.html", [
       [ "Palette.UniformPalette", "class_palette_1_1_uniform_palette.html", [
         [ "Palette.YLORRD9Palette", "class_palette_1_1_y_l_o_r_r_d9_palette.html", null ]

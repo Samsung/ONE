@@ -76,6 +76,7 @@ var namespacennfw_1_1cker =
     [ "NdArrayDesc", "structnnfw_1_1cker_1_1_nd_array_desc.html", "structnnfw_1_1cker_1_1_nd_array_desc" ],
     [ "PackParams", "structnnfw_1_1cker_1_1_pack_params.html", "structnnfw_1_1cker_1_1_pack_params" ],
     [ "PaddingValues", "structnnfw_1_1cker_1_1_padding_values.html", "structnnfw_1_1cker_1_1_padding_values" ],
+    [ "PadParams", "structnnfw_1_1cker_1_1_pad_params.html", "structnnfw_1_1cker_1_1_pad_params" ],
     [ "PoolParams", "structnnfw_1_1cker_1_1_pool_params.html", "structnnfw_1_1cker_1_1_pool_params" ],
     [ "Reduce", "classnnfw_1_1cker_1_1_reduce.html", "classnnfw_1_1cker_1_1_reduce" ],
     [ "ReduceMean", "classnnfw_1_1cker_1_1_reduce_mean.html", "classnnfw_1_1cker_1_1_reduce_mean" ],

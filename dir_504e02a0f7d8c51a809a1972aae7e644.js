@@ -2,6 +2,8 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
 [
     [ "ConvolutionLayer.cc", "train_2ops_2_convolution_layer_8cc.html", null ],
     [ "ConvolutionLayer.h", "train_2ops_2_convolution_layer_8h.html", "train_2ops_2_convolution_layer_8h" ],
+    [ "DepthwiseConvolutionLayer.cc", "train_2ops_2_depthwise_convolution_layer_8cc.html", null ],
+    [ "DepthwiseConvolutionLayer.h", "train_2ops_2_depthwise_convolution_layer_8h.html", "train_2ops_2_depthwise_convolution_layer_8h" ],
     [ "ElementwiseActivationLayer.cc", "train_2ops_2_elementwise_activation_layer_8cc.html", null ],
     [ "ElementwiseActivationLayer.h", "train_2ops_2_elementwise_activation_layer_8h.html", "train_2ops_2_elementwise_activation_layer_8h" ],
     [ "FullyConnectedLayer.cc", "train_2ops_2_fully_connected_layer_8cc.html", null ],
@@ -16,6 +18,7 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
     [ "LossMeanSquaredErrorLayer.h", "_loss_mean_squared_error_layer_8h.html", "_loss_mean_squared_error_layer_8h" ],
     [ "MeanLayer.cc", "train_2ops_2_mean_layer_8cc.html", null ],
     [ "MeanLayer.h", "train_2ops_2_mean_layer_8h.html", "train_2ops_2_mean_layer_8h" ],
+    [ "OperationUtils.cc", "train_2ops_2_operation_utils_8cc.html", "train_2ops_2_operation_utils_8cc" ],
     [ "OperationUtils.h", "train_2ops_2_operation_utils_8h.html", "train_2ops_2_operation_utils_8h" ],
     [ "PoolLayer.cc", "train_2ops_2_pool_layer_8cc.html", null ],
     [ "PoolLayer.h", "train_2ops_2_pool_layer_8h.html", "train_2ops_2_pool_layer_8h" ],

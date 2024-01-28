@@ -324,19 +324,21 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>      }</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordflow">case</span> DataType::S8:</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">case</span> DataType::S16:</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    {</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>      evalQuantized(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>(), options, runtime_graph,</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                    type);</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    }</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  }</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>}</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">case</span> DataType::S8:</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">case</span> DataType::S16:</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      evalQuantized(kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#af0449a0fffd6ad67ce1fdef2403fc8eb">input1</a>(), kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#aece0c6ec294cd15d455085687fd3e0c3">input2</a>(), kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html#ac089b06286f5bf8b29f013358d82f5cb">output</a>(), options, runtime_graph,</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                    type);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  }</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>}</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition:</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html">luci_interpreter::RuntimeGraph</a></div><div class="ttdef"><b>Definition:</b> <a href="compiler_2luci-interpreter_2src_2core_2_runtime_graph_8h_source.html#l00032">RuntimeGraph.h:33</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_a6bfeb888809a7355c95fd93e29106c0d"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#a6bfeb888809a7355c95fd93e29106c0d">luci_interpreter::RuntimeGraph::addDynamicShapeTensor</a></div><div class="ttdeci">void addDynamicShapeTensor(const circle::Tensor *tensor, luci_interpreter::RuntimeShape &amp;&amp;shapes)</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00144">RuntimeGraph.cpp:144</a></div></div>

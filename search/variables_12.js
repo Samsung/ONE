@@ -2,7 +2,7 @@ var searchData=
 [
   ['r_0',['r',['../namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c',1,'jpeg2hdf5']]],
   ['radius_1',['radius',['../structonert_1_1ir_1_1operation_1_1_local_response_normalization_1_1_param.html#a7922d9505649ec7b183109509c59b72b',1,'onert::ir::operation::LocalResponseNormalization::Param::radius()'],['../structluci__interpreter_1_1_local_response_normalization_params.html#a30da6ecab7e460468f2c89e5a503ed08',1,'luci_interpreter::LocalResponseNormalizationParams::radius()']]],
-  ['rank_2',['rank',['../structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4',1,'tensorinfo::rank()'],['../structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab',1,'nnfw_tensorinfo::rank()']]],
+  ['rank_2',['rank',['../structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4',1,'tensorinfo::rank()'],['../structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab',1,'nnfw_tensorinfo::rank()'],['../structnnfw_1_1cker_1_1_pad_params.html#adfb3dff7a11e5194baa3f8fda89c0c36',1,'nnfw::cker::PadParams::rank()']]],
   ['reader_3',['reader',['../structluci_1_1_graph_builder_base_1_1_validate_args.html#aaa5dc31f7fa21d01c62c084b505eb1c7',1,'luci::GraphBuilderBase::ValidateArgs']]],
   ['records_4',['records',['../namespacegen__h5__explicit__inputs__all.html#ac79eef2088b7cff8042d4b07854f464b',1,'gen_h5_explicit_inputs_all']]],
   ['recurrent_5ffc_5fparams_5',['recurrent_fc_params',['../structluci__interpreter_1_1lstm_1_1_gate_parameters.html#a151c23f2f4b3c36fa8c669fe28e3e3cd',1,'luci_interpreter::lstm::GateParameters']]],

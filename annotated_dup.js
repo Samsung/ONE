@@ -2701,6 +2701,7 @@ var annotated_dup =
         [ "NdArrayDesc", "structnnfw_1_1cker_1_1_nd_array_desc.html", "structnnfw_1_1cker_1_1_nd_array_desc" ],
         [ "PackParams", "structnnfw_1_1cker_1_1_pack_params.html", "structnnfw_1_1cker_1_1_pack_params" ],
         [ "PaddingValues", "structnnfw_1_1cker_1_1_padding_values.html", "structnnfw_1_1cker_1_1_padding_values" ],
+        [ "PadParams", "structnnfw_1_1cker_1_1_pad_params.html", "structnnfw_1_1cker_1_1_pad_params" ],
         [ "PoolParams", "structnnfw_1_1cker_1_1_pool_params.html", "structnnfw_1_1cker_1_1_pool_params" ],
         [ "Reduce", "classnnfw_1_1cker_1_1_reduce.html", "classnnfw_1_1cker_1_1_reduce" ],
         [ "ReduceMean", "classnnfw_1_1cker_1_1_reduce_mean.html", "classnnfw_1_1cker_1_1_reduce_mean" ],
@@ -3078,6 +3079,7 @@ var annotated_dup =
         [ "train", "namespaceonert_1_1backend_1_1train.html", [
           [ "ops", "namespaceonert_1_1backend_1_1train_1_1ops.html", [
             [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
+            [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer" ],
             [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer" ],
             [ "FullyConnectedLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer" ],
             [ "GradientApplier", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html", "classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier" ],
@@ -3348,11 +3350,13 @@ var annotated_dup =
         ] ],
         [ "train", "namespaceonert_1_1ir_1_1train.html", [
           [ "operation", "namespaceonert_1_1ir_1_1train_1_1operation.html", [
+            [ "BinaryArithmetic", "classonert_1_1ir_1_1train_1_1operation_1_1_binary_arithmetic.html", "classonert_1_1ir_1_1train_1_1operation_1_1_binary_arithmetic" ],
             [ "Conv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_conv2_d" ],
             [ "DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d" ],
             [ "ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation" ],
             [ "FullyConnected", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected.html", "classonert_1_1ir_1_1train_1_1operation_1_1_fully_connected" ],
             [ "Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1train_1_1operation_1_1_loss" ],
+            [ "Pad", "classonert_1_1ir_1_1train_1_1operation_1_1_pad.html", "classonert_1_1ir_1_1train_1_1operation_1_1_pad" ],
             [ "Permute", "classonert_1_1ir_1_1train_1_1operation_1_1_permute.html", "classonert_1_1ir_1_1train_1_1operation_1_1_permute" ],
             [ "Pool2D", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d.html", "classonert_1_1ir_1_1train_1_1operation_1_1_pool2_d" ],
             [ "Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce" ],
@@ -3411,6 +3415,7 @@ var annotated_dup =
         [ "TypeInfo", "classonert_1_1ir_1_1_type_info.html", "classonert_1_1ir_1_1_type_info" ]
       ] ],
       [ "odc", "namespaceonert_1_1odc.html", [
+        [ "ICodegen", "classonert_1_1odc_1_1_i_codegen.html", "classonert_1_1odc_1_1_i_codegen" ],
         [ "IQuantizer", "classonert_1_1odc_1_1_i_quantizer.html", "classonert_1_1odc_1_1_i_quantizer" ],
         [ "QuantizeManager", "classonert_1_1odc_1_1_quantize_manager.html", "classonert_1_1odc_1_1_quantize_manager" ],
         [ "Quantizer", "classonert_1_1odc_1_1_quantizer.html", "classonert_1_1odc_1_1_quantizer" ],
@@ -3437,6 +3442,10 @@ var annotated_dup =
       ] ],
       [ "InsufficientBufferSizeException", "classonert_1_1_insufficient_buffer_size_exception.html", "classonert_1_1_insufficient_buffer_size_exception" ],
       [ "OnertException", "classonert_1_1_onert_exception.html", "classonert_1_1_onert_exception" ]
+    ] ],
+    [ "onert_micro", "namespaceonert__micro.html", [
+      [ "OMConfig", "structonert__micro_1_1_o_m_config.html", "structonert__micro_1_1_o_m_config" ],
+      [ "OMInterpreter", "classonert__micro_1_1_o_m_interpreter.html", "classonert__micro_1_1_o_m_interpreter" ]
     ] ],
     [ "onert_test", "namespaceonert__test.html", [
       [ "ir", "namespaceonert__test_1_1ir.html", [

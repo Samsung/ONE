@@ -6,7 +6,7 @@ var dir_c67b2d6a1794e95e9d1aa933ef4fa6b2 =
     [ "BatchToSpaceND.h", "runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h" ],
     [ "BCQFullyConnected.h", "runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_fully_connected_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_fully_connected_8h" ],
     [ "BCQGather.h", "runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_gather_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_b_c_q_gather_8h" ],
-    [ "BinaryArithmetic.h", "_binary_arithmetic_8h.html", "_binary_arithmetic_8h" ],
+    [ "BinaryArithmetic.h", "runtime_2onert_2core_2include_2ir_2operation_2_binary_arithmetic_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_binary_arithmetic_8h" ],
     [ "BroadcastTo.h", "runtime_2onert_2core_2include_2ir_2operation_2_broadcast_to_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_broadcast_to_8h" ],
     [ "Bulk.h", "_bulk_8h.html", "_bulk_8h" ],
     [ "Comparison.h", "runtime_2onert_2core_2include_2ir_2operation_2_comparison_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_comparison_8h" ],

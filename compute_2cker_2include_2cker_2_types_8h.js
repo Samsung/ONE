@@ -26,6 +26,7 @@ var compute_2cker_2include_2cker_2_types_8h =
     [ "nnfw::cker::SpaceToBatchParams", "structnnfw_1_1cker_1_1_space_to_batch_params.html", "structnnfw_1_1cker_1_1_space_to_batch_params" ],
     [ "nnfw::cker::SpaceToDepthParams", "structnnfw_1_1cker_1_1_space_to_depth_params.html", "structnnfw_1_1cker_1_1_space_to_depth_params" ],
     [ "nnfw::cker::LeakyReluParams", "structnnfw_1_1cker_1_1_leaky_relu_params.html", "structnnfw_1_1cker_1_1_leaky_relu_params" ],
+    [ "nnfw::cker::PadParams", "structnnfw_1_1cker_1_1_pad_params.html", "structnnfw_1_1cker_1_1_pad_params" ],
     [ "nnfw::cker::MatrixParams< Scalar >", "structnnfw_1_1cker_1_1_matrix_params.html", "structnnfw_1_1cker_1_1_matrix_params" ],
     [ "nnfw::cker::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1cker_1_1_gemm_params.html", "structnnfw_1_1cker_1_1_gemm_params" ],
     [ "BinaryArithmeticOpType", "compute_2cker_2include_2cker_2_types_8h.html#ae614fca042c2ace9275536cb940ffd27", [

@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1backend_1_1train_1_1
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::train::ops Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -100,6 +101,8 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1backend_1_1train_1_1
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html">ConvolutionLayer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html">DepthwiseConvolutionLayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html">ElementwiseActivationLayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +143,12 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a4fe5d3f27e098a4d993f591af7fc3aab"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab">PoolType</a> { <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">kMax</a>
  }</td></tr>
 <tr class="separator:a4fe5d3f27e098a4d993f591af7fc3aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">backpropActivation</a> (const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> &amp;activation, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output_backprop)</td></tr>
+<tr class="memdesc:a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">backpropagate acitvation  <a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">More...</a><br /></td></tr>
+<tr class="separator:a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a36997d521390a4beeccc6475e08fca7e" name="a36997d521390a4beeccc6475e08fca7e"></a>
@@ -248,6 +257,98 @@ Enumerations</h2></td></tr>
 <div class="line"><span class="lineno">   47</span>  kMax,</div>
 <div class="line"><span class="lineno">   48</span>};</div>
 </div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a6d9e6c6534c3e65e1aaf3adec0a379dc" name="a6d9e6c6534c3e65e1aaf3adec0a379dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d9e6c6534c3e65e1aaf3adec0a379dc">&#9670;&#160;</a></span>backpropActivation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> * onert::backend::train::ops::backpropActivation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> &amp;&#160;</td>
+          <td class="paramname"><em>activation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>input_backprop</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>output_backprop</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>backpropagate acitvation </p>
+<pre class="fragment">        -- forward direction --&gt;
+</pre><p> [ current layer ] -&mdash; [ next layer ] [ op | act ] </p><pre class="fragment">      &lt;-- backward direction --
+</pre> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">activation</td><td>activation of current layer </td></tr>
+    <tr><td class="paramname">output</td><td>forward direction's output of current layer </td></tr>
+    <tr><td class="paramname">input_backprop</td><td>backward direction's output of next layer In other words, incoming gradient to current layer </td></tr>
+    <tr><td class="paramname">output_backprop</td><td>backward direction's output of activation, In other words, outcoming gradient of current layer's acitvation If activation is NONE, this param can be nullptr </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>tensor that holds backpropagate result of activation If activation is NONE, just return input_backprop </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00031">31</a> of file <a class="el" href="train_2ops_2_operation_utils_8cc_source.html">OperationUtils.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   37</span>  assert(input_backprop != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// handle NONE - just propagate incoming gradient</span></div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (activation == ir::Activation::NONE)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> input_backprop;</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  assert(output_backprop != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// handle other activation</span></div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">switch</span> (activation)</div>
+<div class="line"><span class="lineno">   49</span>  {</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">case</span> ir::Activation::RELU:</div>
+<div class="line"><span class="lineno">   51</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
+<div class="line"><span class="lineno">   52</span>                                  getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
+<div class="line"><span class="lineno">   53</span>                                  getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
+<div class="line"><span class="lineno">   54</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">case</span> ir::Activation::RELU6:</div>
+<div class="line"><span class="lineno">   56</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
+<div class="line"><span class="lineno">   57</span>                                   getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
+<div class="line"><span class="lineno">   58</span>                                   getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   60</span>    <span class="comment">// TODO: Add other activation backpropagation here</span></div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported activation type yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">return</span> output_backprop;</div>
+<div class="line"><span class="lineno">   65</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a56ba869240e3cb2e543a61e176115d8f"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a></div><div class="ttdeci">void ReLUGrad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">ReLU.h:32</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_abe5949773bbbe4ca31565a0eacbd11c2"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a></div><div class="ttdeci">void ReLU6Grad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition:</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">ReLU6.h:31</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">nnfw::cker::train::ReLU6Grad()</a>, and <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->

@@ -133,28 +133,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="traininfo__loader_8cc_source.html#l00085">85</a> of file <a class="el" href="traininfo__loader_8cc_source.html">traininfo_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  assert(buffer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  flatbuffers::Verifier v(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordtype">bool</span> verified = circle::VerifyModelTrainingBuffer(v);</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (not verified)</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TrainingInfo buffer is not accessible&quot;</span>};</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <span class="keyword">const</span> circle::ModelTraining *circle_model =</div>
-<div class="line"><span class="lineno">   95</span>    circle::GetModelTraining(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer));</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  assert(circle_model != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  <span class="keyword">auto</span> tinfo = std::make_unique&lt;ir::train::TrainingInfo&gt;();</div>
-<div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
-<div class="line"><span class="lineno">  102</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
-<div class="line"><span class="lineno">  103</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
-<div class="line"><span class="lineno">  104</span>  }</div>
-<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">return</span> tinfo;</div>
-<div class="line"><span class="lineno">  106</span>}</div>
+<p class="definition">Definition at line <a class="el" href="traininfo__loader_8cc_source.html#l00086">86</a> of file <a class="el" href="traininfo__loader_8cc_source.html">traininfo_loader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>  assert(buffer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  flatbuffers::Verifier v(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordtype">bool</span> verified = circle::VerifyModelTrainingBuffer(v);</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (not verified)</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TrainingInfo buffer is not accessible&quot;</span>};</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> circle::ModelTraining *circle_model =</div>
+<div class="line"><span class="lineno">   96</span>    circle::GetModelTraining(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer));</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>  assert(circle_model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  <span class="keyword">auto</span> tinfo = std::make_unique&lt;ir::train::TrainingInfo&gt;();</div>
+<div class="line"><span class="lineno">  101</span>  {</div>
+<div class="line"><span class="lineno">  102</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
+<div class="line"><span class="lineno">  103</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
+<div class="line"><span class="lineno">  104</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> tinfo;</div>
+<div class="line"><span class="lineno">  107</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition:</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
@@ -174,7 +174,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="traininfo__loader_8cc_source.html#l00028">28</a> of file <a class="el" href="traininfo__loader_8cc_source.html">traininfo_loader.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="traininfo__loader_8cc_source.html#l00029">29</a> of file <a class="el" href="traininfo__loader_8cc_source.html">traininfo_loader.cc</a>.</p>
 
 </div>
 </div>
