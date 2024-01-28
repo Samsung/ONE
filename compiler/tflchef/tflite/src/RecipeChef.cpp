@@ -277,9 +277,9 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
     if (shape_signature != nullptr)
     {
       tflchef::ShapeSignature *chef_shape_signature = operand->mutable_shape_signature();
-      for (uint32_t i = 0; i < shape_signature->size(); ++i)
+      for (uint32_t j = 0; j < shape_signature->size(); ++j)
       {
-        chef_shape_signature->add_dim(shape_signature->Get(i));
+        chef_shape_signature->add_dim(shape_signature->Get(j));
       }
     }
   }
