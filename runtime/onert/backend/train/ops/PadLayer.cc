@@ -27,17 +27,9 @@ namespace train
 namespace ops
 {
 
-PadLayer::PadLayer()
-  : _input(nullptr), _output(nullptr), _padData(), _padRank(), _constantValueData(),
-    _back_prop_input{nullptr}, _back_prop_output{nullptr}
+PadLayer::PadLayer() : cpu::ops::PadLayer(), _back_prop_input{nullptr}, _back_prop_output{nullptr}
 {
   // DO NOTHING
-}
-
-template <typename T> void PadLayer::padImpl(const T *constant_value_data)
-{
-  nnfw::cker::Pad<T>(_padData, _padRank, getShape(_input), getBuffer<T>(_input), getShape(_output),
-                     getBuffer<T>(_output), constant_value_data);
 }
 
 template <typename T> void PadLayer::depad()
@@ -51,48 +43,12 @@ void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
                          const int32_t *padData, int32_t padRank, const void *constantValueData,
                          IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
 {
-  _input = input;
-  _output = output;
-  memcpy(_padData, padData, sizeof(_padData));
-  _padRank = padRank;
-  _constantValueData.v = constantValueData;
+  cpu::ops::PadLayer::configure(input, output, padData, padRank, constantValueData);
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }
 
-void PadLayer::forward(bool)
-{
-  switch (_input->data_type())
-  {
-    case OperandType::FLOAT32:
-      padImpl<float>(_constantValueData.f);
-      break;
-    case OperandType::QUANT_UINT8_ASYMM:
-      if (_constantValueData.u8 == nullptr)
-      {
-        uint8_t pad_value = static_cast<uint8_t>(_output->data_zero_point());
-        padImpl<uint8_t>(&pad_value);
-      }
-      else
-      {
-        padImpl<uint8_t>(_constantValueData.u8);
-      }
-      break;
-    case OperandType::QUANT_INT8_ASYMM:
-      if (_constantValueData.i8 == nullptr)
-      {
-        int8_t pad_value = static_cast<int8_t>(_output->data_zero_point());
-        padImpl<int8_t>(&pad_value);
-      }
-      else
-      {
-        padImpl<int8_t>(_constantValueData.i8);
-      }
-      break;
-    default:
-      throw std::runtime_error{"Pad: unsupported data type"};
-  }
-}
+void PadLayer::forward(bool) { cpu::ops::PadLayer::run(); }
 
 void PadLayer::backward()
 {
