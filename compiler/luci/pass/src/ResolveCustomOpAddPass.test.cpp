@@ -18,9 +18,19 @@
 
 #include <gtest/gtest.h>
 
-TEST(ResolveCustomOpAddPassTest, name)
+namespace
 {
-  luci::ResolveCustomOpAddPass pass;
-  auto const name = pass.name();
+
+class ResolveCustomOpAddPassTest : public ::testing::Test
+{
+public:
+  luci::ResolveCustomOpAddPass _pass;
+};
+
+} // namespace
+
+TEST_F(ResolveCustomOpAddPassTest, name)
+{
+  auto const name = _pass.name();
   ASSERT_NE(nullptr, name);
 }
