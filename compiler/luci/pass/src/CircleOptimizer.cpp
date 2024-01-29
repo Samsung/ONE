@@ -26,6 +26,7 @@
 #include "luci/Pass/FoldDequantizePass.h"
 #include "luci/Pass/FoldFullyConnectedPass.h"
 #include "luci/Pass/FoldGatherPass.h"
+#include "luci/Pass/FoldShapePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 #include "luci/Pass/ForwardTransposeOpPass.h"
@@ -364,6 +365,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldGather))
   {
     phase.emplace_back(std::make_unique<luci::FoldGatherPass>());
+  }
+  if (_options->query(Options::Algorithm::FoldShape))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldShapePass>());
   }
   if (_options->query(Options::Algorithm::FoldSparseToDense))
   {
