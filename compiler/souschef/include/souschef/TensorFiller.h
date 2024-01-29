@@ -85,6 +85,12 @@ public:
     return false;
   }
 
+  void clear_tensor_filler() { _tensor_filler.clear(); }
+
+  void clear_tensor_filler_vint32() { _tensor_filler_vint32.clear(); }
+
+  void clear_tensor_filler_vfloat() { _tensor_filler_vfloat.clear(); }
+
 private:
   std::map<uint32_t, bool> _tensor_filler{};
   std::map<uint32_t, std::vector<int32_t>> _tensor_filler_vint32{};
