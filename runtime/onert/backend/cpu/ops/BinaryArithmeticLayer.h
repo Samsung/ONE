@@ -53,7 +53,7 @@ public:
 
   void run() override;
 
-private:
+protected:
   const IPortableTensor *_lhs;
   const IPortableTensor *_rhs;
   IPortableTensor *_output;
