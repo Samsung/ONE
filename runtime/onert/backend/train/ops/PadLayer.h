@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,50 +14,48 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_PADLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_PADLAYER_H__
+#ifndef __ONERT_BACKEND_TRAIN_OPS_PADLAYER_H__
+#define __ONERT_BACKEND_TRAIN_OPS_PADLAYER_H__
 
+#include <ops/PadLayer.h>
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
-#include <exec/IFunction.h>
+#include <exec/train/ITrainableFunction.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace cpu
+namespace train
 {
 namespace ops
 {
 
 // Note, this is pad with mode=`CONSTANT`: it doesn't support `REFLECT` and
 // `SYMMETRIC`
-class PadLayer : public ::onert::exec::IFunction
+class PadLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::PadLayer
 {
 public:
   PadLayer();
 
 public:
-  template <typename T> void padImpl(const T *constant_value_data);
+  template <typename T> void depad();
 
   void configure(const IPortableTensor *input, IPortableTensor *output, const int32_t *padData,
-                 int32_t padRank, const void *constantValueData = nullptr);
+                 int32_t padRank, const void *constantValueData, IPortableTensor *back_prop_input,
+                 const IPortableTensor *back_prop_output);
+  void forward(bool training) override;
+  void backward() override;
 
-  void run() override;
-
-protected:
-  const IPortableTensor *_input;
-  IPortableTensor *_output;
-
-  int32_t _padData[8];
-  int32_t _padRank;
-  ConstDataPtr _constantValueData;
+private:
+  IPortableTensor *_back_prop_input;
+  const IPortableTensor *_back_prop_output;
 };
 
 } // namespace ops
-} // namespace cpu
+} // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_CPU_OPS_PADLAYER_H__
+#endif // __ONERT_BACKEND_TRAIN_OPS_PADLAYER_H__
