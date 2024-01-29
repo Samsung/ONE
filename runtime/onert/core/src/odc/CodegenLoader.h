@@ -53,11 +53,13 @@ public:
    */
   static CodegenLoader &instance();
 
+  // delete copy constructor and assignment operator
+  CodegenLoader(CodegenLoader const &) = delete;
+  CodegenLoader &operator=(CodegenLoader const &) = delete;
+
 private:
   // cannot create instance of CodegenLoader outside of this class
   CodegenLoader() = default;
-  CodegenLoader(CodegenLoader const &) = delete;
-  CodegenLoader &operator=(CodegenLoader const &) = delete;
   ~CodegenLoader() = default;
 
 public:
@@ -80,7 +82,7 @@ public:
    * @brief   Get instance of ICodegen created through factory method
    * @return  Pointer to instance of ICodegen
    */
-  ICodegen *get() const { return _codegen.get(); }
+  const ICodegen *get() const { return _codegen.get(); }
 
 private:
   // Note: Keep handle to avoid svace warning of "handle lost without dlclose()"

@@ -41,7 +41,7 @@ class ICodegen
 public:
   virtual ~ICodegen() = default;
 
-  virtual int codegen(const char *in, const char *out) = 0;
+  virtual int codegen(const char *in, const char *out) const = 0;
 };
 
 } // namespace odc
