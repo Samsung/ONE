@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "Builders.h"
+#include "ConvolutionCommon.h"
 #include "kernels/Utils.h"
 
 #include "PALConv2d.h"
@@ -26,55 +26,13 @@ namespace luci_interpreter
 namespace
 {
 
-int32_t compute_padding_h(const circle::Tensor *input, const circle::Tensor *filter,
-                          const circle::Conv2DOptions *options)
-{
-  const int32_t input_height = Tensor::dim(input, 1);
-  const int32_t filter_height = Tensor::dim(filter, 1);
-  const int32_t output_height =
-    kernels::computeOutputSize(luci_padding(options->padding()), input_height, filter_height,
-                               options->stride_h(), options->dilation_h_factor());
-
-  const auto padding_height = kernels::computePadding(
-    options->stride_h(), options->dilation_h_factor(), input_height, filter_height, output_height);
-  return padding_height;
-}
-
-int32_t compute_padding_w(const circle::Tensor *input, const circle::Tensor *filter,
-                          const circle::Conv2DOptions *options)
-{
-  const int32_t input_width = Tensor::dim(input, 2);
-  const int32_t filter_width = Tensor::dim(filter, 2);
-  const int32_t output_width =
-    kernels::computeOutputSize(luci_padding(options->padding()), input_width, filter_width,
-                               options->stride_w(), options->dilation_w_factor());
-
-  const auto padding_width = kernels::computePadding(
-    options->stride_w(), options->dilation_w_factor(), input_width, filter_width, output_width);
-
-  return padding_width;
-}
-
 #ifndef DIS_FLOAT
 
 void evalFloat(const circle::Tensor *input, const circle::Tensor *filter,
                const circle::Tensor *bias, const circle::Tensor *output,
                const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph)
 {
-  float activation_min{};
-  float activation_max{};
-  kernels::calculateActivationRange(luci_actfunc(options->fused_activation_function()),
-                                    &activation_min, &activation_max);
-
-  luci_interpreter_pal::ConvParams params{};
-  params.padding_values.height = compute_padding_h(input, filter, options);
-  params.padding_values.width = compute_padding_w(input, filter, options);
-  params.stride_height = options->stride_h();
-  params.stride_width = options->stride_w();
-  params.dilation_height_factor = options->dilation_h_factor();
-  params.dilation_width_factor = options->dilation_w_factor();
-  params.float_activation_min = activation_min;
-  params.float_activation_max = activation_max;
+  const auto params = createConv2DParams(input, filter, output, options);
 
   auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
@@ -105,35 +63,7 @@ void evalQuantized(const circle::Tensor *input, const circle::Tensor *filter,
                    const circle::Tensor *bias, const circle::Tensor *output,
                    const circle::Conv2DOptions *options, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_scale = static_cast<double>(Tensor::scale(input));
-  const auto filter_scale = static_cast<double>(Tensor::scale(filter));
-  const auto output_scale = static_cast<double>(Tensor::scale(output));
-
-  const double real_multiplier = input_scale * filter_scale / output_scale;
-  int32_t output_multiplier{};
-  int output_shift{};
-  kernels::quantizeMultiplier(real_multiplier, &output_multiplier, &output_shift);
-
-  int32_t activation_min{};
-  int32_t activation_max{};
-  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
-                                             output, &activation_min, &activation_max);
-
-  luci_interpreter_pal::ConvParams params{};
-  params.padding_values.height = compute_padding_h(input, filter, options);
-  params.padding_values.width = compute_padding_w(input, filter, options);
-  params.stride_height = options->stride_h();
-  params.stride_width = options->stride_w();
-  params.dilation_height_factor = options->dilation_h_factor();
-  params.dilation_width_factor = options->dilation_w_factor();
-  // The kernel expects input and filter zero points to be negated.
-  params.input_offset = -Tensor::zero_point(input);    // Note the '-'.
-  params.weights_offset = -Tensor::zero_point(filter); // Note the '-'.
-  params.output_offset = Tensor::zero_point(output);
-  params.output_multiplier = output_multiplier;
-  params.output_shift = output_shift;
-  params.quantized_activation_min = activation_min;
-  params.quantized_activation_max = activation_max;
+  const auto params = createConv2DParams(input, filter, output, options);
 
   auto *input_data = runtime_graph->getDataByTensor(input);
   auto *output_data = runtime_graph->getDataByTensor(output);
@@ -167,6 +97,28 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
   auto *raw_filter_data = runtime_graph->getConstDataByTensor(filter);
   auto *raw_bias_data = runtime_graph->getConstDataByTensor(bias);
 
+  const auto params = createConv2DParams(input, filter, output, options);
+
+  if (type == DataType::S8)
+  {
+    int32_t input_shape[kMaxSmallSize];
+    kernels::getTensorDims(input, runtime_graph, input_shape);
+
+    int32_t filter_shape[kMaxSmallSize];
+    kernels::getTensorDims(filter, runtime_graph, filter_shape);
+
+    int32_t output_shape[kMaxSmallSize];
+    kernels::getTensorDims(output, runtime_graph, output_shape);
+
+    luci_interpreter_pal::QuantizedConvPerChannel(
+      params, input_shape, kernels::getTensorData<int8_t>(raw_input_data), filter_shape,
+      kernels::getTensorData<int8_t>(raw_filter_data),
+      kernels::getTensorData<int32_t>(raw_bias_data), output_shape,
+      kernels::getTensorData<int8_t>(raw_output_data));
+
+    return;
+  }
+
   const int32_t batches = Tensor::dim(input, 0);
   const int32_t input_height = Tensor::dim(input, 1);
   const int32_t input_width = Tensor::dim(input, 2);
@@ -177,63 +129,18 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
   const int32_t output_height = Tensor::dim(output, 1);
   const int32_t output_width = Tensor::dim(output, 2);
 
-  const int32_t stride_height = options->stride_h();
-  const int32_t stride_width = options->stride_w();
-  const int32_t dilation_height_factor = options->dilation_h_factor();
-  const int32_t dilation_width_factor = options->dilation_w_factor();
+  const int32_t padding_h = params.padding_values.height;
+  const int32_t padding_w = params.padding_values.width;
+  const int32_t stride_height = params.stride_height;
+  const int32_t stride_width = params.stride_width;
+  const int32_t dilation_height_factor = params.dilation_height_factor;
+  const int32_t dilation_width_factor = params.dilation_width_factor;
 
-  int32_t activation_min{};
-  int32_t activation_max{};
-  kernels::calculateActivationRangeQuantized(luci_actfunc(options->fused_activation_function()),
-                                             output, &activation_min, &activation_max);
+  const int32_t activation_min = params.quantized_activation_min;
+  const int32_t activation_max = params.quantized_activation_max;
 
   const std::vector<double> effective_output_scale = kernels::getQuantizedConvolutionMultiplers(
     Tensor::scale(input), Tensor::scales(filter), Tensor::scale(output));
-
-  if (type == DataType::S8)
-  {
-    luci_interpreter_pal::ConvParams params;
-
-    params.padding_values.height = compute_padding_h(input, filter, options);
-    params.padding_values.width = compute_padding_w(input, filter, options);
-    params.stride_height = stride_height;
-    params.stride_width = stride_width;
-    params.dilation_height_factor = dilation_height_factor;
-    params.dilation_width_factor = dilation_width_factor;
-    // The kernel expects input and filter zero points to be negated.
-    params.input_offset = -Tensor::zero_point(input);    // Note the '-'.
-    params.weights_offset = -Tensor::zero_point(filter); // Note the '-'.
-    params.output_offset = Tensor::zero_point(output);
-    params.quantized_activation_min = activation_min;
-    params.quantized_activation_max = activation_max;
-
-    int32_t input_shape[kMaxSmallSize];
-    kernels::getTensorDims(input, runtime_graph, input_shape);
-
-    int32_t filter_shape[kMaxSmallSize];
-    kernels::getTensorDims(filter, runtime_graph, filter_shape);
-
-    int32_t output_shape[kMaxSmallSize];
-    kernels::getTensorDims(output, runtime_graph, output_shape);
-
-    size_t n = effective_output_scale.size();
-    params.per_channel_output_shift.resize(n);
-    params.per_channel_output_multiplier.resize(n);
-    for (size_t i = 0; i < n; ++i)
-    {
-      kernels::quantizeMultiplier(effective_output_scale[i],
-                                  &params.per_channel_output_multiplier[i],
-                                  &params.per_channel_output_shift[i]);
-    }
-
-    luci_interpreter_pal::QuantizedConvPerChannel(
-      params, input_shape, kernels::getTensorData<int8_t>(raw_input_data), filter_shape,
-      kernels::getTensorData<int8_t>(raw_filter_data),
-      kernels::getTensorData<int32_t>(raw_bias_data), output_shape,
-      kernels::getTensorData<int8_t>(raw_output_data));
-
-    return;
-  }
 
   // Type U8
 
@@ -259,10 +166,8 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
       {
         for (int32_t out_c = 0; out_c < output_depth; ++out_c)
         {
-          const int32_t in_y_origin =
-            out_y * stride_height - compute_padding_h(input, filter, options);
-          const int32_t in_x_origin =
-            out_x * stride_width - compute_padding_w(input, filter, options);
+          const int32_t in_y_origin = out_y * stride_height - padding_h;
+          const int32_t in_x_origin = out_x * stride_width - padding_w;
           int32_t acc = 0;
           for (int32_t filter_y = 0; filter_y < filter_height; ++filter_y)
           {
@@ -307,22 +212,12 @@ void evalQuantizedPerChannel(const circle::Tensor *input, const circle::Tensor *
 
 void configure_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto filter_index = cur_op->inputs()->operator[](1);
-  const auto bias_index = cur_op->inputs()->operator[](2);
-  const auto output_index = cur_op->outputs()->operator[](0);
+  kernels::DownsamplingConv2DKernel kernel(cur_op, runtime_graph);
 
-  assert(input_index != -1);
-  assert(filter_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  const auto filter = runtime_graph->getCircleTensorByIndex(filter_index);
-  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
-  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(filter != nullptr);
+  const auto input = kernel.input();
+  const auto filter = kernel.filter();
+  const auto bias = kernel.bias();
+  const auto output = kernel.output();
 
   auto filter_data = runtime_graph->getConstDataByTensor(filter);
 
@@ -386,23 +281,12 @@ void configure_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGr
 
 void execute_kernel_CircleConv2D(const circle::Operator *cur_op, BaseRuntimeGraph *runtime_graph)
 {
-  const auto input_index = cur_op->inputs()->operator[](0);
-  const auto weight_index = cur_op->inputs()->operator[](1);
-  const auto bias_index = cur_op->inputs()->operator[](2);
-  const auto output_index = cur_op->outputs()->operator[](0);
+  kernels::DownsamplingConv2DKernel kernel(cur_op, runtime_graph);
 
-  assert(input_index != -1);
-  assert(weight_index != -1);
-  assert(output_index != -1);
-
-  const auto input = runtime_graph->getCircleTensorByIndex(input_index);
-  const auto weights = runtime_graph->getCircleTensorByIndex(weight_index);
-  const auto bias = runtime_graph->getCircleTensorByIndex(bias_index);
-  const auto output = runtime_graph->getCircleTensorByIndex(output_index);
-
-  assert(input != nullptr);
-  assert(weights != nullptr);
-  assert(output != nullptr);
+  const auto input = kernel.input();
+  const auto weights = kernel.filter();
+  const auto bias = kernel.bias();
+  const auto output = kernel.output();
 
   const auto *options = cur_op->builtin_options_as_Conv2DOptions();
 
