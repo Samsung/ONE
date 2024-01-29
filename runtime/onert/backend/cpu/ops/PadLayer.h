@@ -41,17 +41,16 @@ public:
 public:
   template <typename T> void padImpl(const T *constant_value_data);
 
-  void configure(const IPortableTensor *input, IPortableTensor *output, const int32_t *padData,
-                 int32_t padRank, const void *constantValueData = nullptr);
+  void configure(const IPortableTensor *input, const IPortableTensor *pad,
+                 const IPortableTensor *value, IPortableTensor *output);
 
   void run() override;
 
 protected:
   const IPortableTensor *_input;
+  const IPortableTensor *_pad;
+  const IPortableTensor *_value;
   IPortableTensor *_output;
-
-  int32_t _padData[8];
-  int32_t _padRank;
   ConstDataPtr _constantValueData;
 };
 
