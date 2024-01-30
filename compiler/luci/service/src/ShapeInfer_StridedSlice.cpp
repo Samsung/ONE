@@ -124,7 +124,7 @@ inline int64_t StartForAxis(const StridedSliceParams &params, const loco::Tensor
   int64_t start = start_indices[axis];
 
   // begin_mask override
-  if (begin_mask & (1 << axis))
+  if (begin_mask & (1LL << axis))
   {
     if (strides[axis] > 0)
     {
@@ -180,7 +180,7 @@ inline int64_t StopForAxis(const StridedSliceParams &params, const loco::TensorS
   }
 
   // Begin with the specified index
-  const bool shrink_axis = shrink_axis_mask & (1 << axis);
+  const bool shrink_axis = shrink_axis_mask & (1LL << axis);
   int64_t stop = stop_indices[axis];
 
   // When shrinking an axis, the end position does not matter (and can be
@@ -193,7 +193,7 @@ inline int64_t StopForAxis(const StridedSliceParams &params, const loco::TensorS
   }
 
   // end_mask override
-  if (end_mask & (1 << axis))
+  if (end_mask & (1LL << axis))
   {
     if (strides[axis] > 0)
     {
@@ -249,8 +249,8 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   int64_t num_add_axis = 0;
   for (int64_t i = 0; i < begin_count; ++i)
   {
-    if (!((1 << i) & op_context->params.ellipsis_mask) &&
-        ((1 << i) & op_context->params.new_axis_mask))
+    if (!((1LL << i) & op_context->params.ellipsis_mask) &&
+        ((1LL << i) & op_context->params.new_axis_mask))
     {
       num_add_axis++;
     }
@@ -268,7 +268,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   int64_t ellipsis_start_idx = effective_dims, expanded_ellipsis = 0;
   for (int64_t i = 0; i < effective_dims;)
   {
-    if ((1 << i) & op_context->params.ellipsis_mask)
+    if ((1LL << i) & op_context->params.ellipsis_mask)
     {
       ellipsis_start_idx = i;
       int64_t ellipsis_end_idx =
@@ -279,14 +279,14 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
       // Set bit for effective_ellipsis_mask.
       for (; i < ellipsis_end_idx; ++i)
       {
-        effective_ellipsis_mask |= (1 << i);
+        effective_ellipsis_mask |= (1LL << i);
       }
       continue;
     }
 
-    if ((1 << (i - expanded_ellipsis)) & op_context->params.new_axis_mask)
+    if ((1LL << (i - expanded_ellipsis)) & op_context->params.new_axis_mask)
     {
-      effective_new_axis_mask |= (1 << i);
+      effective_new_axis_mask |= (1LL << i);
     }
     ++i;
   }
@@ -298,17 +298,17 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
 
   for (int64_t i = 0; i < effective_dims; ++i)
   {
-    if ((1 << i) & effective_ellipsis_mask)
+    if ((1LL << i) & effective_ellipsis_mask)
     {
       // If ellipsis_mask, set the begin_mask and end_mask at that index.
       added_ellipsis = std::max(int64_t(0), i - ellipsis_start_idx);
       assert(i < 16);
-      op_params.begin_mask |= (1 << i);
-      op_params.end_mask |= (1 << i);
+      op_params.begin_mask |= (1LL << i);
+      op_params.end_mask |= (1LL << i);
       op_params.strides[i] = 1;
       op_context->effective_input_shape.dim(i) = input_shape.dim(i - added_axises);
     }
-    else if ((1 << i) & effective_new_axis_mask)
+    else if ((1LL << i) & effective_new_axis_mask)
     {
       // If new_axis_mask is set, it is equivalent to adding a new dim of 1 to
       // input tensor. Store added shape to effective_input_shape.
@@ -324,8 +324,8 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
       op_params.stop_indices[i] = 0;
       op_params.strides[i] = 1;
       assert(i < 16);
-      op_params.begin_mask |= (1 << i);
-      op_params.end_mask |= (1 << i);
+      op_params.begin_mask |= (1LL << i);
+      op_params.end_mask |= (1LL << i);
       op_context->effective_input_shape.dim(i) = input_shape.dim(i - added_axises);
     }
     else
@@ -334,20 +334,20 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
       op_params.start_indices[i] = op_context->begin->at<S32>(orig_idx);
       op_params.stop_indices[i] = op_context->end->at<S32>(orig_idx);
       op_params.strides[i] = op_context->strides->at<S32>(orig_idx);
-      if (op_context->params.begin_mask & (1 << orig_idx))
+      if (op_context->params.begin_mask & (1LL << orig_idx))
       {
         assert(i < 16);
-        op_params.begin_mask |= (1 << i);
+        op_params.begin_mask |= (1LL << i);
       }
-      if (op_context->params.end_mask & (1 << orig_idx))
+      if (op_context->params.end_mask & (1LL << orig_idx))
       {
         assert(i < 16);
-        op_params.end_mask |= (1 << i);
+        op_params.end_mask |= (1LL << i);
       }
-      if (op_context->params.shrink_axis_mask & (1 << orig_idx))
+      if (op_context->params.shrink_axis_mask & (1LL << orig_idx))
       {
         assert(i < 16);
-        op_params.shrink_axis_mask |= (1 << i);
+        op_params.shrink_axis_mask |= (1LL << i);
       }
       op_context->effective_input_shape.dim(i) = input_shape.dim(i - added_axises);
     }
