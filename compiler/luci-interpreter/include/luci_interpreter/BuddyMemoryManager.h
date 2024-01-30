@@ -114,7 +114,7 @@ private:
     const int32_t l = lowerLog2(block->size + sizeof(Block));
 
     const int64_t address = ((uint8_t *)block - (uint8_t *)_start_block);
-    buddy = (Block *)((address ^ (1 << l)) + (uint8_t *)_start_block);
+    buddy = (Block *)((address ^ (1LL << l)) + (uint8_t *)_start_block);
 
     if (!buddy->is_free || buddy->size != block->size)
       return nullptr;
