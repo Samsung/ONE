@@ -19,7 +19,7 @@
 #include "execute/OMRuntimeKernel.h"
 #include "core/OMUtils.h"
 #include "execute/OMUtils.h"
-#include "core/OMShape.h"
+
 #include "core/OMDataType.h"
 #include "PALUnidirectionalSequenceLSTM.h"
 #include "PALUnidirectionalSequenceLSTMKernel.h"
