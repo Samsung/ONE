@@ -127,6 +127,11 @@ public:
 public:
   const ITrainableOperation &operation(OperationIndex index) const;
 
+private:
+  void assertValidTopologicalOrder(const std::vector<ir::OperationIndex> &order,
+                                   const std::string &order_type) const;
+  void assertValidBackwardTopologicalOrder(std::vector<ir::OperationIndex> order) const;
+
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
   std::vector<ir::OperationIndex> btopolSortOperations() const;
