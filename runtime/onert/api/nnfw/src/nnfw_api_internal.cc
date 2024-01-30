@@ -22,7 +22,7 @@
 #include "util/logging.h"
 #include "exec/Execution.h"
 #include "loader/Loaders.h"
-#include "loader/traininfo_loader.h"
+#include "loader/TrainInfoLoader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"

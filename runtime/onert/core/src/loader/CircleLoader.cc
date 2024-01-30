@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "loader/circle_loader.h"
+#include "CircleLoader.h"
 
-#include "base_loader.h"
+#include "BaseLoader.h"
 #include "circle_schema_generated.h"
 
 namespace onert

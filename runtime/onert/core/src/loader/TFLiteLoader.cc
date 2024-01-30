@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "loader/tflite_loader.h"
+#include "TFLiteLoader.h"
 
-#include "base_loader.h"
+#include "BaseLoader.h"
 #include "tflite_schema_generated.h"
 
 namespace onert

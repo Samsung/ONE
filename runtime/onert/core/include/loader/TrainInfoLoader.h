@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_TFLITE_LOADER_H__
-#define __ONERT_LOADER_TFLITE_LOADER_H__
+#ifndef __ONERT_LOADER_TRAININFO_LOADER_H__
+#define __ONERT_LOADER_TRAININFO_LOADER_H__
 
-#include "ILoader.h"
+#include "ir/train/TrainingInfo.h"
+#include "ir/Model.h"
 
 namespace onert
 {
-namespace loader
+namespace train
+{
+namespace traininfo_loader
 {
 
-class TFLiteLoader : public ILoader
-{
-public:
-  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
-};
+// TODO change this line to use inline variable after C++17
+extern const char *const TRAININFO_METADATA_NAME;
 
-} // namespace loader
+std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
+
+} // namespace traininfo_loader
+} // namespace train
 } // namespace onert
 
-#endif // __ONERT_LOADER_TFLITE_LOADER_H__
+#endif // __ONERT_LOADER_TRAININFO_LOADER_H__

@@ -17,7 +17,7 @@
 #ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
 #define __ONERT_LOADER_CIRCLE_LOADER_H__
 
-#include "ILoader.h"
+#include "loader/ILoader.h"
 
 namespace onert
 {

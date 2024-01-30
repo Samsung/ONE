@@ -16,9 +16,9 @@
 
 #include "loader/Loaders.h"
 
-#include "loader/circle_loader.h"
+#include "CircleLoader.h"
+#include "TFLiteLoader.h"
 #include "loader/ILoader.h"
-#include "loader/tflite_loader.h"
 
 #include <dlfcn.h>
 

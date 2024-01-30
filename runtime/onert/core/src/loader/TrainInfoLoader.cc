@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "loader/traininfo_loader.h"
+#include "loader/TrainInfoLoader.h"
 
 #include "circle_traininfo_generated.h"
 #include "flatbuffers/flatbuffers.h"

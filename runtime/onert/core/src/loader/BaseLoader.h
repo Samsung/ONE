@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __BASE_LOADER_BASE_LOADER_H__
-#define __BASE_LOADER_BASE_LOADER_H__
+#ifndef __ONERT_LOADER_BASE_LOADER_H__
+#define __ONERT_LOADER_BASE_LOADER_H__
 
 #include "ir/Graph.h"
 #include "ir/Shape.h"
