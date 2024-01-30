@@ -1,0 +1,46 @@
+# test for constant folding of Shape operation
+
+operand {
+  name: "ifm"
+  type: INT32
+  shape { dim: 4 }
+}
+operand {
+  name: "constant"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 3 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "shape"
+  type: INT32
+  shape { dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: INT32
+  shape { dim: 4 }
+}
+operation {
+  type: "Shape"
+  shape_options {
+    out_type: INT32
+  }
+  input: "constant"
+  output: "shape"
+}
+operation {
+  type: "Add"
+  input: "ifm"
+  input: "shape"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
