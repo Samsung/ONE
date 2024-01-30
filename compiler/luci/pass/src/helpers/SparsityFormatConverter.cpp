@@ -38,7 +38,9 @@ uint64_t GetFlattenedIndex(const std::vector<int> &indices, const std::vector<in
   int sub_elements = 1;
   for (int i = shape.size() - 1; i >= 0; i--)
   {
-    index += indices[i] * sub_elements;
+    assert(indices[i] >= 0);
+    assert(sub_elements >= 0);
+    index += static_cast<uint64_t>(indices[i]) * static_cast<uint64_t>(sub_elements);
     sub_elements *= shape[i];
   }
   return index;
