@@ -118,8 +118,11 @@ void TrainableExecutor::forwardImpl(bool training)
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
+      std::string log_name = std::to_string(code.op_ind.value()) + " : " + code.op->name();
       auto &tn_seq = code.tn_seq;
+      MEASURE_TIME_START(forward);
       tn_seq->forward(training);
+      MEASURE_TIME_END(forward, log_name);
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -167,8 +170,11 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
 #endif
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
+      std::string log_name = std::to_string(code.op_ind.value()) + " : " + code.op->name();
       auto &tn_seq = code.tn_seq;
+      MEASURE_TIME_START(backward);
       tn_seq->backward(training_step);
+      MEASURE_TIME_END(backward, log_name);
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
