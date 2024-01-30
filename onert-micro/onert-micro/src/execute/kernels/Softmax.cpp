@@ -18,7 +18,7 @@
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
 #include "core/OMUtils.h"
-#include "core/OMShape.h"
+
 #include "PALSoftmax.h"
 
 using namespace onert_micro;

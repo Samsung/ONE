@@ -18,7 +18,7 @@
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
 #include "core/OMUtils.h"
-#include "core/OMShape.h"
+
 #include "core/OMDataType.h"
 #include "PALAbs.h"
 
@@ -65,11 +65,11 @@ OMStatus onert_micro::execute::execute_kernel_CircleReshape(const OMExecuteArgs 
   assert(input_data != nullptr);
   assert(output_data != nullptr);
 
-  const core::OMShape shape(input);
+  const core::OMRuntimeShape shape(input);
 
   const size_t element_size =
     static_cast<uint32_t>(getOMDataTypeSize(core::onertMicroDatatype(input->type())));
-  const int32_t num_elements = shape.num_elements();
+  const int32_t num_elements = shape.flatSize();
   std::memcpy(output_data, input_data, num_elements * element_size);
 
   return status;

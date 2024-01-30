@@ -18,7 +18,6 @@
 #include "core/OMUtils.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMShape.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
@@ -52,14 +51,14 @@ OMStatus onert_micro::import::configure_kernel_CircleSoftmax(const OMConfigureAr
   if (status != Ok)
     return status;
 
-  OMShape input_shape(input);
-  OMShape output_shape(output);
+  OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
 
-  status = utils::checkCondition(input_shape.rank() == output_shape.rank());
+  status = utils::checkCondition(input_shape.dimensionsCount() == output_shape.dimensionsCount());
   if (status != Ok)
     return status;
 
-  status = utils::checkCondition(input_shape.rank() >= 1);
+  status = utils::checkCondition(input_shape.dimensionsCount() >= 1);
   if (status != Ok)
     return status;
 

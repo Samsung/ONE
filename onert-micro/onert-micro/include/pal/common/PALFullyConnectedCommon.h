@@ -19,7 +19,6 @@
 #define ONERT_MICRO_EXECUTE_PAL_FULLY_CONNECTED_COMMON_H
 
 #include "OMStatus.h"
-#include "core/OMShape.h"
 
 #include "Params.h"
 #include "PALUtils.h"

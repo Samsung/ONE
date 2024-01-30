@@ -19,7 +19,7 @@
 #include "execute/OMUtils.h"
 #include "execute/OMRuntimeKernel.h"
 #include "core/OMUtils.h"
-#include "core/OMShape.h"
+
 #include "PALMaxPool2D.h"
 
 #include "core/OMKernelData.h"

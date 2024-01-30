@@ -18,7 +18,6 @@
 #include "core/OMUtils.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMShape.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;

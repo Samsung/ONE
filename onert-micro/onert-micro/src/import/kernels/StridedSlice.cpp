@@ -16,8 +16,6 @@
 
 #include "import/OMKernelConfigureBuilder.h"
 #include "core/OMUtils.h"
-#include "execute/OMUtils.h"
-#include "core/OMShape.h"
 #include "core/OMKernelData.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"

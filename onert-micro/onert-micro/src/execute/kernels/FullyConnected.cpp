@@ -18,7 +18,6 @@
 #include "execute/OMUtils.h"
 #include "core/OMUtils.h"
 #include "core/OMKernelData.h"
-#include "core/OMShape.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
 

@@ -18,7 +18,7 @@
 #include "core/OMUtils.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMShape.h"
+
 #include "execute/OMUtils.h"
 #include "core/OMKernelData.h"
 
@@ -54,14 +54,14 @@ OMStatus onert_micro::import::configure_kernel_CircleMaxPool2D(const OMConfigure
   if (status != Ok)
     return status;
 
-  OMShape input_shape(input);
-  OMShape output_shape(output);
+  OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
 
-  status = utils::checkCondition(input_shape.rank() == output_shape.rank());
+  status = utils::checkCondition(input_shape.dimensionsCount() == output_shape.dimensionsCount());
   if (status != Ok)
     return status;
 
-  status = utils::checkCondition(input_shape.rank() == 4);
+  status = utils::checkCondition(input_shape.dimensionsCount() == 4);
 
   auto option = runtime_kernel.first_operator->builtin_options_as_Pool2DOptions();
 

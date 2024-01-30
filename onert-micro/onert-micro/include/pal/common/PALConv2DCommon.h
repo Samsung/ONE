@@ -22,7 +22,6 @@
 #include "PALUtils.h"
 
 #include "OMStatus.h"
-#include "core/OMShape.h"
 
 namespace onert_micro
 {

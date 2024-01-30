@@ -18,7 +18,7 @@
 #include "core/OMUtils.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMShape.h"
+
 #include "core/OMDataType.h"
 
 using namespace onert_micro;
@@ -45,12 +45,12 @@ OMStatus onert_micro::import::configure_kernel_CirclePack(const OMConfigureArgs 
 
   const auto *params = runtime_kernel.first_operator->builtin_options_as_PackOptions();
 
-  OMShape input_shape(t0);
+  OMRuntimeShape input_shape(t0);
   int axis = params->axis();
   if (axis < 0)
-    axis += input_shape.rank();
+    axis += input_shape.dimensionsCount();
 
-  if (axis < 0 or axis > input_shape.rank())
+  if (axis < 0 or axis > input_shape.dimensionsCount())
     return FailedCheckCondition;
 
   for (int i = 1; i < num_inputs; ++i)

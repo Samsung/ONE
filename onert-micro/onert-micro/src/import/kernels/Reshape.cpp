@@ -18,7 +18,6 @@
 #include "core/OMUtils.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMShape.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
@@ -56,8 +55,8 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
   if (status != Ok)
     return status;
 
-  OMShape input_shape(input);
-  OMShape output_shape(output);
+  OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
 
 #ifndef DIS_DYN_SHAPES
   auto is_dynamic =
@@ -65,9 +64,9 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
 
   if (is_dynamic)
   {
-    auto input_shape_size = input_shape.num_elements();
+    auto input_shape_size = input_shape.flatSize();
 
-    status = utils::checkCondition(output_shape.num_elements() == 1);
+    status = utils::checkCondition(output_shape.flatSize() == 1);
     if (status != Ok)
       return status;
 
@@ -80,7 +79,7 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
   }
   else
   {
-    status = utils::checkCondition(input_shape.num_elements() == output_shape.num_elements());
+    status = utils::checkCondition(input_shape.flatSize() == output_shape.flatSize());
     assert(status == Ok);
     if (status != Ok)
       return status;

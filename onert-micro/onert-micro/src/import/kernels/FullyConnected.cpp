@@ -17,7 +17,7 @@
 #include "import/OMKernelConfigureBuilder.h"
 #include "core/OMUtils.h"
 #include "execute/OMUtils.h"
-#include "core/OMShape.h"
+
 #include "core/OMKernelData.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
@@ -67,16 +67,16 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
     return UnsupportedType;
   }
 
-  core::OMShape weight_shape(weight);
-  core::OMShape bias_shape(bias);
-  core::OMShape input_shape(input);
-  core::OMShape output_shape(output);
+  core::OMRuntimeShape weight_shape(weight);
+  core::OMRuntimeShape bias_shape(bias);
+  core::OMRuntimeShape input_shape(input);
+  core::OMRuntimeShape output_shape(output);
 
-  status = utils::checkCondition(weight_shape.rank() == 2);
+  status = utils::checkCondition(weight_shape.dimensionsCount() == 2);
   if (status != Ok)
     return status;
 
-  if (input_shape.num_elements() == 1 and output_shape.num_elements() != 1)
+  if (input_shape.flatSize() == 1 and output_shape.flatSize() != 1)
   {
 #ifndef DIS_DYN_SHAPES
     int32_t dynamic_tensor_size =
@@ -88,8 +88,7 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
 #endif // DIS_DYN_SHAPES
   }
 
-  status =
-    utils::checkCondition(bias == nullptr or weight_shape.dim(0) == bias_shape.num_elements());
+  status = utils::checkCondition(bias == nullptr or weight_shape.dims(0) == bias_shape.flatSize());
 
   if (input->type() == circle::TensorType_FLOAT32)
     return status;
