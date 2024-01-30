@@ -18,7 +18,6 @@
 #include "odc/CodegenManager.h"
 #include "util/Utils.h"
 
-#include <fstream>
 #include <mutex>
 
 namespace onert
@@ -28,16 +27,18 @@ namespace odc
 
 bool CodegenManager::codegen(const char *target, CodegenPreference pref)
 {
-  // codegen function is thread-unsafe
-  static std::mutex lock;
-  std::lock_guard<std::mutex> guard(lock);
+  if (target == nullptr)
+    throw std::runtime_error("Target string is not set");
 
   if (_export_model_path.empty())
     throw std::runtime_error("Export model path is not set");
 
-  std::ifstream file(_model_path);
-  if (!file.good())
+  if (_model_path.empty())
     throw std::runtime_error("Model path does not exist");
+
+  // codegen function is thread-unsafe
+  static std::mutex lock;
+  std::lock_guard<std::mutex> guard(lock);
 
   auto &codegen_loader = CodegenLoader::instance();
   codegen_loader.loadLibrary(target);
