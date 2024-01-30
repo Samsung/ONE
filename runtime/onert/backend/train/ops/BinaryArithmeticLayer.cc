@@ -78,6 +78,7 @@ void BinaryArithmeticLayer::backward()
   assert(backprop_act != nullptr);
 
   nnfw::cker::train::BinaryArithmeticGrad(
+    getShape(_lhs), getBuffer<float>(_lhs), getShape(_rhs), getBuffer<float>(_rhs),
     getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_back_prop_lhs),
     getBuffer<float>(_back_prop_lhs), getShape(_back_prop_rhs), getBuffer<float>(_back_prop_rhs),
     static_cast<nnfw::cker::train::ArithmeticType>(_arithmetic_type));
