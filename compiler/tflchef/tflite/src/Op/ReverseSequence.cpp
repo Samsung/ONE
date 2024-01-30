@@ -31,10 +31,10 @@ void TFliteOpReverseSequence::filler(const tflite::Operator *op, TFliteImport *i
   fill_tensor_to_import(inputs[1], import);
 }
 
-tflchef::Operation *TFliteOpReverseSequence::build(const tflite::Operator *op, TFliteImport *,
-                                                   tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpReverseSequence::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("ReverseSequence");
 

@@ -24,10 +24,10 @@ void TFliteOpWhere::filler(const tflite::Operator *, TFliteImport *, tflchef::Mo
   // Nothing to do with fillers here
 }
 
-tflchef::Operation *TFliteOpWhere::build(const tflite::Operator *, TFliteImport *,
-                                         tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpWhere::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
   operation->set_type("Where");
 
   return operation;

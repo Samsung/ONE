@@ -27,10 +27,10 @@ void TFliteOpBatchMatMul::filler(const tflite::Operator *op, TFliteImport *impor
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpBatchMatMul::build(const tflite::Operator *op, TFliteImport *import,
-                                               tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpBatchMatMul::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("BatchMatMul");
 

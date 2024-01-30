@@ -26,6 +26,13 @@
 namespace tflchef
 {
 
+struct RecipeChefContext
+{
+  const tflite::Operator *tflop = nullptr;
+  tflchef::Operation *chefop = nullptr;
+  // add more if needed
+};
+
 /**
  * @brief Interface for each operators to build tflchef
  */
@@ -34,8 +41,7 @@ class TFliteOpChef
 public:
   virtual void filler(const tflite::Operator *op, TFliteImport *import,
                       tflchef::ModelRecipe *model_recipe) const = 0;
-  virtual ::tflchef::Operation *build(const tflite::Operator *op, TFliteImport *import,
-                                      tflchef::ModelRecipe *model_recipe) const = 0;
+  virtual ::tflchef::Operation *build(RecipeChefContext *ctx) const = 0;
   virtual ~TFliteOpChef() {}
 };
 

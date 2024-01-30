@@ -30,8 +30,7 @@ class TFliteOpPad : public TFliteOpChef
 public:
   void filler(const tflite::Operator *op, TFliteImport *import,
               tflchef::ModelRecipe *model_recipe) const override;
-  tflchef::Operation *build(const tflite::Operator *op, TFliteImport *import,
-                            tflchef::ModelRecipe *model_recipe) const override;
+  tflchef::Operation *build(RecipeChefContext *ctx) const override;
 };
 
 } // namespace tflchef

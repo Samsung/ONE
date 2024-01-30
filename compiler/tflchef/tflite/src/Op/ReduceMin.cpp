@@ -34,13 +34,13 @@ void TFliteOpReduceMin::filler(const tflite::Operator *op, TFliteImport *import,
   import->set_tensor_filler(inputs[1], vec);
 }
 
-tflchef::Operation *TFliteOpReduceMin::build(const tflite::Operator *op, TFliteImport *import,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpReduceMin::build(RecipeChefContext *ctx) const
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_ReducerOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("ReduceMin");
 

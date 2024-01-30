@@ -27,11 +27,12 @@ void TFliteOpL2Normalize::filler(const tflite::Operator *op, TFliteImport *impor
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpL2Normalize::build(const tflite::Operator *op, TFliteImport *import,
-                                               tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpL2Normalize::build(RecipeChefContext *ctx) const
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_L2NormOptions();
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("L2Normalize");
 
