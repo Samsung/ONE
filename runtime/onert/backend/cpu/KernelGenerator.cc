@@ -794,25 +794,21 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
   const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
   const auto output_index{node.getOutputs().at(0)};
-  assert(_ctx.at(pad_index).data());
 
   auto input = _tensor_reg->getPortableTensor(input_index);
+  auto pad = _tensor_reg->getPortableTensor(pad_index);
   auto output = _tensor_reg->getPortableTensor(output_index);
-  auto pad_rank = _ctx.at(pad_index).shape().dim(0);
-  auto pad_base = reinterpret_cast<const int32_t *>(_ctx.at(pad_index).data()->base());
 
   auto fn = std::make_unique<ops::PadLayer>();
 
-  bool isPadV2 = node.getInputs().size() == 3 ? true : false;
-  const void *value = nullptr;
-
-  if (isPadV2)
+  IPortableTensor *value = nullptr;
+  if (node.getInputs().size() == 3) // isPadV2
   {
     const auto value_index{node.getInputs().at(ir::operation::Pad::Input::VALUE)};
-    value = reinterpret_cast<const void *>(_ctx.at(value_index).data()->base());
+    value = _tensor_reg->getPortableTensor(value_index);
   }
 
-  fn->configure(input, output, pad_base, pad_rank, value);
+  fn->configure(input, pad, value, output);
   _return_fn = std::move(fn);
 }
 

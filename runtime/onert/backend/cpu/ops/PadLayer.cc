@@ -27,30 +27,38 @@ namespace cpu
 namespace ops
 {
 
-PadLayer::PadLayer()
-  : _input(nullptr), _output(nullptr), _padData(), _padRank(), _constantValueData()
+PadLayer::PadLayer() : _input(nullptr), _pad(nullptr), _output(nullptr), _constantValueData()
 {
   // DO NOTHING
 }
 
 template <typename T> void PadLayer::padImpl(const T *constant_value_data)
 {
-  nnfw::cker::Pad<T>(_padData, _padRank, getShape(_input), getBuffer<T>(_input), getShape(_output),
+  assert(_pad->data_type() == onert::ir::DataType::INT32);
+  assert(_pad->buffer());
+  const auto pad_data = reinterpret_cast<const int32_t *>(_pad->buffer());
+  auto pad_rank = _pad->getShape().dim(0);
+  nnfw::cker::Pad<T>(pad_data, pad_rank, getShape(_input), getBuffer<T>(_input), getShape(_output),
                      getBuffer<T>(_output), constant_value_data);
 }
 
-void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                         const int32_t *padData, int32_t padRank, const void *constantValueData)
+void PadLayer::configure(const IPortableTensor *input, const IPortableTensor *pad,
+                         const IPortableTensor *value, IPortableTensor *output)
 {
   _input = input;
+  _pad = pad;
+  _value = value;
   _output = output;
-  memcpy(_padData, padData, sizeof(_padData));
-  _padRank = padRank;
-  _constantValueData.v = constantValueData;
 }
 
 void PadLayer::run()
 {
+  if (_value != nullptr) // isPadV2
+  {
+    assert(_value->buffer());
+    _constantValueData.v = reinterpret_cast<const void *>(_value->buffer());
+  }
+
   switch (_input->data_type())
   {
     case OperandType::FLOAT32:

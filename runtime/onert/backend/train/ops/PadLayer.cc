@@ -34,16 +34,20 @@ PadLayer::PadLayer() : cpu::ops::PadLayer(), _back_prop_input{nullptr}, _back_pr
 
 template <typename T> void PadLayer::depad()
 {
-  nnfw::cker::train::Depad<T>(_padData, _padRank, getShape(_back_prop_output),
+  assert(_pad->data_type() == onert::ir::DataType::INT32);
+  assert(_pad->buffer());
+  const auto pad_data = reinterpret_cast<const int32_t *>(_pad->buffer());
+  auto pad_rank = _pad->getShape().dim(0);
+  nnfw::cker::train::Depad<T>(pad_data, pad_rank, getShape(_back_prop_output),
                               getBuffer<T>(_back_prop_output), getShape(_back_prop_input),
                               getBuffer<T>(_back_prop_input));
 }
 
-void PadLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                         const int32_t *padData, int32_t padRank, const void *constantValueData,
+void PadLayer::configure(const IPortableTensor *input, const IPortableTensor *pad,
+                         const IPortableTensor *value, IPortableTensor *output,
                          IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
 {
-  cpu::ops::PadLayer::configure(input, output, padData, padRank, constantValueData);
+  cpu::ops::PadLayer::configure(input, pad, value, output);
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }
