@@ -60,8 +60,8 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
   OMShape output_shape(output);
 
 #ifndef DIS_DYN_SHAPES
-  auto is_dynamic = runtime_context.getCircleReader().isConstTensor(
-                      runtime_kernel.inputs_index[shapeTensorIdx]) == false;
+  auto is_dynamic =
+    runtime_context.isConstTensor(runtime_kernel.inputs_index[shapeTensorIdx]) == false;
 
   if (is_dynamic)
   {
