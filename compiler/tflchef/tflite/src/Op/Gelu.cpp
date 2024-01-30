@@ -27,12 +27,12 @@ void TFliteOpGelu::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpGelu::build(const tflite::Operator *op, TFliteImport *import,
-                                        tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpGelu::build(RecipeChefContext *ctx) const
 {
-  auto op_params = op->builtin_options_as_GeluOptions();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
-  auto operation = model_recipe->add_operation();
+  auto op_params = op->builtin_options_as_GeluOptions();
 
   operation->set_type("Gelu");
 

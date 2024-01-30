@@ -34,13 +34,13 @@ void TFliteOpDepthwiseConv2D::filler(const tflite::Operator *op, TFliteImport *i
     import->set_tensor_filler(inputs.at(2)); // bias
 }
 
-tflchef::Operation *TFliteOpDepthwiseConv2D::build(const tflite::Operator *op, TFliteImport *import,
-                                                   tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpDepthwiseConv2D::build(RecipeChefContext *ctx) const
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_DepthwiseConv2DOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("DepthwiseConv2D");
 

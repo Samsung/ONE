@@ -27,10 +27,10 @@ void TFliteOpLessEqual::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpLessEqual::build(const tflite::Operator *, TFliteImport *,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpLessEqual::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("LessEqual");
 

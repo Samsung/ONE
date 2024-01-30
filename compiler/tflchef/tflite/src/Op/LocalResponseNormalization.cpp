@@ -27,14 +27,13 @@ void TFliteOpLocalResponseNormalization::filler(const tflite::Operator *op, TFli
   // Nothing to do with filler
 }
 
-tflchef::Operation *
-TFliteOpLocalResponseNormalization::build(const tflite::Operator *op, TFliteImport *import,
-                                          tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpLocalResponseNormalization::build(RecipeChefContext *ctx) const
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_LocalResponseNormalizationOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("LocalResponseNormalization");
 

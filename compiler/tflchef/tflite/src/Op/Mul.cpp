@@ -30,10 +30,10 @@ void TFliteOpMul::filler(const tflite::Operator *op, TFliteImport *import,
   fill_two_inputs(op, import);
 }
 
-tflchef::Operation *TFliteOpMul::build(const tflite::Operator *op, TFliteImport *import,
-                                       tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpMul::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("Mul");
 

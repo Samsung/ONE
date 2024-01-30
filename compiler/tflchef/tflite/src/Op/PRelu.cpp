@@ -31,10 +31,10 @@ void TFliteOpPRelu::filler(const tflite::Operator *op, TFliteImport *import,
   import->set_tensor_filler(inputs.at(1)); // alpha
 }
 
-tflchef::Operation *TFliteOpPRelu::build(const tflite::Operator *op, TFliteImport *import,
-                                         tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpPRelu::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
   operation->set_type("PRelu");
 
   // PReluOptions are empty

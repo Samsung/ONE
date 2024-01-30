@@ -27,10 +27,10 @@ void TFliteOpZerosLike::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with fillers here
 }
 
-tflchef::Operation *TFliteOpZerosLike::build(const tflite::Operator *op, TFliteImport *,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpZerosLike::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
   operation->set_type("ZerosLike");
 
   auto op_options = operation->mutable_zeros_like_options();

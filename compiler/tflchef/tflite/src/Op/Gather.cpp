@@ -39,13 +39,13 @@ void TFliteOpGather::filler(const tflite::Operator *op, TFliteImport *import,
   }
 }
 
-tflchef::Operation *TFliteOpGather::build(const tflite::Operator *op, TFliteImport *import,
-                                          tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpGather::build(RecipeChefContext *ctx) const
 {
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
+
   auto op_params = op->builtin_options_as_GatherOptions();
   assert(op_params != nullptr);
-
-  auto operation = model_recipe->add_operation();
 
   operation->set_type("Gather");
 

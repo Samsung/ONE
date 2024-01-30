@@ -81,6 +81,8 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
   auto buffers = tflite_import.buffers();
   auto operators = tflite_import.operators();
 
+  RecipeChefContext ctx;
+
   // operand fillers for adding all operators
   for (uint32_t i = 0; i < operators->size(); ++i)
   {
@@ -292,7 +294,10 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
 
     if (const auto *graph_builder = TFliteOpRegistry::get().lookup(builtincode))
     {
-      auto operation = graph_builder->build(op, &tflite_import, model_recipe.get());
+      tflchef::Operation *operation = model_recipe->add_operation();
+      ctx.tflop = op;
+      ctx.chefop = operation;
+      graph_builder->build(&ctx);
 
       // common for all operators: inputs, outputs
       set_inputs(&tflite_import, operation, op);

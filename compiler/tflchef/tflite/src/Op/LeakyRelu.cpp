@@ -27,12 +27,12 @@ void TFliteOpLeakyRelu::filler(const tflite::Operator *op, TFliteImport *import,
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpLeakyRelu::build(const tflite::Operator *op, TFliteImport *import,
-                                             tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpLeakyRelu::build(RecipeChefContext *ctx) const
 {
-  auto op_params = op->builtin_options_as_LeakyReluOptions();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
-  auto operation = model_recipe->add_operation();
+  auto op_params = op->builtin_options_as_LeakyReluOptions();
 
   operation->set_type("LeakyRelu");
 

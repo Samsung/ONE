@@ -26,10 +26,10 @@ void TFliteOpCeil::filler(const tflite::Operator *, TFliteImport *, tflchef::Mod
   // Nothing to do with filler
 }
 
-tflchef::Operation *TFliteOpCeil::build(const tflite::Operator *, TFliteImport *,
-                                        tflchef::ModelRecipe *model_recipe) const
+tflchef::Operation *TFliteOpCeil::build(RecipeChefContext *ctx) const
 {
-  auto operation = model_recipe->add_operation();
+  tflchef::Operation *operation = ctx->chefop;
+  const tflite::Operator *op = ctx->tflop;
 
   operation->set_type("Ceil");
 
