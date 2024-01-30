@@ -58,3 +58,75 @@ TEST(CKer_Operation, AddGrad)
       EXPECT_FLOAT_EQ(rhs_backward[i], expected_rhs_backward[i]);
   }
 }
+
+TEST(CKer_Operation, SubGrad)
+{
+  {
+    // Shape: {2, 3}
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> expected_lhs_backward = incoming_backward;
+    std::vector<float> expected_rhs_backward = incoming_backward;
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(6);
+
+    nnfw::cker::train::BinaryArithmeticGrad(nnfw::cker::Shape{2, 3}, incoming_backward.data(),
+                                            nnfw::cker::Shape{2, 3}, lhs_backward.data(),
+                                            nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+                                            nnfw::cker::train::ArithmeticType::kSub);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], -expected_rhs_backward[i]);
+  }
+  {
+    // Shape: {4, 3}
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13};
+    std::vector<float> expected_lhs_backward = incoming_backward;
+    std::vector<float> expected_rhs_backward = incoming_backward;
+    std::vector<float> lhs_backward(12);
+    std::vector<float> rhs_backward(12);
+
+    nnfw::cker::train::BinaryArithmeticGrad(nnfw::cker::Shape{4, 3}, incoming_backward.data(),
+                                            nnfw::cker::Shape{4, 3}, lhs_backward.data(),
+                                            nnfw::cker::Shape{4, 3}, rhs_backward.data(),
+                                            nnfw::cker::train::ArithmeticType::kSub);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], -expected_rhs_backward[i]);
+  }
+  {
+    // Shape: {2, 2, 2}
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7, -8, 9};
+    std::vector<float> expected_lhs_backward = incoming_backward;
+    std::vector<float> expected_rhs_backward = incoming_backward;
+    std::vector<float> lhs_backward(8);
+    std::vector<float> rhs_backward(8);
+
+    nnfw::cker::train::BinaryArithmeticGrad(nnfw::cker::Shape{2, 2, 2}, incoming_backward.data(),
+                                            nnfw::cker::Shape{2, 2, 2}, lhs_backward.data(),
+                                            nnfw::cker::Shape{2, 2, 2}, rhs_backward.data(),
+                                            nnfw::cker::train::ArithmeticType::kSub);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], -expected_rhs_backward[i]);
+  }
+}
+
+TEST(CKer_Operation, DistinctShape)
+{
+  {
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(8);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 2, 2}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
+}

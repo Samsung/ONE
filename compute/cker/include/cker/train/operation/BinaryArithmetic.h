@@ -41,6 +41,10 @@ void BinaryArithmeticGrad(const Shape &incoming_shape, const T *incoming_data,
                           const Shape &rhs_grad_shape, T *rhs_grad_data,
                           ArithmeticType arithmetic_type)
 {
+  if (lhs_grad_shape != rhs_grad_shape || lhs_grad_shape != incoming_shape ||
+      rhs_grad_shape != incoming_shape)
+    throw std::runtime_error{"Shape of LHS, RHS, and incoming must match"};
+
   switch (arithmetic_type)
   {
     case ArithmeticType::kAdd:
@@ -51,6 +55,15 @@ void BinaryArithmeticGrad(const Shape &incoming_shape, const T *incoming_data,
     break;
 
     case ArithmeticType::kSub:
+    {
+      BroadcastTo(incoming_shape, const_cast<T *>(incoming_data), lhs_grad_shape, lhs_grad_data);
+
+      auto const in_map = MapAsVector(incoming_data, incoming_shape);
+      auto rhs_grad_map = MapAsVector(rhs_grad_data, rhs_grad_shape);
+      rhs_grad_map = -in_map;
+    }
+    break;
+
     case ArithmeticType::kMul:
     case ArithmeticType::kDiv:
     default:
