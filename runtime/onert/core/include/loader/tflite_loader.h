@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __TFLITE_TFLITE_LOADER_H__
-#define __TFLITE_TFLITE_LOADER_H__
+#ifndef __ONERT_LOADER_TFLITE_LOADER_H__
+#define __ONERT_LOADER_TFLITE_LOADER_H__
 
-#include "ir/Graph.h"
-
-#include <memory>
+#include "ILoader.h"
 
 namespace onert
 {
-namespace tflite_loader
+namespace loader
 {
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename);
+class TFLiteLoader : public ILoader
+{
+public:
+  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
+};
 
-} // namespace tflite_loader
+} // namespace loader
 } // namespace onert
 
-#endif // __TFLITE_TFLITE_LOADER_H__
+#endif // __ONERT_LOADER_TFLITE_LOADER_H__

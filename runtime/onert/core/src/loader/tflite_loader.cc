@@ -154,14 +154,18 @@ void TFLiteLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 }
 
 } // namespace
+} // namespace tflite_loader
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
+namespace loader
+{
+
+std::unique_ptr<ir::Model> TFLiteLoader::loadFromFile(const std::string &file_path)
 {
   auto model = std::make_unique<ir::Model>();
-  TFLiteLoader loader(model);
-  loader.loadFromFile(filename);
+  onert::tflite_loader::TFLiteLoader loader(model);
+  loader.loadFromFile(file_path);
   return model;
 }
 
-} // namespace tflite_loader
+} // namespace loader
 } // namespace onert

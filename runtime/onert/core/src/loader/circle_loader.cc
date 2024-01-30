@@ -218,22 +218,26 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 }
 
 } // namespace
+} // namespace circle_loader
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
+namespace loader
+{
+
+std::unique_ptr<ir::Model> CircleLoader::loadFromFile(const std::string &file_path)
 {
   auto model = std::make_unique<ir::Model>();
-  CircleLoader loader(model);
-  loader.loadFromFile(filename);
+  onert::circle_loader::CircleLoader loader(model);
+  loader.loadFromFile(file_path);
   return model;
 }
 
-std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size)
+std::unique_ptr<ir::Model> CircleLoader::loadFromBuffer(uint8_t *buffer, size_t size)
 {
   auto model = std::make_unique<ir::Model>();
-  CircleLoader loader(model);
+  onert::circle_loader::CircleLoader loader(model);
   loader.loadFromBuffer(buffer, size);
   return model;
 }
 
-} // namespace circle_loader
+} // namespace loader
 } // namespace onert

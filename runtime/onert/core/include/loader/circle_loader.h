@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_CIRCLE_LOADER_H__
-#define __CIRCLE_CIRCLE_LOADER_H__
+#ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
+#define __ONERT_LOADER_CIRCLE_LOADER_H__
 
-#include "ir/Graph.h"
-
-#include <memory>
+#include "ILoader.h"
 
 namespace onert
 {
-namespace circle_loader
+namespace loader
 {
-std::unique_ptr<ir::Model> loadModel(const std::string &filename);
-std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size);
-} // namespace circle_loader
+
+class CircleLoader : public ILoader
+{
+public:
+  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
+
+  std::unique_ptr<ir::Model> loadFromBuffer(uint8_t *buffer, size_t size);
+};
+
+} // namespace loader
 } // namespace onert
 
-#endif // __CIRCLE_CIRCLE_LOADER_H__
+#endif // __ONERT_LOADER_CIRCLE_LOADER_H__

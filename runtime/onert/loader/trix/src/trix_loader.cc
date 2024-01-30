@@ -16,7 +16,7 @@
 
 #include "ir/Graph.h"
 #include "ir/operation/Bulk.h"
-#include "loader/custom_loader.h"
+#include "loader/ILoader.h"
 
 #include <libnpuhost.h>
 #include <npubinfmt.h>
@@ -74,7 +74,7 @@ void TrixMetaReader::init(const char *path)
   }
 }
 
-class TrixLoader : public onert::custom_loader::ICustomLoader
+class TrixLoader : public onert::loader::ILoader
 {
 public:
   /**
@@ -93,7 +93,7 @@ private:
    * @brief Load actually
    * @throw runtime_error when tvn path is wrong or tvn is invalid
    */
-  void loadModel();
+  void loadModel(std::unique_ptr<ir::Model> &model);
   std::unique_ptr<ir::Graph> loadSubgraph();
   void loadOperands(ir::Graph &subg);
   ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
@@ -110,8 +110,6 @@ private:
   /** original IO shapes */
   std::vector<ir::Shape> _origin_input_shapes;
   std::vector<ir::Shape> _origin_output_shapes;
-  /** Reference on loadable subgraphs */
-  std::unique_ptr<ir::Model> _model;
   TrixMetaReader _meta;
 };
 
@@ -239,23 +237,23 @@ std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
   return subg;
 }
 
-void TrixLoader::loadModel()
+void TrixLoader::loadModel(std::unique_ptr<ir::Model> &model)
 {
   // one subgraph only
   auto subg = loadSubgraph();
-  _model->push(ir::SubgraphIndex(0), std::move(subg));
+  model->push(ir::SubgraphIndex(0), std::move(subg));
 }
 
 std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path)
 {
-  _model = std::make_unique<ir::Model>();
+  auto model = std::make_unique<ir::Model>();
   // model path will be used to set Bulk param
   _model_path = file_path;
   // metadata is initialized from model path since it is loadFromFile
   _meta.init(_model_path.c_str());
-  loadModel();
+  loadModel(model);
 
-  return std::move(_model);
+  return model;
 }
 
 } // namespace trix_loader
@@ -263,10 +261,7 @@ std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path
 
 extern "C" {
 
-onert::custom_loader::ICustomLoader *onert_loader_create()
-{
-  return new onert::trix_loader::TrixLoader;
-}
+onert::loader::ILoader *onert_loader_create() { return new onert::trix_loader::TrixLoader; }
 
-void onert_loader_destroy(onert::custom_loader::ICustomLoader *loader) { delete loader; }
+void onert_loader_destroy(onert::loader::ILoader *loader) { delete loader; }
 }

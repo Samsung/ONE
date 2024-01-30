@@ -14,14 +14,36 @@
  * limitations under the License.
  */
 
-#include "loader/custom_loader.h"
+#include "loader/Loaders.h"
+
+#include "loader/circle_loader.h"
+#include "loader/ILoader.h"
+#include "loader/tflite_loader.h"
 
 #include <dlfcn.h>
 
 namespace onert
 {
-namespace custom_loader
+namespace loader
 {
+
+std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename)
+{
+  CircleLoader loader;
+  return loader.loadFromFile(filename);
+}
+
+std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size)
+{
+  CircleLoader loader;
+  return loader.loadFromBuffer(buffer, size);
+}
+
+std::unique_ptr<ir::Model> loadTFLiteModel(const std::string &filename)
+{
+  TFLiteLoader loader;
+  return loader.loadFromFile(filename);
+}
 
 std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::string &type)
 {
@@ -34,13 +56,13 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
     throw std::runtime_error("Failed to open " + type + " loader");
 
   // Get custom loader create function
-  using create_func_t = ICustomLoader *(*)();
+  using create_func_t = ILoader *(*)();
   auto create_fn = reinterpret_cast<create_func_t>(dlsym(handle, "onert_loader_create"));
   if (!create_fn)
     throw std::runtime_error("Failed to find loader create function");
 
   // Get custom loader destroy function
-  using destroy_func_t = void (*)(ICustomLoader *);
+  using destroy_func_t = void (*)(ILoader *);
   auto destroy_fn = reinterpret_cast<destroy_func_t>(dlsym(handle, "onert_loader_destroy"));
   if (!destroy_fn)
     throw std::runtime_error("Failed to find loader destroy function");
@@ -70,5 +92,5 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
   throw std::runtime_error("Failed to load model " + filename);
 }
 
-} // namespace custom_loader
+} // namespace loader
 } // namespace onert

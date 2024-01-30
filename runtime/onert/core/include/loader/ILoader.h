@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_CUSTOM_LOADER_H__
-#define __ONERT_LOADER_CUSTOM_LOADER_H__
+#ifndef __ONERT_LOADER_ILOADER_H__
+#define __ONERT_LOADER_ILOADER_H__
 
 #include "ir/Graph.h"
 
@@ -23,13 +23,13 @@
 
 namespace onert
 {
-namespace custom_loader
+namespace loader
 {
 
-class ICustomLoader
+class ILoader
 {
 public:
-  virtual ~ICustomLoader() = default;
+  virtual ~ILoader() = default;
 
 public:
   /**
@@ -40,16 +40,7 @@ public:
   virtual std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) = 0;
 };
 
-/**
- * @brief     Create custom loader and load model from file
- * @param[in] filename  File path to load model from
- * @param[in] type      Type of custom loader to create
- * @return    Loaded model.
- *
- * @note  Throw exception if failed to load model
- */
-std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::string &type);
-} // namespace custom_loader
+} // namespace loader
 } // namespace onert
 
-#endif // __ONERT_LOADER_CUSTOM_LOADER_H__
+#endif // __ONERT_LOADER_ILOADER_H__
