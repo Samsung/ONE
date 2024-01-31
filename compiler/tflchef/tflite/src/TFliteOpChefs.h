@@ -131,6 +131,7 @@
 #include "Op/include/Unique.h"
 #include "Op/include/Unpack.h"
 #include "Op/include/Where.h"
+#include "Op/include/While.h"
 #include "Op/include/ZerosLike.h"
 
 #endif // __TFLITE_OP_CHEFS_H__
