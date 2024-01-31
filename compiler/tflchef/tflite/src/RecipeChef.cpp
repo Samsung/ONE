@@ -74,259 +74,276 @@ std::unique_ptr<ModelRecipe> generate_recipe(const tflite::Model *model)
 
   TFliteImport tflite_import(model);
 
-  assert(tflite_import.num_subgraph() == 1);
-  tflite_import.select_sub_graph(0);
-
-  auto tensors = tflite_import.tensors();
-  auto buffers = tflite_import.buffers();
-  auto operators = tflite_import.operators();
+  auto const num_subgraph = tflite_import.num_subgraph();
 
   RecipeChefContext ctx;
-
-  // operand fillers for adding all operators
-  for (uint32_t i = 0; i < operators->size(); ++i)
+  for (uint32_t n = 0; n < num_subgraph; ++n)
   {
-    const auto *op = operators->Get(i);
-    tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
+    tflite_import.select_sub_graph(n);
 
-    if (const auto *graph_builder = TFliteOpRegistry::get().lookup(builtincode))
+    auto tensors = tflite_import.tensors();
+    auto buffers = tflite_import.buffers();
+    auto operators = tflite_import.operators();
+
+    tflchef::Graph *graph = nullptr;
+    if (n != 0)
+      graph = model_recipe->add_graph();
+
+    // operand fillers for adding all operators
+    for (uint32_t i = 0; i < operators->size(); ++i)
     {
-      graph_builder->filler(op, &tflite_import, model_recipe.get());
-    }
-    else
-    {
-      std::string opcodename = tflite_import.opcode_name(op);
-      throw std::runtime_error{"Not supported: " + opcodename};
-    }
-  }
+      const auto *op = operators->Get(i);
+      tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
 
-  // add all operands(tensors)
-  for (uint32_t i = 0; i < tensors->size(); ++i)
-  {
-    auto tensor = tensors->Get(i);
-
-    // check buffer
-    if (tensor->buffer() >= buffers->size())
-      throw std::runtime_error{"file load failed"};
-
-    ::tflchef::Operand *operand = model_recipe->add_operand();
-
-    operand->set_name(mio::tflite::tensor_name(tensor));
-    operand->set_type(as_tflchef_type(tensor->type()));
-    operand->set_is_variable(tensor->is_variable());
-
-    if (tensor->shape())
-    {
-      std::vector<int32_t> dims = as_index_vector(tensor->shape());
-      ::tflchef::TensorShape *shape = operand->mutable_shape();
-      for (auto dim : dims)
+      if (const auto *graph_builder = TFliteOpRegistry::get().lookup(builtincode))
       {
-        shape->add_dim(dim);
+        graph_builder->filler(op, &tflite_import, model_recipe.get());
+      }
+      else
+      {
+        std::string opcodename = tflite_import.opcode_name(op);
+        throw std::runtime_error{"Not supported: " + opcodename};
       }
     }
 
-    // filler for weights, bias and so on
-    std::vector<int32_t> expvalues;
-    std::vector<float> expfvalues;
-    if (tflite_import.get_tensor_filler(i))
+    // add all operands(tensors)
+    for (uint32_t i = 0; i < tensors->size(); ++i)
     {
-      tflchef::TensorFiller *filler = operand->mutable_filler();
-      // Note: it is OK to use random weights for functionality validation
-      filler->set_tag("gaussian");
-      filler->add_arg("0.0"); // average
-      filler->add_arg("0.1"); // standard deviation
-    }
-    else if (tflite_import.get_tensor_filler(i, expvalues))
-    {
-      tflchef::TensorFiller *filler = operand->mutable_filler();
-      filler->set_tag("explicit");
-      for (auto value : expvalues)
-      {
-        std::ostringstream ss;
-        ss << value;
-        filler->add_arg(ss.str());
-      }
-    }
-    else if (tflite_import.get_tensor_filler(i, expfvalues))
-    {
-      tflchef::TensorFiller *filler = operand->mutable_filler();
-      filler->set_tag("explicit");
-      for (auto value : expfvalues)
-      {
-        std::ostringstream ss;
-        ss << value;
-        filler->add_arg(ss.str());
-      }
-    }
+      auto tensor = tensors->Get(i);
 
-    auto quant = tensor->quantization();
-    if (quant != nullptr)
-    {
-      // Note: Calling 'operand->mutable_quant()' will create empty 'quant' node
-      // in the recipe file. We want this only when valid parameter exist.
-      if (quant->min() != nullptr && quant->min()->size() > 0)
-      {
-        tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
-        for (uint32_t idx = 0; idx < quant->min()->size(); ++idx)
-          chef_quant->add_min(quant->min()->Get(idx));
-      }
-      if (quant->max() != nullptr && quant->max()->size() > 0)
-      {
-        tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
-        for (uint32_t idx = 0; idx < quant->max()->size(); idx++)
-          chef_quant->add_max(quant->max()->Get(idx));
-      }
-      if (quant->scale() != nullptr && quant->scale()->size() > 0)
-      {
-        tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
-        for (uint32_t idx = 0; idx < quant->scale()->size(); ++idx)
-          chef_quant->add_scale(quant->scale()->Get(idx));
-      }
-      if (quant->zero_point() != nullptr && quant->zero_point()->size() > 0)
-      {
-        tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
-        for (uint32_t idx = 0; idx < quant->zero_point()->size(); ++idx)
-          chef_quant->add_zero_point(quant->zero_point()->Get(idx));
-      }
-      tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
-      chef_quant->set_quantized_dimension(quant->quantized_dimension());
-    }
+      // check buffer
+      if (tensor->buffer() >= buffers->size())
+        throw std::runtime_error{"file load failed"};
 
-    auto sparsity = tensor->sparsity();
-    if (sparsity != nullptr)
-    {
-      tflchef::TensorSparsity *chef_sparsity = operand->mutable_sparsity();
-      // traversal_order
-      auto chef_traversal_order = chef_sparsity->mutable_traversal_order();
-      for (const auto &to : *(sparsity->traversal_order()))
+      ::tflchef::Operand *operand;
+      if (graph != nullptr)
+        operand = graph->add_operand();
+      else
+        operand = model_recipe->add_operand();
+      operand->set_name(mio::tflite::tensor_name(tensor));
+      operand->set_type(as_tflchef_type(tensor->type()));
+      operand->set_is_variable(tensor->is_variable());
+
+      if (tensor->shape())
       {
-        chef_traversal_order->add_dim(to);
-      }
-      // block_map
-      auto chef_block_map = chef_sparsity->mutable_block_map();
-      for (const auto &bm : *(sparsity->block_map()))
-      {
-        chef_block_map->add_dim(bm);
-      }
-      // dim_metadata
-      for (const auto &dm : *(sparsity->dim_metadata()))
-      {
-        auto chef_dm = chef_sparsity->add_dim_metadata();
-        // format
-        chef_dm->set_format(as_tflchef_sparse_dim_type(dm->format()));
-        // dense_size
-        chef_dm->set_dense_size(dm->dense_size());
-        // array_segments
-        auto chef_array_segments = chef_dm->mutable_array_segments();
-        switch (dm->array_segments_type())
+        std::vector<int32_t> dims = as_index_vector(tensor->shape());
+        ::tflchef::TensorShape *shape = operand->mutable_shape();
+        for (auto dim : dims)
         {
-          case tflite::SparseIndexVector_NONE:
-            // DO NOTHING
-            break;
-          case tflite::SparseIndexVector_Int32Vector:
-            for (const auto &as : *(dm->array_segments_as_Int32Vector()->values()))
-            {
-              chef_array_segments->add_dim(as);
-            }
-            break;
-          case tflite::SparseIndexVector_Uint16Vector:
-            for (const auto &as : *(dm->array_segments_as_Uint16Vector()->values()))
-            {
-              chef_array_segments->add_dim(as);
-            }
-            break;
-          case tflite::SparseIndexVector_Uint8Vector:
-            for (const auto &as : *(dm->array_segments_as_Uint8Vector()->values()))
-            {
-              chef_array_segments->add_dim(as);
-            }
-            break;
-          default:
-            throw std::runtime_error("unsupported sparse index vector type");
-        }
-        // array_indices
-        auto chef_array_indices = chef_dm->mutable_array_indices();
-        switch (dm->array_indices_type())
-        {
-          case tflite::SparseIndexVector_NONE:
-            // DO NOTHING
-            break;
-          case tflite::SparseIndexVector_Int32Vector:
-            for (const auto &as : *(dm->array_indices_as_Int32Vector()->values()))
-            {
-              chef_array_indices->add_dim(as);
-            }
-            break;
-          case tflite::SparseIndexVector_Uint16Vector:
-            for (const auto &as : *(dm->array_indices_as_Uint16Vector()->values()))
-            {
-              chef_array_indices->add_dim(as);
-            }
-            break;
-          case tflite::SparseIndexVector_Uint8Vector:
-            for (const auto &as : *(dm->array_indices_as_Uint8Vector()->values()))
-            {
-              chef_array_indices->add_dim(as);
-            }
-            break;
-          default:
-            throw std::runtime_error("unsupported sparse index vector type");
+          shape->add_dim(dim);
         }
       }
-    }
 
-    auto shape_signature = tensor->shape_signature();
-    if (shape_signature != nullptr)
-    {
-      tflchef::ShapeSignature *chef_shape_signature = operand->mutable_shape_signature();
-      for (uint32_t j = 0; j < shape_signature->size(); ++j)
+      // filler for weights, bias and so on
+      std::vector<int32_t> expvalues;
+      std::vector<float> expfvalues;
+      if (tflite_import.get_tensor_filler(i))
       {
-        chef_shape_signature->add_dim(shape_signature->Get(j));
+        tflchef::TensorFiller *filler = operand->mutable_filler();
+        // Note: it is OK to use random weights for functionality validation
+        filler->set_tag("gaussian");
+        filler->add_arg("0.0"); // average
+        filler->add_arg("0.1"); // standard deviation
+      }
+      else if (tflite_import.get_tensor_filler(i, expvalues))
+      {
+        tflchef::TensorFiller *filler = operand->mutable_filler();
+        filler->set_tag("explicit");
+        for (auto value : expvalues)
+        {
+          std::ostringstream ss;
+          ss << value;
+          filler->add_arg(ss.str());
+        }
+      }
+      else if (tflite_import.get_tensor_filler(i, expfvalues))
+      {
+        tflchef::TensorFiller *filler = operand->mutable_filler();
+        filler->set_tag("explicit");
+        for (auto value : expfvalues)
+        {
+          std::ostringstream ss;
+          ss << value;
+          filler->add_arg(ss.str());
+        }
+      }
+
+      auto quant = tensor->quantization();
+      if (quant != nullptr)
+      {
+        // Note: Calling 'operand->mutable_quant()' will create empty 'quant' node
+        // in the recipe file. We want this only when valid parameter exist.
+        if (quant->min() != nullptr && quant->min()->size() > 0)
+        {
+          tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
+          for (uint32_t idx = 0; idx < quant->min()->size(); ++idx)
+            chef_quant->add_min(quant->min()->Get(idx));
+        }
+        if (quant->max() != nullptr && quant->max()->size() > 0)
+        {
+          tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
+          for (uint32_t idx = 0; idx < quant->max()->size(); idx++)
+            chef_quant->add_max(quant->max()->Get(idx));
+        }
+        if (quant->scale() != nullptr && quant->scale()->size() > 0)
+        {
+          tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
+          for (uint32_t idx = 0; idx < quant->scale()->size(); ++idx)
+            chef_quant->add_scale(quant->scale()->Get(idx));
+        }
+        if (quant->zero_point() != nullptr && quant->zero_point()->size() > 0)
+        {
+          tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
+          for (uint32_t idx = 0; idx < quant->zero_point()->size(); ++idx)
+            chef_quant->add_zero_point(quant->zero_point()->Get(idx));
+        }
+        tflchef::TensorQuantization *chef_quant = operand->mutable_quant();
+        chef_quant->set_quantized_dimension(quant->quantized_dimension());
+      }
+
+      auto sparsity = tensor->sparsity();
+      if (sparsity != nullptr)
+      {
+        tflchef::TensorSparsity *chef_sparsity = operand->mutable_sparsity();
+        // traversal_order
+        auto chef_traversal_order = chef_sparsity->mutable_traversal_order();
+        for (const auto &to : *(sparsity->traversal_order()))
+        {
+          chef_traversal_order->add_dim(to);
+        }
+        // block_map
+        auto chef_block_map = chef_sparsity->mutable_block_map();
+        for (const auto &bm : *(sparsity->block_map()))
+        {
+          chef_block_map->add_dim(bm);
+        }
+        // dim_metadata
+        for (const auto &dm : *(sparsity->dim_metadata()))
+        {
+          auto chef_dm = chef_sparsity->add_dim_metadata();
+          // format
+          chef_dm->set_format(as_tflchef_sparse_dim_type(dm->format()));
+          // dense_size
+          chef_dm->set_dense_size(dm->dense_size());
+          // array_segments
+          auto chef_array_segments = chef_dm->mutable_array_segments();
+          switch (dm->array_segments_type())
+          {
+            case tflite::SparseIndexVector_NONE:
+              // DO NOTHING
+              break;
+            case tflite::SparseIndexVector_Int32Vector:
+              for (const auto &as : *(dm->array_segments_as_Int32Vector()->values()))
+              {
+                chef_array_segments->add_dim(as);
+              }
+              break;
+            case tflite::SparseIndexVector_Uint16Vector:
+              for (const auto &as : *(dm->array_segments_as_Uint16Vector()->values()))
+              {
+                chef_array_segments->add_dim(as);
+              }
+              break;
+            case tflite::SparseIndexVector_Uint8Vector:
+              for (const auto &as : *(dm->array_segments_as_Uint8Vector()->values()))
+              {
+                chef_array_segments->add_dim(as);
+              }
+              break;
+            default:
+              throw std::runtime_error("unsupported sparse index vector type");
+          }
+          // array_indices
+          auto chef_array_indices = chef_dm->mutable_array_indices();
+          switch (dm->array_indices_type())
+          {
+            case tflite::SparseIndexVector_NONE:
+              // DO NOTHING
+              break;
+            case tflite::SparseIndexVector_Int32Vector:
+              for (const auto &as : *(dm->array_indices_as_Int32Vector()->values()))
+              {
+                chef_array_indices->add_dim(as);
+              }
+              break;
+            case tflite::SparseIndexVector_Uint16Vector:
+              for (const auto &as : *(dm->array_indices_as_Uint16Vector()->values()))
+              {
+                chef_array_indices->add_dim(as);
+              }
+              break;
+            case tflite::SparseIndexVector_Uint8Vector:
+              for (const auto &as : *(dm->array_indices_as_Uint8Vector()->values()))
+              {
+                chef_array_indices->add_dim(as);
+              }
+              break;
+            default:
+              throw std::runtime_error("unsupported sparse index vector type");
+          }
+        }
+      }
+
+      auto shape_signature = tensor->shape_signature();
+      if (shape_signature != nullptr)
+      {
+        tflchef::ShapeSignature *chef_shape_signature = operand->mutable_shape_signature();
+        for (uint32_t j = 0; j < shape_signature->size(); ++j)
+        {
+          chef_shape_signature->add_dim(shape_signature->Get(j));
+        }
       }
     }
-  }
 
-  // add all operators
-  for (uint32_t i = 0; i < operators->size(); ++i)
-  {
-    const auto *op = operators->Get(i);
-    tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
-
-    if (const auto *graph_builder = TFliteOpRegistry::get().lookup(builtincode))
+    // add all operators
+    for (uint32_t i = 0; i < operators->size(); ++i)
     {
-      tflchef::Operation *operation = model_recipe->add_operation();
-      ctx.tflop = op;
-      ctx.chefop = operation;
-      graph_builder->build(&ctx);
+      const auto *op = operators->Get(i);
+      tflite::BuiltinOperator builtincode = tflite_import.builtin_code(op);
 
-      // common for all operators: inputs, outputs
-      set_inputs(&tflite_import, operation, op);
-      set_outputs(&tflite_import, operation, op);
+      if (const auto *graph_builder = TFliteOpRegistry::get().lookup(builtincode))
+      {
+        tflchef::Operation *operation =
+          graph ? graph->add_operation() : model_recipe->add_operation();
+        ctx.tflop = op;
+        ctx.chefop = operation;
+        graph_builder->build(&ctx);
+
+        // common for all operators: inputs, outputs
+        set_inputs(&tflite_import, operation, op);
+        set_outputs(&tflite_import, operation, op);
+      }
+      else
+      {
+        std::string opcodename = tflite_import.opcode_name(op);
+        throw std::runtime_error{"Not supported: " + opcodename};
+      }
     }
-    else
+
+    // network inputs/outputs
+    const std::vector<int32_t> &inputs = tflite_import.inputs();
+    const std::vector<int32_t> &outputs = tflite_import.outputs();
+
+    for (const auto input : inputs)
     {
-      std::string opcodename = tflite_import.opcode_name(op);
-      throw std::runtime_error{"Not supported: " + opcodename};
+      auto tensor = tensors->Get(input);
+      std::string name = mio::tflite::tensor_name(tensor);
+
+      if (graph != nullptr)
+        graph->add_input(name);
+      else
+        model_recipe->add_input(name);
     }
-  }
+    for (const auto output : outputs)
+    {
+      auto tensor = tensors->Get(output);
+      std::string name = mio::tflite::tensor_name(tensor);
 
-  // network inputs/outputs
-  const std::vector<int32_t> &inputs = tflite_import.inputs();
-  const std::vector<int32_t> &outputs = tflite_import.outputs();
-
-  for (const auto input : inputs)
-  {
-    auto tensor = tensors->Get(input);
-    std::string name = mio::tflite::tensor_name(tensor);
-
-    model_recipe->add_input(name);
-  }
-  for (const auto output : outputs)
-  {
-    auto tensor = tensors->Get(output);
-    std::string name = mio::tflite::tensor_name(tensor);
-
-    model_recipe->add_output(name);
+      if (graph != nullptr)
+        graph->add_output(name);
+      else
+        model_recipe->add_output(name);
+    }
   }
 
   return std::move(model_recipe);
