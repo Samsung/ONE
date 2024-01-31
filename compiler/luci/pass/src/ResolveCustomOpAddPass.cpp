@@ -25,11 +25,37 @@
 namespace
 {
 
+/// @brief Returns the number of Custom("BroadcastTo") among node's inputs
+int32_t num_of_broadcast_to(const luci::CircleNode *node)
+{
+  int32_t bt_cnt = 0;
+  for (uint32_t idx = 0; idx < node->arity(); idx++)
+  {
+    auto input = loco::must_cast<const luci::CircleNode *>(node->arg(idx));
+    switch (input->opcode())
+    {
+      case luci::CircleOpcode::CIRCLECUSTOMOUT:
+      {
+        auto inputOut = loco::must_cast<const luci::CircleCustomOut *>(input);
+        auto custom = loco::must_cast<luci::CircleCustom *>(inputOut->input());
+        if (custom->custom_code() == "BroadcastTo")
+          ++bt_cnt;
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  return bt_cnt;
+}
+
 /// @brief Returns the index of BroadcastTo node among cop's inputs.
 // NOTE This function assumes there is only one BroadcastTo node among its inputs.
 int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
 {
-  int32_t bc_idx = -1;
+  if (num_of_broadcast_to(cop) != 1)
+    return -1;
+
   for (uint32_t idx = 0; idx < cop->numInputs(); idx++)
   {
     auto input = dynamic_cast<const luci::CircleCustomOut *>(cop->inputs(idx));
@@ -37,18 +63,11 @@ int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
     {
       auto broadcastTo = loco::must_cast<luci::CircleCustom *>(input->input());
       if (broadcastTo->custom_code() == "BroadcastTo")
-      {
-        // check if there is only one BroadcastTo node
-        if (bc_idx != -1)
-        {
-          return -1;
-        }
-        bc_idx = static_cast<int32_t>(idx);
-      }
+        return idx;
     }
   }
 
-  return bc_idx;
+  return -1;
 }
 
 /** BEFORE
