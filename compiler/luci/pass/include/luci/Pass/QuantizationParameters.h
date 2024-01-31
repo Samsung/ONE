@@ -30,6 +30,12 @@ enum QuantizationGranularity
   ChannelWise = 1,
 };
 
+enum struct QuantizationAlgorithm
+{
+  Common = 0,
+  MinimumMSE = 1,
+};
+
 struct LayerInfo
 {
   std::string name;
