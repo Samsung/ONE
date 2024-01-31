@@ -30,6 +30,7 @@ optional arguments:
   --length [N [N ...]]  Data number for items described in split (default: "1000, 100")
   -m Model, --model Model
                         Model name to use generated data (default: mnist)
+                        Supported models: mnist, mobilenetv2
 
 ## Example
 ### Install required packages

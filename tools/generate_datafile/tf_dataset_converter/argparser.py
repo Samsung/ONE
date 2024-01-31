@@ -5,7 +5,8 @@ import argparse
 
 def _create_parser():
     parser = argparse.ArgumentParser(
-        description='Convert a dataset of tensorflow to onert format')
+        description='Convert a dataset of tensorflow to onert format',
+        formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument(
         '-s', '--show-datasets', action='store_true', help='show dataset list')
     parser.add_argument(
@@ -43,14 +44,16 @@ def _create_parser():
         default=[1000, 100],
         metavar='N',
         help='Data number for items described in split (default: "1000 100")')
+    models = ['mnist', 'mobilenetv2']
     parser.add_argument(
         '-m',
         '--model',
         type=str,
         default='mnist',
-        choices=['mnist', 'mobilenetv2'],
+        choices=models,
         metavar='Model',
-        help='Model name to use generated data (default: mnist)')
+        help=('Model name to use generated data (default: mnist)\n'
+              'Supported models: ' + ', '.join(models)))
 
     return parser
 
