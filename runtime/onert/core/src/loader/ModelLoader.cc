@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#include "loader/Loaders.h"
+#include "loader/ModelLoader.h"
 
-#include "CircleLoader.h"
-#include "TFLiteLoader.h"
 #include "loader/ILoader.h"
 
 #include <dlfcn.h>
@@ -26,24 +24,6 @@ namespace onert
 {
 namespace loader
 {
-
-std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename)
-{
-  CircleLoader loader;
-  return loader.loadFromFile(filename);
-}
-
-std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size)
-{
-  CircleLoader loader;
-  return loader.loadFromBuffer(buffer, size);
-}
-
-std::unique_ptr<ir::Model> loadTFLiteModel(const std::string &filename)
-{
-  TFLiteLoader loader;
-  return loader.loadFromFile(filename);
-}
 
 std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::string &type)
 {

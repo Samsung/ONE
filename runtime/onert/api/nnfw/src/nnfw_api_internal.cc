@@ -21,7 +21,9 @@
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
-#include "loader/Loaders.h"
+#include "loader/CircleLoader.h"
+#include "loader/ModelLoader.h"
+#include "loader/TFLiteLoader.h"
 #include "loader/TrainInfoLoader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
@@ -193,9 +195,15 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   try
   {
     if (model_type == "tflite")
-      return onert::loader::loadTFLiteModel(filename.c_str());
+    {
+      onert::loader::TFLiteLoader loader;
+      return loader.loadFromFile(filename);
+    }
     if (model_type == "circle")
-      return onert::loader::loadCircleModel(filename.c_str());
+    {
+      onert::loader::CircleLoader loader;
+      return loader.loadFromFile(filename);
+    }
 
     return onert::loader::loadModel(filename, model_type);
   }
@@ -288,7 +296,8 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   try
   {
-    auto model = onert::loader::loadCircleModel(buffer, size);
+    onert::loader::CircleLoader loader;
+    auto model = loader.loadFromBuffer(buffer, size);
     // TODO: Update _model_path if necessary
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());

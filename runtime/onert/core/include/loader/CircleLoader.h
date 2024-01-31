@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_ILOADER_H__
-#define __ONERT_LOADER_ILOADER_H__
+#ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
+#define __ONERT_LOADER_CIRCLE_LOADER_H__
 
-#include "ir/Model.h"
-
-#include <memory>
+#include "ILoader.h"
 
 namespace onert
 {
 namespace loader
 {
 
-class ILoader
+class CircleLoader : public ILoader
 {
 public:
-  virtual ~ILoader() = default;
+  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
 
-public:
-  /**
-   * @brief     Load model from file
-   * @param[in] file_path File path to load model from
-   * @return    Loaded model
-   */
-  virtual std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) = 0;
+  std::unique_ptr<ir::Model> loadFromBuffer(uint8_t *buffer, size_t size);
 };
 
 } // namespace loader
 } // namespace onert
 
-#endif // __ONERT_LOADER_ILOADER_H__
+#endif // __ONERT_LOADER_CIRCLE_LOADER_H__

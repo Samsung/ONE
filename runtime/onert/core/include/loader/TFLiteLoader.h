@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
-#define __ONERT_LOADER_CIRCLE_LOADER_H__
+#ifndef __ONERT_LOADER_TFLITE_LOADER_H__
+#define __ONERT_LOADER_TFLITE_LOADER_H__
 
-#include "loader/ILoader.h"
+#include "ILoader.h"
 
 namespace onert
 {
 namespace loader
 {
 
-class CircleLoader : public ILoader
+class TFLiteLoader : public ILoader
 {
 public:
   std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
-
-  std::unique_ptr<ir::Model> loadFromBuffer(uint8_t *buffer, size_t size);
 };
 
 } // namespace loader
 } // namespace onert
 
-#endif // __ONERT_LOADER_CIRCLE_LOADER_H__
+#endif // __ONERT_LOADER_TFLITE_LOADER_H__

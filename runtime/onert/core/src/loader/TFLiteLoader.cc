@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "TFLiteLoader.h"
+#include "loader/TFLiteLoader.h"
 
 #include "BaseLoader.h"
 #include "tflite_schema_generated.h"
