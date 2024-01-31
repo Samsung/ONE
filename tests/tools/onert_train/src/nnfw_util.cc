@@ -50,7 +50,7 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-std::string toString(NNFW_TRAIN_OPTIMIZER opt)
+std::string to_string(NNFW_TRAIN_OPTIMIZER opt)
 {
   static const std::unordered_map<NNFW_TRAIN_OPTIMIZER, std::string> name_map{
     {NNFW_TRAIN_OPTIMIZER_UNDEFINED, "undefined"},
@@ -60,7 +60,7 @@ std::string toString(NNFW_TRAIN_OPTIMIZER opt)
   return name_map.at(opt);
 }
 
-std::string toString(NNFW_TRAIN_LOSS loss)
+std::string to_string(NNFW_TRAIN_LOSS loss)
 {
   static const std::unordered_map<NNFW_TRAIN_LOSS, std::string> name_map{
     {NNFW_TRAIN_LOSS_UNDEFINED, "undefined"},
@@ -70,7 +70,7 @@ std::string toString(NNFW_TRAIN_LOSS loss)
   return name_map.at(loss);
 }
 
-std::string toString(NNFW_TRAIN_LOSS_REDUCTION loss_rdt)
+std::string to_string(NNFW_TRAIN_LOSS_REDUCTION loss_rdt)
 {
   static const std::unordered_map<NNFW_TRAIN_LOSS_REDUCTION, std::string> name_map{
     {NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED, "undefined"},
@@ -81,19 +81,19 @@ std::string toString(NNFW_TRAIN_LOSS_REDUCTION loss_rdt)
 
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_OPTIMIZER &opt)
 {
-  os << toString(opt);
+  os << to_string(opt);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS &loss)
 {
-  os << toString(loss);
+  os << to_string(loss);
   return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const NNFW_TRAIN_LOSS_REDUCTION &loss_reduction)
 {
-  os << toString(loss_reduction);
+  os << to_string(loss_reduction);
   return os;
 }
 
