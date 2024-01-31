@@ -29,6 +29,7 @@ class CONSTANT:
         'fold_dwconv',
         'fold_fully_connected',
         'fold_gather',
+        'fold_shape',
         'fold_sparse_to_dense',
 
         # Operator fusion
@@ -98,6 +99,7 @@ class CONSTANT:
         ('fold_dwconv', 'fold Depthwise Convolution op with constant inputs'),
         ('fold_fully_connected', 'fold FullyConnected op with constant inputs'),
         ('fold_gather', 'fold Gather op'),
+        ('fold_shape', 'fold Shape op'),
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
         ('forward_transpose_op', 'Forward Transpose op'),
