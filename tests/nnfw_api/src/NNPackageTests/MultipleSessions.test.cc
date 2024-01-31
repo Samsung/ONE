@@ -15,7 +15,7 @@
  */
 
 #include "fixtures.h"
-#include "one_op_tests/WhileTestModel.h"
+#include "GenModelTests/one_op_tests/WhileTestModel.h"
 
 TEST_F(ValidationTestTwoSessions, neg_two_sessions_create)
 {
