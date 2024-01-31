@@ -17,6 +17,7 @@
 #include "Less.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -24,7 +25,12 @@ namespace tflchef
 void TFliteOpLess::filler(const tflite::Operator *op, TFliteImport *import,
                           tflchef::ModelRecipe *model_recipe) const
 {
-  // Nothing to do with filler
+  const auto &inputs = *op->inputs();
+
+  for (int input : inputs)
+  {
+    fill_tensor_to_import(input, import);
+  }
 }
 
 tflchef::Operation *TFliteOpLess::build(RecipeChefContext *ctx) const
