@@ -10,35 +10,54 @@
 
 ## TFLITE RECIPE
 
+Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
 Add(BroadcastTo_000 PASS resolve_former_customop)
-Add(Net_Preactivation_BN_000 PASS fuse_preactivation_batchnorm)
+Add(DepthwiseConv2D_003 PASS)
+Add(FullyConnected_007 PASS replace_non_const_fc_with_batch_matmul)
+Add(FullyConnected_008 PASS replace_non_const_fc_with_batch_matmul)
+Add(HardSwish_001 PASS decompose_hardswish)
+Add(MatMul_000 PASS resolve_customop_matmul)
+Add(MaxPoolWithArgmax_000 PASS resolve_customop_max_pool_with_argmax)
+Add(MaxPoolWithArgmax_001 PASS resolve_customop_max_pool_with_argmax)
+Add(MaxPoolWithArgmax_002 PASS resolve_customop_max_pool_with_argmax)
 Add(Net_BroadcastTo_AddV2_000 PASS resolve_customop_add)
 Add(Net_BroadcastTo_AddV2_001 PASS resolve_customop_add)
 Add(Net_Conv_Add_Mul_000 PASS fuse_batchnorm_with_conv)
 Add(Net_Conv_Add_Mul_001 PASS fuse_batchnorm_with_conv)
 Add(Net_Conv_Add_Mul_002 PASS fuse_batchnorm_with_conv)
 Add(Net_Conv_FakeQuant_000 PASS remove_fakequant)
-Add(Net_Conv_QuantDequant_000 PASS remove_quantdequant)
 Add(Net_Conv_Min_Max_000 PASS transform_min_max_to_relu6)
 Add(Net_Conv_Min_Relu_000 PASS transform_min_relu_to_relu6)
 Add(Net_Conv_Mul_000 PASS fuse_mul_with_conv)
 Add(Net_Conv_Mul_001 PASS fuse_mul_with_conv)
 Add(Net_Conv_Mul_002 PASS fuse_mul_with_conv)
 Add(Net_Conv_Mul_003 PASS fuse_mul_with_conv)
-Add(Net_Mul_Div_000 PASS fuse_mul_with_div)
 Add(Net_Conv_PReluGraph_000 PASS fuse_prelu)
+Add(Net_Conv_QuantDequant_000 PASS remove_quantdequant)
 Add(Net_Conv_Relu6_000 PASS fuse_activation_function)
 Add(Net_Duplicate_Weights_000 PASS remove_duplicate_const)
 Add(Net_DwConv_BN_000 PASS fuse_batchnorm_with_dwconv)
 Add(Net_DwConv_BN_001 PASS fuse_batchnorm_with_dwconv)
-Add(Net_FullyConnected_Add_000 PASS fold_fully_connected)
-Add(Net_Horizontal_FullyConnected_Add_000 PASS fuse_horizontal_fc_layers)
 Add(Net_FC_Gelu_FC_000 PASS replace_with_fc_gelu_fc)
+Add(Net_FullyConnected_Add_000 PASS fold_fully_connected)
+Add(Net_Gelu_000 PASS fuse_gelu)
+Add(Net_Gelu_001 PASS fuse_gelu)
+Add(Net_Horizontal_FullyConnected_Add_000 PASS fuse_horizontal_fc_layers)
+Add(Net_InstanceNorm_001 PASS fuse_instnorm)
+Add(Net_InstanceNorm_003 PASS fuse_instnorm)
+Add(Net_InstanceNorm_004 PASS fuse_instnorm)
+Add(Net_InstanceNorm_005 PASS fuse_instnorm)
+Add(Net_InstanceNorm_006 PASS fuse_instnorm)
+Add(Net_InstanceNorm_007 PASS fuse_instnorm)
+Add(Net_Maximum_Minimum_000 PASS transform_min_max_to_relu6)
+Add(Net_Mul_Div_000 PASS fuse_mul_with_div)
 Add(Net_Mul_Add_000 PASS remove_unnecessary_add)
 Add(Net_Mul_Add_001 PASS remove_unnecessary_add)
 Add(Net_Mul_Add_002 PASS remove_unnecessary_add)
 Add(Net_Mul_Add_003 PASS remove_unnecessary_add)
+Add(Net_Preactivation_BN_000 PASS fuse_preactivation_batchnorm)
 Add(Net_Reshape_Reshape_000 PASS remove_redundant_reshape)
+Add(Net_Shape_Add_000 PASS fold_shape)
 Add(Net_Squeeze_Squeeze_000 PASS substitute_squeeze_to_reshape)
 Add(Net_TConv_Add_000 PASS fuse_add_with_tconv)
 Add(Net_TConv_Add_001 PASS fuse_add_with_tconv)
@@ -54,29 +73,10 @@ Add(Net_TConv_Slice_001 PASS fuse_slice_with_tconv)
 Add(Net_TConv_Slice_002 PASS fuse_slice_with_tconv)
 Add(Net_TConv_Slice_003 PASS fuse_slice_with_tconv)
 Add(Net_Trans_Reshape_Trans_000 PASS remove_unnecessary_transpose)
-Add(Net_InstanceNorm_001 PASS fuse_instnorm)
-Add(Net_InstanceNorm_003 PASS fuse_instnorm)
-Add(Net_InstanceNorm_004 PASS fuse_instnorm)
-Add(Net_InstanceNorm_005 PASS fuse_instnorm)
-Add(Net_InstanceNorm_006 PASS fuse_instnorm)
-Add(Net_InstanceNorm_007 PASS fuse_instnorm)
-Add(Net_Maximum_Minimum_000 PASS transform_min_max_to_relu6)
-Add(BatchMatMulV2_000 PASS resolve_customop_batchmatmul)
-Add(MatMul_000 PASS resolve_customop_matmul)
-Add(DepthwiseConv2D_003 PASS)
 Add(PadV2_001 PASS substitute_padv2_to_pad)
-Add(StridedSlice_003 PASS substitute_strided_slice_to_reshape)
-Add(MaxPoolWithArgmax_000 PASS resolve_customop_max_pool_with_argmax)
-Add(MaxPoolWithArgmax_001 PASS resolve_customop_max_pool_with_argmax)
-Add(MaxPoolWithArgmax_002 PASS resolve_customop_max_pool_with_argmax)
-Add(FullyConnected_007 PASS replace_non_const_fc_with_batch_matmul)
-Add(FullyConnected_008 PASS replace_non_const_fc_with_batch_matmul)
-Add(Net_Gelu_000 PASS fuse_gelu)
-Add(Net_Gelu_001 PASS fuse_gelu)
-Add(HardSwish_001 PASS decompose_hardswish)
 Add(Softmax_001 PASS decompose_softmax)
 Add(Softmax_002 PASS decompose_softmax)
-Add(Net_Shape_Add_000 PASS fold_shape)
+Add(StridedSlice_003 PASS substitute_strided_slice_to_reshape)
 
 # CSE test
 
@@ -101,15 +101,6 @@ Add(REGRESS_ONNX_Conv_BN_001 PASS
       remove_unnecessary_reshape
       fuse_batchnorm_with_conv)
 
-Add(REGRESS_ONNX_Conv_BN_Relu6_001 PASS
-      convert_nchw_to_nhwc
-      nchw_to_nhwc_input_shape
-      nchw_to_nhwc_output_shape
-      remove_redundant_transpose
-      transform_min_max_to_relu6
-      fuse_batchnorm_with_conv
-      fuse_activation_function)
-
 Add(REGRESS_ONNX_Conv_BN_MeanMean_001 PASS
       convert_nchw_to_nhwc
       nchw_to_nhwc_input_shape
@@ -119,6 +110,15 @@ Add(REGRESS_ONNX_Conv_BN_MeanMean_001 PASS
       fuse_activation_function
       fuse_mean_with_mean
       fuse_transpose_with_mean)
+
+Add(REGRESS_ONNX_Conv_BN_Relu6_001 PASS
+      convert_nchw_to_nhwc
+      nchw_to_nhwc_input_shape
+      nchw_to_nhwc_output_shape
+      remove_redundant_transpose
+      transform_min_max_to_relu6
+      fuse_batchnorm_with_conv
+      fuse_activation_function)
 
 Add(REGRESS_ONNX_Mul_Mul_000 PASS
       convert_nchw_to_nhwc)
