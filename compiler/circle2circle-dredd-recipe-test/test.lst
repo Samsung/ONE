@@ -76,6 +76,7 @@ Add(Net_Gelu_001 PASS fuse_gelu)
 Add(HardSwish_001 PASS decompose_hardswish)
 Add(Softmax_001 PASS decompose_softmax)
 Add(Softmax_002 PASS decompose_softmax)
+Add(Net_Shape_Add_000 PASS fold_shape)
 
 # CSE test
 
