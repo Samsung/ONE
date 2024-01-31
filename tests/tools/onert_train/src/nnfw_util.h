@@ -21,7 +21,6 @@
 #include "nnfw_experimental.h"
 
 #include <ostream>
-#include <type_traits>
 
 #define NNPR_ENSURE_STATUS(a)        \
   do                                 \
@@ -32,17 +31,11 @@
     }                                \
   } while (0)
 
-template <typename E> constexpr auto to_underlying(E e) noexcept
-{
-  return static_cast<std::underlying_type_t<E>>(e);
-}
-
 namespace onert_train
 {
 uint64_t num_elems(const nnfw_tensorinfo *ti);
 uint64_t bufsize_for(const nnfw_tensorinfo *ti);
 
-// TODO: Rename it to use snake case (to_string)
 std::string toString(NNFW_TRAIN_OPTIMIZER opt);
 std::string toString(NNFW_TRAIN_LOSS loss);
 std::string toString(NNFW_TRAIN_LOSS_REDUCTION loss_rdt);
