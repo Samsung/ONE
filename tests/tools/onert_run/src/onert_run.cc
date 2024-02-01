@@ -144,6 +144,14 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_quantize(session));
     }
 
+    // Generate target backend code
+    auto codegen = args.getCodegen();
+    if (!codegen.empty())
+    {
+      NNPR_ENSURE_STATUS(nnfw_set_codegen_model_path(session, args.getCodegenModelPath().c_str()));
+      NNPR_ENSURE_STATUS(nnfw_codegen(session, codegen.c_str(), NNFW_CODEGEN_PREF_DEFAULT));
+    }
+
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
