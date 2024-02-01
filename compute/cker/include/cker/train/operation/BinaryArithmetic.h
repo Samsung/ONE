@@ -36,14 +36,15 @@ enum class ArithmeticType
 };
 
 template <typename T>
-void BinaryArithmeticGrad(const Shape &incoming_shape, const T *incoming_data,
+void BinaryArithmeticGrad(const Shape &lhs_shape, const T *lhs_data, const Shape &rhs_shape,
+                          const T *rhs_data, const Shape &incoming_shape, const T *incoming_data,
                           const Shape &lhs_grad_shape, T *lhs_grad_data,
                           const Shape &rhs_grad_shape, T *rhs_grad_data,
                           ArithmeticType arithmetic_type)
 {
-  if (lhs_grad_shape != rhs_grad_shape || lhs_grad_shape != incoming_shape ||
-      rhs_grad_shape != incoming_shape)
-    throw std::runtime_error{"Shape of LHS, RHS, and incoming must match"};
+  if (!(lhs_shape == rhs_shape && rhs_shape == incoming_shape && incoming_shape == lhs_grad_shape &&
+        lhs_grad_shape == rhs_grad_shape))
+    throw std::runtime_error{"Shape of lhs, rhs, incoming, lhs_grad, and rhs_grad must match"};
 
   switch (arithmetic_type)
   {
@@ -65,6 +66,18 @@ void BinaryArithmeticGrad(const Shape &incoming_shape, const T *incoming_data,
     break;
 
     case ArithmeticType::kMul:
+    {
+      auto const in_map = MapAsVector(incoming_data, incoming_shape);
+      auto const lhs_map = MapAsVector(lhs_data, lhs_shape);
+      auto const rhs_map = MapAsVector(rhs_data, rhs_shape);
+      auto lhs_grad_map = MapAsVector(lhs_grad_data, lhs_grad_shape);
+      auto rhs_grad_map = MapAsVector(rhs_grad_data, rhs_grad_shape);
+
+      lhs_grad_map = in_map.array() * rhs_map.array();
+      rhs_grad_map = in_map.array() * lhs_map.array();
+    }
+    break;
+
     case ArithmeticType::kDiv:
     default:
       throw std::runtime_error{"Unsupported Binary Arithmetic Operation"};
