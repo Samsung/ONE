@@ -189,8 +189,8 @@ public:
   NNFW_STATUS set_quantized_model_path(const char *path);
   NNFW_STATUS quantize();
 
-  NNFW_STATUS set_compiled_model_path(const char *path);
-  NNFW_STATUS compile(const char *target, NNFW_COMPILE_PREF pref);
+  NNFW_STATUS set_codegen_model_path(const char *path);
+  NNFW_STATUS codegen(const char *target, NNFW_CODEGEN_PREF pref);
 
 private:
   const onert::ir::IGraph *primary_subgraph();

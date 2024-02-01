@@ -1840,7 +1840,7 @@ NNFW_STATUS nnfw_session::quantize()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
+NNFW_STATUS nnfw_session::set_codegen_model_path(const char *path)
 {
   try
   {
@@ -1855,47 +1855,47 @@ NNFW_STATUS nnfw_session::set_compiled_model_path(const char *path)
   }
   catch (const std::exception &e)
   {
-    std::cerr << "Error during nnfw_session::set_compiled_model_path : " << e.what() << std::endl;
+    std::cerr << "Error during nnfw_session::set_codegen_model_path : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
 
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::compile(const char *target, NNFW_COMPILE_PREF pref)
+NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
 {
   try
   {
     if (!isStateModelLoaded())
     {
-      std::cerr << "invalid state" << std::endl;
+      std::cerr << "Error during nnfw_session::codegen : Invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
     }
 
     std::string target_str{target};
     if (target_str.empty() || target_str.substr(target_str.size() - 4) != "-gen")
     {
-      std::cerr << "invalid target" << std::endl;
+      std::cerr << "Error during nnfw_session::codegen : Invalid target" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
     onert::odc::CodegenPreference codegen_pref;
     switch (pref)
     {
-      case NNFW_COMPILE_PREF_DEFAULT:
+      case NNFW_CODEGEN_PREF_DEFAULT:
         codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_DEFAULT;
         break;
-      case NNFW_COMPILE_PREF_PERFORMANCE_FIRST:
+      case NNFW_CODEGEN_PREF_PERFORMANCE_FIRST:
         codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_PERFORMANCE_FIRST;
         break;
-      case NNFW_COMPILE_PREF_MEMORY_FIRST:
+      case NNFW_CODEGEN_PREF_MEMORY_FIRST:
         codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_MEMORY_FIRST;
         break;
-      case NNFW_COMPILE_PREF_COMPILE_TIME_FIRST:
+      case NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST:
         codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST;
         break;
       default:
-        std::cerr << "invalid preference" << std::endl;
+        std::cerr << "Error during nnfw_session::codegen : Invalid preference" << std::endl;
         return NNFW_STATUS_ERROR;
     }
 
@@ -1924,7 +1924,8 @@ NNFW_STATUS nnfw_session::compile(const char *target, NNFW_COMPILE_PREF pref)
     auto dotidx = export_model_path.rfind('.');
     if (dotidx == std::string::npos)
     {
-      std::cerr << "Invalid compiled model path. Please use a path that includes the extension."
+      std::cerr << "Error during nnfw_session::codegen : Invalid compiled model path. Please use a "
+                   "path that includes the extension."
                 << std::endl;
       return NNFW_STATUS_ERROR;
     }

@@ -479,14 +479,14 @@ NNFW_STATUS nnfw_quantize(nnfw_session *session)
   return session->quantize();
 }
 
-NNFW_STATUS nnfw_set_compiled_model_path(nnfw_session *session, const char *path)
+NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_compiled_model_path(path);
+  return session->set_codegen_model_path(path);
 }
 
-NNFW_STATUS nnfw_compile(nnfw_session *session, const char *target, NNFW_COMPILE_PREF pref)
+NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->compile(target, pref);
+  return session->codegen(target, pref);
 }
