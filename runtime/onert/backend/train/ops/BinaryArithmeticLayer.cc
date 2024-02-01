@@ -35,7 +35,8 @@ namespace ops
 
 BinaryArithmeticLayer::BinaryArithmeticLayer()
   : cpu::ops::BinaryArithmeticLayer(), _back_prop_lhs{nullptr}, _back_prop_rhs{nullptr},
-    _back_prop_output{nullptr}
+    _back_prop_output{nullptr}, _arithmetic_type{ArithmeticType::kAdd},
+    _activation{ir::Activation::NONE}, _act_back_prop_output{nullptr}
 {
   // DO NOTHING
 }
