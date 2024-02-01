@@ -11,7 +11,7 @@ nnfw_find_package(GTest)
 
 set(RUNTIME_NNFW_API_TEST nnfw_api_gtest)
 file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_LIB "lib/*.cc" "lib/*.cpp")
-file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_SRC "src/*.cc" "src/*.cpp")
+file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_SRC "main.cc" "src/*.test.cc" "src/*.test.cpp")
 
 add_executable(${RUNTIME_NNFW_API_TEST} ${RUNTIME_NNFW_API_TEST_LIB} ${RUNTIME_NNFW_API_TEST_SRC})
 
