@@ -251,6 +251,9 @@ BaseLoader<LoaderDomain>::BaseLoader::loadMetadata(const uint32_t buffer_idx)
 {
   assert(_domain_model != nullptr);
   const auto *data = _domain_model->buffers()->Get(buffer_idx)->data();
+  if (data == nullptr)
+    throw std::runtime_error("Metadata buffer is not found");
+
   if (_fd == -1) // Model is from memory
   {
     return std::make_unique<ir::ExternalData>(data->data(), data->size());
