@@ -22,6 +22,7 @@
 #include <vector>
 #include <boost/program_options.hpp>
 
+#include "nnfw_experimental.h"
 #include "types.h"
 
 namespace po = boost::program_options;
@@ -56,9 +57,9 @@ public:
   const int getEpoch(void) const { return _epoch; }
   const int getBatchSize(void) const { return _batch_size; }
   const float getLearningRate(void) const { return _learning_rate; }
-  const int getLossType(void) const { return _loss_type; }
-  const int getLossReductionType(void) const { return _loss_reduction_type; }
-  const int getOptimizerType(void) const { return _optimizer_type; }
+  const NNFW_TRAIN_LOSS getLossType(void) const { return _loss_type; }
+  const NNFW_TRAIN_LOSS_REDUCTION getLossReductionType(void) const { return _loss_reduction_type; }
+  const NNFW_TRAIN_OPTIMIZER getOptimizerType(void) const { return _optimizer_type; }
   const int getMetricType(void) const { return _metric_type; }
   const float getValidationSplit(void) const { return _validation_split; }
   const bool printVersion(void) const { return _print_version; }
@@ -68,6 +69,28 @@ public:
 private:
   void Initialize();
   void Parse(const int argc, char **argv);
+
+private:
+  // supported loss list and it's default value
+  const std::vector<NNFW_TRAIN_LOSS> valid_loss = {
+    NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR,
+    NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY,
+  };
+  const NNFW_TRAIN_LOSS default_loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR;
+
+  // supported loss reduction type list and it's default value
+  const std::vector<NNFW_TRAIN_LOSS_REDUCTION> valid_loss_rdt = {
+    NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE,
+    NNFW_TRAIN_LOSS_REDUCTION_SUM,
+  };
+  const NNFW_TRAIN_LOSS_REDUCTION default_loss_rdt = NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE;
+
+  // supported optimizer list and it's default value
+  const std::vector<NNFW_TRAIN_OPTIMIZER> valid_optim = {
+    NNFW_TRAIN_OPTIMIZER_SGD,
+    NNFW_TRAIN_OPTIMIZER_ADAM,
+  };
+  const NNFW_TRAIN_OPTIMIZER default_optim = NNFW_TRAIN_OPTIMIZER_SGD;
 
 private:
   po::positional_options_description _positional;
@@ -83,9 +106,9 @@ private:
   int _epoch;
   int _batch_size;
   float _learning_rate;
-  int _loss_type;
-  int _loss_reduction_type;
-  int _optimizer_type;
+  NNFW_TRAIN_LOSS _loss_type;
+  NNFW_TRAIN_LOSS_REDUCTION _loss_reduction_type;
+  NNFW_TRAIN_OPTIMIZER _optimizer_type;
   int _metric_type;
   float _validation_split;
   bool _print_version = false;
