@@ -27,7 +27,8 @@ namespace cpu
 namespace ops
 {
 
-PadLayer::PadLayer() : _input(nullptr), _pad(nullptr), _output(nullptr), _constantValueData()
+PadLayer::PadLayer()
+  : _input(nullptr), _pad(nullptr), _value(nullptr), _output(nullptr), _constantValueData()
 {
   // DO NOTHING
 }
