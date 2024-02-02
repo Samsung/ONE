@@ -1247,8 +1247,8 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     }
   };
 
-  const auto loss = _train_info->lossInfo();
-  const auto optim = _train_info->optimizerInfo();
+  const auto &loss = _train_info->lossInfo();
+  const auto &optim = _train_info->optimizerInfo();
 
   try
   {
