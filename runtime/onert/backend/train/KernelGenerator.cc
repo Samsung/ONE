@@ -170,7 +170,7 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   // Generate kernel
   const auto stride = node.param().stride;
   const auto activation = node.param().activation;
-  const auto param_padding = node.param().padding;
+  const auto &param_padding = node.param().padding;
   const auto dilation = node.param().dilation;
   auto fn = std::make_unique<ops::ConvolutionLayer>();
 
@@ -381,9 +381,9 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
 
-  const auto operands = _tgraph.operands();
-  const auto ofm_shape = operands.at(output_index).shape();
-  const auto ifm_shape = operands.at(input_index).shape();
+  const auto &operands = _tgraph.operands();
+  const auto &ofm_shape = operands.at(output_index).shape();
+  const auto &ifm_shape = operands.at(input_index).shape();
 
   if (ifm_shape.rank() != 4)
   {
