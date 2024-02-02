@@ -22,6 +22,7 @@
 #include "util/logging.h"
 #include "exec/Execution.h"
 #include "loader/circle_loader.h"
+#include "loader/ModelLoader.h"
 #include "loader/tflite_loader.h"
 #include "loader/traininfo_loader.h"
 #include "json/json.h"
@@ -192,14 +193,22 @@ void fillTensorInfo(nnfw_tensorinfo *ti, const onert::ir::Shape &shape,
 std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
                                             const std::string model_type)
 {
-  if (model_type == "tflite")
-    return onert::tflite_loader::loadModel(filename.c_str());
-  if (model_type == "circle")
-    return onert::circle_loader::loadModel(filename.c_str());
-  if (model_type == "tvn")
-    return onert::trix_loader::loadModel(filename.c_str());
+  try
+  {
+    if (model_type == "tflite")
+      return onert::tflite_loader::loadModel(filename.c_str());
+    if (model_type == "circle")
+      return onert::circle_loader::loadModel(filename.c_str());
+    if (model_type == "tvn")
+      return onert::trix_loader::loadModel(filename.c_str());
 
-  std::cerr << "Unsupported model type" << std::endl;
+    return onert::loader::loadModel(filename, model_type);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Fail to load model: " << e.what() << '\n';
+  }
+
   return std::unique_ptr<onert::ir::Model>(nullptr);
 }
 
