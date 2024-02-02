@@ -138,6 +138,7 @@
 // Circle only
 #include "Nodes/CircleBCQFullyConnected.h"
 #include "Nodes/CircleBCQGather.h"
+#include "Nodes/CircleCirGru.h"
 #include "Nodes/CircleInstanceNorm.h"
 // Virtual nodes
 #include "Nodes/CircleConst.h"
