@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_LOADERS_H__
-#define __ONERT_LOADER_LOADERS_H__
+#ifndef __ONERT_LOADER_MODEL_LOADER_H__
+#define __ONERT_LOADER_MODEL_LOADER_H__
 
 #include "ir/Model.h"
 
@@ -39,4 +39,4 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
 } // namespace loader
 } // namespace onert
 
-#endif // __ONERT_LOADER_LOADERS_H__
+#endif // __ONERT_LOADER_MODEL_LOADER_H__

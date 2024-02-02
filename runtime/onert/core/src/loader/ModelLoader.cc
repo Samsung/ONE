@@ -39,18 +39,27 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
   using create_func_t = ILoader *(*)();
   auto create_fn = reinterpret_cast<create_func_t>(dlsym(handle, "onert_loader_create"));
   if (!create_fn)
+  {
+    dlclose(handle);
     throw std::runtime_error("Failed to find loader create function");
+  }
 
   // Get custom loader destroy function
   using destroy_func_t = void (*)(ILoader *);
   auto destroy_fn = reinterpret_cast<destroy_func_t>(dlsym(handle, "onert_loader_destroy"));
   if (!destroy_fn)
+  {
+    dlclose(handle);
     throw std::runtime_error("Failed to find loader destroy function");
+  }
 
   // Create custom loader
   auto loader = create_fn();
   if (!loader)
+  {
+    dlclose(handle);
     throw std::runtime_error("Failed to find loader create function");
+  }
 
   // Load model
   auto model = loader->loadFromFile(filename);
