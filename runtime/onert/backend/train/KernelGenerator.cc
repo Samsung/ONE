@@ -370,7 +370,7 @@ void KernelGenerator::visit(const ir::train::operation::Pad &node)
   auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
   auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
 
-  fn->configure(input, output, pad, value, in_back_prop_tensor, out_back_prop_tensor);
+  fn->configure(input, pad, value, output, in_back_prop_tensor, out_back_prop_tensor);
   _return_fn = std::move(fn);
 }
 
