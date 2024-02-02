@@ -138,11 +138,10 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
   if (dynamic_cast<luci::CircleConst *>(fc->weights()))
     return false; // NonConst
 
-  // For const inputs, we don't do this conversion, because we can improve
-  // accuracy of quantized models by making transposed FC.
+  // NOTE For const inputs, it is possible to block this conversion,
+  // because we can make transposed FC rather than matmul to improve
+  // accuracy of quantized models by sacrificing latency.
   // See https://github.com/Samsung/ONE/discussions/11941 for more details.
-  if (dynamic_cast<luci::CircleConst *>(fc->input()) != nullptr)
-    return false;
 
   if ((ty = dynamic_cast<luci::CircleTranspose *>(fc->weights()))) // is y a transpose?
   {
