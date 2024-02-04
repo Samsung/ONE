@@ -1,8 +1,13 @@
 <map id="luci::VerifyQuantizedNodeTypeBase&lt; Qtype, Btype &gt;" name="luci::VerifyQuantizedNodeTypeBase&lt; Qtype, Btype &gt;">
-<area shape="rect" id="node1" title="Verify using quantization type of a node and bias." alt="" coords="142,257,318,297"/>
-<area shape="rect" id="node2" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="57,168,206,208"/>
-<area shape="rect" id="node3" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,215,105"/>
-<area shape="rect" id="node4" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="239,80,418,105"/>
-<area shape="rect" id="node5" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="224,5,433,31"/>
-<area shape="rect" id="node6" href="$classluci_1_1_verify_quantized_node_type.html" title="Verify the data type of quantized node." alt="" coords="231,175,429,201"/>
+<area shape="rect" id="Node000001" title="Verify using quantization type of a node and bias." alt="" coords="142,259,317,300"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="57,169,205,210"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,218,209,256,206,260,162,222"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,214,106"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,120,129,168,124,169,113,122"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="238,80,416,106"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="289,116,173,171,171,166,287,111"/>
+<area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="223,5,431,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="330,46,330,80,324,80,324,46"/>
+<area shape="rect" id="Node000006" href="$classluci_1_1_verify_quantized_node_type.html" title="Verify the data type of quantized node." alt="" coords="230,177,427,202"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="305,215,253,261,250,257,302,211"/>
 </map>

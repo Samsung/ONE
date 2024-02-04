@@ -1,5 +1,7 @@
 <map id="luci_interpreter_pal::ConvParams" name="luci_interpreter_pal::ConvParams">
-<area shape="rect" id="node1" title=" " alt="" coords="67,225,197,265"/>
-<area shape="rect" id="node2" href="$structluci__interpreter__pal_1_1_padding_values.html" title=" " alt="" coords="5,5,136,45"/>
-<area shape="rect" id="node3" title=" " alt="" coords="164,13,225,38"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="67,229,197,270"/>
+<area shape="rect" id="Node000002" href="$structluci__interpreter__pal_1_1_padding_values.html" title=" " alt="" coords="5,5,136,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,61,60,93,58,130,62,168,75,204,84,216,96,227,92,231,80,220,70,206,57,169,53,130,55,93,60,61"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="164,13,225,39"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,54,190,124,181,166,168,206,153,230,148,227,163,204,176,165,185,124,191,54"/>
 </map>

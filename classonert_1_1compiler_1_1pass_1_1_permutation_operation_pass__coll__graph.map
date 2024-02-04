@@ -1,11 +1,19 @@
 <map id="onert::compiler::pass::PermutationOperationPass" name="onert::compiler::pass::PermutationOperationPass">
-<area shape="rect" id="node1" title=" " alt="" coords="186,464,370,504"/>
-<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="103,375,267,415"/>
-<area shape="rect" id="node3" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="27,272,167,312"/>
-<area shape="rect" id="node4" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="27,183,167,223"/>
-<area shape="rect" id="node5" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,120"/>
-<area shape="rect" id="node6" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="169,87,275,113"/>
-<area shape="rect" id="node7" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="167,5,277,31"/>
-<area shape="rect" id="node8" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="191,272,357,312"/>
-<area shape="rect" id="node9" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="291,382,454,407"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="233,468,416,508"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="103,378,266,418"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,424,294,465,292,469,227,429"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="27,274,166,315"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,325,169,376,165,379,121,328"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="27,184,166,225"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="99,240,99,274,94,274,94,240"/>
+<area shape="rect" id="Node000005" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,80,145,121"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="85,136,95,183,90,184,80,137"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="168,88,273,114"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="196,126,122,185,119,181,192,121"/>
+<area shape="rect" id="Node000007" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="166,5,275,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="223,47,223,88,218,88,218,47"/>
+<area shape="rect" id="Node000008" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="190,274,355,315"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="248,328,203,379,199,376,243,325"/>
+<area shape="rect" id="Node000009" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="290,385,452,411"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="360,426,337,469,332,466,355,423"/>
 </map>

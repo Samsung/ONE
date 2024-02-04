@@ -1,5 +1,7 @@
 <map id="loco::Graph::OutputContext" name="loco::Graph::OutputContext">
-<area shape="rect" id="node1" title="GraphOutput Pool." alt="" coords="23,168,199,193"/>
-<area shape="rect" id="node2" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,93,217,119"/>
-<area shape="rect" id="node3" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="38,5,185,31"/>
+<area shape="rect" id="Node000001" title="GraphOutput Pool." alt="" coords="23,169,199,195"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,94,217,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,135,114,169,108,169,108,135"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="38,5,184,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,47,114,94,108,94,108,47"/>
 </map>

@@ -1,7 +1,11 @@
 <map id="onert::backend::train::ops::LossLayer" name="onert::backend::train::ops::LossLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="25,240,163,280"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,93,140,133"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="164,93,328,133"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="81,5,237,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="262,5,403,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="26,243,162,283"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,94,140,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,149,94,242,88,242,75,150"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="164,94,328,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,147,116,244,112,240,213,143"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="83,5,238,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="184,41,230,92,226,95,180,44"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="262,5,403,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="313,44,266,95,262,92,310,40"/>
 </map>

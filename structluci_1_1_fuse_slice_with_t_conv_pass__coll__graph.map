@@ -1,4 +1,5 @@
 <map id="luci::FuseSliceWithTConvPass" name="luci::FuseSliceWithTConvPass">
-<area shape="rect" id="node1" title="Class to fuse Slice operation with a preceding TConv." alt="" coords="5,79,205,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,147,31"/>
+<area shape="rect" id="Node000001" title="Class to fuse Slice operation with a preceding TConv." alt="" coords="5,79,205,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,146,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,46,108,79,102,79,102,46"/>
 </map>

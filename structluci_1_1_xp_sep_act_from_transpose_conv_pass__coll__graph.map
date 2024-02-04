@@ -1,4 +1,5 @@
 <map id="luci::XpSepActFromTransposeConvPass" name="luci::XpSepActFromTransposeConvPass">
-<area shape="rect" id="node1" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="5,79,204,119"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,146,31"/>
+<area shape="rect" id="Node000001" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="5,79,203,120"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,145,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,46,107,79,101,79,101,46"/>
 </map>

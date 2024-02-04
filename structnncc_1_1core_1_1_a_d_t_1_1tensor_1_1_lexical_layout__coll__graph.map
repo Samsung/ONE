@@ -1,4 +1,5 @@
 <map id="nncc::core::ADT::tensor::LexicalLayout" name="nncc::core::ADT::tensor::LexicalLayout">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,160,133"/>
-<area shape="rect" id="node2" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_layout.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,160,135"/>
+<area shape="rect" id="Node000002" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_layout.html" title=" " alt="" coords="5,5,160,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,62,85,94,80,94,80,62"/>
 </map>

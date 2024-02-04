@@ -1,5 +1,7 @@
 <map id="nnc::sir::CallFunction" name="nnc::sir::CallFunction">
-<area shape="rect" id="node1" title=" " alt="" coords="52,93,193,119"/>
-<area shape="rect" id="node2" href="$structnnc_1_1sir_1_1_action.html" title="Action represents operation in inference sequence that is needed to." alt="" coords="5,5,112,31"/>
-<area shape="rect" id="node3" href="$classmir_1_1_operation.html" title=" " alt="" coords="137,5,239,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="52,94,192,120"/>
+<area shape="rect" id="Node000002" href="$structnnc_1_1sir_1_1_action.html" title="Action represents operation in inference sequence that is needed to." alt="" coords="5,5,111,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,42,115,92,111,95,74,45"/>
+<area shape="rect" id="Node000003" href="$classmir_1_1_operation.html" title=" " alt="" coords="135,5,237,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,45,133,95,129,92,166,42"/>
 </map>

@@ -1,7 +1,11 @@
 <map id="onert::exec::MultiModelExecutors::EdgeTensor" name="onert::exec::MultiModelExecutors::EdgeTensor">
-<area shape="rect" id="node1" title=" " alt="" coords="65,272,275,312"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="97,183,243,223"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="88,93,252,133"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="186,5,327,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="64,274,273,315"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="96,184,241,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,240,171,274,166,274,166,240"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="87,94,250,135"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="171,150,171,184,166,184,166,150"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="106,41,152,92,149,95,102,44"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="185,5,325,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="236,44,188,95,185,92,232,40"/>
 </map>

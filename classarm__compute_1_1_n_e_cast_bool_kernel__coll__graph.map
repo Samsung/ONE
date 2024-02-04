@@ -1,4 +1,5 @@
 <map id="arm_compute::NECastBoolKernel" name="arm_compute::NECastBoolKernel">
-<area shape="rect" id="node1" title="Class for the kernel converting boolean type." alt="" coords="5,79,220,104"/>
-<area shape="rect" id="node2" title=" " alt="" coords="72,5,153,31"/>
+<area shape="rect" id="Node000001" title="Class for the kernel converting boolean type." alt="" coords="5,79,220,105"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="72,5,153,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,46,115,79,110,79,110,46"/>
 </map>

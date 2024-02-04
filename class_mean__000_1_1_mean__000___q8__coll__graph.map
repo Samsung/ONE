@@ -1,4 +1,5 @@
 <map id="Mean_000.Mean_000_Q8" name="Mean_000.Mean_000_Q8">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,175,104"/>
-<area shape="rect" id="node2" href="$classtest__utils_1_1_test_case.html" title=" " alt="" coords="23,5,157,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,174,105"/>
+<area shape="rect" id="Node000002" href="$classtest__utils_1_1_test_case.html" title=" " alt="" coords="23,5,156,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,46,92,79,87,79,87,46"/>
 </map>

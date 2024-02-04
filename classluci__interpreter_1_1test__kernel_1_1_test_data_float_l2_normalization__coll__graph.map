@@ -1,7 +1,11 @@
 <map id="luci_interpreter::test_kernel::TestDataFloatL2Normalization" name="luci_interpreter::test_kernel::TestDataFloatL2Normalization">
-<area shape="rect" id="node1" title=" " alt="" coords="789,51,1036,91"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_l2_normalization_base.html" title=" " alt="" coords="523,44,740,99"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="240,5,393,60"/>
-<area shape="rect" id="node4" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_l2_normalization_base.html" title=" " alt="" coords="208,84,425,139"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,84,159,139"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="786,53,1031,94"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_l2_normalization_base.html" title=" " alt="" coords="520,45,737,101"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="752,71,786,71,786,76,752,76"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="239,5,391,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="407,42,520,57,519,62,406,47"/>
+<area shape="rect" id="Node000004" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_l2_normalization_base.html" title=" " alt="" coords="207,85,423,141"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="439,95,519,84,520,90,439,100"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,85,158,141"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="173,111,206,111,206,116,173,116"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="onert::backend::xnnpack::ops::DepthwiseConvolutionLayer" name="onert::backend::xnnpack::ops::DepthwiseConvolutionLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,167,221,207"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html" title=" " alt="" coords="33,79,193,119"/>
-<area shape="rect" id="node3" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="41,5,185,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,221,208"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html" title=" " alt="" coords="33,79,193,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,135,116,167,110,167,110,135"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="41,5,185,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,46,116,79,110,79,110,46"/>
 </map>

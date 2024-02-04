@@ -1,7 +1,12 @@
 <map id="luci_interpreter::kernels::ResizeNearestNeighbor" name="luci_interpreter::kernels::ResizeNearestNeighbor">
-<area shape="rect" id="node1" title=" " alt="" coords="917,26,1083,66"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="627,19,868,73"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="208,26,368,66"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_resize_nearest_neighbor_params.html" title=" " alt="" coords="205,90,371,130"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="913,26,1077,67"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="623,18,864,74"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="880,44,913,44,913,49,880,49"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,12,179,12,389,9,482,14,600,24,623,26,623,31,599,29,481,19,389,15,179,17,170,17"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="207,26,366,67"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="170,28,206,33,206,38,169,33"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_resize_nearest_neighbor_params.html" title=" " alt="" coords="204,91,368,132"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="383,95,622,61,623,66,384,100"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="381,44,623,44,623,49,381,49"/>
 </map>

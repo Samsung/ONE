@@ -1,5 +1,7 @@
 <map id="onert::ir::operation::While::Param" name="onert::ir::operation::While::Param">
-<area shape="rect" id="node1" title=" " alt="" coords="47,240,169,280"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_index.html" title=" " alt="" coords="5,123,211,163"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_index.html" title="A wrapper class for unsigned integral Index NOTE : Max value of the underlying type is used as the in..." alt="" coords="45,5,171,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="46,243,169,283"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_index.html" title=" " alt="" coords="5,124,210,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,180,110,242,105,242,105,180"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1util_1_1_index.html" title="A wrapper class for unsigned integral Index NOTE : Max value of the underlying type is used as the in..." alt="" coords="45,5,170,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="110,61,110,123,105,123,105,61"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="nnc::DumpVisitor" name="nnc::DumpVisitor">
-<area shape="rect" id="node1" title=" " alt="" coords="5,152,125,177"/>
-<area shape="rect" id="node2" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="24,79,107,104"/>
-<area shape="rect" id="node3" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="22,5,109,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,125,178"/>
+<area shape="rect" id="Node000002" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="24,79,106,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,120,68,152,62,152,62,120"/>
+<area shape="rect" id="Node000003" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="22,5,108,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="68,46,68,79,62,79,62,46"/>
 </map>

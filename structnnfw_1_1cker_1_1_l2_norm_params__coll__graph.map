@@ -1,4 +1,5 @@
 <map id="nnfw::cker::L2NormParams" name="nnfw::cker::L2NormParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,184,119"/>
-<area shape="rect" id="node2" title=" " alt="" coords="64,5,125,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,184,120"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="64,5,125,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,47,97,94,92,94,92,47"/>
 </map>

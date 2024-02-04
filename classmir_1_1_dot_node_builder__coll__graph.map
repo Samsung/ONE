@@ -1,5 +1,7 @@
 <map id="mir::DotNodeBuilder" name="mir::DotNodeBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,152,143,177"/>
-<area shape="rect" id="node2" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="33,79,115,104"/>
-<area shape="rect" id="node3" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="31,5,117,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,142,178"/>
+<area shape="rect" id="Node000002" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="32,79,115,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,120,76,152,71,152,71,120"/>
+<area shape="rect" id="Node000003" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="30,5,117,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="76,46,76,79,71,79,71,46"/>
 </map>

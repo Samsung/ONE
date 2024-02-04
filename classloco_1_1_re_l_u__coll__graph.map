@@ -1,11 +1,20 @@
 <map id="loco::ReLU" name="loco::ReLU">
-<area shape="rect" id="node1" title="Create a new value that rectifies its input." alt="" coords="1405,75,1492,101"/>
-<area shape="rect" id="node2" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="1177,61,1356,115"/>
-<area shape="rect" id="node3" href="$structloco_1_1_canonical_node.html" title=" " alt="" coords="643,66,783,91"/>
-<area shape="rect" id="node8" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="847,11,1007,51"/>
-<area shape="rect" id="node4" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,66,579,91"/>
-<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,59,447,99"/>
-<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,59,143,99"/>
-<area shape="rect" id="node7" title=" " alt="" coords="865,125,989,165"/>
-<area shape="rect" id="node9" title=" " alt="" coords="628,9,797,34"/>
+<area shape="rect" id="Node000001" title="Create a new value that rectifies its input." alt="" coords="1400,76,1485,102"/>
+<area shape="rect" id="Node000002" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="1172,61,1350,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1366,86,1399,86,1399,92,1366,92"/>
+<area shape="rect" id="Node000003" href="$structloco_1_1_canonical_node.html" title=" " alt="" coords="640,67,779,93"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="794,78,1171,85,1171,90,794,84"/>
+<area shape="rect" id="Node000008" href="$structloco_1_1_canonical_node_def.html" title=" " alt="" coords="843,11,1002,52"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="784,60,842,47,843,52,785,65"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="493,67,576,93"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="591,77,639,77,639,82,591,82"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="308,59,444,100"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="459,77,493,77,493,82,459,82"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,59,142,100"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="157,77,307,77,307,82,157,82"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="861,126,984,167"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="999,131,1171,101,1172,107,1000,136"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1018,45,1172,71,1171,77,1017,50"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="625,10,793,35"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="809,24,842,26,842,31,809,29"/>
 </map>

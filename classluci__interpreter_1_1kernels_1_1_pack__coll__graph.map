@@ -1,8 +1,14 @@
 <map id="luci_interpreter::kernels::Pack" name="luci_interpreter::kernels::Pack">
-<area shape="rect" id="node1" title=" " alt="" coords="859,38,1013,78"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="619,38,809,78"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node6" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="295,38,455,78"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_pack_params.html" title=" " alt="" coords="281,103,469,128"/>
-<area shape="rect" id="node5" title=" " alt="" coords="50,103,111,128"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="854,38,1008,79"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="615,38,804,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="820,56,853,56,853,61,820,61"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,14,364,17,478,24,591,36,615,39,615,44,591,41,478,29,364,23,170,19"/>
+<area shape="rect" id="Node000006" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="294,38,453,79"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="170,28,294,45,293,50,169,33"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_pack_params.html" title=" " alt="" coords="280,103,467,128"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="468,97,591,76,614,72,615,77,591,81,469,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="50,103,110,128"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,113,280,113,280,118,126,118"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="468,56,615,56,615,61,468,61"/>
 </map>

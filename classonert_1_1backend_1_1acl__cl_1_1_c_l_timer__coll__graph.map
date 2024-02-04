@@ -1,4 +1,5 @@
 <map id="onert::backend::acl_cl::CLTimer" name="onert::backend::acl_cl::CLTimer">
-<area shape="rect" id="node1" title="Class to measure CL kernels execution time." alt="" coords="5,79,135,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_i_timer.html" title=" " alt="" coords="11,5,129,31"/>
+<area shape="rect" id="Node000001" title="Class to measure CL kernels execution time." alt="" coords="5,79,134,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_i_timer.html" title=" " alt="" coords="11,5,128,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,46,72,79,67,79,67,46"/>
 </map>

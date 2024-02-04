@@ -1,5 +1,7 @@
 <map id="luci_interpreter_pal::PoolParams" name="luci_interpreter_pal::PoolParams">
-<area shape="rect" id="node1" title=" " alt="" coords="67,137,197,177"/>
-<area shape="rect" id="node2" href="$structluci__interpreter__pal_1_1_padding_values.html" title=" " alt="" coords="5,5,136,45"/>
-<area shape="rect" id="node3" title=" " alt="" coords="164,13,225,38"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="67,139,197,180"/>
+<area shape="rect" id="Node000002" href="$structluci__interpreter__pal_1_1_padding_values.html" title=" " alt="" coords="5,5,136,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,61,67,88,75,114,84,126,96,137,92,141,80,130,70,116,62,89,62,62"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="164,13,225,39"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,54,181,85,168,116,151,140,147,137,163,114,176,83,186,53"/>
 </map>

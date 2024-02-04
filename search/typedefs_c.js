@@ -9,7 +9,7 @@ var searchData=
   ['nnfw_5ftrain_5finfo_6',['nnfw_train_info',['../nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975',1,'nnfw_experimental.h']]],
   ['nodecontext_7',['NodeContext',['../classloco_1_1_graph.html#a7ab608d082644c3b5ac526298607f542',1,'loco::Graph']]],
   ['nodedepthtype_8',['NodeDepthType',['../namespacempqsolver_1_1bisection.html#a286c973e6531a1759bb45c77ca65d0a0',1,'mpqsolver::bisection']]],
-  ['nodename_9',['NodeName',['../namespaceluci.html#a269f72042ae95fc05af9c022011b519c',1,'luci::NodeName()'],['../namespacemoco.html#a21a1e8ddb00f8f7f382fad01155f75c7',1,'moco::NodeName()']]],
+  ['nodename_9',['nodename',['../namespaceluci.html#a269f72042ae95fc05af9c022011b519c',1,'luci::NodeName'],['../namespacemoco.html#a21a1e8ddb00f8f7f382fad01155f75c7',1,'moco::NodeName']]],
   ['nodepair_10',['NodePair',['../namespacemoco_1_1tf_1_1eltwise_1_1binary.html#ab8e1eda974932511117c377c522f48b6',1,'moco::tf::eltwise::binary']]],
   ['nodesummary_11',['NodeSummary',['../namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d',1,'locop']]],
   ['npualloc_12',['NpuAlloc',['../namespacenpud_1_1core.html#a33acc5541771b5187284f8e8103e9f49',1,'npud::core']]],

@@ -1,6 +1,9 @@
 var classsouschef_1_1_tensor_filler =
 [
     [ "~TensorFiller", "classsouschef_1_1_tensor_filler.html#af825a5b3eb3b38241d7adc94bf05a1ee", null ],
+    [ "clear_tensor_filler", "classsouschef_1_1_tensor_filler.html#abd67adf214a47fc81a6aa9ec976549bd", null ],
+    [ "clear_tensor_filler_vfloat", "classsouschef_1_1_tensor_filler.html#afc11c52e3f27fb1a62927b3573ccf927", null ],
+    [ "clear_tensor_filler_vint32", "classsouschef_1_1_tensor_filler.html#a5293dd480a7263ce28ca820fd9025cd6", null ],
     [ "get_tensor_filler", "classsouschef_1_1_tensor_filler.html#ae238a85b739ad2a9f86cc866305a8ba5", null ],
     [ "get_tensor_filler", "classsouschef_1_1_tensor_filler.html#addae6afdfc0d44b0702c3e47edb2261e", null ],
     [ "get_tensor_filler", "classsouschef_1_1_tensor_filler.html#a7b49b6ee2f13f5e8e92b9b4f23341f9b", null ],

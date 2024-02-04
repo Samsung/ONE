@@ -1,8 +1,14 @@
 <map id="nnc::ArtifactClassFunction" name="nnc::ArtifactClassFunction">
-<area shape="rect" id="node1" title="A class for member functions." alt="" coords="65,328,239,353"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_artifact_class_member.html" title="Basic class for both class member variables and memmber functions." alt="" coords="5,253,176,279"/>
-<area shape="rect" id="node3" href="$classnnc_1_1_artifact_class.html" title="Represents a class." alt="" coords="39,155,163,180"/>
-<area shape="rect" id="node4" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="87,80,220,105"/>
-<area shape="rect" id="node6" href="$classnnc_1_1_artifact_function.html" title="Represents a function." alt="" coords="143,204,284,229"/>
-<area shape="rect" id="node5" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="92,5,215,31"/>
+<area shape="rect" id="Node000001" title="A class for member functions." alt="" coords="65,330,239,355"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1_artifact_class_member.html" title="Basic class for both class member variables and memmber functions." alt="" coords="5,255,176,280"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,290,144,328,140,331,108,294"/>
+<area shape="rect" id="Node000003" href="$classnnc_1_1_artifact_class.html" title="Represents a class." alt="" coords="40,155,163,181"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,196,87,205,86,231,90,254,84,255,80,231,82,205,85,195"/>
+<area shape="rect" id="Node000004" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="87,80,219,106"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="138,120,112,157,107,154,134,117"/>
+<area shape="rect" id="Node000006" href="$classnnc_1_1_artifact_function.html" title="Represents a function." alt="" coords="142,205,282,231"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="168,119,208,203,204,206,163,121"/>
+<area shape="rect" id="Node000005" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="92,5,214,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="156,46,156,80,151,80,151,46"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="205,247,190,282,162,331,157,328,185,279,200,244"/>
 </map>

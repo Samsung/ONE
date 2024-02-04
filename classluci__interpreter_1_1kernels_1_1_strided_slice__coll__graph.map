@@ -1,8 +1,14 @@
 <map id="luci_interpreter::kernels::StridedSlice" name="luci_interpreter::kernels::StridedSlice">
-<area shape="rect" id="node1" title=" " alt="" coords="939,38,1093,78"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="659,38,889,78"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node6" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="309,38,469,78"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_strided_slice_params.html" title=" " alt="" coords="312,105,467,145"/>
-<area shape="rect" id="node5" title=" " alt="" coords="50,115,111,140"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="933,38,1087,79"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="654,38,883,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="899,56,932,56,932,61,899,61"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,15,380,19,505,25,630,36,654,38,653,44,630,41,505,30,380,24,170,20"/>
+<area shape="rect" id="Node000006" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="307,38,466,79"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="170,27,307,45,306,50,170,33"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_strided_slice_params.html" title=" " alt="" coords="310,106,463,147"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="478,107,653,76,654,81,479,112"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="50,116,110,142"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="126,126,283,125,309,125,309,130,283,130,126,131"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="482,56,653,56,653,61,482,61"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="Palette.UniformPalette" name="Palette.UniformPalette">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,159,104"/>
-<area shape="rect" id="node2" href="$class_palette_1_1_palette.html" title=" " alt="" coords="29,5,135,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,158,105"/>
+<area shape="rect" id="Node000002" href="$class_palette_1_1_palette.html" title=" " alt="" coords="28,5,135,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,46,84,79,79,79,79,46"/>
 </map>

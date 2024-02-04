@@ -1,5 +1,6 @@
 var namespaceonert__micro =
 [
+    [ "core", "namespaceonert__micro_1_1core.html", "namespaceonert__micro_1_1core" ],
     [ "OMConfig", "structonert__micro_1_1_o_m_config.html", "structonert__micro_1_1_o_m_config" ],
     [ "OMInterpreter", "classonert__micro_1_1_o_m_interpreter.html", "classonert__micro_1_1_o_m_interpreter" ],
     [ "OMStatus", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb", [

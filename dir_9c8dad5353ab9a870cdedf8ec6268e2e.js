@@ -14,5 +14,6 @@ var dir_9c8dad5353ab9a870cdedf8ec6268e2e =
     [ "polymorphic_downcast.h", "polymorphic__downcast_8h.html", "polymorphic__downcast_8h" ],
     [ "RandomGenerator.h", "_random_generator_8h.html", "_random_generator_8h" ],
     [ "string_helpers.h", "string__helpers_8h.html", "string__helpers_8h" ],
+    [ "to_underlying.h", "to__underlying_8h.html", "to__underlying_8h" ],
     [ "vector.h", "vector_8h.html", "vector_8h" ]
 ];

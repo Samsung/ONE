@@ -1,8 +1,13 @@
 <map id="onert::backend::train::ops::LossCategoricalCrossentropyLayer" name="onert::backend::train::ops::LossCategoricalCrossentropyLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,329,231,384"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html" title=" " alt="" coords="49,240,187,280"/>
-<area shape="rect" id="node3" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="29,93,164,133"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="188,93,352,133"/>
-<area shape="rect" id="node5" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="105,5,261,31"/>
-<area shape="rect" id="node6" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="286,5,427,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,333,230,388"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html" title=" " alt="" coords="49,243,186,283"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,299,120,332,115,332,115,299"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="29,94,163,135"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,149,117,242,112,242,99,150"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="188,94,351,135"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="241,147,140,244,136,240,237,143"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="107,5,262,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="207,41,254,92,250,95,203,44"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="286,5,426,31"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="337,44,290,95,286,92,333,40"/>
 </map>

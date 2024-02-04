@@ -1,6 +1,9 @@
 <map id="coco::MaxPool2D" name="coco::MaxPool2D">
-<area shape="rect" id="node1" title="2D Max Pooling" alt="" coords="5,225,128,251"/>
-<area shape="rect" id="node2" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="13,152,120,177"/>
-<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="30,79,103,104"/>
-<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="23,5,111,31"/>
+<area shape="rect" id="Node000001" title="2D Max Pooling" alt="" coords="5,226,127,252"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="13,153,119,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,194,69,226,63,226,63,194"/>
+<area shape="rect" id="Node000003" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="30,79,102,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="69,120,69,152,63,152,63,120"/>
+<area shape="rect" id="Node000004" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="22,5,110,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="69,46,69,79,63,79,63,46"/>
 </map>

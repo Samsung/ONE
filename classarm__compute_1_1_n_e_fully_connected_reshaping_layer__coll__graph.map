@@ -1,4 +1,5 @@
 <map id="arm_compute::NEFullyConnectedReshapingLayer" name="arm_compute::NEFullyConnectedReshapingLayer">
-<area shape="rect" id="node1" title="Class to run FullyConnected Layer after reshaping input tensor." alt="" coords="5,79,220,119"/>
-<area shape="rect" id="node2" title=" " alt="" coords="32,5,193,31"/>
+<area shape="rect" id="Node000001" title="Class to run FullyConnected Layer after reshaping input tensor." alt="" coords="5,79,219,120"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="32,5,192,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,46,115,79,109,79,109,46"/>
 </map>

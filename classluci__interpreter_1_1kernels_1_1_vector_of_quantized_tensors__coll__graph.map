@@ -1,5 +1,8 @@
 <map id="luci_interpreter::kernels::VectorOfQuantizedTensors&lt; is_const &gt;" name="luci_interpreter::kernels::VectorOfQuantizedTensors&lt; is_const &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,227,191,281"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html" title=" " alt="" coords="15,123,181,177"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html" title=" " alt="" coords="17,5,179,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,229,190,285"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html" title=" " alt="" coords="15,124,180,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,195,92,228,87,229,86,195"/>
+<area shape="poly" id="edge3_Node000001_Node000002" title=" " alt="" coords="109,195,108,229,103,228,104,195"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html" title=" " alt="" coords="16,5,179,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,76,100,123,95,123,95,76"/>
 </map>

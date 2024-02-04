@@ -1,4 +1,5 @@
 <map id="onert::backend::train::ops::ReshapeLayer" name="onert::backend::train::ops::ReshapeLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,144,133"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="7,5,142,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,143,135"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="7,5,141,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,62,77,94,71,94,71,62"/>
 </map>

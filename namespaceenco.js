@@ -64,7 +64,6 @@ var namespaceenco =
     [ "session", "namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684", null ],
     [ "split_into_phases", "namespaceenco.html#abdf064233e67371d5b1f14b576b507de", null ],
     [ "subst", "namespaceenco.html#a577bf7d7b1d4373230201000570e3b13", null ],
-    [ "unify_feature", "namespaceenco.html#a03d7d5a8f802ca59ce16f241fed0a7e3", null ],
     [ "updaters", "namespaceenco.html#ac986b450ed8a39d5721a646501b09d46", null ],
     [ "validate", "namespaceenco.html#af0e745d9916ba307aaa323a54f10c92d", null ],
     [ "validate_output_shape", "namespaceenco.html#abe6f08bb68e612fcf8efcb5aa1c080a9", null ]

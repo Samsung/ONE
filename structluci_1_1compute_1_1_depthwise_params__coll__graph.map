@@ -1,5 +1,7 @@
 <map id="luci::compute::DepthwiseParams" name="luci::compute::DepthwiseParams">
-<area shape="rect" id="node1" title=" " alt="" coords="93,255,258,295"/>
-<area shape="rect" id="node2" href="$structluci_1_1compute_1_1_padding_values.html" title=" " alt="" coords="5,5,196,31"/>
-<area shape="rect" id="node3" title=" " alt="" coords="221,5,282,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="93,259,257,300"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1compute_1_1_padding_values.html" title=" " alt="" coords="5,5,196,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,47,100,85,102,134,112,185,130,234,149,257,145,260,125,236,106,186,97,134,94,86,95,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="220,5,280,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,47,255,85,251,134,242,186,223,236,204,260,199,257,218,234,236,185,246,133,249,85,249,47"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="nnfw::cker::DepthwiseConvParams" name="nnfw::cker::DepthwiseConvParams">
-<area shape="rect" id="node1" title=" " alt="" coords="74,196,253,236"/>
-<area shape="rect" id="node2" href="$structnnfw_1_1cker_1_1_padding_values.html" title=" " alt="" coords="5,5,180,31"/>
-<area shape="rect" id="node3" title=" " alt="" coords="205,5,266,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="74,199,251,240"/>
+<area shape="rect" id="Node000002" href="$structnnfw_1_1cker_1_1_padding_values.html" title=" " alt="" coords="5,5,179,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,46,94,107,101,142,113,174,133,197,129,200,109,176,95,143,89,108,87,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="203,5,264,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,47,228,108,220,143,206,176,188,200,184,197,202,174,215,141,223,107,230,46"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="luci_interpreter::test_kernel::NegTestDataNoQuantParamsS16AddKernel" name="luci_interpreter::test_kernel::NegTestDataNoQuantParamsS16AddKernel">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,249,148"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="39,5,216,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,249,150"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="39,5,215,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,61,130,93,124,93,124,61"/>
 </map>

@@ -1,7 +1,11 @@
 <map id="luci_interpreter::test_kernel::TestDataFloatFloor" name="luci_interpreter::test_kernel::TestDataFloatFloor">
-<area shape="rect" id="node1" title=" " alt="" coords="749,49,931,89"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base.html" title=" " alt="" coords="517,41,700,96"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="237,5,391,60"/>
-<area shape="rect" id="node4" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base.html" title=" " alt="" coords="208,85,420,125"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,77,159,132"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="746,49,926,90"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base.html" title=" " alt="" coords="515,41,697,97"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="712,67,746,67,746,72,712,72"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="237,5,389,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="405,42,515,55,514,61,404,47"/>
+<area shape="rect" id="Node000004" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_floor_base.html" title=" " alt="" coords="207,85,418,126"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="433,88,514,78,515,83,434,93"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,77,158,133"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="173,103,207,103,207,108,173,108"/>
 </map>

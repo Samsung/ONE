@@ -1,4 +1,5 @@
 <map id="luci_interpreter_pal::ArithmeticParams" name="luci_interpreter_pal::ArithmeticParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,211,137,251"/>
-<area shape="rect" id="node2" title=" " alt="" coords="41,5,102,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,214,137,255"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="41,5,101,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,47,74,213,68,213,68,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="tflimport::ReLU6GraphBuilder" name="tflimport::ReLU6GraphBuilder">
-<area shape="rect" id="node1" title="GraphBuilder for ReLU6 operator." alt="" coords="5,79,196,104"/>
-<area shape="rect" id="node2" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="26,5,175,31"/>
+<area shape="rect" id="Node000001" title="GraphBuilder for ReLU6 operator." alt="" coords="5,79,195,105"/>
+<area shape="rect" id="Node000002" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="26,5,174,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,46,103,79,97,79,97,46"/>
 </map>

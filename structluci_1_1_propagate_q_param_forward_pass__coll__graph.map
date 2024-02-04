@@ -1,4 +1,5 @@
 <map id="luci::PropagateQParamForwardPass" name="luci::PropagateQParamForwardPass">
-<area shape="rect" id="node1" title="Class to propagate quantization parameters of an operator&#39;s input to output." alt="" coords="5,79,237,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="80,5,163,31"/>
+<area shape="rect" id="Node000001" title="Class to propagate quantization parameters of an operator&#39;s input to output." alt="" coords="5,79,237,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="80,5,162,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,46,124,79,118,79,118,46"/>
 </map>

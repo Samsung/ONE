@@ -1,6 +1,9 @@
 <map id="loco::With&lt; Trait &gt;::Mixin&lt; Base &gt;" name="loco::With&lt; Trait &gt;::Mixin&lt; Base &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="8,168,135,208"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,93,57,119"/>
-<area shape="rect" id="node3" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="81,93,243,119"/>
-<area shape="rect" id="node4" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="91,5,233,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="8,169,134,210"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,94,57,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="46,133,64,168,59,170,41,135"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="80,94,241,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,132,94,171,91,167,134,128"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="89,5,232,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="163,47,163,94,158,94,158,47"/>
 </map>

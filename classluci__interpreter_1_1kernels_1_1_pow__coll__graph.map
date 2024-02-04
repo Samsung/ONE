@@ -1,4 +1,6 @@
 <map id="luci_interpreter::kernels::Pow" name="luci_interpreter::kernels::Pow">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,192,104"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="23,5,174,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,192,105"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="24,5,173,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,46,94,78,89,79,87,46"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="110,46,108,79,103,78,105,46"/>
 </map>

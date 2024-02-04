@@ -1,4 +1,5 @@
 <map id="luci::GraphBuilderMultiOutput::BuildNodeArgs" name="luci::GraphBuilderMultiOutput::BuildNodeArgs">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,196,133"/>
-<area shape="rect" id="node2" href="$classluci_1_1_graph_builder_context.html" title="Class to store context to build loco graph IR from TensorFlow." alt="" coords="17,5,184,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,195,135"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_graph_builder_context.html" title="Class to store context to build loco graph IR from TensorFlow." alt="" coords="17,5,183,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,46,103,93,97,93,97,46"/>
 </map>

@@ -1,12 +1,22 @@
 <map id="locoex::TFLRsqrt" name="locoex::TFLRsqrt">
-<area shape="rect" id="node1" title=" " alt="" coords="161,671,281,696"/>
-<area shape="rect" id="node2" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="117,567,324,621"/>
-<area shape="rect" id="node3" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="48,449,212,489"/>
-<area shape="rect" id="node4" href="$structlocoex_1_1_t_f_l_node.html" title=" " alt="" coords="14,272,134,297"/>
-<area shape="rect" id="node8" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="96,347,241,387"/>
-<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="33,197,115,223"/>
-<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,108,143,148"/>
-<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
-<area shape="rect" id="node9" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="236,449,389,489"/>
-<area shape="rect" id="node10" title=" " alt="" coords="287,354,339,379"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="158,676,277,702"/>
+<area shape="rect" id="Node000002" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="114,571,321,627"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,643,220,676,215,676,215,643"/>
+<area shape="rect" id="Node000003" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="47,453,210,493"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="153,504,200,569,196,572,149,507"/>
+<area shape="rect" id="Node000004" href="$structlocoex_1_1_t_f_l_node.html" title=" " alt="" coords="14,274,133,300"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="76,315,78,351,85,389,100,422,117,451,112,454,95,425,80,390,73,351,70,315"/>
+<area shape="rect" id="Node000008" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="95,349,239,390"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="101,308,146,347,142,351,97,312"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="32,199,115,225"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="76,240,76,274,71,274,71,240"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,109,142,150"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="76,165,76,199,71,199,71,165"/>
+<area shape="rect" id="Node000007" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="76,62,76,109,71,109,71,62"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="156,405,138,453,133,451,151,403"/>
+<area shape="rect" id="Node000009" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="233,453,386,493"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="288,507,240,572,235,569,284,504"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="284,357,335,382"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="312,398,312,452,307,452,307,398"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="tflinspect::DumpOperatorVersion" name="tflinspect::DumpOperatorVersion">
-<area shape="rect" id="node1" title=" " alt="" coords="6,79,170,119"/>
-<area shape="rect" id="node2" href="$classtflinspect_1_1_dump_interface.html" title=" " alt="" coords="5,5,171,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="6,79,169,120"/>
+<area shape="rect" id="Node000002" href="$classtflinspect_1_1_dump_interface.html" title=" " alt="" coords="5,5,170,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,46,90,79,85,79,85,46"/>
 </map>

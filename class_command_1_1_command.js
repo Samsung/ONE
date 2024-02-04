@@ -1,10 +1,10 @@
 var class_command_1_1_command =
 [
-    [ "__init__", "class_command_1_1_command.html#a751ce80cbe6df363322b8b07303c66ad", null ],
-    [ "add_noarg_option_if_valid_arg", "class_command_1_1_command.html#a9f6bf8f25408f3ef911a01f756d200f3", null ],
-    [ "add_option_with_valid_args", "class_command_1_1_command.html#a3339a42353ee657bbeb5ccc3e2faef70", null ],
-    [ "add_option_with_values", "class_command_1_1_command.html#a750b7265d8df3b992111ea0d3d7e8ff7", null ],
-    [ "run", "class_command_1_1_command.html#a6ab035ae9cedf1b7e1c9b4364321c26b", null ],
+    [ "__init__", "class_command_1_1_command.html#ada6b0b86a12042a60f8515d7557a4e05", null ],
+    [ "add_noarg_option_if_valid_arg", "class_command_1_1_command.html#a7458eaef12fef69d391a695bc2ae2efe", null ],
+    [ "add_option_with_valid_args", "class_command_1_1_command.html#a1802af489cd613b35065a6db565d432e", null ],
+    [ "add_option_with_values", "class_command_1_1_command.html#a87be097608cdcec15c82c88362f6a3ad", null ],
+    [ "run", "class_command_1_1_command.html#acf547022355d39b696a7b00f0427862d", null ],
     [ "args", "class_command_1_1_command.html#a5075e5f06e8ecdbbc2f7e60b5f357523", null ],
     [ "cmd", "class_command_1_1_command.html#ae737e77d39fda739a9e5272f564852e7", null ],
     [ "driver", "class_command_1_1_command.html#a9b045e4351455c832c4ab4d4d97a050d", null ],

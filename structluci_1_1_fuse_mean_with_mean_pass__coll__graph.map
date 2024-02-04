@@ -1,4 +1,5 @@
 <map id="luci::FuseMeanWithMeanPass" name="luci::FuseMeanWithMeanPass">
-<area shape="rect" id="node1" title="Class to fuse two Mean operations follow one by one into one Mean with merge reduction indices." alt="" coords="5,79,203,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,145,31"/>
+<area shape="rect" id="Node000001" title="Class to fuse two Mean operations follow one by one into one Mean with merge reduction indices." alt="" coords="5,79,202,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,46,106,79,101,79,101,46"/>
 </map>

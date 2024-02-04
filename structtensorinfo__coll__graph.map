@@ -1,4 +1,5 @@
 <map id="tensorinfo" name="tensorinfo">
-<area shape="rect" id="node1" title="tensor info describes the type and shape of tensors" alt="" coords="5,108,84,133"/>
-<area shape="rect" id="node2" title=" " alt="" coords="14,5,75,31"/>
+<area shape="rect" id="Node000001" title="tensor info describes the type and shape of tensors" alt="" coords="5,109,84,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="14,5,75,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,47,47,109,42,109,42,47"/>
 </map>

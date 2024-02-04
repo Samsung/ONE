@@ -1,6 +1,9 @@
 <map id="coco::Sub" name="coco::Sub">
-<area shape="rect" id="node1" title="Element&#45;wise subtraction." alt="" coords="21,225,99,251"/>
-<area shape="rect" id="node2" href="$classcoco_1_1_binary_op.html" title="Op with two arguments." alt="" coords="5,152,115,177"/>
-<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="23,79,97,104"/>
-<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="16,5,104,31"/>
+<area shape="rect" id="Node000001" title="Element&#45;wise subtraction." alt="" coords="20,226,99,252"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_binary_op.html" title="Op with two arguments." alt="" coords="5,153,114,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,194,62,226,57,226,57,194"/>
+<area shape="rect" id="Node000003" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="23,79,96,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="62,120,62,152,57,152,57,120"/>
+<area shape="rect" id="Node000004" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="16,5,103,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="62,46,62,79,57,79,57,46"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="luci_interpreter::PackParams" name="luci_interpreter::PackParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,108,193,133"/>
-<area shape="rect" id="node2" title=" " alt="" coords="69,5,130,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,109,193,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="69,5,129,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,47,102,109,96,109,96,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="tflimport::AvgPool2DGraphBuilder" name="tflimport::AvgPool2DGraphBuilder">
-<area shape="rect" id="node1" title="GraphBuilder for AvgPool2D operator." alt="" coords="5,79,180,119"/>
-<area shape="rect" id="node2" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="18,5,167,31"/>
+<area shape="rect" id="Node000001" title="GraphBuilder for AvgPool2D operator." alt="" coords="5,79,179,120"/>
+<area shape="rect" id="Node000002" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="18,5,166,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,46,95,79,89,79,89,46"/>
 </map>

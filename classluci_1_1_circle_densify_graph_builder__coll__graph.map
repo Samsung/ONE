@@ -1,5 +1,7 @@
 <map id="luci::CircleDensifyGraphBuilder" name="luci::CircleDensifyGraphBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,152,164,192"/>
-<area shape="rect" id="node2" href="$classluci_1_1_graph_builder.html" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="23,79,146,104"/>
-<area shape="rect" id="node3" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="8,5,161,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,164,193"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_graph_builder.html" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="23,79,146,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,120,87,152,82,152,82,120"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="8,5,161,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="87,46,87,79,82,79,82,46"/>
 </map>

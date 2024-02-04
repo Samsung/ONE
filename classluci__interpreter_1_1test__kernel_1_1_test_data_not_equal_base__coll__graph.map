@@ -1,5 +1,7 @@
 <map id="luci_interpreter::test_kernel::TestDataNotEqualBase&lt; T, U &gt;" name="luci_interpreter::test_kernel::TestDataNotEqualBase&lt; T, U &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,227,212,281"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="32,123,185,177"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="32,5,185,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,229,211,285"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="32,124,184,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,195,111,228,105,228,105,195"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="32,5,184,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,76,111,123,105,123,105,76"/>
 </map>

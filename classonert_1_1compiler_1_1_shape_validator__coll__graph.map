@@ -1,4 +1,5 @@
 <map id="onert::compiler::ShapeValidator" name="onert::compiler::ShapeValidator">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,205,104"/>
-<area shape="rect" id="node2" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="24,5,187,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,205,105"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="24,5,186,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,46,108,79,102,79,102,46"/>
 </map>

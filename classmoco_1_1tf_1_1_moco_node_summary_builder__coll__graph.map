@@ -1,4 +1,5 @@
 <map id="moco::tf::MocoNodeSummaryBuilder" name="moco::tf::MocoNodeSummaryBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,197,119"/>
-<area shape="rect" id="node2" href="$structlocop_1_1_node_summary_builder.html" title="Build a summary from loco Node." alt="" coords="9,5,194,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,197,120"/>
+<area shape="rect" id="Node000002" href="$structlocop_1_1_node_summary_builder.html" title="Build a summary from loco Node." alt="" coords="9,5,193,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,46,104,79,98,79,98,46"/>
 </map>

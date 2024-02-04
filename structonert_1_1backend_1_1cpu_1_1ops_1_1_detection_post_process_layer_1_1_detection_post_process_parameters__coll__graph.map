@@ -1,8 +1,13 @@
 <map id="onert::backend::cpu::ops::DetectionPostProcessLayer::DetectionPostProcessParameters" name="onert::backend::cpu::ops::DetectionPostProcessLayer::DetectionPostProcessParameters">
-<area shape="rect" id="node1" title=" " alt="" coords="640,130,897,185"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="252,77,416,117"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,61,161,86"/>
-<area shape="rect" id="node4" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,110,154,135"/>
-<area shape="rect" id="node5" title=" " alt="" coords="303,145,365,170"/>
-<area shape="rect" id="node6" href="$structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html" title=" " alt="" coords="241,194,427,249"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="636,133,892,189"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="250,79,414,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,105,612,126,636,130,635,136,612,132,429,110"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,63,161,89"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,82,250,89,249,94,176,87"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,112,153,138"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="168,114,249,105,250,111,169,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="302,148,362,174"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="378,158,636,158,636,164,378,164"/>
+<area shape="rect" id="Node000006" href="$structonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer_1_1_center_size_box.html" title=" " alt="" coords="240,199,424,254"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="439,208,635,178,636,183,440,213"/>
 </map>

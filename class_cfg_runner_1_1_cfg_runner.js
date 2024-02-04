@@ -1,10 +1,12 @@
 var class_cfg_runner_1_1_cfg_runner =
 [
-    [ "__init__", "class_cfg_runner_1_1_cfg_runner.html#a4d4994b8a43b59779a08fa2ee8959102", null ],
-    [ "add_opt", "class_cfg_runner_1_1_cfg_runner.html#af2aa5654d9a8ff2720b12522dc473a63", null ],
-    [ "detect_import_drivers", "class_cfg_runner_1_1_cfg_runner.html#a62df954f64face38dbca28acb21d93ec", null ],
-    [ "run", "class_cfg_runner_1_1_cfg_runner.html#ab8085d897fa069bc4f64fb110b67b9ff", null ],
-    [ "set_backend", "class_cfg_runner_1_1_cfg_runner.html#adafd824366c6cbcc0c54c90920f1e9fc", null ],
+    [ "__init__", "class_cfg_runner_1_1_cfg_runner.html#a5471279b01d5b498923388f24dbe6fd6", null ],
+    [ "_is_available", "class_cfg_runner_1_1_cfg_runner.html#a02d90f6a2c82cf0b5b58ab8f7534cbba", null ],
+    [ "_verify_cfg", "class_cfg_runner_1_1_cfg_runner.html#a331e0bda91070e6478a61cac8364f051", null ],
+    [ "add_opt", "class_cfg_runner_1_1_cfg_runner.html#a10bfe2d0d34f20e444bfd3a7e72925ca", null ],
+    [ "detect_import_drivers", "class_cfg_runner_1_1_cfg_runner.html#a4c21819b6117c5d83a640d840b2aecfa", null ],
+    [ "run", "class_cfg_runner_1_1_cfg_runner.html#af97c4b88355b1eb3c73c7693fefd9790", null ],
+    [ "set_backend", "class_cfg_runner_1_1_cfg_runner.html#ac1977810b978f45682a0d47f4815e76f", null ],
     [ "backend", "class_cfg_runner_1_1_cfg_runner.html#a8525e9186cb1243ba126c67cc51cf915", null ],
     [ "cfgparser", "class_cfg_runner_1_1_cfg_runner.html#a4006c7673d1402f6c7cb983677d8a5e2", null ],
     [ "import_drivers", "class_cfg_runner_1_1_cfg_runner.html#a9bd0cba932f5781bd230f1c803e21ae3", null ],

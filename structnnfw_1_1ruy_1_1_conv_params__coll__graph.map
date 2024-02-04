@@ -1,5 +1,7 @@
 <map id="nnfw::ruy::ConvParams" name="nnfw::ruy::ConvParams">
-<area shape="rect" id="node1" title=" " alt="" coords="81,196,235,221"/>
-<area shape="rect" id="node2" href="$structnnfw_1_1ruy_1_1_padding_values.html" title=" " alt="" coords="5,5,172,31"/>
-<area shape="rect" id="node3" title=" " alt="" coords="197,5,258,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="79,199,233,225"/>
+<area shape="rect" id="Node000002" href="$structnnfw_1_1ruy_1_1_padding_values.html" title=" " alt="" coords="5,5,171,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,46,86,108,92,142,105,174,116,186,130,196,127,201,113,190,101,176,87,143,81,108,81,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="195,5,256,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,47,222,108,213,143,198,176,176,200,172,197,194,174,208,141,216,107,223,46"/>
 </map>

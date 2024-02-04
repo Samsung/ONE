@@ -1,4 +1,5 @@
 <map id="flatbuffers::grpc::SliceAllocator" name="flatbuffers::grpc::SliceAllocator">
-<area shape="rect" id="node1" title=" " alt="" coords="15,79,130,119"/>
-<area shape="rect" id="node2" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="15,79,130,120"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="5,5,140,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,46,75,79,70,79,70,46"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="onert::exec::InputDesc" name="onert::exec::InputDesc">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,155,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="9,5,151,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,154,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="9,5,150,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,47,82,94,77,94,77,47"/>
 </map>

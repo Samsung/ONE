@@ -1,6 +1,10 @@
 <map id="nnfw::cker::BCast" name="nnfw::cker::BCast">
-<area shape="rect" id="node1" title=" " alt="" coords="31,256,154,281"/>
-<area shape="rect" id="node2" href="$classnnfw_1_1cker_1_1_b_cast_list.html" title=" " alt="" coords="5,181,180,207"/>
-<area shape="rect" id="node3" title=" " alt="" coords="62,5,123,31"/>
-<area shape="rect" id="node4" href="$classnnfw_1_1cker_1_1_b_cast_list.html" title=" " alt="" coords="212,93,389,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,258,153,283"/>
+<area shape="rect" id="Node000002" href="$classnnfw_1_1cker_1_1_b_cast_list.html" title=" " alt="" coords="5,183,179,208"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,224,95,257,89,257,89,224"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="62,5,122,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,46,86,81,85,120,93,182,87,182,80,120,80,81,84,46"/>
+<area shape="rect" id="Node000004" href="$classnnfw_1_1cker_1_1_b_cast_list.html" title=" " alt="" coords="209,94,386,120"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="136,35,270,91,267,96,134,40"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="256,129,122,185,120,180,253,124"/>
 </map>

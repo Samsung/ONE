@@ -1,4 +1,5 @@
 <map id="nnfw::cker::SpaceToBatchParams" name="nnfw::cker::SpaceToBatchParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,179,133"/>
-<area shape="rect" id="node2" title=" " alt="" coords="61,5,123,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,178,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="61,5,122,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,46,94,93,89,93,89,46"/>
 </map>

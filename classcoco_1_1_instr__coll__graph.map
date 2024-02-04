@@ -1,5 +1,7 @@
 <map id="coco::Instr" name="coco::Instr">
-<area shape="rect" id="node1" title="Base interface on explicit computation steps in coco IR." alt="" coords="108,93,191,119"/>
-<area shape="rect" id="node2" href="$classcoco_1_1_d_linked_list_1_1_node.html" title=" " alt="" coords="5,5,152,45"/>
-<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="176,13,264,38"/>
+<area shape="rect" id="Node000001" title="Base interface on explicit computation steps in coco IR." alt="" coords="109,94,190,120"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_d_linked_list_1_1_node.html" title=" " alt="" coords="5,5,152,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,56,140,92,136,95,104,60"/>
+<area shape="rect" id="Node000003" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="176,13,264,39"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,52,162,95,158,92,197,49"/>
 </map>

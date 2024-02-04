@@ -1,4 +1,6 @@
 <map id="luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchNegKernel" name="luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchNegKernel">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,220,148"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="24,5,201,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,220,150"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="24,5,201,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,61,107,93,102,93,101,61"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="124,61,123,93,118,93,119,61"/>
 </map>

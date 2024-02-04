@@ -1,4 +1,5 @@
 <map id="luci::compute::FullyConnectedParams" name="luci::compute::FullyConnectedParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,196,199,236"/>
-<area shape="rect" id="node2" title=" " alt="" coords="71,5,133,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,199,198,240"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="71,5,132,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,46,104,199,99,199,99,46"/>
 </map>

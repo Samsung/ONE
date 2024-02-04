@@ -1,22 +1,18 @@
 var searchData=
 [
   ['eltwise_0',['eltwise',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a98b908c7d0339bb6a4832db44fc2c8da',1,'mir_caffe']]],
-  ['elu_1',['ELU',['../classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a5b44c930bf0ddeef48b50ef11e5ddd58',1,'onert::ir::operation::ElementwiseActivation::ELU()'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a5b44c930bf0ddeef48b50ef11e5ddd58',1,'mir_caffe::ELU()']]],
+  ['elu_1',['elu',['../classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a5b44c930bf0ddeef48b50ef11e5ddd58',1,'onert::ir::operation::ElementwiseActivation::ELU'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a5b44c930bf0ddeef48b50ef11e5ddd58',1,'mir_caffe::ELU']]],
   ['embed_2',['embed',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a269605d45c104f12cbcdc8fb71434acc',1,'mir_caffe']]],
   ['embedding_5flookup_3',['EMBEDDING_LOOKUP',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152ac6ba772dae472252be0cecb7a60c4014',1,'OperationType.h']]],
   ['end_4',['END',['../class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaab1a326c06d88bf042f73d70f50197905',1,'EventCollector']]],
   ['ends_5',['ENDS',['../classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20acee3e87ac3695946730430e522b06d61',1,'onert::ir::operation::StridedSlice']]],
   ['eq_6',['eq',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9adf22f17124884fc51f1ac69d610096ac',1,'nnc']]],
-  ['equal_7',['Equal',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5',1,'onert::ir::operation::Comparison']]],
-  ['equal_8',['EQUAL',['../namespacearm__compute.html#aa98b7f35f1cc6c32c83f5449508ee527a969f331a87d8c958473c32b4d0e61a44',1,'arm_compute']]],
-  ['equal_9',['Equal',['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6af5f286e73bda105e538310b3190f75c5',1,'nnfw::cker']]],
-  ['erf_10',['ERF',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a37a5fe612ac8fe5cc64e84d2d10694e6',1,'onert::ir::operation::ElementwiseUnary']]],
-  ['error_11',['ERROR',['../namespacehermes.html#aeb54ce9ebdeb2deb129a0eb96aa61d07a3db57ef973320be4c3f35648b12922ba',1,'hermes']]],
-  ['euclidianloss_12',['euclidianLoss',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a972382074481db1eb7878b37e518fdc6',1,'mir_caffe']]],
-  ['executionplangen_13',['ExecutionPlanGen',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba82fe1bb7285274710984577afbfb2a92',1,'luci::UserSettings']]],
-  ['exp_14',['EXP',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7',1,'onert::ir::operation::ElementwiseUnary']]],
-  ['exp_15',['exp',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb',1,'mir_caffe']]],
-  ['expandbroadcastconst_16',['ExpandBroadcastConst',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaafb594aed7792f32b5e84ef852102fb0',1,'luci::CircleOptimizer::Options']]],
-  ['explicit_17',['EXPLICIT',['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir']]],
-  ['explicit_18',['Explicit',['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops']]]
+  ['equal_7',['equal',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5',1,'onert::ir::operation::Comparison::Equal'],['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6af5f286e73bda105e538310b3190f75c5',1,'nnfw::cker::Equal'],['../namespacearm__compute.html#aa98b7f35f1cc6c32c83f5449508ee527a969f331a87d8c958473c32b4d0e61a44',1,'arm_compute::EQUAL']]],
+  ['erf_8',['ERF',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a37a5fe612ac8fe5cc64e84d2d10694e6',1,'onert::ir::operation::ElementwiseUnary']]],
+  ['error_9',['ERROR',['../namespacehermes.html#aeb54ce9ebdeb2deb129a0eb96aa61d07a3db57ef973320be4c3f35648b12922ba',1,'hermes']]],
+  ['euclidianloss_10',['euclidianLoss',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a972382074481db1eb7878b37e518fdc6',1,'mir_caffe']]],
+  ['executionplangen_11',['ExecutionPlanGen',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba82fe1bb7285274710984577afbfb2a92',1,'luci::UserSettings']]],
+  ['exp_12',['exp',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7',1,'onert::ir::operation::ElementwiseUnary::EXP'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb',1,'mir_caffe::exp']]],
+  ['expandbroadcastconst_13',['ExpandBroadcastConst',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaafb594aed7792f32b5e84ef852102fb0',1,'luci::CircleOptimizer::Options']]],
+  ['explicit_14',['explicit',['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir::EXPLICIT'],['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops::Explicit']]]
 ];

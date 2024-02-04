@@ -1,4 +1,5 @@
 <map id="loco::PermutingEncoder&lt; Domain::Filter &gt;" name="loco::PermutingEncoder&lt; Domain::Filter &gt;">
-<area shape="rect" id="node1" title="Permutation&#45;based Tensor&#45;to&#45;Filter converter." alt="" coords="5,79,164,119"/>
-<area shape="rect" id="node2" href="$structloco_1_1_filter_encoder.html" title="Decribe how to build a (convolution) filter from a tensor." alt="" coords="21,5,149,31"/>
+<area shape="rect" id="Node000001" title="Permutation&#45;based Tensor&#45;to&#45;Filter converter." alt="" coords="5,79,163,120"/>
+<area shape="rect" id="Node000002" href="$structloco_1_1_filter_encoder.html" title="Decribe how to build a (convolution) filter from a tensor." alt="" coords="20,5,148,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,46,87,79,81,79,81,46"/>
 </map>

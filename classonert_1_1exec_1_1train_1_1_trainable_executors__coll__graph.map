@@ -1,4 +1,5 @@
 <map id="onert::exec::train::TrainableExecutors" name="onert::exec::train::TrainableExecutors">
-<area shape="rect" id="node1" title="Class to gather executor set for trainable model NN package." alt="" coords="11,79,150,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_executors.html" title="Class to gather NN package&#39;s executor set." alt="" coords="5,5,156,31"/>
+<area shape="rect" id="Node000001" title="Class to gather executor set for trainable model NN package." alt="" coords="12,79,149,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_i_executors.html" title="Class to gather NN package&#39;s executor set." alt="" coords="5,5,156,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,46,83,79,78,79,78,46"/>
 </map>

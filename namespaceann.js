@@ -6,7 +6,6 @@ var namespaceann =
     [ "OperandInventory", "classann_1_1_operand_inventory.html", "classann_1_1_operand_inventory" ],
     [ "Operation", "classann_1_1_operation.html", "classann_1_1_operation" ],
     [ "OperationInventory", "classann_1_1_operation_inventory.html", "classann_1_1_operation_inventory" ],
-    [ "ScalarOperand", "structann_1_1_scalar_operand.html", null ],
     [ "TensorOperand", "structann_1_1_tensor_operand.html", "structann_1_1_tensor_operand" ],
     [ "Weight", "classann_1_1_weight.html", "classann_1_1_weight" ],
     [ "WeightInventory", "classann_1_1_weight_inventory.html", "classann_1_1_weight_inventory" ],

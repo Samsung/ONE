@@ -1,10 +1,17 @@
 <map id="onert::backend::basic::train::TrainableTensor" name="onert::backend::basic::train::TrainableTensor">
-<area shape="rect" id="node1" title=" " alt="" coords="704,58,856,98"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html" title="A tensor class that can be trained." alt="" coords="463,27,601,67"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="241,22,405,62"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,154,80"/>
-<area shape="rect" id="node6" href="$structcircle__eval__diff_1_1_tensor.html" title=" " alt="" coords="455,93,609,119"/>
-<area shape="rect" id="node7" href="$structcircle__eval__diff_1_1_tensor_shape.html" title=" " alt="" coords="246,86,401,126"/>
-<area shape="rect" id="node8" href="$structcircle__eval__diff_1_1_tensor_data_type.html" title=" " alt="" coords="246,150,401,190"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="700,59,851,100"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html" title="A tensor class that can be trained." alt="" coords="461,29,597,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="613,57,700,67,699,73,612,62"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="240,22,403,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="418,43,461,44,461,49,418,48"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="176,25,239,31,239,37,176,30"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,153,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="168,56,239,48,239,54,169,61"/>
+<area shape="rect" id="Node000006" href="$structcircle__eval__diff_1_1_tensor.html" title=" " alt="" coords="452,95,606,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="621,94,699,85,699,91,622,100"/>
+<area shape="rect" id="Node000007" href="$structcircle__eval__diff_1_1_tensor_shape.html" title=" " alt="" coords="245,87,398,128"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="413,105,452,105,452,110,413,110"/>
+<area shape="rect" id="Node000008" href="$structcircle__eval__diff_1_1_tensor_data_type.html" title=" " alt="" coords="245,153,398,193"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="402,145,485,118,486,124,403,150"/>
 </map>

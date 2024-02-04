@@ -1,10 +1,18 @@
 <map id="luci::CircleNodeImpl&lt; Code &gt;" name="luci::CircleNodeImpl&lt; Code &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="997,63,1135,103"/>
-<area shape="rect" id="node2" href="$structluci_1_1_circle_node.html" title=" " alt="" coords="836,70,948,95"/>
-<area shape="rect" id="node3" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="656,13,739,38"/>
-<area shape="rect" id="node4" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="312,5,449,45"/>
-<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
-<area shape="rect" id="node6" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="619,63,776,103"/>
-<area shape="rect" id="node7" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="309,99,452,125"/>
-<area shape="rect" id="node8" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="608,127,787,167"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="993,63,1130,103"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node.html" title=" " alt="" coords="833,70,944,96"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="960,80,993,80,993,86,960,86"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="653,13,735,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="751,39,784,48,845,67,843,72,783,54,750,44"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="311,5,447,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="463,23,653,23,653,28,463,28"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="157,23,311,23,311,28,157,28"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="616,63,772,103"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="788,80,832,80,832,86,788,86"/>
+<area shape="rect" id="Node000007" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="308,101,450,127"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="465,103,616,88,616,93,465,108"/>
+<area shape="rect" id="Node000008" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="605,128,783,169"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="439,128,474,136,540,143,605,146,604,151,540,148,474,141,438,134"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="770,120,847,94,848,99,772,125"/>
 </map>

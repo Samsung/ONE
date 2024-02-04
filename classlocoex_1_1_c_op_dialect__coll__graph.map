@@ -1,4 +1,5 @@
 <map id="locoex::COpDialect" name="locoex::COpDialect">
-<area shape="rect" id="node1" title="A singleton for locoex custom op Dialect." alt="" coords="5,79,136,104"/>
-<area shape="rect" id="node2" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="25,5,117,31"/>
+<area shape="rect" id="Node000001" title="A singleton for locoex custom op Dialect." alt="" coords="5,79,136,105"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="25,5,116,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,46,73,79,68,79,68,46"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="nnfw::cker::Shape" name="nnfw::cker::Shape">
-<area shape="rect" id="node1" title=" " alt="" coords="5,108,129,133"/>
-<area shape="rect" id="node2" title=" " alt="" coords="37,5,98,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,109,129,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="37,5,97,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,47,70,109,64,109,64,47"/>
 </map>

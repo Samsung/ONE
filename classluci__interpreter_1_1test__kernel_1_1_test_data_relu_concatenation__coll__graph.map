@@ -1,4 +1,5 @@
 <map id="luci_interpreter::test_kernel::TestDataReluConcatenation" name="luci_interpreter::test_kernel::TestDataReluConcatenation">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,237,133"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="33,5,210,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,237,135"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="33,5,209,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,62,124,94,118,94,118,62"/>
 </map>

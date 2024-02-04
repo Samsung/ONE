@@ -1,4 +1,5 @@
 <map id="onert::compiler::MultiModelCompiler" name="onert::compiler::MultiModelCompiler">
-<area shape="rect" id="node1" title="Class to compile NN package." alt="" coords="5,79,180,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1compiler_1_1_i_compiler.html" title=" " alt="" coords="9,5,176,31"/>
+<area shape="rect" id="Node000001" title="Class to compile NN package." alt="" coords="5,79,180,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1compiler_1_1_i_compiler.html" title=" " alt="" coords="9,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,46,95,79,90,79,90,46"/>
 </map>

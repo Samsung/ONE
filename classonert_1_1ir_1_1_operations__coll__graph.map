@@ -1,5 +1,7 @@
 <map id="onert::ir::Operations" name="onert::ir::Operations">
-<area shape="rect" id="node1" title=" " alt="" coords="38,197,171,223"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="5,108,204,148"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="21,5,189,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="38,199,170,225"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="5,109,203,150"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,165,107,199,101,199,101,165"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="20,5,188,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,62,107,109,101,109,101,62"/>
 </map>

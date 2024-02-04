@@ -1,6 +1,10 @@
 <map id="luci_interpreter::CircleReferencingConstNodeBuilder" name="luci_interpreter::CircleReferencingConstNodeBuilder">
-<area shape="rect" id="node1" title="Builder creates CircleCustom node with pointer to constants data from Tensor with buffer." alt="" coords="8,287,204,327"/>
-<area shape="rect" id="node2" href="$classluci_1_1_typed_node_builder.html" title=" " alt="" coords="5,197,207,237"/>
-<area shape="rect" id="node3" href="$classluci_1_1_node_builder_base.html" title="Creates nodes from given Tensor and context." alt="" coords="26,5,175,31"/>
-<area shape="rect" id="node4" href="$classluci_1_1_typed_node_builder.html" title="Placeholder for builders of tensors with different types." alt="" coords="122,80,277,120"/>
+<area shape="rect" id="Node000001" title="Builder creates CircleCustom node with pointer to constants data from Tensor with buffer." alt="" coords="8,289,203,330"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_typed_node_builder.html" title=" " alt="" coords="5,199,206,240"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,255,108,289,103,289,103,255"/>
+<area shape="rect" id="Node000003" href="$classluci_1_1_node_builder_base.html" title="Creates nodes from given Tensor and context." alt="" coords="26,5,174,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,46,108,199,102,199,98,46"/>
+<area shape="rect" id="Node000004" href="$classluci_1_1_typed_node_builder.html" title="Placeholder for builders of tensors with different types." alt="" coords="122,80,276,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="128,39,177,78,173,82,125,43"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="176,134,123,200,119,197,172,131"/>
 </map>

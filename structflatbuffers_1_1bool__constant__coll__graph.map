@@ -1,7 +1,11 @@
 <map id="flatbuffers::bool_constant&lt; B &gt;" name="flatbuffers::bool_constant&lt; B &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="31,287,227,312"/>
-<area shape="rect" id="node2" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="58,197,199,237"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,95,151,135"/>
-<area shape="rect" id="node4" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="175,95,301,135"/>
-<area shape="rect" id="node5" title=" " alt="" coords="165,5,311,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,289,226,315"/>
+<area shape="rect" id="Node000002" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="58,199,198,240"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,255,131,289,126,289,126,255"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,95,150,136"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,149,121,197,116,200,92,151"/>
+<area shape="rect" id="Node000004" href="$structflatbuffers_1_1integral__constant.html" title=" " alt="" coords="174,95,299,136"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="206,149,151,201,147,197,202,145"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="164,5,308,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="239,62,239,95,234,95,234,62"/>
 </map>

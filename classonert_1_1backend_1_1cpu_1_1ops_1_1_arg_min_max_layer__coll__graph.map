@@ -1,4 +1,5 @@
 <map id="onert::backend::cpu::ops::ArgMinMaxLayer" name="onert::backend::cpu::ops::ArgMinMaxLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,157,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="9,5,153,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,157,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="9,5,153,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,46,84,79,78,79,78,46"/>
 </map>

@@ -1,9 +1,16 @@
 <map id="InstrPrinter" name="InstrPrinter">
-<area shape="rect" id="node1" title=" " alt="" coords="209,257,296,283"/>
-<area shape="rect" id="node2" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="88,168,247,208"/>
-<area shape="rect" id="node3" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="5,80,164,105"/>
-<area shape="rect" id="node4" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="189,80,343,105"/>
-<area shape="rect" id="node6" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="277,168,402,208"/>
-<area shape="rect" id="node5" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="187,5,345,31"/>
-<area shape="rect" id="node7" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="368,80,527,105"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="209,259,294,285"/>
+<area shape="rect" id="Node000002" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="88,169,246,210"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,218,240,257,237,260,196,222"/>
+<area shape="rect" id="Node000003" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="5,80,164,106"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,116,152,167,148,170,103,119"/>
+<area shape="rect" id="Node000004" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="187,80,342,106"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="182,116,165,131,160,149,163,168,157,169,155,149,161,129,178,112"/>
+<area shape="rect" id="Node000006" href="$structcoco_1_1_instr_1_1_visitor.html" title=" " alt="" coords="276,169,400,210"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="296,114,311,128,333,167,328,170,306,132,293,118"/>
+<area shape="rect" id="Node000005" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="185,5,344,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="267,46,267,80,262,80,262,46"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="308,222,266,260,262,257,304,218"/>
+<area shape="rect" id="Node000007" href="$structcoco_1_1_instr_1_1_i_visitor.html" title="Instr visitor interface." alt="" coords="365,80,524,106"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="421,118,362,170,358,166,418,114"/>
 </map>

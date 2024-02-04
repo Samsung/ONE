@@ -1,4 +1,5 @@
 <map id="tfldump::SqueezePrinter" name="tfldump::SqueezePrinter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,164,104"/>
-<area shape="rect" id="node2" href="$classtfldump_1_1_op_printer.html" title=" " alt="" coords="22,5,147,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,163,105"/>
+<area shape="rect" id="Node000002" href="$classtfldump_1_1_op_printer.html" title=" " alt="" coords="22,5,146,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,46,87,79,81,79,81,46"/>
 </map>

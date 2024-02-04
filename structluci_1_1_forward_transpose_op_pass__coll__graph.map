@@ -1,4 +1,5 @@
 <map id="luci::ForwardTransposeOpPass" name="luci::ForwardTransposeOpPass">
-<area shape="rect" id="node1" title="Class to Forward Transpose Ops for further optimization." alt="" coords="5,79,208,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="65,5,148,31"/>
+<area shape="rect" id="Node000001" title="Class to Forward Transpose Ops for further optimization." alt="" coords="5,79,208,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="66,5,147,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,46,109,79,104,79,104,46"/>
 </map>

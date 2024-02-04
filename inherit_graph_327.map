@@ -1,3 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classloco_1_1_depthwise_filter_shape.html" title="DepthwiseFilter Shape." alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000000" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="5,129,97,155"/>
+<area shape="rect" id="Node000001" href="$classloco_1_1_canonical_dialect.html" title="A singleton for Canonical Dialect." alt="" coords="145,5,293,31"/>
+<area shape="poly" id="edge1073_Node000000_Node000001" title=" " alt="" coords="68,115,100,77,143,40,165,29,167,34,146,44,104,80,72,119"/>
+<area shape="rect" id="Node000002" href="$classlocoex_1_1_c_op_dialect.html" title="A singleton for locoex custom op Dialect." alt="" coords="154,55,284,80"/>
+<area shape="poly" id="edge1074_Node000000_Node000002" title=" " alt="" coords="86,119,144,89,171,78,173,83,146,94,89,123"/>
+<area shape="rect" id="Node000003" href="$classlocoex_1_1_circle_dialect.html" title=" " alt="" coords="150,104,288,130"/>
+<area shape="poly" id="edge1075_Node000000_Node000003" title=" " alt="" coords="112,130,149,125,150,130,112,136"/>
+<area shape="rect" id="Node000004" href="$classlocoex_1_1_t_f_l_dialect.html" title=" " alt="" coords="155,153,283,179"/>
+<area shape="poly" id="edge1076_Node000000_Node000004" title=" " alt="" coords="112,148,155,154,154,160,112,153"/>
+<area shape="rect" id="Node000005" href="$classluci_1_1_circle_dialect.html" title="A singleton for Circle Dialect." alt="" coords="159,203,279,228"/>
+<area shape="poly" id="edge1077_Node000000_Node000005" title=" " alt="" coords="89,161,146,189,174,200,172,205,144,194,87,166"/>
+<area shape="rect" id="Node000006" href="$classmoco_1_1_t_f_dialect.html" title="A singleton for TensorFlow Dialect." alt="" coords="161,252,277,278"/>
+<area shape="poly" id="edge1078_Node000000_Node000006" title=" " alt="" coords="72,165,104,203,146,239,167,249,165,254,143,243,100,207,68,169"/>
 </map>

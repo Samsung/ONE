@@ -1,4 +1,6 @@
 <map id="Frontend" name="Frontend">
-<area shape="rect" id="node1" title=" " alt="" coords="22,79,95,104"/>
-<area shape="rect" id="node2" href="$structenco_1_1_frontend.html" title=" " alt="" coords="5,5,112,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="22,79,95,105"/>
+<area shape="rect" id="Node000002" href="$structenco_1_1_frontend.html" title=" " alt="" coords="5,5,112,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="52,46,54,78,49,79,47,46"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="70,46,68,79,63,78,65,46"/>
 </map>

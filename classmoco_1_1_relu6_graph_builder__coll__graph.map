@@ -1,4 +1,5 @@
 <map id="moco::Relu6GraphBuilder" name="moco::Relu6GraphBuilder">
-<area shape="rect" id="node1" title="GraphBuilder for Relu6 node." alt="" coords="5,79,173,104"/>
-<area shape="rect" id="node2" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="22,5,157,31"/>
+<area shape="rect" id="Node000001" title="GraphBuilder for Relu6 node." alt="" coords="5,79,173,105"/>
+<area shape="rect" id="Node000002" href="$classmoco_1_1_graph_builder.html" title="Interface of convert TF NodeDef to loco::Node (e.g., Conv2DGraphBuilder)" alt="" coords="22,5,156,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,46,92,79,86,79,86,46"/>
 </map>

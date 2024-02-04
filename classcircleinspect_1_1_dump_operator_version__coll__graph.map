@@ -1,4 +1,5 @@
 <map id="circleinspect::DumpOperatorVersion" name="circleinspect::DumpOperatorVersion">
-<area shape="rect" id="node1" title=" " alt="" coords="6,79,191,119"/>
-<area shape="rect" id="node2" href="$classcircleinspect_1_1_dump_interface.html" title=" " alt="" coords="5,5,192,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="6,79,190,120"/>
+<area shape="rect" id="Node000002" href="$classcircleinspect_1_1_dump_interface.html" title=" " alt="" coords="5,5,191,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,46,101,79,95,79,95,46"/>
 </map>

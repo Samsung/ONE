@@ -1,4 +1,5 @@
 <map id="onert::compiler::train::LoweredTrainableGraph" name="onert::compiler::train::LoweredTrainableGraph">
-<area shape="rect" id="node1" title="Class that contains lowering information on graph. In addition, after lowering, operands in graph wil..." alt="" coords="5,93,172,133"/>
-<area shape="rect" id="node2" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="5,5,172,45"/>
+<area shape="rect" id="Node000001" title="Class that contains lowering information on graph. In addition, after lowering, operands in graph wil..." alt="" coords="5,94,171,135"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="5,5,171,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,62,91,94,85,94,85,62"/>
 </map>

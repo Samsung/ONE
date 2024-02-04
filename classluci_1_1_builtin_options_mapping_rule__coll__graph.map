@@ -1,7 +1,11 @@
 <map id="luci::BuiltinOptionsMappingRule" name="luci::BuiltinOptionsMappingRule">
-<area shape="rect" id="node1" title=" " alt="" coords="29,257,233,283"/>
-<area shape="rect" id="node2" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="50,168,213,208"/>
-<area shape="rect" id="node3" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,215,105"/>
-<area shape="rect" id="node4" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="239,80,418,105"/>
-<area shape="rect" id="node5" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="224,5,433,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="73,259,277,285"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="94,169,256,210"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,225,178,259,172,259,172,225"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,214,106"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,117,163,167,159,170,124,120"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="238,80,416,106"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="296,117,208,171,205,166,293,112"/>
+<area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="223,5,431,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="330,46,330,80,324,80,324,46"/>
 </map>

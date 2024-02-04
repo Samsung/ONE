@@ -1,6 +1,9 @@
 <map id="luci::CircleInstanceNorm" name="luci::CircleInstanceNorm">
-<area shape="rect" id="node1" title="INSTANCE_NORM in Circle." alt="" coords="339,49,501,74"/>
-<area shape="rect" id="node2" href="$classluci_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="130,5,266,45"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,13,57,38"/>
-<area shape="rect" id="node4" href="$classluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html" title=" " alt="" coords="105,70,291,125"/>
+<area shape="rect" id="Node000001" title="INSTANCE_NORM in Circle." alt="" coords="337,49,499,75"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="129,5,265,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="280,36,337,46,336,51,279,42"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,13,57,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="72,23,129,23,129,28,72,28"/>
+<area shape="rect" id="Node000004" href="$classluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html" title=" " alt="" coords="105,70,289,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="304,77,336,72,337,78,305,83"/>
 </map>

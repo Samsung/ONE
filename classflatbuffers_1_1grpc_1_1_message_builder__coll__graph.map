@@ -1,8 +1,13 @@
 <map id="flatbuffers::grpc::MessageBuilder" name="flatbuffers::grpc::MessageBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="144,272,259,312"/>
-<area shape="rect" id="node2" href="$structflatbuffers_1_1grpc_1_1detail_1_1_slice_allocator_member.html" title=" " alt="" coords="5,183,192,223"/>
-<area shape="rect" id="node3" href="$classflatbuffers_1_1grpc_1_1_slice_allocator.html" title=" " alt="" coords="41,80,156,120"/>
-<area shape="rect" id="node4" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="31,5,166,31"/>
-<area shape="rect" id="node5" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="217,190,397,215"/>
-<area shape="rect" id="node6" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="247,80,367,120"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="144,274,258,315"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,184,191,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,233,179,271,176,275,130,237"/>
+<area shape="rect" id="Node000003" href="$classflatbuffers_1_1grpc_1_1_slice_allocator.html" title=" " alt="" coords="41,80,155,121"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,137,101,184,95,184,95,137"/>
+<area shape="rect" id="Node000004" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="31,5,165,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,47,101,80,95,80,95,47"/>
+<area shape="rect" id="Node000005" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="215,192,394,217"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="280,230,226,276,222,272,277,226"/>
+<area shape="rect" id="Node000006" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="245,80,364,121"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="307,136,307,191,302,191,302,136"/>
 </map>

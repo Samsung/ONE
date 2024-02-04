@@ -1,4 +1,5 @@
 <map id="mpqsolver::pattern::Q8LayerNormWithQ16VarianceResolver" name="mpqsolver::pattern::Q8LayerNormWithQ16VarianceResolver">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,216,148"/>
-<area shape="rect" id="node2" href="$classmpqsolver_1_1pattern_1_1_pattern_resolver.html" title=" " alt="" coords="47,5,175,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,215,150"/>
+<area shape="rect" id="Node000002" href="$classmpqsolver_1_1pattern_1_1_pattern_resolver.html" title=" " alt="" coords="46,5,174,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,61,113,93,107,93,107,61"/>
 </map>

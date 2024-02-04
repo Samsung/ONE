@@ -12,7 +12,7 @@ var namespacennfw_1_1cker_1_1train =
       [ "kDiv", "namespacennfw_1_1cker_1_1train.html#a5e75d80aacc1046441d15fd8b96890c9a62ff1bc26aac2154f97b79366b7a8de4", null ]
     ] ],
     [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
-    [ "BinaryArithmeticGrad", "namespacennfw_1_1cker_1_1train.html#ad2f990b4a3ec364f18c74b888ee24dda", null ],
+    [ "BinaryArithmeticGrad", "namespacennfw_1_1cker_1_1train.html#aa7aedda115b13096ec895b04b6c7ef42", null ],
     [ "CategoricalCrossEntropy", "namespacennfw_1_1cker_1_1train.html#a7878621644fcff89f4f06359077ad4d1", null ],
     [ "CategoricalCrossEntropyGrad", "namespacennfw_1_1cker_1_1train.html#a1aed62343258e8bc05dac2924c184f5e", null ],
     [ "ConvFilterGrad", "namespacennfw_1_1cker_1_1train.html#ade6d9df3c503c8a24c1994e73bced227", null ],

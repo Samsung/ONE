@@ -37,6 +37,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "DepthwiseConv2D", "classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d.html", "classluci__interpreter_1_1kernels_1_1_depthwise_conv2_d" ],
     [ "Dequantize", "classluci__interpreter_1_1kernels_1_1_dequantize.html", "classluci__interpreter_1_1kernels_1_1_dequantize" ],
     [ "Div", "classluci__interpreter_1_1kernels_1_1_div.html", "classluci__interpreter_1_1kernels_1_1_div" ],
+    [ "DownsamplingConv2DKernel", "classluci__interpreter_1_1kernels_1_1_downsampling_conv2_d_kernel.html", "classluci__interpreter_1_1kernels_1_1_downsampling_conv2_d_kernel" ],
     [ "Elu", "classluci__interpreter_1_1kernels_1_1_elu.html", "classluci__interpreter_1_1kernels_1_1_elu" ],
     [ "Equal", "classluci__interpreter_1_1kernels_1_1_equal.html", "classluci__interpreter_1_1kernels_1_1_equal" ],
     [ "Exp", "classluci__interpreter_1_1kernels_1_1_exp.html", "classluci__interpreter_1_1kernels_1_1_exp" ],

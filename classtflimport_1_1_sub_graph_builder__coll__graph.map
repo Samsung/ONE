@@ -1,4 +1,5 @@
 <map id="tflimport::SubGraphBuilder" name="tflimport::SubGraphBuilder">
-<area shape="rect" id="node1" title="GraphBuilder for Sub operator." alt="" coords="5,79,177,104"/>
-<area shape="rect" id="node2" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="17,5,166,31"/>
+<area shape="rect" id="Node000001" title="GraphBuilder for Sub operator." alt="" coords="5,79,177,105"/>
+<area shape="rect" id="Node000002" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="17,5,165,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,46,94,79,88,79,88,46"/>
 </map>

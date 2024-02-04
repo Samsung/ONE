@@ -1,4 +1,6 @@
 <map id="cmdline::Vector" name="cmdline::Vector">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,116,104"/>
-<area shape="rect" id="node2" href="$structcmdline_1_1_view.html" title=" " alt="" coords="9,5,112,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,116,105"/>
+<area shape="rect" id="Node000002" href="$structcmdline_1_1_view.html" title=" " alt="" coords="10,5,111,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,46,56,78,51,79,49,46"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="72,46,70,79,65,78,67,46"/>
 </map>

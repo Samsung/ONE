@@ -1,5 +1,7 @@
 <map id="loco::NodePool" name="loco::NodePool">
-<area shape="rect" id="node1" title=" " alt="" coords="35,168,145,193"/>
-<area shape="rect" id="node2" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,93,175,119"/>
-<area shape="rect" id="node3" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="17,5,163,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="35,169,144,195"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,94,174,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,135,92,169,87,169,87,135"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="17,5,162,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="92,47,92,94,87,94,87,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="npud::core::TensorDataInfos" name="npud::core::TensorDataInfos">
-<area shape="rect" id="node1" title="Npu tensor data info array." alt="" coords="5,93,188,119"/>
-<area shape="rect" id="node2" href="$structnpud_1_1core_1_1_tensor_data_info.html" title="Npu tensor data info description." alt="" coords="9,5,185,31"/>
+<area shape="rect" id="Node000001" title="Npu tensor data info array." alt="" coords="5,94,188,120"/>
+<area shape="rect" id="Node000002" href="$structnpud_1_1core_1_1_tensor_data_info.html" title="Npu tensor data info description." alt="" coords="9,5,184,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,47,99,94,94,94,94,47"/>
 </map>

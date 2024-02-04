@@ -1,6 +1,10 @@
 <map id="onert::compiler::GraphLowerInfo" name="onert::compiler::GraphLowerInfo">
-<area shape="rect" id="node1" title=" " alt="" coords="713,59,919,85"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="400,9,608,63"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="5,56,173,96"/>
-<area shape="rect" id="node4" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="403,87,605,142"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="710,60,914,86"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="399,9,606,65"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="622,48,710,59,709,64,621,53"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1util_1_1_object_manager.html" title="Class that owns objects and maps them with indices as a handle for them." alt="" coords="5,58,173,99"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="188,66,398,45,398,50,188,71"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1util_1_1_object_manager.html" title=" " alt="" coords="402,89,603,145"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="159,101,197,110,302,120,402,120,402,126,302,125,196,115,158,106"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="617,98,717,84,717,89,618,103"/>
 </map>

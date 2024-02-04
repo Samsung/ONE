@@ -1,4 +1,5 @@
 <map id="luci_interpreter::kernels::Sin" name="luci_interpreter::kernels::Sin">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,185,104"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="20,5,171,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,185,105"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="20,5,170,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,46,98,79,92,79,92,46"/>
 </map>

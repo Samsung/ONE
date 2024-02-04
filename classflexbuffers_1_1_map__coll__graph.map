@@ -1,6 +1,9 @@
 <map id="flexbuffers::Map" name="flexbuffers::Map">
-<area shape="rect" id="node1" title=" " alt="" coords="12,225,123,251"/>
-<area shape="rect" id="node2" href="$classflexbuffers_1_1_vector.html" title=" " alt="" coords="5,152,129,177"/>
-<area shape="rect" id="node3" href="$classflexbuffers_1_1_sized.html" title=" " alt="" coords="8,79,127,104"/>
-<area shape="rect" id="node4" href="$classflexbuffers_1_1_object.html" title=" " alt="" coords="5,5,129,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="12,226,122,252"/>
+<area shape="rect" id="Node000002" href="$classflexbuffers_1_1_vector.html" title=" " alt="" coords="5,153,129,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,194,70,226,64,226,64,194"/>
+<area shape="rect" id="Node000003" href="$classflexbuffers_1_1_sized.html" title=" " alt="" coords="8,79,126,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,120,70,152,64,152,64,120"/>
+<area shape="rect" id="Node000004" href="$classflexbuffers_1_1_object.html" title=" " alt="" coords="5,5,129,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="70,46,70,79,64,79,64,46"/>
 </map>

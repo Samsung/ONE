@@ -1,5 +1,7 @@
 <map id="EventCollector::OpSeqEvent" name="EventCollector::OpSeqEvent">
-<area shape="rect" id="node1" title=" " alt="" coords="5,168,191,193"/>
-<area shape="rect" id="node2" href="$struct_event_collector_1_1_event.html" title=" " alt="" coords="25,93,171,119"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="27,5,169,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,190,195"/>
+<area shape="rect" id="Node000002" href="$struct_event_collector_1_1_event.html" title=" " alt="" coords="25,94,170,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,135,100,169,95,169,95,135"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="27,5,168,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,47,100,94,95,94,95,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="luci_interpreter::kernels::ChannelQuantMultipliers" name="luci_interpreter::kernels::ChannelQuantMultipliers">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,175,133"/>
-<area shape="rect" id="node2" title=" " alt="" coords="59,5,121,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,174,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="59,5,120,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,46,92,93,87,93,87,46"/>
 </map>

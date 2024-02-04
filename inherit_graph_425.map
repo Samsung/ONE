@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classlogo_1_1_phase_runner.html" title=" " alt="" coords="5,5,167,31"/>
+<area shape="rect" id="Node000000" href="$classlogo_1_1_phase_runner_mixin_observable.html" title=" " alt="" coords="5,114,231,140"/>
+<area shape="rect" id="Node000001" href="$classlogo_1_1_phase_runner_3_01_phase_strategy_1_1_restart_01_4.html" title=" " alt="" coords="282,5,451,46"/>
+<area shape="poly" id="edge1351_Node000000_Node000001" title=" " alt="" coords="162,105,278,57,309,44,311,49,280,61,165,110"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_phase_runner_3_01_phase_strategy_1_1_saturate_01_4.html" title=" " alt="" coords="279,71,454,111"/>
+<area shape="poly" id="edge1352_Node000000_Node000002" title=" " alt="" coords="226,109,278,101,279,106,227,114"/>
+<area shape="rect" id="Node000003" href="$classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html" title=" " alt="" coords="297,135,436,191"/>
+<area shape="poly" id="edge1353_Node000000_Node000003" title=" " alt="" coords="227,140,297,150,296,156,226,145"/>
+<area shape="rect" id="Node000004" href="$classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_saturate_01_4.html" title=" " alt="" coords="297,215,436,271"/>
+<area shape="poly" id="edge1354_Node000000_Node000004" title=" " alt="" coords="162,144,280,201,305,212,303,217,278,205,160,149"/>
 </map>

@@ -1,7 +1,11 @@
 <map id="onert::compiler::train::pass::Pass" name="onert::compiler::train::pass::Pass">
-<area shape="rect" id="node1" title=" " alt="" coords="480,69,617,109"/>
-<area shape="rect" id="node2" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="179,5,319,45"/>
-<area shape="rect" id="node3" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="171,69,326,109"/>
-<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="5,77,115,102"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1train_1_1_training_info.html" title=" " alt="" coords="164,134,333,159"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="477,71,614,111"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="178,5,317,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,42,478,74,477,79,331,47"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1train_1_1_trainable_graph.html" title=" " alt="" coords="171,71,324,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="340,88,477,88,477,94,340,94"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="5,78,114,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="129,88,170,88,170,94,129,94"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1train_1_1_training_info.html" title=" " alt="" coords="163,136,331,161"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="342,130,453,109,476,104,477,109,454,114,343,135"/>
 </map>

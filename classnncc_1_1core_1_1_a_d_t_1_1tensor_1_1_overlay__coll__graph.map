@@ -1,6 +1,9 @@
 <map id="nncc::core::ADT::tensor::Overlay&lt; T &gt;" name="nncc::core::ADT::tensor::Overlay&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="95,181,249,221"/>
-<area shape="rect" id="node2" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_view.html" title=" " alt="" coords="95,93,249,133"/>
-<area shape="rect" id="node3" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_reader.html" title=" " alt="" coords="5,5,160,45"/>
-<area shape="rect" id="node4" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_accessor.html" title=" " alt="" coords="184,5,339,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="95,183,249,223"/>
+<area shape="rect" id="Node000002" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_view.html" title=" " alt="" coords="95,94,249,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,150,175,182,169,182,169,150"/>
+<area shape="rect" id="Node000003" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_reader.html" title=" " alt="" coords="5,5,160,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,55,153,92,150,95,112,59"/>
+<area shape="rect" id="Node000004" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_accessor.html" title=" " alt="" coords="184,5,338,46"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="232,59,194,95,190,92,228,55"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="nnkit::support::tflite::OutputTensorSet" name="nnkit::support::tflite::OutputTensorSet">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,135,133"/>
-<area shape="rect" id="node2" href="$structnnkit_1_1support_1_1tflite_1_1_tensor_set.html" title=" " alt="" coords="5,5,135,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,134,135"/>
+<area shape="rect" id="Node000002" href="$structnnkit_1_1support_1_1tflite_1_1_tensor_set.html" title=" " alt="" coords="5,5,134,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,62,72,94,67,94,67,62"/>
 </map>

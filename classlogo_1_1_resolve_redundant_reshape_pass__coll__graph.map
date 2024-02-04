@@ -1,4 +1,5 @@
 <map id="logo::ResolveRedundantReshapePass" name="logo::ResolveRedundantReshapePass">
-<area shape="rect" id="node1" title="Remove redundant canonical FixedReshape." alt="" coords="5,79,248,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="85,5,168,31"/>
+<area shape="rect" id="Node000001" title="Remove redundant canonical FixedReshape." alt="" coords="5,79,247,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="85,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,46,129,79,123,79,123,46"/>
 </map>

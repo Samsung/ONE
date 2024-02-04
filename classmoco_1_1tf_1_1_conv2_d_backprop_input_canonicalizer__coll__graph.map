@@ -1,6 +1,10 @@
 <map id="moco::tf::Conv2DBackpropInputCanonicalizer" name="moco::tf::Conv2DBackpropInputCanonicalizer">
-<area shape="rect" id="node1" title="Convert TFConv2DBackpropInput to Canonical TransposedConv2D." alt="" coords="32,287,207,327"/>
-<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,197,233,237"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="73,5,155,31"/>
-<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="136,80,340,120"/>
+<area shape="rect" id="Node000001" title="Convert TFConv2DBackpropInput to Canonical TransposedConv2D." alt="" coords="32,289,206,330"/>
+<area shape="rect" id="Node000002" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,199,233,240"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,255,122,289,116,289,116,255"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="74,5,154,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,46,121,199,116,199,112,46"/>
+<area shape="rect" id="Node000004" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="135,80,338,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="146,38,208,78,205,82,144,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="208,133,141,200,137,197,205,130"/>
 </map>

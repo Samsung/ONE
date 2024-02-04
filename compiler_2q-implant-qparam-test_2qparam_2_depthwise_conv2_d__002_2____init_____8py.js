@@ -1,4 +1,6 @@
 var compiler_2q_implant_qparam_test_2qparam_2_depthwise_conv2_d__002_2____init_____8py =
 [
-    [ "DepthwiseConv2D_002.DepthwiseConv2D_002_Q8", "class_depthwise_conv2_d__002_1_1_depthwise_conv2_d__002___q8.html", "class_depthwise_conv2_d__002_1_1_depthwise_conv2_d__002___q8" ]
+    [ "DepthwiseConv2D_002.DepthwiseConv2D_002_Q8", "class_depthwise_conv2_d__002_1_1_depthwise_conv2_d__002___q8.html", "class_depthwise_conv2_d__002_1_1_depthwise_conv2_d__002___q8" ],
+    [ "_name_", "compiler_2q-implant-qparam-test_2qparam_2_depthwise_conv2_d__002_2____init_____8py.html#a7c836dd03e763143a2c0eaa785e9258e", null ],
+    [ "_test_case_", "compiler_2q-implant-qparam-test_2qparam_2_depthwise_conv2_d__002_2____init_____8py.html#a8893700a861e4b6a92a5a9f3a916d5b6", null ]
 ];

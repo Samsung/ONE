@@ -1,5 +1,7 @@
 <map id="onert::ir::operation::DetectionPostProcess::Param" name="onert::ir::operation::DetectionPostProcess::Param">
-<area shape="rect" id="node1" title=" " alt="" coords="54,137,213,192"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,20,67,45"/>
-<area shape="rect" id="node3" href="$structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html" title=" " alt="" coords="153,5,311,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="54,139,212,195"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,20,66,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="32,61,31,88,39,114,62,137,58,140,35,116,26,89,27,61"/>
+<area shape="rect" id="Node000003" href="$structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html" title=" " alt="" coords="152,5,309,61"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,77,203,117,179,140,175,137,199,113,218,75"/>
 </map>

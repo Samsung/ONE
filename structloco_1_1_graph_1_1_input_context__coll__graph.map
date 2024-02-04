@@ -1,5 +1,7 @@
 <map id="loco::Graph::InputContext" name="loco::Graph::InputContext">
-<area shape="rect" id="node1" title="GraphInput Pool." alt="" coords="23,168,190,193"/>
-<area shape="rect" id="node2" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,93,208,119"/>
-<area shape="rect" id="node3" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="33,5,180,31"/>
+<area shape="rect" id="Node000001" title="GraphInput Pool." alt="" coords="23,169,189,195"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_object_pool.html" title=" " alt="" coords="5,94,207,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,135,109,169,103,169,103,135"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_object_pool.html" title="Object Pool." alt="" coords="33,5,179,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,47,109,94,103,94,103,47"/>
 </map>

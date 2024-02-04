@@ -1,4 +1,5 @@
 <map id="nnkit::support::tflite::AbstractBackend" name="nnkit::support::tflite::AbstractBackend">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,135,119"/>
-<area shape="rect" id="node2" href="$structnnkit_1_1_backend.html" title=" " alt="" coords="17,5,123,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,134,120"/>
+<area shape="rect" id="Node000002" href="$structnnkit_1_1_backend.html" title=" " alt="" coords="16,5,123,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,46,72,79,67,79,67,46"/>
 </map>

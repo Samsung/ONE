@@ -1,13 +1,24 @@
 <map id="locoex::TFLDiv" name="locoex::TFLDiv">
-<area shape="rect" id="node1" title="DIV in TensorFlow Lite." alt="" coords="1769,123,1877,149"/>
-<area shape="rect" id="node2" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="1509,53,1715,107"/>
-<area shape="rect" id="node3" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="1117,29,1263,69"/>
-<area shape="rect" id="node4" href="$structlocoex_1_1_t_f_l_node.html" title=" " alt="" coords="628,13,748,38"/>
-<area shape="rect" id="node8" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="797,33,943,73"/>
-<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,13,579,38"/>
-<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,5,447,45"/>
-<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
-<area shape="rect" id="node9" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="1113,93,1267,133"/>
-<area shape="rect" id="node10" title=" " alt="" coords="844,101,896,126"/>
-<area shape="rect" id="node11" href="$classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_fused_act_func_01_4.html" title=" " alt="" coords="1504,132,1720,172"/>
+<area shape="rect" id="Node000001" title="DIV in TensorFlow Lite." alt="" coords="1761,125,1868,151"/>
+<area shape="rect" id="Node000002" href="$classlocoex_1_1_fixed_arity_node.html" title=" " alt="" coords="1501,54,1707,110"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1723,111,1764,122,1763,127,1721,116"/>
+<area shape="rect" id="Node000003" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="1112,29,1256,70"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1272,54,1501,71,1500,76,1272,59"/>
+<area shape="rect" id="Node000004" href="$structlocoex_1_1_t_f_l_node.html" title=" " alt="" coords="625,13,744,39"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="760,18,770,18,927,17,996,19,1084,28,1112,33,1111,38,1084,34,996,25,927,22,770,23,760,23"/>
+<area shape="rect" id="Node000008" href="$structlocoex_1_1_t_f_l_node_impl.html" title=" " alt="" coords="794,33,938,74"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="760,35,794,40,793,45,759,40"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="493,13,576,39"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="591,23,625,23,625,28,591,28"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="308,5,444,46"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="459,23,493,23,493,28,459,28"/>
+<area shape="rect" id="Node000007" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="157,23,307,23,307,28,157,28"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="953,50,1112,48,1112,53,953,55"/>
+<area shape="rect" id="Node000009" href="$classlocoex_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="1108,95,1260,135"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="1276,114,1371,112,1472,105,1500,101,1501,106,1473,110,1371,118,1276,119"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="840,102,892,128"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="907,112,1108,112,1108,118,907,118"/>
+<area shape="rect" id="Node000011" href="$classlocoex_1_1_t_f_l_node_mixin_3_01_t_f_l_node_trait_1_1_fused_act_func_01_4.html" title=" " alt="" coords="1496,133,1712,174"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1727,142,1760,139,1761,144,1727,147"/>
 </map>

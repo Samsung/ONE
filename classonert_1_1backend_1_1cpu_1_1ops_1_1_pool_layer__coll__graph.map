@@ -1,7 +1,11 @@
 <map id="onert::backend::cpu::ops::PoolLayer" name="onert::backend::cpu::ops::PoolLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="32,211,165,251"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,101,149,126"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="174,93,338,133"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="91,5,247,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="272,5,413,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="32,213,165,253"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="5,102,149,127"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,142,97,212,92,213,79,143"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="173,94,336,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,146,126,214,123,210,214,142"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="91,5,247,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="192,41,238,92,235,95,188,44"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="271,5,411,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="322,44,274,95,271,92,318,40"/>
 </map>

@@ -1,6 +1,10 @@
 <map id="exo::TensorTransposeConverter" name="exo::TensorTransposeConverter">
-<area shape="rect" id="node1" title="Convert loco::TensorTranspose to locoex::TFLTranspose." alt="" coords="5,272,211,297"/>
-<area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="12,183,204,223"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="61,5,144,31"/>
-<area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="124,80,316,120"/>
+<area shape="rect" id="Node000001" title="Convert loco::TensorTranspose to locoex::TFLTranspose." alt="" coords="5,274,210,300"/>
+<area shape="rect" id="Node000002" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="12,184,203,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,240,110,274,105,274,105,240"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="62,5,143,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,46,110,184,104,184,100,47"/>
+<area shape="rect" id="Node000004" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="124,80,315,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="134,38,192,78,189,82,131,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="189,133,131,186,127,182,185,129"/>
 </map>

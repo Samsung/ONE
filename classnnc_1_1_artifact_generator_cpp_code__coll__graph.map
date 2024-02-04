@@ -1,4 +1,5 @@
 <map id="nnc::ArtifactGeneratorCppCode" name="nnc::ArtifactGeneratorCppCode">
-<area shape="rect" id="node1" title="The ACL C++ artifact source code producer." alt="" coords="5,79,207,104"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_i_artifact_generator.html" title="The interface of the artifact source code producer." alt="" coords="30,5,182,31"/>
+<area shape="rect" id="Node000001" title="The ACL C++ artifact source code producer." alt="" coords="5,79,206,105"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1_i_artifact_generator.html" title="The interface of the artifact source code producer." alt="" coords="30,5,181,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,46,108,79,103,79,103,46"/>
 </map>

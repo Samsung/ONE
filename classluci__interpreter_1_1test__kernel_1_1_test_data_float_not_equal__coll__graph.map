@@ -1,8 +1,13 @@
 <map id="luci_interpreter::test_kernel::TestDataFloatNotEqual" name="luci_interpreter::test_kernel::TestDataFloatNotEqual">
-<area shape="rect" id="node1" title=" " alt="" coords="1052,51,1257,91"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_not_equal_base.html" title=" " alt="" coords="796,44,1003,99"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="487,5,640,60"/>
-<area shape="rect" id="node4" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_not_equal_base.html" title=" " alt="" coords="460,84,667,139"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="257,84,411,139"/>
-<area shape="rect" id="node6" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,84,159,139"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1045,53,1250,94"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_not_equal_base.html" title=" " alt="" coords="791,45,996,101"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1012,71,1045,71,1045,76,1012,76"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="484,5,636,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="652,41,791,58,790,64,651,47"/>
+<area shape="rect" id="Node000004" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_not_equal_base.html" title=" " alt="" coords="457,85,663,141"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="678,96,790,83,791,88,678,102"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="256,85,408,141"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="424,111,457,111,457,116,424,116"/>
+<area shape="rect" id="Node000006" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="5,85,158,141"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="173,111,255,111,255,116,173,116"/>
 </map>

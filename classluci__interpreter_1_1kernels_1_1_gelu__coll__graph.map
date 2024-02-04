@@ -1,7 +1,12 @@
 <map id="luci_interpreter::kernels::Gelu" name="luci_interpreter::kernels::Gelu">
-<area shape="rect" id="node1" title=" " alt="" coords="772,26,927,66"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="536,26,723,66"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="218,26,378,66"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_gelu_params.html" title=" " alt="" coords="205,91,391,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="769,26,923,67"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="533,26,720,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="735,44,768,44,768,49,735,49"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,10,180,10,345,10,417,13,510,24,533,27,533,32,509,29,417,18,345,15,180,15,170,16"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="217,26,376,67"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="170,27,216,33,216,38,170,32"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_gelu_params.html" title=" " alt="" coords="204,91,388,116"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="389,85,509,64,532,60,533,65,510,69,390,90"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="392,44,533,44,533,49,392,49"/>
 </map>

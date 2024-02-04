@@ -1,4 +1,5 @@
 <map id="nnfw::cker::optimized_integer_ops::DepthwiseConvWorkerTask&lt; T, TS &gt;" name="nnfw::cker::optimized_integer_ops::DepthwiseConvWorkerTask&lt; T, TS &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,199,148"/>
-<area shape="rect" id="node2" title=" " alt="" coords="19,5,185,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,198,150"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="19,5,184,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,61,104,93,99,93,99,61"/>
 </map>

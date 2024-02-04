@@ -1,4 +1,5 @@
 <map id="circledump::ResizeNearestNeighborPrinter" name="circledump::ResizeNearestNeighborPrinter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,181,119"/>
-<area shape="rect" id="node2" href="$classcircledump_1_1_op_printer.html" title=" " alt="" coords="20,5,167,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,181,120"/>
+<area shape="rect" id="Node000002" href="$classcircledump_1_1_op_printer.html" title=" " alt="" coords="20,5,166,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
 </map>

@@ -1,6 +1,10 @@
 <map id="exo::DepthwiseConv2DConverter" name="exo::DepthwiseConv2DConverter">
-<area shape="rect" id="node1" title="Convert loco::DepthwiseConv2D to locoex::TFLDepthwiseConv2D and auxiliary." alt="" coords="5,272,216,297"/>
-<area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="15,183,207,223"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,147,31"/>
-<area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="127,80,319,120"/>
+<area shape="rect" id="Node000001" title="Convert loco::DepthwiseConv2D to locoex::TFLDepthwiseConv2D and auxiliary." alt="" coords="5,274,216,300"/>
+<area shape="rect" id="Node000002" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="15,184,206,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,240,113,274,108,274,108,240"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="65,5,146,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,46,113,184,107,184,103,47"/>
+<area shape="rect" id="Node000004" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="127,80,318,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="137,38,195,78,192,82,134,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="192,133,134,186,130,182,188,129"/>
 </map>

@@ -1,9 +1,15 @@
 <map id="onert::backend::train::ops::ConvolutionLayer" name="onert::backend::train::ops::ConvolutionLayer">
-<area shape="rect" id="node1" title=" " alt="" coords="11,329,166,369"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,240,140,280"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html" title=" " alt="" coords="165,240,319,280"/>
-<area shape="rect" id="node4" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="114,101,258,126"/>
-<area shape="rect" id="node5" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="283,93,447,133"/>
-<area shape="rect" id="node6" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="200,5,356,31"/>
-<area shape="rect" id="node7" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="381,5,522,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,333,166,373"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1train_1_1_i_trainable_function.html" title=" " alt="" coords="5,243,140,283"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,298,88,332,82,333,76,299"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html" title=" " alt="" coords="163,243,318,283"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,294,124,334,121,330,192,289"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="113,102,256,127"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="197,141,236,241,231,243,192,143"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="280,94,444,135"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="339,148,259,244,255,240,334,144"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="198,5,353,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="298,40,346,92,342,95,294,44"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="377,5,517,31"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="428,44,382,95,378,92,424,41"/>
 </map>

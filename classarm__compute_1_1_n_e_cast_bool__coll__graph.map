@@ -1,4 +1,5 @@
 <map id="arm_compute::NECastBool" name="arm_compute::NECastBool">
-<area shape="rect" id="node1" title="Class to run INESimpleFunctionNoBorder." alt="" coords="11,79,189,104"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,195,31"/>
+<area shape="rect" id="Node000001" title="Class to run INESimpleFunctionNoBorder." alt="" coords="11,79,188,105"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,194,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,46,102,79,97,79,97,46"/>
 </map>

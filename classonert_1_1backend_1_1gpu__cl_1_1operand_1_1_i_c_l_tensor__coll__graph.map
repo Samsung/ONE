@@ -1,5 +1,7 @@
 <map id="onert::backend::gpu_cl::operand::ICLTensor" name="onert::backend::gpu_cl::operand::ICLTensor">
-<area shape="rect" id="node1" title=" " alt="" coords="95,108,253,148"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,13,161,38"/>
-<area shape="rect" id="node3" href="$structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info.html" title=" " alt="" coords="185,5,344,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="95,109,252,150"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,13,161,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,48,158,107,154,110,102,52"/>
+<area shape="rect" id="Node000003" href="$structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info.html" title=" " alt="" coords="185,5,344,46"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,60,193,110,189,107,235,56"/>
 </map>

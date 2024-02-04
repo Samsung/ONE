@@ -1,5 +1,7 @@
 <map id="nnc::ArtifactId" name="nnc::ArtifactId">
-<area shape="rect" id="node1" title="Type of objects which can be used to reference named entities by their names." alt="" coords="15,152,118,177"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="9,79,125,104"/>
-<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,5,128,31"/>
+<area shape="rect" id="Node000001" title="Type of objects which can be used to reference named entities by their names." alt="" coords="16,153,117,178"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="9,79,124,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,120,69,152,64,152,64,120"/>
+<area shape="rect" id="Node000003" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,5,128,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="69,46,69,79,64,79,64,46"/>
 </map>

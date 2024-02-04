@@ -1,13 +1,24 @@
 <map id="locoex::COpCall" name="locoex::COpCall">
-<area shape="rect" id="node1" title="Class to calls custom operation." alt="" coords="1181,125,1295,150"/>
-<area shape="rect" id="node2" href="$classlocoex_1_1_variadic_arity_node.html" title=" " alt="" coords="958,53,1127,93"/>
-<area shape="rect" id="node3" href="$structlocoex_1_1_c_op_node.html" title=" " alt="" coords="651,13,774,38"/>
-<area shape="rect" id="node4" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="496,13,579,38"/>
-<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="309,5,447,45"/>
-<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
-<area shape="rect" id="node7" href="$classlocoex_1_1_variadic_arity_node.html" title="Nodes with the variadic inputs." alt="" coords="628,63,797,103"/>
-<area shape="rect" id="node8" title=" " alt="" coords="511,70,563,95"/>
-<area shape="rect" id="node9" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="953,117,1132,157"/>
-<area shape="rect" id="node10" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="641,147,784,173"/>
-<area shape="rect" id="node11" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="964,181,1121,221"/>
+<area shape="rect" id="Node000001" title="Class to calls custom operation." alt="" coords="1176,126,1288,152"/>
+<area shape="rect" id="Node000002" href="$classlocoex_1_1_variadic_arity_node.html" title=" " alt="" coords="953,53,1122,94"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1115,97,1192,123,1190,128,1114,102"/>
+<area shape="rect" id="Node000003" href="$structlocoex_1_1_c_op_node.html" title=" " alt="" coords="649,13,770,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="786,34,953,59,953,64,785,39"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="493,13,576,39"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="591,23,648,23,648,28,591,28"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="308,5,444,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="459,23,493,23,493,28,459,28"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="157,23,307,23,307,28,157,28"/>
+<area shape="rect" id="Node000007" href="$classlocoex_1_1_variadic_arity_node.html" title="Nodes with the variadic inputs." alt="" coords="625,63,793,103"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="809,78,953,73,953,79,809,83"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="509,70,560,96"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="576,80,625,80,625,86,576,86"/>
+<area shape="rect" id="Node000009" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="948,119,1127,159"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1142,136,1176,136,1176,142,1142,142"/>
+<area shape="rect" id="Node000010" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="638,149,780,175"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="795,153,948,142,948,148,796,158"/>
+<area shape="rect" id="Node000011" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="959,184,1116,225"/>
+<area shape="poly" id="edge11_Node000011_Node000010" title=" " alt="" coords="771,176,818,186,890,195,959,200,959,205,890,200,817,192,770,182"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1114,176,1190,150,1192,155,1115,181"/>
 </map>

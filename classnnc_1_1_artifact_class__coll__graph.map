@@ -1,5 +1,7 @@
 <map id="nnc::ArtifactClass" name="nnc::ArtifactClass">
-<area shape="rect" id="node1" title="Represents a class." alt="" coords="10,152,134,177"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="5,79,139,104"/>
-<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="11,5,133,31"/>
+<area shape="rect" id="Node000001" title="Represents a class." alt="" coords="10,153,133,178"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="5,79,138,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,120,74,152,69,152,69,120"/>
+<area shape="rect" id="Node000003" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="10,5,133,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,46,74,79,69,79,69,46"/>
 </map>

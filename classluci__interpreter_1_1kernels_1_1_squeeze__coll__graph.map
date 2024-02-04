@@ -1,7 +1,13 @@
 <map id="luci_interpreter::kernels::Squeeze" name="luci_interpreter::kernels::Squeeze">
-<area shape="rect" id="node1" title=" " alt="" coords="797,26,952,66"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="537,26,748,66"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="207,26,367,66"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_squeeze_params.html" title=" " alt="" coords="205,90,368,130"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="793,26,947,67"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="534,26,744,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="759,52,793,52,793,57,760,58"/>
+<area shape="poly" id="edge6_Node000001_Node000002" title=" " alt="" coords="760,35,793,35,793,40,759,40"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,12,179,12,345,10,418,14,511,24,534,27,534,32,510,29,417,19,345,15,179,17,170,17"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="206,26,365,67"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="170,28,205,33,205,38,170,33"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_squeeze_params.html" title=" " alt="" coords="204,91,366,132"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="381,91,533,63,534,68,382,96"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="380,44,534,44,534,49,380,49"/>
 </map>

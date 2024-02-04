@@ -1,4 +1,5 @@
 <map id="mpqsolver::pattern::Q8SoftmaxWithQ16SubExpResolver" name="mpqsolver::pattern::Q8SoftmaxWithQ16SubExpResolver">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,244,133"/>
-<area shape="rect" id="node2" href="$classmpqsolver_1_1pattern_1_1_pattern_resolver.html" title=" " alt="" coords="61,5,189,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,243,135"/>
+<area shape="rect" id="Node000002" href="$classmpqsolver_1_1pattern_1_1_pattern_resolver.html" title=" " alt="" coords="60,5,188,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,62,127,94,121,94,121,62"/>
 </map>

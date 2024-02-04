@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"_neg_max_pool2_d_kernel_8h.html#a2dff02a717983c5d9bde5ebc9436adfc":[36,0,3,4,0,0,1,43,1,5],
+"_neg_max_pool2_d_kernel_8h.html#a95a2626c1f958f9713b1cdc744497c74":[36,0,3,4,0,0,1,43,1,4],
+"_neg_max_pool2_d_kernel_8h_source.html":[36,0,3,4,0,0,1,43,1],
+"_neg_maximum_kernel_8h.html":[36,0,3,4,0,0,1,42,1],
+"_neg_maximum_kernel_8h_source.html":[36,0,3,4,0,0,1,42,1],
+"_neg_mean_kernel_8h.html":[36,0,3,4,0,0,1,44,1],
+"_neg_mean_kernel_8h.html#a9a6b303ff042b2f4f5e26f9f4866f225":[36,0,3,4,0,0,1,44,1,1],
+"_neg_mean_kernel_8h_source.html":[36,0,3,4,0,0,1,44,1],
+"_neg_minimum_kernel_8h.html":[36,0,3,4,0,0,1,45,1],
 "_neg_minimum_kernel_8h_source.html":[36,0,3,4,0,0,1,45,1],
 "_neg_mirror_pad_kernel_8h.html":[36,0,3,4,0,0,1,46,1],
 "_neg_mirror_pad_kernel_8h.html#a578d086ed3b5dbe47570e9d1156766db":[36,0,3,4,0,0,1,46,1,1],
@@ -240,14 +249,5 @@ var NAVTREEINDEX19 =
 "_neural_networks_types_8h_source.html":[36,0,4,0,2,0,3],
 "_node_8cc.html":[36,0,4,2,2,1,2,0,4],
 "_node_8cc_source.html":[36,0,4,2,2,1,2,0,4],
-"_node_8forward_8h.html":[36,0,0,45,0,0,1,36],
-"_node_8forward_8h_source.html":[36,0,0,45,0,0,1,36],
-"_node_as_8h.html":[36,0,0,74,4,0,0,0,0],
-"_node_as_8h.html#ac169a7192721f8400c9a5660ca84b808":[36,0,0,74,4,0,0,0,0,0],
-"_node_as_8h_source.html":[36,0,0,74,4,0,0,0,0],
-"_node_builder_8h.html":[36,0,0,52,2,0,0,0,7],
-"_node_builder_8h.html#ad2a8941614b11ceb2bee2c1cfdc2adaa":[36,0,0,52,2,0,0,0,7,2],
-"_node_builder_8h.html#ad2a8941614b11ceb2bee2c1cfdc2adaaa17de626bcae5109bb2f7a66dfc4a8a1d":[36,0,0,52,2,0,0,0,7,2,0],
-"_node_builder_8h_source.html":[36,0,0,52,2,0,0,0,7],
-"_node_data_8cpp.html":[36,0,0,47,1,1]
+"_node_8forward_8h.html":[36,0,0,45,0,0,1,36]
 };

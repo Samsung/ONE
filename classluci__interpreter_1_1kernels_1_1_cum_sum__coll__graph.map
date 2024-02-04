@@ -1,7 +1,12 @@
 <map id="luci_interpreter::kernels::CumSum" name="luci_interpreter::kernels::CumSum">
-<area shape="rect" id="node1" title=" " alt="" coords="809,26,964,66"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="545,26,760,66"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,156,31"/>
-<area shape="rect" id="node5" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="209,26,369,66"/>
-<area shape="rect" id="node4" href="$structluci__interpreter_1_1_cum_sum_params.html" title=" " alt="" coords="205,90,372,130"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="805,26,959,67"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="542,26,756,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="771,44,805,44,805,49,771,49"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1_kernel.html" title=" " alt="" coords="5,5,155,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,12,179,12,349,10,423,14,519,24,542,27,542,32,518,29,423,19,349,15,179,17,170,17"/>
+<area shape="rect" id="Node000005" href="$classluci__interpreter_1_1_kernel_with_params.html" title=" " alt="" coords="208,26,367,67"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="170,28,207,33,207,38,170,33"/>
+<area shape="rect" id="Node000004" href="$structluci__interpreter_1_1_cum_sum_params.html" title=" " alt="" coords="204,91,370,132"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="385,91,541,63,542,68,386,96"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="382,44,542,44,542,49,382,49"/>
 </map>

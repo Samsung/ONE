@@ -1,6 +1,10 @@
 <map id="moco::tf::MaxPoolCanonicalizer" name="moco::tf::MaxPoolCanonicalizer">
-<area shape="rect" id="node1" title="Convert TFMaxPool to Canonical MaxPool2D." alt="" coords="7,272,208,297"/>
-<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,183,209,223"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="61,5,143,31"/>
-<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="124,80,328,120"/>
+<area shape="rect" id="Node000001" title="Convert TFMaxPool to Canonical MaxPool2D." alt="" coords="7,274,207,300"/>
+<area shape="rect" id="Node000002" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="5,184,209,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,240,110,274,104,274,104,240"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="62,5,142,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,46,109,184,104,184,100,47"/>
+<area shape="rect" id="Node000004" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="123,80,326,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="134,38,196,78,193,82,132,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="192,133,131,186,128,182,188,129"/>
 </map>

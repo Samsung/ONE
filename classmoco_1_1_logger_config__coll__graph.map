@@ -1,4 +1,5 @@
 <map id="moco::LoggerConfig" name="moco::LoggerConfig">
-<area shape="rect" id="node1" title="Logger Configuration." alt="" coords="5,79,141,104"/>
-<area shape="rect" id="node2" href="$structhermes_1_1_config.html" title="Top&#45;level configuration interface." alt="" coords="20,5,127,31"/>
+<area shape="rect" id="Node000001" title="Logger Configuration." alt="" coords="5,79,141,105"/>
+<area shape="rect" id="Node000002" href="$structhermes_1_1_config.html" title="Top&#45;level configuration interface." alt="" coords="20,5,126,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,46,76,79,70,79,70,46"/>
 </map>

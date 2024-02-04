@@ -1,4 +1,5 @@
 <map id="onert::exec::feature::nchw::Reader&lt; T &gt;" name="onert::exec::feature::nchw::Reader&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,141,133"/>
-<area shape="rect" id="node2" href="$structonert_1_1exec_1_1feature_1_1_reader.html" title="Class reads values of feature The interface class." alt="" coords="8,5,139,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,141,135"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1exec_1_1feature_1_1_reader.html" title="Class reads values of feature The interface class." alt="" coords="8,5,138,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,62,76,94,70,94,70,62"/>
 </map>

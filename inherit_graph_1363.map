@@ -1,4 +1,21 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,128,31"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_acl_cpp_exception.html" title="objects of this class are to be thrown from ACL C++ soft backend if errors are occurred." alt="" coords="176,5,323,31"/>
+<area shape="rect" id="Node000000" href="$structsouschef_1_1_data_chef_factory.html" title="Data Generator Factory." alt="" coords="5,274,183,300"/>
+<area shape="rect" id="Node000001" href="$structsouschef_1_1_constant_data_chef_factory.html" title=" " alt="" coords="234,5,421,46"/>
+<area shape="poly" id="edge2910_Node000000_Node000001" title=" " alt="" coords="102,259,119,215,146,161,183,105,205,80,229,57,249,44,251,49,232,61,208,83,187,109,151,164,124,218,107,261"/>
+<area shape="rect" id="Node000002" href="$structsouschef_1_1_explicit_data_chef_factory.html" title=" " alt="" coords="240,71,415,111"/>
+<area shape="poly" id="edge2911_Node000000_Node000002" title=" " alt="" coords="109,259,157,191,191,154,229,122,251,110,254,114,232,127,194,158,161,195,113,262"/>
+<area shape="rect" id="Node000003" href="$structsouschef_1_1_explicit_float16_data_chef_factory.html" title=" " alt="" coords="245,136,410,177"/>
+<area shape="poly" id="edge2912_Node000000_Node000003" title=" " alt="" coords="121,262,170,225,229,187,257,175,259,180,232,192,173,229,124,266"/>
+<area shape="rect" id="Node000004" href="$structsouschef_1_1_gaussian_float16_data_chef_factory.html" title=" " alt="" coords="238,201,417,242"/>
+<area shape="poly" id="edge2913_Node000000_Node000004" title=" " alt="" coords="157,267,251,240,253,245,158,272"/>
+<area shape="rect" id="Node000005" href="$structsouschef_1_1_gaussian_float32_data_chef_factory.html" title=" " alt="" coords="238,267,417,307"/>
+<area shape="poly" id="edge2914_Node000000_Node000005" title=" " alt="" coords="198,284,238,284,238,290,198,290"/>
+<area shape="rect" id="Node000006" href="$structsouschef_1_1_gaussian_int16_data_chef_factory.html" title=" " alt="" coords="232,332,423,373"/>
+<area shape="poly" id="edge2915_Node000000_Node000006" title=" " alt="" coords="158,302,253,329,251,334,157,307"/>
+<area shape="rect" id="Node000007" href="$structsouschef_1_1_gaussian_int32_data_chef_factory.html" title=" " alt="" coords="232,397,423,438"/>
+<area shape="poly" id="edge2916_Node000000_Node000007" title=" " alt="" coords="124,308,173,345,232,382,259,394,257,399,229,387,170,349,121,312"/>
+<area shape="rect" id="Node000008" href="$structsouschef_1_1_gaussian_int8_data_chef_factory.html" title=" " alt="" coords="235,463,420,503"/>
+<area shape="poly" id="edge2917_Node000000_Node000008" title=" " alt="" coords="113,312,161,379,194,416,232,447,254,460,251,464,229,452,191,420,157,383,109,315"/>
+<area shape="rect" id="Node000009" href="$structsouschef_1_1_gaussian_uint8_data_chef_factory.html" title=" " alt="" coords="231,528,424,569"/>
+<area shape="poly" id="edge2918_Node000000_Node000009" title=" " alt="" coords="107,313,124,356,151,410,187,465,208,491,232,513,251,525,249,530,229,517,205,494,183,469,146,413,119,359,102,315"/>
 </map>

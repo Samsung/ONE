@@ -1,6 +1,9 @@
 <map id="coco::ReLU" name="coco::ReLU">
-<area shape="rect" id="node1" title="Apply ReLU over elements." alt="" coords="13,225,104,251"/>
-<area shape="rect" id="node2" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="5,152,112,177"/>
-<area shape="rect" id="node3" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="22,79,95,104"/>
-<area shape="rect" id="node4" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="15,5,103,31"/>
+<area shape="rect" id="Node000001" title="Apply ReLU over elements." alt="" coords="14,226,103,252"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_unary_op.html" title="Op with a single argument." alt="" coords="5,153,112,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,194,61,226,56,226,56,194"/>
+<area shape="rect" id="Node000003" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="22,79,95,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="61,120,61,152,56,152,56,120"/>
+<area shape="rect" id="Node000004" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="15,5,102,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="61,46,61,79,56,79,56,46"/>
 </map>

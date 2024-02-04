@@ -1,4 +1,5 @@
 <map id="flatbuffers::DefaultAllocator" name="flatbuffers::DefaultAllocator">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,181,104"/>
-<area shape="rect" id="node2" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="26,5,161,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,181,105"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="26,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,79,90,79,90,46"/>
 </map>

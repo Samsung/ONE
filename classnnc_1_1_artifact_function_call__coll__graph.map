@@ -1,5 +1,7 @@
 <map id="nnc::ArtifactFunctionCall" name="nnc::ArtifactFunctionCall">
-<area shape="rect" id="node1" title="Represents a function call." alt="" coords="5,152,168,177"/>
-<area shape="rect" id="node2" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="29,79,145,104"/>
-<area shape="rect" id="node3" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="25,5,148,31"/>
+<area shape="rect" id="Node000001" title="Represents a function call." alt="" coords="5,153,168,178"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="29,79,144,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,120,89,152,84,152,84,120"/>
+<area shape="rect" id="Node000003" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="25,5,148,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,46,89,79,84,79,84,46"/>
 </map>

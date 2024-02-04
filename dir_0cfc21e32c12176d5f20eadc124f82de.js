@@ -17,6 +17,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "FoldDequantizePass.h", "_fold_dequantize_pass_8h.html", "_fold_dequantize_pass_8h" ],
     [ "FoldFullyConnectedPass.h", "_fold_fully_connected_pass_8h.html", "_fold_fully_connected_pass_8h" ],
     [ "FoldGatherPass.h", "_fold_gather_pass_8h.html", "_fold_gather_pass_8h" ],
+    [ "FoldShapePass.h", "_fold_shape_pass_8h.html", "_fold_shape_pass_8h" ],
     [ "FoldSparseToDensePass.h", "_fold_sparse_to_dense_pass_8h.html", "_fold_sparse_to_dense_pass_8h" ],
     [ "ForceQuantParamPass.h", "_force_quant_param_pass_8h.html", "_force_quant_param_pass_8h" ],
     [ "ForwardReshapeToUnaryOpPass.h", "_forward_reshape_to_unary_op_pass_8h.html", "_forward_reshape_to_unary_op_pass_8h" ],

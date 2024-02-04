@@ -1,5 +1,7 @@
 <map id="luci::CircleMeanGraphBuilder" name="luci::CircleMeanGraphBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,152,193,177"/>
-<area shape="rect" id="node2" href="$classluci_1_1_graph_builder.html" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="38,79,161,104"/>
-<area shape="rect" id="node3" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="23,5,176,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,193,178"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_graph_builder.html" title="Base of general single output graph builder(e.g., Conv2DGraphBuilder)" alt="" coords="38,79,160,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,120,102,152,96,152,96,120"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_graph_builder_base.html" title="Interface of convert circle::OperatorT to CircleNode." alt="" coords="23,5,175,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,46,102,79,96,79,96,46"/>
 </map>

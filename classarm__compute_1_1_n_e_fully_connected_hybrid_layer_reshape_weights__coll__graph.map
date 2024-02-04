@@ -1,4 +1,5 @@
 <map id="arm_compute::NEFullyConnectedHybridLayerReshapeWeights" name="arm_compute::NEFullyConnectedHybridLayerReshapeWeights">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,220,119"/>
-<area shape="rect" id="node2" title=" " alt="" coords="18,5,207,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,219,120"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="18,5,206,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,46,115,79,109,79,109,46"/>
 </map>

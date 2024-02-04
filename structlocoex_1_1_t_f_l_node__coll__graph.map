@@ -1,6 +1,9 @@
 <map id="locoex::TFLNode" name="locoex::TFLNode">
-<area shape="rect" id="node1" title=" " alt="" coords="14,272,134,297"/>
-<area shape="rect" id="node2" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="33,197,115,223"/>
-<area shape="rect" id="node3" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,108,143,148"/>
-<area shape="rect" id="node4" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="14,274,133,300"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="32,199,115,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,240,76,274,71,274,71,240"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,109,142,150"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="76,165,76,199,71,199,71,165"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="76,62,76,109,71,109,71,62"/>
 </map>

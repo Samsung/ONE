@@ -1,4 +1,5 @@
 <map id="onert::exec::train::TrainableExecutor" name="onert::exec::train::TrainableExecutor">
-<area shape="rect" id="node1" title=" " alt="" coords="12,79,143,119"/>
-<area shape="rect" id="node2" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="5,5,149,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="12,79,142,120"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="5,5,149,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,46,80,79,74,79,74,46"/>
 </map>

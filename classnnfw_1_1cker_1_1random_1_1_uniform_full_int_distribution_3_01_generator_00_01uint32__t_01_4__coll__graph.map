@@ -1,5 +1,7 @@
 <map id="nnfw::cker::random::UniformFullIntDistribution&lt; Generator, uint32_t &gt;" name="nnfw::cker::random::UniformFullIntDistribution&lt; Generator, uint32_t &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="13,227,187,281"/>
-<area shape="rect" id="node2" href="$classnnfw_1_1cker_1_1random_1_1_uniform_full_int_distribution32.html" title=" " alt="" coords="5,123,195,177"/>
-<area shape="rect" id="node3" href="$classnnfw_1_1cker_1_1random_1_1_uniform_full_int_distribution32.html" title=" " alt="" coords="5,5,195,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="12,229,187,285"/>
+<area shape="rect" id="Node000002" href="$classnnfw_1_1cker_1_1random_1_1_uniform_full_int_distribution32.html" title=" " alt="" coords="5,124,194,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,195,102,228,97,228,97,195"/>
+<area shape="rect" id="Node000003" href="$classnnfw_1_1cker_1_1random_1_1_uniform_full_int_distribution32.html" title=" " alt="" coords="5,5,194,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,76,102,123,97,123,97,76"/>
 </map>

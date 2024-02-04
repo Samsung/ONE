@@ -1,5 +1,7 @@
 <map id="luci_interpreter::lstm::InterGateParameters" name="luci_interpreter::lstm::InterGateParameters">
-<area shape="rect" id="node1" title=" " alt="" coords="5,343,155,383"/>
-<area shape="rect" id="node2" href="$structluci__interpreter__pal_1_1_arithmetic_params.html" title=" " alt="" coords="14,211,146,251"/>
-<area shape="rect" id="node3" title=" " alt="" coords="49,5,111,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,348,154,388"/>
+<area shape="rect" id="Node000002" href="$structluci__interpreter__pal_1_1_arithmetic_params.html" title=" " alt="" coords="14,214,145,255"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,270,82,347,77,347,77,270"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="49,5,110,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,47,82,213,77,213,77,47"/>
 </map>

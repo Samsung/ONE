@@ -1,7 +1,12 @@
 <map id="onert::ir::train::operation::Softmax" name="onert::ir::train::operation::Softmax">
-<area shape="rect" id="node1" title=" " alt="" coords="72,240,227,280"/>
-<area shape="rect" id="node2" href="$classonert_1_1ir_1_1operation_1_1_softmax.html" title=" " alt="" coords="5,152,128,192"/>
-<area shape="rect" id="node3" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="35,79,162,104"/>
-<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="84,5,215,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="153,152,311,192"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="71,241,225,282"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1operation_1_1_softmax.html" title=" " alt="" coords="5,153,128,193"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,203,131,239,128,243,93,207"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="36,79,161,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,120,77,153,72,151,86,118"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="83,5,213,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,45,109,80,105,77,129,42"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="152,153,309,193"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="164,44,222,151,218,154,159,46"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="203,207,168,243,165,239,199,203"/>
 </map>

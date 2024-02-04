@@ -1,8 +1,13 @@
 <map id="onert::api::CustomKernel" name="onert::api::CustomKernel">
-<area shape="rect" id="node1" title=" " alt="" coords="655,63,817,88"/>
-<area shape="rect" id="node2" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="354,5,498,31"/>
-<area shape="rect" id="node3" href="$structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html" title=" " alt="" coords="331,55,521,95"/>
-<area shape="rect" id="node4" href="$structnnfw__custom__kernel__params.html" title=" " alt="" coords="355,119,497,159"/>
-<area shape="rect" id="node5" href="$structnnfw__operand.html" title=" " alt="" coords="136,127,239,152"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,127,60,152"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="650,63,812,88"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_i_function.html" title=" " alt="" coords="352,5,495,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="511,31,627,53,661,59,660,65,626,58,510,36"/>
+<area shape="rect" id="Node000003" href="$structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html" title=" " alt="" coords="328,55,518,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="534,73,650,73,650,78,534,78"/>
+<area shape="rect" id="Node000004" href="$structnnfw__custom__kernel__params.html" title=" " alt="" coords="353,121,494,161"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="508,120,667,86,668,92,509,125"/>
+<area shape="rect" id="Node000005" href="$structnnfw__operand.html" title=" " alt="" coords="135,128,237,154"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="253,138,352,138,352,144,253,144"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,128,60,154"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="75,138,134,138,134,144,75,144"/>
 </map>

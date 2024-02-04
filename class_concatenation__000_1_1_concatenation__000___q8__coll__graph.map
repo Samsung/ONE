@@ -1,4 +1,5 @@
 <map id="Concatenation_000.Concatenation_000_Q8" name="Concatenation_000.Concatenation_000_Q8">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,224,119"/>
-<area shape="rect" id="node2" href="$classtest__utils_1_1_test_case.html" title=" " alt="" coords="47,5,182,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,224,120"/>
+<area shape="rect" id="Node000002" href="$classtest__utils_1_1_test_case.html" title=" " alt="" coords="48,5,181,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,46,117,79,112,79,112,46"/>
 </map>

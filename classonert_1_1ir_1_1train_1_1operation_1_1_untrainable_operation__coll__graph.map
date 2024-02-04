@@ -1,6 +1,9 @@
 <map id="onert::ir::train::operation::UntrainableOperation&lt; OperationType, typename &gt;" name="onert::ir::train::operation::UntrainableOperation&lt; OperationType, typename &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="46,167,229,221"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,86,112,111"/>
-<area shape="rect" id="node3" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="137,79,295,119"/>
-<area shape="rect" id="node4" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="151,5,281,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="44,168,227,223"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,87,111,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,123,115,165,111,169,75,126"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="135,79,293,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,133,160,169,156,165,186,130"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="149,5,279,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="217,46,217,79,211,79,211,46"/>
 </map>

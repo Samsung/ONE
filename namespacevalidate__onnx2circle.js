@@ -1,8 +1,8 @@
 var namespacevalidate__onnx2circle =
 [
     [ "OnnxRunner", "classvalidate__onnx2circle_1_1_onnx_runner.html", "classvalidate__onnx2circle_1_1_onnx_runner" ],
-    [ "to_nhwc", "namespacevalidate__onnx2circle.html#aee30d54c5db6b186e2defe343997ba21", null ],
-    [ "to_numpy", "namespacevalidate__onnx2circle.html#ad913b5891c349a6f9255493c233756ed", null ],
+    [ "to_nhwc", "namespacevalidate__onnx2circle.html#a39847c6c4d8bea527619ecd04be33f09", null ],
+    [ "to_numpy", "namespacevalidate__onnx2circle.html#a4ee696f81e1f2c6e4c08a931c0f81453", null ],
     [ "args", "namespacevalidate__onnx2circle.html#a7c2a8b1ebdfa9063bcd1992f725c1fae", null ],
     [ "atolerance", "namespacevalidate__onnx2circle.html#a5a5eb361b0ebcd386f06198c465913b3", null ],
     [ "circle_filepath", "namespacevalidate__onnx2circle.html#a079b67aacba2ae59abd0a62f90397c38", null ],
@@ -14,7 +14,7 @@ var namespacevalidate__onnx2circle =
     [ "onnx_runner", "namespacevalidate__onnx2circle.html#a06fb923d53f26d38e396e30af29cccb8", null ],
     [ "output_data", "namespacevalidate__onnx2circle.html#acc72648eaf997600cf2ed7148ed34067", null ],
     [ "output_nchw", "namespacevalidate__onnx2circle.html#a02531d177a426136025d2469695da64a", null ],
-    [ "output_nhwc", "namespacevalidate__onnx2circle.html#aad559e0ffc5ff67e29b20b3cd9a0a18d", null ],
+    [ "output_nhwc", "namespacevalidate__onnx2circle.html#a35788802d7b17b41d9fe87e611c67847", null ],
     [ "output_np_type", "namespacevalidate__onnx2circle.html#a1357628cde201eb071c566f0ac55cd76", null ],
     [ "output_shape", "namespacevalidate__onnx2circle.html#a40c35ba3740529b53d6e5fa2b60670ea", null ],
     [ "output_type", "namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e", null ],

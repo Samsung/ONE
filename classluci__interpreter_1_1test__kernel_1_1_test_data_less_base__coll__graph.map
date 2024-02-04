@@ -1,5 +1,7 @@
 <map id="luci_interpreter::test_kernel::TestDataLessBase&lt; T, U &gt;" name="luci_interpreter::test_kernel::TestDataLessBase&lt; T, U &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,227,188,281"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="20,123,173,177"/>
-<area shape="rect" id="node3" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="20,5,173,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,229,187,285"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="20,124,172,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,195,99,228,93,228,93,195"/>
+<area shape="rect" id="Node000003" href="$classluci__interpreter_1_1test__kernel_1_1_test_data_base.html" title=" " alt="" coords="20,5,172,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,76,99,123,93,123,93,76"/>
 </map>

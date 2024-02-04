@@ -1,4 +1,5 @@
 <map id="luci::ModuleProgressReporter" name="luci::ModuleProgressReporter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,196,104"/>
-<area shape="rect" id="node2" href="$structlogo_1_1_phase_event_listener.html" title=" " alt="" coords="16,5,185,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,196,105"/>
+<area shape="rect" id="Node000002" href="$structlogo_1_1_phase_event_listener.html" title=" " alt="" coords="16,5,185,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,46,103,79,98,79,98,46"/>
 </map>

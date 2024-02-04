@@ -1,4 +1,5 @@
 <map id="nnfw::cker::FullyConnectedParams" name="nnfw::cker::FullyConnectedParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,196,181,236"/>
-<area shape="rect" id="node2" title=" " alt="" coords="63,5,124,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,199,181,240"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="63,5,123,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,46,96,199,90,199,90,46"/>
 </map>

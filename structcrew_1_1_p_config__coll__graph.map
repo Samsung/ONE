@@ -1,4 +1,5 @@
 <map id="crew::PConfig" name="crew::PConfig">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,107,119"/>
-<area shape="rect" id="node2" href="$structcrew_1_1_part.html" title=" " alt="" coords="16,5,96,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,106,120"/>
+<area shape="rect" id="Node000002" href="$structcrew_1_1_part.html" title=" " alt="" coords="16,5,95,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,47,58,94,53,94,53,47"/>
 </map>

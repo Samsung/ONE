@@ -1,4 +1,5 @@
 <map id="BidirectionalSequenceLSTMChef" name="BidirectionalSequenceLSTMChef">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,220,104"/>
-<area shape="rect" id="node2" href="$struct_op_chef.html" title=" " alt="" coords="79,5,146,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,219,105"/>
+<area shape="rect" id="Node000002" href="$struct_op_chef.html" title=" " alt="" coords="79,5,145,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,46,115,79,109,79,109,46"/>
 </map>

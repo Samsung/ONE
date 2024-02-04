@@ -1,4 +1,5 @@
 <map id="locoex::COpNodeSummaryBuilder" name="locoex::COpNodeSummaryBuilder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,223,104"/>
-<area shape="rect" id="node2" href="$structlocop_1_1_node_summary_builder.html" title="Build a summary from loco Node." alt="" coords="21,5,207,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,222,105"/>
+<area shape="rect" id="Node000002" href="$structlocop_1_1_node_summary_builder.html" title="Build a summary from loco Node." alt="" coords="21,5,206,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,46,116,79,111,79,111,46"/>
 </map>

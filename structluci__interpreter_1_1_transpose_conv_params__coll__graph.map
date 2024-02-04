@@ -1,4 +1,5 @@
 <map id="luci_interpreter::TransposeConvParams" name="luci_interpreter::TransposeConvParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,108,180,148"/>
-<area shape="rect" id="node2" title=" " alt="" coords="62,5,123,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,109,179,150"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="62,5,122,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,47,95,109,89,109,89,47"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="coco::OutputManager" name="coco::OutputManager">
-<area shape="rect" id="node1" title=" " alt="" coords="159,168,305,193"/>
-<area shape="rect" id="node2" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="5,93,189,119"/>
-<area shape="rect" id="node3" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="21,5,174,31"/>
-<area shape="rect" id="node4" href="$classcoco_1_1_entity_builder.html" title="A base class for IR entity builders." alt="" coords="213,93,341,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="114,169,259,195"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="5,94,189,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,128,174,167,170,171,122,132"/>
+<area shape="rect" id="Node000003" href="$classcoco_1_1_ptr_manager.html" title=" " alt="" coords="21,5,173,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,47,100,94,94,94,94,47"/>
+<area shape="rect" id="Node000004" href="$classcoco_1_1_entity_builder.html" title="A base class for IR entity builders." alt="" coords="213,94,341,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="252,132,203,171,199,167,248,128"/>
 </map>

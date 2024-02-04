@@ -1,4 +1,5 @@
 <map id="loco::Graph" name="loco::Graph">
-<area shape="rect" id="node1" title="A neural network graph." alt="" coords="25,79,112,104"/>
-<area shape="rect" id="node2" href="$classloco_1_1_named_entity.html" title="Trait for elements with name." alt="" coords="5,5,132,31"/>
+<area shape="rect" id="Node000001" title="A neural network graph." alt="" coords="25,79,111,105"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_named_entity.html" title="Trait for elements with name." alt="" coords="5,5,131,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,46,71,79,65,79,65,46"/>
 </map>

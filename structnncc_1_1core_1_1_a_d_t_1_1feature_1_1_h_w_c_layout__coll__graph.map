@@ -1,4 +1,5 @@
 <map id="nncc::core::ADT::feature::HWCLayout" name="nncc::core::ADT::feature::HWCLayout">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,164,133"/>
-<area shape="rect" id="node2" href="$classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_layout.html" title=" " alt="" coords="5,5,164,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,164,135"/>
+<area shape="rect" id="Node000002" href="$classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_layout.html" title=" " alt="" coords="5,5,164,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,62,87,94,82,94,82,62"/>
 </map>

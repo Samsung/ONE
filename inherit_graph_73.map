@@ -1,13 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structcli_1_1_command.html" title=" " alt="" coords="5,228,105,253"/>
-<area shape="rect" id="node2" href="$struct_decode_command.html" title=" " alt="" coords="168,5,293,31"/>
-<area shape="rect" id="node3" href="$struct_encode_command.html" title=" " alt="" coords="169,55,293,80"/>
-<area shape="rect" id="node4" href="$struct_init_command.html" title=" " alt="" coords="181,104,280,129"/>
-<area shape="rect" id="node5" href="$struct_merge_command.html" title="Takes .prototxt and .caffemodel filenames from ARGV and fills the model with trained weights...." alt="" coords="172,153,289,179"/>
-<area shape="rect" id="node6" href="$classcli_1_1_function_command.html" title=" " alt="" coords="155,203,306,228"/>
-<area shape="rect" id="node7" href="$structtfkit_1_1_convert_command.html" title=" " alt="" coords="153,252,308,277"/>
-<area shape="rect" id="node8" href="$structtfkit_1_1_decode_command.html" title=" " alt="" coords="154,301,307,327"/>
-<area shape="rect" id="node9" href="$structtfkit_1_1_encode_command.html" title=" " alt="" coords="155,351,307,376"/>
-<area shape="rect" id="node10" href="$structtfkit_1_1_pack_command.html" title=" " alt="" coords="161,400,300,425"/>
-<area shape="rect" id="node11" href="$structtfkit_1_1_unpack_command.html" title=" " alt="" coords="153,449,308,475"/>
+<area shape="rect" id="Node000000" href="$structcli_1_1_command.html" title=" " alt="" coords="5,228,105,254"/>
+<area shape="rect" id="Node000001" href="$struct_decode_command.html" title=" " alt="" coords="167,5,292,31"/>
+<area shape="poly" id="edge97_Node000000_Node000001" title=" " alt="" coords="60,212,71,173,89,127,116,81,151,40,168,29,171,34,154,44,120,84,94,130,76,175,65,213"/>
+<area shape="rect" id="Node000002" href="$struct_encode_command.html" title=" " alt="" coords="168,55,291,80"/>
+<area shape="poly" id="edge98_Node000000_Node000002" title=" " alt="" coords="65,212,97,151,122,118,151,89,170,79,172,83,154,94,126,121,102,153,69,215"/>
+<area shape="rect" id="Node000003" href="$struct_init_command.html" title=" " alt="" coords="180,104,279,130"/>
+<area shape="poly" id="edge99_Node000000_Node000003" title=" " alt="" coords="73,214,107,175,151,139,179,126,181,131,154,143,110,179,77,217"/>
+<area shape="rect" id="Node000004" href="$struct_merge_command.html" title="Takes .prototxt and .caffemodel filenames from ARGV and fills the model with trained weights...." alt="" coords="171,153,288,179"/>
+<area shape="poly" id="edge100_Node000000_Node000004" title=" " alt="" coords="91,218,152,188,180,177,182,182,154,193,94,222"/>
+<area shape="rect" id="Node000005" href="$classcli_1_1_function_command.html" title=" " alt="" coords="155,203,304,228"/>
+<area shape="poly" id="edge101_Node000000_Node000005" title=" " alt="" coords="120,229,154,224,155,229,121,234"/>
+<area shape="rect" id="Node000006" href="$structtfkit_1_1_convert_command.html" title=" " alt="" coords="153,252,306,278"/>
+<area shape="poly" id="edge102_Node000000_Node000006" title=" " alt="" coords="120,247,153,252,152,257,120,252"/>
+<area shape="rect" id="Node000007" href="$structtfkit_1_1_decode_command.html" title=" " alt="" coords="153,301,306,327"/>
+<area shape="poly" id="edge103_Node000000_Node000007" title=" " alt="" coords="94,259,154,288,183,298,181,303,152,293,92,264"/>
+<area shape="rect" id="Node000008" href="$structtfkit_1_1_encode_command.html" title=" " alt="" coords="154,351,305,376"/>
+<area shape="poly" id="edge104_Node000000_Node000008" title=" " alt="" coords="77,264,110,302,154,337,176,348,174,353,151,342,107,306,73,268"/>
+<area shape="rect" id="Node000009" href="$structtfkit_1_1_pack_command.html" title=" " alt="" coords="160,400,299,426"/>
+<area shape="poly" id="edge105_Node000000_Node000009" title=" " alt="" coords="69,267,102,327,126,359,154,387,172,397,170,402,151,391,122,363,97,330,65,269"/>
+<area shape="rect" id="Node000010" href="$structtfkit_1_1_unpack_command.html" title=" " alt="" coords="153,449,306,475"/>
+<area shape="poly" id="edge106_Node000000_Node000010" title=" " alt="" coords="65,268,76,306,94,351,120,397,154,436,171,446,168,451,151,440,116,400,90,354,71,308,60,270"/>
 </map>

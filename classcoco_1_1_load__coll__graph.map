@@ -1,8 +1,13 @@
 <map id="coco::Load" name="coco::Load">
-<area shape="rect" id="node1" title="Load an Object." alt="" coords="76,225,161,251"/>
-<area shape="rect" id="node2" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="13,152,86,177"/>
-<area shape="rect" id="node3" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="5,79,93,104"/>
-<area shape="rect" id="node4" href="$structcoco_1_1_object_1_1_consumer.html" title=" " alt="" coords="110,152,269,177"/>
-<area shape="rect" id="node5" href="$structcoco_1_1_bag_1_1_reader.html" title=" " alt="" coords="126,79,253,104"/>
-<area shape="rect" id="node6" href="$structcoco_1_1_locatable.html" title="Return the associated instruction if exists." alt="" coords="133,5,246,31"/>
+<area shape="rect" id="Node000001" title="Load an Object." alt="" coords="76,226,161,252"/>
+<area shape="rect" id="Node000002" href="$structcoco_1_1_op.html" title="Base interface on all supported NN operations." alt="" coords="13,153,85,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,187,109,224,105,228,69,191"/>
+<area shape="rect" id="Node000003" href="$classcoco_1_1_entity.html" title="A base class for IR entities." alt="" coords="5,79,93,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="52,120,52,152,46,152,46,120"/>
+<area shape="rect" id="Node000004" href="$structcoco_1_1_object_1_1_consumer.html" title=" " alt="" coords="110,153,268,178"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,191,132,228,128,224,165,187"/>
+<area shape="rect" id="Node000005" href="$structcoco_1_1_bag_1_1_reader.html" title=" " alt="" coords="126,79,252,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="192,120,192,152,186,152,186,120"/>
+<area shape="rect" id="Node000006" href="$structcoco_1_1_locatable.html" title="Return the associated instruction if exists." alt="" coords="133,5,245,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="192,46,192,79,186,79,186,46"/>
 </map>

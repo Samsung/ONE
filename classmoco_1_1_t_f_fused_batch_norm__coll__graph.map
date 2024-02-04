@@ -1,12 +1,22 @@
 <map id="moco::TFFusedBatchNorm" name="moco::TFFusedBatchNorm">
-<area shape="rect" id="node1" title=" " alt="" coords="161,656,339,681"/>
-<area shape="rect" id="node2" href="$classmoco_1_1_fixed_arity_node.html" title=" " alt="" coords="155,552,345,607"/>
-<area shape="rect" id="node3" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="49,435,253,475"/>
-<area shape="rect" id="node4" href="$structmoco_1_1_t_f_node.html" title=" " alt="" coords="21,272,127,297"/>
-<area shape="rect" id="node8" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="95,347,279,372"/>
-<area shape="rect" id="node5" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="33,197,115,223"/>
-<area shape="rect" id="node6" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,108,143,148"/>
-<area shape="rect" id="node7" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,143,45"/>
-<area shape="rect" id="node9" href="$classmoco_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="284,435,432,475"/>
-<area shape="rect" id="node10" title=" " alt="" coords="340,347,392,372"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="160,661,337,687"/>
+<area shape="rect" id="Node000002" href="$classmoco_1_1_fixed_arity_node.html" title=" " alt="" coords="153,556,343,612"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,628,251,661,246,661,246,628"/>
+<area shape="rect" id="Node000003" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="48,438,251,478"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="176,489,229,554,225,558,172,492"/>
+<area shape="rect" id="Node000004" href="$structmoco_1_1_t_f_node.html" title=" " alt="" coords="20,274,127,300"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="75,315,77,344,85,374,106,408,130,436,126,439,101,411,80,376,72,345,70,315"/>
+<area shape="rect" id="Node000008" href="$structmoco_1_1_t_f_node_impl.html" title=" " alt="" coords="95,349,279,375"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="106,306,170,346,167,351,103,310"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="32,199,115,225"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="76,240,76,274,71,274,71,240"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,109,142,150"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="76,165,76,199,71,199,71,165"/>
+<area shape="rect" id="Node000007" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="76,62,76,109,71,109,71,62"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="169,388,162,400,153,438,148,437,157,398,164,385"/>
+<area shape="rect" id="Node000009" href="$classmoco_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="283,438,430,478"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="332,492,274,558,270,554,328,488"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="339,349,390,375"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="365,390,360,437,355,437,359,390"/>
 </map>

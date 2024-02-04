@@ -1,4 +1,5 @@
 <map id="nnkit::VectorArguments" name="nnkit::VectorArguments">
-<area shape="rect" id="node1" title=" " alt="" coords="10,79,167,104"/>
-<area shape="rect" id="node2" href="$structnnkit_1_1_cmdline_arguments.html" title=" " alt="" coords="5,5,172,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,79,166,105"/>
+<area shape="rect" id="Node000002" href="$structnnkit_1_1_cmdline_arguments.html" title=" " alt="" coords="5,5,171,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,46,91,79,85,79,85,46"/>
 </map>

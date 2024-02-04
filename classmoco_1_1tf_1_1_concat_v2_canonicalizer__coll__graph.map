@@ -1,6 +1,10 @@
 <map id="moco::tf::ConcatV2Canonicalizer" name="moco::tf::ConcatV2Canonicalizer">
-<area shape="rect" id="node1" title="Convert TFConcatV2 to Canonical TensorConcat." alt="" coords="5,272,213,297"/>
-<area shape="rect" id="node2" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="7,183,211,223"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="63,5,145,31"/>
-<area shape="rect" id="node4" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="126,80,330,120"/>
+<area shape="rect" id="Node000001" title="Convert TFConcatV2 to Canonical TensorConcat." alt="" coords="5,274,213,300"/>
+<area shape="rect" id="Node000002" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="7,184,211,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,240,112,274,106,274,106,240"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,144,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,46,111,184,106,184,102,47"/>
+<area shape="rect" id="Node000004" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="125,80,328,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="136,38,198,78,195,82,134,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="194,133,133,186,130,182,190,129"/>
 </map>

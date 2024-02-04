@@ -1,4 +1,5 @@
 <map id="luci_interpreter::test_kernel::TestDataWrongInputShapeSlice" name="luci_interpreter::test_kernel::TestDataWrongInputShapeSlice">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,260,133"/>
-<area shape="rect" id="node2" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="44,5,221,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,260,135"/>
+<area shape="rect" id="Node000002" href="$classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html" title=" " alt="" coords="44,5,221,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,62,135,94,130,94,130,62"/>
 </map>

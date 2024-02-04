@@ -1,6 +1,9 @@
 <map id="nnc::cli::Option&lt; T &gt;" name="nnc::cli::Option&lt; T &gt;">
-<area shape="rect" id="node1" title="this class describes command line option" alt="" coords="81,227,217,252"/>
-<area shape="rect" id="node2" href="$classnnc_1_1cli_1_1_option_type.html" title=" " alt="" coords="5,123,144,177"/>
-<area shape="rect" id="node3" href="$classnnc_1_1cli_1_1_option_type.html" title="a class models option type" alt="" coords="7,5,142,45"/>
-<area shape="rect" id="node4" href="$classnnc_1_1cli_1_1_i_option.html" title="interface for Option class" alt="" coords="169,137,279,163"/>
+<area shape="rect" id="Node000001" title="this class describes command line option" alt="" coords="80,229,216,255"/>
+<area shape="rect" id="Node000002" href="$classnnc_1_1cli_1_1_option_type.html" title=" " alt="" coords="5,124,144,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,190,140,227,136,230,105,193"/>
+<area shape="rect" id="Node000003" href="$classnnc_1_1cli_1_1_option_type.html" title="a class models option type" alt="" coords="8,5,141,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,61,77,124,72,124,72,61"/>
+<area shape="rect" id="Node000004" href="$classnnc_1_1cli_1_1_i_option.html" title="interface for Option class" alt="" coords="168,139,277,165"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="204,179,160,230,156,227,200,175"/>
 </map>

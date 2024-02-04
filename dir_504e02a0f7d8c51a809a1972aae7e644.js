@@ -1,5 +1,7 @@
 var dir_504e02a0f7d8c51a809a1972aae7e644 =
 [
+    [ "BinaryArithmeticLayer.cc", "train_2ops_2_binary_arithmetic_layer_8cc.html", null ],
+    [ "BinaryArithmeticLayer.h", "train_2ops_2_binary_arithmetic_layer_8h.html", "train_2ops_2_binary_arithmetic_layer_8h" ],
     [ "ConvolutionLayer.cc", "train_2ops_2_convolution_layer_8cc.html", null ],
     [ "ConvolutionLayer.h", "train_2ops_2_convolution_layer_8h.html", "train_2ops_2_convolution_layer_8h" ],
     [ "DepthwiseConvolutionLayer.cc", "train_2ops_2_depthwise_convolution_layer_8cc.html", null ],
@@ -20,6 +22,8 @@ var dir_504e02a0f7d8c51a809a1972aae7e644 =
     [ "MeanLayer.h", "train_2ops_2_mean_layer_8h.html", "train_2ops_2_mean_layer_8h" ],
     [ "OperationUtils.cc", "train_2ops_2_operation_utils_8cc.html", "train_2ops_2_operation_utils_8cc" ],
     [ "OperationUtils.h", "train_2ops_2_operation_utils_8h.html", "train_2ops_2_operation_utils_8h" ],
+    [ "PadLayer.cc", "train_2ops_2_pad_layer_8cc.html", null ],
+    [ "PadLayer.h", "train_2ops_2_pad_layer_8h.html", "train_2ops_2_pad_layer_8h" ],
     [ "PoolLayer.cc", "train_2ops_2_pool_layer_8cc.html", null ],
     [ "PoolLayer.h", "train_2ops_2_pool_layer_8h.html", "train_2ops_2_pool_layer_8h" ],
     [ "ReshapeLayer.cc", "train_2ops_2_reshape_layer_8cc.html", null ],

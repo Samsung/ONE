@@ -1,4 +1,5 @@
 <map id="onert::ir::train::ITrainableOperation" name="onert::ir::train::ITrainableOperation">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,164,119"/>
-<area shape="rect" id="node2" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="19,5,150,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,163,120"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="19,5,149,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,46,87,79,81,79,81,46"/>
 </map>

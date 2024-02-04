@@ -1,4 +1,5 @@
 <map id="InitCommand" name="InitCommand">
-<area shape="rect" id="node1" title=" " alt="" coords="6,79,105,104"/>
-<area shape="rect" id="node2" href="$structcli_1_1_command.html" title=" " alt="" coords="5,5,105,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="6,79,104,105"/>
+<area shape="rect" id="Node000002" href="$structcli_1_1_command.html" title=" " alt="" coords="5,5,105,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,46,58,79,52,79,52,46"/>
 </map>

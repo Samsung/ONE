@@ -1,4 +1,5 @@
 <map id="mir::ops::ConcatOp" name="mir::ops::ConcatOp">
-<area shape="rect" id="node1" title="Description of tensor concatenation operation." alt="" coords="5,79,136,104"/>
-<area shape="rect" id="node2" href="$classmir_1_1_operation.html" title=" " alt="" coords="19,5,122,31"/>
+<area shape="rect" id="Node000001" title="Description of tensor concatenation operation." alt="" coords="5,79,136,105"/>
+<area shape="rect" id="Node000002" href="$classmir_1_1_operation.html" title=" " alt="" coords="20,5,121,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,46,73,79,68,79,68,46"/>
 </map>

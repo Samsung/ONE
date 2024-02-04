@@ -1,4 +1,5 @@
 <map id="circledump::SparseToDensePrinter" name="circledump::SparseToDensePrinter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,189,119"/>
-<area shape="rect" id="node2" href="$classcircledump_1_1_op_printer.html" title=" " alt="" coords="24,5,171,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,189,120"/>
+<area shape="rect" id="Node000002" href="$classcircledump_1_1_op_printer.html" title=" " alt="" coords="24,5,170,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,46,100,79,94,79,94,46"/>
 </map>

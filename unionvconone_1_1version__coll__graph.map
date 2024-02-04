@@ -1,4 +1,5 @@
 <map id="vconone::version" name="vconone::version">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,124,119"/>
-<area shape="rect" id="node2" href="$structvconone_1_1four.html" title=" " alt="" coords="15,5,114,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,124,120"/>
+<area shape="rect" id="Node000002" href="$structvconone_1_1four.html" title=" " alt="" coords="15,5,114,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,47,67,94,62,94,62,47"/>
 </map>

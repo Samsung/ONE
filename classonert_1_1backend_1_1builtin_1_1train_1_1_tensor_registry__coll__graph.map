@@ -1,5 +1,7 @@
 <map id="onert::backend::builtin::train::TensorRegistry" name="onert::backend::builtin::train::TensorRegistry">
-<area shape="rect" id="node1" title=" " alt="" coords="33,167,180,207"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="38,79,175,119"/>
-<area shape="rect" id="node3" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,5,208,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="34,168,179,208"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="38,79,175,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,135,109,167,104,167,104,135"/>
+<area shape="rect" id="Node000003" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,5,208,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,46,109,79,104,79,104,46"/>
 </map>

@@ -1,5 +1,8 @@
 <map id="sparsity::TfLiteSparsity" name="sparsity::TfLiteSparsity">
-<area shape="rect" id="node1" title=" " alt="" coords="5,211,160,236"/>
-<area shape="rect" id="node2" href="$structsparsity_1_1_tf_lite_int_array.html" title=" " alt="" coords="7,5,159,31"/>
-<area shape="rect" id="node3" href="$structsparsity_1_1_tf_lite_dimension_metadata.html" title=" " alt="" coords="172,108,340,148"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,213,159,238"/>
+<area shape="rect" id="Node000002" href="$structsparsity_1_1_tf_lite_int_array.html" title=" " alt="" coords="6,5,158,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,47,75,95,75,150,83,212,77,212,69,150,70,94,75,46"/>
+<area shape="rect" id="Node000003" href="$structsparsity_1_1_tf_lite_dimension_metadata.html" title=" " alt="" coords="170,109,338,150"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="115,37,225,106,222,111,112,42"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,160,106,214,103,210,204,155"/>
 </map>

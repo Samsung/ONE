@@ -1,4 +1,5 @@
 <map id="luci_interpreter_pal::StridedSliceParams" name="luci_interpreter_pal::StridedSliceParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,123,148,163"/>
-<area shape="rect" id="node2" title=" " alt="" coords="46,5,107,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,124,148,165"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="46,5,107,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,47,79,124,74,124,74,47"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="nnfw::misc::kernel::Shape" name="nnfw::misc::kernel::Shape">
-<area shape="rect" id="node1" title="Structure to Shape." alt="" coords="5,137,131,177"/>
-<area shape="rect" id="node2" title=" " alt="" coords="37,5,99,31"/>
+<area shape="rect" id="Node000001" title="Structure to Shape." alt="" coords="5,139,130,180"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="37,5,98,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,46,70,139,65,139,65,46"/>
 </map>

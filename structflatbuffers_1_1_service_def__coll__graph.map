@@ -1,8 +1,14 @@
 <map id="flatbuffers::ServiceDef" name="flatbuffers::ServiceDef">
-<area shape="rect" id="node1" title=" " alt="" coords="932,95,1080,120"/>
-<area shape="rect" id="node2" href="$structflatbuffers_1_1_definition.html" title=" " alt="" coords="745,63,883,88"/>
-<area shape="rect" id="node3" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="380,55,539,95"/>
-<area shape="rect" id="node4" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,97,195,123"/>
-<area shape="rect" id="node6" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="563,110,721,150"/>
-<area shape="rect" id="node5" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="382,5,537,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="928,95,1075,120"/>
+<area shape="rect" id="Node000002" href="$structflatbuffers_1_1_definition.html" title=" " alt="" coords="742,63,879,88"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="894,87,928,93,927,98,893,92"/>
+<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="378,55,536,96"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="552,73,742,73,742,78,552,78"/>
+<area shape="rect" id="Node000004" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,97,194,123"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="209,97,377,80,378,86,209,102"/>
+<area shape="rect" id="Node000006" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="560,110,718,151"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="209,114,218,115,560,126,560,131,218,120,209,119"/>
+<area shape="rect" id="Node000005" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="380,5,534,31"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="550,27,719,53,752,59,751,65,718,58,549,32"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="734,122,878,113,927,110,928,115,879,118,734,127"/>
 </map>

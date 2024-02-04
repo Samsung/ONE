@@ -1,5 +1,7 @@
 <map id="nnfw::tflite::TensorView&lt; T &gt;" name="nnfw::tflite::TensorView&lt; T &gt;">
-<area shape="rect" id="node1" title="Class to define TensorView which is inherited from nnfw::misc::tensor::Reader&lt;T&gt; class." alt="" coords="56,108,241,133"/>
-<area shape="rect" id="node2" href="$structnnfw_1_1misc_1_1tensor_1_1_reader.html" title="Struct to read element of tensor." alt="" coords="5,5,132,45"/>
-<area shape="rect" id="node3" href="$classnnfw_1_1misc_1_1tensor_1_1_non_increasing_stride.html" title="Class to represent strides where stride[N&#45;1] &gt;= stride[N] holds for all N &lt; rank." alt="" coords="157,5,303,45"/>
+<area shape="rect" id="Node000001" title="Class to define TensorView which is inherited from nnfw::misc::tensor::Reader&lt;T&gt; class." alt="" coords="56,109,240,135"/>
+<area shape="rect" id="Node000002" href="$structnnfw_1_1misc_1_1tensor_1_1_reader.html" title="Struct to read element of tensor." alt="" coords="5,5,131,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,56,140,107,136,111,92,60"/>
+<area shape="rect" id="Node000003" href="$classnnfw_1_1misc_1_1tensor_1_1_non_increasing_stride.html" title="Class to represent strides where stride[N&#45;1] &gt;= stride[N] holds for all N &lt; rank." alt="" coords="155,5,301,46"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,60,160,111,156,107,200,56"/>
 </map>

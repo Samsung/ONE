@@ -1,6 +1,10 @@
 <map id="exo::Relu6Converter" name="exo::Relu6Converter">
-<area shape="rect" id="node1" title="Convert loco::Relu6 to TFLRelu6." alt="" coords="33,272,170,297"/>
-<area shape="rect" id="node2" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="5,183,197,223"/>
-<area shape="rect" id="node3" href="$classlogo_1_1_pass.html" title=" " alt="" coords="55,5,137,31"/>
-<area shape="rect" id="node4" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="117,80,309,120"/>
+<area shape="rect" id="Node000001" title="Convert loco::Relu6 to TFLRelu6." alt="" coords="33,274,169,300"/>
+<area shape="rect" id="Node000002" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="5,184,197,225"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,240,104,274,98,274,98,240"/>
+<area shape="rect" id="Node000003" href="$classlogo_1_1_pass.html" title=" " alt="" coords="55,5,136,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,46,103,184,98,184,94,47"/>
+<area shape="rect" id="Node000004" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="117,80,309,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="127,38,186,78,183,82,124,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="182,133,124,186,121,182,179,129"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="onert::backend::train::TrainableContextData" name="onert::backend::train::TrainableContextData">
-<area shape="rect" id="node1" title=" " alt="" coords="106,196,258,236"/>
-<area shape="rect" id="node2" href="$classonert_1_1util_1_1_set.html" title=" " alt="" coords="20,93,160,133"/>
-<area shape="rect" id="node3" href="$classonert_1_1util_1_1_set.html" title="Class for set of custom element &amp;." alt="" coords="5,5,175,31"/>
-<area shape="rect" id="node4" href="$structonert_1_1ir_1_1train_1_1_optimizer_info.html" title=" " alt="" coords="185,101,363,126"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="106,198,257,238"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_set.html" title=" " alt="" coords="20,94,159,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,148,114,172,142,195,139,199,110,175,96,150"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1util_1_1_set.html" title="Class for set of custom element &amp;." alt="" coords="5,5,174,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="92,46,92,93,87,93,87,46"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1train_1_1_optimizer_info.html" title=" " alt="" coords="184,102,361,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="256,141,227,175,205,199,201,195,224,172,252,138"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="RequestArgument" name="RequestArgument">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,132,119"/>
-<area shape="rect" id="node2" href="$struct_data_location.html" title=" " alt="" coords="19,5,118,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,131,120"/>
+<area shape="rect" id="Node000002" href="$struct_data_location.html" title=" " alt="" coords="19,5,117,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,47,71,94,65,94,65,47"/>
 </map>

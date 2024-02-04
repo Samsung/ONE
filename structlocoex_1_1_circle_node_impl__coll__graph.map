@@ -1,7 +1,11 @@
 <map id="locoex::CircleNodeImpl&lt; Code &gt;" name="locoex::CircleNodeImpl&lt; Code &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,347,160,387"/>
-<area shape="rect" id="node2" href="$structlocoex_1_1_circle_node.html" title=" " alt="" coords="18,272,147,297"/>
-<area shape="rect" id="node3" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="41,197,124,223"/>
-<area shape="rect" id="node4" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="14,108,151,148"/>
-<area shape="rect" id="node5" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="14,5,151,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,349,159,390"/>
+<area shape="rect" id="Node000002" href="$structlocoex_1_1_circle_node.html" title=" " alt="" coords="18,274,146,300"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,315,85,349,79,349,79,315"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="41,199,123,225"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,240,85,274,79,274,79,240"/>
+<area shape="rect" id="Node000004" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="14,109,150,150"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="85,165,85,199,79,199,79,165"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="14,5,150,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="85,62,85,109,79,109,79,62"/>
 </map>

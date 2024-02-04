@@ -1,4 +1,5 @@
 <map id="luci_interpreter_pal::ConcatenationParams" name="luci_interpreter_pal::ConcatenationParams">
-<area shape="rect" id="node1" title=" " alt="" coords="5,108,161,148"/>
-<area shape="rect" id="node2" title=" " alt="" coords="53,5,114,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,109,161,150"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="53,5,113,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,47,86,109,80,109,80,47"/>
 </map>

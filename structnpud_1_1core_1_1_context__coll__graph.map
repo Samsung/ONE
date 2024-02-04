@@ -1,4 +1,5 @@
 <map id="npud::core::Context" name="npud::core::Context">
-<area shape="rect" id="node1" title=" " alt="" coords="17,93,148,119"/>
-<area shape="rect" id="node2" href="$structnpud_1_1core_1_1_npu_context.html" title="Npu context definition." alt="" coords="5,5,160,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="17,94,148,120"/>
+<area shape="rect" id="Node000002" href="$structnpud_1_1core_1_1_npu_context.html" title="Npu context definition." alt="" coords="5,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,47,85,94,80,94,80,47"/>
 </map>

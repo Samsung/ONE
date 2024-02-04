@@ -1,4 +1,5 @@
 <map id="nnfw::misc::feature::Shape" name="nnfw::misc::feature::Shape">
-<area shape="rect" id="node1" title="Structure to have values of dimensions for feature." alt="" coords="5,137,136,177"/>
-<area shape="rect" id="node2" title=" " alt="" coords="40,5,101,31"/>
+<area shape="rect" id="Node000001" title="Structure to have values of dimensions for feature." alt="" coords="5,139,135,180"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="40,5,100,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,46,73,139,67,139,67,46"/>
 </map>

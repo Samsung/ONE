@@ -1,9 +1,15 @@
 <map id="onert::backend::train::Tensor" name="onert::backend::train::Tensor">
-<area shape="rect" id="node1" title=" " alt="" coords="780,79,917,119"/>
-<area shape="rect" id="node2" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="588,79,731,119"/>
-<area shape="rect" id="node3" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="247,22,411,62"/>
-<area shape="rect" id="node4" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
-<area shape="rect" id="node5" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,154,80"/>
-<area shape="rect" id="node6" title=" " alt="" coords="298,87,359,112"/>
-<area shape="rect" id="node7" href="$classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html" title=" " alt="" coords="241,137,416,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="776,79,912,120"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="584,79,726,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="742,97,775,97,775,102,742,102"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="245,22,408,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="424,54,560,77,584,82,583,87,560,82,423,59"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,25,245,31,244,37,176,30"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1_operand_info.html" title="Class to save tensor&#39;s shape and type." alt="" coords="13,55,153,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="168,56,244,48,244,53,169,61"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="296,87,357,112"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="372,97,583,97,583,102,372,102"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html" title=" " alt="" coords="240,137,413,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="428,139,560,117,583,113,584,118,560,122,429,145"/>
 </map>

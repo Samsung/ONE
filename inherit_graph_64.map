@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classcircledump_1_1_metadata_printer.html" title=" " alt="" coords="5,31,188,56"/>
-<area shape="rect" id="node2" href="$classcircledump_1_1_op_table_printer.html" title=" " alt="" coords="248,5,427,31"/>
-<area shape="rect" id="node3" href="$classcircledump_1_1_source_table_printer.html" title=" " alt="" coords="236,55,439,80"/>
+<area shape="rect" id="Node000000" href="$classcircledump_1_1_metadata_printer.html" title=" " alt="" coords="5,31,188,56"/>
+<area shape="rect" id="Node000001" href="$classcircledump_1_1_op_table_printer.html" title=" " alt="" coords="248,5,425,31"/>
+<area shape="poly" id="edge41_Node000000_Node000001" title=" " alt="" coords="203,30,247,25,248,30,204,35"/>
+<area shape="rect" id="Node000002" href="$classcircledump_1_1_source_table_printer.html" title=" " alt="" coords="236,55,437,80"/>
+<area shape="poly" id="edge42_Node000000_Node000002" title=" " alt="" coords="204,52,235,55,235,60,203,57"/>
 </map>

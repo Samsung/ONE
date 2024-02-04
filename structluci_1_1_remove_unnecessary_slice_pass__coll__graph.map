@@ -1,4 +1,5 @@
 <map id="luci::RemoveUnnecessarySlicePass" name="luci::RemoveUnnecessarySlicePass">
-<area shape="rect" id="node1" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="5,79,236,104"/>
-<area shape="rect" id="node2" href="$classlogo_1_1_pass.html" title=" " alt="" coords="79,5,162,31"/>
+<area shape="rect" id="Node000001" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="5,79,236,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="80,5,161,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,46,123,79,118,79,118,46"/>
 </map>

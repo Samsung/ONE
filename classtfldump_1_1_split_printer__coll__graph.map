@@ -1,4 +1,5 @@
 <map id="tfldump::SplitPrinter" name="tfldump::SplitPrinter">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,140,104"/>
-<area shape="rect" id="node2" href="$classtfldump_1_1_op_printer.html" title=" " alt="" coords="10,5,135,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,139,105"/>
+<area shape="rect" id="Node000002" href="$classtfldump_1_1_op_printer.html" title=" " alt="" coords="10,5,134,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,46,75,79,69,79,69,46"/>
 </map>

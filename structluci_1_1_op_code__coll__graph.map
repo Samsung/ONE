@@ -1,5 +1,7 @@
 <map id="luci::OpCode" name="luci::OpCode">
-<area shape="rect" id="node1" title=" " alt="" coords="67,93,161,119"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,113,31"/>
-<area shape="rect" id="node3" title=" " alt="" coords="138,5,199,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="65,94,160,120"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,113,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,43,107,92,103,95,72,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="137,5,197,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="156,45,140,71,123,95,119,92,135,69,151,43"/>
 </map>

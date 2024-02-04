@@ -1,4 +1,5 @@
 <map id="locoex::TFLDialect" name="locoex::TFLDialect">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,135,104"/>
-<area shape="rect" id="node2" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="24,5,116,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,134,105"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_dialect.html" title="Dialect interface." alt="" coords="24,5,115,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,46,72,79,67,79,67,46"/>
 </map>

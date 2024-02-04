@@ -1,8 +1,13 @@
 <map id="luci::ConnectNode" name="luci::ConnectNode">
-<area shape="rect" id="node1" title=" " alt="" coords="148,271,275,296"/>
-<area shape="rect" id="node2" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="57,168,206,208"/>
-<area shape="rect" id="node3" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,215,105"/>
-<area shape="rect" id="node4" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="239,80,418,105"/>
-<area shape="rect" id="node5" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="224,5,433,31"/>
-<area shape="rect" id="node6" href="$structluci_1_1_clone_context.html" title=" " alt="" coords="230,175,355,201"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="188,273,314,298"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="57,169,205,210"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,217,237,270,234,274,166,222"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="5,80,214,106"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,120,129,168,124,169,113,122"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_visitor.html" title=" " alt="" coords="238,80,416,106"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="289,116,173,171,171,166,287,111"/>
+<area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_visitor_base.html" title=" " alt="" coords="223,5,431,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="330,46,330,80,324,80,324,46"/>
+<area shape="rect" id="Node000006" href="$structluci_1_1_clone_context.html" title=" " alt="" coords="229,177,353,202"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="282,217,258,273,254,271,277,215"/>
 </map>

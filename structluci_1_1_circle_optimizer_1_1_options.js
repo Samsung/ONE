@@ -27,6 +27,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FoldFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf9477ea8dfd5925764d1422fe0c62cf4", null ],
       [ "FoldDequantize", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea23b9df3af72103d0bf7fc4a1412144cb", null ],
       [ "FoldGather", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaa7de78cdafc3f834d1464ccb3cf2ec75", null ],
+      [ "FoldShape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf9452bd26cbc617873efca34f780db17", null ],
       [ "FoldSparseToDense", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aead9c4d4bc9ee1d208b693999349bd2696", null ],
       [ "ForwardReshapeToUnaryOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabdf92e9063280587624db6c121c1a689", null ],
       [ "ForwardTransposeOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea01ebac88ff9f66146710e127483cd6b6", null ],

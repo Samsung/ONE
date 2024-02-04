@@ -1,5 +1,7 @@
 <map id="moco::PlaneInference::Parameters" name="moco::PlaneInference::Parameters">
-<area shape="rect" id="node1" title=" " alt="" coords="5,269,152,309"/>
-<area shape="rect" id="node2" href="$structmoco_1_1_plane_shape.html" title=" " alt="" coords="13,108,144,133"/>
-<area shape="rect" id="node3" href="$classloco_1_1_dimension.html" title="The value of one dimension in a tensor shape." alt="" coords="22,5,135,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,273,152,313"/>
+<area shape="rect" id="Node000002" href="$structmoco_1_1_plane_shape.html" title=" " alt="" coords="14,109,143,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,150,81,272,76,272,76,150"/>
+<area shape="rect" id="Node000003" href="$classloco_1_1_dimension.html" title="The value of one dimension in a tensor shape." alt="" coords="22,5,135,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,47,81,109,76,109,76,47"/>
 </map>

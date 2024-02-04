@@ -23,6 +23,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "FoldDequantizePass.cpp", "_fold_dequantize_pass_8cpp.html", null ],
     [ "FoldFullyConnectedPass.cpp", "_fold_fully_connected_pass_8cpp.html", "_fold_fully_connected_pass_8cpp" ],
     [ "FoldGatherPass.cpp", "_fold_gather_pass_8cpp.html", null ],
+    [ "FoldShapePass.cpp", "_fold_shape_pass_8cpp.html", null ],
     [ "FoldSparseToDensePass.cpp", "_fold_sparse_to_dense_pass_8cpp.html", null ],
     [ "ForceQuantParamPass.cpp", "_force_quant_param_pass_8cpp.html", null ],
     [ "ForwardReshapeToUnaryOpPass.cpp", "_forward_reshape_to_unary_op_pass_8cpp.html", null ],

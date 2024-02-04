@@ -1,4 +1,5 @@
 <map id="mpqsolver::core::MAEMetric" name="mpqsolver::core::MAEMetric">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,188,104"/>
-<area shape="rect" id="node2" href="$classmpqsolver_1_1core_1_1_error_metric.html" title=" " alt="" coords="5,5,188,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,188,105"/>
+<area shape="rect" id="Node000002" href="$classmpqsolver_1_1core_1_1_error_metric.html" title=" " alt="" coords="6,5,187,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,46,99,79,94,79,94,46"/>
 </map>

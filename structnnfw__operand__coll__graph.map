@@ -1,4 +1,5 @@
 <map id="nnfw_operand" name="nnfw_operand">
-<area shape="rect" id="node1" title=" " alt="" coords="5,93,108,119"/>
-<area shape="rect" id="node2" title=" " alt="" coords="29,5,84,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,108,120"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="29,5,84,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,47,59,94,54,94,54,47"/>
 </map>

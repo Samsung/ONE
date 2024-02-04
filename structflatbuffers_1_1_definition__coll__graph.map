@@ -1,6 +1,9 @@
 <map id="flatbuffers::Definition" name="flatbuffers::Definition">
-<area shape="rect" id="node1" title=" " alt="" coords="122,196,259,221"/>
-<area shape="rect" id="node2" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="21,93,179,133"/>
-<area shape="rect" id="node3" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,5,195,31"/>
-<area shape="rect" id="node4" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="204,101,359,126"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="122,198,258,223"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="20,94,179,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,144,181,196,177,199,127,148"/>
+<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,5,194,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,46,102,93,97,93,97,46"/>
+<area shape="rect" id="Node000004" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="203,102,356,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="260,140,204,199,200,195,256,137"/>
 </map>
