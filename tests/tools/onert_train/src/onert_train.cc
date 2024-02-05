@@ -138,11 +138,11 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
 
     // overwrite training information using the arguments
-    if (tri.batch_size == 0)
-    {
-      // If args doens't have a batch size, set batch size 1
-      tri.batch_size = args.getBatchSize().value_or(1);
-    }
+    if (tri.batch_size == 0 && !args.getBatchSize().has_value())
+      tri.batch_size = 1;
+    else
+      tri.batch_size = args.getBatchSize().value_or(tri.batch_size);
+
     tri.learning_rate = args.getLearningRate().value_or(tri.learning_rate);
     tri.loss_info.loss = args.getLossType().value_or(tri.loss_info.loss);
     tri.loss_info.reduction_type =
