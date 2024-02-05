@@ -29,7 +29,7 @@ namespace loader
 /**
  * @brief     Create custom loader and load model from file
  * @param[in] filename  File path to load model from
- * @param[in] type      Type of custom loader to create
+ * @param[in] type      Type of model to load
  * @return    Loaded model.
  *
  * @note  Throw exception if failed to load model
