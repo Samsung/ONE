@@ -24,6 +24,7 @@
 #include "ops/LossMeanSquaredErrorLayer.h"
 #include "ops/LossCategoricalCrossentropyLayer.h"
 #include "ops/MeanLayer.h"
+#include "ops/GradientAppender.h"
 #include "ops/GradientApplier.h"
 #include "ops/PadLayer.h"
 #include "ops/PoolLayer.h"
@@ -80,6 +81,13 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
   update_fn->configure(optimizer, gradient, trainable);
   return update_fn;
 }
+
+std::unique_ptr<ops::GradientAppender> generateGradientAppender(const IPortableTensor *temp,
+                                                                IPortableTensor *gradient)
+{
+  auto update_fn = std::make_unique<ops::GradientAppender>(temp, gradient);
+  return update_fn;
+}
 } // namespace
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
@@ -87,6 +95,14 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
+
+  for (const auto &ind : (op.getInputs() | ir::Remove::UNDEFINED))
+  {
+    // TODO Use correct tensors
+    ret->append(generateGradientAppender(_tensor_reg->getBackPropTensor(ind),
+                                         _tensor_reg->getBackPropTensor(ind)));
+  }
+
   op.accept(*this);
   assert(_return_fn);
   ret->append(std::move(_return_fn));

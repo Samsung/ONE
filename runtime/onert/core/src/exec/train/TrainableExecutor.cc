@@ -152,6 +152,8 @@ void TrainableExecutor::backward(const IODescription &, uint32_t training_step)
 
 void TrainableExecutor::backwardImpl(uint32_t training_step)
 {
+  // TODO Initialize backpropagation tensors
+
   if (_tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
