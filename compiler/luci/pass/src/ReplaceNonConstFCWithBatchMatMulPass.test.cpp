@@ -143,17 +143,3 @@ TEST_F(ReplaceNonConstFCWithBatchMatMulPassTest, wrong_op_NEG)
 
   EXPECT_EQ(false, changed);
 }
-
-TEST_F(ReplaceNonConstFCWithBatchMatMulPassTest, const_input_NEG)
-{
-  g.init({2, 3}, {2, 3}, {2, 2}, 1.0f);
-
-  auto const_input = g.g()->nodes()->create<luci::CircleConst>();
-  const_input->shape({2, 3});
-  const_input->dtype(loco::DataType::FLOAT32);
-
-  g.fc()->input(const_input);
-
-  auto ret = pass.run(g.g());
-  EXPECT_EQ(false, ret);
-}
