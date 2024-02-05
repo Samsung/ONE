@@ -30,6 +30,7 @@
 #include "ir/train/TrainingInfo.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
+#include "odc/CodegenManager.h"
 #include "circle_schema_generated.h"
 #include "trix_loader.h"
 
@@ -240,7 +241,8 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr}
+    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr},
+    _codegen_manager{nullptr}
 {
   // DO NOTHING
 }
@@ -313,6 +315,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
 
   // Create quantize manager
   _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path));
+  // Create codegen manager
+  _codegen_manager = std::make_unique<onert::odc::CodegenManager>(std::string{model_file_path});
 
   std::string filename{model_file_path};
   // TODO: Use std::filesystem::path when we can use c++17.
@@ -404,6 +408,8 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     // TODO Support multiple models
     auto const model_filename = package_path + std::string("/") + models[0].asString();
     _quant_manager = std::make_unique<onert::odc::QuantizeManager>(model_filename);
+    // Create codegen manager
+    _codegen_manager = std::make_unique<onert::odc::CodegenManager>(model_filename);
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
@@ -1828,6 +1834,113 @@ NNFW_STATUS nnfw_session::quantize()
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::quantize : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_codegen_model_path(const char *path)
+{
+  try
+  {
+    if (!isStateModelLoaded())
+    {
+      std::cerr << "invalid state" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    assert(_codegen_manager != nullptr);
+    _codegen_manager->exportModelPath(std::string(path));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_codegen_model_path : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
+{
+  try
+  {
+    if (!isStateModelLoaded())
+    {
+      std::cerr << "Error during nnfw_session::codegen : Invalid state" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    std::string target_str{target};
+    if (target_str.empty() || target_str.substr(target_str.size() - 4) != "-gen")
+    {
+      std::cerr << "Error during nnfw_session::codegen : Invalid target" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    onert::odc::CodegenPreference codegen_pref;
+    switch (pref)
+    {
+      case NNFW_CODEGEN_PREF_DEFAULT:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_DEFAULT;
+        break;
+      case NNFW_CODEGEN_PREF_PERFORMANCE_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_PERFORMANCE_FIRST;
+        break;
+      case NNFW_CODEGEN_PREF_MEMORY_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_MEMORY_FIRST;
+        break;
+      case NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST:
+        codegen_pref = onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST;
+        break;
+      default:
+        std::cerr << "Error during nnfw_session::codegen : Invalid preference" << std::endl;
+        return NNFW_STATUS_ERROR;
+    }
+
+    assert(_codegen_manager != nullptr);
+    auto export_model_path = _codegen_manager->exportModelPath();
+    // If the export_model_path is not set, it generates a compiled model path
+    // automatically.
+    if (export_model_path.empty())
+    {
+      // model path always has a dot. (valid extension)
+      auto dotidx = _model_path.rfind('.');
+      assert(dotidx != std::string::npos);
+      auto genidx = target_str.rfind("-gen");
+      assert(genidx != std::string::npos);
+      // The compiled model path is the same directory of the original model/package with
+      // target backend extension.
+      export_model_path = _model_path.substr(0, dotidx + 1) + target_str.substr(0, genidx);
+      _codegen_manager->exportModelPath(export_model_path);
+    }
+
+    _codegen_manager->codegen(target, codegen_pref);
+
+    // Replace model
+    // TODO Support buffer replace, not file reload
+    // TODO: Use std::filesystem::path when we can use c++17.
+    auto dotidx = export_model_path.rfind('.');
+    if (dotidx == std::string::npos)
+    {
+      std::cerr << "Error during nnfw_session::codegen : Invalid compiled model path. Please use a "
+                   "path that includes the extension."
+                << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    std::string model_type = export_model_path.substr(dotidx + 1); // + 1 to exclude dot
+    auto model = loadModel(export_model_path, model_type);
+    if (model == nullptr)
+      return NNFW_STATUS_ERROR;
+
+    // TODO: Update _model_path if necessary
+    _nnpkg->replaceModel(std::move(model));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::compile : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
 

@@ -478,3 +478,15 @@ NNFW_STATUS nnfw_quantize(nnfw_session *session)
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->quantize();
 }
+
+NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_codegen_model_path(path);
+}
+
+NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->codegen(target, pref);
+}
