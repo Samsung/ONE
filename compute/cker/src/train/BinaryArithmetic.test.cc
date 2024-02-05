@@ -217,6 +217,91 @@ TEST(CKer_Operation, MulGrad)
   }
 }
 
+TEST(CKer_Operation, DivGrad)
+{
+  {
+    // Shape: {2, 3}
+    std::vector<float> lhs = {-8, 9, -10, 11, -12, 13};
+    std::vector<float> rhs = {-14, 15, -16, 17, -18, 19};
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> expected_lhs_backward(6);
+    std::vector<float> expected_rhs_backward(6);
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(6);
+
+    for (uint32_t i = 0; i < 6; ++i)
+    {
+      expected_lhs_backward[i] = incoming_backward[i] / rhs[i];
+      expected_rhs_backward[i] = incoming_backward[i] * -lhs[i] / (rhs[i] * rhs[i]);
+    }
+
+    nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, lhs.data(), nnfw::cker::Shape{2, 3}, rhs.data(),
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kDiv);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], expected_rhs_backward[i]);
+  }
+  {
+    // Shape: {4, 3}
+    std::vector<float> lhs = {-14, 15, -16, 17, -18, 19, -20, 21, -22, 23, -24, 25};
+    std::vector<float> rhs = {-26, 27, -28, 29, -30, 31, -32, 33, -34, 35, -36, 37};
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13};
+    std::vector<float> expected_lhs_backward(12);
+    std::vector<float> expected_rhs_backward(12);
+    std::vector<float> lhs_backward(12);
+    std::vector<float> rhs_backward(12);
+
+    for (uint32_t i = 0; i < 12; ++i)
+    {
+      expected_lhs_backward[i] = incoming_backward[i] / rhs[i];
+      expected_rhs_backward[i] = incoming_backward[i] * -lhs[i] / (rhs[i] * rhs[i]);
+    }
+
+    nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{4, 3}, lhs.data(), nnfw::cker::Shape{4, 3}, rhs.data(),
+      nnfw::cker::Shape{4, 3}, incoming_backward.data(), nnfw::cker::Shape{4, 3},
+      lhs_backward.data(), nnfw::cker::Shape{4, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kDiv);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], expected_rhs_backward[i]);
+  }
+  {
+    // Shape: {2, 2, 2}
+    std::vector<float> lhs = {-10, 11, -12, 13, -14, 15, -16, 17};
+    std::vector<float> rhs = {-18, 19, -20, 21, -22, 23, -24, 25};
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7, -8, 9};
+    std::vector<float> expected_lhs_backward = incoming_backward;
+    std::vector<float> expected_rhs_backward = incoming_backward;
+    std::vector<float> lhs_backward(8);
+    std::vector<float> rhs_backward(8);
+
+    for (uint32_t i = 0; i < 8; ++i)
+    {
+      expected_lhs_backward[i] = incoming_backward[i] / rhs[i];
+      expected_rhs_backward[i] = incoming_backward[i] * -lhs[i] / (rhs[i] * rhs[i]);
+    }
+
+    nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 2, 2}, lhs.data(), nnfw::cker::Shape{2, 2, 2}, rhs.data(),
+      nnfw::cker::Shape{2, 2, 2}, incoming_backward.data(), nnfw::cker::Shape{2, 2, 2},
+      lhs_backward.data(), nnfw::cker::Shape{2, 2, 2}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kDiv);
+
+    for (size_t i = 0; i < lhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(lhs_backward[i], expected_lhs_backward[i]);
+    for (size_t i = 0; i < rhs_backward.size(); ++i)
+      EXPECT_FLOAT_EQ(rhs_backward[i], expected_rhs_backward[i]);
+  }
+}
+
 TEST(CKer_Operation, DistinctShape)
 {
   {
