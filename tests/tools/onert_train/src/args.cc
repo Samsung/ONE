@@ -113,9 +113,9 @@ T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args,
 
 // generate a help message based on the valid_args and default_arg
 template <typename T>
-std::string genHelpMsg(const std::string &arg_name, const std::vector<T> &valid_args, T default_arg)
+std::string genHelpMsg(const std::string &arg_name, const std::vector<T> &valid_args)
 {
-  std::string msg = arg_name + " (default: " + onert_train::to_string(default_arg) + ")\n";
+  std::string msg = arg_name + " (default: use model file parameter)\n";
   for (const auto arg : valid_args)
   {
     const auto num = nnfw::misc::to_underlying(arg);
@@ -251,22 +251,19 @@ void Args::Initialize(void)
     )
     ("mem_poll,m", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _mem_poll = v; }), "Check memory polling (default: false)")
     ("epoch", po::value<int>()->default_value(5)->notifier([&](const auto &v) { _epoch = v; }), "Epoch number (default: 5)")
-    ("batch_size", po::value<int>()->default_value(32)->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: 32)")
-    ("learning_rate", po::value<float>()->default_value(0.001)->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: 0.001)")
+    ("batch_size", po::value<int>()->notifier([&](const auto &v) { _batch_size = v; }), "Batch size (default: use model file parameter)")
+    ("learning_rate", po::value<float>()->notifier([&](const auto &v) { _learning_rate = v; }), "Learning rate (default: use model file parameter)")
     ("loss", po::value<int>()
-      ->default_value(default_loss)
       ->notifier([&](const auto& v){_loss_type = checkValidation("loss", valid_loss, v);}),
-      genHelpMsg("loss", valid_loss, default_loss).c_str()
+      genHelpMsg("loss", valid_loss).c_str()
     )
     ("loss_reduction_type", po::value<int>()
-      ->default_value(default_loss_rdt)
       ->notifier([&](const auto &v){_loss_reduction_type = checkValidation("loss_reduction_type", valid_loss_rdt, v);}),
-      genHelpMsg("loss_reduction_tye", valid_loss_rdt, default_loss_rdt).c_str()
+      genHelpMsg("loss_reduction_tye", valid_loss_rdt).c_str()
     )
     ("optimizer", po::value<int>()
-      ->default_value(default_optim)
       ->notifier([&](const auto& v){_optimizer_type = checkValidation("optimizer", valid_optim, v);}),
-      genHelpMsg("optimizer", valid_optim, default_optim).c_str()
+      genHelpMsg("optimizer", valid_optim).c_str()
     )
     ("metric", po::value<int>()->default_value(-1)->notifier([&] (const auto &v) { _metric_type = v; }),
       "Metric type\n"

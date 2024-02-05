@@ -138,11 +138,16 @@ int main(const int argc, char **argv)
     NNPR_ENSURE_STATUS(nnfw_train_get_traininfo(session, &tri));
 
     // overwrite training information using the arguments
-    tri.batch_size = args.getBatchSize();
-    tri.learning_rate = args.getLearningRate();
-    tri.loss_info.loss = args.getLossType();
-    tri.loss_info.reduction_type = args.getLossReductionType();
-    tri.opt = args.getOptimizerType();
+    if (tri.batch_size == 0)
+    {
+      // If args doens't have a batch size, set batch size 1
+      tri.batch_size = args.getBatchSize().value_or(1);
+    }
+    tri.learning_rate = args.getLearningRate().value_or(tri.learning_rate);
+    tri.loss_info.loss = args.getLossType().value_or(tri.loss_info.loss);
+    tri.loss_info.reduction_type =
+      args.getLossReductionType().value_or(tri.loss_info.reduction_type);
+    tri.opt = args.getOptimizerType().value_or(tri.opt);
 
     std::cout << "== training parameter ==" << std::endl;
     std::cout << tri;
