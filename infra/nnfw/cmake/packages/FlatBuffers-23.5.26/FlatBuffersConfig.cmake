@@ -6,8 +6,7 @@ function(_FlatBuffers_import)
     return()
   endif(Flatbuffers_FOUND)
 
-  # NOTE Tizen uses 2.0
-  nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
+  nnas_find_package(FlatBuffersSource EXACT 23.5.26 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
     set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
@@ -15,9 +14,15 @@ function(_FlatBuffers_import)
   endif(NOT FlatBuffersSource_FOUND)
 
   # From FlatBuffers's CMakeLists.txt
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/annotated_binary_text_gen.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/bfbs_gen_lua.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/bfbs_gen_nim.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/binary_annotator.cpp")
   list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/code_generators.cpp")
-  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_parser.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/flatc.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_fbs.cpp")
   list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_text.cpp")
+  list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_parser.cpp")
   list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/reflection.cpp")
   list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/util.cpp")
 

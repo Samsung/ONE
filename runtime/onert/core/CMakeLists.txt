@@ -19,7 +19,7 @@ set_target_properties(onert_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(onert_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Flatbuffer for loader
-nnfw_find_package(FlatBuffers REQUIRED)
+nnfw_find_package(FlatBuffers EXACT 23.5.26 REQUIRED)
 target_link_libraries(onert_core PRIVATE flatbuffers::flatbuffers)
 target_link_libraries(onert_core PRIVATE circle_schema)
 
