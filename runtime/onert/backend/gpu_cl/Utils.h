@@ -17,8 +17,6 @@
 #ifndef __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
 #define __ONERT_BACKEND_GPU_CL_TENSOR_BUILDER_HELPER_H__
 
-#include "absl/status/status.h"
-
 #include "tensorflow/lite/delegates/gpu/common/shape.h"
 #include "tensorflow/lite/delegates/gpu/common/operations.h"
 

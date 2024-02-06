@@ -49,20 +49,21 @@ list(APPEND TFLITE_GPU_SRCS ${GPU_CL_SRC_LIST})
 
 add_library(${LIB_TENSORFLOW_GPU_DELEGATE} STATIC ${TFLITE_GPU_SRCS})
 
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${Opencl_Headers_DIR}")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${Fp16Source_DIR}/include")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${TensorFlowSource_DIR}")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${TensorFlowGEMMLowpSource_DIR}")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${TensorFlowEigenSource_DIR}")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${VulkanSource_DIR}/include")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${Opengl_HeadersSource_DIR}/api")
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "${Egl_HeadersSource_DIR}/api")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Opencl_Headers_DIR}")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Fp16Source_DIR}/include")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${TensorFlowSource_DIR}")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${TensorFlowGEMMLowpSource_DIR}")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${TensorFlowEigenSource_DIR}")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${VulkanSource_DIR}/include")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Opengl_HeadersSource_DIR}/api")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Egl_HeadersSource_DIR}/api")
 
-target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE abseil farmhash fp16 flatbuffers)
+target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC abseil farmhash flatbuffers::flatbuffers-2.0)
 
 # GL codes are not used on gpu_cl
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DCL_DELEGATE_NO_GL")
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_DELEGATE_NO_GL")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_TARGET_OPENCL_VERSION=220")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
 
 # deprecated-copy warning on header (gcc 9.4.0)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.4)
