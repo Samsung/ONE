@@ -64,6 +64,7 @@ target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC abseil farmhash flat
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_DELEGATE_NO_GL")
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_TARGET_OPENCL_VERSION=220")
 target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-Wno-sign-compare")
 
 # deprecated-copy warning on header (gcc 9.4.0)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.4)
