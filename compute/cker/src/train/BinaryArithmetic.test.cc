@@ -217,8 +217,78 @@ TEST(CKer_Operation, MulGrad)
   }
 }
 
-TEST(CKer_Operation, DistinctShape)
+TEST(CKer_Operation, neg_BinaryArithmeticDistinctShape)
 {
+  {
+    // all but lhs have the same shape
+    std::vector<float> lhs(8); // Does not matter
+    std::vector<float> rhs(6); // Does not matter
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(6);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 2, 2}, lhs.data(), nnfw::cker::Shape{2, 3}, rhs.data(),
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
+  {
+    // all but rhs have the same shape
+    std::vector<float> lhs(6); // Does not matter
+    std::vector<float> rhs(8); // Does not matter
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(6);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, lhs.data(), nnfw::cker::Shape{2, 2, 2}, rhs.data(),
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
+  {
+    // all but incoming_backward have the same shape
+    std::vector<float> lhs(6); // Does not matter
+    std::vector<float> rhs(6); // Does not matter
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7, -8, 9};
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(6);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, lhs.data(), nnfw::cker::Shape{2, 3}, rhs.data(),
+      nnfw::cker::Shape{2, 2, 2}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
+  {
+    // all but lhs_backward have the same shape
+    std::vector<float> lhs(6); // Does not matter
+    std::vector<float> rhs(6); // Does not matter
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> lhs_backward(8);
+    std::vector<float> rhs_backward(6);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, lhs.data(), nnfw::cker::Shape{2, 3}, rhs.data(),
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 2, 2},
+      lhs_backward.data(), nnfw::cker::Shape{2, 3}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
+  {
+    // all but rhs_backward have the same shape
+    std::vector<float> lhs(6); // Does not matter
+    std::vector<float> rhs(6); // Does not matter
+    std::vector<float> incoming_backward = {-2, 3, -4, 5, -6, 7};
+    std::vector<float> lhs_backward(6);
+    std::vector<float> rhs_backward(8);
+
+    EXPECT_ANY_THROW(nnfw::cker::train::BinaryArithmeticGrad(
+      nnfw::cker::Shape{2, 3}, lhs.data(), nnfw::cker::Shape{2, 3}, rhs.data(),
+      nnfw::cker::Shape{2, 3}, incoming_backward.data(), nnfw::cker::Shape{2, 3},
+      lhs_backward.data(), nnfw::cker::Shape{2, 2, 2}, rhs_backward.data(),
+      nnfw::cker::train::ArithmeticType::kAdd));
+  }
   {
     std::vector<float> lhs(8); // Does not matter
     std::vector<float> rhs(8); // Does not matter
