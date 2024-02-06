@@ -83,6 +83,7 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fold_gather", "This will fold Gather operator");
   add_switch(arser, "--fold_shape", "This will fold Shape operator");
   add_switch(arser, "--fold_sparse_to_dense", "This will fold SparseToDense operator");
+  add_switch(arser, "--fold_strided_slice", "This will fold StridedSlice operator");
   add_switch(arser, "--forward_reshape_to_unaryop",
              "This will move Reshape after UnaryOp for centain condition");
   add_switch(arser, "--forward_transpose_op",
@@ -272,6 +273,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldShape);
   if (arser.get<bool>("--fold_sparse_to_dense"))
     options->enable(Algorithms::FoldSparseToDense);
+  if (arser.get<bool>("--fold_strided_slice"))
+    options->enable(Algorithms::FoldStridedSlice);
   if (arser.get<bool>("--forward_reshape_to_unaryop"))
     options->enable(Algorithms::ForwardReshapeToUnaryOp);
   if (arser.get<bool>("--forward_transpose_op"))
