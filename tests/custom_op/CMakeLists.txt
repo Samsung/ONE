@@ -2,7 +2,7 @@ if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-nnfw_find_package(FlatBuffers EXACT 2.0 QUIET)
+nnfw_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 if(NOT FlatBuffers_FOUND)
   message(STATUS "Skip build custom operation test: cannot find flatbuffers")
   return()
