@@ -110,7 +110,7 @@ void TrainableGraph::verify(void) const
     }
     catch (const std::bad_cast &)
     {
-      std::runtime_error("TrainableGraph: " + op.name() + " is not a trainable operation");
+      throw std::runtime_error("TrainableGraph: " + op.name() + " is not a trainable operation");
     }
   });
 }
