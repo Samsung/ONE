@@ -49,7 +49,7 @@ list(APPEND TFLITE_GPU_SRCS ${GPU_CL_SRC_LIST})
 
 add_library(${LIB_TENSORFLOW_GPU_DELEGATE} STATIC ${TFLITE_GPU_SRCS})
 
-target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Opencl_Headers_DIR}")
+target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Opencl_HeadersSource_DIR}")
 target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Fp16Source_DIR}/include")
 target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${TensorFlowSource_DIR}")
 target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${TensorFlowGEMMLowpSource_DIR}")

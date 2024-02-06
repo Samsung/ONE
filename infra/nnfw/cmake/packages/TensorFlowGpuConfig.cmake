@@ -29,6 +29,9 @@ function(_Build_TfliteGpuDelagate_)
   nnas_find_package(VulkanSource QUIET)
   return_unless(VulkanSource_FOUND)
 
+  nnas_find_package(Opencl_HeadersSource QUIET)
+  return_unless(Opencl_HeadersSource_FOUND)
+
   nnas_find_package(Opengl_HeadersSource QUIET)
   return_unless(Opengl_HeadersSource_FOUND)
 
