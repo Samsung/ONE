@@ -20,7 +20,10 @@ if (${TARGET_OS} MATCHES "tizen")
     target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-Wno-error=deprecated-copy")
 endif ()
 
-target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE TensorFlowGpu)
+target_compile_options(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE "-DCL_TARGET_OPENCL_VERSION=220" "-DEGL_NO_X11")
+
+target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE dl)
+target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tensorflow-lite-gpu)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)

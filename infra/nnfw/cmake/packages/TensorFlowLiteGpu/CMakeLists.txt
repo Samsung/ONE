@@ -2,7 +2,7 @@
 # Tensorflow Lite GPU delegate library 2.8.0
 #
 
-set(LIB_TENSORFLOW_GPU_DELEGATE "TensorFlowGpu")
+set(LIB_TENSORFLOW_GPU_DELEGATE tensorflow-lite-gpu)
 
 #TENSORFLOWGPU_SOURCE_DIR
 set(TENSORFLOWSOURCE_DIR ${TensorFlowSource_DIR})
@@ -61,10 +61,9 @@ target_include_directories(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "${Egl_HeadersS
 target_link_libraries(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC abseil farmhash flatbuffers::flatbuffers-2.0)
 
 # GL codes are not used on gpu_cl
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_DELEGATE_NO_GL")
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DCL_TARGET_OPENCL_VERSION=220")
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
-target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PUBLIC "-Wno-sign-compare")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DCL_DELEGATE_NO_GL")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DCL_TARGET_OPENCL_VERSION=220")
+target_compile_options(${LIB_TENSORFLOW_GPU_DELEGATE} PRIVATE "-DTFLITE_GPU_BINARY_RELEASE" "-DEGL_NO_X11")
 
 # deprecated-copy warning on header (gcc 9.4.0)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.4)

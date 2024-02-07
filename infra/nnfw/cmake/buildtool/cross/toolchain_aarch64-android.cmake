@@ -17,9 +17,8 @@ set(ANDROID_STL c++_shared)
 set(ANDROID_STL_LIB "${NDK_DIR}/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++_shared.so")
 
 # Find package in the host. `nnfw_find_package` won't work without this
+# Others follow android.toolchain.cmake settings
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE NEVER)
-# Find library in the host. Necessary for `add_library` searching in `out/lib` dir.
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
 
 # Use the toolchain file that NDK provides
 include(${NDK_DIR}/build/cmake/android.toolchain.cmake)
