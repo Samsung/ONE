@@ -62,6 +62,7 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
   // fill ir_loss from circle_loss
   ir::train::LossInfo ir_loss;
   const circle::LossFn circle_loss = circle_model->lossfn();
+  const circle::LossReductionType circle_loss_rdt = circle_model->loss_reduction_type();
 
   switch (circle_loss)
   {
@@ -78,7 +79,18 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
       throw std::runtime_error{"unknown loss function"};
   }
 
-  // TODO update circle schema to support loss reduction type
+  switch (circle_loss_rdt)
+  {
+    case circle::LossReductionType::LossReductionType_SumOverBatchSize:
+      ir_loss.reduction_type = ir::train::LossReductionType::SumOverBatchSize;
+      break;
+    case circle::LossReductionType::LossReductionType_Sum:
+      ir_loss.reduction_type = ir::train::LossReductionType::Sum;
+      break;
+    default:
+      throw std::runtime_error{"unknown loss reduction type"};
+  }
+
   return ir_loss;
 }
 } // namespace
