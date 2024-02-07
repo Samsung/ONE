@@ -70,6 +70,8 @@ int32_t get_broadcastTo_index_among_inputs_of(luci::CircleCustom *cop)
   return -1;
 }
 
+// NOTE Broadcasting of input `Const` is skipped cause `Add` will do the broadcasting.
+// TODO Implement broadcasting to the `Const` input.
 /** BEFORE
  *                                  [CircleConst]
  *                                        |
