@@ -1,4 +1,4 @@
-// This file is from https://github.sec.samsung.net/one-project/circle-x/blob/91fc9550d914a3c62bf41e62e007e1a2f5f37b59/spec/circle_training.fbs
+// This file is from https://github.sec.samsung.net/one-project/circle-x/blob/e94b2b8956bcc316bef19dc4885a5027f545845a/spec/circle_training.fbs
 
 // Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
 // Copyright 2017 The TensorFlow Authors. All Rights Reserved.
@@ -99,6 +99,11 @@ table CategoricalCrossentropyOptions {
 table MeanSquaredErrorOptions {
 }
 
+enum LossReductionType : byte {
+  SumOverBatchSize = 0,
+  Sum = 1,
+}
+
 // --------
 // Model Metadata
 //
@@ -114,6 +119,7 @@ table ModelTraining {
   lossfn_opt: LossFnOptions;
   epochs: int;
   batch_size: int;
+  loss_reduction_type : LossReductionType;
 }
 
 root_type ModelTraining;

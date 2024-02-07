@@ -211,6 +211,35 @@ bool VerifyLossFnOptionsVector(flatbuffers::Verifier &verifier,
                                const flatbuffers::Vector<flatbuffers::Offset<void>> *values,
                                const flatbuffers::Vector<uint8_t> *types);
 
+enum LossReductionType : int8_t
+{
+  LossReductionType_SumOverBatchSize = 0,
+  LossReductionType_Sum = 1,
+  LossReductionType_MIN = LossReductionType_SumOverBatchSize,
+  LossReductionType_MAX = LossReductionType_Sum
+};
+
+inline const LossReductionType (&EnumValuesLossReductionType())[2]
+{
+  static const LossReductionType values[] = {LossReductionType_SumOverBatchSize,
+                                             LossReductionType_Sum};
+  return values;
+}
+
+inline const char *const *EnumNamesLossReductionType()
+{
+  static const char *const names[3] = {"SumOverBatchSize", "Sum", nullptr};
+  return names;
+}
+
+inline const char *EnumNameLossReductionType(LossReductionType e)
+{
+  if (flatbuffers::IsOutRange(e, LossReductionType_SumOverBatchSize, LossReductionType_Sum))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesLossReductionType()[index];
+}
+
 struct SGDOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
 {
   typedef SGDOptionsBuilder Builder;
@@ -455,7 +484,8 @@ struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
     VT_LOSSFN_OPT_TYPE = 14,
     VT_LOSSFN_OPT = 16,
     VT_EPOCHS = 18,
-    VT_BATCH_SIZE = 20
+    VT_BATCH_SIZE = 20,
+    VT_LOSS_REDUCTION_TYPE = 22
   };
   uint32_t version() const { return GetField<uint32_t>(VT_VERSION, 0); }
   circle::Optimizer optimizer() const
@@ -511,6 +541,10 @@ struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
   }
   int32_t epochs() const { return GetField<int32_t>(VT_EPOCHS, 0); }
   int32_t batch_size() const { return GetField<int32_t>(VT_BATCH_SIZE, 0); }
+  circle::LossReductionType loss_reduction_type() const
+  {
+    return static_cast<circle::LossReductionType>(GetField<int8_t>(VT_LOSS_REDUCTION_TYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) && VerifyField<uint32_t>(verifier, VT_VERSION) &&
@@ -523,7 +557,8 @@ struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table
            VerifyOffset(verifier, VT_LOSSFN_OPT) &&
            VerifyLossFnOptions(verifier, lossfn_opt(), lossfn_opt_type()) &&
            VerifyField<int32_t>(verifier, VT_EPOCHS) &&
-           VerifyField<int32_t>(verifier, VT_BATCH_SIZE) && verifier.EndTable();
+           VerifyField<int32_t>(verifier, VT_BATCH_SIZE) &&
+           VerifyField<int8_t>(verifier, VT_LOSS_REDUCTION_TYPE) && verifier.EndTable();
   }
 };
 
@@ -600,6 +635,11 @@ struct ModelTrainingBuilder
   {
     fbb_.AddElement<int32_t>(ModelTraining::VT_BATCH_SIZE, batch_size, 0);
   }
+  void add_loss_reduction_type(circle::LossReductionType loss_reduction_type)
+  {
+    fbb_.AddElement<int8_t>(ModelTraining::VT_LOSS_REDUCTION_TYPE,
+                            static_cast<int8_t>(loss_reduction_type), 0);
+  }
   explicit ModelTrainingBuilder(flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -612,15 +652,15 @@ struct ModelTrainingBuilder
   }
 };
 
-inline flatbuffers::Offset<ModelTraining>
-CreateModelTraining(flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
-                    circle::Optimizer optimizer = circle::Optimizer_SGD,
-                    circle::OptimizerOptions optimizer_opt_type = circle::OptimizerOptions_NONE,
-                    flatbuffers::Offset<void> optimizer_opt = 0,
-                    circle::LossFn lossfn = circle::LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
-                    circle::LossFnOptions lossfn_opt_type = circle::LossFnOptions_NONE,
-                    flatbuffers::Offset<void> lossfn_opt = 0, int32_t epochs = 0,
-                    int32_t batch_size = 0)
+inline flatbuffers::Offset<ModelTraining> CreateModelTraining(
+  flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
+  circle::Optimizer optimizer = circle::Optimizer_SGD,
+  circle::OptimizerOptions optimizer_opt_type = circle::OptimizerOptions_NONE,
+  flatbuffers::Offset<void> optimizer_opt = 0,
+  circle::LossFn lossfn = circle::LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
+  circle::LossFnOptions lossfn_opt_type = circle::LossFnOptions_NONE,
+  flatbuffers::Offset<void> lossfn_opt = 0, int32_t epochs = 0, int32_t batch_size = 0,
+  circle::LossReductionType loss_reduction_type = circle::LossReductionType_SumOverBatchSize)
 {
   ModelTrainingBuilder builder_(_fbb);
   builder_.add_batch_size(batch_size);
@@ -628,6 +668,7 @@ CreateModelTraining(flatbuffers::FlatBufferBuilder &_fbb, uint32_t version = 0,
   builder_.add_lossfn_opt(lossfn_opt);
   builder_.add_optimizer_opt(optimizer_opt);
   builder_.add_version(version);
+  builder_.add_loss_reduction_type(loss_reduction_type);
   builder_.add_lossfn_opt_type(lossfn_opt_type);
   builder_.add_lossfn(lossfn);
   builder_.add_optimizer_opt_type(optimizer_opt_type);
