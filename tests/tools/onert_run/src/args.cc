@@ -304,15 +304,15 @@ void Args::Initialize(void)
     ("qpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _quantized_model_path = v; }),
          "Path to export quantized model.\n"
          "If it is not set, the quantized model will be exported to the same directory of the original model/package with q8/q16 suffix.")
-    ("compile,c", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _compile = v; }),
-         "Target backend name to compile model\n"
+    ("codegen,c", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _codegen = v; }),
+         "Target backend name for code generation\n"
          "The target string will be used to find a backend library.\n"
          "This string should be in the following format:\n"
          "{backend extension} + '-gen'.\n"
-         "For detailed description, please see the description of nnfw_compile()")
-    ("cpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _compiled_model_path = v; }),
-         "Path to export compiled model.\n"
-         "If it is not set, the compiled model will be exported to the same directory of the original model/package with target backend extension.")
+         "For detailed description, please see the description of nnfw_codegen()")
+    ("cpath", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _codegen_model_path = v; }),
+         "Path to export target-dependent model.\n"
+         "If it is not set, the generated model will be exported to the same directory of the original model/package with target backend extension.")
     ;
   // clang-format on
 
