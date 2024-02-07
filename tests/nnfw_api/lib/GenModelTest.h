@@ -100,7 +100,7 @@ struct TestCaseData
   }
   bool expected_fail_run() const { return _expected_fail_run; }
 
-private:
+protected:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
   {
@@ -441,7 +441,7 @@ protected:
     }
   }
 
-private:
+protected:
   template <typename T>
   void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf,
                            uint32_t index)
