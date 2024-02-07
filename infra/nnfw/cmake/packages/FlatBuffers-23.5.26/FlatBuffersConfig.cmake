@@ -30,6 +30,7 @@ function(_FlatBuffers_import)
     add_library(flatbuffers ${FlatBuffers_Library_SRCS})
     target_include_directories(flatbuffers PUBLIC "${FlatBuffersSource_DIR}/include")
     set_property(TARGET flatbuffers PROPERTY POSITION_INDEPENDENT_CODE ON)
+    target_compile_options(flatbuffers PUBLIC $<$<CONFIG:Debug>:-Wno-sign-compare>)
 
     add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
   endif(NOT TARGET flatbuffers::flatbuffers)
