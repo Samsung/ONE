@@ -213,19 +213,21 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
     if (!unvisited.contains(index))
       return;
     unvisited.remove(index);
-    ret.push_back(index);
 
     for (const auto &input : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       const auto &operand = operands().at(input);
       const auto &def = operand.getDef();
       if (!def.valid())
-        return;
+        continue;
       dfs(def, operations().at(def));
     }
+
+    ret.push_back(index);
   };
 
   dfs(loss_idx, operations().at(loss_idx));
+  std::reverse(ret.begin(), ret.end());
   validateBackwardTopologicalOrder(ret);
 
   return ret;
