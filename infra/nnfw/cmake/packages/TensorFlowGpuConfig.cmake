@@ -38,7 +38,7 @@ function(_Build_TfliteGpuDelagate_)
   nnas_find_package(Egl_HeadersSource QUIET)
   return_unless(Egl_HeadersSource_FOUND)
 
-  nnfw_find_package(FlatBuffers QUIET)
+  nnfw_find_package(FlatBuffers EXACT 2.0 QUIET)
   return_unless(FlatBuffers_FOUND)
 
   if(NOT TARGET TensorFlowGpu)
