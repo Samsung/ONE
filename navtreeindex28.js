@@ -1,5 +1,11 @@
 var NAVTREEINDEX28 =
 {
+"_severity_8h_source.html":[36,0,0,41,0,0,0,5],
+"_shape_8cc.html":[36,0,4,2,2,1,4,23],
+"_shape_8cc.html#add78de535b4132674c884966f922b6f2":[36,0,4,2,2,1,4,23,0],
+"_shape_8cc_source.html":[36,0,4,2,2,1,4,23],
+"_shape_calculator_ex_8h.html":[36,0,1,0,0,0,2,0,0],
+"_shape_calculator_ex_8h.html#a04b0c0423728894eea6d77c2e01aa0ab":[36,0,1,0,0,0,2,0,0,2],
 "_shape_calculator_ex_8h.html#a2ce8b629c4ffa62fd0d3b209b3b9be80":[36,0,1,0,0,0,2,0,0,5],
 "_shape_calculator_ex_8h.html#a639ed6b2f361df361565bf1cb2a22bb2":[36,0,1,0,0,0,2,0,0,4],
 "_shape_calculator_ex_8h.html#a7986ee821cb6645d21c377cc4b4ba6eb":[36,0,1,0,0,0,2,0,0,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX28 =
 "_sparse_to_dense_options_8cpp.html":[36,0,0,124,2,0,148],
 "_sparse_to_dense_options_8cpp.html#ae41c86ca8e852a9d91f2ff2250b20992":[36,0,0,124,2,0,148,0],
 "_sparse_to_dense_options_8cpp_source.html":[36,0,0,124,2,0,148],
-"_sparse_to_dense_options_8h.html":[36,0,0,124,2,0,149],
-"_sparse_to_dense_options_8h.html#ae41c86ca8e852a9d91f2ff2250b20992":[36,0,0,124,2,0,149,0],
-"_sparse_to_dense_options_8h_source.html":[36,0,0,124,2,0,149],
-"_sparsifier_8cpp.html":[36,0,0,52,7,1,97],
-"_sparsifier_8cpp_source.html":[36,0,0,52,7,1,97],
-"_sparsifier_8h.html":[36,0,0,52,7,1,98],
-"_sparsifier_8h_source.html":[36,0,0,52,7,1,98]
+"_sparse_to_dense_options_8h.html":[36,0,0,124,2,0,149]
 };

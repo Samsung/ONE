@@ -1,5 +1,11 @@
 var NAVTREEINDEX217 =
 {
+"namespaceonert_1_1backend_1_1ruy_1_1ops.html#ad60ff70d4292fd81bb5a60a78f9acd8a":[34,0,114,1,9,0,2],
+"namespaceonert_1_1backend_1_1train.html":[34,0,114,1,10],
+"namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745":[34,0,114,1,10,17],
+"namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e":[34,0,114,1,10,23],
+"namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66":[34,0,114,1,10,18],
+"namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0":[34,0,114,1,10,20],
 "namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0":[34,0,114,1,10,21],
 "namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4":[34,0,114,1,10,19],
 "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e":[34,0,114,1,10,25],
@@ -187,6 +193,7 @@ var NAVTREEINDEX217 =
 "namespaceonert_1_1ir_1_1train_1_1operation.html":[34,0,114,7,1,0],
 "namespaceonert_1_1ir_1_1verifier.html":[34,0,114,7,2],
 "namespaceonert_1_1loader.html":[34,0,114,8],
+"namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421":[34,0,114,8,1],
 "namespaceonert_1_1odc.html":[34,0,114,9],
 "namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1":[34,0,114,9,7],
 "namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a81dd4ab5cd7a0d08974dac7c51a8fc7d":[34,0,114,9,7,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX217 =
 "namespaceonert_1_1shape__inference_1_1bcq.html#a02de81e161af0b33433a8851f2982c04":[34,0,114,10,0,0],
 "namespaceonert_1_1tflite__loader.html":[34,0,114,11],
 "namespaceonert_1_1tflite__loader.html#aaeb6354a5eb1670b7fa1142d6b89ff13":[34,0,114,11,0],
-"namespaceonert_1_1train.html":[34,0,114,12],
-"namespaceonert_1_1train_1_1traininfo__loader.html":[34,0,114,12,0],
-"namespaceonert_1_1train_1_1traininfo__loader.html#a39359199632266a2ea58ea8677b9b63a":[34,0,114,12,0,1],
-"namespaceonert_1_1train_1_1traininfo__loader.html#a91ee4ecf302a404d92f16b3de2ff419b":[34,0,114,12,0,0],
-"namespaceonert_1_1trix__loader.html":[34,0,114,13],
-"namespaceonert_1_1trix__loader.html#a5ee573709b72edfadaced92d654e16ae":[34,0,114,13,2],
-"namespaceonert_1_1util.html":[34,0,114,14],
-"namespaceonert_1_1util.html#a16a30753c508a1c04fe3d98d3081a378":[34,0,114,14,9]
+"namespaceonert_1_1train.html":[34,0,114,12]
 };

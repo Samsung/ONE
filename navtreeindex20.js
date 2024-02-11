@@ -1,5 +1,11 @@
 var NAVTREEINDEX20 =
 {
+"_neural_networks_types_8h.html#aff083b3e8cd3cb7b9942261a92b09b18":[36,0,4,0,2,0,3,35],
+"_neural_networks_types_8h.html#affd33340ef341715d8a1338c44a23074":[36,0,4,0,2,0,3,26],
+"_neural_networks_types_8h_source.html":[36,0,4,0,2,0,3],
+"_node_8cc.html":[36,0,4,2,2,1,2,0,4],
+"_node_8cc_source.html":[36,0,4,2,2,1,2,0,4],
+"_node_8forward_8h.html":[36,0,0,45,0,0,1,36],
 "_node_8forward_8h_source.html":[36,0,0,45,0,0,1,36],
 "_node_as_8h.html":[36,0,0,74,4,0,0,0,0],
 "_node_as_8h.html#ac169a7192721f8400c9a5660ca84b808":[36,0,0,74,4,0,0,0,0,0],
@@ -148,8 +154,8 @@ var NAVTREEINDEX20 =
 "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46acbb6717a21700840a8cc79eb660284d5":[36,0,3,5,0,0,3,7,2],
 "_o_m_kernel_data_8h_source.html":[36,0,3,5,0,0,3],
 "_o_m_kernel_type_8cpp.html":[36,0,3,5,1,0,3],
-"_o_m_kernel_type_8cpp.html#a328865cf4b7de7ae7d97936aa429024e":[36,0,3,5,1,0,3,0],
 "_o_m_kernel_type_8cpp.html#a328865cf4b7de7ae7d97936aa429024e":[36,0,3,5,1,0,3,1],
+"_o_m_kernel_type_8cpp.html#a328865cf4b7de7ae7d97936aa429024e":[36,0,3,5,1,0,3,0],
 "_o_m_kernel_type_8cpp.html#a488c41d40df21b637578b037b0431fd0":[36,0,3,5,1,0,3,2],
 "_o_m_kernel_type_8cpp_source.html":[36,0,3,5,1,0,3],
 "_o_m_kernel_type_8h.html":[36,0,3,5,0,0,4],
@@ -243,11 +249,5 @@ var NAVTREEINDEX20 =
 "_o_n_n_x_node_converter_registry_8h_source.html":[36,0,0,71,1,2,8],
 "_o_n_n_x_op_registration_8h.html":[36,0,0,71,1,2,9],
 "_o_n_n_x_op_registration_8h.html#a85e839f33a30952a9d832835a7ef40c6":[36,0,0,71,1,2,9,3],
-"_o_n_n_x_op_registration_8h.html#a992c9dacb8e0b11acafeb6e07bb13a20":[36,0,0,71,1,2,9,2],
-"_o_n_n_x_op_registration_8h.html#ab92d25559308d85608bcc6091042151a":[36,0,0,71,1,2,9,1],
-"_o_n_n_x_op_registration_8h.html#adcf237ba2f0336807cdf2e5f870d9212":[36,0,0,71,1,2,9,0],
-"_o_n_n_x_op_registration_8h_source.html":[36,0,0,71,1,2,9],
-"_object_8cpp.html":[36,0,0,27,0,1,1,24],
-"_object_8cpp.html#a20302586ad696e0c58c30d1b30dbd51c":[36,0,0,27,0,1,1,24,0],
-"_object_8cpp.html#a36a578972707e73614ef87035bb5ecd4":[36,0,0,27,0,1,1,24,3]
+"_o_n_n_x_op_registration_8h.html#a992c9dacb8e0b11acafeb6e07bb13a20":[36,0,0,71,1,2,9,2]
 };

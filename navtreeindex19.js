@@ -1,5 +1,11 @@
 var NAVTREEINDEX19 =
 {
+"_neg_logistic_kernel_8h.html":[36,0,3,4,0,0,1,41,1],
+"_neg_logistic_kernel_8h.html#a052e7eea1c73ff9354f085b1ffe62939":[36,0,3,4,0,0,1,41,1,2],
+"_neg_logistic_kernel_8h.html#a5c22513708e66ed193320cea64c8e586":[36,0,3,4,0,0,1,41,1,3],
+"_neg_logistic_kernel_8h_source.html":[36,0,3,4,0,0,1,41,1],
+"_neg_max_pool2_d_kernel_8h.html":[36,0,3,4,0,0,1,43,1],
+"_neg_max_pool2_d_kernel_8h.html#a29ece48bf49bac60b29f95380b821737":[36,0,3,4,0,0,1,43,1,3],
 "_neg_max_pool2_d_kernel_8h.html#a2dff02a717983c5d9bde5ebc9436adfc":[36,0,3,4,0,0,1,43,1,5],
 "_neg_max_pool2_d_kernel_8h.html#a95a2626c1f958f9713b1cdc744497c74":[36,0,3,4,0,0,1,43,1,4],
 "_neg_max_pool2_d_kernel_8h_source.html":[36,0,3,4,0,0,1,43,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX19 =
 "_neural_networks_types_8h.html#afb7b4df9a890436af5f49281ca5e0185":[36,0,4,0,2,0,3,33],
 "_neural_networks_types_8h.html#afc1a4fdc9a1248067bab41adbf37559b":[36,0,4,0,2,0,3,47],
 "_neural_networks_types_8h.html#afd28dfaa0cf6a367c137be5b480f3a79":[36,0,4,0,2,0,3,37],
-"_neural_networks_types_8h.html#afdbb585913952ac0b8cd0118adb159da":[36,0,4,0,2,0,3,38],
-"_neural_networks_types_8h.html#aff083b3e8cd3cb7b9942261a92b09b18":[36,0,4,0,2,0,3,35],
-"_neural_networks_types_8h.html#affd33340ef341715d8a1338c44a23074":[36,0,4,0,2,0,3,26],
-"_neural_networks_types_8h_source.html":[36,0,4,0,2,0,3],
-"_node_8cc.html":[36,0,4,2,2,1,2,0,4],
-"_node_8cc_source.html":[36,0,4,2,2,1,2,0,4],
-"_node_8forward_8h.html":[36,0,0,45,0,0,1,36]
+"_neural_networks_types_8h.html#afdbb585913952ac0b8cd0118adb159da":[36,0,4,0,2,0,3,38]
 };

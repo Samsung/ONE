@@ -1994,7 +1994,7 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
 <div class="line"><span class="lineno">   34</span>  <span class="comment">// TODO Support 4dim softmax gradient</span></div>
 <div class="line"><span class="lineno">   35</span>  assert(incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 2);</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, incoming_shape, grad_shape);</div>
+<div class="line"><span class="lineno">   36</span>  <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, incoming_shape, grad_shape);</div>
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batches = incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0);</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> width = incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
@@ -2023,7 +2023,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   62</span>    }</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
 <div class="line"><span class="lineno">   64</span>}</div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">Dims.h:108</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">Dims.h:108</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00301">nnfw::cker::MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 

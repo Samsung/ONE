@@ -69,7 +69,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "L2Normalize.h", "compiler_2luci-interpreter_2src_2kernels_2_l2_normalize_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_l2_normalize_8h" ],
     [ "L2Pool2D.cpp", "compiler_2luci-interpreter_2src_2kernels_2_l2_pool2_d_8cpp.html", null ],
     [ "L2Pool2D.h", "luci-interpreter_2src_2kernels_2_l2_pool2_d_8h.html", "luci-interpreter_2src_2kernels_2_l2_pool2_d_8h" ],
-    [ "LeakyRelu.cpp", "compiler_2luci-interpreter_2src_2kernels_2_leaky_re_l_u_8cpp.html", null ],
+    [ "LeakyRelu.cpp", "compiler_2luci-interpreter_2src_2kernels_2_leaky_relu_8cpp.html", null ],
     [ "LeakyRelu.h", "compiler_2luci-interpreter_2src_2kernels_2_leaky_re_l_u_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_leaky_re_l_u_8h" ],
     [ "Less.cpp", "compiler_2luci-interpreter_2src_2kernels_2_less_8cpp.html", null ],
     [ "Less.h", "luci-interpreter_2src_2kernels_2_less_8h.html", "luci-interpreter_2src_2kernels_2_less_8h" ],

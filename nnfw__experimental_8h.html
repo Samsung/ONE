@@ -148,6 +148,13 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:aa01eff0d1a154931c2f7e071f1b0e2e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert between training mode and inference mode.  <a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">More...</a><br /></td></tr>
 <tr class="separator:aa01eff0d1a154931c2f7e071f1b0e2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b579b96cb876a738cb8ccfd174c0b19" id="r_a6b579b96cb876a738cb8ccfd174c0b19"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a> { <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>
+, <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>
+, <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>
+, <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>
+ }</td></tr>
+<tr class="memdesc:a6b579b96cb876a738cb8ccfd174c0b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preference for target-dependent code generation.  <a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">More...</a><br /></td></tr>
+<tr class="separator:a6b579b96cb876a738cb8ccfd174c0b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -212,6 +219,12 @@ Functions</h2></td></tr>
 <tr class="memitem:aa4046ec782673ee90f6ab2dca1a317d9" id="r_aa4046ec782673ee90f6ab2dca1a317d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session)</td></tr>
 <tr class="memdesc:aa4046ec782673ee90f6ab2dca1a317d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantize circle model.  <br /></td></tr>
 <tr class="separator:aa4046ec782673ee90f6ab2dca1a317d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf518c89391eaedd334ea28cf09a4710" id="r_adf518c89391eaedd334ea28cf09a4710"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#adf518c89391eaedd334ea28cf09a4710">nnfw_set_codegen_model_path</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
+<tr class="memdesc:adf518c89391eaedd334ea28cf09a4710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set exported codegen model path.  <br /></td></tr>
+<tr class="separator:adf518c89391eaedd334ea28cf09a4710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c434de04d0c57bf7e28a1c7721bdd49" id="r_a9c434de04d0c57bf7e28a1c7721bdd49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *target, <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a> pref)</td></tr>
+<tr class="memdesc:a9c434de04d0c57bf7e28a1c7721bdd49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate target-dependent code.  <br /></td></tr>
+<tr class="separator:a9c434de04d0c57bf7e28a1c7721bdd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a300b163aa909a1decc6f41d9d46a20e1" name="a300b163aa909a1decc6f41d9d46a20e1"></a>
@@ -261,6 +274,46 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a6b579b96cb876a738cb8ccfd174c0b19" name="a6b579b96cb876a738cb8ccfd174c0b19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b579b96cb876a738cb8ccfd174c0b19">&#9670;&#160;</a></span>NNFW_CODEGEN_PREF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Preference for target-dependent code generation. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac" name="a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac"></a>NNFW_CODEGEN_PREF_DEFAULT&#160;</td><td class="fielddoc"><p>Use the default configuration </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755" name="a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755"></a>NNFW_CODEGEN_PREF_PERFORMANCE_FIRST&#160;</td><td class="fielddoc"><p>Do best efforts to generate target-dependent code for performance </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e" name="a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e"></a>NNFW_CODEGEN_PREF_MEMORY_FIRST&#160;</td><td class="fielddoc"><p>Do best efforts to generate target-dependent code for reducing host memory usage </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1" name="a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1"></a>NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST&#160;</td><td class="fielddoc"><p>Do best efforts to generate target-dependent code for reducing compilation time </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00454">454</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  455</span>{</div>
+<div class="line"><span class="lineno">  457</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>,</div>
+<div class="line"><span class="lineno">  458</span>  <span class="comment">// TODO Support Traffic and Cycle code generation preference</span></div>
+<div class="line"><span class="lineno">  460</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>,</div>
+<div class="line"><span class="lineno">  462</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>,</div>
+<div class="line"><span class="lineno">  464</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>,</div>
+<div class="line"><span class="lineno">  465</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a></div><div class="ttdeci">NNFW_CODEGEN_PREF</div><div class="ttdoc">Preference for target-dependent code generation.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00454">nnfw_experimental.h:455</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_DEFAULT</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00457">nnfw_experimental.h:457</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_MEMORY_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00462">nnfw_experimental.h:462</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00464">nnfw_experimental.h:464</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00460">nnfw_experimental.h:460</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aa01eff0d1a154931c2f7e071f1b0e2e7" name="aa01eff0d1a154931c2f7e071f1b0e2e7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa01eff0d1a154931c2f7e071f1b0e2e7">&#9670;&#160;</a></span>NNFW_QUANTIZE_TYPE</h2>
 
@@ -418,6 +471,62 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a9c434de04d0c57bf7e28a1c7721bdd49" name="a9c434de04d0c57bf7e28a1c7721bdd49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c434de04d0c57bf7e28a1c7721bdd49">&#9670;&#160;</a></span>nnfw_codegen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_codegen </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a>&#160;</td>
+          <td class="paramname"><em>pref</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate target-dependent code. </p>
+<p>This function opens a dynamic shared object. It searches for the object as flollows ld.so(8) search rules. If the <code><a class="el" href="nnfw__experimental_8h.html#adf518c89391eaedd334ea28cf09a4710">nnfw_set_codegen_model_path</a></code> is not called before this function, the codegen model path is automatically defined and used using the same directory of the original model/package with the target backend extension.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session the session which contains information about compilation </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">target</td><td>Target backend to generate code This target string will be used to find a backend library. The name of target backend library should follow the following rules: 'lib' + {backend extension} + '-gen' + {lib extension} And the target string should be a name except 'lib' and {lib extension}. For example, if the backend extension is 'aaa', the backend library should be 'libaaa-gen.so', and the target string should be 'aaa-gen'. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">pref</td><td><code>NNFW_CODEGEN_PREF</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00488">488</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  489</span>{</div>
+<div class="line"><span class="lineno">  490</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  491</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;codegen(target, pref);</div>
+<div class="line"><span class="lineno">  492</span>}</div>
+<div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
+<div class="ttc" id="annfw__api_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00048">nnfw_api.cc:48</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
 <a id="a84b063e69ff8e50612f08a902215c894" name="a84b063e69ff8e50612f08a902215c894"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84b063e69ff8e50612f08a902215c894">&#9670;&#160;</a></span>nnfw_input_tensorindex()</h2>
 
@@ -468,8 +577,6 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  354</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
 <div class="line"><span class="lineno">  355</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;input_tensorindex(tensorname, index);</div>
 <div class="line"><span class="lineno">  356</span>}</div>
-<div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
-<div class="ttc" id="annfw__api_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00048">nnfw_api.cc:48</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -789,6 +896,53 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  366</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
 <div class="line"><span class="lineno">  367</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_backends_per_operation(backend_settings);</div>
 <div class="line"><span class="lineno">  368</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="adf518c89391eaedd334ea28cf09a4710" name="adf518c89391eaedd334ea28cf09a4710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf518c89391eaedd334ea28cf09a4710">&#9670;&#160;</a></span>nnfw_set_codegen_model_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_set_codegen_model_path </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set exported codegen model path. </p>
+<p>This function should be called before <code><a class="el" href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a></code> is invoked.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to set codegen model path </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>Target-dependent model path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00482">482</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  483</span>{</div>
+<div class="line"><span class="lineno">  484</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  485</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_codegen_model_path(path);</div>
+<div class="line"><span class="lineno">  486</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 

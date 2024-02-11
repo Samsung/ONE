@@ -36,7 +36,7 @@ var searchData=
   ['feature_33',['feature',['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6a21021ea0e52be8e9c599f4dff41e5be0',1,'loco::Feature'],['../classcoco_1_1_object.html#a751ce436cf214040602a7fd124e05858a21021ea0e52be8e9c599f4dff41e5be0',1,'coco::Object::Feature']]],
   ['featurebiasadd_34',['FeatureBiasAdd',['../namespaceexo_1_1test.html#a4f4701b7292e77b4729fe5a28bb092fda2d264421202211aa412b30e91d3d4cd6',1,'exo::test']]],
   ['featurecodec_35',['FeatureCodec',['../_graph_testcase_8h.html#a459c47516c8eba2ae0d8f107fd3e2a6fa055e80a00de89798c6ba94c5fc883cbb',1,'GraphTestcase.h']]],
-  ['filter_36',['filter',['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6ad7778d0c64b6ba21494c97f77a66885a',1,'loco::Filter'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a',1,'mir_caffe::filter']]],
+  ['filter_36',['filter',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a',1,'mir_caffe::filter'],['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6ad7778d0c64b6ba21494c97f77a66885a',1,'loco::Filter']]],
   ['filterencode_5ffilterdecode_37',['FilterEncode_FilterDecode',['../namespaceexo_1_1test.html#a4f4701b7292e77b4729fe5a28bb092fda8e6a26a8c5695eaf3e344f7fe3122ff0',1,'exo::test']]],
   ['finishing_38',['FINISHING',['../classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0',1,'onert::exec::WorkQueue']]],
   ['first_39',['FIRST',['../namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade',1,'onert::backend::cl_common']]],

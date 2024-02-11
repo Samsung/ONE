@@ -8,6 +8,12 @@ var nnfw__experimental_8h =
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
     [ "nnfw_loss_info", "nnfw__experimental_8h.html#a880f87813a0082373ae5b64f1b66606a", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
+    [ "NNFW_CODEGEN_PREF", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19", [
+      [ "NNFW_CODEGEN_PREF_DEFAULT", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac", null ],
+      [ "NNFW_CODEGEN_PREF_PERFORMANCE_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755", null ],
+      [ "NNFW_CODEGEN_PREF_MEMORY_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e", null ],
+      [ "NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1", null ]
+    ] ],
     [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
       [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],
       [ "NNFW_QUANTIZE_TYPE_U8_ASYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72", null ],
@@ -28,6 +34,7 @@ var nnfw__experimental_8h =
       [ "NNFW_TRAIN_OPTIMIZER_SGD", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e", null ],
       [ "NNFW_TRAIN_OPTIMIZER_ADAM", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8", null ]
     ] ],
+    [ "nnfw_codegen", "nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49", null ],
     [ "nnfw_input_tensorindex", "nnfw__experimental_8h.html#a84b063e69ff8e50612f08a902215c894", null ],
     [ "nnfw_output_tensorindex", "nnfw__experimental_8h.html#a5f67df99da7ea81a11625ca7cbc981de", null ],
     [ "nnfw_pop_pipeline_output", "nnfw__experimental_8h.html#ad1538903c2e179efa3f63be6431eb050", null ],
@@ -36,6 +43,7 @@ var nnfw__experimental_8h =
     [ "nnfw_quantize", "nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9", null ],
     [ "nnfw_register_custom_op_info", "nnfw__experimental_8h.html#a1cc20d75d44428477e0020e4c8c581a6", null ],
     [ "nnfw_set_backends_per_operation", "nnfw__experimental_8h.html#ac7b4df41162c0e5b6977110c2976072f", null ],
+    [ "nnfw_set_codegen_model_path", "nnfw__experimental_8h.html#adf518c89391eaedd334ea28cf09a4710", null ],
     [ "nnfw_set_quantization_type", "nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
     [ "nnfw_set_quantized_model_path", "nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
     [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],

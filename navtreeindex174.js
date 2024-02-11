@@ -1,5 +1,11 @@
 var NAVTREEINDEX174 =
 {
+"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8cpp_source.html":[36,0,0,122,0,1,1,204],
+"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8h.html":[36,0,0,122,0,1,1,205],
+"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8h_source.html":[36,0,0,122,0,1,1,205],
+"compiler_2tflchef_2core_2src_2_op_2_sub_8cpp.html":[36,0,0,122,0,1,1,206],
+"compiler_2tflchef_2core_2src_2_op_2_sub_8cpp_source.html":[36,0,0,122,0,1,1,206],
+"compiler_2tflchef_2core_2src_2_op_2_sum_8cpp.html":[36,0,0,122,0,1,1,208],
 "compiler_2tflchef_2core_2src_2_op_2_sum_8cpp_source.html":[36,0,0,122,0,1,1,208],
 "compiler_2tflchef_2core_2src_2_op_2_tanh_8cpp.html":[36,0,0,122,0,1,1,212],
 "compiler_2tflchef_2core_2src_2_op_2_tanh_8cpp_source.html":[36,0,0,122,0,1,1,212],
@@ -109,8 +115,8 @@ var NAVTREEINDEX174 =
 "compiler_2tflchef_2tflite_2src_2_op_2_l2_normalize_8cpp_source.html":[36,0,0,122,2,1,0,37],
 "compiler_2tflchef_2tflite_2src_2_op_2_l2_pool2_d_8cpp.html":[36,0,0,122,2,1,0,38],
 "compiler_2tflchef_2tflite_2src_2_op_2_l2_pool2_d_8cpp_source.html":[36,0,0,122,2,1,0,38],
-"compiler_2tflchef_2tflite_2src_2_op_2_leaky_re_l_u_8cpp.html":[36,0,0,122,2,1,0,39],
-"compiler_2tflchef_2tflite_2src_2_op_2_leaky_re_l_u_8cpp_source.html":[36,0,0,122,2,1,0,39],
+"compiler_2tflchef_2tflite_2src_2_op_2_leaky_relu_8cpp.html":[36,0,0,122,2,1,0,39],
+"compiler_2tflchef_2tflite_2src_2_op_2_leaky_relu_8cpp_source.html":[36,0,0,122,2,1,0,39],
 "compiler_2tflchef_2tflite_2src_2_op_2_less_8cpp.html":[36,0,0,122,2,1,0,40],
 "compiler_2tflchef_2tflite_2src_2_op_2_less_8cpp_source.html":[36,0,0,122,2,1,0,40],
 "compiler_2tflchef_2tflite_2src_2_op_2_less_equal_8cpp.html":[36,0,0,122,2,1,0,41],
@@ -243,11 +249,5 @@ var NAVTREEINDEX174 =
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_depthwise_conv2_d_8h_source.html":[36,0,0,122,2,1,0,0,17],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h.html":[36,0,0,122,2,1,0,0,18],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_dequantize_8h_source.html":[36,0,0,122,2,1,0,0,18],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_e_l_u_8h.html":[36,0,0,122,2,1,0,0,20],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_e_l_u_8h_source.html":[36,0,0,122,2,1,0,0,20],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_exp_8h.html":[36,0,0,122,2,1,0,0,22],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_exp_8h_source.html":[36,0,0,122,2,1,0,0,22],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_expand_dims_8h.html":[36,0,0,122,2,1,0,0,23],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_expand_dims_8h_source.html":[36,0,0,122,2,1,0,0,23],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_fill_8h.html":[36,0,0,122,2,1,0,0,25]
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_e_l_u_8h.html":[36,0,0,122,2,1,0,0,20]
 };
