@@ -138,6 +138,8 @@ public:
    */
   T value() const { return _index; }
 
+  bool operator<(const Index &I) const { return value() < I.value(); }
+
   /**
    * @brief Return max index value
    *

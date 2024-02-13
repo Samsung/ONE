@@ -134,11 +134,7 @@ void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> or
 
   const std::string order_type = is_forward ? "forward" : "backward";
 
-  auto compare = [](const ir::OperationIndex &i, const ir::OperationIndex &j) -> bool {
-    return i.value() < j.value();
-  };
-
-  std::map<ir::OperationIndex, uint32_t, decltype(compare)> position(compare);
+  std::map<ir::OperationIndex, uint32_t> position;
   for (uint32_t p = 0; p < order.size(); ++p)
   {
     auto index = order[p];
