@@ -1433,12 +1433,6 @@ table GeluOptions {
   approximate: bool;
 }
 
-table CirGruOptions {
-  fused_activation_function:ActivationFunctionType;
-  return_sequences : bool;
-  time_major : bool;
-}
-
 table DynamicUpdateSliceOptions {
 }
 
@@ -1484,6 +1478,12 @@ enum ReduceWindowFunction : int {
 
 table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
+}
+
+table CirGruOptions {
+  fused_activation_function:ActivationFunctionType;
+  return_sequences : bool;
+  time_major : bool;
 }
 
 table BCQGatherOptions {
