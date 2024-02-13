@@ -617,7 +617,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
-  CirGruOptions = 251,
+  CirGRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
@@ -1480,7 +1480,7 @@ table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
 }
 
-table CirGruOptions {
+table CirGRUOptions {
   fused_activation_function:ActivationFunctionType;
   return_sequences : bool;
   time_major : bool;
