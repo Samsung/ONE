@@ -136,6 +136,10 @@ public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
   std::vector<ir::OperationIndex> btopolSortOperations() const;
 
+public:
+  std::vector<ir::OperationIndex>
+  truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
+
 private:
   Graph _graph;
   Operands _backward_operands;
