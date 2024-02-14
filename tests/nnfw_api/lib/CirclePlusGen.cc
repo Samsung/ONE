@@ -15,6 +15,8 @@
  */
 
 #include "CirclePlusGen.h"
+#include "circle_traininfo_generated.h"
+#include "flatbuffers/flatbuffers.h"
 
 void CirclePlusGen::setInputsAndExpected(const std::vector<int> &inputs,
                                          const std::vector<int> &expected)
@@ -80,5 +82,18 @@ CircleBuffer CirclePlusGen::createModelTraining()
     circle::CreateModelTraining(_fbb_plus, 0, optimizer, optimizer_opt_type, optimizer_opt, lossfn,
                                 lossfn_opt_type, lossfn_opt, 0, batch_size, loss_reduction_type);
   _fbb_plus.Finish(model_training);
-  return CircleBuffer{std::move(_fbb_plus)};
+
+  auto cpbuf = CircleBuffer{std::move(_fbb_plus)};
+  {
+    // Verify model. Code is copied from runtime/onert/core/src/loader/traininfo_loader.cc
+    const uint8_t *buffer = cpbuf.buffer();
+    const size_t size = cpbuf.size();
+    assert(buffer != nullptr);
+    assert(size > 0);
+    assert(circle::ModelTrainingBufferHasIdentifier(buffer)); // failed
+    flatbuffers::Verifier v(buffer, size);
+    assert(circle::VerifyModelTrainingBuffer(v)); // failed
+    (void)v;
+  }
+  return cpbuf;
 }
