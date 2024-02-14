@@ -12,6 +12,11 @@ target_link_libraries(${LIB_ONERT} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT} PROPERTIES OUTPUT_NAME neuralnetworks)
 
+if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
+  add_custom_command(TARGET ${LIB_ONERT} POST_BUILD
+                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${LIB_ONERT}>)
+endif()
+
 install(TARGETS ${LIB_ONERT} DESTINATION lib)
 
 if(NOT ENABLE_TEST)
