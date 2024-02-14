@@ -28,9 +28,9 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
                          circle::ActivationFunctionType_NONE, 1, 1);
   float learning_rate = 1.0f;
   int32_t batch_size = 1;
-  cgen.addTrainInfo(
-    {circle::Optimizer::Optimizer_SGD, 1.0f, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
   cgen.setInputsAndExpected({in}, {out});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
