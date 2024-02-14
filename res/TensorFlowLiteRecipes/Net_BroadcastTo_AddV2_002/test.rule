@@ -1,4 +1,4 @@
- To check if BroadcastTo and AddV2 are fused to Add op
+# To check if BroadcastTo and AddV2 are fused to Add op
 
 RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
 
