@@ -32,6 +32,7 @@
 // Version 0.5: Base up to TensorFlow Lite v2.10.1 schema.
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
+// Version 0.8: GRU op is added.
 
 namespace circle;
 
@@ -268,6 +269,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
   INSTANCE_NORM = -2,
@@ -616,6 +618,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  GRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
@@ -1476,6 +1479,12 @@ enum ReduceWindowFunction : int {
 
 table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
+}
+
+table GRUOptions {
+  fused_activation_function:ActivationFunctionType;
+  return_sequences : bool;
+  time_major : bool;
 }
 
 table BCQGatherOptions {
