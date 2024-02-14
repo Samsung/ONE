@@ -130,6 +130,9 @@ class CONSTANT:
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
         ('remove_fakequant', 'remove FakeQuant ops'),
+        ('remove_gather_guard',
+         'remove Add/FloorMod guards of Gather indices with certain conditions. '
+         'CAUTION: user must guarantee that indices are all non-negative values.'),
         ('remove_quantdequant', 'remove Quantize-Dequantize sequence'),
         ('remove_redundant_quantize', 'remove redundant Quantize ops'),
         ('remove_redundant_reshape', 'fuse or remove subsequent Reshape ops'),

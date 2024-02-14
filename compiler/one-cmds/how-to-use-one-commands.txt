@@ -188,6 +188,8 @@ Current transformation options are
 - mute_warnings : This will turn off warning messages.
 - generate_profile_data : This will turn on profiling data generation.
 - remove_fakequant : This will remove all fakequant operators.
+- remove_gather_guard : This will remove Add/FloorMod guards of Gather indices with certain conditions.
+  CAUTION: user must guarantee that indices are all non-negative values.
 - remove_quantdequant : This will remove all Quantize-Dequantize sequence.
 - remove_redundant_quantize : This removes redundant quantize operators.
 - remove_redundant_reshape : This fuses or removes redundant reshape operators.
