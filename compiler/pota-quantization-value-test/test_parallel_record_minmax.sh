@@ -79,7 +79,7 @@ popd
   --test_param "${TEST_PARAMS}" \
   --bin_dir ${BIN_PATH} \
   --source_dir ${SOURCE_PATH} \
-  --mode record_minmax
+  --mode parallel_record_minmax
 
 if [[ $? -ne 0 ]]; then
   exit 255
