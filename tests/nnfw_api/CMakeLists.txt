@@ -35,9 +35,6 @@ set(CIRCLE_PLUS_HEADER_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/onert/core/src/loa
 set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/lib ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE} ${CIRCLE_PLUS_HEADER_DIR})
 
-# Flatbuffer for loader
-#nnfw_find_package(FlatBuffers EXACT 2.0 REQUIRED)
-#target_link_libraries(${RUNTIME_NNFW_API_TEST} flatbuffers::flatbuffers)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)

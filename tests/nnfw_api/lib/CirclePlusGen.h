@@ -24,6 +24,7 @@ struct CirclePlusBuffer
 {
   CircleBuffer circle;
   CircleBuffer circle_plus;
+  std::vector<int> expected;
 };
 
 class CirclePlusGen : public CircleGen
@@ -45,8 +46,6 @@ public:
 
   // NOTE: this is overriden from CircleGen::finish()
   CirclePlusBuffer finish();
-
-  void setInputsAndExpected(const std::vector<int> &inputs, const std::vector<int> &expected);
 
 private:
   CircleBuffer createModelTraining();
