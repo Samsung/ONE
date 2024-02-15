@@ -37,20 +37,25 @@ namespace testing
                                                       float max_abs_error = 1.0e-5f);
 
 template <typename T, typename U = T>
-std::vector<U> checkSISOKernel(onert_micro::test_model::TestDataBase<T, U> *test_data_base)
+std::vector<U> checkKernel(uint32_t num_inputs,
+                           onert_micro::test_model::TestDataBase<T, U> *test_data_base)
 {
-
   onert_micro::OMInterpreter interpreter;
   onert_micro::OMConfig config;
 
   interpreter.importModel(reinterpret_cast<const char *>(test_data_base->get_model_ptr()), config);
 
-  T *input_data = reinterpret_cast<T *>(interpreter.getInputDataAt(0));
+  assert(num_inputs == interpreter.getNumberOfInputs());
 
-  // Set input data
+  for (uint32_t i = 0; i < num_inputs; ++i)
   {
-    std::copy(test_data_base->get_input_data_by_index(0).begin(),
-              test_data_base->get_input_data_by_index(0).end(), input_data);
+    T *input_data = reinterpret_cast<T *>(interpreter.getInputDataAt(i));
+
+    // Set input data
+    {
+      std::copy(test_data_base->get_input_data_by_index(i).begin(),
+                test_data_base->get_input_data_by_index(i).end(), input_data);
+    }
   }
 
   interpreter.run();
@@ -58,40 +63,6 @@ std::vector<U> checkSISOKernel(onert_micro::test_model::TestDataBase<T, U> *test
   U *output_data = reinterpret_cast<U *>(interpreter.getOutputDataAt(0));
   const size_t num_elements = interpreter.getOutputSizeAt(0);
   std::vector<U> output_data_vector(output_data, output_data + num_elements);
-  return output_data_vector;
-}
-
-template <typename T>
-std::vector<T> checkTISOKernel(onert_micro::test_model::TestDataBase<T> *test_data_base)
-{
-
-  onert_micro::OMInterpreter interpreter;
-  onert_micro::OMConfig config;
-
-  interpreter.importModel(reinterpret_cast<const char *>(test_data_base->get_model_ptr()), config);
-
-  interpreter.allocateInputs();
-
-  T *input1_data = reinterpret_cast<T *>(interpreter.getInputDataAt(0));
-  T *input2_data = reinterpret_cast<T *>(interpreter.getInputDataAt(1));
-
-  // Set input data
-  {
-    std::copy(test_data_base->get_input_data_by_index(0).begin(),
-              test_data_base->get_input_data_by_index(0).end(), input1_data);
-  }
-
-  // Set input data
-  {
-    std::copy(test_data_base->get_input_data_by_index(1).begin(),
-              test_data_base->get_input_data_by_index(1).end(), input2_data);
-  }
-
-  interpreter.run();
-
-  T *output_data = reinterpret_cast<T *>(interpreter.getOutputDataAt(0));
-  const size_t num_elements = interpreter.getOutputSizeAt(0);
-  std::vector<T> output_data_vector(output_data, output_data + num_elements);
   return output_data_vector;
 }
 

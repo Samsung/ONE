@@ -63,6 +63,8 @@ inline double getQuantizedConvolutionMultipler(float input_scale, float filter_s
 
   assert(input_product_scale >= 0);
 
+  assert(output_scale != 0.f);
+
   return input_product_scale / static_cast<double>(output_scale);
 }
 

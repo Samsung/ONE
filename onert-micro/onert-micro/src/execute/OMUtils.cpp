@@ -64,6 +64,8 @@ static void calculateActivationRangeQuantizedImpl(circle::ActivationFunctionType
                                                   float scale, int32_t *activation_min,
                                                   int32_t *activation_max)
 {
+  assert(scale != 0.f);
+
   auto quantize = [scale, zero_point](float x) {
     return zero_point + static_cast<int32_t>(std::round(x / scale));
   };
