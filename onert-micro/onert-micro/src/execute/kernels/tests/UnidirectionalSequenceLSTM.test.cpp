@@ -35,7 +35,7 @@ TEST_F(UnidirLSTMTest, Float_P)
 {
   onert_micro::test_model::TestDataFloatUnidirectionalLSTM test_data_kernel;
   std::vector<float> output_data_vector =
-    onert_micro::execute::testing::checkSISOKernel<float>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector,
               FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
