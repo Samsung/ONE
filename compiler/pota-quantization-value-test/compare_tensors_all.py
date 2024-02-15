@@ -57,6 +57,9 @@ bin_dir = args.bin_dir
 source_dir = args.source_dir
 mode = args.mode
 
+if mode in ['mixed_fake_quantization', 'parallel_record_minmax', 'mixed_quantization']:
+    source_dir += '_config'
+
 log_format = '%(levelname)s: %(message)s'
 formatter = logging.Formatter(log_format)
 streamer = StringIO()
@@ -167,13 +170,13 @@ for idx in range(len(inputs)):
             expect_dir = f'{source_dir}/expected_outputs/{model_name}/{granularity}/{dtype}/{modes_to_expected_folder[mode]}'
             if os.path.isfile(expect_dir + "/" + tensor_name + ".json"):
                 test_result = False
-                if mode == "fake_quantization":
+                if mode in ["fake_quantization", "mixed_fake_quantization"]:
                     test_result = compare_fake_quantization(input[tensor_name],
                                                             tensor_name, expect_dir)
-                elif mode == "record_minmax":
+                elif mode in ["record_minmax", "parallel_record_minmax"]:
                     test_result = compare_record_minmax(input[tensor_name], tensor_name,
                                                         expect_dir)
-                elif mode == "quantization":
+                elif mode in ["quantization", "mixed_quantization"]:
                     test_result = compare_quantization(input[tensor_name], tensor_name,
                                                        expect_dir)
                 elif mode == "weights_only_quantization":

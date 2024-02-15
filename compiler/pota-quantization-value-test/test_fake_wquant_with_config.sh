@@ -65,7 +65,7 @@ popd
   --test_param "${TEST_PARAMS}" \
   --bin_dir ${BIN_PATH} \
   --source_dir ${SOURCE_PATH} \
-  --mode fake_quantization
+  --mode mixed_fake_quantization
 
 if [[ $? -ne 0 ]]; then
   exit 255
