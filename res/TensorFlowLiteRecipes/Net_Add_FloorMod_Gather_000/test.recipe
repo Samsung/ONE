@@ -1,0 +1,67 @@
+operand {
+  name: "input"
+  type: FLOAT32
+  # value test generates random value of [0,100) for INT32, INT64 inputs.
+  # we have to give at least that size for the input shape (100,?)(for axis=0)
+  # as indices will have value of [0,100)
+  shape { dim: 100 dim: 5 }
+}
+operand {
+  name: "indices"
+  type: INT32
+  shape { dim: 3 dim: 4 }
+}
+operand {
+  name: "add_const"
+  type: INT32
+  shape { }
+  filler { tag: "explicit" arg: "100" }
+}
+operand {
+  name: "add_out"
+  type: INT32
+  shape { dim: 3 dim: 4 }
+}
+operand {
+  name: "floormod_const"
+  type: INT32
+  shape { }
+  filler { tag: "explicit" arg: "100" }
+}
+operand {
+  name: "floormod_out"
+  type: INT32
+  shape { dim: 3 dim: 4 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 dim: 5 }
+}
+operation {
+  type: "Add"
+  input: "indices"
+  input: "add_const"
+  output: "add_out"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "FloorMod"
+  input: "add_out"
+  input: "floormod_const"
+  output: "floormod_out"
+}
+operation {
+  type: "Gather"
+  gather_options {
+    axis: 0
+  }
+  input: "input"
+  input: "floormod_out"
+  output: "ofm"
+}
+input: "input"
+input: "indices"
+output: "ofm"
