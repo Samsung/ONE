@@ -1,0 +1,7 @@
+# To check if Add and FloorMod are removed
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_Add"                  $(op_count ADD) '=' 0
+RULE    "NO_FloorMod"             $(op_count FLOOR_MOD) '=' 0
+RULE    "Gather_Exist"            $(op_count GATHER) '=' 1
