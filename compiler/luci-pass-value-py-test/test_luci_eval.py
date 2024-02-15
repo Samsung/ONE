@@ -94,32 +94,26 @@ def luci_eval_verify(test_name,
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "uint8"
         elif output_details["dtype"] == np.float32:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "float32"
         elif output_details["dtype"] == np.int64:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "int64"
         elif output_details["dtype"] == np.int32:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "int32"
         elif output_details["dtype"] == np.int16:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "int16"
         elif output_details["dtype"] == np.bool_:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=0, atol=0
             ), "Execution result of " + tflite_model + " does not match with " + circle_model
-            output_dtype = "bool"
         else:
             assert False, "Unsupported data type: " + output_details["dtype"]
 
