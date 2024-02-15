@@ -35,14 +35,14 @@ TEST_F(ReshapeTest, MainTest_P)
 {
   onert_micro::test_model::TestDataReshapeKernel<float> test_data_kernel(false);
   std::vector<float> output_data_vector =
-    onert_micro::execute::testing::checkSISOKernel<float>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(ReshapeTest, MainTest_NEG)
 {
   onert_micro::test_model::TestDataReshapeKernel<float> test_data_kernel(true);
-  EXPECT_DEATH(checkSISOKernel(&test_data_kernel), "");
+  EXPECT_DEATH(checkKernel(1, &test_data_kernel), "");
 }
 
 } // namespace testing

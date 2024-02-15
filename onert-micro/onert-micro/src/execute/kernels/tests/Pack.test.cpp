@@ -35,7 +35,7 @@ TEST_F(PackTest, Float_P)
 {
   test_model::TestDataFloatPack test_data_kernel;
   std::vector<float> output_data_vector =
-    onert_micro::execute::testing::checkTISOKernel<float>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<float>(2, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
@@ -43,7 +43,7 @@ TEST_F(PackTest, Int_P)
 {
   test_model::TestDataIntPack test_data_kernel;
   std::vector<int32_t> output_data_vector =
-    onert_micro::execute::testing::checkTISOKernel<int32_t>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<int32_t>(2, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 

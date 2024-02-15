@@ -36,7 +36,7 @@ TEST_F(ShapeTest, MainTest_P)
 {
   onert_micro::test_model::TestDataShapeKernel<float, int32_t> test_data_kernel;
   std::vector<int32_t> output_data_vector =
-    onert_micro::execute::testing::checkSISOKernel<float, int32_t>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<float, int32_t>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 

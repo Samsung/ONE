@@ -36,7 +36,7 @@ TEST_F(MaxPool2DTest, Float_P)
 {
   onert_micro::test_model::TestDataFloatMaxPool2D test_data_kernel;
   std::vector<float> output_data_vector =
-    onert_micro::execute::testing::checkSISOKernel<float>(&test_data_kernel);
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
