@@ -9,6 +9,7 @@
 # --> https://github.com/Samsung/ONE/issues/5782
 eval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
 eval(HardSwish_001 decompose_hardswish)
+eval(Net_Add_FloorMod_Gather_000 remove_gather_guard)
 eval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
 eval(Net_Conv_Add_Mul_000 fuse_batchnorm_with_conv)
 eval(Net_Conv_Add_Mul_001 fuse_batchnorm_with_conv)
