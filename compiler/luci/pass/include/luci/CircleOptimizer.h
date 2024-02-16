@@ -102,6 +102,7 @@ public:
       RemoveDuplicateConst,
       UnrollUnidirSeqLSTM,
       XpSepActFromTransposeConv,
+      RemoveGatherGuard,
     };
 
     enum AlgorithmParameters
