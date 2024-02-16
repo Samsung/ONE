@@ -124,6 +124,9 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fuse_gelu", "This will fuse operators to GeLU operator");
   add_switch(arser, "--remove_duplicate_const", "This will remove all duplicate constant nodes");
   add_switch(arser, "--remove_fakequant", "This will remove FakeQuant operators");
+  add_switch(arser, "--remove_gather_guard",
+             "This will remove Add/FloorMod guards of Gather indices with certain conditions. "
+             "CAUTION: user must guarantee that indices are all non-negative values.");
   add_switch(arser, "--remove_quantdequant", "This will remove Quantize-Dequantize sequence");
   add_switch(arser, "--remove_redundant_quantize", "This will remove redundant Quantize operators");
   add_switch(arser, "--remove_redundant_reshape",
@@ -312,6 +315,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveDuplicateConst);
   if (arser.get<bool>("--remove_fakequant"))
     options->enable(Algorithms::RemoveFakeQuant);
+  if (arser.get<bool>("--remove_gather_guard"))
+    options->enable(Algorithms::RemoveGatherGuard);
   if (arser.get<bool>("--remove_quantdequant"))
     options->enable(Algorithms::RemoveQuantDequantSeq);
   if (arser.get<bool>("--remove_redundant_quantize"))
