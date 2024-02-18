@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"_leaky_relu_options_8cpp.html":[36,0,0,124,2,0,68],
+"_leaky_relu_options_8cpp.html#a94265a303125866cf367afd05df1f32a":[36,0,0,124,2,0,68,0],
 "_leaky_relu_options_8cpp_source.html":[36,0,0,124,2,0,68],
 "_leaky_relu_options_8h.html":[36,0,0,124,2,0,69],
 "_leaky_relu_options_8h.html#a94265a303125866cf367afd05df1f32a":[36,0,0,124,2,0,69,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "_matrix_diag_options_8h.html":[36,0,0,124,2,0,85],
 "_matrix_diag_options_8h.html#ac1508df1e5923d290bdfca4d175f3b18":[36,0,0,124,2,0,85,0],
 "_matrix_diag_options_8h_source.html":[36,0,0,124,2,0,85],
-"_matrix_encode_8cpp.html":[36,0,0,47,1,0,19],
-"_matrix_encode_8cpp_source.html":[36,0,0,47,1,0,19],
-"_matrix_index_8h.html":[36,0,0,45,0,0,1,34]
+"_matrix_encode_8cpp.html":[36,0,0,47,1,0,19]
 };

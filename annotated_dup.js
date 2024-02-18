@@ -1296,6 +1296,7 @@ var annotated_dup =
       [ "QuantizeWithMinMaxPass", "classluci_1_1_quantize_with_min_max_pass.html", "classluci_1_1_quantize_with_min_max_pass" ],
       [ "RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", "structluci_1_1_remove_duplicate_const_pass" ],
       [ "RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", "structluci_1_1_remove_fake_quant_pass" ],
+      [ "RemoveGatherGuardPass", "structluci_1_1_remove_gather_guard_pass.html", "structluci_1_1_remove_gather_guard_pass" ],
       [ "RemoveQuantDequantSeqPass", "structluci_1_1_remove_quant_dequant_seq_pass.html", "structluci_1_1_remove_quant_dequant_seq_pass" ],
       [ "RemoveRedundantDequantizePass", "structluci_1_1_remove_redundant_dequantize_pass.html", "structluci_1_1_remove_redundant_dequantize_pass" ],
       [ "RemoveRedundantQuantizePass", "structluci_1_1_remove_redundant_quantize_pass.html", "structluci_1_1_remove_redundant_quantize_pass" ],
@@ -3341,6 +3342,25 @@ var annotated_dup =
         [ "Pool2DParams", "structonert__micro_1_1core_1_1_pool2_d_params.html", "structonert__micro_1_1core_1_1_pool2_d_params" ],
         [ "SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
         [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ]
+      ] ],
+      [ "execute", "namespaceonert__micro_1_1execute.html", [
+        [ "KernelBuiltinExecuteRegistry", "classonert__micro_1_1execute_1_1_kernel_builtin_execute_registry.html", "classonert__micro_1_1execute_1_1_kernel_builtin_execute_registry" ],
+        [ "KernelCustomExecuteRegistry", "classonert__micro_1_1execute_1_1_kernel_custom_execute_registry.html", "classonert__micro_1_1execute_1_1_kernel_custom_execute_registry" ],
+        [ "OMExecuteArgs", "structonert__micro_1_1execute_1_1_o_m_execute_args.html", "structonert__micro_1_1execute_1_1_o_m_execute_args" ],
+        [ "OMKernelExecute", "structonert__micro_1_1execute_1_1_o_m_kernel_execute.html", null ],
+        [ "OMRuntimeKernel", "classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html", "classonert__micro_1_1execute_1_1_o_m_runtime_kernel" ]
+      ] ],
+      [ "import", "namespaceonert__micro_1_1import.html", [
+        [ "KernelBuiltinConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry" ],
+        [ "KernelCustomConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry" ],
+        [ "OMConfigureArgs", "structonert__micro_1_1import_1_1_o_m_configure_args.html", "structonert__micro_1_1import_1_1_o_m_configure_args" ],
+        [ "OMExecutionPlanCreator", "structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html", null ],
+        [ "OMKernelConfiguration", "structonert__micro_1_1import_1_1_o_m_kernel_configuration.html", null ]
+      ] ],
+      [ "optimize", "namespaceonert__micro_1_1optimize.html", [
+        [ "OMGraphStatus", "structonert__micro_1_1optimize_1_1_o_m_graph_status.html", "structonert__micro_1_1optimize_1_1_o_m_graph_status" ],
+        [ "OMOptimizer", "structonert__micro_1_1optimize_1_1_o_m_optimizer.html", null ],
+        [ "OptimizePassRegistry", "classonert__micro_1_1optimize_1_1_optimize_pass_registry.html", "classonert__micro_1_1optimize_1_1_optimize_pass_registry" ]
       ] ],
       [ "OMConfig", "structonert__micro_1_1_o_m_config.html", "structonert__micro_1_1_o_m_config" ],
       [ "OMInterpreter", "classonert__micro_1_1_o_m_interpreter.html", "classonert__micro_1_1_o_m_interpreter" ]

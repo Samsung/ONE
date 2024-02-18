@@ -49,6 +49,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "QuantizeWithMinMaxPass.h", "_quantize_with_min_max_pass_8h.html", "_quantize_with_min_max_pass_8h" ],
     [ "RemoveDuplicateConstPass.h", "_remove_duplicate_const_pass_8h.html", "_remove_duplicate_const_pass_8h" ],
     [ "RemoveFakeQuantPass.h", "_remove_fake_quant_pass_8h.html", "_remove_fake_quant_pass_8h" ],
+    [ "RemoveGatherGuardPass.h", "_remove_gather_guard_pass_8h.html", "_remove_gather_guard_pass_8h" ],
     [ "RemoveQuantDequantSeqPass.h", "_remove_quant_dequant_seq_pass_8h.html", "_remove_quant_dequant_seq_pass_8h" ],
     [ "RemoveRedundantDequantizePass.h", "_remove_redundant_dequantize_pass_8h.html", "_remove_redundant_dequantize_pass_8h" ],
     [ "RemoveRedundantQuantizePass.h", "_remove_redundant_quantize_pass_8h.html", "_remove_redundant_quantize_pass_8h" ],

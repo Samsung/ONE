@@ -8,5 +8,5 @@ var dir_b0b0461a1fcd270c762a17bc5414ad5f =
     [ "OMRuntimeGraph.cpp", "_o_m_runtime_graph_8cpp.html", null ],
     [ "OMRuntimeModule.cpp", "_o_m_runtime_module_8cpp.html", null ],
     [ "OMRuntimeStorage.cpp", "_o_m_runtime_storage_8cpp.html", null ],
-    [ "OMUtils.cpp", "_o_m_utils_8cpp.html", null ]
+    [ "OMUtils.cpp", "core_2_o_m_utils_8cpp.html", null ]
 ];

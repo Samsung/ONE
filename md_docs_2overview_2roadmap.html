@@ -92,13 +92,13 @@ $(document).ready(function(){initNavTree('md_docs_2overview_2roadmap.html',''); 
   <div class="headertitle"><div class="title">Roadmap</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This document describes roadmap of <b>ONE</b> project.</p>
-<p>This project <b>ONE</b> aims at providing a high-performance, on-device neural network (NN) inference framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP, or NPU, in the target platform, such as Tizen, Android, and Ubuntu.</p>
+<div class="textblock"><p>This document describes the roadmap of the <b>ONE</b> project.</p>
+<p>Project <b>ONE</b> aims at providing a high-performance, on-device neural network (NN) inference framework that performs inference of a given NN model on processors, such as CPU, GPU, DSP, or NPU, on the target platform, such as Tizen, Android and Ubuntu.</p>
 <h1>Progress</h1>
-<p>Until last year, we already saw significant gains in accelerating with a single CPU or GPU backend. We have seen better performance improvements, not only when using a single backend, but even when mixing CPUs or GPUs considering the characteristics of individual operations. It could give us an opportunity to have a high degree of freedom in terms of operator coverage, and possibly provide better performance compared to single backend acceleration.</p>
+<p>Until last year, we already saw significant gains in accelerating with a single CPU or GPU backend. We have seen better performance improvements, not only when using a single backend, but even when mixing CPUs or GPUs, considering the characteristics of individual operations. It could give us an opportunity to have a high degree of freedom in terms of operator coverage and possibly provide better performance compared to single backend acceleration.</p>
 <p>On the other hand, we introduced the compiler as a front-end. This will support a variety of deep learning frameworks in relatively spacious host PC environments, while the runtime running on the target device is intended to take a smaller burden. In this approach, the compiler and the runtime will effectively share information among themselves by the Common IR, named <em>circle</em>, and a container format which is referred to as the <em>NN Package</em>.</p>
 <h1>Goal</h1>
-<p>In the meantime, we have been working on improving the acceleration performance based on the vision model. From this year, now we start working on the voice model. The runtime requirements for the voice model will be different from those of the vision model. There will be new requirements that we do not recognize yet, along with some already recognized elements such as control flow and dynamic tensor. In addition, recent studies on voice models require efficient support for specific architectures such as attention, transformer, and BERT. Also, depending on the characteristics of most voice models with large memory bandwidth, we will have to put more effort into optimizing the memory bandwidth at runtime.</p>
+<p>In the meantime, we have been working on improving the acceleration performance based on the vision model. From this year, now we start working on the voice model. The runtime requirements for the voice model will be different from those of the vision model. There will be new requirements that we do not recognize yet, along with some already recognized elements such as control flow and dynamic tensor. In addition, recent studies on voice models require efficient support for specific architectures such as attention, transformer and BERT. Also, depending on the characteristics of most voice models with large memory bandwidth, we will have to put more effort into optimizing the memory bandwidth at runtime.</p>
 <h1>Deliverables</h1>
 <ul>
 <li>Runtime<ul>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('md_docs_2overview_2roadmap.html',''); 
 <li><em>circle-optimizer</em></li>
 </ul>
 </li>
-<li>Grphical <em>circle</em> model viewer</li>
+<li>Graphical <em>circle</em> model viewer</li>
 </ul>
 </li>
 </ul>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('md_docs_2overview_2roadmap.html',''); 
 </ul>
 <h1>Workgroups (WGs)</h1>
 <ul>
-<li>We organize WGs for major topics, and each WG will be working on its own major topic by breaking it into small tasks/issues, performing them inside WG, and collaborating between WGs.</li>
+<li>We organize WGs for major topics and each WG will be working on its own major topic by breaking it into small tasks/issues, performing them inside WG and collaborating between WGs.</li>
 <li>The WG information can be found <a class="el" href="md_docs_2overview_2workgroup.html">here</a>. </li>
 </ul>
 </div></div><!-- contents -->

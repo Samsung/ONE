@@ -423,39 +423,33 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>            <span class="keyword">assert</span> np.allclose(</div>
 <div class="line"><span class="lineno">   95</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
 <div class="line"><span class="lineno">   96</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">   97</span>            output_dtype = <span class="stringliteral">&quot;uint8&quot;</span></div>
-<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
-<div class="line"><span class="lineno">   99</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  100</span>                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32</div>
-<div class="line"><span class="lineno">  101</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  102</span>            output_dtype = <span class="stringliteral">&quot;float32&quot;</span></div>
-<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
-<div class="line"><span class="lineno">  104</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  105</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  106</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  107</span>            output_dtype = <span class="stringliteral">&quot;int64&quot;</span></div>
-<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
-<div class="line"><span class="lineno">  109</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  110</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  111</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  112</span>            output_dtype = <span class="stringliteral">&quot;int32&quot;</span></div>
-<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
+<div class="line"><span class="lineno">   98</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">   99</span>                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32</div>
+<div class="line"><span class="lineno">  100</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
+<div class="line"><span class="lineno">  102</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  103</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
+<div class="line"><span class="lineno">  104</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
+<div class="line"><span class="lineno">  106</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  107</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
+<div class="line"><span class="lineno">  108</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><span class="lineno">  110</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  111</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
+<div class="line"><span class="lineno">  112</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
 <div class="line"><span class="lineno">  114</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  115</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
+<div class="line"><span class="lineno">  115</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
 <div class="line"><span class="lineno">  116</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  117</span>            output_dtype = <span class="stringliteral">&quot;int16&quot;</span></div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
-<div class="line"><span class="lineno">  119</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  120</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
-<div class="line"><span class="lineno">  121</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  122</span>            output_dtype = <span class="stringliteral">&quot;bool&quot;</span></div>
-<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  124</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  118</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="luci-value-py-test_2test__luci__eval_8py_source.html#l00137">test_luci_eval()</a>, <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00129">test_luci_eval()</a>, and <a class="el" href="luci-value-py-test_2test__luci__eval_8py_source.html#l00143">test_luci_eval_tol()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-value-py-test_2test__luci__eval_8py_source.html#l00137">test_luci_eval()</a>, <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00123">test_luci_eval()</a>, and <a class="el" href="luci-value-py-test_2test__luci__eval_8py_source.html#l00143">test_luci_eval_tol()</a>.</p>
 
 </div>
 </div>
@@ -541,9 +535,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00128">128</a> of file <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html">test_luci_eval.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>                   eval_driver_path: str):</div>
-<div class="line"><span class="lineno">  130</span>    luci_eval_verify(test_name, tflite_dir, circle_dir, eval_driver_path)</div>
+<p class="definition">Definition at line <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00122">122</a> of file <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html">test_luci_eval.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>                   eval_driver_path: str):</div>
+<div class="line"><span class="lineno">  124</span>    luci_eval_verify(test_name, tflite_dir, circle_dir, eval_driver_path)</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00012">luci_eval_verify()</a>.</p>
 

@@ -405,6 +405,7 @@ var namespaceluci =
     [ "QuantizeWithMinMaxPass", "classluci_1_1_quantize_with_min_max_pass.html", "classluci_1_1_quantize_with_min_max_pass" ],
     [ "RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", "structluci_1_1_remove_duplicate_const_pass" ],
     [ "RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", "structluci_1_1_remove_fake_quant_pass" ],
+    [ "RemoveGatherGuardPass", "structluci_1_1_remove_gather_guard_pass.html", "structluci_1_1_remove_gather_guard_pass" ],
     [ "RemoveQuantDequantSeqPass", "structluci_1_1_remove_quant_dequant_seq_pass.html", "structluci_1_1_remove_quant_dequant_seq_pass" ],
     [ "RemoveRedundantDequantizePass", "structluci_1_1_remove_redundant_dequantize_pass.html", "structluci_1_1_remove_redundant_dequantize_pass" ],
     [ "RemoveRedundantQuantizePass", "structluci_1_1_remove_redundant_quantize_pass.html", "structluci_1_1_remove_redundant_quantize_pass" ],

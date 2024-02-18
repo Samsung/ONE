@@ -68,7 +68,8 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "RemoveQuantDequantSeq", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeae9e6d566688e9cb42dec2763f9dafb14", null ],
       [ "RemoveDuplicateConst", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2eb11f2f873eae0c36da4f53f79c5d89", null ],
       [ "UnrollUnidirSeqLSTM", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea74482129fb47feefee89fd91a7421964", null ],
-      [ "XpSepActFromTransposeConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea55bccae13242a5c6172648d1304bd1c9", null ]
+      [ "XpSepActFromTransposeConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea55bccae13242a5c6172648d1304bd1c9", null ],
+      [ "RemoveGatherGuard", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea3e6ec79f4e3d5f8a58fac293814ad595", null ]
     ] ],
     [ "AlgorithmParameters", "structluci_1_1_circle_optimizer_1_1_options.html#a162cd04678df88e1c74a34ca6457eb75", [
       [ "Sparsify_tensor_name", "structluci_1_1_circle_optimizer_1_1_options.html#a162cd04678df88e1c74a34ca6457eb75ae4dc2114932a9dbb9c788c598667029b", null ],

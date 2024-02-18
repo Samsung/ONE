@@ -10,5 +10,5 @@ var dir_fa67ff5997c37682ad2ec9ab94d6ff7f =
     [ "OMRuntimeModule.h", "_o_m_runtime_module_8h.html", "_o_m_runtime_module_8h" ],
     [ "OMRuntimeShape.h", "_o_m_runtime_shape_8h.html", "_o_m_runtime_shape_8h" ],
     [ "OMRuntimeStorage.h", "_o_m_runtime_storage_8h.html", "_o_m_runtime_storage_8h" ],
-    [ "OMUtils.h", "_o_m_utils_8h.html", "_o_m_utils_8h" ]
+    [ "OMUtils.h", "core_2_o_m_utils_8h.html", "core_2_o_m_utils_8h" ]
 ];

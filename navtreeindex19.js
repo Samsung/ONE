@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"_neg_logical_or_kernel_8h.html#a0927d20c358163076e025d99ab5c3c42":[36,0,3,4,0,0,1,40,1,1],
+"_neg_logical_or_kernel_8h_source.html":[36,0,3,4,0,0,1,40,1],
 "_neg_logistic_kernel_8h.html":[36,0,3,4,0,0,1,41,1],
 "_neg_logistic_kernel_8h.html#a052e7eea1c73ff9354f085b1ffe62939":[36,0,3,4,0,0,1,41,1,2],
 "_neg_logistic_kernel_8h.html#a5c22513708e66ed193320cea64c8e586":[36,0,3,4,0,0,1,41,1,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "_neural_networks_types_8h.html#ae8acc09d0266387c20b439b9e56e67eb":[36,0,4,0,2,0,3,11],
 "_neural_networks_types_8h.html#aed8c7f62078ae64e5dea952488b1ccb0":[36,0,4,0,2,0,3,5],
 "_neural_networks_types_8h.html#afb7b4df9a890436af5f49281ca5e0185":[36,0,4,0,2,0,3,33],
-"_neural_networks_types_8h.html#afc1a4fdc9a1248067bab41adbf37559b":[36,0,4,0,2,0,3,47],
-"_neural_networks_types_8h.html#afd28dfaa0cf6a367c137be5b480f3a79":[36,0,4,0,2,0,3,37],
-"_neural_networks_types_8h.html#afdbb585913952ac0b8cd0118adb159da":[36,0,4,0,2,0,3,38]
+"_neural_networks_types_8h.html#afc1a4fdc9a1248067bab41adbf37559b":[36,0,4,0,2,0,3,47]
 };

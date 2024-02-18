@@ -1,10 +1,10 @@
 <map id="compiler/nnc/include/passes/optimizations" name="compiler/nnc/include/passes/optimizations">
 <area shape="rect" id="node1" href="dir_47669fa3c90ba1c071ac09a43f9e53f1.html" title="optimizations" alt="" coords="27,52,125,78"/>
 <area shape="rect" id="node2" href="dir_143d397798fb0c5faf010954922292f2.html" title="mir" alt="" coords="23,126,62,152"/>
-<area shape="poly" id="edge1" href="dir_000666_000524.html" alt="" coords="73,79,57,113,52,111,68,77"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000666_000524.html" title="2" alt="" coords="60,105,67,120"/>
+<area shape="poly" id="edge1" href="dir_000670_000528.html" alt="" coords="73,79,57,113,52,111,68,77"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000670_000528.html" title="2" alt="" coords="60,105,67,120"/>
 <area shape="rect" id="node3" href="dir_24732d9157ecc40ad5bb793d48c44e49.html" title="pass" alt="" coords="86,126,135,152"/>
-<area shape="poly" id="edge2" href="dir_000666_000688.html" alt="" coords="84,77,100,111,96,113,79,79"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000666_000688.html" title="5" alt="" coords="101,98,108,113"/>
+<area shape="poly" id="edge2" href="dir_000670_000694.html" alt="" coords="84,77,100,111,96,113,79,79"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000670_000694.html" title="5" alt="" coords="101,98,108,113"/>
 <area shape="rect" id="clust1" href="dir_d38614c1d84a34cf4cd46b68226ded2f.html" title="passes" alt="" coords="16,16,136,89"/>
 </map>

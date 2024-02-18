@@ -272,7 +272,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00056">onert_micro::core::reader::OMCircleReader::inputs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, and <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00090">onert_micro::core::OMRuntimeGraph::getNumberOfInputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00025">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, and <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00090">onert_micro::core::OMRuntimeGraph::getNumberOfInputs()</a>.</p>
 
 </div>
 </div>
@@ -305,6 +305,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00052">onert_micro::core::reader::OMCircleReader::opcodes()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, and <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::executeKernel()</a>.</p>
+
 </div>
 </div>
 <a id="a650ac74eac44d3a09c12e51d5d28ecf3" name="a650ac74eac44d3a09c12e51d5d28ecf3"></a>
@@ -334,6 +336,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00055">onert_micro::core::reader::OMCircleReader::operators()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>.</p>
+
 </div>
 </div>
 <a id="aa4b899b818bb8a1ec85227f39851c4ec" name="aa4b899b818bb8a1ec85227f39851c4ec"></a>
@@ -357,6 +361,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00055">onert_micro::core::reader::OMCircleReader::operators()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00025">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, and <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::executeKernel()</a>.</p>
 
 </div>
 </div>
@@ -389,7 +395,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00057">onert_micro::core::reader::OMCircleReader::outputs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00081">onert_micro::core::OMRuntimeGraph::getNumberOfOutputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00025">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, and <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00081">onert_micro::core::OMRuntimeGraph::getNumberOfOutputs()</a>.</p>
 
 </div>
 </div>
@@ -475,6 +481,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00053">onert_micro::core::reader::OMCircleReader::buffers()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00034">getTensorByIndex()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00029">onert_micro::UnknownError</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>.</p>
+
 </div>
 </div>
 <a id="adacaf4744172633e9f1f806996fbc7da" name="adacaf4744172633e9f1f806996fbc7da"></a>
@@ -559,7 +567,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8h_source.html#l00054">onert_micro::core::reader::OMCircleReader::tensors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00053">getConstDataByTensorIndex()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00072">onert_micro::core::OMRuntimeGraph::getInputSizeAt()</a>, and <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00063">onert_micro::core::OMRuntimeGraph::getOutputSizeAt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00053">getConstDataByTensorIndex()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00072">onert_micro::core::OMRuntimeGraph::getInputSizeAt()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00063">onert_micro::core::OMRuntimeGraph::getOutputSizeAt()</a>, and <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>.</p>
 
 </div>
 </div>
@@ -592,6 +600,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader_html_a0e223de2d8434662db8fff0efe51c558"><div class="ttname"><a href="classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a0e223de2d8434662db8fff0efe51c558">onert_micro::core::reader::OMCircleReader::isConstTensor</a></div><div class="ttdeci">bool isConstTensor(uint32_t tensor_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_circle_reader_8cpp_source.html#l00087">OMCircleReader.cpp:87</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_circle_reader_8cpp_source.html#l00087">onert_micro::core::reader::OMCircleReader::isConstTensor()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00025">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>.</p>
 
 </div>
 </div>

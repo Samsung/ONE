@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"_matrix_encode_8cpp_source.html":[36,0,0,47,1,0,19],
+"_matrix_index_8h.html":[36,0,0,45,0,0,1,34],
 "_matrix_index_8h_source.html":[36,0,0,45,0,0,1,34],
 "_matrix_set_diag_options_8cpp.html":[36,0,0,124,2,0,86],
 "_matrix_set_diag_options_8cpp.html#a376cbd2ff766b20178cb76e6d632544f":[36,0,0,124,2,0,86,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "_n_d_array_8h_source.html":[36,0,0,3,0,0,0,11],
 "_n_e_binary_logical_operation_8cpp.html":[36,0,1,0,1,1,1,0,0],
 "_n_e_binary_logical_operation_8cpp_source.html":[36,0,1,0,1,1,1,0,0],
-"_n_e_binary_logical_operation_8h.html":[36,0,1,0,0,1,1,0,0],
-"_n_e_binary_logical_operation_8h.html#a3c1d37a2b138520f5c1f138bbcd26488":[36,0,1,0,0,1,1,0,0,2],
-"_n_e_binary_logical_operation_8h.html#a50bb7b981f1fa17145d6b11759307a5b":[36,0,1,0,0,1,1,0,0,3]
+"_n_e_binary_logical_operation_8h.html":[36,0,1,0,0,1,1,0,0]
 };
