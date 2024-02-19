@@ -724,10 +724,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     try
     {
       const auto backend = pair.first;
-      if (backend->config->id() != "train") {
+      const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
+      if (tbackend == nullptr) {
         continue;
       }
-      const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
       tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
     }
     catch (const std::bad_cast &)
