@@ -249,7 +249,7 @@ void LoweredTrainableGraph::dumpLowerInfo()
         return sstream.str();
       };
 
-      auto data_to_str = [](const ir::Data *data) {
+      const auto &data_to_str = [](const ir::Data *data) {
         return (data ? (std::to_string(data->size()) + " bytes") : "N/A");
       };
 
