@@ -88,14 +88,14 @@ inline std::string decorated_name(const char *input)
   {                              \
   auto beg_##name = std::chrono::steady_clock::now()
 
-#define MEASURE_TIME_END(name)                                                      \
-  auto end_##name = std::chrono::steady_clock::now();                               \
-  auto dur_##name =                                                                 \
-    std::chrono::duration_cast<std::chrono::microseconds>(end_##name - beg_##name); \
-  if (::onert::util::logging::ctx.enabled())                                        \
-    std::cout << ::onert::util::logging::decorated_name(__func__) << #name          \
-              << " time = " << dur_##name.count() << std::endl;                     \
-  }                                                                                 \
+#define MEASURE_TIME_END(name, log)                                                   \
+  auto end_##name = std::chrono::steady_clock::now();                                 \
+  auto dur_##name =                                                                   \
+    std::chrono::duration_cast<std::chrono::microseconds>(end_##name - beg_##name);   \
+  if (::onert::util::logging::ctx.enabled())                                          \
+    std::cout << ::onert::util::logging::decorated_name(__func__) << #name            \
+              << " time = " << dur_##name.count() << " (" << log << ")" << std::endl; \
+  }                                                                                   \
   while (0)
 
 #endif // __ONERT_UTIL_LOGGING_H__

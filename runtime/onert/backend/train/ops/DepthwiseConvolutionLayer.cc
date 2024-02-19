@@ -19,7 +19,8 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/ReLU.h>
-#include <cker/operation/Reduce.h>
+
+#include "util/logging.h"
 
 namespace onert
 {
@@ -155,32 +156,28 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.depth_multiplier = _multiplier;
 
   // Calculate gradient for input
+  MEASURE_TIME_START(backpropInput);
   _dconv_kernel->backpropInput(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
     getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
     getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
     getBuffer<float>(_filter_dim_buffers.get()));
+  MEASURE_TIME_END(backpropInput, "");
 
   // Calculate gradient for weights
+  MEASURE_TIME_START(backpropFilter);
   _dconv_kernel->backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
     getBuffer<float>(_padded_filter.get()), getBuffer<float>(_filter_buffers.get()));
+  MEASURE_TIME_END(backpropFilter, "");
 
   // Calculate gradient for bias
   if (_bias)
   {
-    // TODO Use optimized kernel
-    assert(_grad_bias);
-    std::vector<int32_t> axes{0, 1, 2};
-    nnfw::cker::Reduce reduce_kernel;
-    reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
-    bool result = reduce_kernel.ReduceGeneric<float>(
-      getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
-      getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
-      [](const float current, const float in) -> float { return in + current; });
-    if (!result)
-      throw std::runtime_error{"train DepthwiseConvolutionLayer: Fail to calculate bias gradient"};
+    MEASURE_TIME_START(bias);
+    biasGrad(backprop_act, _grad_bias);
+    MEASURE_TIME_END(bias, "");
   }
 }
 

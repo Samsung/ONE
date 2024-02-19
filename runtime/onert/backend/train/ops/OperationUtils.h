@@ -61,6 +61,15 @@ const IPortableTensor *backpropActivation(const ir::Activation &activation,
                                           const IPortableTensor *input_backprop,
                                           IPortableTensor *output_backprop);
 
+/**
+ * @brief backpropagate bias
+ *
+ * @param input_backprop backward direction's output of next layer
+ *                       In other words, incoming gradient to current layer
+ * @param bias_grad      gradient tensor of bias
+ */
+void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad);
+
 } // namespace ops
 } // namespace train
 } // namespace backend

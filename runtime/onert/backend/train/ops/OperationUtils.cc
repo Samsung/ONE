@@ -16,6 +16,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/operation/Reduce.h>
 #include <cker/train/operation/ReLU.h>
 #include <cker/train/operation/ReLU6.h>
 
@@ -62,6 +63,22 @@ const IPortableTensor *backpropActivation(const ir::Activation &activation,
       throw std::runtime_error("Unsupported activation type yet");
   }
   return output_backprop;
+}
+
+void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)
+{
+  // TODO Use optimized kernel
+  assert(bias_grad);
+  std::vector<int32_t> axes{0, 1, 2};
+  nnfw::cker::Reduce reduce_kernel;
+
+  reduce_kernel.prepare(input_backprop->getShape().rank(), axes.size());
+  bool result = reduce_kernel.ReduceGeneric<float>(
+    getShape(input_backprop), getBuffer<float>(input_backprop), getShape(bias_grad),
+    getBuffer<float>(bias_grad), axes, false /* keep_dims */, 0.f,
+    [](const float current, const float in) -> float { return in + current; });
+  if (!result)
+    throw std::runtime_error{"train DepthwiseConvolutionLayer: Fail to calculate bias gradient"};
 }
 
 } // namespace ops

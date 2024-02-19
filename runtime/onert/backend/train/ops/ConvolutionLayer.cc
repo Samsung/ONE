@@ -19,12 +19,13 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Conv.h>
-#include <cker/operation/Reduce.h>
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
 
 #include <cker/operation/TransposeConv.h>
+
+#include "util/logging.h"
 
 namespace
 {
@@ -164,23 +165,29 @@ void ConvolutionLayer::backwardFloat32()
   transpose_param.perm[1] = 2;
   transpose_param.perm[2] = 3;
   transpose_param.perm[3] = 0;
+  MEASURE_TIME_START(Transpose1);
   nnfw::cker::Transpose(transpose_param, getShape(_kernel), getBuffer<float>(_kernel),
                         getShape(transposed_weights), getBuffer<float>(transposed_weights));
+  MEASURE_TIME_END(Transpose1, "");
 
   // Calculate gradient for input
+  MEASURE_TIME_START(ConvInputGrad);
   nnfw::cker::train::ConvInputGrad(
     conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act),
     getShape(transposed_weights), getBuffer<float>(transposed_weights), _paddingBottom,
     _paddingRight, getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
+  MEASURE_TIME_END(ConvInputGrad, "");
 
   // Calculate gradient for weights
   auto transposed_grad_weights = _transposed_grad_weights.get();
   assert(_grad_weights->getShape().rank() == 4);
   assert(transposed_grad_weights->getShape().rank() == 4);
+  MEASURE_TIME_START(ConvFilterGrad);
   nnfw::cker::train::ConvFilterGrad(
     conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), _paddingBottom, _paddingRight, getShape(transposed_grad_weights),
     getBuffer<float>(transposed_grad_weights));
+  MEASURE_TIME_END(ConvFilterGrad, "");
 
   // Transpose weights'gradient from HWIO to OHWI
   nnfw::cker::TransposeParams transpose_grad_param;
@@ -189,27 +196,18 @@ void ConvolutionLayer::backwardFloat32()
   transpose_grad_param.perm[1] = 0;
   transpose_grad_param.perm[2] = 1;
   transpose_grad_param.perm[3] = 2;
+  MEASURE_TIME_START(Transpose2);
   nnfw::cker::Transpose(transpose_grad_param, getShape(transposed_grad_weights),
                         getBuffer<float>(transposed_grad_weights), getShape(_grad_weights),
                         getBuffer<float>(_grad_weights));
+  MEASURE_TIME_END(Transpose2, "");
 
   // Calculate gradient for bias
   if (_bias)
   {
-    // TODO Use optimized kernel
-    assert(_grad_bias);
-    std::vector<int32_t> axes{0, 1, 2};
-    nnfw::cker::Reduce reduce_kernel;
-    reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
-    bool result = reduce_kernel.ReduceGeneric<float>(
-      getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
-      getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
-      [](const float current, const float in) -> float { return in + current; });
-
-    if (!result)
-    {
-      throw std::runtime_error{"train ConvolutionLayer: Fail to caculate bias gradient"};
-    }
+    MEASURE_TIME_START(bias);
+    biasGrad(backprop_act, _grad_bias);
+    MEASURE_TIME_END(bias, "");
   }
 }
 
