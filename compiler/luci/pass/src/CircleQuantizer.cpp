@@ -428,7 +428,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     // Check dtype/granularity of layer params
     for (auto layer_param : layer_params)
     {
-      auto name = layer_param->name;
+      const auto &name = layer_param->name;
       if (!in_array(to_lower_case(layer_param->dtype), fakeq_supported_output_model_dtype))
       {
         throw std::runtime_error("Unsupported dtype in " + name + ". List of supported dtype: " +
@@ -546,7 +546,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     // Check dtype/granularity of layer params
     for (auto layer_param : layer_params)
     {
-      auto name = layer_param->name;
+      const auto &name = layer_param->name;
       if (!in_array(to_lower_case(layer_param->dtype), qwmm_supported_output_model_dtype))
       {
         throw std::runtime_error("Unsupported dtype in " + name + ". List of supported dtype: " +

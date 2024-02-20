@@ -125,7 +125,7 @@ bool fold_fully_connected(luci::CircleFullyConnected *node)
   if (!comp_fc.prepare())
     return false;
 
-  auto output_shape = comp_fc.output_shape();
+  const auto &output_shape = comp_fc.output_shape();
   assert(is_same_shape(node, output_shape));
   auto output_size = loco::element_count(&output_shape);
 
