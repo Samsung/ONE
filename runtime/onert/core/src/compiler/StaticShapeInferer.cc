@@ -831,7 +831,7 @@ void StaticShapeInferer::visit(const ir::operation::Permute &op)
   // However, it is not applied here, so input/output have the same layout of frontend. Because
   // "ExecutorFactory" would convert shape of input/output accoding to the layouts when registering
   // operand info to "TensorBuilder" after calling "StaticShapeInferer"
-  const auto new_shape = input.info().shape();
+  const auto &new_shape = input.info().shape();
   output.info().shape(new_shape);
 }
 
