@@ -1,0 +1,6 @@
+# To check if Add is fused to Convolution op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "CONV_EXIST"              $(op_count CONV_2D) '=' 1
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
