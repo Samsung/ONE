@@ -16,6 +16,7 @@
 
 #include "OperationUtils.h"
 
+#include <cker/eigen/redux_functor.h>
 #include <cker/train/operation/ReLU.h>
 #include <cker/train/operation/ReLU6.h>
 
@@ -62,6 +63,20 @@ const IPortableTensor *backpropActivation(const ir::Activation &activation,
       throw std::runtime_error("Unsupported activation type yet");
   }
   return output_backprop;
+}
+
+void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)
+{
+  assert(bias_grad);
+
+  nnfw::cker::Shape input_backprop_shape = getShape(input_backprop);
+  float *input_backprop_buffer = reinterpret_cast<float *>(input_backprop->buffer());
+
+  nnfw::cker::Shape bias_grad_shape = getShape(bias_grad);
+  float *bias_grad_buffer = getBuffer<float>(bias_grad);
+
+  nnfw::cker::functor::biasReductionHelper(input_backprop_buffer, input_backprop_shape,
+                                           bias_grad_buffer, bias_grad_shape);
 }
 
 } // namespace ops
