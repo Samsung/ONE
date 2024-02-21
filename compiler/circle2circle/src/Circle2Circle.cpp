@@ -91,6 +91,7 @@ int entry(int argc, char **argv)
              "This will fuse Activation function to a preceding operator");
   add_switch(arser, "--fuse_horizontal_fc_layers",
              "This will fuse horizontal FullyConnected layers");
+  add_switch(arser, "--fuse_add_with_conv", "This will fuse Add operator to Convolution operator");
   add_switch(arser, "--fuse_add_with_fully_connected",
              "This will fuse Add operator to FullyConnected operator");
   add_switch(arser, "--fuse_add_with_tconv",
@@ -281,6 +282,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseHorizontalFullyConnected);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
+  if (arser.get<bool>("--fuse_add_with_conv"))
+    options->enable(Algorithms::FuseAddWithConv);
   if (arser.get<bool>("--fuse_add_with_fully_connected"))
     options->enable(Algorithms::FuseAddWithFullyConnected);
   if (arser.get<bool>("--fuse_add_with_tconv"))
