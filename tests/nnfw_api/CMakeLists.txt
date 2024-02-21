@@ -30,8 +30,10 @@ if(Opencl_Headers_FOUND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_GPU_CL_BACKEND)
 endif(Opencl_Headers_FOUND)
 
+# TODO: Fix this when circle_traininfo_generated.h is exported to other places
+set(CIRCLE_PLUS_HEADER_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/onert/core/src/loader)
 set(RUNTIME_NNFW_API_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/lib ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE})
+target_include_directories(${RUNTIME_NNFW_API_TEST} PRIVATE ${RUNTIME_NNFW_API_TEST_INCLUDE} ${CIRCLE_PLUS_HEADER_DIR})
 
 target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
@@ -65,4 +67,3 @@ install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}
 # Install nnpackage test model (mobilenet)
 set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/mobilenet_v1_1.0_224)
-
