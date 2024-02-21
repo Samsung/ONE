@@ -78,16 +78,16 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<T>> &inputs,
 class GenModelTrainContext : public GenModelTestContext
 {
 public:
-  GenModelTrainContext(CirclePlusBuffer &&cpbuf)
-    : GenModelTestContext(std::move(cpbuf.circle)), _cpbuf{std::move(cpbuf.circle_plus)}
+  GenModelTrainContext(CircleBuffers &&cbufs)
+    : GenModelTestContext(std::move(cbufs.circle)), _cpbuf{std::move(cbufs.circle_plus)}
   {
     // DO NOTHING
   }
 
   /**
-   * @brief  Return circle buffer
+   * @brief  Return circle plus buffer
    *
-   * @return CircleBuffer& the circle buffer
+   * @return CircleBuffer& the circle plus buffer
    */
   const CircleBuffer &cpbuf() const { return _cpbuf; }
 
@@ -209,8 +209,7 @@ protected:
         // Optional inputs are not supported yet
         ASSERT_NE(_so.inputs[ind].size(), 0);
 
-        NNFW_ENSURE_SUCCESS(
-          nnfw_train_set_input(_so.session, ind, _so.inputs[ind].data(), &ti));
+        NNFW_ENSURE_SUCCESS(nnfw_train_set_input(_so.session, ind, _so.inputs[ind].data(), &ti));
 
         input_infos.emplace_back(std::move(ti));
       }

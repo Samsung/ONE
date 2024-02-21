@@ -37,7 +37,6 @@ inline uint64_t num_elems(const nnfw_tensorinfo *ti)
   return n;
 }
 
-// TODO: SessionObject for training
 struct SessionObject
 {
   nnfw_session *session = nullptr;

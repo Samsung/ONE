@@ -20,11 +20,10 @@
 #include "CircleGen.h"
 #include "circle_traininfo_generated.h"
 
-struct CirclePlusBuffer
+struct CircleBuffers
 {
   CircleBuffer circle;
   CircleBuffer circle_plus;
-  std::vector<int> expected;
 };
 
 class CirclePlusGen : public CircleGen
@@ -45,7 +44,7 @@ public:
   void addTrainInfo(const TrainInfo &info);
 
   // NOTE: this is overriden from CircleGen::finish()
-  CirclePlusBuffer finish();
+  CircleBuffers finish();
 
 private:
   CircleBuffer createModelTraining();

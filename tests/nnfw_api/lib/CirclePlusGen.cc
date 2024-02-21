@@ -16,12 +16,12 @@
 
 #include "CirclePlusGen.h"
 
-CirclePlusBuffer CirclePlusGen::finish()
+CircleBuffers CirclePlusGen::finish()
 {
-  CirclePlusBuffer cpbuf;
-  cpbuf.circle = CircleGen::finish();
-  cpbuf.circle_plus = createModelTraining();
-  return cpbuf;
+  CircleBuffers cbufs;
+  cbufs.circle = CircleGen::finish();
+  cbufs.circle_plus = createModelTraining();
+  return cbufs;
 }
 
 void CirclePlusGen::addTrainInfo(const TrainInfo &info) { _info = info; }
