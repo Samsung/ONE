@@ -721,17 +721,14 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.optim_info = training_info.optimizerInfo();
 
     // TODO Remove dynamic_cast
-    try
-    {
-      const auto backend = pair.first;
-      const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
-      tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
-    }
-    catch (const std::bad_cast &)
+    const auto backend = pair.first;
+    const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
+    if (!tbackend)
     {
       throw std::runtime_error("ExecutorFactory: Invalid backend - TrainableExecutor does not "
                                "support non-trainble backends");
     }
+    tbackend_contexts.emplace(backend, tbackend->newContext(std::move(tdata)));
   }
   base_backend_contexts.clear();
 

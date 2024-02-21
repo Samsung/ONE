@@ -1,0 +1,69 @@
+# Conv2D + Add(RELU)
+operand {
+  name: "ifm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 3 }
+}
+operand {
+  name: "filter"
+  type: FLOAT32
+  shape { dim: 6 dim: 1 dim: 1 dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 6 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_conv"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 6 }
+}
+operand {
+  name: "add_const"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 6 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_add"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 6 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm_conv"
+  input: "filter"
+  input: "bias"
+  output: "ofm_conv"
+}
+operation {
+  type: "Add"
+  input: "ofm_conv"
+  input: "add_const"
+  output: "ofm_add"
+  add_options {
+    activation: RELU
+  }
+}
+input: "ifm_conv"
+output: "ofm_add"

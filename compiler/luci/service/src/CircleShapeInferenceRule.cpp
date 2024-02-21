@@ -2000,7 +2000,7 @@ loco::NodeShape infer_while_out(const luci::CircleWhileOut *node)
   auto cond_graph_inputs = cond_graph->inputs();
   auto cond_graph_input = cond_graph_inputs->at(cond_in->index());
 
-  auto cond_graph_input_shape = *cond_graph_input->shape();
+  const auto &cond_graph_input_shape = *cond_graph_input->shape();
   auto this_shape = own_shape(node);
 
   if (!(this_shape == cond_graph_input_shape))

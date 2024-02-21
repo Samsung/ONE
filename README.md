@@ -23,7 +23,6 @@ as Tensorflow or PyTorch in a unified form at runtime.
 
 - [Background](docs/overview/background.md)
 - [Roadmap](docs/overview/roadmap.md)
-- [Overall Architecture](docs/overview/overall-architecture.md)
 
 ## Getting started
 

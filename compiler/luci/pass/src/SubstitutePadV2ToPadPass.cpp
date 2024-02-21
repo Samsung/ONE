@@ -215,9 +215,9 @@ bool positive_or_zero(loco::Node *ifm)
   // Since Relu.output[i] >= 0
   if (dynamic_cast<luci::CircleRelu *>(ifm))
     return true;
-  if (auto conv = dynamic_cast<luci::CircleConv2D *>(ifm))
+  if (auto node = dynamic_cast<luci::CircleNodeMixin<luci::CircleNodeTrait::FusedActFunc> *>(ifm))
   {
-    if (conv->fusedActivationFunction() == luci::FusedActFunc::RELU)
+    if (node->fusedActivationFunction() == luci::FusedActFunc::RELU)
       return true;
     // Add more FusedActFunc
   }
