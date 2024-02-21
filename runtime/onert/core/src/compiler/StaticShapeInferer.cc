@@ -253,28 +253,42 @@ StaticShapeInferer::createStaticShapeInferers(
         {
           // TODO Remove dynamic_cast
           // An virtual base class cannot be downcasted by static_cast
-          const auto &if_op = dynamic_cast<const ir::operation::If &>(op);
+          try
+          {
+            const auto &if_op = dynamic_cast<const ir::operation::If &>(op);
 
-          appendChildInferer(if_op.param().then_subg_index);
-          appendChildInferer(if_op.param().else_subg_index);
+            appendChildInferer(if_op.param().then_subg_index);
+            appendChildInferer(if_op.param().else_subg_index);
 
-          appendSubgraphInputObserver(if_op.param().then_subg_index);
-          appendSubgraphInputObserver(if_op.param().else_subg_index);
+            appendSubgraphInputObserver(if_op.param().then_subg_index);
+            appendSubgraphInputObserver(if_op.param().else_subg_index);
 
-          setControlFlowOutputObserver(if_op.param().then_subg_index);
+            setControlFlowOutputObserver(if_op.param().then_subg_index);
+          }
+          catch (const std::bad_cast &)
+          {
+            throw std::runtime_error("StaticShapeInferer: Invalid If operation");
+          }
         }
         else if (op.opcode() == ir::OpCode::While)
         {
           // TODO Remove dynamic_cast
-          const auto &while_op = dynamic_cast<const ir::operation::While &>(op);
+          try
+          {
+            const auto &while_op = dynamic_cast<const ir::operation::While &>(op);
 
-          appendChildInferer(while_op.param().cond_subg_index);
-          appendChildInferer(while_op.param().body_subg_index);
+            appendChildInferer(while_op.param().cond_subg_index);
+            appendChildInferer(while_op.param().body_subg_index);
 
-          appendSubgraphInputObserver(while_op.param().cond_subg_index);
-          appendSubgraphInputObserver(while_op.param().body_subg_index);
+            appendSubgraphInputObserver(while_op.param().cond_subg_index);
+            appendSubgraphInputObserver(while_op.param().body_subg_index);
 
-          setControlFlowOutputObserver(while_op.param().body_subg_index);
+            setControlFlowOutputObserver(while_op.param().body_subg_index);
+          }
+          catch (const std::bad_cast &)
+          {
+            throw std::runtime_error("StaticShapeInferer: Invalid While operation");
+          }
         }
       });
   }
