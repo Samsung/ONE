@@ -69,7 +69,7 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
     input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
 
   // parameters
-  const auto binary_path = node.param().binary_path;
+  const auto &binary_path = node.param().binary_path;
 
   auto fn = std::make_unique<ops::BulkLayer>();
 
