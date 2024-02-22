@@ -160,18 +160,15 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
                       std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
 {
   backend::BackendContexts contexts;
-  auto &backend_manager = compiler::BackendManager::get();
-
   std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
 
   // Generate partial graphs for each backend
-  for (auto &&backend : backend_manager.getAll())
-  {
+  auto init_context_data = [&](const backend::Backend *backend) {
     auto &data = context_data_map[backend];
     auto graph = std::make_unique<ir::Graph>();
     graph->setLayout(lgraph.graph().layout());
     data.graph = std::move(graph);
-  }
+  };
 
   auto &whole_graph = lgraph.graph();
   // Separate operands into partial graphs
@@ -182,6 +179,9 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       return;
     const auto &def_factor = def_factors.getOnlyElement();
     const auto backend = def_factor.backend();
+    if (context_data_map.find(backend) == context_data_map.end())
+      init_context_data(backend);
+
     auto &partial_graph = *context_data_map[backend].graph;
     auto &operand_layouts = context_data_map[backend].operand_layouts;
     assert(operand_layouts.find(operand_ind) == operand_layouts.end());
@@ -200,6 +200,9 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &operation) {
       auto &op_li = lgraph.lower_info().operation;
       auto backend = op_li.at(op_ind).backend();
+      if (context_data_map.find(backend) == context_data_map.end())
+        init_context_data(backend);
+
       auto &partial_graph = *context_data_map[backend].graph;
       auto &external_operands = context_data_map[backend].external_operands;
       auto &operand_layouts = context_data_map[backend].operand_layouts;
