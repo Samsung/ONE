@@ -26,6 +26,7 @@
 
 # Flatbuffers generated
 /ONE/runtime/libs/circle-schema/include/circle_schema_generated.h
+/ONE/runtime/libs/circle-schema/include/circle_traininfo_generated.h
 /ONE/runtime/onert/core/src/loader/tflite_schema_generated.h
 
 # External code: Android NN API
