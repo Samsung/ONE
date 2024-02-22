@@ -21,10 +21,10 @@
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
-#include "loader/circle_loader.h"
+#include "loader/CircleLoader.h"
 #include "loader/ModelLoader.h"
-#include "loader/tflite_loader.h"
-#include "loader/traininfo_loader.h"
+#include "loader/TFLiteLoader.h"
+#include "loader/TrainInfoLoader.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -197,9 +197,9 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
   try
   {
     if (model_type == "tflite")
-      return onert::tflite_loader::loadModel(filename.c_str());
+      return onert::loader::loadTFLiteModel(filename.c_str());
     if (model_type == "circle")
-      return onert::circle_loader::loadModel(filename.c_str());
+      return onert::loader::loadCircleModel(filename.c_str());
     if (model_type == "tvn")
       return onert::trix_loader::loadModel(filename.c_str());
 
@@ -216,11 +216,11 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
 std::unique_ptr<onert::ir::train::TrainingInfo>
 loadTrainingInfo(const std::shared_ptr<onert::ir::Model> &model)
 {
-  const auto tinfo_name = onert::train::traininfo_loader::TRAININFO_METADATA_NAME;
+  const auto tinfo_name = onert::loader::TRAININFO_METADATA_NAME;
   if (model->exists_metadata(tinfo_name))
   {
     const auto buffer = model->extract_metadata(tinfo_name);
-    return onert::train::traininfo_loader::loadTrainingInfo(buffer->base(), buffer->size());
+    return onert::loader::loadTrainingInfo(buffer->base(), buffer->size());
   }
   return std::make_unique<onert::ir::train::TrainingInfo>();
 }
@@ -296,7 +296,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
 
   try
   {
-    auto model = onert::circle_loader::loadModel(buffer, size);
+    auto model = onert::loader::loadCircleModel(buffer, size);
     // TODO: Update _model_path if necessary
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
     _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "loader/circle_loader.h"
+#include "loader/CircleLoader.h"
 
-#include "base_loader.h"
+#include "BaseLoader.h"
 #include "circle_schema_generated.h"
 
 namespace onert
 {
-namespace circle_loader
+namespace loader
 {
 
 namespace
@@ -58,7 +58,7 @@ struct LoaderDomain
   static bool VerifyModelBuffer(Verifier &verifier) { return circle::VerifyModelBuffer(verifier); }
 };
 
-class CircleLoader final : public base_loader::BaseLoader<LoaderDomain>
+class CircleLoader final : public loader::BaseLoader<LoaderDomain>
 {
 protected:
   // Different option name
@@ -219,7 +219,7 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 
 } // namespace
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
+std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename)
 {
   auto model = std::make_unique<ir::Model>();
   CircleLoader loader(model);
@@ -227,7 +227,7 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename)
   return model;
 }
 
-std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size)
+std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size)
 {
   auto model = std::make_unique<ir::Model>();
   CircleLoader loader(model);
@@ -235,5 +235,5 @@ std::unique_ptr<ir::Model> loadModel(uint8_t *buffer, size_t size)
   return model;
 }
 
-} // namespace circle_loader
+} // namespace loader
 } // namespace onert

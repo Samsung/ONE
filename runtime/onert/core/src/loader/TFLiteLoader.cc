@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "loader/tflite_loader.h"
+#include "loader/TFLiteLoader.h"
 
-#include "base_loader.h"
+#include "BaseLoader.h"
 #include "tflite_schema_generated.h"
 
 namespace onert
 {
-namespace tflite_loader
+namespace loader
 {
 
 namespace
@@ -64,7 +64,7 @@ struct LoaderDomain
   }
 };
 
-class TFLiteLoader final : public base_loader::BaseLoader<LoaderDomain>
+class TFLiteLoader final : public loader::BaseLoader<LoaderDomain>
 {
 protected:
   // Different option name
@@ -155,7 +155,7 @@ void TFLiteLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 
 } // namespace
 
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
+std::unique_ptr<ir::Model> loadTFLiteModel(const std::string &filename)
 {
   auto model = std::make_unique<ir::Model>();
   TFLiteLoader loader(model);
@@ -163,5 +163,5 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename)
   return model;
 }
 
-} // namespace tflite_loader
+} // namespace loader
 } // namespace onert
