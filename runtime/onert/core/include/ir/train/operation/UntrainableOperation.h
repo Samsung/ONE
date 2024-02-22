@@ -53,6 +53,7 @@ public:
   {
     throw std::runtime_error(OperationType::name() + "operation is not trainable yet");
   }
+  bool hasTrainableParameter() const override { return false; }
 };
 
 } // namespace operation

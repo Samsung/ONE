@@ -39,6 +39,7 @@ public:
   virtual std::unique_ptr<ITrainableOperation> clone() const = 0;
   virtual void accept(OperationVisitor &v) const override = 0;
   virtual void accept(TrainableOperationVisitor &v) const = 0;
+  virtual bool hasTrainableParameter() const = 0;
   // TODO Add virtual methods related to training
 };
 
