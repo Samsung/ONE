@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef __BASE_LOADER_BASE_LOADER_H__
-#define __BASE_LOADER_BASE_LOADER_H__
+#ifndef __ONERT_LOADER_BASE_LOADER_H__
+#define __ONERT_LOADER_BASE_LOADER_H__
 
 #include "ir/Graph.h"
 #include "ir/Shape.h"
@@ -36,7 +36,7 @@
 
 namespace onert
 {
-namespace base_loader
+namespace loader
 {
 
 template <typename LoaderDomain> class BaseLoader
@@ -1778,7 +1778,7 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   _model = std::move(model);
 }
 
-} // namespace base_loader
+} // namespace loader
 } // namespace onert
 
-#endif //__BASE_LOADER_BASE_LOADER_H__
+#endif //__ONERT_LOADER_BASE_LOADER_H__

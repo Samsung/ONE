@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-#include "loader/traininfo_loader.h"
+#include "loader/TrainInfoLoader.h"
 
 #include "circle_traininfo_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
 namespace onert
 {
-namespace train
-{
-namespace traininfo_loader
+namespace loader
 {
 
 const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
@@ -118,6 +116,5 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
   return tinfo;
 }
 
-} // namespace traininfo_loader
-} // namespace train
+} // namespace loader
 } // namespace onert

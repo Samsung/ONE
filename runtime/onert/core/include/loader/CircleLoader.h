@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __TFLITE_TFLITE_LOADER_H__
-#define __TFLITE_TFLITE_LOADER_H__
+#ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
+#define __ONERT_LOADER_CIRCLE_LOADER_H__
 
 #include "ir/Graph.h"
 
@@ -23,12 +23,11 @@
 
 namespace onert
 {
-namespace tflite_loader
+namespace loader
 {
-
-std::unique_ptr<ir::Model> loadModel(const std::string &filename);
-
-} // namespace tflite_loader
+std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename);
+std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size);
+} // namespace loader
 } // namespace onert
 
-#endif // __TFLITE_TFLITE_LOADER_H__
+#endif // __ONERT_LOADER_CIRCLE_LOADER_H__
