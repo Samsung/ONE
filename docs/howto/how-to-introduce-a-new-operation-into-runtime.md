@@ -278,7 +278,7 @@ If you want new operation to be loaded on only Circle Loader, you only need to i
 ### NNAPI
 
 1. Add to the OperationFactory to generate IR of new operation
-- [OperationFactory](/runtime/onert/frontend/nnapi/wrapper/OperationFactory.cc)
+- [OperationFactory](/runtime/onert/api/nnapi/wrapper/OperationFactory.cc)
 
 ```cpp
   _map[ANEURALNETWORKS_SELECT] = [](const OperationFactory::Param &init_param, Operands &) {
