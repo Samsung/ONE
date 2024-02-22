@@ -2,7 +2,7 @@ if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-nnfw_find_package(FlatBuffers EXACT 2.0 QUIET)
+nnfw_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 if(NOT FlatBuffers_FOUND)
   message(STATUS "Skip build custom operation test: cannot find flatbuffers")
   return()
@@ -58,7 +58,7 @@ function(add_nnfw_custom_op_kernel NAME STATIC)
     add_library(${LIBNAME} SHARED ${ARGN})
   endif()
   target_link_libraries(${LIBNAME} PRIVATE nnfw-nnapi-header nnfw-dev)
-  target_link_libraries(${LIBNAME} PRIVATE flatbuffers::flatbuffers)
+  target_link_libraries(${LIBNAME} PRIVATE flatbuffers::flatbuffers-23.5.26)
 endfunction()
 
 # Install custom op kernel built with `add_nnfw_custom_op_kernel`
