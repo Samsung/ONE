@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
+#include "OMStatus.h"
+
+#include "core/OMUtils.h"
+#include "core/OMRuntimeShape.h"
+
 #include "execute/OMUtils.h"
 #include "execute/OMKernelExecutionBuilder.h"
-#include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMUtils.h"
-
-#include "core/OMRuntimeShape.h"
-#include "PALAdd.h"
+#include "PALMul.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
 namespace
 {
+
+constexpr uint32_t numInput = 2;
+constexpr uint32_t numOutput = 1;
 
 constexpr uint32_t input1TensorIdx = 0;
 constexpr uint32_t input2TensorIdx = 1;
@@ -36,8 +40,8 @@ constexpr uint32_t outputTensorIdx = 0;
 } // namespace
 
 // NOTE: doesnt currently support dynamic shapes
-// TODO: reduce code duplication with Mul, Sub
-OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &execute_args)
+// TODO: reduce code duplication with Add, Sub
+OMStatus onert_micro::execute::execute_kernel_CircleMul(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -51,10 +55,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
   uint8_t *input2_data;
   uint8_t *output_data;
 
-  uint16_t input1_index = 0;
-  uint16_t input2_index = 0;
-
-  const circle::AddOptions *options;
+  const circle::MulOptions *options;
   // Read kernel
   {
     execute::OMRuntimeKernel runtime_kernel;
@@ -76,10 +77,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
     assert(input2_data != nullptr);
     assert(output_data != nullptr);
 
-    options = runtime_kernel.first_operator->builtin_options_as_AddOptions();
-
-    input1_index = runtime_kernel.inputs_index[input1TensorIdx];
-    input2_index = runtime_kernel.inputs_index[input2TensorIdx];
+    options = runtime_kernel.first_operator->builtin_options_as_MulOptions();
   }
 
   OMStatus status;
@@ -88,16 +86,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
   core::OMRuntimeShape input2_shape(input2);
   core::OMRuntimeShape output_shape(output);
 
-#ifndef DIS_DYN_SHAPES
-  // Check dynamic shapes
-  if (runtime_storage.getDynamicTensorSize(input1_index) != -1)
-    input1_shape = output_shape;
-
-  if (runtime_storage.getDynamicTensorSize(input2_index) != -1)
-    input2_shape = output_shape;
-#endif // DIS_DYN_SHAPES
-
-  // Check broadcast property
   core::BinaryArithmeticBroadcastParams params{};
   const bool need_broadcast = pal::processBroadcastShapes(input1_shape, input2_shape, &params);
 
@@ -106,11 +94,13 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
-      execute::calculateActivationRange(options->fused_activation_function(),
-                                        &params.float_activation_min, &params.float_activation_max);
+      status = execute::calculateActivationRange(options->fused_activation_function(),
+                                                 &params.float_activation_min,
+                                                 &params.float_activation_max);
+
       if (need_broadcast)
       {
-        status = pal::BroadcastAdd4DSlow(
+        status = pal::BroadcastMul4DSlow(
           params, input1_shape, core::utils::castInputData<float>(input1_data), input2_shape,
           core::utils::castInputData<float>(input2_data), output_shape,
           core::utils::castOutputData<float>(output_data));
@@ -118,7 +108,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
       else
       {
         status =
-          pal::Add(params, output_shape.flatSize(), core::utils::castInputData<float>(input1_data),
+          pal::Mul(params, input1_shape.flatSize(), core::utils::castInputData<float>(input1_data),
                    core::utils::castInputData<float>(input2_data),
                    core::utils::castOutputData<float>(output_data));
       }
@@ -126,19 +116,20 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
     break;
     case circle::TensorType_INT64:
     {
-      execute::calculateActivationRange(options->fused_activation_function(),
-                                        &params.int64_activation_min, &params.int64_activation_max);
+      status = execute::calculateActivationRange(options->fused_activation_function(),
+                                                 &params.int64_activation_min,
+                                                 &params.int64_activation_max);
 
       if (need_broadcast)
       {
-        status = pal::BroadcastAdd4DSlow(
+        status = pal::BroadcastMul4DSlow(
           params, input1_shape, core::utils::castInputData<int64_t>(input1_data), input2_shape,
           core::utils::castInputData<int64_t>(input2_data), output_shape,
           core::utils::castOutputData<int64_t>(output_data));
       }
       else
       {
-        status = pal::Add(params, input1_shape.flatSize(),
+        status = pal::Mul(params, input1_shape.flatSize(),
                           core::utils::castInputData<int64_t>(input1_data),
                           core::utils::castInputData<int64_t>(input2_data),
                           core::utils::castOutputData<int64_t>(output_data));
@@ -147,19 +138,20 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
     break;
     case circle::TensorType_INT32:
     {
-      execute::calculateActivationRange(options->fused_activation_function(),
-                                        &params.int32_activation_min, &params.int32_activation_max);
+      status = execute::calculateActivationRange(options->fused_activation_function(),
+                                                 &params.int32_activation_min,
+                                                 &params.int32_activation_max);
 
       if (need_broadcast)
       {
-        status = pal::BroadcastAdd4DSlow(
+        status = pal::BroadcastMul4DSlow(
           params, input1_shape, core::utils::castInputData<int32_t>(input1_data), input2_shape,
           core::utils::castInputData<int32_t>(input2_data), output_shape,
           core::utils::castOutputData<int32_t>(output_data));
       }
       else
       {
-        status = pal::Add(params, input1_shape.flatSize(),
+        status = pal::Mul(params, input1_shape.flatSize(),
                           core::utils::castInputData<int32_t>(input1_data),
                           core::utils::castInputData<int32_t>(input2_data),
                           core::utils::castOutputData<int32_t>(output_data));

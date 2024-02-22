@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "import/OMKernelConfigureBuilder.h"
-#include "core/OMUtils.h"
 #include "OMStatus.h"
+
+#include "core/OMUtils.h"
+#include "import/OMKernelConfigureBuilder.h"
 #include "execute/OMRuntimeKernel.h"
 
 using namespace onert_micro;
@@ -31,8 +32,8 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-// TODO: reduce code duplication with Mul, Sub
-OMStatus onert_micro::import::configure_kernel_CircleAdd(const OMConfigureArgs &config_args)
+// TODO: reduce code duplication with Add, Mul
+OMStatus onert_micro::import::configure_kernel_CircleSub(const OMConfigureArgs &config_args)
 {
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
@@ -62,6 +63,8 @@ OMStatus onert_micro::import::configure_kernel_CircleAdd(const OMConfigureArgs &
   if (input1->type() != circle::TensorType_INT8 and input1->type() != circle::TensorType_INT16)
     return status;
 
+#ifndef DIS_QUANT
+
   // Check quantization params
   if (input1->quantization() == nullptr or input2->quantization() == nullptr or
       output->quantization() == nullptr)
@@ -72,8 +75,10 @@ OMStatus onert_micro::import::configure_kernel_CircleAdd(const OMConfigureArgs &
   if (input1->quantization()->scale()->size() != 1 or
       input2->quantization()->scale()->size() != 1 or output->quantization()->scale()->size() != 1)
   {
-    return UnsupportedType;
+    return UnsupportedQuantizationType;
   }
+
+#endif // DIS_QUANT
 
   return status;
 }
