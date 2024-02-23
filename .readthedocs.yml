@@ -3,7 +3,13 @@
 # See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
 # Required
-version: 1.4
+version: 2
+
+# Set the OS, Python version and other tools you might need
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: "3"
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
@@ -17,6 +23,5 @@ formats:
 
 # Optionally set the version of Python and requirements required to build your docs
 python:
-  version: 3.7
   install:
     - requirements: docs/requirements.txt
