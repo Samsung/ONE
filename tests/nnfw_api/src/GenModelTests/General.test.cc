@@ -15,11 +15,12 @@
  */
 
 /**
- * @file This file contains miscellaneous GenModelTest test cases.
+ * @file This file contains miscellaneous GenModelTest and GenModelTrain test cases.
  *
  */
 
 #include "GenModelTest.h"
+#include "GenModelTrain.h"
 
 #include <memory>
 
