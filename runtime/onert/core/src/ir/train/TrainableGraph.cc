@@ -19,6 +19,7 @@
 #include "util/Set.h"
 
 #include <algorithm>
+#include <set>
 #include <map>
 #include <misc/polymorphic_downcast.h>
 
@@ -227,6 +228,41 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
   validateBackwardTopologicalOrder(ret);
 
   return ret;
+}
+
+std::vector<ir::OperationIndex>
+TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const
+{
+  auto forward_order = backward_order;
+  std::reverse(forward_order.begin(), forward_order.end());
+
+  std::set<ir::OperationIndex> alive;
+
+  for (const auto &index : forward_order)
+  {
+    const auto &op = operations().at(index);
+    const auto &trainable_op = dynamic_cast<const ITrainableOperation &>(op);
+
+    if (trainable_op.hasTrainableParameter())
+      alive.insert(index);
+
+    // TODO: replace this with `std::set::contains` after C++20
+    if (alive.find(index) != alive.end())
+      for (const auto &output : op.getOutputs())
+      {
+        const auto &operand = operands().at(output);
+        for (const auto &use : operand.getUses())
+          alive.insert(use);
+      }
+  }
+
+  // TODO: replace this with `std::erase_if(std::vector)` after C++20
+  backward_order.erase(
+    std::remove_if(backward_order.begin(), backward_order.end(),
+                   [&](const auto &index) { return alive.find(index) == alive.end(); }),
+    backward_order.end());
+
+  return backward_order;
 }
 
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
