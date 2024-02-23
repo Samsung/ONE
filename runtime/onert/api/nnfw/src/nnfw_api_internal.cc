@@ -33,7 +33,6 @@
 #include "odc/QuantizeManager.h"
 #include "odc/CodegenManager.h"
 #include "circle_schema_generated.h"
-#include "trix_loader.h"
 
 #include <fstream>
 #include <iostream>
@@ -200,8 +199,6 @@ std::unique_ptr<onert::ir::Model> loadModel(const std::string filename,
       return onert::loader::loadTFLiteModel(filename.c_str());
     if (model_type == "circle")
       return onert::loader::loadCircleModel(filename.c_str());
-    if (model_type == "tvn")
-      return onert::trix_loader::loadModel(filename.c_str());
 
     return onert::loader::loadModel(filename, model_type);
   }

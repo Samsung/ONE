@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include "trix_loader.h"
-
 #include "ir/Graph.h"
 #include "ir/operation/Bulk.h"
+#include "loader/ILoader.h"
 
 #include <libnpuhost.h>
 #include <npubinfmt.h>
@@ -75,28 +74,26 @@ void TrixMetaReader::init(const char *path)
   }
 }
 
-class TrixLoader
+class TrixLoader : public onert::loader::ILoader
 {
 public:
   /**
    * @brief Construct a new Loader object
-   *
-   * @param model reference on model
    */
-  explicit TrixLoader(std::unique_ptr<ir::Model> &model) : _model(model) {}
+  TrixLoader() = default;
 
   /**
    * @brief Load a model from file
    * @param file_path
    */
-  void loadFromFile(const std::string &file_path);
+  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
 
 private:
   /*
    * @brief Load actually
    * @throw runtime_error when tvn path is wrong or tvn is invalid
    */
-  void loadModel();
+  void loadModel(std::unique_ptr<ir::Model> &model);
   std::unique_ptr<ir::Graph> loadSubgraph();
   void loadOperands(ir::Graph &subg);
   ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
@@ -108,14 +105,11 @@ private:
   ir::DataType toDataType(const data_type type) const;
 
 private:
-protected:
   /** path to model (e.g. tvn) */
   std::string _model_path;
   /** original IO shapes */
   std::vector<ir::Shape> _origin_input_shapes;
   std::vector<ir::Shape> _origin_output_shapes;
-  /** Reference on loadable subgraphs */
-  std::unique_ptr<ir::Model> &_model;
   TrixMetaReader _meta;
 };
 
@@ -243,28 +237,30 @@ std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
   return subg;
 }
 
-void TrixLoader::loadModel()
+void TrixLoader::loadModel(std::unique_ptr<ir::Model> &model)
 {
   // one subgraph only
   auto subg = loadSubgraph();
-  _model->push(ir::SubgraphIndex(0), std::move(subg));
+  model->push(ir::SubgraphIndex(0), std::move(subg));
 }
 
-void TrixLoader::loadFromFile(const std::string &file_path)
+std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path)
 {
+  auto model = std::make_unique<ir::Model>();
   // model path will be used to set Bulk param
   _model_path = file_path;
   // metadata is initialized from model path since it is loadFromFile
   _meta.init(_model_path.c_str());
-  loadModel();
-}
-
-std::unique_ptr<ir::Model> loadModel(const std::string &filename)
-{
-  auto model = std::make_unique<ir::Model>();
-  TrixLoader loader(model);
-  loader.loadFromFile(filename);
+  loadModel(model);
   return model;
 }
+
 } // namespace trix_loader
 } // namespace onert
+
+extern "C" {
+
+onert::loader::ILoader *onert_loader_create() { return new onert::trix_loader::TrixLoader; }
+
+void onert_loader_destroy(onert::loader::ILoader *loader) { delete loader; }
+}
