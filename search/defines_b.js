@@ -49,5 +49,5 @@ var searchData=
   ['lu_5fbrelu_5fop_46',['lu_brelu_op',['../activation__float__helpers_8h.html#aaaa0358ab1c5e91587a81bd4e8415d8b',1,'activation_float_helpers.h']]],
   ['luci_5fassert_47',['luci_assert',['../luci_2export_2src_2_check_8h.html#a556cade00a2ca7747005bcf22a909578',1,'LUCI_ASSERT:&#160;Check.h'],['../luci_2lang_2src_2_check_8h.html#a556cade00a2ca7747005bcf22a909578',1,'LUCI_ASSERT:&#160;Check.h'],['../luci_2service_2src_2_check_8h.html#a556cade00a2ca7747005bcf22a909578',1,'LUCI_ASSERT:&#160;Check.h']]],
   ['luci_5finterpreter_5fcheck_48',['luci_interpreter_check',['../compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d',1,'LUCI_INTERPRETER_CHECK:&#160;Utils.h'],['../onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d',1,'LUCI_INTERPRETER_CHECK:&#160;Utils.h']]],
-  ['luci_5finterpreter_5ftest_5fmodels_5fneg_5fadd_5fkernel_5fh_49',['LUCI_INTERPRETER_TEST_MODELS_NEG_ADD_KERNEL_H',['../_neg_add_kernel_8h.html#a0937972515343f7cccc119f459a0f7e4',1,'NegAddKernel.h']]]
+  ['luci_5finterpreter_5ftest_5fmodels_5fneg_5fadd_5fkernel_5fh_49',['LUCI_INTERPRETER_TEST_MODELS_NEG_ADD_KERNEL_H',['../luci-interpreter_2include_2luci__interpreter_2test__models_2add_2_neg_add_kernel_8h.html#a0937972515343f7cccc119f459a0f7e4',1,'NegAddKernel.h']]]
 ];

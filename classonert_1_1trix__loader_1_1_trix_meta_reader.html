@@ -134,7 +134,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A tvn metadata reader. </p>
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00034">34</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00033">33</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a837c7b8f1e534c040c2489907d78e6ad" name="a837c7b8f1e534c040c2489907d78e6ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a837c7b8f1e534c040c2489907d78e6ad">&#9670;&#160;</a></span>TrixMetaReader()</h2>
@@ -184,8 +184,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00038">38</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ free(_meta); }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00037">37</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ free(_meta); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -206,21 +206,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00064">64</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
-<div class="line"><span class="lineno">   66</span>  assert(path);</div>
-<div class="line"><span class="lineno">   67</span>  _meta = getNPUmodel_metadata(path, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">if</span> (_meta == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to get TRIX model metadata&quot;</span>);</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">if</span> (NPUBIN_VERSION(_meta-&gt;magiccode) != 3)</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;TRIX model metadata version mismatched.&quot;</span>);</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="line"><span class="lineno">   76</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00063">63</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  assert(path);</div>
+<div class="line"><span class="lineno">   66</span>  _meta = getNPUmodel_metadata(path, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (_meta == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to get TRIX model metadata&quot;</span>);</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">if</span> (NPUBIN_VERSION(_meta-&gt;magiccode) != 3)</div>
+<div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;TRIX model metadata version mismatched.&quot;</span>);</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="trix__loader_8cc_source.html#l00253">onert::trix_loader::TrixLoader::loadFromFile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trix_loader_8cc_source.html#l00247">onert::trix_loader::TrixLoader::loadFromFile()</a>.</p>
 
 </div>
 </div>
@@ -258,10 +258,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00051">51</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> _meta-&gt;input_seg_dims[n][axis];</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00050">50</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> _meta-&gt;input_seg_dims[n][axis];</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -289,8 +289,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00041">41</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_layout[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00040">40</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_layout[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -317,8 +317,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00049">49</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_num; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00048">48</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_num; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,8 +346,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00045">45</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_s[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00044">44</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_s[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -375,8 +375,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00043">43</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_type[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00042">42</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_type[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -404,8 +404,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00047">47</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_z[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00046">46</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _meta-&gt;input_seg_quant_z[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -443,10 +443,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00055">55</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> _meta-&gt;output_seg_dims[n][axis];</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00054">54</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> _meta-&gt;output_seg_dims[n][axis];</div>
+<div class="line"><span class="lineno">   57</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -474,8 +474,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00042">42</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_layout[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00041">41</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_layout[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -502,8 +502,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00050">50</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_num; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00049">49</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_num; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -531,8 +531,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00046">46</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_s[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00045">45</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_s[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -560,8 +560,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00044">44</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_type[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00043">43</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_type[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -589,13 +589,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00048">48</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_z[n]; }</div>
+<p class="definition">Definition at line <a class="el" href="_trix_loader_8cc_source.html#l00047">47</a> of file <a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _meta-&gt;output_seg_quant_z[n]; }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>runtime/onert/loader/trix/src/<a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a></li>
+<li>runtime/onert/loader/trix/<a class="el" href="_trix_loader_8cc_source.html">TrixLoader.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

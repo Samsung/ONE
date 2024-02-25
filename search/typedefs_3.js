@@ -6,7 +6,7 @@ var searchData=
   ['datatypeimpl_3',['DataTypeImpl',['../namespaceluci__interpreter.html#aabbfe775c93e9ada62f74d376e55556b',1,'luci_interpreter']]],
   ['depset_4',['DepSet',['../namespacecoco.html#ab0605b49890de394682d0771fd481a8b',1,'coco']]],
   ['difference_5ftype_5',['difference_type',['../structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429',1,'flatbuffers::VectorIterator']]],
-  ['dimensiontype_6',['DimensionType',['../classonert_1_1base__loader_1_1_base_loader.html#a006c3eef430488a66cd9958e012740a4',1,'onert::base_loader::BaseLoader']]],
+  ['dimensiontype_6',['DimensionType',['../classonert_1_1loader_1_1_base_loader.html#aaa50097b9099f455cdbbc54bd022af98',1,'onert::loader::BaseLoader']]],
   ['dims_7',['dims',['../namespacemorph.html#a7e45f169b086c0fffd2fddb857256ee3',1,'morph::Dims'],['../namespacesouschef.html#af6901c7c7d76de2d622df38926a477da',1,'souschef::Dims']]],
   ['dlhandle_8',['DLHandle',['../namespacenpud_1_1core.html#a8a5f2166fb0605199fb60a605ecf5012',1,'npud::core']]],
   ['dlhandle_5fdestroy_5ft_9',['dlhandle_destroy_t',['../classonert_1_1odc_1_1_quantizer_loader.html#a607a22d82042c81cc76173939256c8a6',1,'onert::odc::QuantizerLoader::dlhandle_destroy_t'],['../classonert_1_1odc_1_1_codegen_loader.html#af54139f703f79ca630fb77ba785c6aab',1,'onert::odc::CodegenLoader::dlhandle_destroy_t'],['../classonert_1_1compiler_1_1_backend_manager.html#aa0e17a9ffd4eb27df6afd7d421835c5f',1,'onert::compiler::BackendManager::dlhandle_destroy_t']]],

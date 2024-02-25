@@ -1,10 +1,10 @@
 <map id="runtime/onert/odc" name="runtime/onert/odc">
 <area shape="rect" id="node1" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html" title="core" alt="" coords="26,126,73,152"/>
 <area shape="rect" id="node2" href="dir_51f345b33942eee10ec724372dc42676.html" title="odc" alt="" coords="28,52,71,78"/>
-<area shape="poly" id="edge1" href="dir_000628_000154.html" alt="" coords="52,78,52,110,47,110,47,78"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000628_000154.html" title="1" alt="" coords="54,100,61,115"/>
+<area shape="poly" id="edge1" href="dir_000634_000158.html" alt="" coords="52,78,52,110,47,110,47,78"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000634_000158.html" title="1" alt="" coords="54,100,61,115"/>
 <area shape="rect" id="node3" href="dir_e955afc72e8af59637c9070b8690ff98.html" title="compiler" alt="" coords="97,126,167,152"/>
-<area shape="poly" id="edge2" href="dir_000628_000118.html" alt="" coords="65,77,108,114,105,118,62,81"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000628_000118.html" title="4" alt="" coords="106,100,113,115"/>
+<area shape="poly" id="edge2" href="dir_000634_000121.html" alt="" coords="65,77,108,114,105,118,62,81"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000634_000121.html" title="4" alt="" coords="106,100,113,115"/>
 <area shape="rect" id="clust1" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html" title="onert" alt="" coords="16,16,83,162"/>
 </map>

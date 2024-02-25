@@ -1231,6 +1231,7 @@ var annotated_dup =
       [ "ForwardReshapeToUnaryOpPass", "structluci_1_1_forward_reshape_to_unary_op_pass.html", "structluci_1_1_forward_reshape_to_unary_op_pass" ],
       [ "ForwardTransposeOpPass", "structluci_1_1_forward_transpose_op_pass.html", "structluci_1_1_forward_transpose_op_pass" ],
       [ "FuseActivationFunctionPass", "structluci_1_1_fuse_activation_function_pass.html", "structluci_1_1_fuse_activation_function_pass" ],
+      [ "FuseAddWithConvPass", "structluci_1_1_fuse_add_with_conv_pass.html", "structluci_1_1_fuse_add_with_conv_pass" ],
       [ "FuseAddWithFullyConnectedPass", "structluci_1_1_fuse_add_with_fully_connected_pass.html", "structluci_1_1_fuse_add_with_fully_connected_pass" ],
       [ "FuseAddWithTConvPass", "structluci_1_1_fuse_add_with_t_conv_pass.html", "structluci_1_1_fuse_add_with_t_conv_pass" ],
       [ "FuseBatchNormWithConvPass", "structluci_1_1_fuse_batch_norm_with_conv_pass.html", "structluci_1_1_fuse_batch_norm_with_conv_pass" ],
@@ -3005,9 +3006,6 @@ var annotated_dup =
         [ "ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", "structonert_1_1backend_1_1_i_tensor_registry" ],
         [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ]
       ] ],
-      [ "base_loader", "namespaceonert_1_1base__loader.html", [
-        [ "BaseLoader", "classonert_1_1base__loader_1_1_base_loader.html", "classonert_1_1base__loader_1_1_base_loader" ]
-      ] ],
       [ "compiler", "namespaceonert_1_1compiler.html", [
         [ "pass", "namespaceonert_1_1compiler_1_1pass.html", [
           [ "ConstantInsertionPass", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html", "classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass" ],
@@ -3275,6 +3273,7 @@ var annotated_dup =
         [ "TypeInfo", "classonert_1_1ir_1_1_type_info.html", "classonert_1_1ir_1_1_type_info" ]
       ] ],
       [ "loader", "namespaceonert_1_1loader.html", [
+        [ "BaseLoader", "classonert_1_1loader_1_1_base_loader.html", "classonert_1_1loader_1_1_base_loader" ],
         [ "ILoader", "classonert_1_1loader_1_1_i_loader.html", "classonert_1_1loader_1_1_i_loader" ]
       ] ],
       [ "odc", "namespaceonert_1_1odc.html", [
@@ -3344,6 +3343,13 @@ var annotated_dup =
         [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ]
       ] ],
       [ "execute", "namespaceonert__micro_1_1execute.html", [
+        [ "pal", "namespaceonert__micro_1_1execute_1_1pal.html", [
+          [ "AddFn", "structonert__micro_1_1execute_1_1pal_1_1_add_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_add_fn" ],
+          [ "DivFn", "structonert__micro_1_1execute_1_1pal_1_1_div_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_div_fn" ],
+          [ "MulFn", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn" ],
+          [ "NdArrayDesc", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc" ],
+          [ "SubFn", "structonert__micro_1_1execute_1_1pal_1_1_sub_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_sub_fn" ]
+        ] ],
         [ "KernelBuiltinExecuteRegistry", "classonert__micro_1_1execute_1_1_kernel_builtin_execute_registry.html", "classonert__micro_1_1execute_1_1_kernel_builtin_execute_registry" ],
         [ "KernelCustomExecuteRegistry", "classonert__micro_1_1execute_1_1_kernel_custom_execute_registry.html", "classonert__micro_1_1execute_1_1_kernel_custom_execute_registry" ],
         [ "OMExecuteArgs", "structonert__micro_1_1execute_1_1_o_m_execute_args.html", "structonert__micro_1_1execute_1_1_o_m_execute_args" ],
@@ -3361,6 +3367,27 @@ var annotated_dup =
         [ "OMGraphStatus", "structonert__micro_1_1optimize_1_1_o_m_graph_status.html", "structonert__micro_1_1optimize_1_1_o_m_graph_status" ],
         [ "OMOptimizer", "structonert__micro_1_1optimize_1_1_o_m_optimizer.html", null ],
         [ "OptimizePassRegistry", "classonert__micro_1_1optimize_1_1_optimize_pass_registry.html", "classonert__micro_1_1optimize_1_1_optimize_pass_registry" ]
+      ] ],
+      [ "test_model", "namespaceonert__micro_1_1test__model.html", [
+        [ "NegTestDataBase", "classonert__micro_1_1test__model_1_1_neg_test_data_base.html", "classonert__micro_1_1test__model_1_1_neg_test_data_base" ],
+        [ "NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel" ],
+        [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
+        [ "NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel" ],
+        [ "NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel" ],
+        [ "TestData32IntAdd", "classonert__micro_1_1test__model_1_1_test_data32_int_add.html", "classonert__micro_1_1test__model_1_1_test_data32_int_add" ],
+        [ "TestData64IntAdd", "classonert__micro_1_1test__model_1_1_test_data64_int_add.html", "classonert__micro_1_1test__model_1_1_test_data64_int_add" ],
+        [ "TestDataAbsBase", "classonert__micro_1_1test__model_1_1_test_data_abs_base.html", "classonert__micro_1_1test__model_1_1_test_data_abs_base" ],
+        [ "TestDataAddBase", "classonert__micro_1_1test__model_1_1_test_data_add_base.html", "classonert__micro_1_1test__model_1_1_test_data_add_base" ],
+        [ "TestDataBase", "classonert__micro_1_1test__model_1_1_test_data_base.html", "classonert__micro_1_1test__model_1_1_test_data_base" ],
+        [ "TestDataConcatenationBase", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base" ],
+        [ "TestDataFloatAbs", "classonert__micro_1_1test__model_1_1_test_data_float_abs.html", "classonert__micro_1_1test__model_1_1_test_data_float_abs" ],
+        [ "TestDataFloatAdd", "classonert__micro_1_1test__model_1_1_test_data_float_add.html", "classonert__micro_1_1test__model_1_1_test_data_float_add" ],
+        [ "TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation" ],
+        [ "TestDataInputTypeMismatchConcatenation", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation" ],
+        [ "TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation" ],
+        [ "TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation" ],
+        [ "TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation" ],
+        [ "TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation" ]
       ] ],
       [ "OMConfig", "structonert__micro_1_1_o_m_config.html", "structonert__micro_1_1_o_m_config" ],
       [ "OMInterpreter", "classonert__micro_1_1_o_m_interpreter.html", "classonert__micro_1_1_o_m_interpreter" ]

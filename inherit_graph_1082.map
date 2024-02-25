@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structonert_1_1backend_1_1basic_1_1_i_memory_planner.html" title="Interface to plan memory." alt="" coords="5,71,148,111"/>
 <area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1basic_1_1_bump_planner.html" title="Class to plan memory by bump way." alt="" coords="196,5,338,46"/>
-<area shape="poly" id="edge2315_Node000000_Node000001" title=" " alt="" coords="151,63,205,44,206,49,153,68"/>
+<area shape="poly" id="edge2316_Node000000_Node000001" title=" " alt="" coords="151,63,205,44,206,49,153,68"/>
 <area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1basic_1_1_first_fit_planner.html" title="Class to plan memory by firstfit way." alt="" coords="196,71,338,111"/>
-<area shape="poly" id="edge2316_Node000000_Node000002" title=" " alt="" coords="163,88,195,88,195,94,163,94"/>
+<area shape="poly" id="edge2317_Node000000_Node000002" title=" " alt="" coords="163,88,195,88,195,94,163,94"/>
 <area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html" title="Class to plan memory by Weighted Interval Color algorithm." alt="" coords="196,136,338,177"/>
-<area shape="poly" id="edge2317_Node000000_Node000003" title=" " alt="" coords="153,114,206,133,205,138,151,119"/>
+<area shape="poly" id="edge2318_Node000000_Node000003" title=" " alt="" coords="153,114,206,133,205,138,151,119"/>
 </map>

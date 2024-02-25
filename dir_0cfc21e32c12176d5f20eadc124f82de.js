@@ -23,6 +23,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "ForwardReshapeToUnaryOpPass.h", "_forward_reshape_to_unary_op_pass_8h.html", "_forward_reshape_to_unary_op_pass_8h" ],
     [ "ForwardTransposeOpPass.h", "_forward_transpose_op_pass_8h.html", "_forward_transpose_op_pass_8h" ],
     [ "FuseActivationFunctionPass.h", "_fuse_activation_function_pass_8h.html", "_fuse_activation_function_pass_8h" ],
+    [ "FuseAddWithConvPass.h", "_fuse_add_with_conv_pass_8h.html", "_fuse_add_with_conv_pass_8h" ],
     [ "FuseAddWithFullyConnectedPass.h", "_fuse_add_with_fully_connected_pass_8h.html", "_fuse_add_with_fully_connected_pass_8h" ],
     [ "FuseAddWithTConvPass.h", "_fuse_add_with_t_conv_pass_8h.html", "_fuse_add_with_t_conv_pass_8h" ],
     [ "FuseBatchNormWithConvPass.h", "_fuse_batch_norm_with_conv_pass_8h.html", "_fuse_batch_norm_with_conv_pass_8h" ],

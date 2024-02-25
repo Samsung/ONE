@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8cc_s
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    input_tensors.emplace_back(_tensor_reg-&gt;getPortableTensor(ifm_idx));</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// parameters</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">const</span> <span class="keyword">auto</span> binary_path = node.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_bulk.html#a9c92220107023d8df3f3325ef9757ebd">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#a07d59e474bb4d8a946d0b6cc20b6d421">binary_path</a>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;binary_path = node.<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_bulk.html#a9c92220107023d8df3f3325ef9757ebd">param</a>().<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html#a07d59e474bb4d8a946d0b6cc20b6d421">binary_path</a>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::BulkLayer&gt;();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>

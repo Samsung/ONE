@@ -56,6 +56,7 @@ var hierarchy =
     [ "ActivationFunctionImpl< FusedActivationFunctionType::kRelu6 >", "struct_activation_function_impl_3_01_fused_activation_function_type_1_1k_relu6_01_4.html", null ],
     [ "nnfw::cker::ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", null ],
     [ "luci_interpreter_pal::AddFn< T >", "structluci__interpreter__pal_1_1_add_fn.html", null ],
+    [ "onert_micro::execute::pal::AddFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_add_fn.html", null ],
     [ "mir_interpreter::AddImpl< T >", "structmir__interpreter_1_1_add_impl.html", null ],
     [ "mir_interpreter::AddImpl< uint8_t >", "structmir__interpreter_1_1_add_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::AddParams", "structluci__interpreter_1_1_add_params.html", null ],
@@ -1304,7 +1305,7 @@ var hierarchy =
       [ "moco::VariadicArityNode< Base >", "classmoco_1_1_variadic_arity_node.html", null ]
     ] ],
     [ "flatbuffers::BaseGenerator", "classflatbuffers_1_1_base_generator.html", null ],
-    [ "onert::base_loader::BaseLoader< LoaderDomain >", "classonert_1_1base__loader_1_1_base_loader.html", null ],
+    [ "onert::loader::BaseLoader< LoaderDomain >", "classonert_1_1loader_1_1_base_loader.html", null ],
     [ "nnfw::cker::BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", null ],
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", null ],
     [ "onert::backend::trix::BatchThreadPool", "classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html", null ],
@@ -1743,6 +1744,7 @@ var hierarchy =
     [ "luci::DimMetaData", "classluci_1_1_dim_meta_data.html", null ],
     [ "Dims< N >", "struct_dims.html", null ],
     [ "luci_interpreter_pal::DivFn< T >", "structluci__interpreter__pal_1_1_div_fn.html", null ],
+    [ "onert_micro::execute::pal::DivFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_div_fn.html", null ],
     [ "mir_interpreter::DivImpl< T >", "structmir__interpreter_1_1_div_impl.html", null ],
     [ "mir_interpreter::DivImpl< uint8_t >", "structmir__interpreter_1_1_div_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::DivParams", "structluci__interpreter_1_1_div_params.html", null ],
@@ -2463,7 +2465,9 @@ var hierarchy =
     [ "onert::backend::custom::IKernelBuilder", "classonert_1_1backend_1_1custom_1_1_i_kernel_builder.html", [
       [ "onert::api::KernelBuilder", "classonert_1_1api_1_1_kernel_builder.html", null ]
     ] ],
-    [ "onert::loader::ILoader", "classonert_1_1loader_1_1_i_loader.html", null ],
+    [ "onert::loader::ILoader", "classonert_1_1loader_1_1_i_loader.html", [
+      [ "onert::trix_loader::TrixLoader", "classonert_1_1trix__loader_1_1_trix_loader.html", null ]
+    ] ],
     [ "onert::compiler::ILoweredGraph", "structonert_1_1compiler_1_1_i_lowered_graph.html", [
       [ "onert::compiler::LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", null ],
       [ "onert::compiler::train::LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", null ]
@@ -3260,6 +3264,7 @@ var hierarchy =
       [ "mpqsolver::pattern::PatternSolver", "classmpqsolver_1_1pattern_1_1_pattern_solver.html", null ]
     ] ],
     [ "luci_interpreter_pal::MulFn< T >", "structluci__interpreter__pal_1_1_mul_fn.html", null ],
+    [ "onert_micro::execute::pal::MulFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn.html", null ],
     [ "mir_interpreter::MulImpl< T >", "structmir__interpreter_1_1_mul_impl.html", null ],
     [ "mir_interpreter::MulImpl< uint8_t >", "structmir__interpreter_1_1_mul_impl_3_01uint8__t_01_4.html", null ],
     [ "luci_interpreter::MulParams", "structluci__interpreter_1_1_mul_params.html", null ],
@@ -3278,6 +3283,7 @@ var hierarchy =
     [ "luci_interpreter_pal::NdArrayDesc< N >", "structluci__interpreter__pal_1_1_nd_array_desc.html", null ],
     [ "NdArrayDesc< N >", "struct_nd_array_desc.html", null ],
     [ "nnfw::cker::NdArrayDesc< N >", "structnnfw_1_1cker_1_1_nd_array_desc.html", null ],
+    [ "onert_micro::execute::pal::NdArrayDesc< N >", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html", null ],
     [ "luci_interpreter::test_kernel::NegTestDataBase", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_base.html", [
       [ "luci_interpreter::test_kernel::NegTestDataIfKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_if_kernel.html", null ],
       [ "luci_interpreter::test_kernel::NegTestDataInput1WrongTypeDiv", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input1_wrong_type_div.html", null ],
@@ -3394,6 +3400,15 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataWrongBeginTypeSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_begin_type_slice.html", null ],
       [ "luci_interpreter::test_kernel::TestDataWrongInputShapeSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_input_shape_slice.html", null ],
       [ "luci_interpreter::test_kernel::TestDataWrongSizeTypeSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_size_type_slice.html", null ]
+    ] ],
+    [ "onert_micro::test_model::NegTestDataBase", "classonert__micro_1_1test__model_1_1_neg_test_data_base.html", [
+      [ "onert_micro::test_model::NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", null ],
+      [ "onert_micro::test_model::TestDataInputTypeMismatchConcatenation", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation.html", null ],
+      [ "onert_micro::test_model::TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", null ],
+      [ "onert_micro::test_model::TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", null ]
     ] ],
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
@@ -4333,6 +4348,7 @@ var hierarchy =
       [ "luci::ForwardReshapeToUnaryOpPass", "structluci_1_1_forward_reshape_to_unary_op_pass.html", null ],
       [ "luci::ForwardTransposeOpPass", "structluci_1_1_forward_transpose_op_pass.html", null ],
       [ "luci::FuseActivationFunctionPass", "structluci_1_1_fuse_activation_function_pass.html", null ],
+      [ "luci::FuseAddWithConvPass", "structluci_1_1_fuse_add_with_conv_pass.html", null ],
       [ "luci::FuseAddWithFullyConnectedPass", "structluci_1_1_fuse_add_with_fully_connected_pass.html", null ],
       [ "luci::FuseAddWithTConvPass", "structluci_1_1_fuse_add_with_t_conv_pass.html", null ],
       [ "luci::FuseBatchNormWithConvPass", "structluci_1_1_fuse_batch_norm_with_conv_pass.html", null ],
@@ -4764,6 +4780,7 @@ var hierarchy =
     [ "ndarray::Strides", "structndarray_1_1_strides.html", null ],
     [ "flatbuffers::FlatBufferBuilder::StringOffsetCompare", "structflatbuffers_1_1_flat_buffer_builder_1_1_string_offset_compare.html", null ],
     [ "luci_interpreter_pal::SubFn< T >", "structluci__interpreter__pal_1_1_sub_fn.html", null ],
+    [ "onert_micro::execute::pal::SubFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_sub_fn.html", null ],
     [ "exo::circle_detail::SubGraphContext", "structexo_1_1circle__detail_1_1_sub_graph_context.html", [
       [ "exo::circle_detail::SerializedModelData", "structexo_1_1circle__detail_1_1_serialized_model_data.html", null ]
     ] ],
@@ -5264,6 +5281,21 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataWhileKernel< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_while_kernel.html", null ],
       [ "luci_interpreter::test_kernel::TestDataZerosLikeBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_zeros_like_base.html", null ]
     ] ],
+    [ "onert_micro::test_model::TestDataBase< T, U >", "classonert__micro_1_1test__model_1_1_test_data_base.html", [
+      [ "onert_micro::test_model::TestDataAbsBase< T >", "classonert__micro_1_1test__model_1_1_test_data_abs_base.html", [
+        [ "onert_micro::test_model::TestDataFloatAbs", "classonert__micro_1_1test__model_1_1_test_data_float_abs.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataAddBase< T >", "classonert__micro_1_1test__model_1_1_test_data_add_base.html", [
+        [ "onert_micro::test_model::TestData32IntAdd", "classonert__micro_1_1test__model_1_1_test_data32_int_add.html", null ],
+        [ "onert_micro::test_model::TestData64IntAdd", "classonert__micro_1_1test__model_1_1_test_data64_int_add.html", null ],
+        [ "onert_micro::test_model::TestDataFloatAdd", "classonert__micro_1_1test__model_1_1_test_data_float_add.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataConcatenationBase< T >", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", [
+        [ "onert_micro::test_model::TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", null ],
+        [ "onert_micro::test_model::TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", null ],
+        [ "onert_micro::test_model::TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", null ]
+      ] ]
+    ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
@@ -5508,7 +5540,6 @@ var hierarchy =
     [ "luci_interpreter_pal::TransposeParams", "structluci__interpreter__pal_1_1_transpose_params.html", null ],
     [ "nnfw::cker::TransposeParams", "structnnfw_1_1cker_1_1_transpose_params.html", null ],
     [ "npud::backend::trix::TrixDevice", "structnpud_1_1backend_1_1trix_1_1_trix_device.html", null ],
-    [ "onert::trix_loader::TrixLoader", "classonert_1_1trix__loader_1_1_trix_loader.html", null ],
     [ "onert::trix_loader::TrixMetaReader", "classonert_1_1trix__loader_1_1_trix_meta_reader.html", null ],
     [ "npud::backend::trix::TrixModelInfo", "structnpud_1_1backend_1_1trix_1_1_trix_model_info.html", null ],
     [ "npud::backend::trix::TrixRequestInfo", "structnpud_1_1backend_1_1trix_1_1_trix_request_info.html", null ],

@@ -1,0 +1,5 @@
+<map id="luci::FuseAddWithConvPass" name="luci::FuseAddWithConvPass">
+<area shape="rect" id="Node000001" title="Class to fuse CircleAdd into CircleConv2D." alt="" coords="5,79,191,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="57,5,139,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,46,101,79,95,79,95,46"/>
+</map>

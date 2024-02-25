@@ -124,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a890d6f702aa5db030eef9dff3323b518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad437dc1b181499a6f40e40a4a38e09a" id="r_aad437dc1b181499a6f40e40a4a38e09a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html#aad437dc1b181499a6f40e40a4a38e09a">accept</a> (<a class="el" href="structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html">TrainableOperationVisitor</a> &amp;v) const override</td></tr>
 <tr class="separator:aad437dc1b181499a6f40e40a4a38e09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90c8fc87f22c19586f76bf7efb29a732" id="r_a90c8fc87f22c19586f76bf7efb29a732"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html#a90c8fc87f22c19586f76bf7efb29a732">hasTrainableParameter</a> () const override</td></tr>
+<tr class="separator:a90c8fc87f22c19586f76bf7efb29a732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html">onert::ir::operation::DepthwiseConv2D</a></td></tr>
 <tr class="memitem:a30e158e1014e6ab0c5edc0099c8f91c4 inherit pub_methods_classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d" id="r_a30e158e1014e6ab0c5edc0099c8f91c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#a30e158e1014e6ab0c5edc0099c8f91c4">DepthwiseConv2D</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;inputs, const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;outputs, const <a class="el" href="structonert_1_1ir_1_1operation_1_1_depthwise_conv2_d_1_1_param.html">Param</a> &amp;<a class="el" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#ad1753def392d19858092f98e64ec2244">param</a>)</td></tr>
 <tr class="separator:a30e158e1014e6ab0c5edc0099c8f91c4 inherit pub_methods_classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,6 +301,36 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
 <div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> std::make_unique&lt;DepthwiseConv2D&gt;(*<span class="keyword">this</span>);</div>
 <div class="line"><span class="lineno">   34</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a90c8fc87f22c19586f76bf7efb29a732" name="a90c8fc87f22c19586f76bf7efb29a732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90c8fc87f22c19586f76bf7efb29a732">&#9670;&#160;</a></span>hasTrainableParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::ir::train::operation::DepthwiseConv2D::hasTrainableParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa44e00251fe2b8eafea55b3945d1d14f">onert::ir::train::ITrainableOperation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_depthwise_conv2_d_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_depthwise_conv2_d_8h_source.html">DepthwiseConv2D.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

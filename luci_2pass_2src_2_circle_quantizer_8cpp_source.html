@@ -530,7 +530,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_circle_quantizer_8cp
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    {</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;name = layer_param-&gt;name;</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), fakeq_supported_output_model_dtype))</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>      {</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>
@@ -648,7 +648,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_circle_quantizer_8cp
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>    <span class="comment">// Check dtype/granularity of layer params</span></div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer_param : layer_params)</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>    {</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>      <span class="keyword">auto</span> name = layer_param-&gt;name;</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;name = layer_param-&gt;name;</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#adb72f2f4f0cdcc82c08d2d535e4cf5d4">in_array</a>(<a class="code hl_function" href="namespaceluci.html#a87642206687ea46b2dc3830be9f79cfc">to_lower_case</a>(layer_param-&gt;dtype), qwmm_supported_output_model_dtype))</div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>      {</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype in &quot;</span> + name + <span class="stringliteral">&quot;. List of supported dtype: &quot;</span> +</div>

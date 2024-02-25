@@ -1,15 +1,15 @@
 <map id="runtime/onert/backend/ruy" name="runtime/onert/backend/ruy">
 <area shape="rect" id="node2" href="dir_11b2da7a51e8881111c6516397757f45.html" title="ops" alt="" coords="44,137,86,162"/>
-<area shape="poly" id="edge1" href="dir_000770_000666.html" alt="" coords="69,88,68,121,63,121,63,88"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000770_000666.html" title="2" alt="" coords="71,111,78,126"/>
+<area shape="poly" id="edge1" href="dir_000777_000672.html" alt="" coords="69,88,68,121,63,121,63,88"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000777_000672.html" title="2" alt="" coords="71,111,78,126"/>
 <area shape="rect" id="node4" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html" title="core" alt="" coords="101,210,147,236"/>
-<area shape="poly" id="edge2" href="dir_000770_000154.html" alt="" coords="76,87,101,136,120,195,115,196,96,138,71,89"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000770_000154.html" title="28" alt="" coords="118,183,132,198"/>
+<area shape="poly" id="edge2" href="dir_000777_000158.html" alt="" coords="76,87,101,136,120,195,115,196,96,138,71,89"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000777_000158.html" title="28" alt="" coords="118,183,132,198"/>
 <area shape="rect" id="node3" href="dir_0aec905722638a09b3267c4de0fa0e08.html" title="compute" alt="" coords="5,210,77,236"/>
-<area shape="poly" id="edge3" href="dir_000666_000121.html" alt="" coords="64,163,52,197,47,195,59,162"/>
-<area shape="rect" id="edge3-headlabel" href="dir_000666_000121.html" title="5" alt="" coords="55,188,62,203"/>
-<area shape="poly" id="edge4" href="dir_000666_000154.html" alt="" coords="77,161,106,197,102,200,73,164"/>
-<area shape="rect" id="edge4-headlabel" href="dir_000666_000154.html" title="8" alt="" coords="105,183,112,198"/>
+<area shape="poly" id="edge3" href="dir_000672_000124.html" alt="" coords="64,163,52,197,47,195,59,162"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000672_000124.html" title="5" alt="" coords="55,188,62,203"/>
+<area shape="poly" id="edge4" href="dir_000672_000158.html" alt="" coords="77,161,106,197,102,200,73,164"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000672_000158.html" title="8" alt="" coords="105,183,112,198"/>
 <area shape="rect" id="clust2" href="dir_e63553609781945599d2dd0f5e71ee7e.html" alt="" coords="33,52,97,173"/>
 <area shape="rect" id="clust1" href="dir_e3c1c6f396287f59b9861978effe28d3.html" title="backend" alt="" coords="22,16,108,184"/>
 </map>

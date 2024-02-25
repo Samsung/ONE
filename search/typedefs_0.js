@@ -2,7 +2,7 @@ var searchData=
 [
   ['activation_0',['activation',['../namespaceluci__interpreter.html#a8d7c785096a52951aadcd97f6d83bbb8',1,'luci_interpreter::Activation'],['../namespaceluci__interpreter_1_1kernels.html#a7e6d0f8aa60d2f54876de5b83cb2238c',1,'luci_interpreter::kernels::Activation']]],
   ['activationbuilder_1',['activationbuilder',['../namespaceonert_1_1backend_1_1acl__cl.html#aa0673ca06bf4d182fa3fca6535d2edcd',1,'onert::backend::acl_cl::ActivationBuilder'],['../namespaceonert_1_1backend_1_1acl__neon.html#a83fd8486280d570d411be80445e45c91',1,'onert::backend::acl_neon::ActivationBuilder']]],
-  ['activationfunctiontype_2',['ActivationFunctionType',['../classonert_1_1base__loader_1_1_base_loader.html#af5b6daee61affa000b74a3851593a569',1,'onert::base_loader::BaseLoader']]],
+  ['activationfunctiontype_2',['ActivationFunctionType',['../classonert_1_1loader_1_1_base_loader.html#ad105ca158ef35b2446c5b5c800b94eed',1,'onert::loader::BaseLoader']]],
   ['af_3',['AF',['../_d_o_m_to_text_8cpp.html#a13acb38466d6e40304b809971fa64955',1,'DOMToText.cpp']]],
   ['ahardwarebuffer_4',['AHardwareBuffer',['../group___neural_networks.html#ga837cf80de697c99501d88bfe2326cfd4',1,'NeuralNetworks.h']]],
   ['algorithmparameters_5',['algorithmparameters',['../circle-quantizer_2src_2_circle_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520',1,'AlgorithmParameters:&#160;CircleQuantizer.cpp'],['../_circle2_circle_8cpp.html#a62329304769fa3827d13213b1c6875bd',1,'AlgorithmParameters:&#160;Circle2Circle.cpp'],['../_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520',1,'AlgorithmParameters:&#160;Quantizer.cpp']]],

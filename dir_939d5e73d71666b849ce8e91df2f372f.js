@@ -29,6 +29,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "ForwardReshapeToUnaryOpPass.cpp", "_forward_reshape_to_unary_op_pass_8cpp.html", null ],
     [ "ForwardTransposeOpPass.cpp", "_forward_transpose_op_pass_8cpp.html", "_forward_transpose_op_pass_8cpp" ],
     [ "FuseActivationFunctionPass.cpp", "_fuse_activation_function_pass_8cpp.html", "_fuse_activation_function_pass_8cpp" ],
+    [ "FuseAddWithConvPass.cpp", "_fuse_add_with_conv_pass_8cpp.html", null ],
     [ "FuseAddWithFullyConnectedPass.cpp", "_fuse_add_with_fully_connected_pass_8cpp.html", null ],
     [ "FuseAddWithTConvPass.cpp", "_fuse_add_with_t_conv_pass_8cpp.html", null ],
     [ "FuseBatchNormWithConvPass.cpp", "_fuse_batch_norm_with_conv_pass_8cpp.html", null ],

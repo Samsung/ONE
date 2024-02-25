@@ -90,8 +90,7 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1trix__loader.html','
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">onert::trix_loader Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -103,48 +102,7 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1trix__loader_1_1_trix_meta_reader.html">TrixMetaReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tvn metadata reader.  <a href="classonert_1_1trix__loader_1_1_trix_meta_reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a5ee573709b72edfadaced92d654e16ae" id="r_a5ee573709b72edfadaced92d654e16ae"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_model.html">ir::Model</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1trix__loader.html#a5ee573709b72edfadaced92d654e16ae">loadModel</a> (const std::string &amp;filename)</td></tr>
-<tr class="separator:a5ee573709b72edfadaced92d654e16ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a5ee573709b72edfadaced92d654e16ae" name="a5ee573709b72edfadaced92d654e16ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ee573709b72edfadaced92d654e16ae">&#9670;&#160;</a></span>loadModel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_model.html">ir::Model</a> &gt; onert::trix_loader::loadModel </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">runtime_error</td><td>when tvn path is wrong or tvn is invalid </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="trix__loader_8cc_source.html#l00262">262</a> of file <a class="el" href="trix__loader_8cc_source.html">trix_loader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  263</span>{</div>
-<div class="line"><span class="lineno">  264</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  265</span>  <a class="code hl_class" href="classonert_1_1trix__loader_1_1_trix_loader.html">TrixLoader</a> loader(model);</div>
-<div class="line"><span class="lineno">  266</span>  loader.loadFromFile(filename);</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  268</span>}</div>
-<div class="ttc" id="aclassonert_1_1trix__loader_1_1_trix_loader_html"><div class="ttname"><a href="classonert_1_1trix__loader_1_1_trix_loader.html">onert::trix_loader::TrixLoader</a></div><div class="ttdef"><b>Definition</b> <a href="trix__loader_8cc_source.html#l00078">trix_loader.cc:79</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="trix__loader_8cc_source.html#l00253">onert::trix_loader::TrixLoader::loadFromFile()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

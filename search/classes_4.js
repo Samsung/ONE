@@ -108,7 +108,7 @@ var searchData=
   ['div_105',['div',['../classcoco_1_1_div.html',1,'coco::Div'],['../classluci__interpreter_1_1kernels_1_1_div.html',1,'luci_interpreter::kernels::Div']]],
   ['divchef_106',['DivChef',['../class_div_chef.html',1,'']]],
   ['divcheffactory_107',['DivChefFactory',['../struct_div_chef_factory.html',1,'']]],
-  ['divfn_108',['DivFn',['../structluci__interpreter__pal_1_1_div_fn.html',1,'luci_interpreter_pal']]],
+  ['divfn_108',['divfn',['../structluci__interpreter__pal_1_1_div_fn.html',1,'luci_interpreter_pal::DivFn&lt; T &gt;'],['../structonert__micro_1_1execute_1_1pal_1_1_div_fn.html',1,'onert_micro::execute::pal::DivFn&lt; T &gt;']]],
   ['divgraphbuilder_109',['DivGraphBuilder',['../classtflimport_1_1_div_graph_builder.html',1,'tflimport']]],
   ['divimpl_110',['DivImpl',['../structmir__interpreter_1_1_div_impl.html',1,'mir_interpreter']]],
   ['divimpl_3c_20uint8_5ft_20_3e_111',['DivImpl&lt; uint8_t &gt;',['../structmir__interpreter_1_1_div_impl_3_01uint8__t_01_4.html',1,'mir_interpreter']]],

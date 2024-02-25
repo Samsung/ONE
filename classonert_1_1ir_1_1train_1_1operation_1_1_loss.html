@@ -124,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a68fa122785d4ed5bac0971a789cf6cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a77b757d284d8d3fbeada636d2eb9ac" id="r_a4a77b757d284d8d3fbeada636d2eb9ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a4a77b757d284d8d3fbeada636d2eb9ac">accept</a> (<a class="el" href="structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html">TrainableOperationVisitor</a> &amp;v) const override</td></tr>
 <tr class="separator:a4a77b757d284d8d3fbeada636d2eb9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a9a5e458d67c4d33a9a358b094ed039" id="r_a1a9a5e458d67c4d33a9a358b094ed039"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a1a9a5e458d67c4d33a9a358b094ed039">hasTrainableParameter</a> () const override</td></tr>
+<tr class="separator:a1a9a5e458d67c4d33a9a358b094ed039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3375aaac3605ae42170e1d00d7cd6530" id="r_a3375aaac3605ae42170e1d00d7cd6530"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a3375aaac3605ae42170e1d00d7cd6530">name</a> () const override</td></tr>
 <tr class="separator:a3375aaac3605ae42170e1d00d7cd6530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5099504e47100523179bde37ac21d74d" id="r_a5099504e47100523179bde37ac21d74d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structonert_1_1ir_1_1train_1_1_loss_info.html">LossInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a5099504e47100523179bde37ac21d74d">param</a> () const</td></tr>
@@ -213,7 +215,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   42</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   43</span>}</div>
 <div class="ttc" id="a_operation_type_8h_html_ae75fec8376570a470a9035fab2a08152"><div class="ttname"><a href="_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152">OperationType</a></div><div class="ttdeci">OperationType</div><div class="ttdef"><b>Definition</b> <a href="_operation_type_8h_source.html#l00023">OperationType.h:23</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1operation_1_1_loss_html_a5099504e47100523179bde37ac21d74d"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a5099504e47100523179bde37ac21d74d">onert::ir::train::operation::Loss::param</a></div><div class="ttdeci">const LossInfo &amp; param() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00050">Loss.h:50</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1operation_1_1_loss_html_a5099504e47100523179bde37ac21d74d"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a5099504e47100523179bde37ac21d74d">onert::ir::train::operation::Loss::param</a></div><div class="ttdeci">const LossInfo &amp; param() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00051">Loss.h:51</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -310,6 +312,36 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a1a9a5e458d67c4d33a9a358b094ed039" name="a1a9a5e458d67c4d33a9a358b094ed039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a9a5e458d67c4d33a9a358b094ed039">&#9670;&#160;</a></span>hasTrainableParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::ir::train::operation::Loss::hasTrainableParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa44e00251fe2b8eafea55b3945d1d14f">onert::ir::train::ITrainableOperation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a3375aaac3605ae42170e1d00d7cd6530" name="a3375aaac3605ae42170e1d00d7cd6530"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3375aaac3605ae42170e1d00d7cd6530">&#9670;&#160;</a></span>name()</h2>
 
@@ -335,8 +367,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="structonert_1_1ir_1_1_i_operation.html#ae08d5a0280ec4bbc5fcada43e0b2ea93">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a>(_param.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">loss_code</a>) + <a class="code hl_function" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a>(<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_loss.html#a5c6b43dcd5578059bd0fb711857ea716">opcode</a>()); };</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a>(_param.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">loss_code</a>) + <a class="code hl_function" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a>(<a class="code hl_function" href="classonert_1_1ir_1_1operation_1_1_loss.html#a5c6b43dcd5578059bd0fb711857ea716">opcode</a>()); };</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_loss_html_a5c6b43dcd5578059bd0fb711857ea716"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_loss.html#a5c6b43dcd5578059bd0fb711857ea716">onert::ir::operation::Loss::opcode</a></div><div class="ttdeci">OpCode opcode() const final</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_loss_8h_source.html#l00044">Loss.h:44</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_aebfbfb608742622c99e8b6b88a7df17b"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">onert::ir::train::toString</a></div><div class="ttdeci">std::string toString(LossCode opcode)</div><div class="ttdoc">Convert the optimizer code to the name.</div><div class="ttdef"><b>Definition</b> <a href="_loss_code_8cc_source.html#l00028">LossCode.cc:28</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a4bd1e6f14248781f51834d22b7f12f6f"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">onert::ir::train::LossInfo::loss_code</a></div><div class="ttdeci">LossCode loss_code</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00044">LossInfo.h:44</a></div></div>
@@ -368,8 +400,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00050">50</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _param; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html#l00051">51</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_loss_8h_source.html">Loss.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _param; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00311">onert::backend::train::KernelGenerator::visit()</a>.</p>
 

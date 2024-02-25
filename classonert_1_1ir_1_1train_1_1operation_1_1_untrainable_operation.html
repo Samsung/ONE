@@ -123,6 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad16cbaf5352d9836d9cbcdc4887f0daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a166a3cbfa4b916afe87e67d911ec7ff1" id="r_a166a3cbfa4b916afe87e67d911ec7ff1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#a166a3cbfa4b916afe87e67d911ec7ff1">accept</a> (<a class="el" href="structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html">TrainableOperationVisitor</a> &amp;) const override</td></tr>
 <tr class="separator:a166a3cbfa4b916afe87e67d911ec7ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeed8704ce18ea9c74c6375ff09cee730" id="r_aeed8704ce18ea9c74c6375ff09cee730"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#aeed8704ce18ea9c74c6375ff09cee730">hasTrainableParameter</a> () const override</td></tr>
+<tr class="separator:aeed8704ce18ea9c74c6375ff09cee730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1ir_1_1train_1_1_i_trainable_operation"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1ir_1_1train_1_1_i_trainable_operation')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html">onert::ir::train::ITrainableOperation</a></td></tr>
 <tr class="memitem:a4ac21261e4c299f9e14ecd73f5ea8a73 inherit pub_methods_classonert_1_1ir_1_1train_1_1_i_trainable_operation" id="r_a4ac21261e4c299f9e14ecd73f5ea8a73"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a4ac21261e4c299f9e14ecd73f5ea8a73">~ITrainableOperation</a> ()=default</td></tr>
 <tr class="separator:a4ac21261e4c299f9e14ecd73f5ea8a73 inherit pub_methods_classonert_1_1ir_1_1train_1_1_i_trainable_operation"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,6 +308,38 @@ template&lt;typename <a class="el" href="_operation_type_8h.html#ae75fec8376570a
 <div class="fragment"><div class="line"><span class="lineno">   48</span>  {</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> std::make_unique&lt;UntrainableOperation&lt;OperationType&gt;&gt;(*this);</div>
 <div class="line"><span class="lineno">   50</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aeed8704ce18ea9c74c6375ff09cee730" name="aeed8704ce18ea9c74c6375ff09cee730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeed8704ce18ea9c74c6375ff09cee730">&#9670;&#160;</a></span>hasTrainableParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename <a class="el" href="_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152">OperationType</a> , typename  = std::enable_if_t&lt;std::is_base_of&lt;Operation, OperationType&gt;::value&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html">onert::ir::train::operation::UntrainableOperation</a>&lt; <a class="el" href="_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152">OperationType</a>, typename &gt;::hasTrainableParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa44e00251fe2b8eafea55b3945d1d14f">onert::ir::train::ITrainableOperation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_untrainable_operation_8h_source.html#l00056">56</a> of file <a class="el" href="_untrainable_operation_8h_source.html">UntrainableOperation.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

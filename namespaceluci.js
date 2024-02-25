@@ -340,6 +340,7 @@ var namespaceluci =
     [ "ForwardReshapeToUnaryOpPass", "structluci_1_1_forward_reshape_to_unary_op_pass.html", "structluci_1_1_forward_reshape_to_unary_op_pass" ],
     [ "ForwardTransposeOpPass", "structluci_1_1_forward_transpose_op_pass.html", "structluci_1_1_forward_transpose_op_pass" ],
     [ "FuseActivationFunctionPass", "structluci_1_1_fuse_activation_function_pass.html", "structluci_1_1_fuse_activation_function_pass" ],
+    [ "FuseAddWithConvPass", "structluci_1_1_fuse_add_with_conv_pass.html", "structluci_1_1_fuse_add_with_conv_pass" ],
     [ "FuseAddWithFullyConnectedPass", "structluci_1_1_fuse_add_with_fully_connected_pass.html", "structluci_1_1_fuse_add_with_fully_connected_pass" ],
     [ "FuseAddWithTConvPass", "structluci_1_1_fuse_add_with_t_conv_pass.html", "structluci_1_1_fuse_add_with_t_conv_pass" ],
     [ "FuseBatchNormWithConvPass", "structluci_1_1_fuse_batch_norm_with_conv_pass.html", "structluci_1_1_fuse_batch_norm_with_conv_pass" ],

@@ -124,6 +124,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a35e4d5e0b1de3b0cb5bdcbadcd0c39ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97634a7dae63a7de1668314ed31d8779" id="r_a97634a7dae63a7de1668314ed31d8779"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_pad.html#a97634a7dae63a7de1668314ed31d8779">accept</a> (<a class="el" href="structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html">TrainableOperationVisitor</a> &amp;v) const override</td></tr>
 <tr class="separator:a97634a7dae63a7de1668314ed31d8779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04b42e972fbadc124417f15fad3dbb88" id="r_a04b42e972fbadc124417f15fad3dbb88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1operation_1_1_pad.html#a04b42e972fbadc124417f15fad3dbb88">hasTrainableParameter</a> () const override</td></tr>
+<tr class="separator:a04b42e972fbadc124417f15fad3dbb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1ir_1_1operation_1_1_pad"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1ir_1_1operation_1_1_pad')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1ir_1_1operation_1_1_pad.html">onert::ir::operation::Pad</a></td></tr>
 <tr class="memitem:a4a651d6bf679d35a86a20743698c166d inherit pub_methods_classonert_1_1ir_1_1operation_1_1_pad" id="r_a4a651d6bf679d35a86a20743698c166d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_pad.html#a4a651d6bf679d35a86a20743698c166d">Pad</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;inputs, const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;outputs)</td></tr>
 <tr class="separator:a4a651d6bf679d35a86a20743698c166d inherit pub_methods_classonert_1_1ir_1_1operation_1_1_pad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,6 +297,36 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="train_2operation_2_pad_8cc_source.html#l00031">31</a> of file <a class="el" href="train_2operation_2_pad_8cc_source.html">Pad.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> std::make_unique&lt;Pad&gt;(*<span class="keyword">this</span>); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a04b42e972fbadc124417f15fad3dbb88" name="a04b42e972fbadc124417f15fad3dbb88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04b42e972fbadc124417f15fad3dbb88">&#9670;&#160;</a></span>hasTrainableParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::ir::train::operation::Pad::hasTrainableParameter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa44e00251fe2b8eafea55b3945d1d14f">onert::ir::train::ITrainableOperation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_pad_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2operation_2_pad_8h_source.html">Pad.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

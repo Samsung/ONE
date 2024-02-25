@@ -1,7 +1,0 @@
-var _neg_abs_kernel_8h =
-[
-    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_abs_kernel" ],
-    [ "luci_interpreter::test_kernel::NegTestDataInputOutputShapeMismatchAbsKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
-    [ "test_kernel_model_circle", "_neg_abs_kernel_8h.html#ad01554a388e394aa1d4a3315783c54ca", null ],
-    [ "test_kernel_model_circle", "_neg_abs_kernel_8h.html#a6e73802de31f9f4b621b28dcf81058ec", null ]
-];

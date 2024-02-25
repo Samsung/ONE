@@ -10,7 +10,7 @@ var searchData=
   ['operation_7',['Operation',['../_dot_builder_8h.html#ad8f032fcac78ce64f52a67913dec4fd8',1,'DotBuilder.h']]],
   ['operationindex_8',['OperationIndex',['../namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347',1,'onert::ir']]],
   ['operationindexmap_9',['OperationIndexMap',['../namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f',1,'onert::ir']]],
-  ['operator_10',['Operator',['../classonert_1_1base__loader_1_1_base_loader.html#ac8ac7b74cd37dbf54c21b3157dd1944e',1,'onert::base_loader::BaseLoader']]],
+  ['operator_10',['Operator',['../classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa',1,'onert::loader::BaseLoader']]],
   ['opminmaxmap_11',['OpMinMaxMap',['../namespaceonert_1_1exec.html#a9bb7d7fe29fa6d0b1f9e712de6abda82',1,'onert::exec']]],
   ['opname_12',['OpName',['../namespacelocop.html#a8eeaca07a3e5a0bb4f04f0bb6f6dd584',1,'locop']]],
   ['opsetversion_13',['OpsetVersion',['../classmoco_1_1onnx_1_1_graph_builder.html#a6b393ff2bcdae202d85fd8e4127f0d7f',1,'moco::onnx::GraphBuilder']]],

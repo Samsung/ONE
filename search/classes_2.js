@@ -11,7 +11,7 @@ var searchData=
   ['bagduplicationpass_8',['BagDuplicationPass',['../structenco_1_1_bag_duplication_pass.html',1,'enco']]],
   ['bagmanager_9',['BagManager',['../classcoco_1_1_bag_manager.html',1,'coco']]],
   ['basegenerator_10',['BaseGenerator',['../classflatbuffers_1_1_base_generator.html',1,'flatbuffers']]],
-  ['baseloader_11',['BaseLoader',['../classonert_1_1base__loader_1_1_base_loader.html',1,'onert::base_loader']]],
+  ['baseloader_11',['BaseLoader',['../classonert_1_1loader_1_1_base_loader.html',1,'onert::loader']]],
   ['batchmatmul_12',['batchmatmul',['../classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html',1,'onert::ir::operation::BatchMatMul'],['../classnnfw_1_1cker_1_1_batch_mat_mul.html',1,'nnfw::cker::BatchMatMul'],['../classluci__interpreter_1_1kernels_1_1_batch_mat_mul.html',1,'luci_interpreter::kernels::BatchMatMul']]],
   ['batchmatmulchef_13',['BatchMatMulChef',['../class_batch_mat_mul_chef.html',1,'']]],
   ['batchmatmulcheffactory_14',['BatchMatMulChefFactory',['../struct_batch_mat_mul_chef_factory.html',1,'']]],

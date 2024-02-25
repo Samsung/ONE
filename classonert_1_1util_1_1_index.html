@@ -142,6 +142,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a94c365fc1cb51e44ff8be2a384d4177d" id="r_a94c365fc1cb51e44ff8be2a384d4177d"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a> () const</td></tr>
 <tr class="memdesc:a94c365fc1cb51e44ff8be2a384d4177d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return underlying value.  <br /></td></tr>
 <tr class="separator:a94c365fc1cb51e44ff8be2a384d4177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a282cdda5e382129dbd70dc1fb9f4e93a" id="r_a282cdda5e382129dbd70dc1fb9f4e93a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1util_1_1_index.html#a282cdda5e382129dbd70dc1fb9f4e93a">operator&lt;</a> (const <a class="el" href="classonert_1_1util_1_1_index.html">Index</a> &amp;I) const</td></tr>
+<tr class="separator:a282cdda5e382129dbd70dc1fb9f4e93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -299,8 +301,8 @@ template&lt;typename T , typename DummyTag &gt; </div>
 <p>Return max index value. </p>
 <dl class="section return"><dt>Returns</dt><dd>Maximum valid index value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00146">146</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span>{ <span class="keywordflow">return</span> UNDEFINED - 1; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00148">148</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{ <span class="keywordflow">return</span> UNDEFINED - 1; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -421,6 +423,40 @@ template&lt;typename T , typename DummyTag &gt; </div>
 <div class="line"><span class="lineno">  120</span>  }</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a08d4f88549c883246043d197b4585b99"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a08d4f88549c883246043d197b4585b99">onert::util::Index::Index</a></div><div class="ttdeci">Index(void)</div><div class="ttdoc">Construct a new Index object.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00047">Index.h:47</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a282cdda5e382129dbd70dc1fb9f4e93a" name="a282cdda5e382129dbd70dc1fb9f4e93a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a282cdda5e382129dbd70dc1fb9f4e93a">&#9670;&#160;</a></span>operator&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename DummyTag &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classonert_1_1util_1_1_index.html">onert::util::Index</a>&lt; T, DummyTag &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1util_1_1_index.html">Index</a>&lt; T, DummyTag &gt; &amp;&#160;</td>
+          <td class="paramname"><em>I</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00141">141</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; I.value(); }</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_index_html_a94c365fc1cb51e44ff8be2a384d4177d"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">onert::util::Index::value</a></div><div class="ttdeci">T value() const</div><div class="ttdoc">Return underlying value.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">Index.h:139</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
+
 </div>
 </div>
 <a id="a1423fbd15cb235b9a596a93396f812a2" name="a1423fbd15cb235b9a596a93396f812a2"></a>
@@ -647,7 +683,7 @@ template&lt;typename T , typename DummyTag &gt; </div>
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">127</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html">Index.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  127</span>{ <span class="keywordflow">return</span> _index != UNDEFINED; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_lifetime_map_8cc_source.html#l00028">onert::backend::cl_common::createLifetimeMap()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01618">nnfw_session::train_export_circle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_lifetime_map_8cc_source.html#l00028">onert::backend::cl_common::createLifetimeMap()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01615">nnfw_session::train_export_circle()</a>.</p>
 
 </div>
 </div>
@@ -682,7 +718,7 @@ template&lt;typename T , typename DummyTag &gt; </div>
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">139</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html">Index.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  139</span>{ <span class="keywordflow">return</span> _index; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00409">onert::exec::MultiModelExecutors::execute()</a>, <a class="el" href="core_2src_2exec_2_execution_8cc_source.html#l00210">onert::exec::Execution::getOutputShape()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00143">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00156">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00137">onert::exec::TracingObserver::handleSubgraphBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00165">onert::exec::TracingObserver::handleSubgraphEnd()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00120">onert::exec::MultiModelExecutors::inputInfo()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00130">onert::exec::MultiModelExecutors::outputInfo()</a>, <a class="el" href="_memory_planner_8cc_source.html#l00088">onert::backend::basic::FirstFitPlanner::release()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l01618">nnfw_session::train_export_circle()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00074">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00152">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00176">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00194">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00262">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00301">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00312">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00326">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00369">onert::ir::OperationDumper::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00399">onert::ir::OperationDumper::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00409">onert::exec::MultiModelExecutors::execute()</a>, <a class="el" href="core_2src_2exec_2_execution_8cc_source.html#l00210">onert::exec::Execution::getOutputShape()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00143">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00156">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00137">onert::exec::TracingObserver::handleSubgraphBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00165">onert::exec::TracingObserver::handleSubgraphEnd()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00120">onert::exec::MultiModelExecutors::inputInfo()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00141">onert::util::Index&lt; T, DummyTag &gt;::operator&lt;()</a>, <a class="el" href="_multi_model_executors_8cc_source.html#l00130">onert::exec::MultiModelExecutors::outputInfo()</a>, <a class="el" href="_memory_planner_8cc_source.html#l00088">onert::backend::basic::FirstFitPlanner::release()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l01615">nnfw_session::train_export_circle()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00074">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00152">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00176">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00194">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00262">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00301">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00312">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00326">onert::ir::OperationDumper::visit()</a>, <a class="el" href="_operation_dumper_8cc_source.html#l00369">onert::ir::OperationDumper::visit()</a>, and <a class="el" href="_operation_dumper_8cc_source.html#l00399">onert::ir::OperationDumper::visit()</a>.</p>
 
 </div>
 </div>

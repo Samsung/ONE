@@ -2081,7 +2081,7 @@ $(document).ready(function(){initNavTree('luci_2service_2src_2_circle_shape_infe
 <div class="line"><a id="l02000" name="l02000"></a><span class="lineno"> 2000</span>  <span class="keyword">auto</span> cond_graph_inputs = cond_graph-&gt;inputs();</div>
 <div class="line"><a id="l02001" name="l02001"></a><span class="lineno"> 2001</span>  <span class="keyword">auto</span> cond_graph_input = cond_graph_inputs-&gt;at(cond_in-&gt;index());</div>
 <div class="line"><a id="l02002" name="l02002"></a><span class="lineno"> 2002</span> </div>
-<div class="line"><a id="l02003" name="l02003"></a><span class="lineno"> 2003</span>  <span class="keyword">auto</span> cond_graph_input_shape = *cond_graph_input-&gt;shape();</div>
+<div class="line"><a id="l02003" name="l02003"></a><span class="lineno"> 2003</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;cond_graph_input_shape = *cond_graph_input-&gt;shape();</div>
 <div class="line"><a id="l02004" name="l02004"></a><span class="lineno"> 2004</span>  <span class="keyword">auto</span> this_shape = own_shape(node);</div>
 <div class="line"><a id="l02005" name="l02005"></a><span class="lineno"> 2005</span> </div>
 <div class="line"><a id="l02006" name="l02006"></a><span class="lineno"> 2006</span>  <span class="keywordflow">if</span> (!(this_shape == cond_graph_input_shape))</div>

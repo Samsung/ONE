@@ -1,13 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="5,59,149,84"/>
-<area shape="rect" id="Node000001" href="$classonert_1_1exec_1_1_executor_base.html" title=" " alt="" coords="197,29,366,55"/>
-<area shape="poly" id="edge2412_Node000000_Node000001" title=" " alt="" coords="163,56,196,52,197,57,164,62"/>
-<area shape="rect" id="Node000005" href="$classonert_1_1exec_1_1train_1_1_trainable_executor.html" title=" " alt="" coords="216,79,347,120"/>
-<area shape="poly" id="edge2416_Node000000_Node000005" title=" " alt="" coords="164,81,216,88,215,93,164,86"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_dataflow_executor.html" title=" " alt="" coords="414,5,603,31"/>
-<area shape="poly" id="edge2413_Node000001_Node000002" title=" " alt="" coords="381,29,413,26,414,31,382,34"/>
-<area shape="rect" id="Node000004" href="$classonert_1_1exec_1_1_linear_executor.html" title="Class to handle execution phase. Simple run the sequence of operations that is sorted in topological ..." alt="" coords="421,55,596,80"/>
-<area shape="poly" id="edge2415_Node000001_Node000004" title=" " alt="" coords="382,51,421,55,420,60,381,56"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1_parallel_executor.html" title="Class to execute Graph in parallel." alt="" coords="651,5,834,31"/>
-<area shape="poly" id="edge2414_Node000002_Node000003" title=" " alt="" coords="619,16,651,16,651,21,619,21"/>
+<area shape="rect" id="Node000000" href="$classonert_1_1exec_1_1_i_executors.html" title="Class to gather NN package&#39;s executor set." alt="" coords="5,63,156,88"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1exec_1_1_multi_model_executors.html" title="Class to gather executors." alt="" coords="204,5,413,31"/>
+<area shape="poly" id="edge2418_Node000000_Node000001" title=" " alt="" coords="146,56,203,41,251,29,252,34,204,46,147,61"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_single_model_executors.html" title="Class to gather executor set for single model NN package." alt="" coords="228,55,389,96"/>
+<area shape="poly" id="edge2419_Node000000_Node000002" title=" " alt="" coords="172,73,228,73,228,78,172,78"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1train_1_1_trainable_executors.html" title="Class to gather executor set for trainable model NN package." alt="" coords="240,121,377,161"/>
+<area shape="poly" id="edge2420_Node000000_Node000003" title=" " alt="" coords="143,91,240,119,238,124,142,96"/>
 </map>

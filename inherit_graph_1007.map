@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structnnfw_1_1misc_1_1tensor_1_1_reader.html" title="Struct to read element of tensor." alt="" coords="5,35,131,75"/>
 <area shape="rect" id="Node000001" href="$classnnfw_1_1misc_1_1tensor_1_1_object.html" title="Class to build a tensor using specific generator." alt="" coords="208,5,334,46"/>
-<area shape="poly" id="edge2263_Node000000_Node000001" title=" " alt="" coords="145,41,207,32,208,37,146,46"/>
+<area shape="poly" id="edge2264_Node000000_Node000001" title=" " alt="" coords="145,41,207,32,208,37,146,46"/>
 <area shape="rect" id="Node000002" href="$classnnfw_1_1tflite_1_1_tensor_view.html" title="Class to define TensorView which is inherited from nnfw::misc::tensor::Reader&lt;T&gt; class." alt="" coords="179,70,363,96"/>
-<area shape="poly" id="edge2264_Node000000_Node000002" title=" " alt="" coords="146,63,179,68,178,73,146,68"/>
+<area shape="poly" id="edge2265_Node000000_Node000002" title=" " alt="" coords="146,63,179,68,178,73,146,68"/>
 </map>

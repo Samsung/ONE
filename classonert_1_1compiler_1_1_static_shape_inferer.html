@@ -383,34 +383,48 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  253</span>        {</div>
 <div class="line"><span class="lineno">  254</span>          <span class="comment">// TODO Remove dynamic_cast</span></div>
 <div class="line"><span class="lineno">  255</span>          <span class="comment">// An virtual base class cannot be downcasted by static_cast</span></div>
-<div class="line"><span class="lineno">  256</span>          <span class="keyword">const</span> <span class="keyword">auto</span> &amp;if_op = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>ir::operation::If &amp;<span class="keyword">&gt;</span>(op);</div>
-<div class="line"><span class="lineno">  257</span> </div>
-<div class="line"><span class="lineno">  258</span>          <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(if_op.param().then_subg_index);</div>
-<div class="line"><span class="lineno">  259</span>          <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(if_op.param().else_subg_index);</div>
-<div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>          appendSubgraphInputObserver(if_op.param().then_subg_index);</div>
-<div class="line"><span class="lineno">  262</span>          appendSubgraphInputObserver(if_op.param().else_subg_index);</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>          setControlFlowOutputObserver(if_op.param().then_subg_index);</div>
-<div class="line"><span class="lineno">  265</span>        }</div>
-<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (op.opcode() == ir::OpCode::While)</div>
-<div class="line"><span class="lineno">  267</span>        {</div>
-<div class="line"><span class="lineno">  268</span>          <span class="comment">// TODO Remove dynamic_cast</span></div>
-<div class="line"><span class="lineno">  269</span>          <span class="keyword">const</span> <span class="keyword">auto</span> &amp;while_op = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>ir::operation::While &amp;<span class="keyword">&gt;</span>(op);</div>
-<div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span>          <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(while_op.param().cond_subg_index);</div>
-<div class="line"><span class="lineno">  272</span>          <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(while_op.param().body_subg_index);</div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>          appendSubgraphInputObserver(while_op.param().cond_subg_index);</div>
-<div class="line"><span class="lineno">  275</span>          appendSubgraphInputObserver(while_op.param().body_subg_index);</div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>          setControlFlowOutputObserver(while_op.param().body_subg_index);</div>
-<div class="line"><span class="lineno">  278</span>        }</div>
-<div class="line"><span class="lineno">  279</span>      });</div>
-<div class="line"><span class="lineno">  280</span>  }</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>  <span class="keywordflow">return</span> inferers;</div>
-<div class="line"><span class="lineno">  283</span>}</div>
+<div class="line"><span class="lineno">  256</span>          <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  257</span>          {</div>
+<div class="line"><span class="lineno">  258</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;if_op = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>ir::operation::If &amp;<span class="keyword">&gt;</span>(op);</div>
+<div class="line"><span class="lineno">  259</span> </div>
+<div class="line"><span class="lineno">  260</span>            <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(if_op.param().then_subg_index);</div>
+<div class="line"><span class="lineno">  261</span>            <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(if_op.param().else_subg_index);</div>
+<div class="line"><span class="lineno">  262</span> </div>
+<div class="line"><span class="lineno">  263</span>            appendSubgraphInputObserver(if_op.param().then_subg_index);</div>
+<div class="line"><span class="lineno">  264</span>            appendSubgraphInputObserver(if_op.param().else_subg_index);</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>            setControlFlowOutputObserver(if_op.param().then_subg_index);</div>
+<div class="line"><span class="lineno">  267</span>          }</div>
+<div class="line"><span class="lineno">  268</span>          <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_cast &amp;)</div>
+<div class="line"><span class="lineno">  269</span>          {</div>
+<div class="line"><span class="lineno">  270</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;StaticShapeInferer: Invalid If operation&quot;</span>);</div>
+<div class="line"><span class="lineno">  271</span>          }</div>
+<div class="line"><span class="lineno">  272</span>        }</div>
+<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (op.opcode() == ir::OpCode::While)</div>
+<div class="line"><span class="lineno">  274</span>        {</div>
+<div class="line"><span class="lineno">  275</span>          <span class="comment">// TODO Remove dynamic_cast</span></div>
+<div class="line"><span class="lineno">  276</span>          <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  277</span>          {</div>
+<div class="line"><span class="lineno">  278</span>            <span class="keyword">const</span> <span class="keyword">auto</span> &amp;while_op = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>ir::operation::While &amp;<span class="keyword">&gt;</span>(op);</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>            <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(while_op.param().cond_subg_index);</div>
+<div class="line"><span class="lineno">  281</span>            <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">appendChildInferer</a>(while_op.param().body_subg_index);</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>            appendSubgraphInputObserver(while_op.param().cond_subg_index);</div>
+<div class="line"><span class="lineno">  284</span>            appendSubgraphInputObserver(while_op.param().body_subg_index);</div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>            setControlFlowOutputObserver(while_op.param().body_subg_index);</div>
+<div class="line"><span class="lineno">  287</span>          }</div>
+<div class="line"><span class="lineno">  288</span>          <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_cast &amp;)</div>
+<div class="line"><span class="lineno">  289</span>          {</div>
+<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;StaticShapeInferer: Invalid While operation&quot;</span>);</div>
+<div class="line"><span class="lineno">  291</span>          }</div>
+<div class="line"><span class="lineno">  292</span>        }</div>
+<div class="line"><span class="lineno">  293</span>      });</div>
+<div class="line"><span class="lineno">  294</span>  }</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>  <span class="keywordflow">return</span> inferers;</div>
+<div class="line"><span class="lineno">  297</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_static_shape_inferer_html_a6fd33b799786e1595152848a18b1858d"><div class="ttname"><a href="classonert_1_1compiler_1_1_static_shape_inferer.html#a6fd33b799786e1595152848a18b1858d">onert::compiler::StaticShapeInferer::appendChildInferer</a></div><div class="ttdeci">void appendChildInferer(const ir::SubgraphIndex &amp;subg_idx, compiler::StaticShapeInferer *inferer)</div><div class="ttdef"><b>Definition</b> <a href="_static_shape_inferer_8h_source.html#l00090">StaticShapeInferer.h:90</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_afff9e77cac191f4fcc8c447e4bea053c"><div class="ttname"><a href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">onert::ir::SubgraphIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt; SubgraphIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00041">Index.h:41</a></div></div>

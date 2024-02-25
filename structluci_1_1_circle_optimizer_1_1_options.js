@@ -1,6 +1,7 @@
 var structluci_1_1_circle_optimizer_1_1_options =
 [
     [ "Algorithm", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043ae", [
+      [ "FuseAddWithConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea08e7ec3c05fdac7477471e1144f71daa", null ],
       [ "FuseAddWithFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeace3e6de9e1824ec704d3675a3e38c7ed", null ],
       [ "FuseAddWithTConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeadb00bf59560a5d2d712dfcaca963c15b", null ],
       [ "FuseBatchNormWithConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2d0eec8eb8e74374f86696e117c8a458", null ],

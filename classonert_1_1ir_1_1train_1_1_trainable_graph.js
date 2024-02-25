@@ -32,5 +32,6 @@ var classonert_1_1ir_1_1train_1_1_trainable_graph =
     [ "setLayout", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a34bc52654a1b858442e1585315d9be21", null ],
     [ "setOutputs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a66f47389596e8002afb536af93e4d48d", null ],
     [ "topolSortOperations", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#aabab9ab2695dfe2ebccfaa7d9786dce4", null ],
+    [ "truncateBackwardOrder", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#ada0dee326b0a38fd4160a4040460cfe1", null ],
     [ "verify", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#af5d1fd9cdcc982cd5046bce210a4ff85", null ]
 ];
