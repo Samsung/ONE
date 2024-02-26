@@ -71,15 +71,9 @@ $ tree out
 `onert_train` gets a `*.circle` file or a nnpackage as input. <br/>
 You could convert tf/tflite/onnx model file into circle file using [`onecc`](https://github.com/Samsung/ONE/tree/master/compiler/one-cmds). 
 
-For example, if you start with tensorflow code like [here](https://github.com/Samsung/ONE/tree/master/tools/generate_datafile/tf_dataset_converter), you could save the model to tensorflow saved format by adding below code. 
-```python 
-model.save('mnist_model')
-``` 
+<!-- This readme is for the ONE developers, so they might know the onecc usage.--> 
+If you start with tensorflow code, you could first save it as saved format and then convert it to a circle file by using `onecc`. 
 
-After that, you could convert the tensorflow model to circle using under command.
-```bash 
-$ onecc import tf --v2 --saved_model -i mnist_model -o mnist.circle
-```
 <!--TODO : Add How to inject training parameter into the circle model -->
 
 ### Run onert_train
