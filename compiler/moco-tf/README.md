@@ -4,7 +4,7 @@ _moco-tf_ translates a TensorFlow model into _loco_
 
 ## Purpose
 
-_moco-tf_ is to convert TensorFlow generated model file to in-memory _loco_ IR Graph.
+_moco-tf_ converts a TensorFlow generated model file to in-memory _loco_ IR Graph.
 
 ## How to use
 
@@ -22,7 +22,7 @@ _moco-tf_ is to convert TensorFlow generated model file to in-memory _loco_ IR G
 
 ## Dependency
 
-Please refer [requires.cmake](./requires.cmake) for dependant modules.
+Please refer to [requires.cmake](./requires.cmake) for dependant modules.
 
 ## Naming rules
 

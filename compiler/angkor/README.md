@@ -2,11 +2,11 @@
 
 ## Purpose
 
-_angkor_ is a `nncc` core library
+_angkor_ is an `nncc` core library
 
 ## How to use
 
-_angkor_ implements abstract data type(ADT) for feature, kernel, tensor.
+_angkor_ implements abstract data type (ADT) for feature, kernel, tensor.
 There are layout, shape information and enumerator and so on.
 
 To use some of these things, just insert `include`!

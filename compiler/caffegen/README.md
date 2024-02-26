@@ -5,16 +5,16 @@
 ## How caffegen works
 
 Some of commands in `caffegen` use standard input for reading data and standard output for exporting result.
-In this case, we strongly recommand you to use pipe, not copy & paste the content of file itself.
+In this case, we strongly recommend you to use pipe, not copy & paste the content of file itself.
 
 Otherwise, `caffegen` use arguments to pass some directories.
 
 ## Supported command
 
-Basically, caffgen command is used as `caffegen [COMMAND]` and there are four `COMMAND` types.
+Basically, caffegen command is used as `caffegen [COMMAND]` and there are four `COMMAND` types.
  - init : initialize parameters using prototxt.
- - encode : make a binary file(caffemodel) using initialized data
- - decode : decode a binary file(caffemodel) and reproduce the initialized data
+ - encode : make a binary file (caffemodel) using initialized data
+ - decode : decode a binary file (caffemodel) and reproduce the initialized data
  - merge : copy the trained weights from a caffemodel into a prototxt file
 
 ## How to use each command

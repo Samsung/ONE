@@ -64,7 +64,7 @@ struct GraphOutputIndexQueryService : public DialectService
 
 This proposal extends ``Dialect`` class with ``service`` method.
 
-Each dialect SHOULD return a valid pointer on ``service<Service>`` method call if it implements that service. Otherwise, it SHOULD return a null pointer otherwise.
+Each dialect SHOULD return a valid pointer on ``service<Service>`` method call if it implements that service. Otherwise, it SHOULD return a null pointer.
 
 **WARNING** It is impossible to use ``get``. ``get`` is currently reserved for singleton accessor.
 
@@ -106,7 +106,7 @@ std::vector<loco::Node *> output_nodes(loco::Graph *g)
 
 ### How to register a service
 
-Each dialect should invoke protected ``service`` method during its construction.
+Each dialect should invoke the protected ``service`` method during its construction.
 ```cxx
 AwesomeDialect::AwesomeDialect()
 {
