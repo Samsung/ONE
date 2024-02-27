@@ -19,7 +19,6 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Conv.h>
-#include <cker/operation/Reduce.h>
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
@@ -196,20 +195,8 @@ void ConvolutionLayer::backwardFloat32()
   // Calculate gradient for bias
   if (_bias)
   {
-    // TODO Use optimized kernel
     assert(_grad_bias);
-    std::vector<int32_t> axes{0, 1, 2};
-    nnfw::cker::Reduce reduce_kernel;
-    reduce_kernel.prepare(backprop_act->getShape().rank(), axes.size());
-    bool result = reduce_kernel.ReduceGeneric<float>(
-      getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_grad_bias),
-      getBuffer<float>(_grad_bias), axes, false /* keep_dims */, 0.f,
-      [](const float current, const float in) -> float { return in + current; });
-
-    if (!result)
-    {
-      throw std::runtime_error{"train ConvolutionLayer: Fail to caculate bias gradient"};
-    }
+    biasGrad(backprop_act, _grad_bias);
   }
 }
 
