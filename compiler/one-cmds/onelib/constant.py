@@ -33,6 +33,7 @@ class CONSTANT:
         'fold_sparse_to_dense',
 
         # Operator fusion
+        'fuse_add_with_conv',
         'fuse_add_with_tconv',
         'fuse_add_with_fully_connected',
         'fuse_batchnorm_with_conv',
@@ -103,6 +104,7 @@ class CONSTANT:
         ('fold_sparse_to_dense', 'fold SparseToDense op'),
         ('forward_reshape_to_unaryop', 'Forward Reshape op'),
         ('forward_transpose_op', 'Forward Transpose op'),
+        ('fuse_add_with_conv', 'fuse Add op to Convolution op'),
         ('fuse_add_with_tconv', 'fuse Add op to Transposed'),
         ('fuse_add_with_fully_connected', 'fuse Add op to FullyConnected op'),
         ('fuse_batchnorm_with_conv', 'fuse BatchNorm op to Convolution op'),
