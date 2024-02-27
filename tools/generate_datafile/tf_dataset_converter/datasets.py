@@ -9,7 +9,7 @@ dataset_root_dir = Path(__file__).parent.absolute() / 'data'
 
 class Mnist():
     def check(dataset_name):
-        supported_dataset_list = ['fashion_mnist']
+        supported_dataset_list = ['fashion_mnist', 'mnist']
         if dataset_name in supported_dataset_list:
             return
         print(f'{dataset_name} does not fit Mnist')
