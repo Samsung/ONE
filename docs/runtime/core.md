@@ -66,21 +66,21 @@ Let's say we have some functions written in a certain programming language. Then
 
 #### 5. Create Executor
 
-With generated tensors and kernels, the compiler creates executor objects. There are 3 types of executors are supported - Linear, Dataflow, and Parallel. Linear executor is the default executor and Dataflow Executor and Parallel Executor are experimental.
+With generated tensors and kernels, the compiler creates executor objects. There are 3 types of executors: Linear, Dataflow, and Parallel. Linear executor is the default executor and Dataflow Executor and Parallel Executor are experimental.
 
-For more about executors, please refer to [Executors](executors.md) document.
+For more about executors, please refer to the [Executors](executors.md) document.
 
 ### Module `exec`
 
-`exec` stands for 'execution'. As a result of the compilation, `Execution` class is created. This class manages the actual execution of the model inference. Here is a typical usage of using this class.
+`exec` stands for 'execution'. As a result of the compilation, `Execution` class is created. This class manages the actual execution of the model inference. Here is a typical usage of this class.
 
 1. Resize input size if needed
 2. Provide input and output buffers
-3. Run the inference in either synchronous/asynchronous mode
+3. Run the inference in either synchronous or asynchronous mode
 4. Check out the results which are stored in output buffers provided earlier
 
 ### Module `backend`
 
-Backends are plugins and they are loaded dynamically(via `dlopen`). So this module is a set of interface classes for backend implementation. `compiler` can compile with a variety of backends without knowing specific backend implementation.
+Backends are plugins and they are loaded dynamically (via `dlopen`). So this module is a set of interface classes for backend implementation. `compiler` can compile with a variety of backends without knowing specific backend implementation.
 
-Backend interface classes are mostly about memory management and kernel generation. For more, please refer to [Backend API](backend-api.md) document.
+Backend interface classes are mostly about memory management and kernel generation. For more, please refer to the [Backend API](backend-api.md) document.

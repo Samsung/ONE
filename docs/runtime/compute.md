@@ -10,4 +10,4 @@ The code structure looks just like ComputeLibrary's. Some of the code could be c
 
 ## cker
 
-"cker" stands for Cpu KERnel. It is a port of Tensorflow lite's operation kernels and possibly there are some own code. It is used by `cpu` backend.
+"cker" stands for Cpu KERnel. It is a port of Tensorflow lite's operation kernels with some additions. It is used by the `cpu` backend.
