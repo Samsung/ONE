@@ -18,6 +18,19 @@ sudo apt install -y libhdf5-dev libboost-program-options-dev
 
 ## Usage
 
-### Simple train
+You could train your model using the command like below.  
 
-### Simple inference to trained model
+```bash
+onert_train \
+--path [circle file or nnpackage] \
+--load_input:raw [training input data] \
+--load_expected:raw [training output data] \
+--batch_size 32 \ 
+--epoch 5 \
+--optimizer 1 \             # sgd
+--learning_rate 0.01 \   
+--loss 2 \                  # cateogrical crossentropy
+--loss_reduction_type 1     # sum over batch size
+```
+
+`onert_train --help` would help you to set each parameter.
