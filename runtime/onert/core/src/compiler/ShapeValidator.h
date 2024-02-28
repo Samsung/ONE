@@ -53,7 +53,10 @@ public:
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::BCQFullyConnected &node) override;
   void visit(const ir::operation::BCQGather &node) override;
+  void visit(const ir::operation::Conv2D &node) override;
   void visit(const ir::operation::Comparison &node) override;
+  void visit(const ir::operation::DepthwiseConv2D &node) override;
+  void visit(const ir::operation::FullyConnected &node) override;
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;
   void visit(const ir::operation::Permute &node) override;

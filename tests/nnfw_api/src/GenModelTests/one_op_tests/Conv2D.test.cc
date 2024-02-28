@@ -25,7 +25,7 @@ TEST_F(GenModelTest, OneOp_Conv2D)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 1, 1);
@@ -49,7 +49,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_Stride)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 2, 2,
                          circle::ActivationFunctionType_NONE, 1, 1);
@@ -73,7 +73,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_Dilation)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 2, 2);
@@ -98,7 +98,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_I8)
   int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8}, 0.5, 0);
   int weight =
     cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf}, 0.5, 0);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8}, 1.0, 0);
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
@@ -123,7 +123,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_I8_PerChannel)
   std::vector<int64_t> weight_zeropoints = {0, 0, 0};
   int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
                               weight_scales, weight_zeropoints);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8}, 1.0, 0);
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
@@ -149,7 +149,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_U8_PerChannel)
   // bias
   std::vector<int32_t> bias_data{4, -8, -4};
   uint32_t bias_buf = cgen.addBuffer(bias_data);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1., 0);
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, bias_buf}, 1., 0);
 
   // in and out
   int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_UINT8}, 2., 1);
@@ -178,7 +178,7 @@ TEST_F(GenModelTest, OneOp_Conv2D_I8_Hybrid_PerChannel)
   std::vector<int64_t> weight_zeropoints = {0, 0, 0};
   int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
                               weight_scales, weight_zeropoints);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
@@ -200,7 +200,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_Type)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT16});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 1, 1);
@@ -221,7 +221,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_Stride)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 0, 0,
                          circle::ActivationFunctionType_NONE, 1, 1);
@@ -242,7 +242,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_Dilation)
   uint32_t bias_buf = cgen.addBuffer(bias_data);
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 0, 0);
@@ -264,7 +264,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_NonZero_ZeroPoint)
   int in = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8}, 0.5, 0);
   int weight =
     cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf}, 0.5, 17);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT8}, 1.0, 0);
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
@@ -289,7 +289,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_NonZero_ZeroPoints)
   std::vector<int64_t> weight_zeropoints = {0, 0, 10};
   int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
                               weight_scales, weight_zeropoints);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, bias_buf}, 1.0, 0);
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32}, 1.0, 0);
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
@@ -315,7 +315,7 @@ TEST_F(GenModelTest, neg_OneOp_Conv2D_I8_Hybrid_PerTensor)
   std::vector<int64_t> weight_zeropoints = {0};
   int weight = cgen.addTensor({{3, 1, 1, 3}, circle::TensorType::TensorType_INT8, weight_buf},
                               weight_scales, weight_zeropoints);
-  int bias = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{3}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE);
