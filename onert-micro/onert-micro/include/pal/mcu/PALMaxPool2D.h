@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +15,27 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_STATUS_H
-#define ONERT_MICRO_STATUS_H
+#ifndef ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_H
+#define ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_H
+
+#include "PALMaxPool2DCommon.h"
 
 namespace onert_micro
 {
-
-enum OMStatus
+namespace execute
 {
-  Ok,
-  UnsupportedType,
-  UnsupportedActivation,
-  UnsupportedOp,
-  UnknownError,
-  ModelNotImport,
-  FailedCheckCondition,
-  NoQuantization,
-  UnsupportedQuantizationType,
-  UnsupportedDynamicShapeCase,
-};
+namespace pal
+{
 
+OMStatus MaxPool(const core::Pool2DParams &, const core::OMRuntimeShape &, const uint8_t *,
+                 const core::OMRuntimeShape &, uint8_t *, circle::TensorType)
+{
+  assert(false && "Not impl yet");
+  return UnsupportedType;
+}
+
+} // namespace pal
+} // namespace execute
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_STATUS_H
+#endif // ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_H
