@@ -9,7 +9,7 @@ function(_PthreadpoolSource_import)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # pthreadpool commit in xnnpack 8b283aa30a31
-  envoption(PTHREADPOOL_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/pthreadpool/archive/029c88620802e1361ccf41d1970bd5b07fd6b7bb.tar.gz)
+  envoption(PTHREADPOOL_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/pthreadpool/archive/4fe0e1e183925bf8cfa6aae24237e724a96479b8.tar.gz)
   ExternalSource_Download(PTHREADPOOL
     DIRNAME PTHREADPOOL
     URL ${PTHREADPOOL_URL})

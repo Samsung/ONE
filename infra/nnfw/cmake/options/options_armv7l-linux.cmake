@@ -12,3 +12,6 @@ option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
 option(BUILD_PYTHON_BINDING "Build python binding" ON)
+
+# Temporary disable until version up - mismatch with pthreadpool
+option(BUILD_XNNPACK "Build XNNPACK" OFF)

@@ -11,7 +11,7 @@ function(_NEON2SSESource_import)
   # NOTE TensorFlow 2.8.0 downloads NEON2SSE from the following URL
   # NOTE commit c12f8932c3be5aebaf35562d699f645686c4e2c3 will resolve build fail on debug build
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(NEON2SSE_URL ${EXTERNAL_DOWNLOAD_SERVER}/intel/ARM_NEON_2_x86_SSE/archive/1200fe90bb174a6224a525ee60148671a786a71f.tar.gz)
+  envoption(NEON2SSE_URL ${EXTERNAL_DOWNLOAD_SERVER}/intel/ARM_NEON_2_x86_SSE/archive/a15b489e1222b2087007546b4912e21293ea86ff.tar.gz)
 
   ExternalSource_Download(NEON2SSE ${NEON2SSE_URL})
 

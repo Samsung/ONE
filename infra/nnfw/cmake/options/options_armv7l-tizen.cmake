@@ -24,3 +24,6 @@ option(BUILD_NPUD "Build NPU daemon" ON)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
+
+# Temporary disable until version up - mismatch with pthreadpool
+option(BUILD_XNNPACK "Build XNNPACK" OFF)
