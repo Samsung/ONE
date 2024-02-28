@@ -24,7 +24,7 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
   uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
   int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
-  int bias = cgen.addTensor({{1, 1, 1, 2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 1, 1);
@@ -41,9 +41,11 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
     {{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
       1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}},                               // inputs
     {{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11, 4}}, // expected
-    {{403.333f}}                                                                 // loss
+    {{62469.609375f}}                                                            // loss
     ));
   _context->setBackends({"train"});
+  // To apply backward to loss, epoch should be >= 2
+  _context->setEpoch(2);
 
   SUCCEED();
 }

@@ -79,7 +79,7 @@ class GenModelTrainContext : public GenModelTestContext
 {
 public:
   GenModelTrainContext(CircleBuffers &&cbufs)
-    : GenModelTestContext(std::move(cbufs.circle)), _cpbuf{std::move(cbufs.circle_plus)}
+    : GenModelTestContext(std::move(cbufs.circle)), _cpbuf{std::move(cbufs.circle_plus)}, _epoch(0)
   {
     // DO NOTHING
   }
@@ -105,9 +105,21 @@ public:
    */
   void addTrainCase(const TrainCaseData &tc) { _train_cases.emplace_back(tc); }
 
+  int epoch() { return _epoch; }
+
+  void setEpoch(int32_t epoch)
+  {
+    if (epoch < 2)
+    {
+      throw std::runtime_error{"epoch should be equal or greater than 2"};
+    }
+    _epoch = epoch;
+  }
+
 private:
   CircleBuffer _cpbuf;
   std::vector<TrainCaseData> _train_cases;
+  int32_t _epoch;
 };
 
 /**
@@ -237,8 +249,8 @@ protected:
       // Prepare expected loss
       _so.losses.resize(num_expecteds);
 
-      const int num_epoch = 1;
-      ASSERT_EQ(num_epoch, 1); // for now, epoch is set to 1
+      const int num_epoch = _context->epoch();
+      ASSERT_GE(num_epoch, 2);
       const int num_step = num_expecteds / tri.batch_size;
       ASSERT_GE(num_step, 1);
 
