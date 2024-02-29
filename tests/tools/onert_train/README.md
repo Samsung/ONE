@@ -46,7 +46,7 @@ Before using `onert_train`, training data files and a model file have to be read
 `onert_train` expects that a preprocessed dataset is given as binary files. <br/>
 For convenience, we provide a tool([tf dataset convert](https://github.com/Samsung/ONE/tree/master/tools/generate_datafile/tf_dataset_converter)) that preprocesses tensorflow dataset and save it as binary files.
 
-Let's convert mnist datasets to input binary files. 
+You could use the tool like this. For detailed usage, please refer [here](https://github.com/Samsung/ONE/tree/master/tools/generate_datafile/tf_dataset_converter#readme).
 ```bash
 # Move to tf_dataset_convert directory 
 $ cd ONE/tools/generate_datafile/tf_dataset_converter
@@ -67,7 +67,7 @@ $ tree out
 
 ### Prepare a circle model file
 
-`onert_train` gets a `*.circle` file or a nnpackage as input. <br/>
+`onert_train` use a `*.circle` file or a nnpackage as input. <br/>
 
 <!-- This readme is for the ONE developers, so they might know the onecc usage.--> 
 You could convert tf/tflite/onnx model file into circle file using [`onecc`](https://github.com/Samsung/ONE/tree/master/compiler/one-cmds). <br/> 
@@ -76,8 +76,7 @@ If you start with tensorflow code, you could first save it as saved format and t
 <!--TODO : Add how to inject training parameter in the circle model -->
  
 ### Run onert_train
-Now you're ready to run `onert_train`.
-
+Now you're ready to run `onert_train`. <br/>
 Please pass your model file to `--modelfile` and data files to `--load_input:raw` and `--load_expected:raw`. <br/>
 Also, you could set training parameter using options like `--batch_size`, `--epoch`.. etc.
 
