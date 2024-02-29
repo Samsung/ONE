@@ -23,6 +23,9 @@ namespace
 
 bool divideConst(luci::CircleConst *node)
 {
+  if (node == nullptr)
+    return false;
+
   if (node->dtype() != loco::DataType::FLOAT32)
     return true;
 
@@ -44,6 +47,14 @@ bool divideConst(luci::CircleConst *node)
   return true;
 }
 
+void visit(luci::CircleFullyConnected *fc_node)
+{
+  auto fc_w = dynamic_cast<luci::CircleConst *>(fc_node->weights());
+  auto fc_bias = dynamic_cast<luci::CircleConst *>(fc_node->bias());
+  divideConst(fc_w);
+  divideConst(fc_bias);
+}
+
 } // namespace
 
 namespace luci
@@ -57,12 +68,34 @@ bool WeightDivider::divide()
   for (size_t i = 0; i < _module->size(); ++i)
   {
     loco::Graph *graph = _module->graph(i);
+    std::vector<luci::CircleNode *> selected_nodes;
     for (auto node : loco::active_nodes(loco::output_nodes(graph)))
     {
-      if (auto const_node = dynamic_cast<luci::CircleConst *>(node))
+      luci::CircleNode *cnode = dynamic_cast<luci::CircleNode *>(node);
+      if (cnode == nullptr)
+        continue;
+      ;
+      try
       {
-        divideConst(const_node);
-        //  return false;
+        auto node_id = luci::get_node_id(cnode);
+        for (auto selected_id : _ids)
+        {
+          if (selected_id == node_id)
+          {
+            selected_nodes.emplace_back(cnode);
+          }
+        }
+      }
+      catch (const std::runtime_error &)
+      {
+        continue;
+      }
+    }
+    for (auto node : selected_nodes)
+    {
+      if (auto fc_node = dynamic_cast<luci::CircleFullyConnected *>(node))
+      {
+        visit(fc_node);
       }
     }
   }

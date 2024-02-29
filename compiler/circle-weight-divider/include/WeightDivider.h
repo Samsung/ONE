@@ -47,7 +47,7 @@ namespace luci
 class WeightDivider
 {
 public:
-  explicit WeightDivider(luci::Module *module) : _module(module)
+  explicit WeightDivider(luci::Module *module, const std::vector<uint32_t> &ids) : _module(module), _ids(ids)
   {
 
   }
@@ -56,6 +56,7 @@ public:
 
 private:
   luci::Module *_module;
+  const std::vector<uint32_t> &_ids;
 
 };
 

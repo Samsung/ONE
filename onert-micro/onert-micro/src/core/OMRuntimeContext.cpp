@@ -50,12 +50,21 @@ uint32_t OMRuntimeContext::getGraphOutputTensorIndex(uint32_t index)
   return outputs->operator[](index);
 }
 
+// TODO: check this const
 OMStatus OMRuntimeContext::getConstDataByTensorIndex(uint8_t **data, uint16_t tensor_index)
 {
   auto *tensor = getTensorByIndex(tensor_index);
 
   if (tensor == nullptr)
     return UnknownError;
+
+  uint8_t *buffer_data = reinterpret_cast<uint8_t *>(_wof_reader.buffer(tensor_index));
+
+  if (buffer_data != nullptr)
+  {
+    *data = buffer_data;
+    return Ok;
+  }
 
   auto const *buffer = _reader.buffers()->operator[](tensor->buffer())->data();
 

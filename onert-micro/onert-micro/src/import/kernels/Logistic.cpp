@@ -71,10 +71,10 @@ OMStatus onert_micro::import::configure_kernel_CircleLogistic(const OMConfigureA
     return NoQuantization;
 
   if (output->quantization()->scale() == nullptr or output->quantization()->scale()->size() != 1)
-    return UnsupportedQuantizationType;
+    return NoQuantization;
 
   if (input->quantization()->scale() == nullptr or input->quantization()->scale()->size() != 1)
-    return UnsupportedQuantizationType;
+    return NoQuantization;
 
   return status;
 }

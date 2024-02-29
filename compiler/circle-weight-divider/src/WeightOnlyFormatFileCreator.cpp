@@ -69,17 +69,47 @@ size_t WeightOnlyFormatFileCreator::calculateFileSize()
   // tensors_size * 4 bytes for buffers offsets
   result += tensors_size * 4;
 
-  for (auto tensor : tensors)
+  for (uint32_t i = 0; i < tensors_size; ++i)
   {
+    auto tensor = tensors[i];
+
     // check is const tensor
     auto data = _model->buffers()->operator[](tensor->buffer())->data();
     if (data == nullptr)
+      continue;
+
+    // check range of selected operators for training
+    auto op_index = findOperatorIndex(i, reader);
+    if (op_index == -1)
+      continue;
+
+    if (std::find(_ids.begin(), _ids.end(), op_index) == _ids.end())
       continue;
 
     result += data->size();
   }
 
   return result;
+}
+
+int32_t WeightOnlyFormatFileCreator::findOperatorIndex(const uint32_t tensor_index, CircleReader &reader)
+{
+  auto operators = reader.operators();
+  auto tensors = reader.tensors();
+
+  for (uint32_t i = 0; i < operators.size(); ++i)
+  {
+    auto op = operators.at(i);
+    auto inputs = op->inputs();
+
+    for (auto input : *inputs)
+    {
+      if (input == tensor_index)
+        return i;
+    }
+  }
+
+  return -1;
 }
 
 /**
@@ -141,12 +171,21 @@ std::tuple<std::unique_ptr<char[]>, size_t> WeightOnlyFormatFileCreator::create(
     if (data == nullptr)
     {
       offsets[i] = 0;
+      continue;
     }
-    else
+
+    // Check is index op for teaching
+    auto op_index = findOperatorIndex(i, reader);
+    if (op_index == -1)
+      continue;
+    if (std::find(_ids.begin(), _ids.end(), op_index) == _ids.end())
     {
-      offsets[i] = cur_offset;
-      cur_offset += data->size();
+      offsets[i] = 0;
+      continue;
     }
+
+    offsets[i] = cur_offset;
+    cur_offset += data->size();
   }
 
   // Write offsets
@@ -174,7 +213,7 @@ std::tuple<std::unique_ptr<char[]>, size_t> WeightOnlyFormatFileCreator::create(
 
     std::memcpy(cur_ptr, data->data(), data->size());
   }
-#if 0
+#if 1
   // Dump wof
   std::cout << "DUMP:\n";
   // Magic NUM

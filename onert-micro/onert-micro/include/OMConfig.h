@@ -24,6 +24,8 @@ struct OMConfig
 {
   bool keep_input = false;
   bool cmsis_nn = false;
+  // For case with divided weights and circle file
+  char *wof_ptr = nullptr;
 };
 
 } // namespace onert_micro

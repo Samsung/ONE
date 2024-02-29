@@ -15,7 +15,6 @@
  */
 
 #include "OMInterpreter.h"
-
 #include <stdexcept>
 #include <cstdlib>
 #include <fstream>
@@ -53,23 +52,43 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
 /*
  * @brief EvalDriver main
  *
- *        Driver for testing luci-inerpreter
+ *        Driver for testing onert-micro
  *
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 5)
+  if (argc != 5 and argc != 6)
   {
     std::cerr
       << "Usage: " << argv[0]
-      << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
+      << " optional<<path/to/wof/file>> <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
     return EXIT_FAILURE;
   }
 
-  const char *filename = argv[1];
-  const int32_t num_inputs = atoi(argv[2]);
-  const char *input_prefix = argv[3];
-  const char *output_file = argv[4];
+  const char *filename = nullptr;
+  int32_t num_inputs = 0;
+  const char *input_prefix = nullptr;
+  const char *output_file = nullptr;
+  const char *wof_file_path = nullptr;
+
+  if (argc == 5)
+  {
+    filename = argv[1];
+    num_inputs = atoi(argv[2]);
+    input_prefix = argv[3];
+    output_file = argv[4];
+  } else if (argc == 6)
+  {
+    wof_file_path = argv[1];
+    filename = argv[2];
+    num_inputs = atoi(argv[3]);
+    input_prefix = argv[4];
+    output_file = argv[5];
+  } else
+  {
+    std::string errmsg = "Wrong driver arguments";
+    throw std::runtime_error(errmsg.c_str());
+  }
 
   std::ifstream file(filename, std::ios::binary | std::ios::in);
   if (!file.good())
@@ -77,6 +96,9 @@ int entry(int argc, char **argv)
     std::string errmsg = "Failed to open file";
     throw std::runtime_error(errmsg.c_str());
   }
+
+  // For WOF file
+  DataBuffer wof_data;
 
   file.seekg(0, std::ios::end);
   auto fileSize = file.tellg();
@@ -96,6 +118,36 @@ int entry(int argc, char **argv)
   // Create interpreter.
   onert_micro::OMInterpreter interpreter;
   onert_micro::OMConfig config;
+
+  // Read wof_data if path is provided
+  if (wof_file_path != nullptr)
+  {
+    std::ifstream wof_file(wof_file_path, std::ios::binary | std::ios::in);
+    if (!wof_file.good())
+    {
+      std::string errmsg = "Failed to open wof file";
+      throw std::runtime_error(errmsg.c_str());
+    }
+
+    wof_file.seekg(0, std::ios::end);
+    auto wof_file_size = wof_file.tellg();
+    wof_file.seekg(0, std::ios::beg);
+
+    wof_data.resize(wof_file_size);
+
+    // read wof the data
+    wof_file.read(wof_data.data(), wof_file_size);
+    if (wof_file.fail())
+    {
+      std::string errmsg = "Failed to read wof file";
+      throw std::runtime_error(errmsg.c_str());
+    }
+
+    wof_file.close();
+
+    config.wof_ptr = reinterpret_cast<char *>(wof_data.data());
+  }
+
   interpreter.importModel(model_data.data(), config);
 
   // Set input.

@@ -89,6 +89,11 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
 
     runtime_context.setModel(model_ptr, i);
 
+    // Parse and validate WOF file if it is exist
+    // WARNING: setWofFile method of RuntimeContext should follow after setModel.
+    if (config.wof_ptr != nullptr)
+      runtime_context.setWofFile(config.wof_ptr);
+
     // Third - optimize it until can
     status = optimize::OMOptimizer::optimize(runtime_storage, runtime_context, config);
     if (status != Ok)

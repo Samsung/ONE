@@ -36,7 +36,7 @@ class WeightOnlyFormatFileCreator
   size_t calculateFileSize();
 
 public:
-  explicit WeightOnlyFormatFileCreator(const std::vector<char> &model_data)
+  explicit WeightOnlyFormatFileCreator(const std::vector<char> &model_data, const std::vector<uint32_t> &ids): _ids(ids)
   {
     _model = circle::GetModel(model_data.data());
   }
@@ -44,7 +44,11 @@ public:
   std::tuple<std::unique_ptr<char[]>, size_t> create();
 
 private:
+  int32_t findOperatorIndex(const uint32_t tensor_index, CircleReader &reader);
+
+private:
   const circle::Model *_model;
+  const std::vector<uint32_t> &_ids;
 };
 
 } // namespace luci
