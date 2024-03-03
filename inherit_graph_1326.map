@@ -1,3 +1,39 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonnx__legalizer_1_1___model_transformer_helper.html" title=" " alt="" coords="5,5,223,46"/>
+<area shape="rect" id="Node000000" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="5,381,165,422"/>
+<area shape="rect" id="Node000001" href="$classonert__micro_1_1test__model_1_1_test_data_abs_base.html" title=" " alt="" coords="243,39,406,79"/>
+<area shape="poly" id="edge2649_Node000000_Node000001" title=" " alt="" coords="97,366,142,268,173,210,211,156,252,112,293,78,296,82,255,116,215,159,178,213,146,270,102,368"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_add_base.html" title=" " alt="" coords="243,169,406,210"/>
+<area shape="poly" id="edge2651_Node000000_Node000003" title=" " alt="" coords="119,369,298,208,302,212,122,373"/>
+<area shape="rect" id="Node000007" href="$classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html" title=" " alt="" coords="213,364,436,405"/>
+<area shape="poly" id="edge2655_Node000000_Node000007" title=" " alt="" coords="180,392,212,390,212,395,180,397"/>
+<area shape="rect" id="Node000011" href="$classonert__micro_1_1test__model_1_1_test_data_logistic_base.html" title=" " alt="" coords="231,447,418,487"/>
+<area shape="poly" id="edge2659_Node000000_Node000011" title=" " alt="" coords="177,424,248,443,246,449,175,429"/>
+<area shape="rect" id="Node000013" href="$classonert__micro_1_1test__model_1_1_test_data_mul_base.html" title=" " alt="" coords="244,528,405,569"/>
+<area shape="poly" id="edge2661_Node000000_Node000013" title=" " alt="" coords="123,430,165,464,214,497,271,525,268,530,211,501,162,468,120,434"/>
+<area shape="rect" id="Node000016" href="$classonert__micro_1_1test__model_1_1_test_data_sub_base.html" title=" " alt="" coords="243,659,406,699"/>
+<area shape="poly" id="edge2664_Node000000_Node000016" title=" " alt="" coords="109,434,155,503,215,579,257,621,298,656,295,660,254,625,211,582,151,506,105,437"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_float_abs.html" title=" " alt="" coords="501,5,660,46"/>
+<area shape="poly" id="edge2650_Node000001_Node000002" title=" " alt="" coords="421,44,500,33,500,39,422,49"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1test__model_1_1_test_data32_int_add.html" title=" " alt="" coords="501,71,660,111"/>
+<area shape="poly" id="edge2652_Node000003_Node000004" title=" " alt="" coords="388,160,483,122,517,109,519,114,485,127,390,165"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1test__model_1_1_test_data64_int_add.html" title=" " alt="" coords="501,136,660,177"/>
+<area shape="poly" id="edge2653_Node000003_Node000005" title=" " alt="" coords="421,174,500,164,500,169,422,180"/>
+<area shape="rect" id="Node000006" href="$classonert__micro_1_1test__model_1_1_test_data_float_add.html" title=" " alt="" coords="501,201,660,242"/>
+<area shape="poly" id="edge2654_Node000003_Node000006" title=" " alt="" coords="422,199,500,209,500,214,421,204"/>
+<area shape="rect" id="Node000008" href="$classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html" title=" " alt="" coords="484,267,676,307"/>
+<area shape="poly" id="edge2656_Node000007_Node000008" title=" " alt="" coords="389,355,483,318,517,305,519,310,485,323,391,360"/>
+<area shape="rect" id="Node000009" href="$classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html" title=" " alt="" coords="487,332,673,373"/>
+<area shape="poly" id="edge2657_Node000007_Node000009" title=" " alt="" coords="451,366,486,361,487,367,452,371"/>
+<area shape="rect" id="Node000010" href="$classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html" title=" " alt="" coords="487,397,673,438"/>
+<area shape="poly" id="edge2658_Node000007_Node000010" title=" " alt="" coords="452,398,487,403,486,408,451,404"/>
+<area shape="rect" id="Node000012" href="$classonert__micro_1_1test__model_1_1_test_data_float_logistic.html" title=" " alt="" coords="501,463,660,503"/>
+<area shape="poly" id="edge2660_Node000011_Node000012" title=" " alt="" coords="434,471,500,475,500,481,433,476"/>
+<area shape="rect" id="Node000014" href="$classonert__micro_1_1test__model_1_1_test_data_float_mul.html" title=" " alt="" coords="501,528,660,569"/>
+<area shape="poly" id="edge2662_Node000013_Node000014" title=" " alt="" coords="421,546,500,546,500,551,421,551"/>
+<area shape="rect" id="Node000015" href="$classonert__micro_1_1test__model_1_1_test_data_int_mul.html" title=" " alt="" coords="501,593,660,634"/>
+<area shape="poly" id="edge2663_Node000013_Node000015" title=" " alt="" coords="421,570,501,591,499,596,420,575"/>
+<area shape="rect" id="Node000017" href="$classonert__micro_1_1test__model_1_1_test_data_float_sub.html" title=" " alt="" coords="501,659,660,699"/>
+<area shape="poly" id="edge2665_Node000016_Node000017" title=" " alt="" coords="421,676,500,676,500,682,421,682"/>
+<area shape="rect" id="Node000018" href="$classonert__micro_1_1test__model_1_1_test_data_int_sub.html" title=" " alt="" coords="501,724,660,765"/>
+<area shape="poly" id="edge2666_Node000016_Node000018" title=" " alt="" coords="422,701,501,721,499,727,420,706"/>
 </map>

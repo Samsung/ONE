@@ -94,10 +94,10 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2backend-api.html',''
 <div class="contents">
 <div class="textblock"><p>Backend API is defined by One Runtime. It is about actual computation of operations and memory management for operands. In order to allow different kinds of computation units or libraries, Backend API is exposed to support user defined operation kernels and memory manager. It contains several C++ interface classes which are <b>subject to change</b>.</p>
 <h1>How backends are loaded</h1>
-<p>When a backend ID is given to a session, the compiler module tries to load <code>libbackend_{BACKEND_ID}.so</code>. If it is successful, the runtime looks up for C API functions in it, and make use of those.</p>
+<p>When a backend ID is given to a session, the compiler module tries to load <code>libbackend_{BACKEND_ID}.so</code>. If it is successful, the runtime looks up for C API functions in it and makes use of those.</p>
 <h1>C and C++ API</h1>
 <h2>C API</h2>
-<p>We have 2 C API functions which are used as the entrypoint and the exitpoint. Here are the definitions of those.</p>
+<p>We have two C API functions which are used as the entrypoint and the exitpoint. Here are the definitions of those.</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">onert::backend::Backend</a> *<a class="code hl_function" href="acl__cl_8cc.html#ac05b7edc89ea7fbb0fb60f42db522c49">onert_backend_create</a>();</div>
 <div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="acl__cl_8cc.html#a1d7114a0448122974a3df458ef21f2f8">onert_backend_destroy</a>(<a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">onert::backend::Backend</a> *backend);</div>
 <div class="ttc" id="aacl__cl_8cc_html_a1d7114a0448122974a3df458ef21f2f8"><div class="ttname"><a href="acl__cl_8cc.html#a1d7114a0448122974a3df458ef21f2f8">onert_backend_destroy</a></div><div class="ttdeci">void onert_backend_destroy(onert::backend::Backend *backend)</div><div class="ttdef"><b>Definition</b> <a href="acl__cl_8cc_source.html#l00023">acl_cl.cc:23</a></div></div>
@@ -108,36 +108,36 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2backend-api.html',''
 <blockquote class="doxtable">
 <p>&zwj;<b>NOTE</b> C++ API is subject to change so it may change in every release </p>
 </blockquote>
-<p>C API above is just an entrypoint and it delegates core stuff to C++ API.</p>
-<p>Here are major classes are described below. One must implement these classes(and some more classes) to create a backend.</p>
+<p>C API above is just an entrypoint and it delegates core stuff to the C++ API.</p>
+<p>Major classes are described below. One must implement these classes (and some more classes) to create a backend.</p>
 <ul>
-<li><code>Backend</code> : Responsible to create a backend context which is a set of backend components</li>
-<li><code>BackendContext</code> : Holds data for the current session and also responsible to create tensor objects and kernels<ul>
-<li><code>BackendContext::genTensors</code> : Create tensor objects</li>
-<li><code>BackendContext::genKernels</code> : Create kernels</li>
+<li><code>Backend</code> : Responsible for creating a backend context which is a set of backend components</li>
+<li><code>BackendContext</code> : Holds data for the current session and also responsible for creation of tensor objects and kernels<ul>
+<li><code>BackendContext::genTensors</code> : Creates tensor objects</li>
+<li><code>BackendContext::genKernels</code> : Creates kernels</li>
 </ul>
 </li>
-<li><code>IConfig</code> : Configurations and miscellaneous stuff (not session based, global)</li>
-<li><code>ITensorRegistry</code> : A set of tensor(<code>ITensor</code>) objects that are used by the current backend</li>
+<li><code>IConfig</code> : Configurations and miscellaneous stuff (global, not session based)</li>
+<li><code>ITensorRegistry</code> : A set of tensor (<code>ITensor</code>) objects that are used by the current backend</li>
 </ul>
 <p>Please refer to each class document for details. You may refer to Bundle Backends for actual implementation samples.</p>
 <h1>Provided Backend Implementations</h1>
 <p>We provide some backends along with the runtime. There is the special backend <code>builtin</code> which is part of runtime core, and some bundle backends which are baseline backends and samples of backend implementation.</p>
 <h1><code>builtin</code> Backend</h1>
-<p><code>builtin</code> is a special backend that is always loaded(statically linked, part of runtime core). It is implemented just like other backends, but there are some things that it does exclusively.</p>
+<p><code>builtin</code> is a special backend that is always loaded (statically linked, part of runtime core). It is implemented just like other backends, but there are some things that it does exclusively.</p>
 <ul>
-<li>Has kernels for If, While and Permute operations (Kernels from other backends are never be used)</li>
+<li>Has kernels for If, While and Permute operations (Kernels from other backends are never used)</li>
 <li>The runtime core directly creates <code>builtin</code>'s tensor objects to accept user-given input and output buffers</li>
-<li>The runtime core gives the executor context to <code>builtin</code> backend which allows control flow ops can change execution flow properly</li>
+<li>The runtime core gives the executor a context to <code>builtin</code> backend which lets control flow ops properly change the execution flow</li>
 </ul>
 <h1>Bundle Backends</h1>
-<p>Without actual implmentation of backends, we cannot run any models. So we provide 3 bundle backends which support dozens of operations.</p>
+<p>Without actual implementation of backends, we cannot run any model. So we provide 3 bundle backends which support dozens of operations.</p>
 <h2>cpu</h2>
-<p>This backend is written in C++ and all the computation is done with CPU only.</p>
+<p>This backend is written in C++ and all the computation is done exclusively on a CPU.</p>
 <h2>acl_neon</h2>
-<p><code>acl_neon</code> is a backend that is an adaptation layer of <a href="https://github.com/ARM-software/ComputeLibrary">ARM ComputeLibrary</a> NE(NEON) part. So it basically only uses CPU too, but worksonly on ARM.</p>
+<p><code>acl_neon</code> is a backend that is an adaptation layer of <a href="https://github.com/ARM-software/ComputeLibrary">ARM ComputeLibrary</a> NE (NEON) part. So it's CPU-only and restricted to ARM.</p>
 <h2>acl_cl</h2>
-<p><code>acl_cl</code> is a backend that is an adaptation layer of <a href="https://github.com/ARM-software/ComputeLibrary">ARM ComputeLibrary</a> CL(OpenCL) part. OpenCL support(<code>libOpenCL.so</code>) is also necessary in the running environment to be able to use this backend. Also, it works only on ARM. </p>
+<p><code>acl_cl</code> is a backend that is an adaptation layer of <a href="https://github.com/ARM-software/ComputeLibrary">ARM ComputeLibrary</a> CL (OpenCL) part. OpenCL support (<code>libOpenCL.so</code>) is also necessary in the running environment to be able to use this backend. Also, it works only on ARM. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

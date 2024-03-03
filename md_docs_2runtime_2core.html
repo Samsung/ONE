@@ -132,19 +132,19 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2core.html',''); init
 <p>A backend is assigned for each operation. In this phase, a kernel for each operation is generated.</p>
 <p>Let's say we have some functions written in a certain programming language. Then its compiler compiles each function into a chunk of assembly. Here 'function' is like 'operation' and 'assembly' is like 'kernel'.</p>
 <h3>5. Create Executor</h3>
-<p>With generated tensors and kernels, the compiler creates executor objects. There are 3 types of executors are supported - Linear, Dataflow, and Parallel. Linear executor is the default executor and Dataflow Executor and Parallel Executor are experimental.</p>
-<p>For more about executors, please refer to <a class="el" href="md_docs_2runtime_2executors.html">Executors</a> document.</p>
+<p>With generated tensors and kernels, the compiler creates executor objects. There are 3 types of executors: Linear, Dataflow, and Parallel. Linear executor is the default executor and Dataflow Executor and Parallel Executor are experimental.</p>
+<p>For more about executors, please refer to the <a class="el" href="md_docs_2runtime_2executors.html">Executors</a> document.</p>
 <h2>Module <code>exec</code></h2>
-<p><code>exec</code> stands for 'execution'. As a result of the compilation, <code>Execution</code> class is created. This class manages the actual execution of the model inference. Here is a typical usage of using this class.</p>
+<p><code>exec</code> stands for 'execution'. As a result of the compilation, <code>Execution</code> class is created. This class manages the actual execution of the model inference. Here is a typical usage of this class.</p>
 <ol type="1">
 <li>Resize input size if needed</li>
 <li>Provide input and output buffers</li>
-<li>Run the inference in either synchronous/asynchronous mode</li>
+<li>Run the inference in either synchronous or asynchronous mode</li>
 <li>Check out the results which are stored in output buffers provided earlier</li>
 </ol>
 <h2>Module <code>backend</code></h2>
-<p>Backends are plugins and they are loaded dynamically(via <code>dlopen</code>). So this module is a set of interface classes for backend implementation. <code>compiler</code> can compile with a variety of backends without knowing specific backend implementation.</p>
-<p>Backend interface classes are mostly about memory management and kernel generation. For more, please refer to <a class="el" href="md_docs_2runtime_2backend-api.html">Backend API</a> document. </p>
+<p>Backends are plugins and they are loaded dynamically (via <code>dlopen</code>). So this module is a set of interface classes for backend implementation. <code>compiler</code> can compile with a variety of backends without knowing specific backend implementation.</p>
+<p>Backend interface classes are mostly about memory management and kernel generation. For more, please refer to the <a class="el" href="md_docs_2runtime_2backend-api.html">Backend API</a> document. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

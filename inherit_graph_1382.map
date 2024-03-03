@@ -1,21 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structsouschef_1_1_data_chef_factory.html" title="Data Generator Factory." alt="" coords="5,274,183,300"/>
-<area shape="rect" id="Node000001" href="$structsouschef_1_1_constant_data_chef_factory.html" title=" " alt="" coords="234,5,421,46"/>
-<area shape="poly" id="edge2930_Node000000_Node000001" title=" " alt="" coords="102,259,119,215,146,161,183,105,205,80,229,57,249,44,251,49,232,61,208,83,187,109,151,164,124,218,107,261"/>
-<area shape="rect" id="Node000002" href="$structsouschef_1_1_explicit_data_chef_factory.html" title=" " alt="" coords="240,71,415,111"/>
-<area shape="poly" id="edge2931_Node000000_Node000002" title=" " alt="" coords="109,259,157,191,191,154,229,122,251,110,254,114,232,127,194,158,161,195,113,262"/>
-<area shape="rect" id="Node000003" href="$structsouschef_1_1_explicit_float16_data_chef_factory.html" title=" " alt="" coords="245,136,410,177"/>
-<area shape="poly" id="edge2932_Node000000_Node000003" title=" " alt="" coords="121,262,170,225,229,187,257,175,259,180,232,192,173,229,124,266"/>
-<area shape="rect" id="Node000004" href="$structsouschef_1_1_gaussian_float16_data_chef_factory.html" title=" " alt="" coords="238,201,417,242"/>
-<area shape="poly" id="edge2933_Node000000_Node000004" title=" " alt="" coords="157,267,251,240,253,245,158,272"/>
-<area shape="rect" id="Node000005" href="$structsouschef_1_1_gaussian_float32_data_chef_factory.html" title=" " alt="" coords="238,267,417,307"/>
-<area shape="poly" id="edge2934_Node000000_Node000005" title=" " alt="" coords="198,284,238,284,238,290,198,290"/>
-<area shape="rect" id="Node000006" href="$structsouschef_1_1_gaussian_int16_data_chef_factory.html" title=" " alt="" coords="232,332,423,373"/>
-<area shape="poly" id="edge2935_Node000000_Node000006" title=" " alt="" coords="158,302,253,329,251,334,157,307"/>
-<area shape="rect" id="Node000007" href="$structsouschef_1_1_gaussian_int32_data_chef_factory.html" title=" " alt="" coords="232,397,423,438"/>
-<area shape="poly" id="edge2936_Node000000_Node000007" title=" " alt="" coords="124,308,173,345,232,382,259,394,257,399,229,387,170,349,121,312"/>
-<area shape="rect" id="Node000008" href="$structsouschef_1_1_gaussian_int8_data_chef_factory.html" title=" " alt="" coords="235,463,420,503"/>
-<area shape="poly" id="edge2937_Node000000_Node000008" title=" " alt="" coords="113,312,161,379,194,416,232,447,254,460,251,464,229,452,191,420,157,383,109,315"/>
-<area shape="rect" id="Node000009" href="$structsouschef_1_1_gaussian_uint8_data_chef_factory.html" title=" " alt="" coords="231,528,424,569"/>
-<area shape="poly" id="edge2938_Node000000_Node000009" title=" " alt="" coords="107,313,124,356,151,410,187,465,208,491,232,513,251,525,249,530,229,517,205,494,183,469,146,413,119,359,102,315"/>
+<area shape="rect" id="Node000000" href="$structsouschef_1_1_data_chef.html" title="Data Generator." alt="" coords="5,276,140,302"/>
+<area shape="rect" id="Node000001" href="$classsouschef_1_1_constant_data_chef.html" title=" " alt="" coords="190,5,406,31"/>
+<area shape="poly" id="edge2936_Node000000_Node000001" title=" " alt="" coords="76,260,87,212,108,152,140,92,161,64,186,40,204,29,206,34,189,44,165,68,145,94,113,154,92,214,81,261"/>
+<area shape="rect" id="Node000002" href="$classsouschef_1_1_explicit_data_chef.html" title=" " alt="" coords="195,55,401,80"/>
+<area shape="poly" id="edge2937_Node000000_Node000002" title=" " alt="" coords="80,260,94,222,116,176,147,129,186,91,208,79,211,83,189,95,151,133,121,178,99,224,85,262"/>
+<area shape="rect" id="Node000003" href="$classsouschef_1_1_explicit_data_chef_3_01std_1_1string_01_4.html" title=" " alt="" coords="210,105,386,145"/>
+<area shape="poly" id="edge2938_Node000000_Node000003" title=" " alt="" coords="88,261,128,208,156,180,186,156,210,143,212,148,189,160,159,184,132,211,92,264"/>
+<area shape="rect" id="Node000004" href="$classsouschef_1_1_explicit_float16_data_chef.html" title=" " alt="" coords="216,170,380,211"/>
+<area shape="poly" id="edge2939_Node000000_Node000004" title=" " alt="" coords="105,265,144,242,187,221,219,209,221,214,189,226,146,247,108,270"/>
+<area shape="rect" id="Node000005" href="$classsouschef_1_1_gaussian_float16_data_chef.html" title=" " alt="" coords="209,235,387,276"/>
+<area shape="poly" id="edge2940_Node000000_Node000005" title=" " alt="" coords="155,274,208,266,209,271,155,279"/>
+<area shape="rect" id="Node000006" href="$classsouschef_1_1_gaussian_float32_data_chef.html" title="Generate a sequence of random values according to the gaussian(=normal) distribution." alt="" coords="209,301,387,341"/>
+<area shape="poly" id="edge2941_Node000000_Node000006" title=" " alt="" coords="155,298,209,306,208,311,155,303"/>
+<area shape="rect" id="Node000007" href="$classsouschef_1_1_gaussian_int16_data_chef.html" title=" " alt="" coords="189,365,407,391"/>
+<area shape="poly" id="edge2942_Node000000_Node000007" title=" " alt="" coords="108,308,146,330,189,350,226,362,225,367,187,355,143,335,105,313"/>
+<area shape="rect" id="Node000008" href="$classsouschef_1_1_gaussian_int32_data_chef.html" title=" " alt="" coords="189,415,407,440"/>
+<area shape="poly" id="edge2943_Node000000_Node000008" title=" " alt="" coords="94,313,134,359,160,382,189,401,213,412,211,416,186,406,157,386,130,362,90,316"/>
+<area shape="rect" id="Node000009" href="$classsouschef_1_1_gaussian_int8_data_chef.html" title=" " alt="" coords="192,464,404,490"/>
+<area shape="poly" id="edge2944_Node000000_Node000009" title=" " alt="" coords="87,315,103,347,126,384,154,420,189,451,209,461,207,466,186,455,150,424,121,387,98,349,83,317"/>
+<area shape="rect" id="Node000010" href="$classsouschef_1_1_gaussian_uint8_data_chef.html" title=" " alt="" coords="188,513,408,539"/>
+<area shape="poly" id="edge2945_Node000000_Node000010" title=" " alt="" coords="83,316,96,357,118,408,148,458,168,481,189,500,207,510,204,515,186,504,164,484,144,461,113,410,91,359,78,317"/>
 </map>

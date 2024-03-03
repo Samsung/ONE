@@ -61,8 +61,43 @@ var namespaceonert__micro_1_1test__model =
     [ "concatenation_with_wrong_axis", "namespaceonert__micro_1_1test__model_1_1concatenation__with__wrong__axis.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1concatenation__with__wrong__axis.html#a3fa9461a129424ae4f9688e2dffb992f", null ]
     ] ],
+    [ "input_1_wrong_type", "namespaceonert__micro_1_1test__model_1_1input__1__wrong__type.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1input__1__wrong__type.html#a18529b5a98137071f7787a99e0def89b", null ]
+    ] ],
+    [ "input_2_wrong_type", "namespaceonert__micro_1_1test__model_1_1input__2__wrong__type.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1input__2__wrong__type.html#a21d5dd9c43fac29979c7aa2b650bc7bb", null ]
+    ] ],
     [ "input_type_mismatch_concatenation", "namespaceonert__micro_1_1test__model_1_1input__type__mismatch__concatenation.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1input__type__mismatch__concatenation.html#adca93d50cbbae62c4dd931ec43fc411d", null ]
+    ] ],
+    [ "logistic_float", "namespaceonert__micro_1_1test__model_1_1logistic__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a142c75b5d461adcb85b4a7f47727edee", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a422eff38d2ac3504cc89a64532625a01", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a741cad1619b7f7126bb7a02d2b01d08d", null ]
+    ] ],
+    [ "mul_float_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#a03ad5792a6be5fa851def6aae9eb8b85", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#ace4a901efad0abc7bdd0a750a13eadcf", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#a78ac10afb0c7f04fa4b01340ec1c8d66", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mul__float__no__broadcasting.html#aa3920e909142dd025ca488f43b8537a3", null ]
+    ] ],
+    [ "mul_float_with_broadcasting", "namespaceonert__micro_1_1test__model_1_1mul__float__with__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1mul__float__with__broadcasting.html#a7fa55c8969efce3be9ad35560fc67696", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1mul__float__with__broadcasting.html#ac9bd1dd596e302494486f517d72a38ba", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mul__float__with__broadcasting.html#aa62ebf9d1074ba5ed7fe66203803a832", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mul__float__with__broadcasting.html#adad03d2943fc77184a61d7c0033d1bbc", null ]
+    ] ],
+    [ "mul_int_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1mul__int__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1mul__int__no__broadcasting.html#ac2cea0994cc8492ef5358718199cbb46", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1mul__int__no__broadcasting.html#a93e07750b53df33e43a8604c4df07341", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mul__int__no__broadcasting.html#ac19dd328373c72a1f915fc964102a19d", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mul__int__no__broadcasting.html#a36dd8342c5ecb3fe6c75dd43bbfe72d6", null ]
+    ] ],
+    [ "mul_int_with_broadcasting", "namespaceonert__micro_1_1test__model_1_1mul__int__with__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1mul__int__with__broadcasting.html#a216f922902fee5b596bef34d7415ec25", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1mul__int__with__broadcasting.html#af3361293f0eac363f02b2771ac312d19", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mul__int__with__broadcasting.html#a6d6d278061543eb80cabffe422ad9ef1", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mul__int__with__broadcasting.html#a5281abf9c9daece466f51ef2312bae77", null ]
     ] ],
     [ "neg_abs_input_output_shape_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__abs__input__output__shape__mismatch.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__abs__input__output__shape__mismatch.html#a6121045cf068803ef99bcb2f30331c37", null ]
@@ -76,11 +111,61 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_add_no_quant_params", "namespaceonert__micro_1_1test__model_1_1neg__add__no__quant__params.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__add__no__quant__params.html#a7618568cdf3c5ed0953efd879098b102", null ]
     ] ],
+    [ "neg_input_output_type_mismatch_sub_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sub__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sub__kernel.html#ad0477831a09225ef846b9291e7f99b56", null ]
+    ] ],
+    [ "neg_inputs_type_mismatch_sub_kernel", "namespaceonert__micro_1_1test__model_1_1neg__inputs__type__mismatch__sub__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__inputs__type__mismatch__sub__kernel.html#a9563d2129387f1cc4abe562872e6f847", null ]
+    ] ],
+    [ "neg_logistic_input_output_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logistic__input__output__type__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logistic__input__output__type__mismatch.html#a4967536dd59c5cdee16bcdd30fce7a34", null ]
+    ] ],
+    [ "neg_logistic_no_quant_params", "namespaceonert__micro_1_1test__model_1_1neg__logistic__no__quant__params.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logistic__no__quant__params.html#a9d5ed2360d042fb908cff7ef28ea5a79", null ]
+    ] ],
+    [ "neg_no_quant_params_sub_kernel", "namespaceonert__micro_1_1test__model_1_1neg__no__quant__params__sub__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__no__quant__params__sub__kernel.html#ae2cff12ba59e3cd3fc8921214839e2aa", null ]
+    ] ],
+    [ "sub_float_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1sub__float__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1sub__float__no__broadcasting.html#a7af8d352c7982eb54d5bc12b455d56fd", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1sub__float__no__broadcasting.html#aa596fb650d6a251026ed3ba28bec6fb2", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__float__no__broadcasting.html#a72ed010146dd229f317d87b4e57aa335", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__float__no__broadcasting.html#aae42d13728cbab41d13c138e01ee5f3b", null ]
+    ] ],
+    [ "sub_float_with_broadcasting", "namespaceonert__micro_1_1test__model_1_1sub__float__with__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1sub__float__with__broadcasting.html#a812e296bcd5e2826b5f49440b40ac2ef", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1sub__float__with__broadcasting.html#adb49c3fbbd7a960f4a1d92ebd16749e6", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__float__with__broadcasting.html#a088eb66c6ad628b443c066968f666267", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__float__with__broadcasting.html#a3769a723549134ac80f96906e0457142", null ]
+    ] ],
+    [ "sub_int_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1sub__int__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1sub__int__no__broadcasting.html#a9fb6d9402561882cbff46998421cbda4", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1sub__int__no__broadcasting.html#ab376cb4b74f2db974e93f80286ef8a70", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__int__no__broadcasting.html#a6bda771a0332da57295c3c615a955070", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__int__no__broadcasting.html#aecf5a2ebd9b3f9a8664ccaf3bfaae690", null ]
+    ] ],
+    [ "sub_int_with_broadcasting", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#ac68d088f74822cdab2ddcad4323f59e2", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#a19d2c5e93c236b01ff55f99508fabb31", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#a067f805352fd88f7af701541597f9585", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#ae3f696a7fa0a6e322ac10a539dea6a0a", null ]
+    ] ],
+    [ "unsupported_type", "namespaceonert__micro_1_1test__model_1_1unsupported__type.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1unsupported__type.html#abbdeb8224146c15016a54650a6f9dd49", null ]
+    ] ],
     [ "NegTestDataBase", "classonert__micro_1_1test__model_1_1_neg_test_data_base.html", "classonert__micro_1_1test__model_1_1_neg_test_data_base" ],
+    [ "NegTestDataInput1WrongTypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_mul.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_mul" ],
+    [ "NegTestDataInput2WrongTypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_input2_wrong_type_mul.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input2_wrong_type_mul" ],
     [ "NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel" ],
     [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel" ],
+    [ "NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel" ],
+    [ "NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul" ],
+    [ "NegTestDataNoQuantParamsLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel" ],
     [ "NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel" ],
+    [ "NegTestDataNoQuantParamsSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel" ],
     [ "TestData32IntAdd", "classonert__micro_1_1test__model_1_1_test_data32_int_add.html", "classonert__micro_1_1test__model_1_1_test_data32_int_add" ],
     [ "TestData64IntAdd", "classonert__micro_1_1test__model_1_1_test_data64_int_add.html", "classonert__micro_1_1test__model_1_1_test_data64_int_add" ],
     [ "TestDataAbsBase", "classonert__micro_1_1test__model_1_1_test_data_abs_base.html", "classonert__micro_1_1test__model_1_1_test_data_abs_base" ],
@@ -90,9 +175,17 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatAbs", "classonert__micro_1_1test__model_1_1_test_data_float_abs.html", "classonert__micro_1_1test__model_1_1_test_data_float_abs" ],
     [ "TestDataFloatAdd", "classonert__micro_1_1test__model_1_1_test_data_float_add.html", "classonert__micro_1_1test__model_1_1_test_data_float_add" ],
     [ "TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation" ],
+    [ "TestDataFloatLogistic", "classonert__micro_1_1test__model_1_1_test_data_float_logistic.html", "classonert__micro_1_1test__model_1_1_test_data_float_logistic" ],
+    [ "TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", "classonert__micro_1_1test__model_1_1_test_data_float_mul" ],
+    [ "TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", "classonert__micro_1_1test__model_1_1_test_data_float_sub" ],
     [ "TestDataInputTypeMismatchConcatenation", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation" ],
+    [ "TestDataIntMul", "classonert__micro_1_1test__model_1_1_test_data_int_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int_mul" ],
+    [ "TestDataIntSub", "classonert__micro_1_1test__model_1_1_test_data_int_sub.html", "classonert__micro_1_1test__model_1_1_test_data_int_sub" ],
+    [ "TestDataLogisticBase", "classonert__micro_1_1test__model_1_1_test_data_logistic_base.html", "classonert__micro_1_1test__model_1_1_test_data_logistic_base" ],
+    [ "TestDataMulBase", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", "classonert__micro_1_1test__model_1_1_test_data_mul_base" ],
     [ "TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation" ],
     [ "TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation" ],
     [ "TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation" ],
+    [ "TestDataSubBase", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", "classonert__micro_1_1test__model_1_1_test_data_sub_base" ],
     [ "TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation" ]
 ];

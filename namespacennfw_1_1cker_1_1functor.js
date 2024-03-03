@@ -10,7 +10,9 @@ var namespacennfw_1_1cker_1_1functor =
     [ "FillPhiloxRandomTask< Distribution, true >", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01true_01_4.html", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01true_01_4" ],
     [ "InflateFunctor", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor.html", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor" ],
     [ "ReduceFunctor", "structnnfw_1_1cker_1_1functor_1_1_reduce_functor.html", null ],
+    [ "ReduceOuterDimensions", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions" ],
     [ "SetZeroFunctor", "structnnfw_1_1cker_1_1functor_1_1_set_zero_functor.html", "structnnfw_1_1cker_1_1functor_1_1_set_zero_functor" ],
     [ "StrideFunctor", "structnnfw_1_1cker_1_1functor_1_1_stride_functor.html", "structnnfw_1_1cker_1_1functor_1_1_stride_functor" ],
-    [ "CPUDevice", "namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929", null ]
+    [ "CPUDevice", "namespacennfw_1_1cker_1_1functor.html#a2775020c056e7ec2305d27b4dad94929", null ],
+    [ "biasReductionHelper", "namespacennfw_1_1cker_1_1functor.html#abcd8b027035e5d5d8c51c377a4a8518e", null ]
 ];

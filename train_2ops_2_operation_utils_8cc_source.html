@@ -115,72 +115,94 @@ $(document).ready(function(){initNavTree('train_2ops_2_operation_utils_8cc_sourc
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="xnnpack_2ops_2_operation_utils_8h.html">OperationUtils.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h.html">cker/train/operation/ReLU.h</a>&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h.html">cker/train/operation/ReLU6.h</a>&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span>train</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">   31</a></span><span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *<a class="code hl_function" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">backpropActivation</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> &amp;activation,</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                          <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output,</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                          <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                          <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output_backprop)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  assert(input_backprop != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// handle NONE - just propagate incoming gradient</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">if</span> (activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> input_backprop;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  assert(output_backprop != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// handle other activation</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">switch</span> (activation)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                  getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                  getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>:</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                                   getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                   getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// TODO: Add other activation backpropagation here</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported activation type yet&quot;</span>);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> output_backprop;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="redux__functor_8h.html">cker/eigen/redux_functor.h</a>&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h.html">cker/train/operation/ReLU.h</a>&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h.html">cker/train/operation/ReLU6.h</a>&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>backend</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>train</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemir_1_1ops.html">ops</a></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">   32</a></span><span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *<a class="code hl_function" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">backpropActivation</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> &amp;activation,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                          <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                          <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                          <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output_backprop)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  assert(input_backprop != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// handle NONE - just propagate incoming gradient</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">if</span> (activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> input_backprop;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(output_backprop != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// handle other activation</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">switch</span> (activation)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a>:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                  getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                                  getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a>(getShape(output), getBuffer&lt;float&gt;(output),</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                                   getShape(input_backprop), getBuffer&lt;float&gt;(input_backprop),</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                   getShape(output_backprop), getBuffer&lt;float&gt;(output_backprop));</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// TODO: Add other activation backpropagation here</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported activation type yet&quot;</span>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordflow">return</span> output_backprop;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace ops</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f">   68</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f">biasGrad</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop, <a class="code hl_class" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *bias_grad)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  assert(bias_grad);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> input_backprop_shape = getShape(input_backprop);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">float</span> *input_backprop_buffer = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(input_backprop-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>());</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a> bias_grad_shape = getShape(bias_grad);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">float</span> *bias_grad_buffer = getBuffer&lt;float&gt;(bias_grad);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <a class="code hl_function" href="namespacennfw_1_1cker_1_1functor.html#abcd8b027035e5d5d8c51c377a4a8518e">nnfw::cker::functor::biasReductionHelper</a>(input_backprop_buffer, input_backprop_shape,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                                           bias_grad_buffer, bias_grad_shape);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
+</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>} <span class="comment">// namespace ops</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace onert</span></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00038">IPortableTensor.h:39</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_ac42a9739e80a0e11be18c0e0a61ccf85"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer</a></div><div class="ttdeci">virtual uint8_t * buffer() const =0</div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_html"><div class="ttname"><a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h.html">ReLU6.h</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_html"><div class="ttname"><a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h.html">ReLU.h</a></div></div>
 <div class="ttc" id="anamespacemir_1_1ops_html"><div class="ttname"><a href="namespacemir_1_1ops.html">mir::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_abs_op_8h_source.html#l00024">AbsOp.h:25</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1functor_html_abcd8b027035e5d5d8c51c377a4a8518e"><div class="ttname"><a href="namespacennfw_1_1cker_1_1functor.html#abcd8b027035e5d5d8c51c377a4a8518e">nnfw::cker::functor::biasReductionHelper</a></div><div class="ttdeci">void biasReductionHelper(float *input_backprop_buffer, const Shape &amp;input_backprop_shape, float *bias_grad_buffer, const Shape &amp;bias_grad_shape)</div><div class="ttdef"><b>Definition</b> <a href="redux__functor_8h_source.html#l00193">redux_functor.h:193</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a56ba869240e3cb2e543a61e176115d8f"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a56ba869240e3cb2e543a61e176115d8f">nnfw::cker::train::ReLUGrad</a></div><div class="ttdeci">void ReLUGrad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">ReLU.h:32</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_abe5949773bbbe4ca31565a0eacbd11c2"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#abe5949773bbbe4ca31565a0eacbd11c2">nnfw::cker::train::ReLU6Grad</a></div><div class="ttdeci">void ReLU6Grad(const Shape &amp;output_shape, const float *output_data, const Shape &amp;incoming_shape, const float *incoming_data, const Shape &amp;grad_shape, float *grad_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">ReLU6.h:31</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a6d9e6c6534c3e65e1aaf3adec0a379dc"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">onert::backend::train::ops::backpropActivation</a></div><div class="ttdeci">const IPortableTensor * backpropActivation(const ir::Activation &amp;activation, const IPortableTensor *output, const IPortableTensor *input_backprop, IPortableTensor *output_backprop)</div><div class="ttdoc">backpropagate acitvation</div><div class="ttdef"><b>Definition</b> <a href="train_2ops_2_operation_utils_8cc_source.html#l00031">OperationUtils.cc:31</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a21e32e6cbd040fe9e236ec567839491f"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f">onert::backend::train::ops::biasGrad</a></div><div class="ttdeci">void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)</div><div class="ttdoc">backpropagate bias</div><div class="ttdef"><b>Definition</b> <a href="train_2ops_2_operation_utils_8cc_source.html#l00068">OperationUtils.cc:68</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a6d9e6c6534c3e65e1aaf3adec0a379dc"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">onert::backend::train::ops::backpropActivation</a></div><div class="ttdeci">const IPortableTensor * backpropActivation(const ir::Activation &amp;activation, const IPortableTensor *output, const IPortableTensor *input_backprop, IPortableTensor *output_backprop)</div><div class="ttdoc">backpropagate acitvation</div><div class="ttdef"><b>Definition</b> <a href="train_2ops_2_operation_utils_8cc_source.html#l00032">OperationUtils.cc:32</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">onert::ir::Activation</a></div><div class="ttdeci">Activation</div><div class="ttdef"><b>Definition</b> <a href="_internal_type_8h_source.html#l00027">InternalType.h:28</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::Activation::RELU6</a></div><div class="ttdeci">@ RELU6</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::Activation::RELU</a></div><div class="ttdeci">@ RELU</div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
+<div class="ttc" id="aredux__functor_8h_html"><div class="ttname"><a href="redux__functor_8h.html">redux_functor.h</a></div></div>
 <div class="ttc" id="axnnpack_2ops_2_operation_utils_8h_html"><div class="ttname"><a href="xnnpack_2ops_2_operation_utils_8h.html">OperationUtils.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

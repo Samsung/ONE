@@ -3402,10 +3402,18 @@ var hierarchy =
       [ "luci_interpreter::test_kernel::TestDataWrongSizeTypeSlice", "classluci__interpreter_1_1test__kernel_1_1_test_data_wrong_size_type_slice.html", null ]
     ] ],
     [ "onert_micro::test_model::NegTestDataBase", "classonert__micro_1_1test__model_1_1_neg_test_data_base.html", [
+      [ "onert_micro::test_model::NegTestDataInput1WrongTypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_mul.html", null ],
+      [ "onert_micro::test_model::NegTestDataInput2WrongTypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_input2_wrong_type_mul.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", null ],
+      [ "onert_micro::test_model::NegTestDataNoQuantParamsLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataNoQuantParamsSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel.html", null ],
       [ "onert_micro::test_model::TestDataInputTypeMismatchConcatenation", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation.html", null ],
       [ "onert_micro::test_model::TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", null ],
       [ "onert_micro::test_model::TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", null ]
@@ -3417,8 +3425,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4591,6 +4599,7 @@ var hierarchy =
     ] ],
     [ "nnfw::cker::functor::ReduceFunctor< Device, Reducer >", "structnnfw_1_1cker_1_1functor_1_1_reduce_functor.html", null ],
     [ "mir_interpreter::ReduceMeanImpl< T >", "structmir__interpreter_1_1_reduce_mean_impl.html", null ],
+    [ "nnfw::cker::functor::ReduceOuterDimensions< Device, InputT, AccumT, OutputT, BinaryFunctor >", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", null ],
     [ "luci_interpreter::ReducerParams", "structluci__interpreter_1_1_reducer_params.html", null ],
     [ "flexbuffers::Reference", "classflexbuffers_1_1_reference.html", null ],
     [ "mir::Region< T >", "structmir_1_1_region.html", [
@@ -5294,6 +5303,17 @@ var hierarchy =
         [ "onert_micro::test_model::TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", null ],
         [ "onert_micro::test_model::TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", null ],
         [ "onert_micro::test_model::TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataLogisticBase< T >", "classonert__micro_1_1test__model_1_1_test_data_logistic_base.html", [
+        [ "onert_micro::test_model::TestDataFloatLogistic", "classonert__micro_1_1test__model_1_1_test_data_float_logistic.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataMulBase< T >", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", [
+        [ "onert_micro::test_model::TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", null ],
+        [ "onert_micro::test_model::TestDataIntMul", "classonert__micro_1_1test__model_1_1_test_data_int_mul.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSubBase< T >", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", [
+        [ "onert_micro::test_model::TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", null ],
+        [ "onert_micro::test_model::TestDataIntSub", "classonert__micro_1_1test__model_1_1_test_data_int_sub.html", null ]
       ] ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],

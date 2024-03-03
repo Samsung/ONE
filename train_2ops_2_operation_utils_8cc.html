@@ -96,6 +96,7 @@ $(document).ready(function(){initNavTree('train_2ops_2_operation_utils_8cc.html'
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="train_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="redux__functor_8h_source.html">cker/eigen/redux_functor.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html">cker/train/operation/ReLU.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html">cker/train/operation/ReLU6.h</a>&gt;</code><br />
 </div>
@@ -117,6 +118,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6d9e6c6534c3e65e1aaf3adec0a379dc" id="r_a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc">onert::backend::train::ops::backpropActivation</a> (const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> &amp;activation, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output_backprop)</td></tr>
 <tr class="memdesc:a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">backpropagate acitvation  <br /></td></tr>
 <tr class="separator:a6d9e6c6534c3e65e1aaf3adec0a379dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21e32e6cbd040fe9e236ec567839491f" id="r_a21e32e6cbd040fe9e236ec567839491f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f">onert::backend::train::ops::biasGrad</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *bias_grad)</td></tr>
+<tr class="memdesc:a21e32e6cbd040fe9e236ec567839491f"><td class="mdescLeft">&#160;</td><td class="mdescRight">backpropagate bias  <br /></td></tr>
+<tr class="separator:a21e32e6cbd040fe9e236ec567839491f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

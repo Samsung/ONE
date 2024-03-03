@@ -92,22 +92,22 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2heterogeneous-execut
   <div class="headertitle"><div class="title">Heterogeneous Execution</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A big feature of ONE Runtime is that it can perform inference for a neural network model with different backends(computation libraries). This is called "Heterogenous Execution".</p>
-<p>A neural network model consists of operations and each operation can be computed by a variety of backends. Then we can choose the faster one for that operation for computation. Let's say we have a model that has two operations in sequence.</p>
+<div class="textblock"><p>A major feature of ONE Runtime is that it can perform inference for a neural network model with different backends (computation libraries). This is called "Heterogenous Execution".</p>
+<p>A neural network model consists of operations and each operation can be computed by a variety of backends. Then we can choose the faster one for a given computation. Let's say we have a model that has two operations in sequence.</p>
 <p><img src="heterogeneous-execution-add-conv-model.png" alt="Add-Conv model" class="inline"/></p>
 <p>And say we have two backends A and B. A has a faster kernel for Add and B has a faster kernel for Conv2D. Then it might be the best choice to run Add with A and run Conv2D with B.</p>
 <p>Here is another case. Let's say we have a model that is not sequential so there are multiple operations can be run at the same time.</p>
 <p><img src="heterogeneous-execution-add-3-conv-model.png" alt="Add-3Conv model" class="inline"/></p>
-<p>Say we have 3 backends that are based on CPU, GPU and NPU(Neural Processing Unit) respectively. After executing Add, 3 Conv2D operations are ready to run. We may utilize those backends with <a href="executors.md#parallel-executor-experimental">Parallel Executor (experimental)</a>. For this case we may get performance gain regardless of kernels' speed as those are run in parallel independently.</p>
+<p>Say we have 3 backends that are based on CPU, GPU and NPU (Neural Processing Unit) respectively. After executing Add, 3 Conv2D operations are ready to run. We may utilize those backends with <a href="executors.md#parallel-executor-experimental">Parallel Executor (experimental)</a>. For this case we may get performance gain regardless of kernels' speed as those are run in parallel independently.</p>
 <h1>Graph Transformation</h1>
-<p>Unfortunately it is not that simple to get performance gain. As each backend has its own memory management module, a copy must be done between backend boundaries. Plus, it may require layout changes so "Permute" operations are added from <code>PermutationInsertionPass</code>. This process is done from <a href="core.md#1-lowering">Lowering</a> phase of compilation.</p>
+<p>Unfortunately, it is not that simple to get a performance gain. As each backend has its own memory management module, a copy must be done between backend boundaries. Plus, it may require layout changes so "Permute" operations are added from <code>PermutationInsertionPass</code>. This process is done from the <a href="core.md#1-lowering">Lowering</a> phase of compilation.</p>
 <p>Here is an example of that. Let's say we have assigned different backends for Add and Conv2D. So a Permute operation is inserted between them.</p>
 <p><img src="heterogeneous-execution-add-conv-model-lowering.png" alt="Add-Conv model" class="inline"/></p>
 <p>This means that choosing a backend for an operation should be careful. We must take Permute(copy) overhead into account. That cost could dominate actual computation's so choosing the fastest one is not always the best choice.</p>
 <p>Sometime later, we are going to introduce a concept of compatible backends and they can share their tensors freely. So for those cases, Permute operations are not inserted.</p>
 <h1>Automatic Scheduling</h1>
 <p>Now we know that it could be useful to have a lot of backends, but one might wonder how we can schedule backends effectively. When a model is large, it is not trivial to do it manually by a user.</p>
-<p>There is a <a href="/runtime/onert/core/src/compiler/HEScheduler.h">profiling-based automatic scheduler</a>(experimental). It first runs every operation in sequence with every backend it has. And it records the duration of the execution for each. Then that data can be used to schedule. The scheduler assigns backends according to a certain algorithm with the given data. And the user can execute it with Parallel Scheduler.</p>
+<p>There is a <a href="/runtime/onert/core/src/compiler/HEScheduler.h">profiling-based automatic scheduler</a> (experimental). It first runs every operation in sequence with every backend it has. And it records the duration of the execution for each. Then that data can be used to schedule. The scheduler assigns backends according to a certain algorithm with the given data. And the user can execute it with Parallel Scheduler.</p>
 <p>There were actually some performance gain with the model Inception V3 and two backends - acl_neon(GPU) and acl_cl(GPU). Note that this model contains operations that can be run at the same time. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

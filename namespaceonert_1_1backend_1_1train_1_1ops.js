@@ -31,5 +31,6 @@ var namespaceonert_1_1backend_1_1train_1_1ops =
     [ "PoolType", "namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab", [
       [ "kMax", "namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b", null ]
     ] ],
-    [ "backpropActivation", "namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc", null ]
+    [ "backpropActivation", "namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc", null ],
+    [ "biasGrad", "namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f", null ]
 ];

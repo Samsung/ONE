@@ -1,7 +1,0 @@
-var _neg_logistic_kernel_8h =
-[
-    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchLogisticKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel" ],
-    [ "luci_interpreter::test_kernel::NegTestDataNoQuantParamsLogisticKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_no_quant_params_logistic_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_no_quant_params_logistic_kernel" ],
-    [ "test_kernel_model_circle", "_neg_logistic_kernel_8h.html#a052e7eea1c73ff9354f085b1ffe62939", null ],
-    [ "test_kernel_model_circle", "_neg_logistic_kernel_8h.html#a5c22513708e66ed193320cea64c8e586", null ]
-];

@@ -1,7 +1,10 @@
 <map id="onert&#45;micro/onert&#45;micro/include/test_models" name="onert&#45;micro/onert&#45;micro/include/test_models">
-<area shape="rect" id="node2" href="dir_aa27684d5c9a17bac19b9bd6787df906.html" title="abs" alt="" coords="230,63,272,89"/>
-<area shape="rect" id="node3" href="dir_8d456c05a4cb9ec2960d78933d5ee3eb.html" title="add" alt="" coords="163,63,205,89"/>
-<area shape="rect" id="node4" href="dir_d707ebc8d5bf446e1aa43b548cdfb2de.html" title="concatenation" alt="" coords="37,63,139,89"/>
-<area shape="rect" id="clust2" href="dir_9c303a4cdd47269491d349bda3a65357.html" alt="" coords="27,52,400,99"/>
-<area shape="rect" id="clust1" href="dir_32fb82c918ad356f958b362edaba515d.html" title="include" alt="" coords="16,16,411,110"/>
+<area shape="rect" id="node2" href="dir_aa27684d5c9a17bac19b9bd6787df906.html" title="abs" alt="" coords="450,63,492,89"/>
+<area shape="rect" id="node3" href="dir_8d456c05a4cb9ec2960d78933d5ee3eb.html" title="add" alt="" coords="383,63,425,89"/>
+<area shape="rect" id="node4" href="dir_d707ebc8d5bf446e1aa43b548cdfb2de.html" title="concatenation" alt="" coords="257,63,359,89"/>
+<area shape="rect" id="node5" href="dir_22eef7d2e5b5ea4159481cf6de3ed799.html" title="logistic" alt="" coords="170,63,233,89"/>
+<area shape="rect" id="node6" href="dir_07fd40edcf34751d3ece359e78f66dca.html" title="mul" alt="" coords="104,63,147,89"/>
+<area shape="rect" id="node7" href="dir_68bc21887fe61f1a5bbf67997e076948.html" title="sub" alt="" coords="38,63,80,89"/>
+<area shape="rect" id="clust2" href="dir_9c303a4cdd47269491d349bda3a65357.html" alt="" coords="27,52,620,99"/>
+<area shape="rect" id="clust1" href="dir_32fb82c918ad356f958b362edaba515d.html" title="include" alt="" coords="16,16,631,110"/>
 </map>

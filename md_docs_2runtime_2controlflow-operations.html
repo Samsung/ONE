@@ -92,15 +92,15 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2controlflow-operatio
   <div class="headertitle"><div class="title">Controlflow Operations</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>We call <code>If</code> and <code>While</code> operations "Controlflow operations". These operations are different from the others. They are not for computing data, they are used to invoke another subgraph and return back which is to make conditional/iterations work in dataflow models.</p>
+<div class="textblock"><p>We call the <code>If</code> and <code>While</code> operations "Controlflow operations". These operations are special. Instead of computing data, they are used to invoke another subgraph and return back which constitutes conditional/iterations work in dataflow models.</p>
 <h1>Defining controlflow operations</h1>
-<p>As we use Tensorflow Lite schema(or Circle which is based on TF Lite), the runtime follows the way TF Lite does. The details are stated in <a href="https://github.com/tensorflow/community/blob/master/rfcs/20190315-tflite-control-flow.md">Control Flow in TensorFlow Lite</a> RFC document.</p>
-<p>Controlflow operations from NN API is not yet supported. But we expect that it can be enabled in the similar way.</p>
+<p>As we use Tensorflow Lite schema (or Circle which is based on TF Lite), the runtime follows the way TF Lite does. The details are stated in the <a href="https://github.com/tensorflow/community/blob/master/rfcs/20190315-tflite-control-flow.md">Control Flow in TensorFlow Lite</a> RFC document.</p>
+<p>Controlflow operations from NN API are not yet supported. But we expect that they can be enabled in a similar way.</p>
 <h1>Implementation</h1>
 <h2>Graph representation</h2>
-<p><code>onert</code> internally has its representation for controlflow operations and subgraphs. It is pretty much straightforward as it is pretty much isomorphic with the schema. The <code>onert</code>'s in-memory model contains multiple subgraphs and the controlflow operations have same parameters(subgraph indices) just like TF Lite schema has.</p>
+<p><code>onert</code> internally has its representation for controlflow operations and subgraphs. It is straightforward as it is pretty much isomorphic with the schema. The <code>onert</code>'s in-memory model contains multiple subgraphs and the controlflow operations have same parameters (subgraph indices), just like TF Lite schema has.</p>
 <h2>Execution</h2>
-<p><code>controlflow</code> backend is a built-in backend to support these controlflow operations. This backend is special as it has access to <code>onert</code> core's executor manager(<code>ExecutorMap</code>) so it can invoke/return a subgraph. This backend has implementation for <code>If</code> and <code>While</code> operation and they make use of the access to executor manager.</p>
+<p>The <code>controlflow</code> backend is a built-in backend to support these controlflow operations. This backend is special as it has access to <code>onert</code> core's executor manager (<code>ExecutorMap</code>) so it can invoke/return a subgraph. This backend has implementations for <code>If</code> and <code>While</code> operations and they make use of the access to executor manager.</p>
 <p>An <code>Executor</code> has two different ways to execute depending on if it is the initial execution or invoking a subgraph from a controlflow operation.</p>
 <ul>
 <li>Executing the primary subgraph<ul>
@@ -114,18 +114,18 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2controlflow-operatio
 </li>
 </ul>
 <h3>Kernel Implementation</h3>
-<p>Here is brief explanation what the kernels do, which is quoted from <a href="https://github.com/tensorflow/community/blob/master/rfcs/20190315-tflite-control-flow.md">Control Flow in TensorFlow Lite</a>.</p>
+<p>Here is a brief explanation what the kernels do, which is quoted from <a href="https://github.com/tensorflow/community/blob/master/rfcs/20190315-tflite-control-flow.md">Control Flow in TensorFlow Lite</a>.</p>
 <blockquote class="doxtable">
 <p>&zwj;* <code>If</code> : Check the condition input and invoke one of the 2 subgraphs.</p><ul>
 <li><code>While</code> :<ul>
-<li>Invoke the condition subgraph. Break out the loop if result is false.</li>
+<li>Invoke the condition subgraph. Break out the loop if the result is false.</li>
 <li>Invoke the body subgraph, use the output as the input of the next iteration. </li>
 </ul>
 </li>
 </ul>
 </blockquote>
 <p>Invoking a subgraph needs to pass the operation's inputs to the subgraph inputs. And Returning back needs to pass the subgraph outputs to the operation outputs.</p>
-<p>When invoking a subgraph and returning back, the current kernel implementation performs literally copy all the subgraph inputs and outputs. This is going to be optimized to minimize redundant copies. </p>
+<p>When invoking a subgraph and returning back, the current kernel implementation makes a copy of all the subgraph inputs and outputs. This is going to be optimized to minimize redundant copies. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
