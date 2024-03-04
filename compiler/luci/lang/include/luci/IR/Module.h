@@ -65,6 +65,10 @@ public:
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
 
+  void map_tenros_indexes(const std::map<uint32_t, uint32_t> &map_tenros_indexes) { _map_tensors_indexes = map_tenros_indexes; }
+
+  const std::map<uint32_t, uint32_t> &map_tenros_indexes(void) const { return _map_tensors_indexes; }
+
 private:
   std::vector<std::unique_ptr<loco::Graph>> _graphs;
 
@@ -81,6 +85,8 @@ private:
    *        Even if Module has multiple subgraphs, only first subgraph is considered.
    */
   std::map<uint32_t, std::string> _source_table;
+
+  std::map<uint32_t, uint32_t> _map_tensors_indexes;
 };
 
 std::unique_ptr<Module> make_module(void);

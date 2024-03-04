@@ -30,3 +30,24 @@ target_link_libraries(circle_execution_plan luci_log)
 
 target_include_directories(circle_execution_plan PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/pal")
 install(TARGETS circle_execution_plan DESTINATION bin)
+
+set(SOURCES_2
+        src/CircleTrainingConfigure.cpp
+        src/GenerateTrainingGraph.cpp
+        )
+
+add_executable(circle_training_configure "${SOURCES_2}")
+target_include_directories(circle_training_configure PRIVATE ${Jsoncpp_INCLUDE_DIRS})
+
+target_link_libraries(circle_training_configure ${Jsoncpp_STATIC_LIB})
+target_link_libraries(circle_training_configure foder)
+target_link_libraries(circle_training_configure safemain)
+target_link_libraries(circle_training_configure luci_env)
+target_link_libraries(circle_training_configure luci_import)
+target_link_libraries(circle_training_configure luci_export)
+target_link_libraries(circle_training_configure luci_plan)
+target_link_libraries(circle_training_configure arser)
+target_link_libraries(circle_training_configure luci_log)
+
+target_include_directories(circle_training_configure PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/pal")
+install(TARGETS circle_training_configure DESTINATION bin)

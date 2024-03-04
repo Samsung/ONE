@@ -226,6 +226,8 @@ void CircleExporterImpl::exportModule(Module *module)
 
   // Metadata
   md._metadata.source_table(module->source_table());
+  if (!module->map_tenros_indexes().empty())
+    md._metadata.map_tensors_indexes(module->map_tenros_indexes());
   auto metadata_vec = createCircleMetadataVector(_builder, md);
   auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
 

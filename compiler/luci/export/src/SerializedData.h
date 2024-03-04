@@ -54,6 +54,8 @@ class CircleExportMetadata
 public:
   void source_table(const std::map<uint32_t, std::string> &table) { _source_table = table; }
 
+  void map_tensors_indexes(const std::map<uint32_t, std::uint32_t> &table) { _map_tensors_indexes = table; }
+
   void add_op_table(uint32_t node_id, uint32_t source_id)
   {
     // Model with multiple subgraph may have duplicated node id.
@@ -72,11 +74,13 @@ public:
 
 public:
   const std::vector<uint8_t> encoded_source_table(void);
+  const std::vector<uint8_t> encoded_map_tensors_indexes(void);
   const std::vector<uint8_t> encoded_op_table(void);
   const std::vector<uint8_t> encoded_execution_plan_table(void);
 
 private:
   std::map<uint32_t, std::string> _source_table;
+  std::map<uint32_t, uint32_t> _map_tensors_indexes;
   std::map<uint32_t, std::set<uint32_t>> _op_table;
   // _exec_plan_table stores for node with node_id order of execution, and memory offsets:
   // first go execution order, then memory offsets for node output tensors.

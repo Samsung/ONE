@@ -48,6 +48,8 @@ public:
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
 
+  const std::map<uint32_t, std::uint32_t> &map_tensors_indexes(void) const { return _map_tensors_indexes; }
+
   const luci::ExecutionPlanTable &execution_plan_table(void) const { return _execution_plan_table; }
 
 private:
@@ -57,6 +59,7 @@ private:
   // _execution_plan_table stores for node with node_id order of execution,
   // and offsets output tensors
   luci::ExecutionPlanTable _execution_plan_table;
+  std::map<uint32_t, uint32_t> _map_tensors_indexes;
 };
 
 } // namespace luci

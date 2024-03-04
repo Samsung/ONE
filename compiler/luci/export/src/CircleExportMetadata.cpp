@@ -95,6 +95,26 @@ const std::vector<uint8_t> CircleExportMetadata::encoded_source_table(void)
   return data;
 }
 
+// 'source_table' is encoded to binary format.
+const std::vector<uint8_t> CircleExportMetadata::encoded_map_tensors_indexes(void)
+{
+  std::vector<uint8_t> data;
+
+  write_u32(data, _map_tensors_indexes.size());
+
+  for (auto &kv : _map_tensors_indexes)
+  {
+    const auto id = kv.first;
+    write_u32(data, id);
+
+    const auto second_id = kv.second;
+    write_u32(data, second_id);
+  }
+
+  return data;
+}
+
+
 // 'op_table' is encoded to binary format.
 const std::vector<uint8_t> CircleExportMetadata::encoded_op_table(void)
 {
@@ -129,6 +149,9 @@ std::vector<flatbuffers::Offset<circle::Metadata>>
 createCircleMetadataVector(flatbuffers::FlatBufferBuilder &builder, luci::SerializedModelData &md)
 {
   std::vector<flatbuffers::Offset<circle::Metadata>> metadata_vec;
+
+  metadata_vec.emplace_back(
+    metadata_offset(builder, md, md._metadata.encoded_map_tensors_indexes(), "ONE_train_inform"));
 
   auto settings = luci::UserSettings::settings();
   if (settings->get(luci::UserSettings::Key::ProfilingDataGen))

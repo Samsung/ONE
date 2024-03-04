@@ -140,6 +140,67 @@ const std::map<uint32_t, std::set<uint32_t>> decoded_op_table(const VECTORTYPE &
   return node_source_ids_map;
 }
 
+// 'map_tensors_indexes' is decoded to std::map<uint32_t, uint32_t> format.
+template <typename VECTORTYPE>
+const std::map<uint32_t, uint32_t> decoded_map_tensors_indexes(const VECTORTYPE &map_tensors_indexes_data)
+{
+  static_assert(std::is_same<typename VECTORTYPE::value_type, uint8_t>::value, "Types mismatch!");
+
+  std::map<uint32_t, uint32_t> map_tensors_indexes;
+  uint32_t idx = 0;
+
+  if (map_tensors_indexes_data.size() < 4)
+    throw std::runtime_error("Op table decode error : invalid entry number");
+
+  uint32_t entry_number = read_u32(map_tensors_indexes_data, idx);
+  idx += sizeof(uint32_t);
+
+  while (idx < map_tensors_indexes_data.size())
+  {
+    if (idx + 2 * sizeof(uint32_t) > map_tensors_indexes_data.size())
+      throw std::runtime_error("Op table decode error : invalid entry item");
+
+    uint32_t id = read_u32(map_tensors_indexes_data, idx);
+    idx += sizeof(uint32_t);
+
+    uint32_t origin_id = read_u32(map_tensors_indexes_data, idx);
+    idx += sizeof(uint32_t);
+
+    if (map_tensors_indexes.insert({id, origin_id}).second == false)
+      throw std::runtime_error("Op table decode error : duplicated origin ID");
+
+//    uint32_t size = read_u32(execution_plan_data, idx);
+//
+//    if (size == 0)
+//      throw std::runtime_error("Op table decode error : empty execution plan entry");
+//
+//    idx += sizeof(uint32_t);
+//
+//    if (idx + sizeof(uint32_t) * size > execution_plan_data.size())
+//      throw std::runtime_error("Source table decode error : invalid entry data");
+//
+//    std::vector<uint32_t> execution_plan_vector;
+//    for (uint32_t j = 0; j < size; ++j)
+//    {
+//      uint32_t execution_plan_inform = read_u32(execution_plan_data, idx);
+//      idx += sizeof(uint32_t);
+//
+//      execution_plan_vector.push_back(execution_plan_inform);
+//    }
+//
+//    if (execution_plan_table.insert({id, execution_plan_vector}).second == false)
+//      throw std::runtime_error("Op table decode error : duplicated origin ID");
+  }
+
+  if (idx != map_tensors_indexes_data.size())
+    throw std::runtime_error("Op table decode error : data size invalid");
+
+  if (map_tensors_indexes.size() != entry_number)
+    throw std::runtime_error("Op table decode error : entry number invalid");
+
+  return map_tensors_indexes;
+}
+
 // 'execution_plan_table' is decoded to std::map<uint32_t, std::vector<uint32_t>> format.
 template <typename VECTORTYPE>
 const luci::ExecutionPlanTable decoded_execution_plan(const VECTORTYPE &execution_plan_data)
@@ -219,6 +280,8 @@ CircleImportMetadata::CircleImportMetadata(const luci::CircleReader &reader)
       _source_table = decoded_source_table(buffer);
     else if (meta->name()->str().compare("ONE_execution_plan_table") == 0)
       _execution_plan_table = decoded_execution_plan(buffer);
+    else if (meta->name()->str().compare("ONE_train_inform") == 0)
+      _map_tensors_indexes = decoded_map_tensors_indexes(buffer);
   }
 }
 

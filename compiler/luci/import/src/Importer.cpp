@@ -344,6 +344,13 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 
   // Initialize 'source_table'
   auto circle_metadata = std::make_unique<luci::CircleImportMetadata>(reader);
+
+  if (circle_metadata->map_tensors_indexes().size() > 0)
+  {
+    // If there is 'source_table' metadata in circle model, copy the table.
+    module->map_tenros_indexes(circle_metadata->map_tensors_indexes());
+  }
+
   if (circle_metadata->source_table().size() > 0)
   {
     // If there is 'source_table' metadata in circle model, copy the table.

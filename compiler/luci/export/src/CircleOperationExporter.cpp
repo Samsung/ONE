@@ -20,6 +20,7 @@
 #include <luci/IR/CircleNode.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Plan/CircleNodeExecutionPlan.h>
+#include <luci/Plan/CircleMapTensorsIndexes.h>
 #include <loco/IR/Algorithm.h>
 
 namespace luci
@@ -29,6 +30,7 @@ void exportNodes(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder, Serial
                  SerializedGraphData &gd)
 {
   uint32_t node_position = 0;
+ // std::map<uint32_t, uint32_t> tensors_indexes;
   for (auto node : loco::postorder_traversal(loco::output_nodes(g)))
   {
     ExportContext ctx{builder, md, gd};
@@ -61,8 +63,23 @@ void exportNodes(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder, Serial
       md._metadata.add_execution_plan_table(node_position, execution_plan_vector);
     }
 
+//    if (has_map_tensors_index(circle_node))
+//    {
+//      // Add to node (in node_position) metadata vector with execution_plan information:
+//      // order of execution, and offsets output tensors.
+//      const auto map_tensors = get_map_tensors_index(circle_node);
+//      tensors_indexes[map_tensors.first_idx()] = map_tensors.second_idx();
+//
+//    }
+
     node_position++;
   }
+
+//  if (!tensors_indexes.empty())
+//  {
+//    md._metadata.map_tensors_indexes(tensors_indexes);
+//  }
+
 }
 
 } // namespace luci
