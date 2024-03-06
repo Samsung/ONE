@@ -32,7 +32,7 @@ struct OMExecuteArgs
   core::OMRuntimeStorage &runtime_storage;
   core::OMRuntimeContext &runtime_context;
   uint16_t kernel_index;
-  core::OMRuntimeModule &runtime_module;
+  core::OMRuntimeModule *runtime_module;
 };
 
 } // namespace execute

@@ -19,7 +19,7 @@
 
 #include "OMStatus.h"
 #include "OMConfig.h"
-#include "OMRuntimeGraph.h"
+#include "core/OMRuntimeGraph.h"
 #include "core/reader/OMCircleReader.h"
 
 #include <vector>

@@ -54,15 +54,14 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
   if (model_ptr == nullptr)
     return UnknownError;
 
-  // First - parse reader
-  // Second - load default graph
-  // Third - optimize it until can
+  // 1 - Parse reader
+  // 2 - Load default graph
+  // 3 - Optimize it until can
   // 4 - AllocDeallocPlan creation
   // 5 - KernelConfigure
-  // 6 - Allocate inputs
 
   OMStatus status;
-  // First - parse reader
+  // 1 - parse reader
   uint32_t num_subgraph = 0;
   {
     reader::OMCircleReader reader;
@@ -80,7 +79,7 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
 
   for (uint32_t i = 0; i < num_subgraph; ++i)
   {
-    // Second - load default graph
+    // 2 - load default graph
     OMRuntimeGraph &graph = _graphs.at(i);
 
     OMRuntimeContext &runtime_context = graph.getRuntimeContext();
@@ -94,7 +93,7 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
     if (config.wof_ptr != nullptr)
       runtime_context.setWofFile(config.wof_ptr);
 
-    // Third - optimize it until can
+    // 3 - Optimize it until can
     status = optimize::OMOptimizer::optimize(runtime_storage, runtime_context, config);
     if (status != Ok)
       return status;
@@ -106,7 +105,7 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
       return status;
 
     // 5 - KernelConfigure
-    import::OMConfigureArgs configure_args = {runtime_storage, runtime_context, 0, config, *this};
+    import::OMConfigureArgs configure_args = {runtime_storage, runtime_context, 0, config, this};
 
     status = import::OMKernelConfiguration::configureKernels(configure_args);
     if (status != Ok)
@@ -136,7 +135,7 @@ OMStatus OMRuntimeModule::run()
   core::OMRuntimeGraph &main_graph = _graphs.at(0);
 
   execute::OMExecuteArgs execute_args = {main_graph.getRuntimeStorage(),
-                                         main_graph.getRuntimeContext(), 0, *this};
+                                         main_graph.getRuntimeContext(), 0, this};
 
   status = execute::OMKernelExecute::executeKernel(execute_args, main_graph.getRuntimeAllocator());
   if (status != Ok)

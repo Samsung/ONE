@@ -34,7 +34,7 @@ struct OMConfigureArgs
   core::OMRuntimeContext &runtime_context;
   uint16_t kernel_index;
   const OMConfig &configs;
-  core::OMRuntimeModule &runtime_module;
+  core::OMRuntimeModule *runtime_module;
 };
 
 } // namespace import

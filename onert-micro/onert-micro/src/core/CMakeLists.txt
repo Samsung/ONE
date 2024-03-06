@@ -8,6 +8,8 @@ set(SOURCES
         OMRuntimeModule.cpp
         OMUtils.cpp
         OMDataType.cpp
+        train/OMTrainingRuntimeModule.cpp
+        train/OMTrainingStorage.cpp
         memory/OMMemoryManager.cpp
         memory/OMRuntimeAllocator.cpp
         reader/OMCircleReader.cpp

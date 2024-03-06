@@ -20,6 +20,7 @@
 #include "OMStatus.h"
 
 #include <circle-generated/circle/schema_generated.h>
+#include <unordered_map>
 
 namespace onert_micro
 {
@@ -69,6 +70,7 @@ public:
   // helpers
 public:
   bool isConstTensor(uint32_t tensor_index);
+  std::unordered_map<uint16_t, uint16_t> readTensorsTrainIndexesTable();
 
 private:
   const circle::Model *_model{nullptr};

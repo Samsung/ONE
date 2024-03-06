@@ -75,7 +75,7 @@ OMStatus onert_micro::import::configure_kernel_CircleMul(const OMConfigureArgs &
   if (input1->quantization()->scale()->size() != 1 or
       input2->quantization()->scale()->size() != 1 or output->quantization()->scale()->size() != 1)
   {
-    return UnsupportedQuantizationType;
+    return NoQuantization;
   }
 
 #endif // DIS_QUANT

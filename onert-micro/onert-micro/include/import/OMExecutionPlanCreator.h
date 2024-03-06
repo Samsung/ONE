@@ -23,6 +23,8 @@
 #include "core/OMRuntimeContext.h"
 #include "core/memory/OMRuntimeAllocator.h"
 
+#include <unordered_set>
+
 namespace onert_micro
 {
 namespace import
@@ -34,7 +36,8 @@ struct OMExecutionPlanCreator
   static OMStatus createExecutionPlan(core::OMRuntimeStorage &runtime_storage,
                                       core::OMRuntimeContext &runtime_context,
                                       core::memory::OMRuntimeAllocator &allocator,
-                                      const OMConfig &configs);
+                                      const OMConfig &configs,
+                                      const std::unordered_set<uint16_t> &saved_tensors_indexes = {});
 };
 
 } // namespace import

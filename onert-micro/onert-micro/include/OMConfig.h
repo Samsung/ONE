@@ -17,8 +17,18 @@
 #ifndef ONERT_MICRO_CONFIG_H
 #define ONERT_MICRO_CONFIG_H
 
+#include <stdint.h>
+
 namespace onert_micro
 {
+
+// Training specific options
+struct OMTrainingConfig
+{
+  bool update_weights_in_place = false;
+  float lambda = 0.f;
+  uint16_t batches = 1;
+};
 
 struct OMConfig
 {
@@ -26,6 +36,9 @@ struct OMConfig
   bool cmsis_nn = false;
   // For case with divided weights and circle file
   char *wof_ptr = nullptr;
+  bool train_mode = false;
+  // Training specific options
+  OMTrainingConfig train_config;
 };
 
 } // namespace onert_micro

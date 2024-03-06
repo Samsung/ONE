@@ -25,7 +25,8 @@ using namespace onert_micro;
 OMStatus OMExecutionPlanCreator::createExecutionPlan(core::OMRuntimeStorage &runtime_storage,
                                                      core::OMRuntimeContext &runtime_context,
                                                      core::memory::OMRuntimeAllocator &allocator,
-                                                     const OMConfig &configs)
+                                                     const OMConfig &configs,
+                                                     const std::unordered_set<uint16_t> &saved_tensors_indexes)
 {
   bool keep_input = configs.keep_input;
 
@@ -70,7 +71,7 @@ OMStatus OMExecutionPlanCreator::createExecutionPlan(core::OMRuntimeStorage &run
 
       if (lifetimes.count(input_index) > 0)
       {
-        if (kernel_type == Inplace)
+        if (kernel_type == Inplace or saved_tensors_indexes.find(input_index) != saved_tensors_indexes.end())
           lifetimes.at(input_index).second = -1;
         else
           lifetimes.at(input_index).second = index;

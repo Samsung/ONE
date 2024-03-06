@@ -40,7 +40,7 @@ target_link_libraries(${OM_CORE_LIB} PUBLIC ${OM_IMPORT_LIB})
 target_link_libraries(${OM_CORE_LIB} PUBLIC ${OM_EXECUTE_LIB})
 target_link_libraries(${OM_CORE_LIB} PUBLIC ${OM_OPTIMIZE_LIB})
 
-add_library(${OM_INTERPRETER_LIB} STATIC OMInterpreter.cpp)
+add_library(${OM_INTERPRETER_LIB} STATIC OMInterpreter.cpp OMTrainingInterpreter.cpp)
 
 target_include_directories(${OM_INTERPRETER_LIB} PUBLIC "${OM_INCLUDE_DIR}")
 target_link_libraries(${OM_INTERPRETER_LIB} PUBLIC ${OM_CORE_LIB})

@@ -110,7 +110,8 @@ OMStatus OMRuntimeAllocator::deallocate(size_t kernel_index, OMRuntimeStorage *s
 }
 
 OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
-                                                 OMRuntimeStorage *storage)
+                                                 OMRuntimeStorage *storage,
+                                                 const std::vector<uint16_t> &allocate_tensor_indexes)
 {
   OMStatus status = Ok;
   const auto &graph_inputs = context->getCircleInputs();
@@ -118,6 +119,11 @@ OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
   for (uint i = 0; i < graph_inputs->size(); ++i)
   {
     auto tensor_index = graph_inputs->operator[](i);
+
+    if (allocate_tensor_indexes.size() != 0 and
+        std::find(allocate_tensor_indexes.begin(), allocate_tensor_indexes.end(), tensor_index) == allocate_tensor_indexes.end())
+      continue;
+
     const circle::Tensor *tensor = context->getTensorByIndex(tensor_index);
     const OMRuntimeShape tensor_shape(tensor);
 

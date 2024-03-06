@@ -61,7 +61,7 @@ public:
 
   std::vector<std::vector<uint16_t>> &getDeallocPlan() { return _dealloc_plan; }
 
-  OMStatus allocateGraphInputs(OMRuntimeContext *context, OMRuntimeStorage *storage);
+  OMStatus allocateGraphInputs(OMRuntimeContext *context, OMRuntimeStorage *storage, const std::vector<uint16_t> &allocate_tensor_indexes = {});
 
   OMStatus clearAllTensorsData(OMRuntimeContext *context, OMRuntimeStorage *storage);
 

@@ -17,9 +17,10 @@
 #ifndef ONERT_MICRO_CORE_RUNTIME_STORAGE_H
 #define ONERT_MICRO_CORE_RUNTIME_STORAGE_H
 
-#include "OMRuntimeShape.h"
 #include "OMStatus.h"
-#include "OMKernelType.h"
+
+#include "core/OMKernelType.h"
+#include "core/OMRuntimeShape.h"
 
 #include <vector>
 #include <unordered_map>
