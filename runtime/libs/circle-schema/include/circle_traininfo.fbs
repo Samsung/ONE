@@ -1,6 +1,6 @@
-// This file is from https://github.sec.samsung.net/one-project/circle-x/blob/e94b2b8956bcc316bef19dc4885a5027f545845a/spec/circle_training.fbs
+// This file is from https://github.sec.samsung.net/one-project/circle-x/blob/5dd9665b3dab4652a0afed50da86bf6964a41bdd/spec/circle_training.fbs
 
-// Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+// Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
 // Copyright 2017 The TensorFlow Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,9 @@
 namespace circle;
 
 // file_identifier for circle training.
-// The last two characters is identifier version.
+// The last character is a number which corresponds to the major version.
 // This identifier number should be same if it does not break compatibility.
-file_identifier "CTR1";
+file_identifier "CTR0";
 
 // Revision History
 //
