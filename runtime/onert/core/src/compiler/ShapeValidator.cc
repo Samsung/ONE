@@ -119,7 +119,7 @@ void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
     node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_BINARY)};
   const auto weight_cluster_index{
     node.getInputs().at(ir::operation::BCQFullyConnected::Input::WEIGHTS_CLUSTERS)};
-  // const auto bias_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::BIAS)};
+  const auto bias_index{node.getInputs().at(ir::operation::BCQFullyConnected::Input::BIAS)};
 
   OP_REQUIRES(operands.at(ifm_index).shape().rank() == 2);
   OP_REQUIRES(operands.at(ofm_index).shape().rank() == 2);
@@ -134,7 +134,7 @@ void ShapeValidator::visit(const ir::operation::BCQFullyConnected &node)
 
   // more shape validation will be done inside kernel.
 
-  // TODO Check bias dimension (can be null tensor)
+  OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
 }
 
 void ShapeValidator::visit(const ir::operation::BCQGather &node)
@@ -162,9 +162,45 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   // more shape validation will be done inside kernel.
 }
 
+void ShapeValidator::visit(const ir::operation::Conv2D &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto bias_index{node.getInputs().at(ir::operation::Conv2D::Input::BIAS)};
+
+  OP_REQUIRES(operands.at(bias_index).shape().rank() == 1);
+}
+
 void ShapeValidator::visit(const ir::operation::Comparison &)
 {
   // TODO Shape validation of comparison
+}
+
+void ShapeValidator::visit(const ir::operation::DepthwiseConv2D &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto bias_index{node.getInputs().at(ir::operation::DepthwiseConv2D::Input::BIAS)};
+
+  OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
+}
+
+void ShapeValidator::visit(const ir::operation::FullyConnected &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto bias_index{node.getInputs().at(ir::operation::FullyConnected::Input::BIAS)};
+
+  OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
 }
 
 void ShapeValidator::visit(const ir::operation::Softmax &node)
