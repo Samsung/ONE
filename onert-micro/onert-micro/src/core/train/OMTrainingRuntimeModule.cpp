@@ -26,6 +26,9 @@
 
 #include <unordered_set>
 
+// TODO: remove it
+#include <iostream>
+
 using namespace onert_micro;
 using namespace onert_micro::core;
 using namespace onert_micro::core::train;
@@ -447,7 +450,9 @@ OMStatus OMTrainingRuntimeModule::updateWeights()
     for (uint32_t j = 0; j < output_size; ++j)
     {
       weight_data_f[j] -= _training_storage.getLambda() * data_f[j];
+      std::cout << weight_data_f[j] << " ";
     }
+    std::cout << "\n";
   }
 
   return Ok;

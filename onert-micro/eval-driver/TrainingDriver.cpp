@@ -15,7 +15,7 @@
  */
 
 #include "OMTrainingInterpreter.h"
-
+#include <memory>
 #include <stdexcept>
 #include <cstdlib>
 #include <fstream>
@@ -96,20 +96,20 @@ void calculateMSE(float *pred, float *target, size_t size)
   std::cout << "Calculated MSE = " << mse / size << "\n";
 }
 
-void printDataVector(float *data, int num_samples, int num_inputs, int num_size)
-{
-  for (int i = 0; i < num_samples; i++)
-  {
-    std::cout << "Cur sample № = " << i + 1 << "\n";
-    for (int j = 0; j < num_inputs; ++j)
-    {
-      for (int k = 0; k > num_size; ++k)
-      {
-        std::cout << data[k + j * num_size + i * num_size * num_inputs];
-      }
-    }
-  }
-}
+//void printDataVector(float *data, int num_samples, int num_size)
+//{
+//  for (int i = 0; i < num_samples; i++)
+//  {
+//    std::cout << "Cur sample № = " << i + 1 << "\n";
+//    for (int j = 0; j < num_inputs; ++j)
+//    {
+//      for (int k = 0; k > num_size; ++k)
+//      {
+//        std::cout << data[k + j * num_size + i * num_size * num_inputs];
+//      }
+//    }
+//  }
+//}
 
 } // namespace
 
@@ -176,186 +176,89 @@ int entry(int argc, char **argv)
   if (model_outputs_num != model_targets_num)
     throw std::runtime_error("Output model size and target size have to be equal");
 
-  // Save model inputs/outputs/target sizes
-  std::vector<uint32_t> inputs_sizes(model_inputs_num);
-  for (uint32_t i = 0; i < model_inputs_num; ++i)
-  {
-    inputs_sizes.at(i) = train_interpreter.getInputSizeAt(i);
-  }
+  assert(model_inputs_num == 1);
+  assert(model_outputs_num == 1);
+  assert(model_targets_num == 1);
 
-  std::vector<uint32_t> outputs_sizes(model_outputs_num);
-  for (uint32_t i = 0; i < model_outputs_num; ++i)
-  {
-    outputs_sizes.at(i) = train_interpreter.getOutputSizeAt(i);
-  }
+  // Save model input/output/target size
+  const auto input_size = train_interpreter.getInputSizeAt(0);
+  const auto output_size = train_interpreter.getOutputSizeAt(0);
+  const auto target_size = train_interpreter.getTargetSizeAt(0);
 
-  std::vector<uint32_t> targets_sizes(model_targets_num);
-  for (uint32_t i = 0; i < model_targets_num; ++i)
-  {
-    targets_sizes.at(i) = train_interpreter.getTargetSizeAt(i);
-  }
+  auto train_input_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * input_size * num_train_data_samples);
+  auto train_target_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * target_size * num_train_data_samples);
 
+  auto test_input_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * input_size * num_test_data_samples);
+  auto test_target_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * target_size * num_test_data_samples);
 
-  char *train_input_data = new char[sizeof(MODEL_TYPE) * inputs_sizes[0] * num_train_data_samples];
-  char *train_target_data = new char[sizeof(MODEL_TYPE) * targets_sizes[0] * num_train_data_samples];
-
-  char *test_input_data = new char[sizeof(MODEL_TYPE) * inputs_sizes[0] * num_test_data_samples];
-  char *test_target_data = new char[sizeof(MODEL_TYPE) * targets_sizes[0] * num_test_data_samples];
-
-  readDataFromFile(input_train_data_path, train_input_data, sizeof(MODEL_TYPE) * inputs_sizes[0] * num_train_data_samples);
+  readDataFromFile(input_train_data_path, train_input_data_raw.get(), sizeof(MODEL_TYPE) * input_size * num_train_data_samples);
   //readDataFromFile(input_test_data_path, test_input_data, sizeof(MODEL_TYPE) * inputs_sizes[0] * num_test_data_samples);
 
-  readDataFromFile(input_label_train_data_path, train_target_data,
-                   sizeof(MODEL_TYPE) * targets_sizes[0] * num_train_data_samples);
+  readDataFromFile(input_label_train_data_path, train_target_data_raw.get(),
+                   sizeof(MODEL_TYPE) * target_size * num_train_data_samples);
 //  readDataFromFile(input_label_test_data_path, test_target_data,
 //                   sizeof(MODEL_TYPE) * targets_sizes[0] * num_test_data_samples);
 
   // Data for train inputs and labels
   // Dim = 0 - it is number of samples
-  // Dim = 1 - it is number of inputs
-  // Dim = 2 - it is for current input
+  // Dim = 1 - it is for current input
 
   // Train inputs
-  std::vector<std::vector<std::vector<char>>> trains_input_data(num_train_data_samples);
+  std::vector<std::vector<MODEL_TYPE>> train_input_data(num_train_data_samples);
   for (uint32_t i = 0; i < num_train_data_samples; ++i)
   {
-    trains_input_data.at(i).resize(model_inputs_num);
-    for (uint32_t j = 0; j < model_inputs_num; ++j)
+    train_input_data.at(i).resize(input_size);
+    for (uint32_t j = 0; j < input_size; ++j)
     {
-      auto size = sizeof(MODEL_TYPE) * inputs_sizes[j];
-      trains_input_data.at(i).at(j).resize(sizeof(MODEL_TYPE) * inputs_sizes[j]);
-      std::memcpy(trains_input_data.at(i).at(j).data(), train_input_data + size * j + size * model_inputs_num * i, size);
+      train_input_data.at(i)[j] = *reinterpret_cast<float *>(train_input_data_raw.get() +
+                                                          sizeof(MODEL_TYPE) * j +
+                                                          i * sizeof(MODEL_TYPE) * input_size);
     }
   }
 
-  // Train labels
-  std::vector<std::vector<std::vector<char>>> train_labels_data(num_train_data_samples);
+  // Train targets
+  std::vector<std::vector<MODEL_TYPE>> train_target_data(num_train_data_samples);
   for (uint32_t i = 0; i < num_train_data_samples; ++i)
   {
-    train_labels_data.at(i).resize(model_targets_num);
-    for (uint32_t j = 0; j < model_targets_num; ++j)
+    train_target_data.at(i).resize(target_size);
+    for (uint32_t j = 0; j < target_size; ++j)
     {
-      auto size = sizeof(MODEL_TYPE) * targets_sizes[j];
-      train_labels_data.at(i).at(j).resize(sizeof(MODEL_TYPE) * targets_sizes[j]);
-      std::memcpy(train_labels_data.at(i).at(j).data(), train_target_data + size * j + size * model_targets_num * i, size);
+      train_target_data.at(i)[j] = *reinterpret_cast<float *>(train_target_data_raw.get() +
+        sizeof(MODEL_TYPE) * j +
+        i * sizeof(MODEL_TYPE) * target_size);
     }
   }
-
-//  // Test inputs
-//  std::vector<std::vector<std::vector<char>>> test_inputs_data(num_test_data_samples);
-//  for (uint32_t i = 0; i < num_test_data_samples; ++i)
-//  {
-//    test_inputs_data.at(i).reserve(model_inputs_num);
-//    for (uint32_t j = 0; j < model_inputs_num; ++j)
-//    {
-//      auto size = sizeof(MODEL_TYPE) * inputs_sizes[j];
-//      test_inputs_data.at(i).at(j).reserve(sizeof(MODEL_TYPE) * inputs_sizes[j]);
-//      std::memcpy(test_inputs_data.at(i).at(j).data(), test_input_data + size * j + size * model_inputs_num * i, size);
-//    }
-//  }
-//
-//  // Test labels
-//  std::vector<std::vector<std::vector<char>>> test_labels_data(num_test_data_samples);
-//  for (uint32_t i = 0; i < num_test_data_samples; ++i)
-//  {
-//    test_labels_data.at(i).reserve(model_targets_num);
-//    for (uint32_t j = 0; j < model_targets_num; ++j)
-//    {
-//      auto size = sizeof(MODEL_TYPE) * targets_sizes[j];
-//      test_labels_data.at(i).at(j).reserve(sizeof(MODEL_TYPE) * targets_sizes[j]);
-//      std::memcpy(test_labels_data.at(i).at(j).data(), test_target_data + size * j + size * model_targets_num * i, size);
-//    }
-//  }
 
   printf("Run train dataset:\n");
   for (int i = 0; i < num_train_data_samples; i+=batches)
   {
     train_interpreter.reset();
-    assert(trains_input_data.at(i).size() == 1);
     for (uint32_t b = 0; b < batches; ++b)
     {
       train_interpreter.allocateInputs();
-      for (uint32_t j = 0; j < model_inputs_num; ++j)
-      {
-        // Copy input data
-        auto &cur_train_data = trains_input_data.at(i + b).at(j);
-        auto cur_input_data = train_interpreter.getInputDataAt(j);
-        std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * inputs_sizes[j]);
-      }
+      // Copy input data
+      auto &cur_train_data = train_input_data.at(i + b);
+      auto cur_input_data = train_interpreter.getInputDataAt(0);
+      std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
+
       train_interpreter.forward();
-      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_labels_data.at(i + b).at(0).data()), targets_sizes[0]);
-      calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_labels_data.at(i + b).at(0).data()), targets_sizes[0]);
+
+      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_target_data.at(i + b).data()), target_size);
+      calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_target_data.at(i + b).data()), target_size);
+
       train_interpreter.allocateTargets();
-      for (uint32_t j = 0; j < model_targets_num; ++j)
-      {
-        auto &cur_train_target_data = train_labels_data.at(i + b).at(j);
-        auto cur_target_data = train_interpreter.getTargetDataAt(j);
-        std::memcpy(cur_target_data, cur_train_target_data.data(), sizeof(MODEL_TYPE) * targets_sizes[j]);
-      }
+
+      // Copy targets values
+      auto &cur_train_target_data = train_target_data.at(i + b);
+      auto cur_target_data = train_interpreter.getTargetDataAt(0);
+      std::memcpy(cur_target_data, cur_train_target_data.data(), sizeof(MODEL_TYPE) * target_size);
+
       train_interpreter.backward();
     }
+    std::cout << "Weights:\n";
     train_interpreter.updateWeights();
-
+    std::cout << "\n";
   }
-
-//  auto test_data_u8 = reinterpret_cast<char *>(test_data);
-//
-//  printf("Run test dataset:\n");
-//  for (int i = 0; i < num_test_data_samples; ++i)
-//  {
-//    auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(0));
-//
-//
-//    std::memcpy(input_data, test_data_u8, size);
-//
-//    interpreter.interpret();
-//    auto data = reinterpret_cast<float *>(interpreter.readOutputTensor(0));
-//
-//    printf("Sample № = %d\n", i);
-//    for (int j = 0; j < output_size / sizeof(float); ++j)
-//    {
-//      printf("j = %d: predicted_result = %f, correct_result = %f\n", j, data[j],
-//             reinterpret_cast<float *>(label_test_data)[j + i * output_size / sizeof(float)]);
-//    }
-//    printf("\n");
-//    test_data_u8 += size;
-//  }
-//
-//  float mse_result = 0.0f;
-//
-//  settings.metric = luci_interpreter::training::MSE;
-//  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
-//                            reinterpret_cast<const uint8_t *>(label_train_data),
-//                            reinterpret_cast<void *>(&mse_result));
-//
-//  float mae_result = 0.0f;
-//
-//  settings.metric = luci_interpreter::training::MAE;
-//  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
-//                            reinterpret_cast<const uint8_t *>(label_train_data),
-//                            reinterpret_cast<void *>(&mae_result));
-//
-//  printf("MSE_ERROR TRAIN = %f\n", mse_result);
-//
-//  printf("MAE_ERROR TRAIN = %f\n", mae_result);
-//
-//  mse_result = 0.0f;
-//
-//  settings.metric = luci_interpreter::training::MSE;
-//  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
-//                            reinterpret_cast<const uint8_t *>(label_test_data),
-//                            reinterpret_cast<void *>(&mse_result));
-//
-//  mae_result = 0.0f;
-//
-//  settings.metric = luci_interpreter::training::MAE;
-//  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
-//                            reinterpret_cast<const uint8_t *>(label_test_data),
-//                            reinterpret_cast<void *>(&mae_result));
-//
-//  printf("MSE_ERROR TEST = %f\n", mse_result);
-//
-//  printf("MAE_ERROR TEST = %f\n", mae_result);
 
   return EXIT_SUCCESS;
 }
