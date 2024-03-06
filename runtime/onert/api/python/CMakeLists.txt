@@ -31,5 +31,10 @@ pybind11_add_module(nnfw_api_pybind ${NNFW_API_PYBIND_SOURCES})
 target_include_directories(nnfw_api_pybind PRIVATE include)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
 
+if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
+  add_custom_command(TARGET nnfw_api_pybind POST_BUILD
+                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:nnfw_api_pybind>)
+endif()
+
 # Install the Python module
 install(TARGETS nnfw_api_pybind DESTINATION lib)

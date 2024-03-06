@@ -13,6 +13,11 @@ target_link_libraries(onert_odc PRIVATE onert_core luci::import luci::export luc
 target_link_libraries(onert_odc PRIVATE nnfw_common)
 target_link_libraries(onert_odc PRIVATE nnfw_coverage)
 
+if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
+  add_custom_command(TARGET onert_odc POST_BUILD
+                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_odc>)
+endif()
+
 install(TARGETS onert_odc LIBRARY DESTINATION lib/nnfw/odc)
 
 if(NOT ENABLE_TEST)
