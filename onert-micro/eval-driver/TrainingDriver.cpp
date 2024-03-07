@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <numeric>
 
 #define MODEL_TYPE float
 
@@ -86,7 +87,7 @@ void printPredAndTargetsValues(float *pred, float *target, size_t size)
   }
 }
 
-void calculateMSE(float *pred, float *target, size_t size)
+float calculateMSE(float *pred, float *target, size_t size)
 {
   float mse = 0;
   for (uint32_t i = 0; i < size; ++i)
@@ -94,6 +95,18 @@ void calculateMSE(float *pred, float *target, size_t size)
     mse += (pred[i] - target[i]) * (pred[i] - target[i]);
   }
   std::cout << "Calculated MSE = " << mse / size << "\n";
+  return mse;
+}
+
+float calculateMAE(float *pred, float *target, size_t size)
+{
+  float mae = 0;
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    mae += std::abs(pred[i] - target[i]);
+  }
+  std::cout << "Calculated MAE = " << mae / size << "\n";
+  return mae;
 }
 
 //void printDataVector(float *data, int num_samples, int num_size)
@@ -148,7 +161,7 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 50;
+  const uint32_t training_epochs = 5;
   const float lambda = 0.005f;
   const uint16_t batches = 1;
 
@@ -191,13 +204,15 @@ int entry(int argc, char **argv)
   auto test_input_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * input_size * num_test_data_samples);
   auto test_target_data_raw = std::make_unique<char []>(sizeof(MODEL_TYPE) * target_size * num_test_data_samples);
 
+  // Read train and test inputs
   readDataFromFile(input_train_data_path, train_input_data_raw.get(), sizeof(MODEL_TYPE) * input_size * num_train_data_samples);
-  //readDataFromFile(input_test_data_path, test_input_data, sizeof(MODEL_TYPE) * inputs_sizes[0] * num_test_data_samples);
+  readDataFromFile(input_test_data_path, test_input_data_raw.get(), sizeof(MODEL_TYPE) * input_size * num_test_data_samples);
 
+  // Read train and test targets
   readDataFromFile(input_label_train_data_path, train_target_data_raw.get(),
                    sizeof(MODEL_TYPE) * target_size * num_train_data_samples);
-//  readDataFromFile(input_label_test_data_path, test_target_data,
-//                   sizeof(MODEL_TYPE) * targets_sizes[0] * num_test_data_samples);
+  readDataFromFile(input_label_test_data_path, test_target_data_raw.get(),
+                   sizeof(MODEL_TYPE) * target_size * num_test_data_samples);
 
   // Data for train inputs and labels
   // Dim = 0 - it is number of samples
@@ -210,9 +225,22 @@ int entry(int argc, char **argv)
     train_input_data.at(i).resize(input_size);
     for (uint32_t j = 0; j < input_size; ++j)
     {
-      train_input_data.at(i)[j] = *reinterpret_cast<float *>(train_input_data_raw.get() +
+      train_input_data.at(i)[j] = *reinterpret_cast<MODEL_TYPE *>(train_input_data_raw.get() +
                                                           sizeof(MODEL_TYPE) * j +
                                                           i * sizeof(MODEL_TYPE) * input_size);
+    }
+  }
+
+  // Test inputs
+  std::vector<std::vector<MODEL_TYPE>> test_input_data(num_test_data_samples);
+  for (uint32_t i = 0; i < num_test_data_samples; ++i)
+  {
+    test_input_data.at(i).resize(input_size);
+    for (uint32_t j = 0; j < input_size; ++j)
+    {
+      test_input_data.at(i)[j] = *reinterpret_cast<MODEL_TYPE *>(test_input_data_raw.get() +
+                                                             sizeof(MODEL_TYPE) * j +
+                                                             i * sizeof(MODEL_TYPE) * input_size);
     }
   }
 
@@ -223,41 +251,95 @@ int entry(int argc, char **argv)
     train_target_data.at(i).resize(target_size);
     for (uint32_t j = 0; j < target_size; ++j)
     {
-      train_target_data.at(i)[j] = *reinterpret_cast<float *>(train_target_data_raw.get() +
+      train_target_data.at(i)[j] = *reinterpret_cast<MODEL_TYPE *>(train_target_data_raw.get() +
         sizeof(MODEL_TYPE) * j +
         i * sizeof(MODEL_TYPE) * target_size);
     }
   }
 
-  printf("Run train dataset:\n");
-  for (int i = 0; i < num_train_data_samples; i+=batches)
+  // Test targets
+  std::vector<std::vector<MODEL_TYPE>> test_target_data(num_test_data_samples);
+  for (uint32_t i = 0; i < num_test_data_samples; ++i)
   {
-    train_interpreter.reset();
-    for (uint32_t b = 0; b < batches; ++b)
+    test_target_data.at(i).resize(target_size);
+    for (uint32_t j = 0; j < target_size; ++j)
     {
+      test_target_data.at(i)[j] = *reinterpret_cast<MODEL_TYPE *>(test_target_data_raw.get() +
+                                                              sizeof(MODEL_TYPE) * j +
+                                                              i * sizeof(MODEL_TYPE) * target_size);
+    }
+  }
+
+  for (uint32_t e = 0; e < training_epochs; ++e)
+  {
+    std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    for (int i = 0; i < num_train_data_samples; i += batches)
+    {
+      train_interpreter.reset();
+      for (uint32_t b = 0; b < batches; ++b)
+      {
+        train_interpreter.allocateInputs();
+        // Copy input data
+        auto &cur_train_data = train_input_data.at(i + b);
+        auto cur_input_data = train_interpreter.getInputDataAt(0);
+        std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
+
+        train_interpreter.forward();
+
+        printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                                  reinterpret_cast<float *>(train_target_data.at(i + b).data()),
+                                  target_size);
+        calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                     reinterpret_cast<float *>(train_target_data.at(i + b).data()), target_size);
+        calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                     reinterpret_cast<float *>(train_target_data.at(i + b).data()), target_size);
+
+        train_interpreter.allocateTargets();
+
+        // Copy targets values
+        auto &cur_train_target_data = train_target_data.at(i + b);
+        auto cur_target_data = train_interpreter.getTargetDataAt(0);
+        std::memcpy(cur_target_data, cur_train_target_data.data(),
+                    sizeof(MODEL_TYPE) * target_size);
+
+        train_interpreter.backward();
+      }
+      std::cout << "Weights:\n";
+      train_interpreter.updateWeights();
+      std::cout << "\n";
+    }
+
+    // Run test dataset
+    std::vector<float> mse_vector;
+    std::vector<float> mae_vector;
+    std::cout << "Run test dataset for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    for (int i = 0; i < num_test_data_samples; i++)
+    {
+      train_interpreter.reset();
       train_interpreter.allocateInputs();
       // Copy input data
-      auto &cur_train_data = train_input_data.at(i + b);
+      auto &cur_train_data = train_input_data.at(i);
       auto cur_input_data = train_interpreter.getInputDataAt(0);
       std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
 
       train_interpreter.forward();
 
-      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_target_data.at(i + b).data()), target_size);
-      calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), reinterpret_cast<float*>(train_target_data.at(i + b).data()), target_size);
-
-      train_interpreter.allocateTargets();
-
-      // Copy targets values
-      auto &cur_train_target_data = train_target_data.at(i + b);
-      auto cur_target_data = train_interpreter.getTargetDataAt(0);
-      std::memcpy(cur_target_data, cur_train_target_data.data(), sizeof(MODEL_TYPE) * target_size);
-
-      train_interpreter.backward();
+      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                                reinterpret_cast<float *>(train_target_data.at(i).data()),
+                                target_size);
+      auto mse = calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                   reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
+      auto mae = calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                              reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
+      mse_vector.push_back(mse);
+      mae_vector.push_back(mae);
     }
-    std::cout << "Weights:\n";
-    train_interpreter.updateWeights();
-    std::cout << "\n";
+
+    // Calculating avg mse and mae
+    float avg_mse = float(std::accumulate(mse_vector.begin(), mse_vector.end(), 0.0f)) / float(mse_vector.size());
+    std::cout << "\nAverage MSE = " << avg_mse << "\n";
+    float avg_mae = float(std::accumulate(mae_vector.begin(), mae_vector.end(), 0.0f)) / float(mae_vector.size());
+    std::cout << "Average MAE = " << avg_mae << "\n\n";
   }
 
   return EXIT_SUCCESS;
