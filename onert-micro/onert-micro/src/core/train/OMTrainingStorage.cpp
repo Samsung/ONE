@@ -28,8 +28,7 @@ OMStatus OMTrainingStorage::initTrainingStorage(reader::OMCircleReader *reader, 
   if (reader == nullptr)
     return UnknownError;
 
-  _lambda = config.train_config.lambda;
-  _batches = config.train_config.batches;
+  _training_configs = config.train_config;
 
   // Reads mapping table
   _backprop_indexes_to_main_indexes_table = reader->readTensorsTrainIndexesTable();
@@ -46,4 +45,29 @@ OMStatus OMTrainingStorage::initTrainingStorage(reader::OMCircleReader *reader, 
   }
 
   return Ok;
+}
+
+OMStatus OMTrainingStorage::setGradientDataToTensorIndex(uint16_t tensor_index, uint8_t *data)
+{
+  auto it = _tensor_to_gradients.find(tensor_index);
+
+  assert(it == _tensor_to_gradients.end());
+  assert(data != nullptr);
+
+  if (it != _tensor_to_gradients.end())
+    return UnknownError;
+
+  _tensor_to_gradients[tensor_index] = data;
+
+  return Ok;
+}
+
+uint8_t * OMTrainingStorage::getGradientDataByTensorIndex(uint16_t tensor_index)
+{
+  auto it = _tensor_to_gradients.find(tensor_index);
+
+  if (it == _tensor_to_gradients.end())
+    return nullptr;
+
+  return _tensor_to_gradients.at(tensor_index);
 }

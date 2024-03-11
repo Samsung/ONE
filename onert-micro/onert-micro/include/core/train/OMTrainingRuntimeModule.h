@@ -39,6 +39,7 @@ private:
   std::vector<OMRuntimeGraph> _main_runtime_graphs;
   std::vector<OMRuntimeGraph> _backpropagation_runtime_graphs;
   train::OMTrainingStorage _training_storage;
+  bool _is_train_mode = false;
 
 public:
   OMTrainingRuntimeModule() = default;
@@ -47,6 +48,8 @@ public:
   OMTrainingRuntimeModule &operator=(const OMTrainingRuntimeModule &) = delete;
   OMTrainingRuntimeModule &&operator=(const OMTrainingRuntimeModule &&) = delete;
   ~OMTrainingRuntimeModule() = default;
+
+  void set_train_mode(bool is_train_mode) { _is_train_mode = is_train_mode; }
 
   // Import circle forward and backward model
   OMStatus import(const char *model_ptr, const char *backpropagation_model_ptr, const OMConfig &config);
@@ -91,6 +94,9 @@ private:
   OMStatus importMainModel(const char *model_ptr, const OMConfig &config);
 
   OMStatus importBackpropagationModel(const char *backpropagation_model_ptr, const OMConfig &config);
+
+  // Method to update with current optimization strategy
+  void updateSGDGradients(uint8_t *dest, uint8_t *src, size_t size);
 };
 
 } // namespace train

@@ -161,8 +161,8 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 5;
-  const float lambda = 0.005f;
+  const uint32_t training_epochs = 20;
+  const float lambda = 0.001f;
   const uint16_t batches = 1;
 
   // Configure training mode
@@ -172,7 +172,6 @@ int entry(int argc, char **argv)
   {
     onert_micro::OMTrainingConfig trainConfig;
     trainConfig.lambda = lambda;
-    trainConfig.update_weights_in_place = batches == 1? true : false;
     trainConfig.batches = batches;
 
     config.train_config = trainConfig;
@@ -272,11 +271,11 @@ int entry(int argc, char **argv)
 
   for (uint32_t e = 0; e < training_epochs; ++e)
   {
+    train_interpreter.set_training_mode(true);
     std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
     for (int i = 0; i < num_train_data_samples; i += batches)
     {
-      train_interpreter.reset();
-      for (uint32_t b = 0; b < batches; ++b)
+      for (uint32_t b = 0; b < batches and i + b < num_train_data_samples; ++b)
       {
         train_interpreter.allocateInputs();
         // Copy input data
@@ -307,15 +306,18 @@ int entry(int argc, char **argv)
       std::cout << "Weights:\n";
       train_interpreter.updateWeights();
       std::cout << "\n";
+      train_interpreter.reset();
     }
 
     // Run test dataset
     std::vector<float> mse_vector;
     std::vector<float> mae_vector;
+
+    train_interpreter.set_training_mode(false);
+
     std::cout << "Run test dataset for epoch: " << e + 1 << "/" << training_epochs << "\n";
     for (int i = 0; i < num_test_data_samples; i++)
     {
-      train_interpreter.reset();
       train_interpreter.allocateInputs();
       // Copy input data
       auto &cur_train_data = train_input_data.at(i);
@@ -333,6 +335,7 @@ int entry(int argc, char **argv)
                               reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
       mse_vector.push_back(mse);
       mae_vector.push_back(mae);
+      train_interpreter.reset();
     }
 
     // Calculating avg mse and mae

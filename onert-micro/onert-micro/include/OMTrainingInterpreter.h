@@ -38,6 +38,8 @@ public:
   OMTrainingInterpreter &&operator=(const OMTrainingInterpreter &&) = delete;
   ~OMTrainingInterpreter() = default;
 
+  void set_training_mode(bool is_training_mode) { _training_runtime_module.set_train_mode(is_training_mode); }
+
   // Import circle forward and backward model
   OMStatus import(const char *model_ptr, const char *backpropagation_model_ptr, const OMConfig &config);
 

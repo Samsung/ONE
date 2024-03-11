@@ -22,12 +22,18 @@
 namespace onert_micro
 {
 
+enum OMOptimizationStrategy
+{
+  SGD,
+  ADAM,
+};
+
 // Training specific options
 struct OMTrainingConfig
 {
-  bool update_weights_in_place = false;
   float lambda = 0.f;
   uint16_t batches = 1;
+  OMOptimizationStrategy optimization_strategy = SGD;
 };
 
 struct OMConfig

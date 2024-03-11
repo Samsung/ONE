@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "core/OMDataType.h"
 #include "core/train/OMTrainingRuntimeModule.h"
 
 #include "import/OMExecutionPlanCreator.h"
@@ -272,16 +273,6 @@ OMStatus OMTrainingRuntimeModule::importBackpropagationModel(const char *backpro
   // Resize graphs
   _backpropagation_runtime_graphs.resize(num_subgraph);
 
-  // Get tensors indexes for main graph, that should be saved during training
-  std::unordered_set<uint16_t> saved_tensors_indexes;
-  {
-    auto &mapping_table = _training_storage.getBackpropIndexesToMainIndexesTable();
-    for (const auto &map_pair : mapping_table)
-    {
-      saved_tensors_indexes.insert(map_pair.second);
-    }
-  }
-
   for (uint32_t i = 0; i < num_subgraph; ++i)
   {
     // 2 - load default graph
@@ -305,7 +296,7 @@ OMStatus OMTrainingRuntimeModule::importBackpropagationModel(const char *backpro
 
     // 4 - AllocDeallocPlan creation
     status = import::OMExecutionPlanCreator::createExecutionPlan(runtime_storage, runtime_context,
-                                                                 runtime_allocator, config, saved_tensors_indexes);
+                                                                 runtime_allocator, config);
     if (status != Ok)
       return status;
 
@@ -390,7 +381,8 @@ OMStatus OMTrainingRuntimeModule::backward()
 
       assert(data != nullptr);
 
-      assert(backprop_tensor_index_to_data.find(map_pair.first) == backprop_tensor_index_to_data.end());
+      assert(backprop_tensor_index_to_data.find(map_pair.first) ==
+             backprop_tensor_index_to_data.end());
       backprop_tensor_index_to_data[map_pair.first] = data;
 
       main_storage.removeTensorFromTensorIndexToData(map_pair.second);
@@ -402,11 +394,86 @@ OMStatus OMTrainingRuntimeModule::backward()
   execute::OMExecuteArgs execute_args = {backprop_graph.getRuntimeStorage(),
                                          backprop_graph.getRuntimeContext(), 0, nullptr};
 
-  status = execute::OMKernelExecute::executeKernel(execute_args, backprop_graph.getRuntimeAllocator());
+  status =
+    execute::OMKernelExecute::executeKernel(execute_args, backprop_graph.getRuntimeAllocator());
   if (status != Ok)
     return status;
 
+  // Move calculated output tensor data to training storage for gradients
+  auto *outputs_tensor_indexes =
+    _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
+  auto batch_size = _training_storage.getBatches();
+  auto &backpropagation_calculation_storage =
+    _backpropagation_runtime_graphs.at(0).getRuntimeStorage();
+
+  auto &backpropagation_context = _backpropagation_runtime_graphs.at(0).getRuntimeContext();
+
+  for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
+  {
+    // Get output data
+    auto output_index = outputs_tensor_indexes->operator[](i);
+    uint8_t *data = nullptr;
+    backpropagation_calculation_storage.getDataByTensorIndex(&data, output_index);
+    assert(data != nullptr);
+
+    uint8_t *gradient_data = _training_storage.getGradientDataByTensorIndex(output_index);
+    // If batch size is greater then 1, then we have to allocate memory for gradients
+    // Also check is data already allocated
+    if (gradient_data == nullptr)
+    {
+      // Move data
+      _training_storage.setGradientDataToTensorIndex(output_index, data);
+      backpropagation_calculation_storage.removeTensorFromTensorIndexToData(output_index);
+
+      continue;
+    }
+
+    assert(gradient_data != nullptr);
+
+    // Calculate data size
+    const circle::Tensor *tensor = backpropagation_context.getTensorByIndex(output_index);
+    const OMRuntimeShape tensor_shape(tensor);
+
+    int32_t num_elements = tensor_shape.flatSize();
+
+    assert(num_elements >= 0 && "Num elements should be positive");
+    if (num_elements < 0)
+      return UnknownError;
+    const auto casted_num_elements = static_cast<uint32_t>(num_elements);
+
+    auto optimization_strategy = _training_storage.getOptimizationStrategy();
+    switch (optimization_strategy)
+    {
+      case SGD:
+      {
+        updateSGDGradients(gradient_data, data, casted_num_elements);
+        break;
+      }
+      default:
+      {
+        assert("Unsupported optimization strategy");
+        return UnknownError;
+      }
+    }
+  }
+
+  _backpropagation_runtime_graphs.at(0).reset();
+
   return status;
+}
+
+void OMTrainingRuntimeModule::updateSGDGradients(uint8_t *dest, uint8_t *src, size_t size)
+{
+  assert(dest != nullptr); // Check caller
+  assert(src != nullptr);  // Check caller
+
+  float *dest_f = reinterpret_cast<float *>(dest);
+  float *src_f = reinterpret_cast<float *>(src);
+
+  for (size_t s = 0; s < size; s++)
+  {
+    dest_f[s] += src_f[s];
+  }
 }
 
 OMStatus OMTrainingRuntimeModule::reset()
@@ -424,8 +491,31 @@ OMStatus OMTrainingRuntimeModule::reset()
   if (_backpropagation_runtime_graphs.empty())
     return ModelNotImport;
 
+  // move data gradient back
   for (auto &graph : _backpropagation_runtime_graphs)
   {
+    if (not _is_train_mode)
+    {
+      graph.reset();
+      continue;
+    }
+
+    // Move calculated output tensor data to training storage for gradients
+    auto *outputs_tensor_indexes = graph.getRuntimeContext().getCircleOutputs();
+
+    auto &backpropagation_storage = graph.getRuntimeStorage();
+
+    for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
+    {
+      // Get output data
+      auto output_index = outputs_tensor_indexes->operator[](i);
+      uint8_t *data = _training_storage.getGradientDataByTensorIndex(output_index);
+
+      backpropagation_storage.saveDataToTensorIndex(data, output_index);
+    }
+
+    _training_storage.reset();
+
     graph.reset();
   }
 
@@ -434,13 +524,19 @@ OMStatus OMTrainingRuntimeModule::reset()
 
 OMStatus OMTrainingRuntimeModule::updateWeights()
 {
-  auto tensors_indexes = _training_storage.getBackpropIndexesToMainIndexesTable();
+  auto &tensors_indexes = _training_storage.getBackpropIndexesToMainIndexesTable();
   auto outputs_tensor_indexes = _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
+
+  float batch = static_cast<float>(_training_storage.getBatches());
+
   for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
   {
-    auto origin_index = tensors_indexes.at(outputs_tensor_indexes->operator[](i));
-    uint8_t *data;
-    _backpropagation_runtime_graphs.at(0).getRuntimeStorage().getDataByTensorIndex(&data, outputs_tensor_indexes->operator[](i));
+    auto output_index = outputs_tensor_indexes->operator[](i);
+    auto origin_index = tensors_indexes.at(output_index);
+    uint8_t *data = _training_storage.getGradientDataByTensorIndex(output_index);
+
+    assert(data != nullptr); // Check moving data
+
     uint8_t *weight_data;
     _main_runtime_graphs.at(0).getRuntimeContext().getConstDataByTensorIndex(&weight_data, origin_index);
     float *data_f = reinterpret_cast<float *>(data);
@@ -449,7 +545,7 @@ OMStatus OMTrainingRuntimeModule::updateWeights()
 
     for (uint32_t j = 0; j < output_size; ++j)
     {
-      weight_data_f[j] -= _training_storage.getLambda() * data_f[j];
+      weight_data_f[j] -= _training_storage.getLambda() * (data_f[j] / batch);
       std::cout << weight_data_f[j] << " ";
     }
     std::cout << "\n";
