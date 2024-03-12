@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +15,9 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_STATUS_H
-#define ONERT_MICRO_STATUS_H
+#ifndef ONERT_MICRO_EXECUTE_PAL_FULLY_CONNECTED_H
+#define ONERT_MICRO_EXECUTE_PAL_FULLY_CONNECTED_H
 
-namespace onert_micro
-{
+#include "PALFullyConnectedCommon.h"
 
-enum OMStatus
-{
-  Ok,
-  UnsupportedType,
-  UnsupportedQuantizationType,
-  UnsupportedActivation,
-  UnsupportedOp,
-  UnknownError,
-  ModelNotImport,
-  FailedCheckCondition,
-  NoQuantization,
-  UnsupportedQuantizationType,
-  UnsupportedDynamicShapeCase,
-};
-
-} // namespace onert_micro
-
-#endif // ONERT_MICRO_STATUS_H
+#endif // ONERT_MICRO_EXECUTE_PAL_FULLY_CONNECTED_H
