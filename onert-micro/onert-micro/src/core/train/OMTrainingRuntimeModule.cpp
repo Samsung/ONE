@@ -26,6 +26,7 @@
 #include "execute/OMKernelExecute.h"
 
 #include <unordered_set>
+#include <cmath>
 
 // TODO: remove it
 #include <iostream>
@@ -399,80 +400,85 @@ OMStatus OMTrainingRuntimeModule::backward()
   if (status != Ok)
     return status;
 
-  // Move calculated output tensor data to training storage for gradients
-  auto *outputs_tensor_indexes =
-    _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
-  auto batch_size = _training_storage.getBatches();
-  auto &backpropagation_calculation_storage =
-    _backpropagation_runtime_graphs.at(0).getRuntimeStorage();
-
-  auto &backpropagation_context = _backpropagation_runtime_graphs.at(0).getRuntimeContext();
-
-  for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
-  {
-    // Get output data
-    auto output_index = outputs_tensor_indexes->operator[](i);
-    uint8_t *data = nullptr;
-    backpropagation_calculation_storage.getDataByTensorIndex(&data, output_index);
-    assert(data != nullptr);
-
-    uint8_t *gradient_data = _training_storage.getGradientDataByTensorIndex(output_index);
-    // If batch size is greater then 1, then we have to allocate memory for gradients
-    // Also check is data already allocated
-    if (gradient_data == nullptr)
-    {
-      // Move data
-      _training_storage.setGradientDataToTensorIndex(output_index, data);
-      backpropagation_calculation_storage.removeTensorFromTensorIndexToData(output_index);
-
-      continue;
-    }
-
-    assert(gradient_data != nullptr);
-
-    // Calculate data size
-    const circle::Tensor *tensor = backpropagation_context.getTensorByIndex(output_index);
-    const OMRuntimeShape tensor_shape(tensor);
-
-    int32_t num_elements = tensor_shape.flatSize();
-
-    assert(num_elements >= 0 && "Num elements should be positive");
-    if (num_elements < 0)
-      return UnknownError;
-    const auto casted_num_elements = static_cast<uint32_t>(num_elements);
-
-    auto optimization_strategy = _training_storage.getOptimizationStrategy();
-    switch (optimization_strategy)
-    {
-      case SGD:
-      {
-        updateSGDGradients(gradient_data, data, casted_num_elements);
-        break;
-      }
-      default:
-      {
-        assert("Unsupported optimization strategy");
-        return UnknownError;
-      }
-    }
-  }
-
-  _backpropagation_runtime_graphs.at(0).reset();
-
   return status;
 }
 
-void OMTrainingRuntimeModule::updateSGDGradients(uint8_t *dest, uint8_t *src, size_t size)
+template <typename T>
+void OMTrainingRuntimeModule::updateSGDWeights(uint8_t *dest, uint8_t *src, size_t size)
 {
   assert(dest != nullptr); // Check caller
   assert(src != nullptr);  // Check caller
+  assert(size > 0); // Check caller
 
-  float *dest_f = reinterpret_cast<float *>(dest);
-  float *src_f = reinterpret_cast<float *>(src);
+  T *dest_f = reinterpret_cast<T *>(dest);
+  T *src_f = reinterpret_cast<T *>(src);
+
+  auto lamda = _training_storage.getLambda();
 
   for (size_t s = 0; s < size; s++)
   {
-    dest_f[s] += src_f[s];
+    dest_f[s] -= lamda * src_f[s];
+  }
+}
+
+template <typename T>
+void OMTrainingRuntimeModule::updateRMSPropWeights(uint8_t *dest, uint8_t *src, size_t size, uint16_t tensor_index)
+{
+  assert(dest != nullptr); // Check caller
+  assert(src != nullptr);  // Check caller
+  assert(size > 0); // Check caller
+
+  T *dest_f = reinterpret_cast<T *>(dest);
+  T *src_f = reinterpret_cast<T *>(src);
+
+  auto lamda = _training_storage.getLambda();
+  auto beta_squares = _training_storage.getBetaSquares();
+  auto epsilon = _training_storage.getEpsilon();
+
+  T *exp_avg_squares = reinterpret_cast<T *>(_training_storage.getExponentAvgSquaresData(tensor_index));
+  assert(exp_avg_squares != nullptr);
+
+  for (size_t s = 0; s < size; s++)
+  {
+    exp_avg_squares[s] = beta_squares * exp_avg_squares[s] + (1 - beta_squares) * std::pow(src_f[s], 2);
+    dest_f[s] -= lamda * (src_f[s] / (std::sqrt(exp_avg_squares[s] + epsilon)));
+  }
+}
+
+template <typename T>
+void OMTrainingRuntimeModule::updateADAMWeights(uint8_t *dest, uint8_t *src, size_t size, uint16_t tensor_index)
+{
+  assert(dest != nullptr); // Check caller
+  assert(src != nullptr);  // Check caller
+  assert(size > 0); // Check caller
+
+  T *dest_f = reinterpret_cast<T *>(dest);
+  T *src_f = reinterpret_cast<T *>(src);
+
+  auto lamda = _training_storage.getLambda();
+  auto beta = _training_storage.getBeta();
+  auto beta_squares = _training_storage.getBetaSquares();
+  auto epsilon = _training_storage.getEpsilon();
+  int32_t adam_step = _training_storage.getAdamStep();
+
+  // Add 1 step
+  adam_step++;
+
+  T *exp_avg_squares = reinterpret_cast<T *>(_training_storage.getExponentAvgSquaresData(tensor_index));
+  assert(exp_avg_squares != nullptr);
+
+  T *exp_avg = reinterpret_cast<T *>(_training_storage.getExponentAvgData(tensor_index));
+  assert(exp_avg != nullptr);
+
+  for (size_t s = 0; s < size; s++)
+  {
+    exp_avg[s] = beta * exp_avg[s] + (1 - beta) * src_f[s];
+    exp_avg_squares[s] = beta_squares * exp_avg_squares[s] + (1 - beta_squares) * std::pow(src_f[s], 2);
+
+    auto exp_avg_corrected = exp_avg[s] / (1.f - std::pow(beta, adam_step));
+    auto exp_avg_squares_corrected = exp_avg_squares[s] / (1.f - std::pow(beta_squares, adam_step));
+
+    dest_f[s] -= lamda * (exp_avg_corrected / (std::sqrt(exp_avg_squares_corrected) + epsilon));
   }
 }
 
@@ -483,39 +489,16 @@ OMStatus OMTrainingRuntimeModule::reset()
   if (_main_runtime_graphs.empty())
     return ModelNotImport;
 
+  if (_backpropagation_runtime_graphs.empty())
+    return ModelNotImport;
+
   for (auto &graph : _main_runtime_graphs)
   {
     graph.reset();
   }
 
-  if (_backpropagation_runtime_graphs.empty())
-    return ModelNotImport;
-
-  // move data gradient back
   for (auto &graph : _backpropagation_runtime_graphs)
   {
-    if (not _is_train_mode)
-    {
-      graph.reset();
-      continue;
-    }
-
-    // Move calculated output tensor data to training storage for gradients
-    auto *outputs_tensor_indexes = graph.getRuntimeContext().getCircleOutputs();
-
-    auto &backpropagation_storage = graph.getRuntimeStorage();
-
-    for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
-    {
-      // Get output data
-      auto output_index = outputs_tensor_indexes->operator[](i);
-      uint8_t *data = _training_storage.getGradientDataByTensorIndex(output_index);
-
-      backpropagation_storage.saveDataToTensorIndex(data, output_index);
-    }
-
-    _training_storage.reset();
-
     graph.reset();
   }
 
@@ -527,28 +510,48 @@ OMStatus OMTrainingRuntimeModule::updateWeights()
   auto &tensors_indexes = _training_storage.getBackpropIndexesToMainIndexesTable();
   auto outputs_tensor_indexes = _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
 
-  float batch = static_cast<float>(_training_storage.getBatches());
+  auto &backpop_storage = _backpropagation_runtime_graphs.at(0).getRuntimeStorage();
+  auto &main_graph_context = _main_runtime_graphs.at(0).getRuntimeContext();
 
+  auto optimization_strategy = _training_storage.getOptimizationStrategy();
   for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
   {
     auto output_index = outputs_tensor_indexes->operator[](i);
     auto origin_index = tensors_indexes.at(output_index);
-    uint8_t *data = _training_storage.getGradientDataByTensorIndex(output_index);
 
-    assert(data != nullptr); // Check moving data
+    uint8_t *gradients_data = nullptr;
+    OMStatus status = backpop_storage.getDataByTensorIndex(&gradients_data, output_index);
+
+    assert(gradients_data != nullptr); // Check data is calculated
 
     uint8_t *weight_data;
-    _main_runtime_graphs.at(0).getRuntimeContext().getConstDataByTensorIndex(&weight_data, origin_index);
-    float *data_f = reinterpret_cast<float *>(data);
-    float *weight_data_f = reinterpret_cast<float *>(weight_data);
+    status = main_graph_context.getConstDataByTensorIndex(&weight_data, origin_index);
+
     const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
 
-    for (uint32_t j = 0; j < output_size; ++j)
+    switch (optimization_strategy)
     {
-      weight_data_f[j] -= _training_storage.getLambda() * (data_f[j] / batch);
-      std::cout << weight_data_f[j] << " ";
+      case SGD:
+      {
+        updateSGDWeights<float>(weight_data, gradients_data, output_size);
+        break;
+      }
+      case RMSProp:
+      {
+        updateRMSPropWeights<float>(weight_data, gradients_data, output_size, output_index);
+        break;
+      }
+      case ADAM:
+      {
+        updateADAMWeights<float>(weight_data, gradients_data, output_size, output_index);
+        break;
+      }
+      default:
+      {
+        assert(false && "Unsuppoprted optimization strategy");
+        return UnsupportedType;
+      }
     }
-    std::cout << "\n";
   }
 
   return Ok;

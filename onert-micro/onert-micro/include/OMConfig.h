@@ -25,6 +25,7 @@ namespace onert_micro
 enum OMOptimizationStrategy
 {
   SGD,
+  RMSProp,
   ADAM,
 };
 
@@ -32,7 +33,9 @@ enum OMOptimizationStrategy
 struct OMTrainingConfig
 {
   float lambda = 0.f;
-  uint16_t batches = 1;
+  float beta_squares = 0.9f;
+  float beta = 0.9f;
+  float epsilon = 10e-8;
   OMOptimizationStrategy optimization_strategy = SGD;
 };
 

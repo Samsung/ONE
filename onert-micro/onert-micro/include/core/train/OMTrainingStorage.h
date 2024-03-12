@@ -39,25 +39,37 @@ class OMTrainingStorage
 private:
   std::unordered_map<uint16_t, uint16_t> _backprop_indexes_to_main_indexes_table = {};
   std::vector<uint16_t> _targets_indexes;
-  std::unordered_map<uint16_t, uint8_t *> _tensor_to_gradients;
+  std::unordered_map<uint16_t, uint8_t *> _tensor_to_exponent_avg_squares = {};
+  std::unordered_map<uint16_t, uint8_t *> _tensor_to_exponent_avg = {};
+  uint16_t _adam_step = 0;
   onert_micro::OMTrainingConfig _training_configs;
 
 public:
+  OMTrainingStorage() = default;
+  OMTrainingStorage(const OMTrainingStorage &) = delete;
+  OMTrainingStorage &operator=(const OMTrainingStorage &) = delete;
+  OMTrainingStorage &&operator=(const OMTrainingStorage &&) = delete;
+  OMTrainingStorage(OMTrainingStorage &&) = default;
+
+  ~OMTrainingStorage();
+
   OMStatus initTrainingStorage(core::reader::OMCircleReader *reader, const OMConfig &config);
 
   // Getters
   float getLambda() { return _training_configs.lambda; }
-  uint16_t getBatches() { return _training_configs.batches; }
+  float getBeta() { return _training_configs.beta; }
+  float getBetaSquares() { return _training_configs.beta_squares; }
+  float getEpsilon() { return _training_configs.epsilon; }
+  uint16_t &getAdamStep() { return _adam_step; }
+
+  // Exponent average squares
+  uint8_t *getExponentAvgSquaresData(uint16_t tensor_index);
+  uint8_t *getExponentAvgData(uint16_t tensor_index);
+
   std::vector<uint16_t> &getTargetsIndexes() { return _targets_indexes; }
   std::unordered_map<uint16_t, uint16_t> &getBackpropIndexesToMainIndexesTable() { return _backprop_indexes_to_main_indexes_table; }
 
-  OMStatus setGradientDataToTensorIndex(uint16_t tensor_index, uint8_t *data);
-  uint8_t *getGradientDataByTensorIndex(uint16_t tensor_index);
-
   onert_micro::OMOptimizationStrategy getOptimizationStrategy() { return _training_configs.optimization_strategy; }
-
-  // Clear tensor gradients
-  void reset() { _tensor_to_gradients.clear(); }
 };
 
 } // namespace train

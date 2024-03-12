@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_CORE_TRAIN_TRAINING_RUNTIME_MODULE_H
-#define ONERT_MICRO_CORE_TRAIN_TRAINING_RUNTIME_MODULE_H
+#ifndef ONERT_MICRO_CORE_TRAIN_BACKPROPAGATION_RUNTIME_MODULE_H
+#define ONERT_MICRO_CORE_TRAIN_BACKPROPAGATION_RUNTIME_MODULE_H
 
 #include "OMStatus.h"
 #include "OMConfig.h"
@@ -33,7 +33,7 @@ namespace core
 namespace train
 {
 
-class OMTrainingRuntimeModule
+class OMBackpropagationRuntimeModule
 {
 private:
   std::vector<OMRuntimeGraph> _main_runtime_graphs;
@@ -96,18 +96,11 @@ private:
   OMStatus importBackpropagationModel(const char *backpropagation_model_ptr, const OMConfig &config);
 
   // Method to update with current optimization strategy
-  template <typename T>
-  void updateSGDWeights(uint8_t *dest, uint8_t *src, size_t size);
-
-  template <typename T>
-  void updateRMSPropWeights(uint8_t *dest, uint8_t *src, size_t size, uint16_t tensor_index);
-
-    template <typename T>
-  void updateADAMWeights(uint8_t *dest, uint8_t *src, size_t size, uint16_t tensor_index);
+  void updateSGDGradients(uint8_t *dest, uint8_t *src, size_t size);
 };
 
 } // namespace train
 } // namespace core
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_CORE_TRAIN_TRAINING_RUNTIME_MODULE_H
+#endif // ONERT_MICRO_CORE_TRAIN_BACKPROPAGATION_RUNTIME_MODULE_H
