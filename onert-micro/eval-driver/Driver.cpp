@@ -150,6 +150,7 @@ int entry(int argc, char **argv)
 
   interpreter.importModel(model_data.data(), config);
 
+  num_inputs = interpreter.getNumberOfInputs();
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
@@ -170,7 +171,7 @@ int entry(int argc, char **argv)
   }
 
   // Get output.
-  int num_outputs = 1;
+  int num_outputs = interpreter.getNumberOfOutputs();
   for (int i = 0; i < num_outputs; i++)
   {
     auto data = interpreter.getOutputDataAt(i);

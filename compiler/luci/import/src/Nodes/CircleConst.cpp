@@ -121,7 +121,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   if (const_tensor->is_variable())
   {
     // Create CircleVariable for variable
-    return nullptr;
+    //return nullptr;
   }
 
   assert(reader->buffers()[const_tensor->buffer()] != nullptr);
@@ -130,7 +130,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   if (const_dims.size() == 0 && buffer.empty())
   {
     // unknown shape tensor and scalar tensor
-    return nullptr;
+    //return nullptr;
   }
 
   // if tensor_index is used as output to some other operator, this is not a constant
@@ -150,7 +150,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   if (buffer.empty() && num_elements > 0)
   {
     // normal empty tensor
-    return nullptr;
+    //return nullptr;
   }
 
   auto const_node = graph->nodes()->create<CircleConst>();
@@ -158,6 +158,9 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   const_node->shape_status(luci::ShapeStatus::VALID);
   INFO(l) << "[luci] NodeFinder const_node(" << tensor_index << ") -> " << const_node << " "
           << const_dims << std::endl;
+
+  if (buffer.empty())
+    return const_node;
   if (num_elements > 0)
   {
     switch (luci_datatype(const_tensor->type()))

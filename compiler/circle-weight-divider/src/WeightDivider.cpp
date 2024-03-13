@@ -74,7 +74,6 @@ bool WeightDivider::divide()
       luci::CircleNode *cnode = dynamic_cast<luci::CircleNode *>(node);
       if (cnode == nullptr)
         continue;
-      ;
       try
       {
         auto node_id = luci::get_node_id(cnode);

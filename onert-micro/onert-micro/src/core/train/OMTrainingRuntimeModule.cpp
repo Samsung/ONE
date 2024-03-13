@@ -274,6 +274,17 @@ OMStatus OMTrainingRuntimeModule::importBackpropagationModel(const char *backpro
   // Resize graphs
   _backpropagation_runtime_graphs.resize(num_subgraph);
 
+//  // Get tensors indexes for main graph, that should be saved during training
+//  std::unordered_set<uint16_t> saved_tensors_indexes;
+//  {
+//    auto &mapping_table = _training_storage.getBackpropIndexesToMainIndexesTable();
+//    for (const auto &map_pair : mapping_table)
+//    {
+//      if
+//      saved_tensors_indexes.insert(map_pair.second);
+//    }
+//  }
+
   for (uint32_t i = 0; i < num_subgraph; ++i)
   {
     // 2 - load default graph
@@ -367,6 +378,7 @@ OMStatus OMTrainingRuntimeModule::backward()
   // Move tensors data from main to backprop graph
   {
     auto &main_storage = _main_runtime_graphs.at(0).getRuntimeStorage();
+    auto &main_context = _main_runtime_graphs.at(0).getRuntimeContext();
     auto &backprop_storage = _backpropagation_runtime_graphs.at(0).getRuntimeStorage();
 
     auto &main_tensor_index_to_data = main_storage.getTensorIndexToData();
@@ -380,13 +392,24 @@ OMStatus OMTrainingRuntimeModule::backward()
         continue;
       auto *data = main_tensor_index_to_data.at(map_pair.second);
 
-      assert(data != nullptr);
+      // Lets try to find data in const part of main graph
+      if (data == nullptr)
+      {
+        main_context.getConstDataByTensorIndex(&data, map_pair.second);
+        assert(data != nullptr);
 
-      assert(backprop_tensor_index_to_data.find(map_pair.first) ==
-             backprop_tensor_index_to_data.end());
+        assert(backprop_tensor_index_to_data.find(map_pair.first) ==
+               backprop_tensor_index_to_data.end());
+      } else
+      {
+        assert(data != nullptr);
+
+        assert(backprop_tensor_index_to_data.find(map_pair.first) ==
+               backprop_tensor_index_to_data.end());
+        main_storage.removeTensorFromTensorIndexToData(map_pair.second);
+      }
       backprop_tensor_index_to_data[map_pair.first] = data;
 
-      main_storage.removeTensorFromTensorIndexToData(map_pair.second);
     }
   }
 

@@ -25,6 +25,26 @@ namespace onert_micro
 namespace core
 {
 
+struct TransposeParams
+{
+  int8_t perm_count;
+  int32_t perm[5];
+};
+
+struct ComparisonParams
+{
+  // uint8_t inference params.
+  int left_shift;
+  int32_t input1_offset;
+  int32_t input1_multiplier;
+  int input1_shift;
+  int32_t input2_offset;
+  int32_t input2_multiplier;
+  int input2_shift;
+  // Shape dependent / common to inference types.
+  bool is_broadcast;
+};
+
 enum class BroadcastableOpCategory : uint8_t
 {
   kNone,
