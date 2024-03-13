@@ -1,0 +1,39 @@
+# This recipe is just to check processing of INT4 models.
+# do not run this model in any interpreter or runtime as it may throw an error.
+operand {
+  name: "ifm1"
+  type: INT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ifm2"
+  type: INT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "-8" arg: "-7" arg: "-6" arg: "-5"
+    arg: "-4" arg: "-3" arg: "-2" arg: "-1"
+    arg: "0" arg: "1" arg: "2" arg: "3"
+    arg: "4" arg: "5" arg: "6" arg: "7"
+  }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "ofm"
+  type: INT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+input: "ifm1"
+output: "ofm"
