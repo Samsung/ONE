@@ -7,4 +7,5 @@
 OP_CHEF(BatchMatMul, BatchMatMulChefFactory)
 OP_CHEF(BCQFullyConnected, BCQFullyConnectedChefFactory)
 OP_CHEF(BCQGather, BCQGatherChefFactory)
+OP_CHEF(GRU, GRUChefFactory)
 OP_CHEF(InstanceNorm, InstanceNormChefFactory)
