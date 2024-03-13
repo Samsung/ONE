@@ -626,7 +626,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::QuantizeWeights))
   {
     static const std::vector<std::string> qw_supported_input_model_dtype{"float32"};
-    static const std::vector<std::string> qw_supported_output_model_dtype{"int8", "int16"};
+    static const std::vector<std::string> qw_supported_output_model_dtype{"int4", "int8", "int16"};
     static const std::vector<std::string> qw_supported_granularity{"channel"};
 
     auto input_model_dtype =

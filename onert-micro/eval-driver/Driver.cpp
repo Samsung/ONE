@@ -58,7 +58,7 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 5)
+  if (argc != 3)
   {
     std::cerr
       << "Usage: " << argv[0]
@@ -68,8 +68,8 @@ int entry(int argc, char **argv)
 
   const char *filename = argv[1];
   const int32_t num_inputs = atoi(argv[2]);
-  const char *input_prefix = argv[3];
-  const char *output_file = argv[4];
+//  const char *input_prefix = argv[3];
+//  const char *output_file = argv[4];
 
   std::ifstream file(filename, std::ios::binary | std::ios::in);
   if (!file.good())
@@ -105,8 +105,9 @@ int entry(int argc, char **argv)
     for (int32_t i = 0; i < num_inputs; i++)
     {
       auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(i));
-      readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
-                       interpreter.getInputDataSizeByIndex(i));
+      *(float*) input_data = 3.1415;
+//      readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
+//                       interpreter.getInputDataSizeByIndex(i));
     }
 
     // Do inference.
@@ -118,11 +119,11 @@ int entry(int argc, char **argv)
   for (int i = 0; i < num_outputs; i++)
   {
     auto data = interpreter.readOutputTensor(i);
-
+    std::cout << *(float*) data << "\n";
     // Output data is written in ${output_file}
     // (ex: Add.circle.output0)
-    writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
-                    interpreter.getOutputDataSizeByIndex(i));
+//    writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
+//                    interpreter.getOutputDataSizeByIndex(i));
   }
   return EXIT_SUCCESS;
 }

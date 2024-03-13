@@ -35,6 +35,12 @@ template <DataType DT> struct DataTypeImpl
 };
 
 // TODO Support other enum values
+template <> struct DataTypeImpl<DataType::S4>
+{
+  // Use C++ uint8_t type for int4
+  using Type = int8_t;
+};
+
 template <> struct DataTypeImpl<DataType::S8>
 {
   // Use C++ int8_t type for 8bit integer
@@ -123,6 +129,8 @@ inline uint32_t size(DataType data_type)
 {
   switch (data_type)
   {
+    case DataType::S4:
+      return sizeof(DataTypeImpl<DataType::S4>::Type);
     case DataType::S8:
       return sizeof(DataTypeImpl<DataType::S8>::Type);
     case DataType::U8:
