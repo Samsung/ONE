@@ -535,6 +535,12 @@ public:
     return circle::CreateBCQGatherOptions(_builder, node->input_hidden_size(), node->axis())
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleGRU *node)
+  {
+    return circle::CreateGRUOptions(_builder, to_circle_actfunc(node->fusedActivationFunction()),
+                                    node->returnSequences(), node->timeMajor())
+      .Union();
+  }
   flatbuffers::Offset<void> visit(luci::CircleInstanceNorm *node)
   {
     return circle::CreateInstanceNormOptions(_builder, node->epsilon(),
