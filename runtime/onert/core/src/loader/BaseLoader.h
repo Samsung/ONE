@@ -321,6 +321,8 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     // case TensorType::TensorType_FLOAT64
     case TensorType::TensorType_UINT32:
       return ir::DataType::UINT32;
+    case TensorType::TensorType_INT4:
+      return ir::DataType::QUANT_INT4_SYMM;
     default:
       throw std::runtime_error(
         std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
