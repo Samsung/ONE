@@ -55,6 +55,11 @@ OMStatus Softmax(const core::SoftmaxParams &params, const float *input_data, flo
       sum += exp_c;
     }
 
+    assert(sum != 0);
+
+    if (sum == 0)
+      return UnknownError;
+
     // Compute result.
     for (int c = 0; c < depth; ++c)
     {
