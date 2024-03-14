@@ -71,7 +71,8 @@ OMStatus OMExecutionPlanCreator::createExecutionPlan(core::OMRuntimeStorage &run
 
       if (lifetimes.count(input_index) > 0)
       {
-        if (kernel_type == Inplace or saved_tensors_indexes.find(input_index) != saved_tensors_indexes.end())
+        // TODO: replace saved_tesnors_indexes with new kernel type
+        if ((kernel_type == Inplace and j == 0) or saved_tensors_indexes.find(input_index) != saved_tensors_indexes.end())
           lifetimes.at(input_index).second = -1;
         else
           lifetimes.at(input_index).second = index;

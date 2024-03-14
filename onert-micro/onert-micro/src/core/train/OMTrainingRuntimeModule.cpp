@@ -384,32 +384,40 @@ OMStatus OMTrainingRuntimeModule::backward()
     auto &main_tensor_index_to_data = main_storage.getTensorIndexToData();
     auto &backprop_tensor_index_to_data = backprop_storage.getTensorIndexToData();
 
+    auto output_back_prop_tensors =
+      _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
+
     auto tensors_indexes = _training_storage.getBackpropIndexesToMainIndexesTable();
     for (const auto &map_pair : tensors_indexes)
     {
-      //assert(main_tensor_index_to_data.find(map_pair.second) != main_tensor_index_to_data.end());
-      if (main_tensor_index_to_data.find(map_pair.second) == main_tensor_index_to_data.end())
+      // assert(main_tensor_index_to_data.find(map_pair.second) != main_tensor_index_to_data.end());
+      auto it = main_tensor_index_to_data.find(map_pair.second);
+
+      uint8_t *data = nullptr;
+
+      if (std::find(output_back_prop_tensors->begin(), output_back_prop_tensors->end(),
+                    map_pair.first) != output_back_prop_tensors->end())
         continue;
-      auto *data = main_tensor_index_to_data.at(map_pair.second);
 
       // Lets try to find data in const part of main graph
-      if (data == nullptr)
+      if (it == main_tensor_index_to_data.end())
       {
         main_context.getConstDataByTensorIndex(&data, map_pair.second);
-        assert(data != nullptr);
-
-        assert(backprop_tensor_index_to_data.find(map_pair.first) ==
-               backprop_tensor_index_to_data.end());
-      } else
+        //        assert(data != nullptr);
+      }
+      else
       {
+        data = main_tensor_index_to_data.at(map_pair.second);
         assert(data != nullptr);
 
-        assert(backprop_tensor_index_to_data.find(map_pair.first) ==
-               backprop_tensor_index_to_data.end());
         main_storage.removeTensorFromTensorIndexToData(map_pair.second);
       }
-      backprop_tensor_index_to_data[map_pair.first] = data;
+      if (data == nullptr)
+        continue;
 
+      assert(backprop_tensor_index_to_data.find(map_pair.first) ==
+             backprop_tensor_index_to_data.end() or _backpropagation_runtime_graphs.at(0).getRuntimeContext().isConstTensor(map_pair.first) == true);
+      backprop_tensor_index_to_data[map_pair.first] = data;
     }
   }
 
@@ -422,6 +430,60 @@ OMStatus OMTrainingRuntimeModule::backward()
     execute::OMKernelExecute::executeKernel(execute_args, backprop_graph.getRuntimeAllocator());
   if (status != Ok)
     return status;
+
+  // Update gradients (SGD)
+  //assert(_training_storage.getOptimizationStrategy() == SGD);
+  auto output_tensors =
+    _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
+  auto tensors = _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleTensors();
+  for (uint32_t i = 0; i < output_tensors->size(); ++i)
+  {
+    auto output_index = output_tensors->operator[](i);
+    uint8_t *calculated_data = nullptr;
+    _backpropagation_runtime_graphs.at(0).getRuntimeStorage().getDataByTensorIndex(&calculated_data, output_index);
+    assert(calculated_data != nullptr);
+
+    uint8_t *gradient_data = _training_storage.getGradientData(output_index);
+    assert(gradient_data != nullptr);
+
+    uint8_t *exp_square_data = _training_storage.getExponentAvgSquaresData(output_index);
+    assert(exp_square_data != nullptr);
+
+    uint8_t *exp_data = _training_storage.getExponentAvgData(output_index);
+    assert(exp_data != nullptr);
+
+    const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
+    float *grad_data_f = reinterpret_cast<float *>(gradient_data);
+    float *exp_square_data_f = reinterpret_cast<float *>(exp_square_data);
+    float *exp_data_f = reinterpret_cast<float *>(exp_data);
+    auto beta = _training_storage.getBeta();
+    auto beta_squares = _training_storage.getBetaSquares();
+
+    float *calculated_data_f = reinterpret_cast<float *>(calculated_data);
+
+    if (_training_storage.getOptimizationStrategy() == SGD)
+    {
+      for (uint32_t j = 0; j < output_size; ++j)
+      {
+        auto tmp_1 = grad_data_f[j];
+        auto tmp_2 = calculated_data_f[j];
+        grad_data_f[j] += calculated_data_f[j];
+      }
+    } else
+    {
+      for (uint32_t s = 0; s < output_size; ++s)
+      {
+        exp_data_f[s] = beta * exp_data_f[s] + (1 - beta) * calculated_data_f[s];
+        exp_square_data_f[s] = beta_squares * exp_square_data_f[s] +
+                             (1 - beta_squares) * std::pow(calculated_data_f[s], 2);
+        auto tmp1 = exp_data_f[s];
+        auto tmp2 = exp_square_data_f[s];
+        auto tmp3 = tmp2 - tmp1;
+      }
+    }
+  }
+
+  _backpropagation_runtime_graphs.at(0).reset();
 
   return status;
 }
@@ -437,10 +499,14 @@ void OMTrainingRuntimeModule::updateSGDWeights(uint8_t *dest, uint8_t *src, size
   T *src_f = reinterpret_cast<T *>(src);
 
   auto lamda = _training_storage.getLambda();
+  auto batches = static_cast<float>(_training_storage.getBatches());
 
   for (size_t s = 0; s < size; s++)
   {
-    dest_f[s] -= lamda * src_f[s];
+    auto tmp_d = dest_f[s];
+    auto tmp_f = src_f[s];
+
+    dest_f[s] -= lamda * src_f[s] / batches;
   }
 }
 
@@ -482,6 +548,7 @@ void OMTrainingRuntimeModule::updateADAMWeights(uint8_t *dest, uint8_t *src, siz
   auto beta = _training_storage.getBeta();
   auto beta_squares = _training_storage.getBetaSquares();
   auto epsilon = _training_storage.getEpsilon();
+  auto batches = static_cast<float>(_training_storage.getBatches());
   int32_t adam_step = _training_storage.getAdamStep();
 
   // Add 1 step
@@ -495,13 +562,13 @@ void OMTrainingRuntimeModule::updateADAMWeights(uint8_t *dest, uint8_t *src, siz
 
   for (size_t s = 0; s < size; s++)
   {
-    exp_avg[s] = beta * exp_avg[s] + (1 - beta) * src_f[s];
-    exp_avg_squares[s] = beta_squares * exp_avg_squares[s] + (1 - beta_squares) * std::pow(src_f[s], 2);
+//    exp_avg[s] = beta * exp_avg[s] + (1 - beta) * src_f[s];
+//    exp_avg_squares[s] = beta_squares * exp_avg_squares[s] + (1 - beta_squares) * std::pow(src_f[s], 2);
 
-    auto exp_avg_corrected = exp_avg[s] / (1.f - std::pow(beta, adam_step));
-    auto exp_avg_squares_corrected = exp_avg_squares[s] / (1.f - std::pow(beta_squares, adam_step));
+    auto exp_avg_corrected = exp_avg[s] / (1.f - std::pow(beta, batches));
+    auto exp_avg_squares_corrected = exp_avg_squares[s] / (1.f - std::pow(beta_squares, batches));
 
-    dest_f[s] -= lamda * (exp_avg_corrected / (std::sqrt(exp_avg_squares_corrected) + epsilon));
+    dest_f[s] -= lamda * (exp_avg_corrected / (std::sqrt(exp_avg_squares_corrected + epsilon)));
   }
 }
 
@@ -525,6 +592,45 @@ OMStatus OMTrainingRuntimeModule::reset()
     graph.reset();
   }
 
+  // Reset gradients (SGD)
+ // assert(_training_storage.getOptimizationStrategy() == SGD);
+  auto output_tensors =
+    _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleOutputs();
+  auto tensors = _backpropagation_runtime_graphs.at(0).getRuntimeContext().getCircleTensors();
+  for (uint32_t i = 0; i < output_tensors->size(); ++i)
+  {
+    auto output_index = output_tensors->operator[](i);
+
+    uint8_t *gradient_data = _training_storage.getGradientData(output_index);
+    assert(gradient_data != nullptr);
+
+    uint8_t *exp_square_data = _training_storage.getExponentAvgSquaresData(output_index);
+    assert(exp_square_data != nullptr);
+
+    uint8_t *exp_data = _training_storage.getExponentAvgData(output_index);
+    assert(exp_data != nullptr);
+
+    const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
+    float *grad_data_f = reinterpret_cast<float *>(gradient_data);
+    float *exp_square_data_f = reinterpret_cast<float *>(exp_square_data);
+    float *exp_data_f = reinterpret_cast<float *>(exp_data);
+    if (_training_storage.getOptimizationStrategy() == SGD)
+    {
+      for (uint32_t j = 0; j < output_size; ++j)
+      {
+        grad_data_f[j] = 0.f;
+      }
+    } else
+    {
+      for (uint32_t j = 0; j < output_size; ++j)
+      {
+        grad_data_f[j] = 0.f;
+        exp_square_data_f[j] = 0.f;
+        exp_data_f[j] = 0.f;
+      }
+    }
+  }
+
   return status;
 }
 
@@ -539,16 +645,17 @@ OMStatus OMTrainingRuntimeModule::updateWeights()
   auto optimization_strategy = _training_storage.getOptimizationStrategy();
   for (uint16_t i = 0; i < outputs_tensor_indexes->size(); ++i)
   {
+//    if (i == 1)
+//      break;
     auto output_index = outputs_tensor_indexes->operator[](i);
     auto origin_index = tensors_indexes.at(output_index);
 
-    uint8_t *gradients_data = nullptr;
-    OMStatus status = backpop_storage.getDataByTensorIndex(&gradients_data, output_index);
+    uint8_t *gradients_data = _training_storage.getGradientData(output_index);
 
     assert(gradients_data != nullptr); // Check data is calculated
 
     uint8_t *weight_data;
-    status = main_graph_context.getConstDataByTensorIndex(&weight_data, origin_index);
+    OMStatus status = main_graph_context.getConstDataByTensorIndex(&weight_data, origin_index);
 
     const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
 

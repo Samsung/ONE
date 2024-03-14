@@ -36,6 +36,7 @@ struct OMTrainingConfig
   float beta_squares = 0.9f;
   float beta = 0.9f;
   float epsilon = 10e-8;
+  uint16_t batches = 1;
   OMOptimizationStrategy optimization_strategy = SGD;
 };
 

@@ -161,7 +161,7 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 5;
+  const uint32_t training_epochs = 100;
   const float lambda = 0.001f;
 
   // Configure training mode
@@ -174,6 +174,7 @@ int entry(int argc, char **argv)
     trainConfig.optimization_strategy = onert_micro::ADAM;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
+    trainConfig.batches = 32;
 
     config.train_config = trainConfig;
   }
@@ -274,35 +275,40 @@ int entry(int argc, char **argv)
   {
     train_interpreter.set_training_mode(true);
     std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
-    for (int i = 0; i < num_train_data_samples; ++i)
+    for (int i = 0; i < num_train_data_samples; i += config.train_config.batches)
     {
-      train_interpreter.allocateInputs();
-      // Copy input data
-      auto &cur_train_data = train_input_data.at(i);
-      auto cur_input_data = train_interpreter.getInputDataAt(0);
-      std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
+      for (int batch = 0; batch < config.train_config.batches and i + batch < num_train_data_samples; ++batch)
+      {
+        train_interpreter.allocateInputs();
+        // Copy input data
+        auto &cur_train_data = train_input_data.at(i + batch);
+        auto cur_input_data = train_interpreter.getInputDataAt(0);
+        std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
 
-      train_interpreter.forward();
+        train_interpreter.forward();
 
-      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                                reinterpret_cast<float *>(train_target_data.at(i).data()),
-                                target_size);
-      calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                   reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
-      calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                   reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
+//        printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                                  reinterpret_cast<float *>(train_target_data.at(i + batch ).data()),
+//                                  target_size);
+//        calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                     reinterpret_cast<float *>(train_target_data.at(i + batch).data()), target_size);
+//        calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                     reinterpret_cast<float *>(train_target_data.at(i + batch).data()), target_size);
 
-      train_interpreter.allocateTargets();
+        train_interpreter.allocateTargets();
 
-      // Copy targets values
-      auto &cur_train_target_data = train_target_data.at(i);
-      auto cur_target_data = train_interpreter.getTargetDataAt(0);
-      std::memcpy(cur_target_data, cur_train_target_data.data(), sizeof(MODEL_TYPE) * target_size);
+        // Copy targets values
+        auto &cur_train_target_data = train_target_data.at(i + batch);
+        auto cur_target_data = train_interpreter.getTargetDataAt(0);
+        std::memcpy(cur_target_data, cur_train_target_data.data(),
+                    sizeof(MODEL_TYPE) * target_size);
 
-      train_interpreter.backward();
-      std::cout << "Weights:\n";
+        train_interpreter.backward();
+      }
+
       train_interpreter.updateWeights();
-      std::cout << "\n";
+     // std::cout << "Update weights\n";
+      //std::cout << "\n";
       train_interpreter.reset();
     }
 

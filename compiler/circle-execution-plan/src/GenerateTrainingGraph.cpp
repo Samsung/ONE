@@ -98,24 +98,34 @@ std::map<uint32_t, uint32_t> training_graph::GenerateTrainingGraph::createMapTen
   std::map<uint32_t, uint32_t> result;
 
   // Create and fill std::map from origin net: key is name, value is tensor index in origin model
-  std::map<std::string, uint32_t> origin_name_to_tensor_index;
+  std::map<std::string, uint32_t> back_name_to_tensor_index;
   auto origin_tensors = reader_origin.tensors();
-  for (uint32_t i = 0; i < origin_tensors.size(); ++i)
-  {
-    auto tensor = origin_tensors.at(i);
-    origin_name_to_tensor_index[tensor->name()->str()] = i;
-  }
-
   auto train_tensors = reader_train.tensors();
   for (uint32_t i = 0; i < train_tensors.size(); ++i)
   {
     auto tensor = train_tensors.at(i);
-    auto tensor_name = tensor->name()->str();
-    if (origin_name_to_tensor_index.find(tensor_name) == origin_name_to_tensor_index.end())
-      continue;
+    back_name_to_tensor_index[tensor->name()->str()] = i;
+  }
 
-    uint32_t origin_index = origin_name_to_tensor_index[tensor_name];
-    result[i] = origin_index;
+
+  for (uint32_t i = 0; i < origin_tensors.size(); ++i)
+  {
+    auto tensor = origin_tensors.at(i);
+    auto tensor_name = tensor->name()->str();
+    auto gradient_name = tensor_name + "_gradient";
+
+    auto it_orig_name = back_name_to_tensor_index.find(tensor_name);
+    auto it_grad_name = back_name_to_tensor_index.find(gradient_name);
+    if (it_orig_name != back_name_to_tensor_index.end())
+    {
+      uint32_t origin_index = it_orig_name->second;
+      result[origin_index] = i;
+    }
+    if (it_grad_name != back_name_to_tensor_index.end())
+    {
+      uint32_t origin_index = it_grad_name->second;
+      result[origin_index] = i;
+    }
   }
 
   return result;
@@ -374,14 +384,13 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
   copy_nodes_params(fc_w_2_const, weight_2);
   fc_w_2_const->size<loco::DataType::FLOAT32>(0);
   fc_w_2_const->shape_status(luci::ShapeStatus::VALID);
-  luci::add_origin(fc_w_2_const, luci::get_origin(weight_2));
 
   // Create Mul 2 node
   auto mul_2 = training_graph->nodes()->create<luci::CircleMul>();
   mul_2->fusedActivationFunction(luci::FusedActFunc::NONE);
   mul_2->x(fc_input_activation_2_node);
   mul_2->y(sub);
-  mul_2->name(sub->name() + fc_input_activation_2_node->name());
+  mul_2->name(weight_gradient_2_node->name() + "_gradient");
 
   // Connect grad weight 2 with mul_2
   weight_gradient_2_node->from(mul_2);
@@ -454,7 +463,7 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
   new_fc_node->weights(transpose_right);
   new_fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
   new_fc_node->bias(empty_bias);
-  new_fc_node->name("new fc node");
+  new_fc_node->name(weight_gradient_1_node->name() + "_gradient");
 
   weight_gradient_1_node->from(new_fc_node);
 

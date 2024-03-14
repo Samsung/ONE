@@ -42,31 +42,46 @@ OMStatus OMTrainingStorage::initTrainingStorage(reader::OMCircleReader *reader, 
     for (uint32_t i = 0; i < inputs_indexes->size(); ++i)
     {
       const auto input_index = inputs_indexes->operator[](i);
-      if (_backprop_indexes_to_main_indexes_table.find(input_index) == _backprop_indexes_to_main_indexes_table.end())
+      if (_backprop_indexes_to_main_indexes_table.find(input_index) ==
+          _backprop_indexes_to_main_indexes_table.end())
         _targets_indexes.push_back(input_index);
     }
   }
 
+  // Gradients tensors
+  const auto output_tensors = reader->outputs();
+
   // Allocate buffers for exponent average squares values if needed
-  if (config.train_config.optimization_strategy == RMSProp or config.train_config.optimization_strategy == ADAM)
+  for (uint32_t i = 0; i < output_tensors->size(); ++i)
   {
-    for (const auto &pair : _backprop_indexes_to_main_indexes_table)
+    const auto tensor_index = output_tensors->operator[](i);
+    const auto tensor = reader->tensors()->operator[](tensor_index);
+    const OMRuntimeShape tensor_shape(tensor);
+
+    int32_t num_elements = tensor_shape.flatSize();
+    assert(num_elements >= 0 && "Num elements should be positive");
+    if (num_elements < 0)
+      return UnknownError;
+    const auto casted_num_elements = static_cast<uint32_t>(num_elements);
+    const auto type_size =
+      static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));
+
+    // allocate data
+    uint8_t *allocated_data = nullptr;
+    OMStatus status =
+      memory::OMMemoryManager::allocateMemory(casted_num_elements * type_size, &allocated_data);
+    if (status != Ok)
+      return status;
+
+    std::memset(allocated_data, 0.f, casted_num_elements * type_size);
+
+    _gradients_storage[tensor_index] = allocated_data;
+
+    if (config.train_config.optimization_strategy == RMSProp or config.train_config.optimization_strategy == ADAM)
     {
-      const auto tensor_index = pair.first;
-      const auto tensor = reader->tensors()->operator[](tensor_index);
-      const OMRuntimeShape tensor_shape(tensor);
-
-      int32_t num_elements = tensor_shape.flatSize();
-      assert(num_elements >= 0 && "Num elements should be positive");
-      if (num_elements < 0)
-        return UnknownError;
-      const auto casted_num_elements = static_cast<uint32_t>(num_elements);
-      const auto type_size =
-        static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));
-
-      // allocate data
-      uint8_t *allocated_data = nullptr;
-      OMStatus status =
+      // allocate data for RMSPROP AND ADAM
+      allocated_data = nullptr;
+      status =
         memory::OMMemoryManager::allocateMemory(casted_num_elements * type_size, &allocated_data);
       if (status != Ok)
         return status;
@@ -110,6 +125,13 @@ OMTrainingStorage::~OMTrainingStorage()
     memory::OMMemoryManager::deallocateMemory(allocated_data);
   }
   _tensor_to_exponent_avg.clear();
+
+  for (const auto &pair : _gradients_storage)
+  {
+    uint8_t *allocated_data = pair.second;
+    memory::OMMemoryManager::deallocateMemory(allocated_data);
+  }
+  _gradients_storage.clear();
 }
 
 uint8_t *OMTrainingStorage::getExponentAvgSquaresData(uint16_t tensor_index)
@@ -117,6 +139,16 @@ uint8_t *OMTrainingStorage::getExponentAvgSquaresData(uint16_t tensor_index)
   auto it = _tensor_to_exponent_avg_squares.find(tensor_index);
 
   if (it == _tensor_to_exponent_avg_squares.end())
+    return nullptr;
+
+  return it->second;
+}
+
+uint8_t *OMTrainingStorage::getGradientData(uint16_t tensor_index)
+{
+  auto it = _gradients_storage.find(tensor_index);
+
+  if (it == _gradients_storage.end())
     return nullptr;
 
   return it->second;

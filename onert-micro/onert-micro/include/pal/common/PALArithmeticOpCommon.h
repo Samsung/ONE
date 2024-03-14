@@ -114,7 +114,12 @@ OMStatus BroadcastArithmeticOp4DSlow(const core::BinaryArithmeticBroadcastParams
             ((b * extended_output_shape.dims(1) + y) * extended_output_shape.dims(2) + x) *
               extended_output_shape.dims(3) +
             c;
-
+          auto tmp1 = input1_data[subscriptToIndex(desc1, b, y, x, c)];
+          auto tmp2 = input2_data[subscriptToIndex(desc2, b, y, x, c)];
+          auto tmp = std::min(std::max(func(input1_data[subscriptToIndex(desc1, b, y, x, c)],
+                                            input2_data[subscriptToIndex(desc2, b, y, x, c)]),
+                                       activation_min),
+                              activation_max);
           output_data[output_data_offset] =
             std::min(std::max(func(input1_data[subscriptToIndex(desc1, b, y, x, c)],
                                    input2_data[subscriptToIndex(desc2, b, y, x, c)]),

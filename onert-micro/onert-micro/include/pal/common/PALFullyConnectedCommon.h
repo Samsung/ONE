@@ -107,6 +107,7 @@ OMStatus inline FullyConnected<float>(const core::FullyConnectedParams &params,
       {
         bias_value = bias_data[out_c];
       }
+      auto tmp = std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
       output_data[out_c + output_depth * b] =
         std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
     }
