@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+import sys
+
+
+def _is_valid_attr(args, attr):
+    return hasattr(args, attr) and getattr(args, attr)
+
+
+def parser_add_own_options(parser):
+    parser.add_argument('--own_option', action='store_true', help='Own option')
+
+
+def check_own_options(args, ext_cmd):
+    if _is_valid_attr(args, 'own_option'):
+        ext_cmd.append('--own_option')
+
+
+def main():
+    dummy_message = 'one-import-onnx-ext '
+    leng = len(sys.argv)
+    for i in range(1, leng):
+        option = sys.argv[i]
+        if option.startswith('--'):
+            dummy_message = dummy_message + option
+
+    print(dummy_message, flush=True)
+
+
+if __name__ == '__main__':
+    main()

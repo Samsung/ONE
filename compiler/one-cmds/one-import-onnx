@@ -20,6 +20,8 @@
 # limitations under the License.
 
 import argparse
+import importlib.machinery
+import importlib.util
 import os
 import sys
 import tempfile
@@ -39,6 +41,10 @@ import onelib.utils as oneutils
 
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
+
+# extension module
+_import_onnx_ext = None
+_import_onnx_ext_name = 'one-import-onnx-ext'
 
 
 # Class to rename input/output to prevent issues while import ONNX models
@@ -184,6 +190,26 @@ def _get_parser():
     return parser
 
 
+def _ext_add_parser_args(parser):
+    global _import_onnx_ext
+    global _import_onnx_ext_name
+    ext_path = _check_ext()
+    if ext_path != None:
+        ext_name = _import_onnx_ext_name
+        module_loader = importlib.machinery.SourceFileLoader(ext_name, ext_path)
+        module_spec = importlib.util.spec_from_loader(ext_name, module_loader)
+        _import_onnx_ext = importlib.util.module_from_spec(module_spec)
+        print("!!! _import_onnx_ext loaded =", _import_onnx_ext, flush=True)
+        if _import_onnx_ext != None:
+            try:
+                module_loader.exec_module(_import_onnx_ext)
+                if hasattr(_import_onnx_ext, "parser_add_own_options"):
+                    _import_onnx_ext.parser_add_own_options(parser)
+            except:
+                print(ext_name + ": Failed to add own options")
+                _import_onnx_ext = None
+
+
 def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
@@ -239,8 +265,9 @@ def _remap_io_names(onnx_model):
 
 
 def _check_ext():
+    global _import_onnx_ext_name
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    ext_path = os.path.join(dir_path, 'one-import-onnx-ext')
+    ext_path = os.path.join(dir_path, _import_onnx_ext_name)
     if (os.path.isfile(ext_path)):
         return ext_path
     return None
@@ -292,6 +319,12 @@ def _convert(args):
                 ext_cmd.append('--save_intermediate')
             if oneutils.is_valid_attr(args, 'keep_io_order'):
                 ext_cmd.append('--keep_io_order')
+            global _import_onnx_ext
+            print(
+                "!!! _import_onnx_ext.check_own_options =", _import_onnx_ext, flush=True)
+            if _import_onnx_ext != None:
+                if hasattr(_import_onnx_ext, "check_own_options"):
+                    _import_onnx_ext.check_own_options(args, ext_cmd)
             ext_cmd.append(alt_path)
             ext_cmd.append(getattr(args, 'output_path'))
             oneutils.run(ext_cmd, logfile=f)
@@ -333,6 +366,7 @@ def _convert(args):
 def main():
     # parse arguments
     parser = _get_parser()
+    _ext_add_parser_args(parser)
     args = _parse_arg(parser)
 
     # parse configuration file
