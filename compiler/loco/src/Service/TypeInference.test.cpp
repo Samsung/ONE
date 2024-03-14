@@ -233,17 +233,23 @@ public:
 
 TEST(MultiDialectTypeInferenceRuleTest, test1)
 {
-  // Create a simple network : Pull - S8 - U8 - Push
+  // Create a simple network : Pull - S4 - S8 - U4 - U8 - Push
   auto g = loco::make_graph();
 
   auto pull_node = g->nodes()->create<loco::Pull>();
   pull_node->dtype(loco::DataType::FLOAT32);
 
+  auto s4_node = g->nodes()->create<TestOpNode<loco::DataType::S4>>();
+  s4_node->input(pull_node);
+
   auto s8_node = g->nodes()->create<TestOpNode<loco::DataType::S8>>();
-  s8_node->input(pull_node);
+  s8_node->input(s4_node);
+
+  auto u4_node = g->nodes()->create<TestOpNode<loco::DataType::U4>>();
+  u4_node->input(s8_node);
 
   auto u8_node = g->nodes()->create<TestOpNode<loco::DataType::U8>>();
-  u8_node->input(s8_node);
+  u8_node->input(u4_node);
 
   auto push_node = g->nodes()->create<loco::Push>();
   push_node->from(u8_node);
@@ -257,25 +263,37 @@ TEST(MultiDialectTypeInferenceRuleTest, test1)
   loco::link(graph_output, push_node);
 
   // initially they don't have type info
+  ASSERT_FALSE(loco::dtype_known(s4_node));
   ASSERT_FALSE(loco::dtype_known(s8_node));
+  ASSERT_FALSE(loco::dtype_known(u4_node));
   ASSERT_FALSE(loco::dtype_known(u8_node));
 
   // Run Type Inference
   TestTypeInferenceRule<loco::DataType::U8> u8_rule;
   TestTypeInferenceRule<loco::DataType::S8> s8_rule;
+  TestTypeInferenceRule<loco::DataType::S4> s4_rule;
+  TestTypeInferenceRule<loco::DataType::U4> u4_rule;
   loco::CanonicalTypeInferenceRule canon_rule;
 
   loco::MultiDialectTypeInferenceRule rules;
 
   rules.bind(TestDialect<loco::DataType::S8>::get(), &s8_rule)
     .bind(TestDialect<loco::DataType::U8>::get(), &u8_rule)
+    .bind(TestDialect<loco::DataType::S4>::get(), &s4_rule)
+    .bind(TestDialect<loco::DataType::U4>::get(), &u4_rule)
     .bind(loco::CanonicalDialect::get(), &canon_rule);
 
   loco::apply(&rules).to(g.get());
 
   // Verify!
+  ASSERT_TRUE(loco::dtype_known(s4_node));
+  ASSERT_EQ(loco::DataType::S4, loco::dtype_get(s4_node));
+
   ASSERT_TRUE(loco::dtype_known(s8_node));
   ASSERT_EQ(loco::DataType::S8, loco::dtype_get(s8_node));
+
+  ASSERT_TRUE(loco::dtype_known(u4_node));
+  ASSERT_EQ(loco::DataType::U4, loco::dtype_get(u4_node));
 
   ASSERT_TRUE(loco::dtype_known(u8_node));
   ASSERT_EQ(loco::DataType::U8, loco::dtype_get(u8_node));
