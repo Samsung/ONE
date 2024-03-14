@@ -52,6 +52,8 @@ size_t sizeOfDataType(DataType data_type)
       return sizeof(int16_t);
     case DataType::QUANT_INT16_SYMM:
       return sizeof(int16_t);
+    case DataType::QUANT_INT4_SYMM:
+      return sizeof(uint8_t); // Q: what is type size for int4?
     default:
       throw std::runtime_error{"Unsupported type size"};
   }
