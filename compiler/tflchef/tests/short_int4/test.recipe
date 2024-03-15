@@ -1,0 +1,44 @@
+operand {
+  name: "ifm"
+  type: INT4
+  shape { dim: 1 dim: 5 dim: 5 dim: 1 }
+}
+operand {
+  name: "ker"
+  type: INT4
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "-1" arg: "0" arg: "1"
+    arg: "1" arg: "2" arg: "3"
+    arg: "-1" arg: "-2" arg: "-3"
+  }
+}
+operand {
+  name: "bias"
+  type: INT4
+  shape { dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "1"
+  }
+}
+operand {
+  name: "ofm"
+  type: INT4
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
