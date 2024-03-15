@@ -23,6 +23,7 @@ enum TensorType {
   BOOL = 6;
   INT16 = 7;
   INT8 = 9;
+  INT4 = 10;
 }
 
 enum DimensionType {

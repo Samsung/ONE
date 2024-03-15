@@ -79,6 +79,8 @@ tflite::TensorType as_tflite_tensortype(const tflchef::TensorType &value)
       return tflite::TensorType_INT16;
     case tflchef::INT8:
       return tflite::TensorType_INT8;
+    case tflchef::INT4:
+      return tflite::TensorType_INT4;
     default:
       break;
   }
