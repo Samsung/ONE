@@ -1,0 +1,5 @@
+<map id="circlechef::CircleOpGRU" name="circlechef::CircleOpGRU">
+<area shape="rect" id="Node000001" title="circlechef operator builder for GRU" alt="" coords="5,79,168,105"/>
+<area shape="rect" id="Node000002" href="$classcirclechef_1_1_circle_op_chef.html" title="Interface for each operators to build circlechef." alt="" coords="6,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,46,89,79,84,79,84,46"/>
+</map>

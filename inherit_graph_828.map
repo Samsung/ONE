@@ -1,48 +1,48 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classnnc_1_1_artifact_class_member.html" title="Basic class for both class member variables and memmber functions." alt="" coords="362,499,532,524"/>
 <area shape="rect" id="Node000001" href="$classnnc_1_1_artifact_class_function.html" title="A class for member functions." alt="" coords="580,475,754,500"/>
-<area shape="poly" id="edge2190_Node000000_Node000001" title=" " alt="" coords="547,498,579,494,580,500,548,503"/>
+<area shape="poly" id="edge2195_Node000000_Node000001" title=" " alt="" coords="547,498,579,494,580,500,548,503"/>
 <area shape="rect" id="Node000006" href="$classnnc_1_1_artifact_class_variable.html" title="A class member variables." alt="" coords="582,524,752,550"/>
-<area shape="poly" id="edge2191_Node000000_Node000006" title=" " alt="" coords="548,520,582,524,581,530,547,526"/>
+<area shape="poly" id="edge2196_Node000000_Node000006" title=" " alt="" coords="548,520,582,524,581,530,547,526"/>
 <area shape="rect" id="Node000007" href="$classnnc_1_1_artifact_entity.html" title="The base class of the whole artifact entities hierarchy." alt="" coords="5,253,128,279"/>
 <area shape="rect" id="Node000008" href="$classnnc_1_1_artifact_block.html" title="Represents a block of instructions." alt="" coords="183,80,307,106"/>
-<area shape="poly" id="edge2192_Node000007_Node000008" title=" " alt="" coords="78,238,116,177,143,143,174,115,193,104,196,109,177,119,147,147,120,180,83,241"/>
+<area shape="poly" id="edge2197_Node000007_Node000008" title=" " alt="" coords="78,238,116,177,143,143,174,115,193,104,196,109,177,119,147,147,120,180,83,241"/>
 <area shape="rect" id="Node000009" href="$classnnc_1_1_artifact_break.html" title="Just represents the break statement." alt="" coords="183,129,307,155"/>
-<area shape="poly" id="edge2193_Node000007_Node000009" title=" " alt="" coords="87,240,125,201,174,164,196,153,199,158,177,168,129,205,91,244"/>
+<area shape="poly" id="edge2198_Node000007_Node000009" title=" " alt="" coords="87,240,125,201,174,164,196,153,199,158,177,168,129,205,91,244"/>
 <area shape="rect" id="Node000010" href="$classnnc_1_1_artifact_cont.html" title="Just represents the continue statement." alt="" coords="186,179,304,204"/>
-<area shape="poly" id="edge2194_Node000007_Node000010" title=" " alt="" coords="107,244,175,213,202,202,204,207,177,218,109,248"/>
+<area shape="poly" id="edge2199_Node000007_Node000010" title=" " alt="" coords="107,244,175,213,202,202,204,207,177,218,109,248"/>
 <area shape="rect" id="Node000011" href="$classnnc_1_1_artifact_expr.html" title="Basic class for all expressions: identifiers, function calls, references etc." alt="" coords="187,228,303,254"/>
-<area shape="poly" id="edge2195_Node000007_Node000011" title=" " alt="" coords="143,253,187,246,187,252,144,258"/>
+<area shape="poly" id="edge2200_Node000007_Node000011" title=" " alt="" coords="143,253,187,246,187,252,144,258"/>
 <area shape="rect" id="Node000020" href="$classnnc_1_1_artifact_for_loop.html" title="Represents for loops." alt="" coords="176,277,314,303"/>
-<area shape="poly" id="edge2204_Node000007_Node000020" title=" " alt="" coords="144,274,175,278,175,283,143,279"/>
+<area shape="poly" id="edge2209_Node000007_Node000020" title=" " alt="" coords="144,274,175,278,175,283,143,279"/>
 <area shape="rect" id="Node000021" href="$classnnc_1_1_artifact_if.html" title="Represents if block." alt="" coords="196,327,294,352"/>
-<area shape="poly" id="edge2205_Node000007_Node000021" title=" " alt="" coords="110,284,177,313,204,324,203,328,175,318,108,289"/>
+<area shape="poly" id="edge2210_Node000007_Node000021" title=" " alt="" coords="110,284,177,313,204,324,203,328,175,318,108,289"/>
 <area shape="rect" id="Node000003" href="$classnnc_1_1_artifact_named.html" title="Represents any named entity in the code." alt="" coords="179,400,311,426"/>
-<area shape="poly" id="edge2206_Node000007_Node000003" title=" " alt="" coords="94,288,177,363,225,397,222,402,174,367,90,292"/>
+<area shape="poly" id="edge2211_Node000007_Node000003" title=" " alt="" coords="94,288,177,363,225,397,222,402,174,367,90,292"/>
 <area shape="rect" id="Node000022" href="$classnnc_1_1_artifact_ret.html" title="Just represents return from function statement." alt="" coords="190,449,300,475"/>
-<area shape="poly" id="edge2212_Node000007_Node000022" title=" " alt="" coords="81,292,117,364,144,403,177,436,195,447,192,451,174,440,140,406,112,367,76,295"/>
+<area shape="poly" id="edge2217_Node000007_Node000022" title=" " alt="" coords="81,292,117,364,144,403,177,436,195,447,192,451,174,440,140,406,112,367,76,295"/>
 <area shape="rect" id="Node000012" href="$classnnc_1_1_artifact_binary_expr.html" title="Represents different types of binary expressions." alt="" coords="372,203,523,228"/>
-<area shape="poly" id="edge2196_Node000011_Node000012" title=" " alt="" coords="317,229,371,222,371,228,318,234"/>
+<area shape="poly" id="edge2201_Node000011_Node000012" title=" " alt="" coords="317,229,371,222,371,228,318,234"/>
 <area shape="rect" id="Node000013" href="$classnnc_1_1_artifact_deref.html" title="Represents an entity with semantics of C/C++ dereference (*) operator." alt="" coords="387,252,508,278"/>
-<area shape="poly" id="edge2197_Node000011_Node000013" title=" " alt="" coords="318,247,386,255,386,260,318,252"/>
+<area shape="poly" id="edge2202_Node000011_Node000013" title=" " alt="" coords="318,247,386,255,386,260,318,252"/>
 <area shape="rect" id="Node000014" href="$classnnc_1_1_artifact_function_call.html" title="Represents a function call." alt="" coords="366,301,528,327"/>
-<area shape="poly" id="edge2198_Node000011_Node000014" title=" " alt="" coords="302,257,315,262,363,288,393,298,392,303,361,293,313,267,300,262"/>
+<area shape="poly" id="edge2203_Node000011_Node000014" title=" " alt="" coords="302,257,315,262,363,288,393,298,392,303,361,293,313,267,300,262"/>
 <area shape="rect" id="Node000015" href="$classnnc_1_1_artifact_id.html" title="Type of objects which can be used to reference named entities by their names." alt="" coords="397,351,498,376"/>
-<area shape="poly" id="edge2199_Node000011_Node000015" title=" " alt="" coords="311,259,316,263,332,282,340,302,348,320,364,337,397,353,395,358,360,342,343,323,335,304,328,285,312,267,308,264"/>
+<area shape="poly" id="edge2204_Node000011_Node000015" title=" " alt="" coords="311,259,316,263,332,282,340,302,348,320,364,337,397,353,395,358,360,342,343,323,335,304,328,285,312,267,308,264"/>
 <area shape="rect" id="Node000016" href="$classnnc_1_1_artifact_index.html" title="Array index access." alt="" coords="387,5,508,31"/>
-<area shape="poly" id="edge2200_Node000011_Node000016" title=" " alt="" coords="311,217,312,215,327,194,334,172,335,129,336,85,344,62,360,40,385,25,388,29,364,44,348,65,341,86,340,129,339,173,332,196,316,219,314,220"/>
+<area shape="poly" id="edge2205_Node000011_Node000016" title=" " alt="" coords="311,217,312,215,327,194,334,172,335,129,336,85,344,62,360,40,385,25,388,29,364,44,348,65,341,86,340,129,339,173,332,196,316,219,314,220"/>
 <area shape="rect" id="Node000017" href="$classnnc_1_1_artifact_literal.html" title="Represents literals which should go to the artifact source code as is." alt="" coords="384,55,510,80"/>
-<area shape="poly" id="edge2201_Node000011_Node000017" title=" " alt="" coords="310,217,312,215,324,200,331,185,335,153,339,121,347,105,360,89,382,76,385,80,364,94,351,108,345,123,340,154,336,186,329,203,316,219,314,221"/>
+<area shape="poly" id="edge2206_Node000011_Node000017" title=" " alt="" coords="310,217,312,215,324,200,331,185,335,153,339,121,347,105,360,89,382,76,385,80,364,94,351,108,345,123,340,154,336,186,329,203,316,219,314,221"/>
 <area shape="rect" id="Node000018" href="$classnnc_1_1_artifact_ref.html" title="Represents an entity with semantics like C/C++ address of (&amp;) operator." alt="" coords="392,104,502,130"/>
-<area shape="poly" id="edge2202_Node000011_Node000018" title=" " alt="" coords="308,218,312,215,328,196,335,177,343,158,360,139,390,124,393,128,364,143,348,161,340,179,332,199,316,219,311,222"/>
+<area shape="poly" id="edge2207_Node000011_Node000018" title=" " alt="" coords="308,218,312,215,328,196,335,177,343,158,360,139,390,124,393,128,364,143,348,161,340,179,332,199,316,219,311,222"/>
 <area shape="rect" id="Node000019" href="$classnnc_1_1_artifact_unary_expr.html" title=" " alt="" coords="373,153,522,179"/>
-<area shape="poly" id="edge2203_Node000011_Node000019" title=" " alt="" coords="301,220,313,214,337,201,361,188,391,177,393,182,363,193,339,206,315,219,303,224"/>
+<area shape="poly" id="edge2208_Node000011_Node000019" title=" " alt="" coords="301,220,313,214,337,201,361,188,391,177,393,182,363,193,339,206,315,219,303,224"/>
 <area shape="rect" id="Node000004" href="$classnnc_1_1_artifact_class.html" title="Represents a class." alt="" coords="386,449,509,475"/>
-<area shape="poly" id="edge2207_Node000003_Node000004" title=" " alt="" coords="316,427,392,446,391,451,315,433"/>
+<area shape="poly" id="edge2212_Node000003_Node000004" title=" " alt="" coords="316,427,392,446,391,451,315,433"/>
 <area shape="rect" id="Node000002" href="$classnnc_1_1_artifact_function.html" title="Represents a function." alt="" coords="377,400,517,426"/>
-<area shape="poly" id="edge2208_Node000003_Node000002" title=" " alt="" coords="326,410,377,410,377,416,326,416"/>
+<area shape="poly" id="edge2213_Node000003_Node000002" title=" " alt="" coords="326,410,377,410,377,416,326,416"/>
 <area shape="rect" id="Node000005" href="$classnnc_1_1_artifact_variable.html" title="Represents a variable." alt="" coords="379,548,516,574"/>
-<area shape="poly" id="edge2210_Node000003_Node000005" title=" " alt="" coords="312,432,316,435,327,448,334,461,340,487,346,511,353,523,364,535,380,545,377,550,360,539,348,526,341,513,335,488,329,463,323,451,312,439,309,436"/>
-<area shape="poly" id="edge2209_Node000002_Node000001" title=" " alt="" coords="513,428,533,434,633,472,632,477,531,439,512,433"/>
-<area shape="poly" id="edge2211_Node000005_Node000006" title=" " alt="" coords="531,549,581,544,582,549,531,554"/>
+<area shape="poly" id="edge2215_Node000003_Node000005" title=" " alt="" coords="312,432,316,435,327,448,334,461,340,487,346,511,353,523,364,535,380,545,377,550,360,539,348,526,341,513,335,488,329,463,323,451,312,439,309,436"/>
+<area shape="poly" id="edge2214_Node000002_Node000001" title=" " alt="" coords="513,428,533,434,633,472,632,477,531,439,512,433"/>
+<area shape="poly" id="edge2216_Node000005_Node000006" title=" " alt="" coords="531,549,581,544,582,549,531,554"/>
 </map>

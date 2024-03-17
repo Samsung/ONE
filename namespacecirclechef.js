@@ -5,6 +5,7 @@ var namespacecirclechef =
     [ "CircleOpBCQFullyConnected", "classcirclechef_1_1_circle_op_b_c_q_fully_connected.html", "classcirclechef_1_1_circle_op_b_c_q_fully_connected" ],
     [ "CircleOpBCQGather", "classcirclechef_1_1_circle_op_b_c_q_gather.html", "classcirclechef_1_1_circle_op_b_c_q_gather" ],
     [ "CircleOpChef", "classcirclechef_1_1_circle_op_chef.html", "classcirclechef_1_1_circle_op_chef" ],
+    [ "CircleOpGRU", "classcirclechef_1_1_circle_op_g_r_u.html", "classcirclechef_1_1_circle_op_g_r_u" ],
     [ "CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", "classcirclechef_1_1_circle_op_instance_norm" ],
     [ "CircleOpRegistry", "classcirclechef_1_1_circle_op_registry.html", "classcirclechef_1_1_circle_op_registry" ],
     [ "GeneratedModel", "classcirclechef_1_1_generated_model.html", "classcirclechef_1_1_generated_model" ],

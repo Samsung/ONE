@@ -40,6 +40,7 @@ var dir_130a5ab0c1ea8d564ec8825a7293e954 =
     [ "CircleGelu.h", "import_2include_2luci_2_import_2_nodes_2_circle_gelu_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_gelu_8h" ],
     [ "CircleGreater.h", "import_2include_2luci_2_import_2_nodes_2_circle_greater_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_greater_8h" ],
     [ "CircleGreaterEqual.h", "import_2include_2luci_2_import_2_nodes_2_circle_greater_equal_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_greater_equal_8h" ],
+    [ "CircleGRU.h", "import_2include_2luci_2_import_2_nodes_2_circle_g_r_u_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_g_r_u_8h" ],
     [ "CircleHardSwish.h", "import_2include_2luci_2_import_2_nodes_2_circle_hard_swish_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_hard_swish_8h" ],
     [ "CircleIf.h", "import_2include_2luci_2_import_2_nodes_2_circle_if_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_if_8h" ],
     [ "CircleInstanceNorm.h", "import_2include_2luci_2_import_2_nodes_2_circle_instance_norm_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_instance_norm_8h" ],

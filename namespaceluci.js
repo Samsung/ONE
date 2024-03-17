@@ -95,6 +95,8 @@ var namespaceluci =
     [ "CircleGreaterEqual", "classluci_1_1_circle_greater_equal.html", "classluci_1_1_circle_greater_equal" ],
     [ "CircleGreaterEqualGraphBuilder", "classluci_1_1_circle_greater_equal_graph_builder.html", "classluci_1_1_circle_greater_equal_graph_builder" ],
     [ "CircleGreaterGraphBuilder", "classluci_1_1_circle_greater_graph_builder.html", "classluci_1_1_circle_greater_graph_builder" ],
+    [ "CircleGRU", "classluci_1_1_circle_g_r_u.html", "classluci_1_1_circle_g_r_u" ],
+    [ "CircleGRUGraphBuilder", "classluci_1_1_circle_g_r_u_graph_builder.html", "classluci_1_1_circle_g_r_u_graph_builder" ],
     [ "CircleHardSwish", "classluci_1_1_circle_hard_swish.html", "classluci_1_1_circle_hard_swish" ],
     [ "CircleHardSwishGraphBuilder", "classluci_1_1_circle_hard_swish_graph_builder.html", "classluci_1_1_circle_hard_swish_graph_builder" ],
     [ "CircleIf", "classluci_1_1_circle_if.html", "classluci_1_1_circle_if" ],

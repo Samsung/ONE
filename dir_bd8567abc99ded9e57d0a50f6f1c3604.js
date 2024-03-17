@@ -6,6 +6,8 @@ var dir_bd8567abc99ded9e57d0a50f6f1c3604 =
     [ "BCQFullyConnected.h", "compiler_2circlechef_2circle_2src_2_op_2_b_c_q_fully_connected_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_b_c_q_fully_connected_8h" ],
     [ "BCQGather.cpp", "circle_2src_2_op_2_b_c_q_gather_8cpp.html", null ],
     [ "BCQGather.h", "compiler_2circlechef_2circle_2src_2_op_2_b_c_q_gather_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_b_c_q_gather_8h" ],
+    [ "GRU.cpp", "circle_2src_2_op_2_g_r_u_8cpp.html", null ],
+    [ "GRU.h", "circle_2src_2_op_2_g_r_u_8h.html", "circle_2src_2_op_2_g_r_u_8h" ],
     [ "InstanceNorm.cpp", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8cpp.html", null ],
     [ "InstanceNorm.h", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h" ]
 ];

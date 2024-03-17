@@ -1,0 +1,29 @@
+<map id="luci::CircleGRU" name="luci::CircleGRU">
+<area shape="rect" id="Node000001" title="GRU in Circle." alt="" coords="1875,128,1984,153"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_fixed_arity_node.html" title=" " alt="" coords="1666,113,1825,168"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1841,138,1874,138,1874,143,1841,143"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_impl.html" title=" " alt="" coords="1316,87,1472,127"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1488,113,1642,127,1666,129,1665,135,1642,132,1487,118"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node.html" title=" " alt="" coords="833,70,944,96"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="960,75,969,75,1131,74,1202,77,1292,86,1315,89,1315,94,1291,91,1201,82,1131,79,969,80,960,80"/>
+<area shape="rect" id="Node000011" href="$structluci_1_1_circle_node_impl.html" title=" " alt="" coords="993,91,1130,131"/>
+<area shape="poly" id="edge12_Node000011_Node000004" title=" " alt="" coords="960,92,993,97,992,103,959,97"/>
+<area shape="rect" id="Node000005" href="$classloco_1_1_node.html" title="Logical unit of computation." alt="" coords="653,13,735,39"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="751,39,784,48,845,67,843,72,783,54,750,44"/>
+<area shape="rect" id="Node000006" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="311,5,447,46"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="463,23,653,23,653,28,463,28"/>
+<area shape="rect" id="Node000007" href="$classloco_1_1_annotated_item.html" title=" " alt="" coords="5,5,142,46"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="157,23,311,23,311,28,157,28"/>
+<area shape="rect" id="Node000008" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="616,63,772,103"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="788,80,832,80,832,86,788,86"/>
+<area shape="rect" id="Node000009" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="308,101,450,127"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="465,103,616,88,616,93,465,108"/>
+<area shape="rect" id="Node000010" href="$classloco_1_1_node_mixin.html" title=" " alt="" coords="605,128,783,169"/>
+<area shape="poly" id="edge10_Node000010_Node000009" title=" " alt="" coords="436,129,474,137,540,144,605,147,604,152,540,149,474,142,435,134"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="770,120,847,94,848,99,772,125"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="1145,107,1315,105,1315,111,1145,113"/>
+<area shape="rect" id="Node000012" href="$classluci_1_1_fixed_arity_node.html" title="Nodes with the fixed number of inputs." alt="" coords="1326,152,1462,193"/>
+<area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="1477,168,1557,165,1642,157,1665,154,1666,159,1642,162,1557,170,1477,174"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1036,160,1087,185"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="1103,170,1326,170,1326,175,1103,175"/>
+</map>

@@ -1,9 +1,0 @@
-var _neg_max_pool2_d_kernel_8h =
-[
-    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel" ],
-    [ "luci_interpreter::test_kernel::NegTestDataInvalidInputShapeMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_max_pool2_d_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_max_pool2_d_kernel" ],
-    [ "luci_interpreter::test_kernel::NegTestDataNoQuantParamsMaxPool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_no_quant_params_max_pool2_d_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_no_quant_params_max_pool2_d_kernel" ],
-    [ "test_kernel_model_circle", "_neg_max_pool2_d_kernel_8h.html#a29ece48bf49bac60b29f95380b821737", null ],
-    [ "test_kernel_model_circle", "_neg_max_pool2_d_kernel_8h.html#a95a2626c1f958f9713b1cdc744497c74", null ],
-    [ "test_kernel_model_circle", "_neg_max_pool2_d_kernel_8h.html#a2dff02a717983c5d9bde5ebc9436adfc", null ]
-];

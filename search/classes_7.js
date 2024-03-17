@@ -12,7 +12,7 @@ var searchData=
   ['gatherndhelperresult_9',['GatherNdHelperResult',['../structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html',1,'tflite::reference_ops']]],
   ['gatherop_10',['GatherOp',['../classmir_1_1ops_1_1_gather_op.html',1,'mir::ops']]],
   ['gatherparams_11',['gatherparams',['../structluci__interpreter_1_1_gather_params.html',1,'luci_interpreter::GatherParams'],['../structnnfw_1_1cker_1_1_gather_params.html',1,'nnfw::cker::GatherParams']]],
-  ['gatherprinter_12',['gatherprinter',['../classtfldump_1_1_gather_printer.html',1,'tfldump::GatherPrinter'],['../classcircledump_1_1_gather_printer.html',1,'circledump::GatherPrinter']]],
+  ['gatherprinter_12',['gatherprinter',['../classcircledump_1_1_gather_printer.html',1,'circledump::GatherPrinter'],['../classtfldump_1_1_gather_printer.html',1,'tfldump::GatherPrinter']]],
   ['gaussianfloat16datachef_13',['GaussianFloat16DataChef',['../classsouschef_1_1_gaussian_float16_data_chef.html',1,'souschef']]],
   ['gaussianfloat16datacheffactory_14',['GaussianFloat16DataChefFactory',['../structsouschef_1_1_gaussian_float16_data_chef_factory.html',1,'souschef']]],
   ['gaussianfloat32datachef_15',['GaussianFloat32DataChef',['../classsouschef_1_1_gaussian_float32_data_chef.html',1,'souschef']]],
@@ -36,7 +36,7 @@ var searchData=
   ['gemmcontext_33',['GemmContext',['../structnnfw_1_1cker_1_1gemm__support_1_1_gemm_context.html',1,'nnfw::cker::gemm_support']]],
   ['gemmimplusingeigen_34',['GemmImplUsingEigen',['../structnnfw_1_1cker_1_1detail_1_1_gemm_impl_using_eigen.html',1,'nnfw::cker::detail']]],
   ['gemmlowpoutputpipeline_35',['GemmlowpOutputPipeline',['../structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html',1,'nnfw::cker::optimized']]],
-  ['gemmparams_36',['gemmparams',['../structnnfw_1_1ruy_1_1_gemm_params.html',1,'nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;'],['../structnnfw_1_1cker_1_1_gemm_params.html',1,'nnfw::cker::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;']]],
+  ['gemmparams_36',['gemmparams',['../structnnfw_1_1cker_1_1_gemm_params.html',1,'nnfw::cker::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;'],['../structnnfw_1_1ruy_1_1_gemm_params.html',1,'nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;']]],
   ['generalconfigsource_37',['GeneralConfigSource',['../classnnfw_1_1misc_1_1_general_config_source.html',1,'nnfw::misc']]],
   ['generatedmodel_38',['generatedmodel',['../classcirclechef_1_1_generated_model.html',1,'circlechef::GeneratedModel'],['../classtflchef_1_1_generated_model.html',1,'tflchef::GeneratedModel']]],
   ['generator_39',['Generator',['../structflatbuffers_1_1_flat_compiler_1_1_generator.html',1,'flatbuffers::FlatCompiler']]],
@@ -46,7 +46,7 @@ var searchData=
   ['genericnodesummarybuilder_43',['GenericNodeSummaryBuilder',['../classlocop_1_1_generic_node_summary_builder.html',1,'locop']]],
   ['globaldata_44',['GlobalData',['../structenco_1_1_global_data.html',1,'enco']]],
   ['gradientapplier_45',['GradientApplier',['../classonert_1_1backend_1_1train_1_1ops_1_1_gradient_applier.html',1,'onert::backend::train::ops']]],
-  ['graph_46',['graph',['../classloco_1_1_graph.html',1,'loco::Graph'],['../classonert_1_1ir_1_1_graph.html',1,'onert::ir::Graph'],['../classmir_1_1_graph.html',1,'mir::Graph']]],
+  ['graph_46',['graph',['../classonert_1_1ir_1_1_graph.html',1,'onert::ir::Graph'],['../classmir_1_1_graph.html',1,'mir::Graph'],['../classloco_1_1_graph.html',1,'loco::Graph']]],
   ['graphbuilder_47',['graphbuilder',['../classcaffeimport_1_1_graph_builder.html',1,'caffeimport::GraphBuilder'],['../classtflimport_1_1_graph_builder.html',1,'tflimport::GraphBuilder'],['../classmoco_1_1onnx_1_1_graph_builder.html',1,'moco::onnx::GraphBuilder'],['../classluci_1_1_graph_builder.html',1,'luci::GraphBuilder'],['../class_graph_builder.html',1,'GraphBuilder'],['../classmoco_1_1_graph_builder.html',1,'moco::GraphBuilder']]],
   ['graphbuilderbase_48',['GraphBuilderBase',['../structluci_1_1_graph_builder_base.html',1,'luci']]],
   ['graphbuildercontext_49',['graphbuildercontext',['../classcaffeimport_1_1_graph_builder_context.html',1,'caffeimport::GraphBuilderContext'],['../classluci_1_1_graph_builder_context.html',1,'luci::GraphBuilderContext'],['../classmoco_1_1_graph_builder_context.html',1,'moco::GraphBuilderContext'],['../classmoco_1_1onnx_1_1_graph_builder_context.html',1,'moco::onnx::GraphBuilderContext'],['../classtflimport_1_1_graph_builder_context.html',1,'tflimport::GraphBuilderContext']]],
@@ -82,5 +82,7 @@ var searchData=
   ['greaterequalchef_79',['GreaterEqualChef',['../class_greater_equal_chef.html',1,'']]],
   ['greaterequalcheffactory_80',['GreaterEqualChefFactory',['../struct_greater_equal_chef_factory.html',1,'']]],
   ['greaterimpl_81',['GreaterImpl',['../structmir__interpreter_1_1_greater_impl.html',1,'mir_interpreter']]],
-  ['greaterop_82',['GreaterOp',['../classmir_1_1ops_1_1_greater_op.html',1,'mir::ops']]]
+  ['greaterop_82',['GreaterOp',['../classmir_1_1ops_1_1_greater_op.html',1,'mir::ops']]],
+  ['gruchef_83',['GRUChef',['../class_g_r_u_chef.html',1,'']]],
+  ['grucheffactory_84',['GRUChefFactory',['../struct_g_r_u_chef_factory.html',1,'']]]
 ];
