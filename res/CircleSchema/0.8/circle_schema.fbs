@@ -32,7 +32,7 @@
 // Version 0.5: Base up to TensorFlow Lite v2.10.1 schema.
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
-// Version 0.8: GRU op is added.
+// Version 0.8: GRU op is added. UINT4 is added.
 
 namespace circle;
 
@@ -46,6 +46,7 @@ file_extension "circle";
 
 // The type of data stored in a tensor.
 enum TensorType : byte {
+  UINT4 = -1,
   FLOAT32 = 0,
   FLOAT16 = 1,
   INT32 = 2,
