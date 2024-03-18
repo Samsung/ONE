@@ -33,7 +33,7 @@ namespace
 inline bool resolveAxis(const int32_t num_dims, const int32_t *axis, const int64_t num_axis,
                         int32_t *out_num_axis)
 {
-  int out_axis[2];
+  int out_axis[3];
   *out_num_axis = 0; // Just in case.
   // Short-circuit axis resolution for scalars; the axis will go unused.
   if (num_dims == 0)

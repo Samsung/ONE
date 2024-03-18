@@ -447,10 +447,10 @@ OMStatus OMTrainingRuntimeModule::backward()
     assert(gradient_data != nullptr);
 
     uint8_t *exp_square_data = _training_storage.getExponentAvgSquaresData(output_index);
-    assert(exp_square_data != nullptr);
+//    assert(exp_square_data != nullptr);
 
     uint8_t *exp_data = _training_storage.getExponentAvgData(output_index);
-    assert(exp_data != nullptr);
+  //  assert(exp_data != nullptr);
 
     const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
     float *grad_data_f = reinterpret_cast<float *>(gradient_data);
@@ -501,13 +501,18 @@ void OMTrainingRuntimeModule::updateSGDWeights(uint8_t *dest, uint8_t *src, size
   auto lamda = _training_storage.getLambda();
   auto batches = static_cast<float>(_training_storage.getBatches());
 
+  //std::cout << "Weights: \n";
+
   for (size_t s = 0; s < size; s++)
   {
     auto tmp_d = dest_f[s];
     auto tmp_f = src_f[s];
 
     dest_f[s] -= lamda * src_f[s] / batches;
+
+   // std::cout << dest_f[s] << ", ";
   }
+ // std::cout << "\n";
 }
 
 template <typename T>
@@ -605,10 +610,10 @@ OMStatus OMTrainingRuntimeModule::reset()
     assert(gradient_data != nullptr);
 
     uint8_t *exp_square_data = _training_storage.getExponentAvgSquaresData(output_index);
-    assert(exp_square_data != nullptr);
+//    assert(exp_square_data != nullptr);
 
     uint8_t *exp_data = _training_storage.getExponentAvgData(output_index);
-    assert(exp_data != nullptr);
+ //   assert(exp_data != nullptr);
 
     const auto output_size = _backpropagation_runtime_graphs.at(0).getOutputSizeAt(i);
     float *grad_data_f = reinterpret_cast<float *>(gradient_data);

@@ -269,6 +269,8 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  MAX_POOL_2D_GRAD = -7,
+  CONV_2D_GRAD = -6,
   GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
@@ -618,6 +620,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  Conv2DGradOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
@@ -1479,6 +1482,15 @@ enum ReduceWindowFunction : int {
 
 table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
+}
+
+table Conv2DGradOptions {
+  padding:Padding;
+  stride_w:int;
+  stride_h:int;
+  dilation_w_factor:int = 1;
+  dilation_h_factor:int = 1;
+  weights_grad : bool;
 }
 
 table GRUOptions {

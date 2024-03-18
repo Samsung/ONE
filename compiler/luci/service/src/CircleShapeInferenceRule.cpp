@@ -401,6 +401,96 @@ struct OutputSize
   uint32_t width = 0;
 };
 
+OutputSize infer_conv2d_weight_grad_type(const luci::CircleConv2DWeightGrad *node)
+  {
+  auto ifm_shape = luci::shape_get(node->input_activation()).template as<loco::TensorShape>();
+  auto ker_shape = luci::shape_get(node->input_grad()).template as<loco::TensorShape>();
+  assert(ifm_shape.rank() == 4);
+  assert(ker_shape.rank() == 4);
+  assert(ifm_shape.dim(1).known());
+  assert(ifm_shape.dim(2).known());
+  assert(ker_shape.dim(1).known());
+  assert(ker_shape.dim(2).known());
+
+  uint32_t input_height = ifm_shape.dim(1).value();
+  uint32_t input_width = ifm_shape.dim(2).value();
+  uint32_t stride_height = node->stride()->h();
+  uint32_t stride_width = node->stride()->w();
+  uint32_t ker_height = ker_shape.dim(1).value();
+  uint32_t ker_width = ker_shape.dim(2).value();
+  uint32_t dilation_height = node->dilation()->h();
+  uint32_t dilation_width = node->dilation()->w();
+  uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
+  uint32_t effective_ker_width = dilation_width * (ker_width - 1) + 1;
+
+  uint32_t output_height = 0;
+  uint32_t output_width = 0;
+
+  if (node->padding() == luci::Padding::VALID)
+  {
+    LUCI_ASSERT(input_height + stride_height > effective_ker_height, "Invalid shape");
+    LUCI_ASSERT(input_width + stride_width > effective_ker_width, "Invalid shape");
+    output_height = (input_height + stride_height - effective_ker_height) / stride_height;
+    output_width = (input_width + stride_width - effective_ker_width) / stride_width;
+  }
+  else if (node->padding() == luci::Padding::SAME)
+  {
+    output_height = (input_height + stride_height - 1) / stride_height;
+    output_width = (input_width + stride_width - 1) / stride_width;
+  }
+  else
+    LUCI_ASSERT(false, "Wrong padding type");
+
+  OutputSize os{output_height, output_width};
+
+  return os;
+  }
+
+  OutputSize infer_conv2d_input_grad_type(const luci::CircleConv2DInputGrad *node)
+    {
+    auto ifm_shape = luci::shape_get(node->input_grad()).template as<loco::TensorShape>();
+    auto ker_shape = luci::shape_get(node->weight()).template as<loco::TensorShape>();
+    assert(ifm_shape.rank() == 4);
+    assert(ker_shape.rank() == 4);
+    assert(ifm_shape.dim(1).known());
+    assert(ifm_shape.dim(2).known());
+    assert(ker_shape.dim(1).known());
+    assert(ker_shape.dim(2).known());
+
+    uint32_t input_height = ifm_shape.dim(1).value();
+    uint32_t input_width = ifm_shape.dim(2).value();
+    uint32_t stride_height = node->stride()->h();
+    uint32_t stride_width = node->stride()->w();
+    uint32_t ker_height = ker_shape.dim(1).value();
+    uint32_t ker_width = ker_shape.dim(2).value();
+    uint32_t dilation_height = node->dilation()->h();
+    uint32_t dilation_width = node->dilation()->w();
+    uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
+    uint32_t effective_ker_width = dilation_width * (ker_width - 1) + 1;
+
+    uint32_t output_height = 0;
+    uint32_t output_width = 0;
+
+    if (node->padding() == luci::Padding::VALID)
+    {
+      LUCI_ASSERT(input_height + stride_height > effective_ker_height, "Invalid shape");
+      LUCI_ASSERT(input_width + stride_width > effective_ker_width, "Invalid shape");
+      output_height = (input_height + stride_height - effective_ker_height) / stride_height;
+      output_width = (input_width + stride_width - effective_ker_width) / stride_width;
+    }
+    else if (node->padding() == luci::Padding::SAME)
+    {
+      output_height = (input_height + stride_height - 1) / stride_height;
+      output_width = (input_width + stride_width - 1) / stride_width;
+    }
+    else
+      LUCI_ASSERT(false, "Wrong padding type");
+
+    OutputSize os{output_height, output_width};
+
+    return os;
+    }
+
 template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
 {
   auto ifm_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
@@ -563,6 +653,63 @@ loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
   }
 
   return loco::NodeShape{output_shape};
+}
+
+
+loco::NodeShape infer_conv2d_input_grad(const luci::CircleConv2DInputGrad *node)
+{
+  LOGGER(l);
+
+  auto ifm_shape = luci::shape_get(node->input_grad()).as<loco::TensorShape>();  // in NHWC
+  auto ker_shape = luci::shape_get(node->weight()).as<loco::TensorShape>(); // in OHWI
+
+  assert(ifm_shape.rank() == 4);
+  assert(ker_shape.rank() == 4);
+  assert(ifm_shape.dim(3) == ker_shape.dim(3));
+
+  auto os = infer_conv2d_input_grad_type(node);
+
+  loco::TensorShape ofm_shape;
+  ofm_shape.rank(4);
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(1) = os.height;
+  ofm_shape.dim(2) = os.width;
+  ofm_shape.dim(3) = ker_shape.dim(0);
+
+  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
+  << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
+  << ofm_shape.dim(2).value() << "," << ofm_shape.dim(3).value() << ") " << node->name()
+  << std::endl;
+
+  return loco::NodeShape{ofm_shape};
+}
+
+loco::NodeShape infer_conv2d_weight_grad(const luci::CircleConv2DWeightGrad *node)
+{
+  LOGGER(l);
+
+  auto ifm_shape = luci::shape_get(node->input_activation()).as<loco::TensorShape>();  // in NHWC
+  auto ker_shape = luci::shape_get(node->input_grad()).as<loco::TensorShape>(); // in OHWI
+
+//  assert(ifm_shape.rank() == 4);
+//  assert(ker_shape.rank() == 4);
+//  assert(ifm_shape.dim(3) == ker_shape.dim(3));
+//
+//  auto os = infer_conv2d_weight_grad_type(node);
+//
+  loco::TensorShape ofm_shape;
+  ofm_shape.rank(4);
+  ofm_shape.dim(0) = ker_shape.dim(1);
+  ofm_shape.dim(1) = ifm_shape.dim(1);//ifm_shape.dim(1);
+  ofm_shape.dim(2) = 1;//ifm_shape.dim(2);
+  ofm_shape.dim(3) = 2;//ifm_shape.dim(3);
+//
+//  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
+//  << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
+//  << ofm_shape.dim(2).value() << "," << ofm_shape.dim(3).value() << ") " << node->name()
+//  << std::endl;
+
+  return loco::NodeShape{ofm_shape};
 }
 
 loco::NodeShape infer_conv2d(const luci::CircleConv2D *node)
@@ -2066,6 +2213,8 @@ public:
   loco::NodeShape visit(const luci::CircleConst *node) final { return use_own(node); }
 
   loco::NodeShape visit(const luci::CircleConv2D *node) final { return infer_conv2d(node); }
+  loco::NodeShape visit(const luci::CircleConv2DWeightGrad *node) final { return infer_conv2d_weight_grad(node); }
+  loco::NodeShape visit(const luci::CircleConv2DInputGrad *node) final { return infer_conv2d_input_grad(node); }
 
   loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
@@ -2281,6 +2430,12 @@ public:
   }
 
   loco::NodeShape visit(const luci::CircleReduceProd *node) final
+  {
+    auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
+    return loco::NodeShape{output_shape};
+  }
+
+  loco::NodeShape visit(const luci::CircleReduceSum *node) final
   {
     auto output_shape = infer_reducer(node->input(), node->reduction_indices(), node->keep_dims());
     return loco::NodeShape{output_shape};

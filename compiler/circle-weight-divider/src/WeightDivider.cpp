@@ -55,6 +55,14 @@ void visit(luci::CircleFullyConnected *fc_node)
   divideConst(fc_bias);
 }
 
+void visit(luci::CircleConv2D *fc_node)
+{
+  auto fc_w = dynamic_cast<luci::CircleConst *>(fc_node->filter());
+  auto fc_bias = dynamic_cast<luci::CircleConst *>(fc_node->bias());
+  divideConst(fc_w);
+  divideConst(fc_bias);
+}
+
 } // namespace
 
 namespace luci
@@ -93,6 +101,10 @@ bool WeightDivider::divide()
     for (auto node : selected_nodes)
     {
       if (auto fc_node = dynamic_cast<luci::CircleFullyConnected *>(node))
+      {
+        visit(fc_node);
+      }
+      if (auto fc_node = dynamic_cast<luci::CircleConv2D *>(node))
       {
         visit(fc_node);
       }

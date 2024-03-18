@@ -174,7 +174,7 @@ int entry(int argc, char **argv)
     trainConfig.optimization_strategy = onert_micro::ADAM;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
-    trainConfig.batches = 32;
+    trainConfig.batches = 1;
 
     config.train_config = trainConfig;
   }
@@ -329,9 +329,9 @@ int entry(int argc, char **argv)
 
       train_interpreter.forward();
 
-      printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                                reinterpret_cast<float *>(train_target_data.at(i).data()),
-                                target_size);
+      //printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+      //                          reinterpret_cast<float *>(train_target_data.at(i).data()),
+      //                          target_size);
       auto mse = calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
                    reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
       auto mae = calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),

@@ -93,6 +93,7 @@
 #include "Nodes/CircleReduceMax.h"
 #include "Nodes/CircleReduceMin.h"
 #include "Nodes/CircleReduceProd.h"
+#include "Nodes/CircleReduceSum.h"
 #include "Nodes/CircleRelu.h"
 #include "Nodes/CircleRelu6.h"
 #include "Nodes/CircleReluN1To1.h"
@@ -139,6 +140,8 @@
 #include "Nodes/CircleBCQFullyConnected.h"
 #include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleInstanceNorm.h"
+#include "Nodes/CircleConv2DInputGrad.h"
+#include "Nodes/CircleConv2DWeightGrad.h"
 // Virtual nodes
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleInput.h"

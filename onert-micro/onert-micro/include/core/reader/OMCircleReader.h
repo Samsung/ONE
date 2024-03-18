@@ -56,7 +56,7 @@ public: // direct API
   const CircleOperators *operators() const { return _current_subgraph->operators(); }
   const CircleValues *inputs() const { return _current_subgraph->inputs(); }
   const CircleValues *outputs() const { return _current_subgraph->outputs(); }
-  const circle::DataFormat data_format() const { return _current_subgraph->data_format(); }
+  //const circle::DataFormat data_format() const { return _current_subgraph->data_format(); }
   const CircleMetadataSet *metadata() const { return _model->metadata(); }
 
   uint32_t num_subgraph() const { return _model->subgraphs()->size(); }

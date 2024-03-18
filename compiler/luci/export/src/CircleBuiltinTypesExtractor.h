@@ -114,6 +114,20 @@ public:
                                        node->dilation()->w(), node->dilation()->h())
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleConv2DInputGrad *node)
+  {
+    return circle::CreateConv2DInputGradOptions(_builder, getOpPadding(node->padding()), node->stride()->w(),
+                                       node->stride()->h(),
+                                       node->dilation()->w(), node->dilation()->h())
+                                       .Union();
+  }
+  flatbuffers::Offset<void> visit(luci::CircleConv2DWeightGrad *node)
+  {
+    return circle::CreateConv2DWeightGradOptions(_builder, getOpPadding(node->padding()), node->stride()->w(),
+                                                node->stride()->h(),
+                                                node->dilation()->w(), node->dilation()->h())
+                                                .Union();
+  }
   flatbuffers::Offset<void> visit(luci::CircleCos *)
   {
     return circle::CreateCosOptions(_builder).Union();
@@ -354,6 +368,10 @@ public:
     return circle::CreateReducerOptions(_builder, node->keep_dims()).Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleReduceProd *node)
+  {
+    return circle::CreateReducerOptions(_builder, node->keep_dims()).Union();
+  }
+  flatbuffers::Offset<void> visit(luci::CircleReduceSum *node)
   {
     return circle::CreateReducerOptions(_builder, node->keep_dims()).Union();
   }

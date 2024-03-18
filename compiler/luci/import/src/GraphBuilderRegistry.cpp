@@ -44,6 +44,8 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(CUSTOM, CircleCustomGraphBuilder);                                           // 32
   CIRCLE_NODE(CONCATENATION, CircleConcatenationGraphBuilder);                             // 2
   CIRCLE_NODE(CONV_2D, CircleConv2DGraphBuilder);                                          // 3
+  CIRCLE_NODE(CONV_2D_INPUT_GRAD, CircleConv2DInputGradGraphBuilder);                      // 250
+  CIRCLE_NODE(CONV_2D_WEIGHT_GRAD, CircleConv2DWeightGradGraphBuilder);                    // 251
   CIRCLE_NODE(COS, CircleCosGraphBuilder);                                                 // 108
   CIRCLE_NODE(CUMSUM, CircleCumSumGraphBuilder);                                           // 128
   CIRCLE_NODE(DENSIFY, CircleDensifyGraphBuilder);                                         // 124
@@ -106,6 +108,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(REDUCE_MAX, CircleReduceMaxGraphBuilder);                                    // 82
   CIRCLE_NODE(REDUCE_MIN, CircleReduceMinGraphBuilder);                                    // 89
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);                                  // 81
+  CIRCLE_NODE(REDUCE_SUM, CircleReduceSumGraphBuilder);                                  // 81
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                                               // 19
   CIRCLE_NODE(RELU6, CircleRelu6GraphBuilder);                                             // 21
   CIRCLE_NODE(RELU_N1_TO_1, CircleReluN1To1GraphBuilder);                                  // 20

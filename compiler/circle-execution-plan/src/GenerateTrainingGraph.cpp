@@ -259,7 +259,7 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
 }
 #endif
 
-
+#if 0
 // Let's create backpropogation calculation graph:
 // For this example (MSE error, graph: FC(no bias) -> Relu -> FC(no bias) ) it is:
 //       PRED    TARGET
@@ -466,6 +466,179 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
   new_fc_node->name(weight_gradient_1_node->name() + "_gradient");
 
   weight_gradient_1_node->from(new_fc_node);
+
+  return std::move(training_graph);
+}
+#endif
+
+// Let's create backpropogation calculation node:
+// For this example (MSE error, SGD, lambda=L, one conv2d node with weight and bias) it is:
+//       PRED    TARGET
+//         \       /
+//            SUB      Conv2D_InputActivation
+//           /   \        /
+//          /     \      /
+//         /       \    /
+//    Bias_grad   Conv2D_Grad_Weight
+//                    |
+//                  Weight_grad
+//
+std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTrainingGraph()
+{
+  assert(_module->size() == 1); // Should be one graph
+  auto original_graph = _module->graph();
+
+  assert(original_graph->outputs()->size() == 1); // Should be one output
+  auto predicted_output_values_node = dynamic_cast<luci::CircleOutput *>(output_nodes(original_graph).at(0));
+  assert(predicted_output_values_node != nullptr);
+
+  std::unique_ptr<loco::Graph> training_graph = std::make_unique<loco::Graph>();
+
+  // Create inputs: outputs from original model and target values
+  loco::Graph::InputContext *input_context = training_graph->inputs();
+  // Predicted values
+  auto predicted_input_values_node = training_graph->nodes()->create<luci::CircleInput>();
+  auto predicted_input_values_node_context = input_context->create();
+  copy_nodes_params(predicted_input_values_node, predicted_output_values_node);
+  link(predicted_input_values_node_context, predicted_input_values_node);
+  copy_for_context(predicted_input_values_node_context, predicted_input_values_node);
+  // Target values
+  auto target_input_values_node = training_graph->nodes()->create<luci::CircleInput>();
+  auto target_input_values_node_context = input_context->create();
+  copy_nodes_params(target_input_values_node, predicted_input_values_node); // Note: params of the node
+  // the same for target as predicted
+  link(target_input_values_node_context, target_input_values_node);
+  target_input_values_node->name(target_input_values_node->name() + "_target");
+  copy_for_context(target_input_values_node_context, predicted_input_values_node);
+
+  luci::CircleConv2D *conv_node = nullptr;
+
+  for (auto node : loco::active_nodes(loco::output_nodes(original_graph)))
+  {
+    if (auto cv = dynamic_cast<luci::CircleConv2D *>(node))
+    {
+      conv_node = cv;
+      break;
+    }
+  }
+
+assert(conv_node != nullptr);
+
+  luci::CircleConst *weight = dynamic_cast<luci::CircleConst *>(conv_node->filter());
+  assert(weight != nullptr);
+  luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(conv_node->bias());
+  assert(bias != nullptr);
+  luci::CircleNode *conv_from = dynamic_cast<luci::CircleNode *>(conv_node->input());
+  assert(conv_from != nullptr);
+
+  // Create outputs: result gradients for weights and biases
+  loco::Graph::OutputContext *output_context = training_graph->outputs();
+
+  // Create weight gradient output
+  auto weight_gradient_context = output_context->create();
+  auto weight_gradient_node = training_graph->nodes()->create<luci::CircleOutput>();
+  copy_nodes_params(weight_gradient_node, weight);
+  link(weight_gradient_context, weight_gradient_node);
+  copy_for_context(weight_gradient_context, weight_gradient_node);
+
+  // Create bias gradient output
+  auto bias_gradient_context = output_context->create();
+  auto bias_gradient_node = training_graph->nodes()->create<luci::CircleOutput>();
+  copy_nodes_params(bias_gradient_node, bias);
+  link(bias_gradient_context, bias_gradient_node);
+  copy_for_context(bias_gradient_context, bias_gradient_node);
+
+  // Create Sub node
+  auto sub = training_graph->nodes()->create<luci::CircleSub>();
+  sub->fusedActivationFunction(luci::FusedActFunc::NONE);
+  sub->x(predicted_input_values_node);
+  sub->y(target_input_values_node);
+  sub->name("_sub");
+
+  // Create Const for transpose_1 and transpose_2
+  auto transpose_const = training_graph->nodes()->create<luci::CircleConst>();
+  transpose_const->shape({4}); // scalar
+  transpose_const->dtype(loco::DataType::S32);
+  transpose_const->rank(1);
+  transpose_const->size<loco::DataType::S32>(4);
+  transpose_const->at<loco::DataType::S32>(0) = 0;
+  transpose_const->at<loco::DataType::S32>(1) = 3;
+  transpose_const->at<loco::DataType::S32>(2) = 1;
+  transpose_const->at<loco::DataType::S32>(3) = 2;
+  transpose_const->name("TRANSPOSE_CONST");
+
+  // Create Const for transpose_3
+  auto transpose_const_2 = training_graph->nodes()->create<luci::CircleConst>();
+  transpose_const_2->shape({4}); // scalar
+  transpose_const_2->dtype(loco::DataType::S32);
+  transpose_const_2->rank(1);
+  transpose_const_2->size<loco::DataType::S32>(4);
+  transpose_const_2->at<loco::DataType::S32>(0) = 0;
+  transpose_const_2->at<loco::DataType::S32>(1) = 2;
+  transpose_const_2->at<loco::DataType::S32>(2) = 3;
+  transpose_const_2->at<loco::DataType::S32>(3) = 1;
+  transpose_const_2->name("TRANSPOSE_CONST");
+
+
+  // Create Const for index
+  auto index_const = training_graph->nodes()->create<luci::CircleConst>();
+  index_const->shape({3}); // scalar
+  index_const->dtype(loco::DataType::S32);
+  index_const->rank(1);
+  index_const->size<loco::DataType::S32>(3);
+  index_const->at<loco::DataType::S32>(0) = 0;
+  index_const->at<loco::DataType::S32>(1) = 1;
+  index_const->at<loco::DataType::S32>(2) = 2;
+  index_const->name("index");
+
+  // Create ReduceSum
+  // Create CircleReduceMax operation
+  auto reduce_sum = training_graph->nodes()->create<luci::CircleReduceSum>();
+  reduce_sum->input(sub);
+  reduce_sum->reduction_indices(index_const);
+  reduce_sum->keep_dims(false);
+  reduce_sum->name(bias_gradient_node->name());
+
+  // Connect bias grad output and sub
+  bias_gradient_node->from(reduce_sum);
+
+  // Create conv_InputActivation node
+  auto conv_input_activation_node = training_graph->nodes()->create<luci::CircleInput>();
+  auto conv_input_activation_node_context = input_context->create();
+  copy_nodes_params(conv_input_activation_node, conv_from);
+  link(conv_input_activation_node_context, conv_input_activation_node);
+  copy_for_context(conv_input_activation_node_context, conv_input_activation_node);
+
+  // Create Transpose_input node
+  auto transpose_input = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_input->a(conv_input_activation_node);
+  transpose_input->perm(transpose_const);
+  transpose_input->name("trabnspose_left");
+
+  // Create Transpose_output node
+  auto transpose_output = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_output->a(sub);
+  transpose_output->perm(transpose_const);
+  transpose_output->name("trabnspose_left");
+
+  // Create Conv_2D_Weight_Grad node
+  auto conv2d_weight_grad_node = training_graph->nodes()->create<luci::CircleConv2DWeightGrad>();
+  conv2d_weight_grad_node->input_grad(transpose_output);
+  conv2d_weight_grad_node->input_activation(transpose_input);
+  conv2d_weight_grad_node->padding(conv_node->padding());
+  auto stride = conv2d_weight_grad_node->stride();
+  stride->w(conv_node->stride()->w());
+  stride->h(conv_node->stride()->h());
+  conv2d_weight_grad_node->name(weight->name() + "_tmp");
+
+  // Create Transpose_output_grad node
+  auto transpose_grad = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_grad->a(conv2d_weight_grad_node);
+  transpose_grad->perm(transpose_const_2);
+  transpose_grad->name(weight->name());
+
+  // Connect output weight gradient with MUL
+  weight_gradient_node->from(transpose_grad);
 
   return std::move(training_graph);
 }
