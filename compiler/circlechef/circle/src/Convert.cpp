@@ -31,10 +31,14 @@ circlechef::TensorType as_circlechef_type(const circle::TensorType type)
       return circlechef::INT64;
     case circle::TensorType_UINT8:
       return circlechef::UINT8;
+    case circle::TensorType_UINT4:
+      return circlechef::UINT4;
     case circle::TensorType_BOOL:
       return circlechef::BOOL;
     case circle::TensorType_INT16:
       return circlechef::INT16;
+    case circle::TensorType_INT4:
+      return circlechef::INT4;
     // TODO handle other types
     // TensorType_FLOAT16
     // TensorType_STRING
