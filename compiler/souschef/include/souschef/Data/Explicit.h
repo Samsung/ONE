@@ -131,6 +131,74 @@ struct ExplicitFloat16DataChefFactory : public DataChefFactory
   }
 };
 
+class ExplicitInt4DataChef final : public DataChef
+{
+public:
+  ExplicitInt4DataChef()
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override;
+
+public:
+  void insert(const int8_t &value) { _values.emplace_back(value); }
+
+private:
+  std::vector<int8_t> _values;
+};
+
+struct ExplicitInt4DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const
+  {
+    std::unique_ptr<ExplicitInt4DataChef> res{new ExplicitInt4DataChef};
+
+    for (uint32_t n = 0; n < args.count(); ++n)
+    {
+      auto const data = to_number<int8_t>(args.value(n));
+      res->insert(data);
+    }
+
+    return std::move(res);
+  }
+};
+
+class ExplicitUint4DataChef final : public DataChef
+{
+public:
+  ExplicitUint4DataChef()
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override;
+
+public:
+  void insert(const uint8_t &value) { _values.emplace_back(value); }
+
+private:
+  std::vector<uint8_t> _values;
+};
+
+struct ExplicitUint4DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const
+  {
+    std::unique_ptr<ExplicitUint4DataChef> res{new ExplicitUint4DataChef};
+
+    for (uint32_t n = 0; n < args.count(); ++n)
+    {
+      auto const data = to_number<uint8_t>(args.value(n));
+      res->insert(data);
+    }
+
+    return std::move(res);
+  }
+};
+
 } // namespace souschef
 
 #endif // __SOUSCHEF_DATA_EXPLICIT_H__

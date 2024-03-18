@@ -20,6 +20,8 @@
 #include "souschef/DataChef.h"
 #include "souschef/LexicalCast.h"
 
+#include <stdexcept>
+
 namespace souschef
 {
 
@@ -59,6 +61,89 @@ template <typename T> struct ConstantDataChefFactory : public DataChefFactory
   {
     auto const value = to_number<T>(args.value(0));
     return std::unique_ptr<DataChef>{new ConstantDataChef<T>{value}};
+  }
+};
+
+class ConstantInt4DataChef final : public DataChef
+{
+public:
+  ConstantInt4DataChef(const int8_t &value) : _value{value}
+  {
+    // DO NOTHING
+  }
+
+public:
+  // int4 constant is saved as int8 (extra 4 bits are filled with sign bits).
+  // Callers must cast each element to int8 before using it.
+  // Example)
+  //   ConstInt4DataChef chef(-5)
+  //   auto values = chef.generate(3);
+  //   for (uint8_t value: values) {
+  //     int8_t real_value = static_cast<int8_t>(value);
+  //     assert(value == 251 and real_value == -5);
+  std::vector<uint8_t> generate(int32_t count) const override
+  {
+    std::vector<uint8_t> res;
+
+    if (_value < -8 || 7 < _value)
+      throw std::runtime_error("Constant value out of range.");
+
+    for (uint32_t n = 0; n < count; ++n)
+    {
+      const uint8_t data = static_cast<const uint8_t>(_value);
+      res.emplace_back(data);
+    }
+
+    return res;
+  }
+
+private:
+  int8_t _value;
+};
+
+struct ConstantInt4DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const
+  {
+    auto const value = to_number<int8_t>(args.value(0));
+    return std::unique_ptr<DataChef>{new ConstantInt4DataChef{value}};
+  }
+};
+
+class ConstantUint4DataChef final : public DataChef
+{
+public:
+  ConstantUint4DataChef(const uint8_t &value) : _value{value}
+  {
+    // DO NOTHING
+  }
+
+public:
+  std::vector<uint8_t> generate(int32_t count) const override
+  {
+    std::vector<uint8_t> res;
+
+    if (15 < _value)
+      throw std::runtime_error("Constant value out of range.");
+
+    for (uint32_t n = 0; n < count; ++n)
+    {
+      res.emplace_back(_value);
+    }
+
+    return res;
+  }
+
+private:
+  uint8_t _value;
+};
+
+struct ConstantUint4DataChefFactory : public DataChefFactory
+{
+  std::unique_ptr<DataChef> create(const Arguments &args) const
+  {
+    auto const value = to_number<uint8_t>(args.value(0));
+    return std::unique_ptr<DataChef>{new ConstantUint4DataChef{value}};
   }
 };
 
