@@ -16,6 +16,7 @@
 
 #include "souschef/Data/Explicit.h"
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -90,6 +91,39 @@ std::vector<uint8_t> ExplicitFloat16DataChef::generate(int32_t count) const
     {
       res.emplace_back(arr[b]);
     }
+  }
+
+  return res;
+}
+
+std::vector<uint8_t> ExplicitInt4DataChef::generate(int32_t count) const
+{
+  std::vector<uint8_t> res;
+
+  for (uint32_t n = 0; n < count; ++n)
+  {
+    int8_t const value = (n < _values.size()) ? _values.at(n) : 0;
+    if (value < -8 || 7 < value)
+      throw std::runtime_error("Explicit value out of range.");
+
+    const uint8_t data = static_cast<const uint8_t>(value);
+    res.emplace_back(data);
+  }
+
+  return res;
+}
+
+std::vector<uint8_t> ExplicitUint4DataChef::generate(int32_t count) const
+{
+  std::vector<uint8_t> res;
+
+  for (uint32_t n = 0; n < count; ++n)
+  {
+    uint8_t const value = (n < _values.size()) ? _values.at(n) : 0;
+    if (15 < value)
+      throw std::runtime_error("Explicit value out of range.");
+
+    res.emplace_back(value);
   }
 
   return res;
