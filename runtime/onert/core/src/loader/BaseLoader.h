@@ -94,7 +94,7 @@ protected:
 
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
-  ir::DataType tensorTypeToDataType(TensorType type);
+  virtual ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
   flexbuffers::Map getCustomOpAttrMap(const Operator *op);
 
@@ -321,8 +321,6 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     // case TensorType::TensorType_FLOAT64
     case TensorType::TensorType_UINT32:
       return ir::DataType::UINT32;
-    case TensorType::TensorType_INT4:
-      return ir::DataType::QUANT_INT4_SYMM;
     default:
       throw std::runtime_error(
         std::string("Unsupported tensor type: ").append(EnumNameTensorType(type)));
