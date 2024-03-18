@@ -57,6 +57,35 @@ TEST_F(GenModelTest, OneOp_FullyConnected)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_FullyConnected_Int4Weight)
+{
+  CircleGen cgen;
+  // clang-format off
+  // This is packed weight for [0, 1, 0, 0, -1, -1 ,0, 0]
+  std::vector<uint8_t> weight_data{ 16, 0, 255, 0 };
+  std::vector<float> bias_data{ 0, 1, 2, 3 };
+
+  // clang-format on
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+
+  int input = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<float> weight_scales = {0.5};
+  std::vector<int64_t> weight_zeropoints = {0};
+  int weight = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT4, weight_buf}, weight_scales, weight_zeropoints);
+  int bias = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int output = cgen.addTensor({{1, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorFullyConnected({{input, weight, bias}, {output}});
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1, 3}}, {{1.5 , 1, 0, 3}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 #if defined(__aarch64__)
 TEST_F(GenModelTest, OneOp_FullyConnectedShuffled16x1Float32)
 {
