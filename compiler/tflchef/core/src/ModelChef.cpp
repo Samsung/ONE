@@ -353,6 +353,7 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
       {
         assert(not operand.has_sparsity());
         assert(operand.has_shape());
+        assert(operand.type() != tflchef::TensorType::INT4);
 
         const int32_t dims_count = dims.size();
         std::vector<int> traversal_order_vec;
