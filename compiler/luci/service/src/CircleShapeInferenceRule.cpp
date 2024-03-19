@@ -1752,6 +1752,7 @@ loco::NodeShape infer_circle_gru(const luci::CircleGRU *node)
   const auto state_shape = luci::shape_get(node->state()).as<loco::TensorShape>();
 
   auto rank = input_shape.rank();
+  assert(rank > 1);
   output_shape.rank(rank);
   for (uint32_t i = 0; i < rank - 1; i++)
   {
