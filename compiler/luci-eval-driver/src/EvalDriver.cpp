@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <luci/IR/DataTypeHelper.h>
 #include <luci/ImporterEx.h>
 #include <luci_interpreter/Interpreter.h>
 
@@ -48,7 +49,7 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
 
 template <typename NodeT> size_t getTensorSize(const NodeT *node)
 {
-  uint32_t tensor_size = loco::size(node->dtype());
+  uint32_t tensor_size = luci::size(node->dtype());
   for (uint32_t i = 0; i < node->rank(); ++i)
     tensor_size *= node->dim(i).value();
   return tensor_size;
