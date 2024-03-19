@@ -128,6 +128,10 @@ void calculateActivationRangeQuantized(Activation activation, const Tensor *outp
       qmin = 0;
       qmax = std::numeric_limits<uint8_t>::max();
       break;
+    case DataType::S4:
+      qmin = -8;
+      qmax = 7;
+      break;
     case DataType::S8:
       qmin = -std::numeric_limits<int8_t>::max();
       qmax = std::numeric_limits<int8_t>::max();
