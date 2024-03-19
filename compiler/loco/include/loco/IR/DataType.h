@@ -27,11 +27,13 @@ enum class DataType
 {
   Unknown, // Unknown type (serves as a default value)
 
+  U4,  // 4-bit unsigned integer
   U8,  // 8-bit unsigned integer
   U16, // 16-bit unsigned integer
   U32, // 32-bit unsigned integer
   U64, // 64-bit unsigned integer
 
+  S4,  // 4-bit signed integer
   S8,  // 8-bit signed integer
   S16, // 16-bit signed integer
   S32, // 32-bit signed integer
