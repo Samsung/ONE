@@ -208,6 +208,9 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _output = output;
   _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
                weights->data_type() == OperandType::QUANT_INT8_SYMM;
+  _is_hybrid = input->data_type() == OperandType::FLOAT32 &&
+               weights->data_type() == OperandType::QUANT_INT4_SYMM;
+
   _is_shuffled16x1float32 = weights_format == ir::FullyConnectedWeightsFormat::Shuffled16x1Float32;
 #if !defined(__aarch64__) || !defined(USE_NEON)
   if (_is_shuffled16x1float32)
