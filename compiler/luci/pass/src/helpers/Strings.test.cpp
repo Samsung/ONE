@@ -22,11 +22,13 @@
 
 TEST(StringsTest, str_to_dtype)
 {
+  ASSERT_EQ(loco::DataType::U4, luci::str_to_dtype("uint4"));
   ASSERT_EQ(loco::DataType::U8, luci::str_to_dtype("uint8"));
   ASSERT_EQ(loco::DataType::U16, luci::str_to_dtype("uint16"));
   ASSERT_EQ(loco::DataType::U32, luci::str_to_dtype("uint32"));
   ASSERT_EQ(loco::DataType::U64, luci::str_to_dtype("uint64"));
 
+  ASSERT_EQ(loco::DataType::S4, luci::str_to_dtype("int4"));
   ASSERT_EQ(loco::DataType::S8, luci::str_to_dtype("int8"));
   ASSERT_EQ(loco::DataType::S16, luci::str_to_dtype("int16"));
   ASSERT_EQ(loco::DataType::S32, luci::str_to_dtype("int32"));

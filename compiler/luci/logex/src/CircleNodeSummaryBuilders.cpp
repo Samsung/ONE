@@ -30,6 +30,8 @@ std::string to_str(loco::DataType type)
 {
   switch (type)
   {
+    case loco::DataType::U4:
+      return "UINT4";
     case loco::DataType::U8:
       return "UINT8";
     case loco::DataType::U16:
@@ -39,6 +41,8 @@ std::string to_str(loco::DataType type)
     case loco::DataType::U64:
       return "UINT64";
 
+    case loco::DataType::S4:
+      return "INT4";
     case loco::DataType::S8:
       return "INT8";
     case loco::DataType::S16:

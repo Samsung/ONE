@@ -59,8 +59,16 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
         copy_values<loco::DataType::FLOAT32>(node, cloned);
         break;
 
+      case loco::DataType::U4:
+        copy_values<loco::DataType::U4>(node, cloned);
+        break;
+
       case loco::DataType::U8:
         copy_values<loco::DataType::U8>(node, cloned);
+        break;
+
+      case loco::DataType::S4:
+        copy_values<loco::DataType::S4>(node, cloned);
         break;
 
       case loco::DataType::S8:

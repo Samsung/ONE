@@ -122,8 +122,14 @@ bool RemoveDuplicateConstPass::remove_duplicate_const()
           case loco::DataType::S8:
             is_equal = is_equal_consts<loco::DataType::S8>(reference_const, cur_const);
             break;
+          case loco::DataType::S4:
+            is_equal = is_equal_consts<loco::DataType::S4>(reference_const, cur_const);
+            break;
           case loco::DataType::U8:
             is_equal = is_equal_consts<loco::DataType::U8>(reference_const, cur_const);
+            break;
+          case loco::DataType::U4:
+            is_equal = is_equal_consts<loco::DataType::U4>(reference_const, cur_const);
             break;
           default:
             continue;
@@ -211,8 +217,14 @@ bool RemoveDuplicateConstPass::run(loco::Graph *g)
       case loco::DataType::S8:
         add_to_map<loco::DataType::S8>(const_node);
         break;
+      case loco::DataType::S4:
+        add_to_map<loco::DataType::S4>(const_node);
+        break;
       case loco::DataType::U8:
         add_to_map<loco::DataType::U8>(const_node);
+        break;
+      case loco::DataType::U4:
+        add_to_map<loco::DataType::U4>(const_node);
         break;
       default:
         continue;
