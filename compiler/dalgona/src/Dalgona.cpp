@@ -18,6 +18,7 @@
 #include "PythonHooks.h"
 #include "RandomUtils.h"
 
+#include <luci/IR/DataTypeHelper.h>
 #include <luci/Importer.h>
 #include <foder/FileLoader.h>
 #include <dio_hdf5/HDF5Importer.h>
@@ -51,7 +52,7 @@ template <typename NodeT> size_t getByteSize(const NodeT *node)
 {
   assert(node != nullptr); // FIX_CALLER_UNLESS
 
-  uint32_t dtype_size = loco::size(node->dtype());
+  uint32_t dtype_size = luci::size(node->dtype());
   return static_cast<size_t>(dtype_size) * static_cast<size_t>(numElements(node));
 }
 
