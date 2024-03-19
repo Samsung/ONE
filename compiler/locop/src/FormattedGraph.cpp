@@ -41,6 +41,8 @@ std::string str(const loco::DataType &dtype)
     case loco::DataType::Unknown:
       return "Unknown";
 
+    case loco::DataType::U4:
+      return "U4";
     case loco::DataType::U8:
       return "U8";
     case loco::DataType::U16:
@@ -50,6 +52,8 @@ std::string str(const loco::DataType &dtype)
     case loco::DataType::U64:
       return "U64";
 
+    case loco::DataType::S4:
+      return "S4";
     case loco::DataType::S8:
       return "S8";
     case loco::DataType::S16:
