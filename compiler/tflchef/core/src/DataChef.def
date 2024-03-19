@@ -26,8 +26,8 @@ DATA_CHEF(INT8, gaussian, GaussianInt8DataChefFactory)
 DATA_CHEF(UINT8, gaussian, GaussianUint8DataChefFactory)
 
 // INT4 support only for constant, explicit as int8_t
-DATA_CHEF(INT4, constant, ConstantDataChefFactory<int8_t>)
-DATA_CHEF(INT4, explicit, ExplicitDataChefFactory<int8_t>)
+DATA_CHEF(INT4, constant, ConstantInt4DataChefFactory)
+DATA_CHEF(INT4, explicit, ExplicitInt4DataChefFactory)
 
 // FLOAT16 support for only gaussian, explicit for now
 DATA_CHEF(FLOAT16, explicit, ExplicitFloat16DataChefFactory)
