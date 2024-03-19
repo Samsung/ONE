@@ -19,6 +19,7 @@
 
 #include <loco/IR/DataType.h>
 #include <loco/IR/DataTypeTraits.h>
+#include <luci/IR/DataTypeHelper.h>
 
 #include <cstddef>
 
@@ -29,7 +30,7 @@ using DataType = loco::DataType;
 
 template <DataType DT> using DataTypeImpl = loco::DataTypeImpl<DT>;
 
-inline size_t getDataTypeSize(DataType data_type) { return loco::size(data_type); }
+inline size_t getDataTypeSize(DataType data_type) { return luci::size(data_type); }
 
 } // namespace luci_interpreter
 
