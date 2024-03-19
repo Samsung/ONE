@@ -18,6 +18,7 @@
 #define CIRCLE_EXECUTION_PLAN_SCRATCHPAD_HELPER_LINUX_H
 
 #include "IScratchpadHelper.h"
+#include <luci/IR/DataTypeHelper.h>
 #include <loco/IR/DataTypeTraits.h>
 
 namespace circle_planner
@@ -45,14 +46,14 @@ public:
     for (int32_t i = 0; i < lhs->rank(); ++i)
       scratchpad_size *= lhs->dim(i).value();
 
-    scratchpad_sizes.push_back(scratchpad_size * loco::size(lhs->dtype()));
+    scratchpad_sizes.push_back(scratchpad_size * luci::size(lhs->dtype()));
 
     // Scratchpad for rhs
     scratchpad_size = 1;
     for (int32_t i = 0; i < rhs->rank(); ++i)
       scratchpad_size *= rhs->dim(i).value();
 
-    scratchpad_sizes.push_back(scratchpad_size * loco::size(rhs->dtype()));
+    scratchpad_sizes.push_back(scratchpad_size * luci::size(rhs->dtype()));
 
     return scratchpad_sizes;
   }
