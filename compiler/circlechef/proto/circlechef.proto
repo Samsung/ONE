@@ -14,6 +14,7 @@ package circlechef;
 
 // This enum value corresponds to TensorType in TensorFlow Lite schema
 enum TensorType {
+  UINT4 = -1;
   FLOAT32 = 0;
   INT32 = 2;
   UINT8 = 3;
@@ -21,6 +22,7 @@ enum TensorType {
   STRING = 5;
   BOOL = 6;
   INT16 = 7;
+  INT4 = 17;
 }
 
 message TensorShape {

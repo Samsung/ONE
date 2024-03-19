@@ -1,0 +1,34 @@
+operand {
+  name: "ifm1"
+  type: UINT4
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+}
+operand {
+  name: "constant"
+  type: UINT4
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "1"  arg: "2"  arg: "3"
+    arg: "4"  arg: "5"  arg: "6"  arg: "7"
+    arg: "8"  arg: "9" arg: "10" arg: "11"
+    arg: "12"  arg: "13" arg: "14" arg: "15"
+  }
+}
+operand {
+  name: "ofm"
+  type: UINT4
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm1"
+  input: "constant"
+  output: "ofm"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+input: "ifm1"
+output: "ofm"
