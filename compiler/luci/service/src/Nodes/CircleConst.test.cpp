@@ -98,6 +98,20 @@ TEST(CircleConstTest, clone)
   ASSERT_NE(nullptr, const_cloned->sparsityparam());
 }
 
+TEST(CircleConstTest, clone_U4)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = new_empty_const<loco::DataType::U4>(g.get());
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::U4, const_cloned->dtype());
+}
+
 TEST(CircleConstTest, clone_U8)
 {
   auto g = loco::make_graph();
@@ -110,6 +124,20 @@ TEST(CircleConstTest, clone_U8)
 
   // check attributes
   ASSERT_EQ(loco::DataType::U8, const_cloned->dtype());
+}
+
+TEST(CircleConstTest, clone_S4)
+{
+  auto g = loco::make_graph();
+
+  // prepare source CircleConst
+  auto circle_const = new_empty_const<loco::DataType::S4>(g.get());
+
+  // make a clone
+  auto const_cloned = luci::clone(circle_const);
+
+  // check attributes
+  ASSERT_EQ(loco::DataType::S4, const_cloned->dtype());
 }
 
 TEST(CircleConstTest, clone_S8)

@@ -183,7 +183,9 @@ bool resolve_custom_op(luci::CircleCustom *addv2)
     auto input = loco::must_cast<luci::CircleNode *>(addv2->inputs(i));
     switch (input->dtype())
     {
+      case loco::DataType::U4:
       case loco::DataType::U8:
+      case loco::DataType::S4:
       case loco::DataType::S8:
       case loco::DataType::S16:
       case loco::DataType::S32:

@@ -363,6 +363,54 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &bui
 
 template <>
 flatbuffers::Offset<circle::Buffer>
+encodeOpBufferByDType<loco::DataType::S4>(FlatBufferBuilder &builder, luci::CircleConst *c)
+{
+  const uint32_t size = c->size<loco::DataType::S4>();
+  const uint32_t raw_size = (size + 1) / 2;
+  std::vector<uint8_t> raw_data(raw_size);
+
+  for (uint32_t i = 0; i < raw_size; ++i)
+  {
+    uint32_t sidx = i * 2;
+    uint8_t data = static_cast<uint8_t>(c->at<loco::DataType::S4>(sidx++));
+    raw_data[i] = data & 0x0f;
+    if (sidx < size)
+    {
+      data = static_cast<uint8_t>(c->at<loco::DataType::S4>(sidx));
+      raw_data[i] |= data << 4;
+    }
+  }
+
+  auto array_offset = builder.CreateVector(raw_data.data(), raw_size);
+  return CreateBuffer(builder, array_offset);
+}
+
+template <>
+flatbuffers::Offset<circle::Buffer>
+encodeOpBufferByDType<loco::DataType::U4>(FlatBufferBuilder &builder, luci::CircleConst *c)
+{
+  const uint32_t size = c->size<loco::DataType::U4>();
+  const uint32_t raw_size = (size + 1) / 2;
+  std::vector<uint8_t> raw_data(raw_size);
+
+  for (uint32_t i = 0; i < raw_size; ++i)
+  {
+    uint32_t sidx = i * 2;
+    uint8_t data = static_cast<uint8_t>(c->at<loco::DataType::U4>(sidx++));
+    raw_data[i] = data & 0x0f;
+    if (sidx < size)
+    {
+      data = static_cast<uint8_t>(c->at<loco::DataType::U4>(sidx));
+      raw_data[i] |= data << 4;
+    }
+  }
+
+  auto array_offset = builder.CreateVector(raw_data.data(), raw_size);
+  return CreateBuffer(builder, array_offset);
+}
+
+template <>
+flatbuffers::Offset<circle::Buffer>
 encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::CircleConst *c)
 {
   const uint32_t count = c->size<loco::DataType::STRING>();
@@ -416,6 +464,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
   {
     case loco::DataType::FLOAT32:
       return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
+    case loco::DataType::S4:
+      return encodeOpBufferByDType<loco::DataType::S4>(builder, c);
     case loco::DataType::S8:
       return encodeOpBufferByDType<loco::DataType::S8>(builder, c);
     case loco::DataType::S16:
@@ -424,6 +474,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
       return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
     case loco::DataType::S64:
       return encodeOpBufferByDType<loco::DataType::S64>(builder, c);
+    case loco::DataType::U4:
+      return encodeOpBufferByDType<loco::DataType::U4>(builder, c);
     case loco::DataType::U8:
       return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
     case loco::DataType::BOOL:
@@ -526,6 +578,9 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
     case loco::DataType::FLOAT32:
       return has_same_elements<loco::DataType::FLOAT32>(lhs, rhs);
 
+    case loco::DataType::S4:
+      return has_same_elements<loco::DataType::S4>(lhs, rhs);
+
     case loco::DataType::S8:
       return has_same_elements<loco::DataType::S8>(lhs, rhs);
 
@@ -537,6 +592,9 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
 
     case loco::DataType::S64:
       return has_same_elements<loco::DataType::S64>(lhs, rhs);
+
+    case loco::DataType::U4:
+      return has_same_elements<loco::DataType::U4>(lhs, rhs);
 
     case loco::DataType::U8:
       return has_same_elements<loco::DataType::U8>(lhs, rhs);
