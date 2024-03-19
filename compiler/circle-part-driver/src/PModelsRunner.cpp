@@ -18,6 +18,7 @@
 
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
+#include <luci/IR/DataTypeHelper.h>
 #include <luci/Importer.h>
 #include <luci/Log.h>
 #include <luci_interpreter/Interpreter.h>
@@ -78,7 +79,7 @@ void save_shape(const std::string &shape_filename, const luci::CircleOutput *out
 
 template <typename NodeT> size_t tensor_size(const NodeT *node)
 {
-  uint32_t tsize = loco::size(node->dtype());
+  uint32_t tsize = luci::size(node->dtype());
   for (uint32_t i = 0; i < node->rank(); ++i)
   {
     assert(node->dim(i).known());
