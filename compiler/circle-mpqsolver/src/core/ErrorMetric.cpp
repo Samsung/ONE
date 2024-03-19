@@ -16,6 +16,7 @@
 
 #include "ErrorMetric.h"
 
+#include <luci/IR/DataTypeHelper.h>
 #include <loco/IR/DataType.h>
 #include <loco/IR/DataTypeTraits.h>
 
@@ -45,7 +46,7 @@ float MAEMetric::compute(const WholeOutput &first, const WholeOutput &second) co
       const Buffer &first_elementary = first[sample_index][out_index];
       const Buffer &second_elementary = second[sample_index][out_index];
       assert(first_elementary.size() == second_elementary.size());
-      size_t cur_size = first_elementary.size() / loco::size(loco::DataType::FLOAT32);
+      size_t cur_size = first_elementary.size() / luci::size(loco::DataType::FLOAT32);
 
       double output_error = 0.; // mean error oevr current output
 

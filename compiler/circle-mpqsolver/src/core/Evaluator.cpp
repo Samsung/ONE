@@ -18,6 +18,8 @@
 
 #include "core/DataProvider.h"
 
+#include <luci/IR/DataTypeHelper.h>
+
 #include <luci_interpreter/Interpreter.h>
 
 #include <dio_hdf5/HDF5Importer.h>
@@ -33,7 +35,7 @@ using namespace luci;
 
 template <typename NodeT> size_t get_tensor_size(const NodeT *node)
 {
-  uint32_t tensor_size = loco::size(node->dtype());
+  uint32_t tensor_size = luci::size(node->dtype());
   for (uint32_t i = 0; i < node->rank(); ++i)
     tensor_size *= node->dim(i).value();
   return tensor_size;
