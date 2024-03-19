@@ -71,8 +71,7 @@ void SelectV2::evalFloat() const
   const auto output_shape = getTensorShape(output());
   auto output_data = getTensorData<float>(output());
 
-  // TODO Upgrade broadcast kernel to supporting 5D when upgrade to TF2.10.x or above
-  tflite::reference_ops::BroadcastSelect4DSlow(condition_shape, condition_data, t_shape, t_data,
+  tflite::reference_ops::BroadcastSelect5DSlow(condition_shape, condition_data, t_shape, t_data,
                                                e_shape, e_data, output_shape, output_data);
 }
 

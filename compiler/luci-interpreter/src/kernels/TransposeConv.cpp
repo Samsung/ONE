@@ -121,12 +121,20 @@ void TransposeConv::execute() const
 
 void TransposeConv::evalFloat() const
 {
+  float activation_min{};
+  float activation_max{};
+  // TODO support activation
+  assert(_params.activation == Activation::NONE);
+  calculateActivationRange(Activation::NONE, &activation_min, &activation_max);
+
   tflite::ConvParams op_params{};
   op_params.padding_type = tflite::PaddingType::kSame;
   op_params.padding_values.height = _padding_height;
   op_params.padding_values.width = _padding_width;
   op_params.stride_height = params().stride_height;
   op_params.stride_width = params().stride_width;
+  op_params.float_activation_min = activation_min;
+  op_params.float_activation_max = activation_max;
   tflite::reference_ops::TransposeConv(op_params,                                                //
                                        getTensorShape(input()), getTensorData<float>(input()),   //
                                        getTensorShape(filter()), getTensorData<float>(filter()), //

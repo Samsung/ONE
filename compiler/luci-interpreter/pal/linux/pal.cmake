@@ -25,10 +25,11 @@ elseif("${TARGET_ARCH}" STREQUAL "aarch64")
 endif()
 
 macro(initialize_pal)
-    nnas_find_package(TensorFlowSource EXACT 2.8.0 QUIET)
-    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.8.0 QUIET)
-    nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
-    nnas_find_package(TensorFlowRuySource EXACT 2.8.0 QUIET)
+    nnas_find_package(TensorFlowSource EXACT 2.12.1 QUIET)
+    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.12.1 QUIET)
+    nnas_find_package(TensorFlowEigenSource EXACT 2.12.1 QUIET)
+    nnas_find_package(TensorFlowRuySource EXACT 2.12.1 QUIET)
+    nnas_find_package(TensorFlowThreadpoolSource EXACT 2.12.1 QUIET)
 
     if (NOT TensorFlowSource_FOUND)
         message(STATUS "Skipping luci-interpreter: TensorFlow not found")
@@ -50,6 +51,11 @@ macro(initialize_pal)
         return()
     endif ()
 
+    if (NOT TensorFlowThreadpoolSource_FOUND)
+        message(STATUS "Skipping luci-interpreter: Threadpool not found")
+        return()
+    endif ()
+
     find_package(Threads REQUIRED)
 
     set(PAL_INITIALIZED TRUE)
@@ -61,6 +67,7 @@ macro(add_pal_to_target TGT)
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
             "${TensorFlowEigenSource_DIR}"
+            "${TensorFlowThreadpoolSource_DIR}/include"
             "${TensorFlowSource_DIR}")
     target_include_directories(${TGT} PRIVATE ${LUCI_INTERPRETER_PAL_DIR})
 
@@ -69,8 +76,9 @@ macro(add_pal_to_target TGT)
     set(PAL_SOURCES ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/portable_tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/kernel_util.cc
-            ${TensorFlowSource_DIR}/tensorflow/lite/c/common.c)
+            ${TensorFlowSource_DIR}/tensorflow/lite/core/c/common.cc)
 
     if(TARGET_ARCH_BASE STREQUAL "arm")
         # NOTE may need to revise this list for version upgrade
@@ -128,6 +136,7 @@ macro(add_pal_to_target TGT)
             "${TensorFlowRuySource_DIR}"
             "${TensorFlowGEMMLowpSource_DIR}"
             "${TensorFlowEigenSource_DIR}"
+            "${TensorFlowThreadpoolSource_DIR}/include"
             "${TensorFlowSource_DIR}"
     )
 
