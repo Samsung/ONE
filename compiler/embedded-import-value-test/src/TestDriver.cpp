@@ -17,6 +17,7 @@
 #include <luci_interpreter/GraphBuilderRegistry.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include <luci/IR/DataTypeHelper.h>
 #include <luci/Importer.h>
 
 #include <cstdlib>
@@ -31,7 +32,7 @@ namespace
 
 uint32_t tensor_size_of(const luci::CircleNode *node)
 {
-  uint32_t tensor_size = loco::size(node->dtype());
+  uint32_t tensor_size = luci::size(node->dtype());
   for (uint32_t i = 0; i < node->rank(); ++i)
     tensor_size *= node->dim(i).value();
   return tensor_size;
@@ -45,8 +46,8 @@ std::vector<uint8_t> random_data_for(const luci::CircleInput *node)
 
   // define size of buffer in elements
   const auto dtype = node->dtype();
-  assert(inputs_data.size() % loco::size(dtype) == 0); // FIX ME UNLESS
-  const auto element_count = inputs_data.size() / loco::size(dtype);
+  assert(inputs_data.size() % luci::size(dtype) == 0); // FIX ME UNLESS
+  const auto element_count = inputs_data.size() / luci::size(dtype);
 
   // random generator engine
   std::random_device device;
