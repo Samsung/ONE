@@ -16,6 +16,7 @@
 
 #include <arser/arser.h>
 #include <foder/FileLoader.h>
+#include <luci/IR/DataTypeHelper.h>
 #include <luci/Importer.h>
 #include <luci_interpreter/Interpreter.h>
 
@@ -265,7 +266,7 @@ int entry(int argc, char **argv)
         input_file.createDataSet("value/" + std::to_string(input_index), dtype, *dataspace));
 
       auto data_size = ::element_num(dims);
-      auto dtype_size = loco::size(input_node->dtype());
+      auto dtype_size = luci::size(input_node->dtype());
       auto byte_size = dtype_size * data_size;
       std::vector<int8_t> data(byte_size);
 
@@ -329,7 +330,7 @@ int entry(int argc, char **argv)
       auto dataset = std::make_unique<H5::DataSet>(
         output_file.createDataSet("value/" + std::to_string(output_index), dtype, *dataspace));
 
-      uint32_t tensor_bytesize = loco::size(output_node->dtype());
+      uint32_t tensor_bytesize = luci::size(output_node->dtype());
       tensor_bytesize *= ::element_num(dims);
       std::vector<int8_t> output_data(tensor_bytesize);
       interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
