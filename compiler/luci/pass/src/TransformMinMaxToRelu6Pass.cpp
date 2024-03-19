@@ -17,7 +17,6 @@
 #include "luci/Pass/TransformMinMaxToRelu6Pass.h"
 
 #include "helpers/NodeFiller.h"
-#include "helpers/TypeMapper.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
