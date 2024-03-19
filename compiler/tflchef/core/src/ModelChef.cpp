@@ -456,6 +456,21 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
       }
       else
       {
+        // pack for INT4 and replace data_vec
+        if (operand.type() == tflchef::TensorType::INT4)
+        {
+          uint32_t packed = (count + 1) / 2;
+          std::vector<uint8_t> data_packed(packed);
+          for (uint32_t idx = 0; idx < packed; ++idx)
+          {
+            uint32_t sidx = idx * 2;
+            data_packed[idx] = data_vec[sidx++] & 0x0f;
+            if (sidx < count)
+              data_packed[idx] |= data_vec[sidx] << 4;
+          }
+          data_vec = data_packed;
+        }
+
         auto data = flatbuffer_builder->CreateVector(data_vec);
 
         // Create Buffer
