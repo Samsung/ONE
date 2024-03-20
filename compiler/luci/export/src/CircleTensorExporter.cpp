@@ -363,54 +363,6 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &bui
 
 template <>
 flatbuffers::Offset<circle::Buffer>
-encodeOpBufferByDType<loco::DataType::S4>(FlatBufferBuilder &builder, luci::CircleConst *c)
-{
-  const uint32_t size = c->size<loco::DataType::S4>();
-  const uint32_t raw_size = (size + 1) / 2;
-  std::vector<uint8_t> raw_data(raw_size);
-
-  for (uint32_t i = 0; i < raw_size; ++i)
-  {
-    uint32_t sidx = i * 2;
-    uint8_t data = static_cast<uint8_t>(c->at<loco::DataType::S4>(sidx++));
-    raw_data[i] = data & 0x0f;
-    if (sidx < size)
-    {
-      data = static_cast<uint8_t>(c->at<loco::DataType::S4>(sidx));
-      raw_data[i] |= data << 4;
-    }
-  }
-
-  auto array_offset = builder.CreateVector(raw_data.data(), raw_size);
-  return CreateBuffer(builder, array_offset);
-}
-
-template <>
-flatbuffers::Offset<circle::Buffer>
-encodeOpBufferByDType<loco::DataType::U4>(FlatBufferBuilder &builder, luci::CircleConst *c)
-{
-  const uint32_t size = c->size<loco::DataType::U4>();
-  const uint32_t raw_size = (size + 1) / 2;
-  std::vector<uint8_t> raw_data(raw_size);
-
-  for (uint32_t i = 0; i < raw_size; ++i)
-  {
-    uint32_t sidx = i * 2;
-    uint8_t data = static_cast<uint8_t>(c->at<loco::DataType::U4>(sidx++));
-    raw_data[i] = data & 0x0f;
-    if (sidx < size)
-    {
-      data = static_cast<uint8_t>(c->at<loco::DataType::U4>(sidx));
-      raw_data[i] |= data << 4;
-    }
-  }
-
-  auto array_offset = builder.CreateVector(raw_data.data(), raw_size);
-  return CreateBuffer(builder, array_offset);
-}
-
-template <>
-flatbuffers::Offset<circle::Buffer>
 encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::CircleConst *c)
 {
   const uint32_t count = c->size<loco::DataType::STRING>();
@@ -457,6 +409,31 @@ encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::
   return CreateBuffer(builder, array_offset);
 }
 
+template <loco::DataType DT>
+flatbuffers::Offset<circle::Buffer> encodeOpBufferPack4bit(FlatBufferBuilder &builder,
+                                                           luci::CircleConst *c)
+{
+  const uint32_t size = c->size<DT>();
+  const uint32_t raw_size = (size + 1) / 2;
+  std::vector<uint8_t> raw_data(raw_size);
+
+  for (uint32_t i = 0; i < raw_size; ++i)
+  {
+    uint32_t sidx = i * 2;
+    uint8_t data = static_cast<uint8_t>(c->at<DT>(sidx));
+    raw_data[i] = data & 0x0f;
+    sidx++;
+    if (sidx < size)
+    {
+      data = static_cast<uint8_t>(c->at<DT>(sidx));
+      raw_data[i] |= data << 4;
+    }
+  }
+
+  auto array_offset = builder.CreateVector(raw_data.data(), raw_size);
+  return CreateBuffer(builder, array_offset);
+}
+
 template <>
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, luci::CircleConst *c)
 {
@@ -465,7 +442,7 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
     case loco::DataType::FLOAT32:
       return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
     case loco::DataType::S4:
-      return encodeOpBufferByDType<loco::DataType::S4>(builder, c);
+      return encodeOpBufferPack4bit<loco::DataType::S4>(builder, c);
     case loco::DataType::S8:
       return encodeOpBufferByDType<loco::DataType::S8>(builder, c);
     case loco::DataType::S16:
@@ -475,7 +452,7 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, l
     case loco::DataType::S64:
       return encodeOpBufferByDType<loco::DataType::S64>(builder, c);
     case loco::DataType::U4:
-      return encodeOpBufferByDType<loco::DataType::U4>(builder, c);
+      return encodeOpBufferPack4bit<loco::DataType::U4>(builder, c);
     case loco::DataType::U8:
       return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
     case loco::DataType::BOOL:
