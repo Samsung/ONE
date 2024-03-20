@@ -169,5 +169,6 @@ tcgenerate(BCQFullyConnected_001)
 tcgenerate(BCQGather_000)
 tcgenerate(CircleBatchMatMul_I4_000)
 tcgenerate(CircleBatchMatMul_U4_000)
+tcgenerate(GRU_000) # luci-interpreter does not support custom GRU
 tcgenerate(InstanceNorm_000)
 tcgenerate(InstanceNorm_001)
