@@ -54,6 +54,8 @@ const void *getNodeData(const luci::CircleConst *node, size_t *data_size)
 {
   switch (node->dtype())
   {
+    case DataType::U4:
+      return getNodeDataImpl<DataType::U4>(node, data_size);
     case DataType::U8:
       return getNodeDataImpl<DataType::U8>(node, data_size);
     case DataType::FLOAT32:
