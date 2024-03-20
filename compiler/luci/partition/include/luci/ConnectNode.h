@@ -184,6 +184,7 @@ public:
   // Circle Only
   void visit(const luci::CircleBCQFullyConnected *) final;
   void visit(const luci::CircleBCQGather *) final;
+  void visit(const luci::CircleGRU *) final;
   void visit(const luci::CircleInstanceNorm *) final;
 
   // NOTE CircleInput and CircleOutput are not handled here as these need
