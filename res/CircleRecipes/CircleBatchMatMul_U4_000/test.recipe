@@ -1,0 +1,39 @@
+# This recipe is just to check processing of UINT4 models.
+# do not run this model in any interpreter or runtime as it may throw an error.
+operand {
+  name: "ifm1"
+  type: UINT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  quant { min: 0 max: 15 scale: 1.0 zero_point: 8 }
+}
+operand {
+  name: "ifm2"
+  type: UINT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "1" arg: "2" arg: "3"
+    arg: "4" arg: "5" arg: "6" arg: "7"
+    arg: "8" arg: "9" arg: "10" arg: "11"
+    arg: "12" arg: "13" arg: "14" arg: "15"
+  }
+  quant { min: 0 max: 15 scale: 1.0 zero_point: 8 }
+}
+operand {
+  name: "ofm"
+  type: UINT4
+  shape { dim: 1 dim: 1 dim: 4 dim: 4 }
+  quant { min: 0 max: 15 scale: 1.0 zero_point: 8 }
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+input: "ifm1"
+output: "ofm"

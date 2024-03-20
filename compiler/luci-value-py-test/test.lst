@@ -62,6 +62,9 @@ eval(FullyConnected_000)
 eval(FullyConnected_001)
 eval(FullyConnected_002)
 #eval(FullyConnected_U8_000)
+
+#eval(FullyConnected_I4_001)
+
 eval(Gather_000)
 #eval(GatherNd_000)
 eval(Gelu_000)

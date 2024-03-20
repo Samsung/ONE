@@ -35,6 +35,8 @@ tflchef::TensorType as_tflchef_type(const tflite::TensorType type)
       return tflchef::BOOL;
     case tflite::TensorType_INT8:
       return tflchef::INT8;
+    case tflite::TensorType_INT4:
+      return tflchef::INT4;
     case tflite::TensorType_INT16:
       return tflchef::INT16;
     case tflite::TensorType_FLOAT16:

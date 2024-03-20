@@ -43,6 +43,7 @@ private:
   void evalFloat() const;
   void evalQuantized() const;
   void evalQuantizedS8() const;
+  void evalQuantizedS4() const;
 };
 
 } // namespace kernels
