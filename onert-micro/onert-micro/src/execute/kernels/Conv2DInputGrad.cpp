@@ -21,7 +21,7 @@
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
 
-#include "PALConv2DWeightGrad.h"
+#include "PALConv2DInputGrad.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
@@ -31,28 +31,28 @@ namespace
 {
 
 constexpr uint32_t inputGradTensorIdx = 0;
-constexpr uint32_t inputActivationTensorIdx = 1;
+constexpr uint32_t weightsTensorIdx = 1;
 
 constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
 // NOTE: doesn't currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleConv2DWeightGrad(const OMExecuteArgs &execute_args)
+OMStatus onert_micro::execute::execute_kernel_CircleConv2DInputGrad(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
   uint16_t op_index = execute_args.kernel_index;
 
   const circle::Tensor *input_grad;
-  const circle::Tensor *input_activation;
+  const circle::Tensor *weights_tensor;
   const circle::Tensor *output_grad;
 
   uint8_t *input_grad_data;
-  uint8_t *input_activation_data;
+  uint8_t *weights_data;
   uint8_t *output_grad_data;
 
-  const circle::Conv2DWeightGradOptions *options;
+  const circle::Conv2DInputGradOptions *options;
   // Read kernel
   {
     execute::OMRuntimeKernel runtime_kernel;
@@ -61,22 +61,22 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2DWeightGrad(const OMExe
       return status;
 
     input_grad = runtime_kernel.inputs[inputGradTensorIdx];
-    input_activation = runtime_kernel.inputs[inputActivationTensorIdx];
+    weights_tensor = runtime_kernel.inputs[weightsTensorIdx];
     output_grad = runtime_kernel.outputs[outputTensorIdx];
     assert(input_grad != nullptr);
-    assert(input_activation != nullptr);
+    assert(weights_tensor != nullptr);
 
     status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
     if (status != Ok)
       return status;
 
     input_grad_data = runtime_kernel.inputs_data[inputGradTensorIdx];
-    input_activation_data = runtime_kernel.inputs_data[inputActivationTensorIdx];
+    weights_data = runtime_kernel.inputs_data[weightsTensorIdx];
     output_grad_data = runtime_kernel.outputs_data[outputTensorIdx];
     assert(input_grad_data != nullptr);
-    assert(input_activation != nullptr);
+    assert(weights_data != nullptr);
 
-    options = runtime_kernel.first_operator->builtin_options_as_Conv2DWeightGradOptions();
+    options = runtime_kernel.first_operator->builtin_options_as_Conv2DInputGradOptions();
   }
 
   OMStatus status = Ok;
@@ -85,13 +85,13 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2DWeightGrad(const OMExe
   int32_t padding_w = 0;
 
   OMRuntimeShape input_grad_shape(input_grad);
-  OMRuntimeShape input_activation_shape(input_activation);
+  OMRuntimeShape weight_shape(weights_tensor);
   OMRuntimeShape output_shape(output_grad);
 
-  const int input_width = input_activation_shape.dims(3);
-  const int input_height = input_activation_shape.dims(2);
-  const int weight_width = output_shape.dims(3);
-  const int weight_height = output_shape.dims(2);
+  const int input_width = input_grad_shape.dims(3);
+  const int input_height = input_grad_shape.dims(2);
+  const int weight_width = weight_shape.dims(3);
+  const int weight_height = weight_shape.dims(2);
   execute::computePaddingHeightWidth(options->stride_h(), options->stride_w(),
                                      options->dilation_h_factor(), options->dilation_w_factor(),
                                      input_height, input_width, weight_height, weight_width,
@@ -115,13 +115,13 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2DWeightGrad(const OMExe
       if (status != Ok)
         return status;
 
-      status = pal::ConvWeightGradFloat(
-        &params, input_activation_shape, core::utils::castInputData<float>(input_activation_data),
-        input_grad_shape, core::utils::castInputData<float>(input_grad_data),
+      status = pal::ConvInputGradFloat(
+        &params, input_grad_shape, core::utils::castInputData<float>(input_grad_data),
+        weight_shape, core::utils::castInputData<float>(weights_data),
         OMRuntimeShape(output_shape), core::utils::castOutputData<float>(output_grad_data));
       assert(status == Ok);
     }
-    break;
+      break;
 #endif // DIS_FLOAT
     default:
     {

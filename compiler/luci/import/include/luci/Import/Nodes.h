@@ -77,6 +77,7 @@
 #include "Nodes/CircleMatrixSetDiag.h"
 #include "Nodes/CircleMaximum.h"
 #include "Nodes/CircleMaxPool2D.h"
+#include "Nodes/CircleMaxPool2DGrad.h"
 #include "Nodes/CircleMatrixDiag.h"
 #include "Nodes/CircleMean.h"
 #include "Nodes/CircleMinimum.h"

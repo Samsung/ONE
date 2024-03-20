@@ -125,7 +125,8 @@ public:
   {
     return circle::CreateConv2DWeightGradOptions(_builder, getOpPadding(node->padding()), node->stride()->w(),
                                                 node->stride()->h(),
-                                                node->dilation()->w(), node->dilation()->h())
+                                                node->dilation()->w(), node->dilation()->h(), node->kernel_size()->w(),
+                                                node->kernel_size()->h())
                                                 .Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleCos *)
@@ -283,6 +284,14 @@ public:
   flatbuffers::Offset<void> visit(luci::CircleMaximum *)
   {
     return circle::CreateMaximumMinimumOptions(_builder).Union();
+  }
+  flatbuffers::Offset<void> visit(luci::CircleMaxPool2DGrad *node)
+  {
+    return circle::CreatePool2DOptions(_builder, getOpPadding(node->padding()), node->stride()->w(),
+                                       node->stride()->h(), node->filter()->w(),
+                                       node->filter()->h(),
+                                       to_circle_actfunc(node->fusedActivationFunction()))
+      .Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleMaxPool2D *node)
   {

@@ -412,12 +412,12 @@ OutputSize infer_conv2d_weight_grad_type(const luci::CircleConv2DWeightGrad *nod
   assert(ker_shape.dim(1).known());
   assert(ker_shape.dim(2).known());
 
-  uint32_t input_height = ifm_shape.dim(1).value();
-  uint32_t input_width = ifm_shape.dim(2).value();
+  uint32_t input_height = ifm_shape.dim(2).value();
+  uint32_t input_width = ifm_shape.dim(3).value();
   uint32_t stride_height = node->stride()->h();
   uint32_t stride_width = node->stride()->w();
-  uint32_t ker_height = ker_shape.dim(1).value();
-  uint32_t ker_width = ker_shape.dim(2).value();
+  uint32_t ker_height = ker_shape.dim(2).value();
+  uint32_t ker_width = ker_shape.dim(3).value();
   uint32_t dilation_height = node->dilation()->h();
   uint32_t dilation_width = node->dilation()->w();
   uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
@@ -665,16 +665,16 @@ loco::NodeShape infer_conv2d_input_grad(const luci::CircleConv2DInputGrad *node)
 
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
-  assert(ifm_shape.dim(3) == ker_shape.dim(3));
+//  assert(ifm_shape.dim(3) == ker_shape.dim(3));
 
-  auto os = infer_conv2d_input_grad_type(node);
+  //auto os = infer_conv2d_input_grad_type(node);
 
   loco::TensorShape ofm_shape;
   ofm_shape.rank(4);
   ofm_shape.dim(0) = ifm_shape.dim(0);
-  ofm_shape.dim(1) = os.height;
-  ofm_shape.dim(2) = os.width;
-  ofm_shape.dim(3) = ker_shape.dim(0);
+  ofm_shape.dim(1) = ker_shape.dim(1);//os.height;
+  ofm_shape.dim(2) = ifm_shape.dim(2);//os.width;
+  ofm_shape.dim(3) = ifm_shape.dim(3);//ker_shape.dim(0);
 
   INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
   << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
@@ -695,14 +695,14 @@ loco::NodeShape infer_conv2d_weight_grad(const luci::CircleConv2DWeightGrad *nod
 //  assert(ker_shape.rank() == 4);
 //  assert(ifm_shape.dim(3) == ker_shape.dim(3));
 //
-//  auto os = infer_conv2d_weight_grad_type(node);
+ // auto os = infer_conv2d_weight_grad_type(node);
 //
   loco::TensorShape ofm_shape;
   ofm_shape.rank(4);
   ofm_shape.dim(0) = ker_shape.dim(1);
   ofm_shape.dim(1) = ifm_shape.dim(1);//ifm_shape.dim(1);
-  ofm_shape.dim(2) = 1;//ifm_shape.dim(2);
-  ofm_shape.dim(3) = 2;//ifm_shape.dim(3);
+  ofm_shape.dim(2) = node->kernel_size()->h();//1;//ifm_shape.dim(2);
+  ofm_shape.dim(3) = node->kernel_size()->w();//2;//ifm_shape.dim(3);
 //
 //  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
 //  << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
@@ -2353,6 +2353,12 @@ public:
   loco::NodeShape visit(const luci::CircleMaxPool2D *node) final
   {
     return infer_pool_2d_shape(node);
+  }
+
+  loco::NodeShape visit(const luci::CircleMaxPool2DGrad *node) final
+  {
+    auto ifm_shape = luci::shape_get(node->input_activations()).template as<loco::TensorShape>();
+    return loco::NodeShape{ifm_shape};
   }
 
   loco::NodeShape visit(const luci::CircleMean *node) final

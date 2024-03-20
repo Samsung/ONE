@@ -44,6 +44,8 @@ CircleNode *CircleConv2DWeightGradGraphBuilder::build_node(const circle::Operato
   node->stride()->h(options->stride_h);
   node->dilation()->w(options->dilation_w_factor);
   node->dilation()->h(options->dilation_h_factor);
+  node->kernel_size()->h(options->kernel_h);
+  node->kernel_size()->w(options->kernel_w);
 
   return node;
 }

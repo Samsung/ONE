@@ -48,6 +48,9 @@ class CircleConv2DWeightGrad final : public FixedArityNode<2, CircleNodeImpl<Cir
     const Stride *stride(void) const { return &_stride; }
     Stride *stride(void) { return &_stride; }
 
+    const Stride *kernel_size(void) const { return &_kernel_size; }
+    Stride *kernel_size(void) { return &_kernel_size; }
+
     const Dilation *dilation(void) const { return &_dilation; }
     Dilation *dilation(void) { return &_dilation; }
 
@@ -55,6 +58,7 @@ class CircleConv2DWeightGrad final : public FixedArityNode<2, CircleNodeImpl<Cir
     Padding _padding{Padding::UNDEFINED};
     Stride _stride;
     Dilation _dilation;
+    Stride _kernel_size;
   };
 
 } // namespace luci

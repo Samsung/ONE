@@ -161,7 +161,7 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 100;
+  const uint32_t training_epochs = 50;
   const float lambda = 0.001f;
 
   // Configure training mode
@@ -171,10 +171,10 @@ int entry(int argc, char **argv)
   {
     onert_micro::OMTrainingConfig trainConfig;
     trainConfig.lambda = lambda;
-    trainConfig.optimization_strategy = onert_micro::ADAM;
+    trainConfig.optimization_strategy = onert_micro::SGD;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
-    trainConfig.batches = 1;
+    trainConfig.batches = 32;
 
     config.train_config = trainConfig;
   }
@@ -306,9 +306,9 @@ int entry(int argc, char **argv)
         train_interpreter.backward();
       }
 
+      std::cout << "Update weights\n";
       train_interpreter.updateWeights();
-     // std::cout << "Update weights\n";
-      //std::cout << "\n";
+      std::cout << "\n";
       train_interpreter.reset();
     }
 

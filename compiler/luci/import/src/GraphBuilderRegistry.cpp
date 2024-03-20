@@ -87,6 +87,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(MATRIX_SET_DIAG, CircleMatrixSetDiagGraphBuilder);                           // 115
   CIRCLE_NODE(MAXIMUM, CircleMaximumGraphBuilder);                                         // 55
   CIRCLE_NODE(MAX_POOL_2D, CircleMaxPool2DGraphBuilder);                                   // 17
+  CIRCLE_NODE(MAX_POOL_2D_GRAD, CircleMaxPool2DGradGraphBuilder);                                   // 17
   CIRCLE_NODE(MEAN, CircleMeanGraphBuilder);                                               // 40
   CIRCLE_NODE(MINIMUM, CircleMinimumGraphBuilder);                                         // 57
   CIRCLE_NODE(MIRROR_PAD, CircleMirrorPadGraphBuilder);                                    // 100

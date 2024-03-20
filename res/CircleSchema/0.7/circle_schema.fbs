@@ -1513,6 +1513,8 @@ table Conv2DWeightGradOptions {
   stride_h:int;
   dilation_w_factor:int = 1;
   dilation_h_factor:int = 1;
+  kernel_w:int;
+  kernel_h:int;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a

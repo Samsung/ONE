@@ -510,9 +510,9 @@ void OMTrainingRuntimeModule::updateSGDWeights(uint8_t *dest, uint8_t *src, size
 
     dest_f[s] -= lamda * src_f[s] / batches;
 
-   // std::cout << dest_f[s] << ", ";
+    std::cout << dest_f[s] << ", ";
   }
- // std::cout << "\n";
+  std::cout << "\n";
 }
 
 template <typename T>
