@@ -54,6 +54,13 @@ void FullyConnected::configure()
     LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S8);
     LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::S32)
   }
+  else if (weights()->element_type() == DataType::S4)
+  {
+    // TODO support other combinations when needed
+    LUCI_INTERPRETER_CHECK(input()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
+    LUCI_INTERPRETER_CHECK(!bias() || bias()->element_type() == DataType::FLOAT32)
+  }
   else
   {
     throw std::runtime_error("luci-intp FullyConnected(1) Unsupported type.");
@@ -89,19 +96,30 @@ void FullyConnected::configure()
 
 void FullyConnected::execute() const
 {
-  switch (input()->element_type())
+  const bool is_hybrid =
+    (input()->element_type() == DataType::FLOAT32 && weights()->element_type() == DataType::S4 &&
+     output()->element_type() == DataType::FLOAT32 &&
+     (!bias() || bias()->element_type() == DataType::FLOAT32));
+  if (is_hybrid)
   {
-    case DataType::U8:
-      evalQuantized();
-      break;
-    case DataType::S8:
-      evalQuantizedS8();
-      break;
-    case DataType::FLOAT32:
-      evalFloat();
-      break;
-    default:
-      throw std::runtime_error("luci-intp FullyConnected(2) Unsupported type.");
+    evalHybridWI4AF32();
+  }
+  else
+  {
+    switch (input()->element_type())
+    {
+      case DataType::U8:
+        evalQuantized();
+        break;
+      case DataType::S8:
+        evalQuantizedS8();
+        break;
+      case DataType::FLOAT32:
+        evalFloat();
+        break;
+      default:
+        throw std::runtime_error("luci-intp FullyConnected(2) Unsupported type.");
+    }
   }
 }
 
@@ -186,6 +204,31 @@ void FullyConnected::evalQuantizedS8() const
     op_params, getTensorShape(input()), getTensorData<int8_t>(input()), getTensorShape(weights()),
     getTensorData<int8_t>(weights()), getTensorShape(bias()), getTensorData<int32_t>(bias()),
     getTensorShape(output()), getTensorData<int8_t>(output()));
+}
+
+void FullyConnected::evalHybridWI4AF32() const
+{
+  float activation_min{};
+  float activation_max{};
+  calculateActivationRange(_params.activation, &activation_min, &activation_max);
+
+  tflite::FullyConnectedParams params{};
+  params.float_activation_min = activation_min;
+  params.float_activation_max = activation_max;
+  params.weights_format = tflite::FullyConnectedWeightsFormat::kDefault;
+
+  const int8_t *weights_int4 = getTensorData<int8_t>(weights());
+  float *weights_float = getTensorData<float>(scratch());
+  const Shape &weights_shape = weights()->shape();
+  for (int32_t i = 0; i < weights_shape.num_elements(); ++i)
+  {
+    // 1bit for sign, 3bit for value
+    weights_float[i] = weights()->scale() * weights_int4[i];
+  }
+  tflite::reference_ops::FullyConnected(
+    params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(scratch()),
+    getTensorData<float>(scratch()), getTensorShape(bias()), getTensorData<float>(bias()),
+    getTensorShape(output()), getTensorData<float>(output()));
 }
 
 } // namespace kernels

@@ -35,7 +35,18 @@ std::unique_ptr<Kernel> build_kernel_CircleFullyConnected(const luci::CircleNode
   FullyConnectedParams params{};
   params.activation = node->fusedActivationFunction();
   params.keep_num_dims = node->keep_num_dims();
-
+  if (weights->element_type() == loco::DataType::S4)
+  {
+    auto scratchpad =
+      std::make_unique<Tensor>(input->element_type(), weights->shape(), AffineQuantization{}, "");
+    scratchpad->set_observable(false);
+    scratchpad->set_data_buffer(nullptr);
+    Tensor *scratchpad_tmp =
+      helper.getRuntimeGraph(node->graph())->addTensor(std::move(scratchpad));
+    helper.getRuntimeGraph(node->graph())->configureAllocations(scratchpad_tmp);
+    return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, scratchpad_tmp,
+                                                     params);
+  }
   return std::make_unique<kernels::FullyConnected>(input, weights, bias, output, params);
 }
 
