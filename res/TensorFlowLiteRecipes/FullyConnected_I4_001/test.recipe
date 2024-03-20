@@ -1,0 +1,49 @@
+# This recipe is just to check processing of INT4 models.
+# do not run this model in any interpreter or runtime as it may throw an error.
+operand {
+  name: "in"
+  type: INT4
+  shape { dim: 1 dim: 4 }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "weight"
+  type: INT4
+  shape { dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "-8" arg: "-7" arg: "-6" arg: "-5"
+    arg: "-4" arg: "-3" arg: "-2" arg: "-1"
+    arg: "0" arg: "1" arg: "2" arg: "3"
+    arg: "4" arg: "5" arg: "6" arg: "7"
+  }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "bias"
+  type: INT4
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "0" arg: "-1" arg: "-2"
+  }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operand {
+  name: "out"
+  type: INT4
+  shape { dim: 1 dim: 4 }
+  quant { min: -8 max: 7 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "in"
+  input: "weight"
+  input: "bias"
+  output: "out"
+}
+input: "in"
+output: "out"
