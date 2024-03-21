@@ -132,6 +132,23 @@ std::map<uint32_t, uint32_t> training_graph::GenerateTrainingGraph::createMapTen
   return result;
 }
 
+std::map<std::basic_string<char>, luci::CircleInput *> inputsNames(loco::Graph *graph)
+{
+  std::map<std::basic_string<char>, luci::CircleInput *> result;
+
+  auto inputs = input_nodes(graph);
+  for (const auto &node : inputs)
+  {
+    auto circle_node = dynamic_cast<luci::CircleInput *>(node);
+    if (circle_node == nullptr)
+      continue;
+
+    result[circle_node->name()] = circle_node;
+  }
+
+  return result;
+}
+
 #if 0
 // Let's create backpropogation calculation node:
 // For this example (MSE error, SGD, lambda=L, one fc node with weight and bias) it is:
@@ -705,12 +722,24 @@ luci::CircleNode *backPropRelu(luci::CircleNode *input_grad_node, luci::CircleNo
 
   auto training_graph = input_grad_node->graph();
 
-  // Create Input activation node
-  auto input_activation_node = training_graph->nodes()->create<luci::CircleInput>();
-  auto input_activation_node_context = input_context->create();
-  copy_nodes_params(input_activation_node, node_with_relu);
-  link(input_activation_node_context, input_activation_node);
-  copy_for_context(input_activation_node_context, input_activation_node);
+  auto node_name = node_with_relu->name();
+
+  luci::CircleInput *input_activation_node = nullptr;
+
+  auto inputs_names = inputsNames(training_graph);
+
+  if (inputs_names.find(node_name) != inputs_names.end())
+  {
+    input_activation_node = inputs_names[node_name];
+  } else
+  {
+    // Create Input activation node
+    input_activation_node = training_graph->nodes()->create<luci::CircleInput>();
+    auto input_activation_node_context = input_context->create();
+    copy_nodes_params(input_activation_node, node_with_relu);
+    link(input_activation_node_context, input_activation_node);
+    copy_for_context(input_activation_node_context, input_activation_node);
+  }
 
   // Create Const with one zero for greater op
   auto greater_const = training_graph->nodes()->create<luci::CircleConst>();
@@ -821,7 +850,6 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleConv2D
   index_const->name("index");
 
   // Create ReduceSum -> Output of bias for ConvNode
-  // Create CircleReduceMax operation
   auto reduce_sum = training_graph->nodes()->create<luci::CircleReduceSum>();
   reduce_sum->input(input_grad_node);
   reduce_sum->reduction_indices(index_const);
@@ -887,7 +915,7 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleConv2D
 
   // Create Output Grad Result transpose node
   auto transpose_output_grad_result = training_graph->nodes()->create<luci::CircleTranspose>();
-  transpose_output_grad_result->a(conv2d_weight_grad_node);
+  transpose_output_grad_result->a(result_output_grad);
   transpose_output_grad_result->perm(transpose_const_after);
   transpose_output_grad_result->name(result_output_grad->name() + transpose_const_after->name());
 
@@ -1179,7 +1207,7 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
         assert(conv_2d->fusedActivationFunction() == luci::FusedActFunc::NONE);
       }
       cur_input_grad_node = backProp(cur_input_grad_node, conv_2d, input_context, output_context);
-      break; //tmp
+      //break; //tmp
     }
     else
     {
