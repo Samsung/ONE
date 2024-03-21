@@ -647,6 +647,105 @@ assert(conv_node != nullptr);
 
 #endif
 
+// Backprop for Softmax node
+luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleNode *after_node, luci::CircleSoftmax *softmax_node, loco::Graph::InputContext *input_context,
+                           loco::Graph::OutputContext *output_context)
+{
+  assert(softmax_node != nullptr);
+  assert(after_node != nullptr);
+  assert(input_grad_node != nullptr);
+  assert(input_context != nullptr);
+  assert(output_context != nullptr);
+
+  auto training_graph = input_grad_node->graph();
+
+  // Create Softmax_grad node
+  auto softmax_grad_node = training_graph->nodes()->create<luci::CircleSoftmaxGrad>();
+  softmax_grad_node->name(input_grad_node->name() + after_node->name());
+  softmax_grad_node->softmax_values(after_node);
+
+  // Create Const for Transpose op
+  auto transpose_const = training_graph->nodes()->create<luci::CircleConst>();
+  transpose_const->shape({2}); // scalar
+  transpose_const->dtype(loco::DataType::S32);
+  transpose_const->rank(1);
+  transpose_const->size<loco::DataType::S32>(2);
+  transpose_const->at<loco::DataType::S32>(0) = 1;
+  transpose_const->at<loco::DataType::S32>(1) = 0;
+  transpose_const->name(softmax_grad_node->name() + "_transpose_const");
+
+  // Create Transpose for input_grad node node
+  auto transpose_node = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_node->a(softmax_grad_node);
+  transpose_node->perm(transpose_const);
+  transpose_node->name(softmax_grad_node->name() + "_transpose");
+
+  auto empty_bias = training_graph->nodes()->create<luci::CircleOutputExclude>();
+
+  // TODO: check transpose (maybe unnecessary)
+  auto fc_node = training_graph->nodes()->create<luci::CircleFullyConnected>();
+  fc_node->name(transpose_node->name() + input_grad_node->name());
+  fc_node->weights(softmax_grad_node);
+  fc_node->input(input_grad_node);
+  fc_node->bias(empty_bias);
+  fc_node->keep_num_dims(true);
+  fc_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  return fc_node;
+}
+
+// Backprop for Relu node
+luci::CircleNode *backPropRelu(luci::CircleNode *input_grad_node, luci::CircleNode *node_with_relu, loco::Graph::InputContext *input_context,
+                           loco::Graph::OutputContext *output_context)
+{
+  assert(node_with_relu != nullptr);
+  assert(input_grad_node != nullptr);
+  assert(input_context != nullptr);
+  assert(output_context != nullptr);
+
+  auto training_graph = input_grad_node->graph();
+
+  // Create Input activation node
+  auto input_activation_node = training_graph->nodes()->create<luci::CircleInput>();
+  auto input_activation_node_context = input_context->create();
+  copy_nodes_params(input_activation_node, node_with_relu);
+  link(input_activation_node_context, input_activation_node);
+  copy_for_context(input_activation_node_context, input_activation_node);
+
+  // Create Const with one zero for greater op
+  auto greater_const = training_graph->nodes()->create<luci::CircleConst>();
+  greater_const->shape({1}); // scalar
+  greater_const->dtype(loco::DataType::FLOAT32);
+  greater_const->rank(1);
+  greater_const->size<loco::DataType::FLOAT32>(1);
+  greater_const->at<loco::DataType::FLOAT32>(0) = 0.f;
+  greater_const->name("GREATER_CONST");
+
+  // Create Greater op
+  auto greater = training_graph->nodes()->create<luci::CircleGreater>();
+  greater->x(input_activation_node);
+  greater->y(greater_const);
+  greater->name(input_activation_node->name() + greater_const->name());
+  greater->dtype(loco::DataType::BOOL);
+
+  // Create Cast op
+  auto cast = training_graph->nodes()->create<luci::CircleCast>();
+  cast->x(greater);
+  cast->in_data_type(loco::DataType::BOOL);
+  cast->out_data_type(loco::DataType::FLOAT32);
+  cast->name(greater->name() + "_cast");
+  cast->dtype(loco::DataType::FLOAT32);
+
+  // Create Mul node
+  auto mul = training_graph->nodes()->create<luci::CircleMul>();
+  mul->fusedActivationFunction(luci::FusedActFunc::NONE);
+  mul->x(cast);
+  mul->y(input_grad_node);
+  mul->name(cast->name() + input_grad_node->name());
+
+  return mul;
+}
+
 // Backprop for Conv2D node
 luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleConv2D *conv_node, loco::Graph::InputContext *input_context,
                            loco::Graph::OutputContext *output_context)
@@ -786,7 +885,13 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleConv2D
   stride_2->h(conv_node->stride()->h());
   result_output_grad->name(transpose_grad_node->name() + transpose_weight_input->name());
 
-  return result_output_grad;
+  // Create Output Grad Result transpose node
+  auto transpose_output_grad_result = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_output_grad_result->a(conv2d_weight_grad_node);
+  transpose_output_grad_result->perm(transpose_const_after);
+  transpose_output_grad_result->name(result_output_grad->name() + transpose_const_after->name());
+
+  return transpose_output_grad_result;
 }
 
 // Backprop for MaxPool node
@@ -897,16 +1002,31 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleFullyC
   link(fc_input_activation_node_context, fc_input_activation_node);
   copy_for_context(fc_input_activation_node_context, fc_input_activation_node);
 
+  // Create Const for Transpose op
+  auto transpose_const = training_graph->nodes()->create<luci::CircleConst>();
+  transpose_const->shape({2}); // scalar
+  transpose_const->dtype(loco::DataType::S32);
+  transpose_const->rank(1);
+  transpose_const->size<loco::DataType::S32>(2);
+  transpose_const->at<loco::DataType::S32>(0) = 1;
+  transpose_const->at<loco::DataType::S32>(1) = 0;
+  transpose_const->name(input_grad_node->name() + "_transpose_const");
+
+  // Create Transpose for input_grad node node
+  auto transpose_grad_node = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_grad_node->a(input_grad_node);
+  transpose_grad_node->perm(transpose_const);
+  transpose_grad_node->name(input_grad_node->name() + "_transpose");
+
   // Create Mul node
   auto mul = training_graph->nodes()->create<luci::CircleMul>();
   mul->fusedActivationFunction(luci::FusedActFunc::NONE);
-  mul->x(input_grad_node);
+  mul->x(transpose_grad_node);
   mul->y(fc_input_activation_node);
   mul->name(weight->name() + "_gradient");
 
   // Connect output weight gradient with MUL_LAMBDA
   weight_gradient_node->from(mul);
-
 
   // Create output gradient
   // Create Fc_Weight_2 node as const
@@ -915,14 +1035,23 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleFullyC
   fc_w_const->size<loco::DataType::FLOAT32>(0);
   fc_w_const->shape_status(luci::ShapeStatus::VALID);
 
-  // Create output node
-  auto mul_output = training_graph->nodes()->create<luci::CircleMul>();
-  mul_output->fusedActivationFunction(luci::FusedActFunc::NONE);
-  mul_output->x(input_grad_node);
-  mul_output->y(fc_w_const);
-  mul_output->name(input_grad_node->name() + fc_w_const->name());
+  // Create Transpose for input_grad node node
+  auto transpose_output_node = training_graph->nodes()->create<luci::CircleTranspose>();
+  transpose_output_node->a(fc_w_const);
+  transpose_output_node->perm(transpose_const);
+  transpose_output_node->name(fc_w_const->name() + "_transpose");
 
-  return mul_output;
+  // Create output node
+  auto empty_bias = training_graph->nodes()->create<luci::CircleOutputExclude>();
+  auto fc_new_node = training_graph->nodes()->create<luci::CircleFullyConnected>();
+  fc_new_node->name(input_grad_node->name() + transpose_output_node->name());
+  fc_new_node->weights(transpose_output_node);
+  fc_new_node->input(input_grad_node);
+  fc_new_node->bias(empty_bias);
+  fc_new_node->keep_num_dims(true);
+  fc_new_node->fusedActivationFunction(luci::FusedActFunc::NONE);
+
+  return fc_new_node;
 }
 
 std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTrainingGraph()
@@ -955,16 +1084,41 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
   target_input_values_node->name(target_input_values_node->name() + "_target");
   copy_for_context(target_input_values_node_context, predicted_input_values_node);
 
-  // Create Sub node
-  auto sub = training_graph->nodes()->create<luci::CircleSub>();
-  sub->fusedActivationFunction(luci::FusedActFunc::NONE);
-  sub->x(predicted_input_values_node);
-  sub->y(target_input_values_node);
-  sub->name("_sub");
+  // it is for MSE
+//  // Create Sub node
+//  auto sub = training_graph->nodes()->create<luci::CircleSub>();
+//  sub->fusedActivationFunction(luci::FusedActFunc::NONE);
+//  sub->x(predicted_input_values_node);
+//  sub->y(target_input_values_node);
+//  sub->name("_sub");
+
+  // Create Div for Cross Entropy
+  auto grad_error = training_graph->nodes()->create<luci::CircleDiv>();
+  grad_error->fusedActivationFunction(luci::FusedActFunc::NONE);
+  grad_error->x(target_input_values_node);
+  grad_error->y(predicted_input_values_node);
+  grad_error->name("corss_etropy_error");
+
+  // Create Neg
+  auto neg = training_graph->nodes()->create<luci::CircleNeg>();
+  neg->name("neg");
+  neg->x(grad_error);
+
+//  // Create Const for index
+//  auto neg_const = training_graph->nodes()->create<luci::CircleConst>();
+//  index_const->shape({3}); // scalar
+//  index_const->dtype(loco::DataType::S32);
+//  index_const->rank(1);
+//  index_const->size<loco::DataType::S32>(3);
+//  index_const->at<loco::DataType::S32>(0) = 0;
+//  index_const->at<loco::DataType::S32>(1) = 1;
+//  index_const->at<loco::DataType::S32>(2) = 2;
+//  index_const->name("index");
+
 
   std::stack<luci::CircleNode *> nodes;
 
-  luci::CircleNode *cur_input_grad_node = sub;
+  luci::CircleNode *cur_input_grad_node = neg;
 
   for (auto node : postorder_traversal(loco::output_nodes(original_graph)))
   {
@@ -985,8 +1139,22 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
     {
       // Do nothing
       continue;
+    } else if (auto softmax_node = dynamic_cast<luci::CircleSoftmax *>(circle_node))
+    {
+      // TODO: support not only last softmax node
+      cur_input_grad_node = backProp(cur_input_grad_node, predicted_input_values_node, softmax_node, input_context, output_context);
     } else if (auto fc_node = dynamic_cast<luci::CircleFullyConnected *>(circle_node))
     {
+      if (fc_node->fusedActivationFunction() == luci::FusedActFunc::RELU)
+      {
+        cur_input_grad_node =
+          backPropRelu(cur_input_grad_node, fc_node, input_context, output_context);
+      }
+      else
+      {
+        assert(fc_node->fusedActivationFunction() == luci::FusedActFunc::NONE);
+      }
+
       cur_input_grad_node = backProp(cur_input_grad_node, fc_node, input_context, output_context);
     } else if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(circle_node))
     {
@@ -1001,8 +1169,17 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
     }
     else if  (auto conv_2d = dynamic_cast<luci::CircleConv2D *>(circle_node))
     {
+      if (conv_2d->fusedActivationFunction() == luci::FusedActFunc::RELU)
+      {
+        cur_input_grad_node =
+          backPropRelu(cur_input_grad_node, conv_2d, input_context, output_context);
+      }
+      else
+      {
+        assert(conv_2d->fusedActivationFunction() == luci::FusedActFunc::NONE);
+      }
       cur_input_grad_node = backProp(cur_input_grad_node, conv_2d, input_context, output_context);
-      break;
+      break; //tmp
     }
     else
     {

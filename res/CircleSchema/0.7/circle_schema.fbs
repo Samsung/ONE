@@ -268,6 +268,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  SOFTMAX_GRAD = -9,
   REDUCE_SUM = -8,
   MAX_POOL_2D_GRAD = -7,
   CONV_2D_WEIGHT_GRAD = -6,

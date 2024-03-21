@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_COMMON_H
-#define ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_COMMON_H
+#ifndef ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_GRAD_H
+#define ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_GRAD_H
 
 #include "Params.h"
 #include "PALUtils.h"
@@ -30,16 +30,17 @@ namespace execute
 namespace pal
 {
 
-OMStatus MaxPool(const core::Pool2DParams &params, const core::OMRuntimeShape &input_shape,
-                 const float *input_data, const core::OMRuntimeShape &output_shape,
-                 float *output_data)
+OMStatus MaxPoolGrad(const core::Pool2DParams &params, const core::OMRuntimeShape &input_grad_shape,
+                     const float *input_grad_data, const core::OMRuntimeShape &input_activation_shape,
+                     const float *input_activation_data, const core::OMRuntimeShape &output_shape,
+                     float *output_data)
 {
-  const int32_t batches = input_shape.dims(0);
+  const int32_t batches = input_activation_shape.dims(0);
   const int32_t depth = output_shape.dims(3);
-  const int32_t input_height = input_shape.dims(1);
-  const int32_t input_width = input_shape.dims(2);
-  const int32_t output_height = output_shape.dims(1);
-  const int32_t output_width = output_shape.dims(2);
+  const int32_t input_height = input_activation_shape.dims(1);
+  const int32_t input_width = input_activation_shape.dims(2);
+  const int32_t output_height = input_grad_shape.dims(1);
+  const int32_t output_width = input_grad_shape.dims(2);
   const int32_t stride_height = params.stride_h;
   const int32_t stride_width = params.stride_w;
   for (int batch = 0; batch < batches; ++batch)
@@ -59,6 +60,12 @@ OMStatus MaxPool(const core::Pool2DParams &params, const core::OMRuntimeShape &i
           const int filter_y_start = std::max(0, -in_y_origin);
           const int filter_y_end = std::min(params.filter_h, input_height - in_y_origin);
           float max = std::numeric_limits<float>::lowest();
+
+          const int input_grad_data_offset =
+            ((batch * input_grad_shape.dims(1) + out_y) * input_grad_shape.dims(2) + out_x) *
+            input_grad_shape.dims(3) +
+            channel;
+
           for (int filter_y = filter_y_start; filter_y < filter_y_end; ++filter_y)
           {
             for (int filter_x = filter_x_start; filter_x < filter_x_end; ++filter_x)
@@ -67,20 +74,22 @@ OMStatus MaxPool(const core::Pool2DParams &params, const core::OMRuntimeShape &i
               const int in_y = in_y_origin + filter_y;
 
               const int input_data_offset =
-                ((batch * input_shape.dims(1) + in_y) * input_shape.dims(2) + in_x) *
-                  input_shape.dims(3) +
+                ((batch * input_activation_shape.dims(1) + in_y) * input_activation_shape.dims(2) + in_x) *
+                input_activation_shape.dims(3) +
                 channel;
 
-              max = std::max(max, input_data[input_data_offset]);
+              if (input_activation_data[input_data_offset] == input_grad_data[input_grad_data_offset])
+              {
+                output_data[input_data_offset] = input_grad_data[input_grad_data_offset];
+              } else
+              {
+                output_data[input_data_offset] = 0;
+              }
+              auto tmp = output_data[input_data_offset];
+              auto tmp_1 = input_activation_data[input_data_offset];
+              //printf("1");
             }
           }
-          const int output_data_offset =
-            ((batch * output_shape.dims(1) + out_y) * output_shape.dims(2) + out_x) *
-              output_shape.dims(3) +
-            channel;
-
-          output_data[output_data_offset] =
-            std::min(std::max(max, params.activation_min), params.activation_max);
         }
       }
     }
@@ -92,4 +101,4 @@ OMStatus MaxPool(const core::Pool2DParams &params, const core::OMRuntimeShape &i
 } // namespace execute
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_COMMON_H
+#endif // ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_GRAD_H

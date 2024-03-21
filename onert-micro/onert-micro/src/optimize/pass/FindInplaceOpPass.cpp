@@ -244,12 +244,11 @@ optimize::OMGraphStatus optimize::onert_micro_FindInplaceOpPass(core::OMRuntimeS
                                                                 const OMConfig &configs)
 {
   bool changed = false;
-
   OMGraphStatus graph_status = {Unchanged, Ok};
   do
   {
     changed = false;
-    graph_status.main_status = findInplaceOp(storage, context, configs, changed);
+    //graph_status.main_status = findInplaceOp(storage, context, configs, changed);
 
     if (graph_status.main_status != Ok)
       return graph_status;

@@ -20,7 +20,7 @@
 #include "execute/OMRuntimeKernel.h"
 #include "core/OMUtils.h"
 
-#include "PALMaxPool2D.h"
+#include "PALMaxPool2DGrad.h"
 
 #include "core/OMKernelData.h"
 
@@ -110,24 +110,13 @@ OMStatus onert_micro::execute::execute_kernel_CircleMaxPool2DGrad(const OMExecut
     {
       calculateActivationRange(options->fused_activation_function(), &params.activation_min,
                                &params.activation_max);
-      status =
-        pal::MaxPool(params, input_shape, core::utils::castInputData<float>(input_data),
-                     core::OMRuntimeShape(output), core::utils::castOutputData<float>(output_data));
+      status = pal::MaxPoolGrad(
+        params, input_grad_shape, core::utils::castInputData<float>(input_grad_data),
+        input_activation_shape, core::utils::castInputData<float>(input_activation_data),
+        core::OMRuntimeShape(output), core::utils::castOutputData<float>(output_data));
     }
       break;
 #endif // DIS_FLOAT
-#ifndef DIS_QUANT
-    case circle::TensorType_INT8:
-    case circle::TensorType_INT16:
-    {
-      calculateActivationRange(options->fused_activation_function(),
-                               &params.quantized_activation_min, &params.quantized_activation_max);
-      status = pal::MaxPool(params, input_shape, core::utils::castInputData<uint8_t>(input_data),
-                            core::OMRuntimeShape(output),
-                            core::utils::castOutputData<uint8_t>(output_data), input->type());
-    }
-      break;
-#endif // DIS_QUANT
     default:
     {
       status = UnsupportedType;

@@ -23,6 +23,8 @@
 #include <string>
 #include <iostream>
 #include <numeric>
+#include <math.h>
+#include <algorithm>
 
 #define MODEL_TYPE float
 
@@ -109,6 +111,51 @@ float calculateMAE(float *pred, float *target, size_t size)
   return mae;
 }
 
+float calculateCrossEntropy(float *pred, float *target, size_t size)
+{
+  float cce = 0;
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    cce += std::log(pred[i]) * target[i];
+  }
+  std::cout << "Calculated CROSS_ENTROPY = " << cce << "\n";
+  return -cce;
+}
+
+int predicted_class(float *pred, size_t size)
+{
+  int max = 0;
+  float max_value = pred[0];
+  for (uint32_t i = 1; i < size; ++i)
+  {
+    if (max_value < pred[i])
+    {
+      max = i;
+      max_value = pred[i];
+    }
+  }
+
+  //std::cout << "Predicted class = " << max << "\n";
+  return max;
+}
+
+void measure_accuracy(std::vector<int> &predicted_labels, std::vector<std::vector<float>> &real_labels)
+{
+  assert(predicted_labels.size() == real_labels.size());
+  int corrected_num = 0;
+  for (uint32_t i = 0; i < predicted_labels.size(); ++i)
+  {
+    auto it = std::max_element(real_labels[i].begin(), real_labels[i].end());
+    int real_value = std::distance(real_labels[i].begin(), it);
+
+    int pred_value = predicted_labels[i];
+    if (pred_value == real_value)
+      corrected_num++;
+  }
+
+  std::cout << "Calculated accuracy = " << static_cast<float>(corrected_num) / static_cast<float>(real_labels.size()) << "\n";
+}
+
 //void printDataVector(float *data, int num_samples, int num_size)
 //{
 //  for (int i = 0; i < num_samples; i++)
@@ -161,7 +208,7 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 50;
+  const uint32_t training_epochs = 20;
   const float lambda = 0.001f;
 
   // Configure training mode
@@ -171,7 +218,7 @@ int entry(int argc, char **argv)
   {
     onert_micro::OMTrainingConfig trainConfig;
     trainConfig.lambda = lambda;
-    trainConfig.optimization_strategy = onert_micro::SGD;
+    trainConfig.optimization_strategy = onert_micro::ADAM;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
     trainConfig.batches = 32;
@@ -275,6 +322,7 @@ int entry(int argc, char **argv)
   {
     train_interpreter.set_training_mode(true);
     std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    std::vector<int> predicted_labels;
     for (int i = 0; i < num_train_data_samples; i += config.train_config.batches)
     {
       for (int batch = 0; batch < config.train_config.batches and i + batch < num_train_data_samples; ++batch)
@@ -286,6 +334,12 @@ int entry(int argc, char **argv)
         std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
 
         train_interpreter.forward();
+
+//        calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                              reinterpret_cast<float *>(train_target_data.at(i + batch ).data()),
+//                              target_size);
+        predicted_labels.push_back(predicted_class(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), target_size));
+
 
 //        printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
 //                                  reinterpret_cast<float *>(train_target_data.at(i + batch ).data()),
@@ -306,11 +360,16 @@ int entry(int argc, char **argv)
         train_interpreter.backward();
       }
 
-      std::cout << "Update weights\n";
+      //std::cout << "Update weights\n";
       train_interpreter.updateWeights();
-      std::cout << "\n";
+      //std::cout << "\n";
       train_interpreter.reset();
     }
+
+    std::cout << "Training accuracy: ";
+    measure_accuracy(predicted_labels, train_target_data);
+
+    predicted_labels.clear();
 
     // Run test dataset
     std::vector<float> mse_vector;
@@ -323,29 +382,37 @@ int entry(int argc, char **argv)
     {
       train_interpreter.allocateInputs();
       // Copy input data
-      auto &cur_train_data = train_input_data.at(i);
+      auto &cur_test_data = test_input_data.at(i);
       auto cur_input_data = train_interpreter.getInputDataAt(0);
-      std::memcpy(cur_input_data, cur_train_data.data(), sizeof(MODEL_TYPE) * input_size);
+      std::memcpy(cur_input_data, cur_test_data.data(), sizeof(MODEL_TYPE) * input_size);
 
       train_interpreter.forward();
 
-      //printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-      //                          reinterpret_cast<float *>(train_target_data.at(i).data()),
-      //                          target_size);
-      auto mse = calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                   reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
-      auto mae = calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                              reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
-      mse_vector.push_back(mse);
-      mae_vector.push_back(mae);
+    //  printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+    //                            reinterpret_cast<float *>(train_target_data.at(i).data()),
+    //                            target_size);
+//      auto mse = calculateMSE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                   reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
+//      auto mae = calculateMAE(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                              reinterpret_cast<float *>(train_target_data.at(i).data()), target_size);
+//      mse_vector.push_back(mse);
+//      mae_vector.push_back(mae);
+
+//      calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                            reinterpret_cast<float *>(test_target_data.at(i).data()),
+//                            target_size);
+      predicted_labels.push_back(predicted_class(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), target_size));
+
       train_interpreter.reset();
     }
+    std::cout << "Test accuracy: ";
+    measure_accuracy(predicted_labels, test_target_data);
 
-    // Calculating avg mse and mae
-    float avg_mse = float(std::accumulate(mse_vector.begin(), mse_vector.end(), 0.0f)) / float(mse_vector.size());
-    std::cout << "\nAverage MSE = " << avg_mse << "\n";
-    float avg_mae = float(std::accumulate(mae_vector.begin(), mae_vector.end(), 0.0f)) / float(mae_vector.size());
-    std::cout << "Average MAE = " << avg_mae << "\n\n";
+//    // Calculating avg mse and mae
+//    float avg_mse = float(std::accumulate(mse_vector.begin(), mse_vector.end(), 0.0f)) / float(mse_vector.size());
+//    std::cout << "\nAverage MSE = " << avg_mse << "\n";
+//    float avg_mae = float(std::accumulate(mae_vector.begin(), mae_vector.end(), 0.0f)) / float(mae_vector.size());
+//    std::cout << "Average MAE = " << avg_mae << "\n\n";
   }
 
   return EXIT_SUCCESS;

@@ -475,6 +475,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return luci::dtype_get(node->logits());
   }
 
+  loco::DataType visit(const luci::CircleSoftmaxGrad *node) final
+  {
+    return luci::dtype_get(node->softmax_values());
+  }
+
   loco::DataType visit(const luci::CircleSpaceToBatchND *node) final
   {
     return luci::dtype_get(node->input());

@@ -128,6 +128,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(SIN, CircleSinGraphBuilder);                                                 // 66
   CIRCLE_NODE(SLICE, CircleSliceGraphBuilder);                                             // 65
   CIRCLE_NODE(SOFTMAX, CircleSoftmaxGraphBuilder);                                         // 25
+  CIRCLE_NODE(SOFTMAX_GRAD, CircleSoftmaxGradGraphBuilder);                                // 25
   CIRCLE_NODE(SPACE_TO_BATCH_ND, CircleSpaceToBatchNDGraphBuilder);                        // 38
   CIRCLE_NODE(SPACE_TO_DEPTH, CircleSpaceToDepthGraphBuilder);                             // 26
   CIRCLE_NODE(SPARSE_TO_DENSE, CircleSparseToDenseGraphBuilder);                           // 68

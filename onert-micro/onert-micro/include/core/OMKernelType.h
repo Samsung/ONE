@@ -40,9 +40,9 @@ enum OMBuilderCustomID
 #define REGISTER_CUSTOM_KERNEL(name, string_name) CUSTOM_##name,
 enum class OMBuilderID
 {
-#include "KernelsToBuild.lst"
+#include "pal/mcu/KernelsToBuild.lst"
   BuiltinOperatorsSize, // casts to count of values in BuilderId enum
-#include "CustomKernelsToBuild.lst"
+#include "pal/mcu/CustomKernelsToBuild.lst"
   Size
 };
 #undef REGISTER_CUSTOM_KERNEL

@@ -444,6 +444,10 @@ public:
   {
     return circle::CreateSoftmaxOptions(_builder, node->beta()).Union();
   }
+    flatbuffers::Offset<void> visit(luci::CircleSoftmaxGrad *node)
+  {
+    return _no_option;
+  }
   flatbuffers::Offset<void> visit(luci::CircleSpaceToBatchND *)
   {
     return circle::CreateSpaceToBatchNDOptions(_builder).Union();

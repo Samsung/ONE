@@ -209,6 +209,7 @@ DECLARE_USE_SINGLE(inputs);
 DECLARE_USE_SINGLE(x);
 DECLARE_USE_SINGLE(logits);
 
+
 #undef DECLARE_USE_SINGLE
 
 template <class CIRCLENODE>
@@ -2526,6 +2527,16 @@ public:
   loco::NodeShape visit(const luci::CircleSlice *node) final { return infer_slice(node); }
 
   loco::NodeShape visit(const luci::CircleSoftmax *node) final { return use_logits(node); }
+
+  loco::NodeShape visit(const luci::CircleSoftmaxGrad *node) final
+  {
+    auto input_shape = luci::shape_get(node->softmax_values()).as<loco::TensorShape>();
+    auto shape_value = input_shape.dim(1);
+    input_shape.rank(2);
+    input_shape.dim(0) = shape_value;
+    input_shape.dim(1) = shape_value;
+    return loco::NodeShape{input_shape};
+  }
 
   loco::NodeShape visit(const luci::CircleSpaceToBatchND *node) final
   {
