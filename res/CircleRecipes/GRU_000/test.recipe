@@ -1,0 +1,77 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 2 }
+}
+operand {
+  name: "hidden_hidden"
+  type: FLOAT32
+  shape { dim: 12 dim: 4 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "hidden_hidden_bias"
+  type: FLOAT32
+  shape { dim: 12 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "hidden_input"
+  type: FLOAT32
+  shape { dim: 12 dim: 2 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "hidden_input_bias"
+  type: FLOAT32
+  shape { dim: 12 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "state"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+  filler {
+      tag: "gaussian"
+      arg: "0.0"
+      arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 4 }
+}
+operation {
+  type: "GRU"
+  gru_options {
+    activation: NONE
+    return_sequences: false
+    time_major: false
+  }
+  input: "ifm"
+  input: "hidden_hidden"
+  input: "hidden_hidden_bias"
+  input: "hidden_input"
+  input: "hidden_input_bias"
+  input: "state"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
