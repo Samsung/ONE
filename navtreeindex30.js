@@ -1,5 +1,8 @@
 var NAVTREEINDEX30 =
 {
+"_t_f_l_shape_inference_rule_8cpp.html":[36,0,0,38,1,2,1,4],
+"_t_f_l_shape_inference_rule_8cpp_source.html":[36,0,0,38,1,2,1,4],
+"_t_f_l_shape_inference_rule_8h.html":[36,0,0,38,1,2,1,5],
 "_t_f_l_shape_inference_rule_8h_source.html":[36,0,0,38,1,2,1,5],
 "_t_f_l_tensor_exporter_8cpp.html":[36,0,0,38,1,4,7],
 "_t_f_l_tensor_exporter_8cpp.html#a41d3da629293c8d4e82611547a5d772e":[36,0,0,38,1,4,7,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX30 =
 "_tensor_reduce_8cpp_source.html":[36,0,0,47,1,0,31],
 "_tensor_reduce_converter_8cpp.html":[36,0,0,38,1,1,37],
 "_tensor_reduce_converter_8cpp_source.html":[36,0,0,38,1,1,37],
-"_tensor_reduce_converter_8h.html":[36,0,0,38,1,1,38],
-"_tensor_reduce_converter_8h_source.html":[36,0,0,38,1,1,38],
-"_tensor_registries_8h.html":[36,0,4,2,2,1,1,27],
-"_tensor_registries_8h_source.html":[36,0,4,2,2,1,1,27]
+"_tensor_reduce_converter_8h.html":[36,0,0,38,1,1,38]
 };

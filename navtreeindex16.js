@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"_logical_and_options_8h.html#afd6edffa48507fb31daa3de7831c01d1":[36,0,0,125,2,0,77,0],
+"_logical_and_options_8h_source.html":[36,0,0,125,2,0,77],
+"_logical_not_options_8cpp.html":[36,0,0,125,2,0,78],
 "_logical_not_options_8cpp.html#a4167255c59a0eb5b7a7b9b4ac57d5f6c":[36,0,0,125,2,0,78,0],
 "_logical_not_options_8cpp_source.html":[36,0,0,125,2,0,78],
 "_logical_not_options_8h.html":[36,0,0,125,2,0,79],
@@ -61,10 +64,10 @@ var NAVTREEINDEX16 =
 "_lowered_trainable_graph_8cc_source.html":[36,0,4,2,2,1,1,1,1],
 "_lowered_trainable_graph_8h.html":[36,0,4,2,2,0,1,0,0],
 "_lowered_trainable_graph_8h_source.html":[36,0,4,2,2,0,1,0,0],
-"_luci_node_mixins_8h.html":[36,0,0,52,3,0,0,0,19],
-"_luci_node_mixins_8h.html#a1deab1bf49f281354bf03e271e9e6386":[36,0,0,52,3,0,0,0,19,0],
-"_luci_node_mixins_8h.html#a704626fb47a4e43e4e0ef48f4311b738":[36,0,0,52,3,0,0,0,19,1],
-"_luci_node_mixins_8h_source.html":[36,0,0,52,3,0,0,0,19],
+"_luci_node_mixins_8h.html":[36,0,0,52,3,0,0,0,20],
+"_luci_node_mixins_8h.html#a1deab1bf49f281354bf03e271e9e6386":[36,0,0,52,3,0,0,0,20,0],
+"_luci_node_mixins_8h.html#a704626fb47a4e43e4e0ef48f4311b738":[36,0,0,52,3,0,0,0,20,1],
+"_luci_node_mixins_8h_source.html":[36,0,0,52,3,0,0,0,20],
 "_m_d_table_event_writer_8cc.html":[36,0,4,2,2,1,7,9],
 "_m_d_table_event_writer_8cc_source.html":[36,0,4,2,2,1,7,9],
 "_m_i_r_to_d_o_m_8cpp.html":[36,0,0,81,6,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "_message_buffer_8h.html":[36,0,0,41,0,0,0,3],
 "_message_buffer_8h_source.html":[36,0,0,41,0,0,0,3],
 "_message_bus_8cpp.html":[36,0,0,41,1,0,3],
-"_message_bus_8cpp_source.html":[36,0,0,41,1,0,3],
-"_message_bus_8h.html":[36,0,0,41,0,0,0,4],
-"_message_bus_8h_source.html":[36,0,0,41,0,0,0,4],
-"_metadata_printer_8cpp.html":[36,0,0,25,2,1]
+"_message_bus_8cpp_source.html":[36,0,0,41,1,0,3]
 };

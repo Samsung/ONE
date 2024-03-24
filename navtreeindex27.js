@@ -1,5 +1,8 @@
 var NAVTREEINDEX27 =
 {
+"_s_g_d_8cc_source.html":[36,0,4,2,1,7,1,3],
+"_s_i_s_o_kernel_8h.html":[36,0,3,4,2,1,91],
+"_s_i_s_o_kernel_8h_source.html":[36,0,3,4,2,1,91],
 "_s_n_p_e_event_writer_8cc.html":[36,0,4,2,2,1,7,11],
 "_s_n_p_e_event_writer_8cc.html#a2dcddc727d3f868402d8e9140399f3d0":[36,0,4,2,2,1,7,11,0],
 "_s_n_p_e_event_writer_8cc_source.html":[36,0,4,2,2,1,7,11],
@@ -246,8 +249,5 @@ var NAVTREEINDEX27 =
 "_sink_test_8cpp.html":[36,0,0,81,6,1,3],
 "_sink_test_8cpp_source.html":[36,0,0,81,6,1,3],
 "_sink_transpose_8cpp.html":[36,0,0,81,4,1,6],
-"_sink_transpose_8cpp_source.html":[36,0,0,81,4,1,6],
-"_sink_transpose_8h.html":[36,0,0,81,2,2,1,6],
-"_sink_transpose_8h_source.html":[36,0,0,81,2,2,1,6],
-"_slice_8cc.html":[36,0,4,2,2,1,4,0,54]
+"_sink_transpose_8cpp_source.html":[36,0,0,81,4,1,6]
 };

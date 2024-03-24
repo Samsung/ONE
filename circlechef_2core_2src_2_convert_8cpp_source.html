@@ -164,20 +164,24 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_convert_8cpp_s
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">return</span> circle::TensorType_INT32;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">case</span> circlechef::UINT8:</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">return</span> circle::TensorType_UINT8;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::UINT4:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_UINT4;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">case</span> circlechef::INT4:</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <span class="keywordflow">return</span> circle::TensorType_INT4;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
 </div>
 <div class="ttc" id="acirclechef_2core_2src_2_convert_8cpp_html_a6c6c6de293d2296fd38782bc451547b5"><div class="ttname"><a href="circlechef_2core_2src_2_convert_8cpp.html#a6c6c6de293d2296fd38782bc451547b5">as_circle_tensortype</a></div><div class="ttdeci">circle::TensorType as_circle_tensortype(const circlechef::TensorType &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2core_2src_2_convert_8cpp_source.html#l00053">Convert.cpp:53</a></div></div>
 <div class="ttc" id="acirclechef_2core_2src_2_convert_8cpp_html_a7473937e4dcbbba8923b17f20d896e8f"><div class="ttname"><a href="circlechef_2core_2src_2_convert_8cpp.html#a7473937e4dcbbba8923b17f20d896e8f">as_circle_activation</a></div><div class="ttdeci">circle::ActivationFunctionType as_circle_activation(const circlechef::Activation &amp;value)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2core_2src_2_convert_8cpp_source.html#l00036">Convert.cpp:36</a></div></div>

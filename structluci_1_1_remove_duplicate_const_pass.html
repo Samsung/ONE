@@ -186,38 +186,44 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_remove_duplicate_const_pass_8cpp_source.html#l00192">192</a> of file <a class="el" href="_remove_duplicate_const_pass_8cpp_source.html">RemoveDuplicateConstPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  193</span>{</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  195</span>  {</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keyword">auto</span> const_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">if</span> (const_node == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">switch</span> (const_node-&gt;dtype())</div>
-<div class="line"><span class="lineno">  201</span>    {</div>
-<div class="line"><span class="lineno">  202</span>      <span class="keywordflow">case</span> loco::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  203</span>        add_to_map&lt;loco::DataType::FLOAT32&gt;(const_node);</div>
-<div class="line"><span class="lineno">  204</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  205</span>      <span class="keywordflow">case</span> loco::DataType::S32:</div>
-<div class="line"><span class="lineno">  206</span>        add_to_map&lt;loco::DataType::S32&gt;(const_node);</div>
-<div class="line"><span class="lineno">  207</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">case</span> loco::DataType::S16:</div>
-<div class="line"><span class="lineno">  209</span>        add_to_map&lt;loco::DataType::S16&gt;(const_node);</div>
+<p class="definition">Definition at line <a class="el" href="_remove_duplicate_const_pass_8cpp_source.html#l00198">198</a> of file <a class="el" href="_remove_duplicate_const_pass_8cpp_source.html">RemoveDuplicateConstPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  199</span>{</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keyword">auto</span> const_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">if</span> (const_node == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  204</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">switch</span> (const_node-&gt;dtype())</div>
+<div class="line"><span class="lineno">  207</span>    {</div>
+<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">case</span> loco::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  209</span>        add_to_map&lt;loco::DataType::FLOAT32&gt;(const_node);</div>
 <div class="line"><span class="lineno">  210</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  211</span>      <span class="keywordflow">case</span> loco::DataType::S8:</div>
-<div class="line"><span class="lineno">  212</span>        add_to_map&lt;loco::DataType::S8&gt;(const_node);</div>
+<div class="line"><span class="lineno">  211</span>      <span class="keywordflow">case</span> loco::DataType::S32:</div>
+<div class="line"><span class="lineno">  212</span>        add_to_map&lt;loco::DataType::S32&gt;(const_node);</div>
 <div class="line"><span class="lineno">  213</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  214</span>      <span class="keywordflow">case</span> loco::DataType::U8:</div>
-<div class="line"><span class="lineno">  215</span>        add_to_map&lt;loco::DataType::U8&gt;(const_node);</div>
+<div class="line"><span class="lineno">  214</span>      <span class="keywordflow">case</span> loco::DataType::S16:</div>
+<div class="line"><span class="lineno">  215</span>        add_to_map&lt;loco::DataType::S16&gt;(const_node);</div>
 <div class="line"><span class="lineno">  216</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  217</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  218</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  219</span>    }</div>
-<div class="line"><span class="lineno">  220</span>  }</div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> remove_duplicate_const();</div>
-<div class="line"><span class="lineno">  223</span>}</div>
+<div class="line"><span class="lineno">  217</span>      <span class="keywordflow">case</span> loco::DataType::S8:</div>
+<div class="line"><span class="lineno">  218</span>        add_to_map&lt;loco::DataType::S8&gt;(const_node);</div>
+<div class="line"><span class="lineno">  219</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  220</span>      <span class="keywordflow">case</span> loco::DataType::S4:</div>
+<div class="line"><span class="lineno">  221</span>        add_to_map&lt;loco::DataType::S4&gt;(const_node);</div>
+<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  223</span>      <span class="keywordflow">case</span> loco::DataType::U8:</div>
+<div class="line"><span class="lineno">  224</span>        add_to_map&lt;loco::DataType::U8&gt;(const_node);</div>
+<div class="line"><span class="lineno">  225</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  226</span>      <span class="keywordflow">case</span> loco::DataType::U4:</div>
+<div class="line"><span class="lineno">  227</span>        add_to_map&lt;loco::DataType::U4&gt;(const_node);</div>
+<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  229</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  231</span>    }</div>
+<div class="line"><span class="lineno">  232</span>  }</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>  <span class="keywordflow">return</span> remove_duplicate_const();</div>
+<div class="line"><span class="lineno">  235</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html"><div class="ttname"><a href="classluci_1_1_circle_const.html">luci::CircleConst</a></div><div class="ttdoc">Class to build tensor data.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">CircleConst.h:35</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>

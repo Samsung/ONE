@@ -46,6 +46,7 @@ var circledump_2src_2_op_printer_8cpp =
     [ "circledump::CustomOpPrinter", "classcircledump_1_1_custom_op_printer.html", "classcircledump_1_1_custom_op_printer" ],
     [ "circledump::BCQFullyConnectedPrinter", "classcircledump_1_1_b_c_q_fully_connected_printer.html", "classcircledump_1_1_b_c_q_fully_connected_printer" ],
     [ "circledump::BCQGatherPrinter", "classcircledump_1_1_b_c_q_gather_printer.html", "classcircledump_1_1_b_c_q_gather_printer" ],
+    [ "circledump::GRUPrinter", "classcircledump_1_1_g_r_u_printer.html", "classcircledump_1_1_g_r_u_printer" ],
     [ "circledump::InstanceNormPrinter", "classcircledump_1_1_instance_norm_printer.html", "classcircledump_1_1_instance_norm_printer" ],
     [ "operator<<", "circledump_2src_2_op_printer_8cpp.html#ab708edb4f620af271075d9aa19bc9168", null ]
 ];

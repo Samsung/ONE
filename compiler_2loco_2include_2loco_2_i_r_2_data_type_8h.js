@@ -2,10 +2,12 @@ var compiler_2loco_2include_2loco_2_i_r_2_data_type_8h =
 [
     [ "DataType", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3c", [
       [ "Unknown", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+      [ "U4", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca7a7e060fbac468049775df37d8dfa511", null ],
       [ "U8", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca6669348b484e3008dca2bfa8e85e40b5", null ],
       [ "U16", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3caef9ef3ebca4d2b64b6ec83808bafa5f2", null ],
       [ "U32", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3cac8bd5bedff8ef192d39a962afc0e19ee", null ],
       [ "U64", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca31d65cccd6593e4101db93fb878abcaa", null ],
+      [ "S4", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3cad59a89abb4af5bc4dd85243d5f75bcac", null ],
       [ "S8", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3caafb0fced528eaac5fe170b763cda5975", null ],
       [ "S16", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca6e0b0886efb94aec797f6b830329b72c", null ],
       [ "S32", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3caa1e28eee0339658d39a8b4d325b56e9c", null ],

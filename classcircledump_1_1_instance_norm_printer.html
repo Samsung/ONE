@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00794">794</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00812">812</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa916d61e3edf13c2dcde9d6a5a887e37" name="aa916d61e3edf13c2dcde9d6a5a887e37"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa916d61e3edf13c2dcde9d6a5a887e37">&#9670;&#160;</a></span>options()</h2>
@@ -150,17 +150,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classcircledump_1_1_op_printer.html#a9ce311a3773e4d5de389a8218406b1e4">circledump::OpPrinter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00797">797</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  798</span>  {</div>
-<div class="line"><span class="lineno">  799</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_InstanceNormOptions())</div>
-<div class="line"><span class="lineno">  800</span>    {</div>
-<div class="line"><span class="lineno">  801</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
-<div class="line"><span class="lineno">  802</span>      os &lt;&lt; <span class="stringliteral">&quot;epsilon(&quot;</span> &lt;&lt; params-&gt;epsilon() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  803</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
-<div class="line"><span class="lineno">  804</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><span class="lineno">  805</span>      os &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  806</span>    }</div>
-<div class="line"><span class="lineno">  807</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00815">815</a> of file <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html">OpPrinter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  816</span>  {</div>
+<div class="line"><span class="lineno">  817</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> *params = op-&gt;builtin_options_as_InstanceNormOptions())</div>
+<div class="line"><span class="lineno">  818</span>    {</div>
+<div class="line"><span class="lineno">  819</span>      os &lt;&lt; <span class="stringliteral">&quot;    &quot;</span>;</div>
+<div class="line"><span class="lineno">  820</span>      os &lt;&lt; <span class="stringliteral">&quot;epsilon(&quot;</span> &lt;&lt; params-&gt;epsilon() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  821</span>      os &lt;&lt; <span class="stringliteral">&quot;Activation(&quot;</span> &lt;&lt; EnumNameActivationFunctionType(params-&gt;fused_activation_function())</div>
+<div class="line"><span class="lineno">  822</span>         &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  823</span>      os &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  824</span>    }</div>
+<div class="line"><span class="lineno">  825</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

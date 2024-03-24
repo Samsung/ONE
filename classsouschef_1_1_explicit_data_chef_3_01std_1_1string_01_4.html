@@ -181,39 +181,39 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structsouschef_1_1_data_chef.html#aba3e5234f3670624be6401a6ee52609b">souschef::DataChef</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_explicit_8cpp_source.html#l00035">35</a> of file <a class="el" href="_explicit_8cpp_source.html">Explicit.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  std::vector&lt;uint8_t&gt; res;</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  <span class="comment">// write count</span></div>
-<div class="line"><span class="lineno">   40</span>  write_value(res, count);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <span class="comment">// write first item offset</span></div>
-<div class="line"><span class="lineno">   43</span>  int32_t start = <span class="keyword">sizeof</span>(int32_t) * (count + 2);</div>
-<div class="line"><span class="lineno">   44</span>  write_value(res, start);</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="comment">// write succeeding items offset (or the end)</span></div>
-<div class="line"><span class="lineno">   47</span>  int32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = start;</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    std::string <span class="keyword">const</span> value = (n &lt; _values.size()) ? _values.at(n) : std::string{};</div>
-<div class="line"><span class="lineno">   51</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += value.length();</div>
-<div class="line"><span class="lineno">   52</span>    write_value(res, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
-<div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    std::string <span class="keyword">const</span> value = (n &lt; _values.size()) ? _values.at(n) : std::string{};</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> uint8_t *arr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(value.c_str());</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">for</span> (uint32_t b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; value.length(); ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
-<div class="line"><span class="lineno">   61</span>    {</div>
-<div class="line"><span class="lineno">   62</span>      res.emplace_back(arr[b]);</div>
-<div class="line"><span class="lineno">   63</span>    }</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_explicit_8cpp_source.html#l00036">36</a> of file <a class="el" href="_explicit_8cpp_source.html">Explicit.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  std::vector&lt;uint8_t&gt; res;</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>  <span class="comment">// write count</span></div>
+<div class="line"><span class="lineno">   41</span>  write_value(res, count);</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="comment">// write first item offset</span></div>
+<div class="line"><span class="lineno">   44</span>  int32_t start = <span class="keyword">sizeof</span>(int32_t) * (count + 2);</div>
+<div class="line"><span class="lineno">   45</span>  write_value(res, start);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// write succeeding items offset (or the end)</span></div>
+<div class="line"><span class="lineno">   48</span>  int32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = start;</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    std::string <span class="keyword">const</span> value = (n &lt; _values.size()) ? _values.at(n) : std::string{};</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += value.length();</div>
+<div class="line"><span class="lineno">   53</span>    write_value(res, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    std::string <span class="keyword">const</span> value = (n &lt; _values.size()) ? _values.at(n) : std::string{};</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> uint8_t *arr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(value.c_str());</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">for</span> (uint32_t b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; value.length(); ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
+<div class="line"><span class="lineno">   62</span>    {</div>
+<div class="line"><span class="lineno">   63</span>      res.emplace_back(arr[b]);</div>
+<div class="line"><span class="lineno">   64</span>    }</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 </div><!-- fragment -->

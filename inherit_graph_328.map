@@ -1,11 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structloco_1_1_dialect_service.html" title="Dialect Service interface." alt="" coords="5,78,141,104"/>
-<area shape="rect" id="Node000001" href="$structloco_1_1_graph_input_index_query_service.html" title=" " alt="" coords="194,5,374,46"/>
-<area shape="poly" id="edge1083_Node000000_Node000001" title=" " alt="" coords="130,71,215,44,217,49,132,76"/>
-<area shape="rect" id="Node000002" href="$structloco_1_1_graph_output_index_query_service.html" title=" " alt="" coords="189,71,379,111"/>
-<area shape="poly" id="edge1084_Node000000_Node000002" title=" " alt="" coords="156,88,188,88,188,94,156,94"/>
-<area shape="rect" id="Node000003" href="$structlogo_1_1_dead_node_query_service.html" title=" " alt="" coords="189,136,379,161"/>
-<area shape="poly" id="edge1085_Node000000_Node000003" title=" " alt="" coords="137,106,189,120,233,132,232,137,188,126,136,111"/>
-<area shape="rect" id="Node000004" href="$structluci_1_1_dead_node_query_service_impl.html" title=" " alt="" coords="427,136,638,161"/>
-<area shape="poly" id="edge1086_Node000003_Node000004" title=" " alt="" coords="395,146,426,146,426,151,395,151"/>
+<area shape="rect" id="Node000000" href="$classloco_1_1_depthwise_filter_shape.html" title="DepthwiseFilter Shape." alt="" coords="5,5,184,31"/>
 </map>

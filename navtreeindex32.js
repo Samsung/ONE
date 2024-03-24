@@ -1,5 +1,8 @@
 var NAVTREEINDEX32 =
 {
+"_trainable_fn_sequence_8h.html":[36,0,4,2,2,0,2,0,3],
+"_trainable_fn_sequence_8h_source.html":[36,0,4,2,2,0,2,0,3],
+"_trainable_graph_8cc.html":[36,0,4,2,2,1,4,1,3],
 "_trainable_graph_8cc_source.html":[36,0,4,2,2,1,4,1,3],
 "_trainable_graph_8h.html":[36,0,4,2,2,0,3,1,7],
 "_trainable_graph_8h_source.html":[36,0,4,2,2,0,3,1,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX32 =
 "_use_set_8h_source.html":[36,0,0,27,0,0,0,1,63],
 "_user_data_8cpp.html":[36,0,0,47,1,9],
 "_user_data_8cpp_source.html":[36,0,0,47,1,9],
-"_user_data_8h.html":[36,0,0,47,1,10],
-"_user_data_8h_source.html":[36,0,0,47,1,10],
-"_user_exn_8h.html":[36,0,0,98,0,0,1],
-"_user_exn_8h_source.html":[36,0,0,98,0,0,1]
+"_user_data_8h.html":[36,0,0,47,1,10]
 };

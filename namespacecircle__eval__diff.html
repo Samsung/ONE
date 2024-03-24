@@ -314,7 +314,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00116">circle_eval_diff::HDF5Loader::get()</a>, <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>, and <a class="el" href="_circle_eval_diff_8cpp_source.html#l00125">interpret()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00117">circle_eval_diff::HDF5Loader::get()</a>, <a class="el" href="_input_data_loader_8cpp_source.html#l00184">circle_eval_diff::DirectoryLoader::get()</a>, and <a class="el" href="_circle_eval_diff_8cpp_source.html#l00125">interpret()</a>.</p>
 
 </div>
 </div>
@@ -334,31 +334,31 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00051">51</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  std::vector&lt;size_t&gt; vec;</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
-<div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dtype_size = <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a>(input_node-&gt;dtype());</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordtype">size_t</span> element_size = 1;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; input_node-&gt;rank(); index++)</div>
-<div class="line"><span class="lineno">   62</span>    {</div>
-<div class="line"><span class="lineno">   63</span>      element_size *= input_node-&gt;dim(index).value();</div>
-<div class="line"><span class="lineno">   64</span>    }</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    vec.push_back(element_size * dtype_size);</div>
-<div class="line"><span class="lineno">   67</span>  }</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">return</span> vec;</div>
-<div class="line"><span class="lineno">   70</span>}</div>
-<div class="ttc" id="anamespaceloco_html_a4d01930bc9d64546f93776723542b22d"><div class="ttname"><a href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a></div><div class="ttdeci">uint32_t size(DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition</b> <a href="_data_type_traits_8h_source.html#l00122">DataTypeTraits.h:122</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00052">52</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  std::vector&lt;size_t&gt; vec;</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dtype_size = <a class="code hl_function" href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a>(input_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordtype">size_t</span> element_size = 1;</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; input_node-&gt;rank(); index++)</div>
+<div class="line"><span class="lineno">   63</span>    {</div>
+<div class="line"><span class="lineno">   64</span>      element_size *= input_node-&gt;dim(index).value();</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    vec.push_back(element_size * dtype_size);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> vec;</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+<div class="ttc" id="anamespaceluci_html_af979a00d2e6c772309aaf5f6ef03a148"><div class="ttname"><a href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a></div><div class="ttdeci">uint32_t size(loco::DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition</b> <a href="_data_type_helper_8h_source.html#l00031">DataTypeHelper.h:31</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>.</p>
+<p class="reference">References <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00184">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
 </div>
 </div>
@@ -378,29 +378,29 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00072">72</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordtype">size_t</span> total_byte_size = 0;</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
-<div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
-<div class="line"><span class="lineno">   79</span>    <span class="keywordtype">size_t</span> byte_size = <a class="code hl_function" href="namespaceloco.html#a4d01930bc9d64546f93776723542b22d">loco::size</a>(input_node-&gt;dtype());</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; input_node-&gt;rank(); index++)</div>
-<div class="line"><span class="lineno">   82</span>    {</div>
-<div class="line"><span class="lineno">   83</span>      byte_size *= input_node-&gt;dim(index).value();</div>
-<div class="line"><span class="lineno">   84</span>    }</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    total_byte_size += byte_size;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> total_byte_size;</div>
-<div class="line"><span class="lineno">   90</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00073">73</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordtype">size_t</span> total_byte_size = 0;</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordtype">size_t</span> byte_size = <a class="code hl_function" href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a>(input_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; input_node-&gt;rank(); index++)</div>
+<div class="line"><span class="lineno">   83</span>    {</div>
+<div class="line"><span class="lineno">   84</span>      byte_size *= input_node-&gt;dim(index).value();</div>
+<div class="line"><span class="lineno">   85</span>    }</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    total_byte_size += byte_size;</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> total_byte_size;</div>
+<div class="line"><span class="lineno">   91</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_traits_8h_source.html#l00122">loco::size()</a>.</p>
+<p class="reference">References <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00157">circle_eval_diff::DirectoryLoader::DirectoryLoader()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00183">circle_eval_diff::DirectoryLoader::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00158">circle_eval_diff::DirectoryLoader::DirectoryLoader()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00184">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
 </div>
 </div>
@@ -592,22 +592,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00219">219</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  222</span>{</div>
-<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">switch</span> (format)</div>
-<div class="line"><span class="lineno">  224</span>  {</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">case</span> InputFormat::H5:</div>
-<div class="line"><span class="lineno">  226</span>    {</div>
-<div class="line"><span class="lineno">  227</span>      <span class="keywordflow">return</span> std::make_unique&lt;HDF5Loader&gt;(file_path, input_nodes);</div>
-<div class="line"><span class="lineno">  228</span>    }</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keywordflow">case</span> InputFormat::DIR:</div>
-<div class="line"><span class="lineno">  230</span>    {</div>
-<div class="line"><span class="lineno">  231</span>      <span class="keywordflow">return</span> std::make_unique&lt;DirectoryLoader&gt;(file_path, input_nodes);</div>
-<div class="line"><span class="lineno">  232</span>    }</div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  234</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported input format.&quot;</span>};</div>
-<div class="line"><span class="lineno">  235</span>  }</div>
-<div class="line"><span class="lineno">  236</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00220">220</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">switch</span> (format)</div>
+<div class="line"><span class="lineno">  225</span>  {</div>
+<div class="line"><span class="lineno">  226</span>    <span class="keywordflow">case</span> InputFormat::H5:</div>
+<div class="line"><span class="lineno">  227</span>    {</div>
+<div class="line"><span class="lineno">  228</span>      <span class="keywordflow">return</span> std::make_unique&lt;HDF5Loader&gt;(file_path, input_nodes);</div>
+<div class="line"><span class="lineno">  229</span>    }</div>
+<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">case</span> InputFormat::DIR:</div>
+<div class="line"><span class="lineno">  231</span>    {</div>
+<div class="line"><span class="lineno">  232</span>      <span class="keywordflow">return</span> std::make_unique&lt;DirectoryLoader&gt;(file_path, input_nodes);</div>
+<div class="line"><span class="lineno">  233</span>    }</div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  235</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported input format.&quot;</span>};</div>
+<div class="line"><span class="lineno">  236</span>  }</div>
+<div class="line"><span class="lineno">  237</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">DIR</a>, and <a class="el" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273a830652084dda69b6b957e2c3a7bd9b18">H5</a>.</p>
 
@@ -647,23 +647,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00035">35</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// Type check</span></div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (dtype != input_node-&gt;dtype())</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong input type.&quot;</span>);</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (shape.size() != input_node-&gt;rank())</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Input rank mismatch.&quot;</span>);</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; shape.size(); i++)</div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> (not(shape.at(i) == input_node-&gt;dim(i)))</div>
-<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Input shape mismatch.&quot;</span>);</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_input_data_loader_8cpp_source.html#l00036">36</a> of file <a class="el" href="_input_data_loader_8cpp_source.html">InputDataLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// Type check</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (dtype != input_node-&gt;dtype())</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong input type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (shape.size() != input_node-&gt;rank())</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Input rank mismatch.&quot;</span>);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; shape.size(); i++)</div>
+<div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (not(shape.at(i) == input_node-&gt;dim(i)))</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Input shape mismatch.&quot;</span>);</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00116">circle_eval_diff::HDF5Loader::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00117">circle_eval_diff::HDF5Loader::get()</a>.</p>
 
 </div>
 </div>

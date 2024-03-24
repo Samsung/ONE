@@ -1,5 +1,8 @@
 var NAVTREEINDEX35 =
 {
+"caffe2__importer_8cpp_source.html":[36,0,0,72,1,0,0],
+"caffe2__importer_8h.html":[36,0,0,72,0,1,0],
+"caffe2__importer_8h.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8":[36,0,0,72,0,1,0,0],
 "caffe2__importer_8h_source.html":[36,0,0,72,0,1,0],
 "caffe2__op__creator_8cpp.html":[36,0,0,72,1,0,1],
 "caffe2__op__creator_8cpp_source.html":[36,0,0,72,1,0,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX35 =
 "circlechef_2core_2src_2_op_chefs_8h_source.html":[36,0,0,24,1,1,6],
 "circlechef_2log_2include_2_log_8h.html":[36,0,0,24,2,0,0],
 "circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e":[36,0,0,24,2,0,0,3],
-"circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029":[36,0,0,24,2,0,0,2],
-"circlechef_2log_2include_2_log_8h_source.html":[36,0,0,24,2,0,0],
-"circlechef_2log_2include_2_logging_context_8h.html":[36,0,0,24,2,0,1],
-"circlechef_2log_2include_2_logging_context_8h_source.html":[36,0,0,24,2,0,1]
+"circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029":[36,0,0,24,2,0,0,2]
 };

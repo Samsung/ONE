@@ -4,6 +4,7 @@ var classluci_1_1_clone_node =
     [ "visit", "classluci_1_1_clone_node.html#a570dde8ae61b0faecffd557e43b9c995", null ],
     [ "visit", "classluci_1_1_clone_node.html#a24415987d267af963e2fac4e81fceace", null ],
     [ "visit", "classluci_1_1_clone_node.html#a7563e1d015678ea1bfd8209a4e2d176a", null ],
+    [ "visit", "classluci_1_1_clone_node.html#a683452a31d65fcfbcbecb16209563a44", null ],
     [ "visit", "classluci_1_1_clone_node.html#ae5b58cc39a7683dafc5b6f89001b914c", null ],
     [ "visit", "classluci_1_1_clone_node.html#a6b66b79d6d02a5decc1cc19b815b62f2", null ],
     [ "visit", "classluci_1_1_clone_node.html#a6135d33ffd847495aee667afc6fe0436", null ],

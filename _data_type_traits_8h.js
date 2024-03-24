@@ -1,7 +1,9 @@
 var _data_type_traits_8h =
 [
     [ "loco::DataTypeImpl< DT >", "structloco_1_1_data_type_impl.html", null ],
+    [ "loco::DataTypeImpl< DataType::S4 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s4_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s4_01_4" ],
     [ "loco::DataTypeImpl< DataType::S8 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s8_01_4" ],
+    [ "loco::DataTypeImpl< DataType::U4 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u4_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u4_01_4" ],
     [ "loco::DataTypeImpl< DataType::U8 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u8_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u8_01_4" ],
     [ "loco::DataTypeImpl< DataType::S16 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s16_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_s16_01_4" ],
     [ "loco::DataTypeImpl< DataType::U16 >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4.html", "structloco_1_1_data_type_impl_3_01_data_type_1_1_u16_01_4" ],

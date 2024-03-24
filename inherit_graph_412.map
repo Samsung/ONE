@@ -1,15 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structlocop_1_1_node_summary_builder.html" title="Build a summary from loco Node." alt="" coords="5,145,190,171"/>
-<area shape="rect" id="Node000001" href="$classexo_1_1_node_summary_builder.html" title=" " alt="" coords="259,5,433,31"/>
-<area shape="poly" id="edge1129_Node000000_Node000001" title=" " alt="" coords="119,132,169,85,202,60,237,40,264,29,266,34,239,45,205,65,173,89,123,136"/>
-<area shape="rect" id="Node000002" href="$classlocoex_1_1_c_op_node_summary_builder.html" title=" " alt="" coords="238,55,454,80"/>
-<area shape="poly" id="edge1130_Node000000_Node000002" title=" " alt="" coords="135,135,183,112,237,90,278,78,279,83,239,95,185,117,138,140"/>
-<area shape="rect" id="Node000003" href="$classlocop_1_1_canonical_node_summary_builder.html" title="Built&#45;in Node Summary Builder for Canonical Dialect." alt="" coords="245,105,447,145"/>
-<area shape="poly" id="edge1131_Node000000_Node000003" title=" " alt="" coords="205,141,244,136,245,141,206,146"/>
-<area shape="rect" id="Node000004" href="$classlocop_1_1_generic_node_summary_builder.html" title="Dialect&#45;agnostic Node Summary Builder." alt="" coords="251,170,441,211"/>
-<area shape="poly" id="edge1132_Node000000_Node000004" title=" " alt="" coords="206,169,251,175,251,181,205,175"/>
-<area shape="rect" id="Node000005" href="$classluci_1_1_node_summary_builder.html" title=" " alt="" coords="259,235,433,260"/>
-<area shape="poly" id="edge1133_Node000000_Node000005" title=" " alt="" coords="139,176,186,199,239,220,280,232,278,237,237,225,184,203,136,181"/>
-<area shape="rect" id="Node000006" href="$classmoco_1_1tf_1_1_moco_node_summary_builder.html" title=" " alt="" coords="250,285,442,325"/>
-<area shape="poly" id="edge1134_Node000000_Node000006" title=" " alt="" coords="124,180,174,226,206,250,239,270,264,282,262,286,236,275,203,254,171,230,120,184"/>
+<area shape="rect" id="Node000000" href="$structlocop_1_1_node_desc.html" title=" " alt="" coords="5,5,125,31"/>
 </map>

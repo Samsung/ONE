@@ -211,18 +211,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00295">295</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  296</span>{</div>
-<div class="line"><span class="lineno">  297</span>  assert(op != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_codes = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
-<div class="line"><span class="lineno">  300</span>  uint32_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
-<div class="line"><span class="lineno">  301</span>  assert(index &lt; op_codes.size());</div>
-<div class="line"><span class="lineno">  302</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><span class="lineno">  303</span>  assert(opcode != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">mio::circle::builtin_code_neutral</a>(opcode);</div>
-<div class="line"><span class="lineno">  306</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00299">299</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  300</span>{</div>
+<div class="line"><span class="lineno">  301</span>  assert(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_codes = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
+<div class="line"><span class="lineno">  304</span>  uint32_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
+<div class="line"><span class="lineno">  305</span>  assert(index &lt; op_codes.size());</div>
+<div class="line"><span class="lineno">  306</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><span class="lineno">  307</span>  assert(opcode != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">mio::circle::builtin_code_neutral</a>(opcode);</div>
+<div class="line"><span class="lineno">  310</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_a0b74a15b1e89b081d47fc391f140522c"><div class="ttname"><a href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">luci::CircleReader::opcodes</a></div><div class="ttdeci">CircleOperatorCodes opcodes() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8h_source.html#l00102">CircleReader.h:102</a></div></div>
 <div class="ttc" id="anamespacemio_1_1circle_html_ae833fa8c55869bac78dd55fab7d14415"><div class="ttname"><a href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">mio::circle::builtin_code_neutral</a></div><div class="ttdeci">::circle::BuiltinOperator builtin_code_neutral(const ::circle::OperatorCode *opcode)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle04_2src_2_helper_8cpp_source.html#l00033">Helper.cpp:33</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
@@ -322,9 +322,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8h_source.html#l00108">108</a> of file <a class="el" href="_circle_reader_8h_source.html">CircleReader.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  108</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#aaec9402bcde136a29e9efb0dbab25765">fb_string2std_string</a>(_current_subgraph-&gt;name()); }</div>
-<div class="ttc" id="anamespaceluci_html_aaec9402bcde136a29e9efb0dbab25765"><div class="ttname"><a href="namespaceluci.html#aaec9402bcde136a29e9efb0dbab25765">luci::fb_string2std_string</a></div><div class="ttdeci">std::string fb_string2std_string(const flatbuffers::String *fb_str)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00290">CircleReader.cpp:290</a></div></div>
+<div class="ttc" id="anamespaceluci_html_aaec9402bcde136a29e9efb0dbab25765"><div class="ttname"><a href="namespaceluci.html#aaec9402bcde136a29e9efb0dbab25765">luci::fb_string2std_string</a></div><div class="ttdeci">std::string fb_string2std_string(const flatbuffers::String *fb_str)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00294">CircleReader.cpp:294</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00290">luci::fb_string2std_string()</a>.</p>
+<p class="reference">References <a class="el" href="_circle_reader_8cpp_source.html#l00294">luci::fb_string2std_string()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>.</p>
 
@@ -358,7 +358,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::import()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>, <a class="el" href="_generate_kernels_list_helper_8cpp_source.html#l00198">run()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00330">select_subgraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::import()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>, <a class="el" href="_generate_kernels_list_helper_8cpp_source.html#l00198">run()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00334">select_subgraph()</a>.</p>
 
 </div>
 </div>
@@ -378,17 +378,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00308">308</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  309</span>{</div>
-<div class="line"><span class="lineno">  310</span>  assert(op != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_codes = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
-<div class="line"><span class="lineno">  313</span>  uint32_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
-<div class="line"><span class="lineno">  314</span>  assert(index &lt; op_codes.size());</div>
-<div class="line"><span class="lineno">  315</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#a6bb8a9fd1ddde814312d5582f25b9260">mio::circle::opcode_name</a>(opcode);</div>
-<div class="line"><span class="lineno">  318</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00312">312</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  313</span>{</div>
+<div class="line"><span class="lineno">  314</span>  assert(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_codes = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
+<div class="line"><span class="lineno">  317</span>  uint32_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
+<div class="line"><span class="lineno">  318</span>  assert(index &lt; op_codes.size());</div>
+<div class="line"><span class="lineno">  319</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#a6bb8a9fd1ddde814312d5582f25b9260">mio::circle::opcode_name</a>(opcode);</div>
+<div class="line"><span class="lineno">  322</span>}</div>
 <div class="ttc" id="anamespacemio_1_1circle_html_a6bb8a9fd1ddde814312d5582f25b9260"><div class="ttname"><a href="namespacemio_1_1circle.html#a6bb8a9fd1ddde814312d5582f25b9260">mio::circle::opcode_name</a></div><div class="ttdeci">std::string opcode_name(const ::circle::OperatorCode *opcode)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle_2src_2_helper_8cpp_source.html#l00038">Helper.cpp:38</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00038">mio::circle::opcode_name()</a>, and <a class="el" href="_circle_reader_8h_source.html#l00102">opcodes()</a>.</p>
@@ -423,7 +423,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00295">builtin_code()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00308">opcode_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00299">builtin_code()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00312">opcode_name()</a>.</p>
 
 </div>
 </div>
@@ -507,15 +507,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00320">320</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  321</span>{</div>
-<div class="line"><span class="lineno">  322</span>  assert(model != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>  <span class="comment">// for direct pointer access</span></div>
-<div class="line"><span class="lineno">  325</span>  _model = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>;</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  328</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00324">324</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  325</span>{</div>
+<div class="line"><span class="lineno">  326</span>  assert(model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  327</span> </div>
+<div class="line"><span class="lineno">  328</span>  <span class="comment">// for direct pointer access</span></div>
+<div class="line"><span class="lineno">  329</span>  _model = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>;</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  332</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::import()</a>, <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>, and <a class="el" href="_generate_kernels_list_helper_8cpp_source.html#l00198">run()</a>.</p>
@@ -538,23 +538,23 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00330">330</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  331</span>{</div>
-<div class="line"><span class="lineno">  332</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">num_subgraph</a>() &lt;= sgindex)</div>
-<div class="line"><span class="lineno">  333</span>  {</div>
-<div class="line"><span class="lineno">  334</span>    assert(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  336</span>  }</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>  <span class="comment">// for direct pointer access</span></div>
-<div class="line"><span class="lineno">  339</span>  <span class="keyword">auto</span> subgraphs = _model-&gt;subgraphs();</div>
-<div class="line"><span class="lineno">  340</span>  assert(subgraphs != <span class="keyword">nullptr</span>);</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00334">334</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  335</span>{</div>
+<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">num_subgraph</a>() &lt;= sgindex)</div>
+<div class="line"><span class="lineno">  337</span>  {</div>
+<div class="line"><span class="lineno">  338</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  340</span>  }</div>
 <div class="line"><span class="lineno">  341</span> </div>
-<div class="line"><span class="lineno">  342</span>  _current_subgraph = subgraphs-&gt;Get(sgindex);</div>
-<div class="line"><span class="lineno">  343</span>  assert(_current_subgraph != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  344</span> </div>
-<div class="line"><span class="lineno">  345</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  346</span>}</div>
+<div class="line"><span class="lineno">  342</span>  <span class="comment">// for direct pointer access</span></div>
+<div class="line"><span class="lineno">  343</span>  <span class="keyword">auto</span> subgraphs = _model-&gt;subgraphs();</div>
+<div class="line"><span class="lineno">  344</span>  assert(subgraphs != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  345</span> </div>
+<div class="line"><span class="lineno">  346</span>  _current_subgraph = subgraphs-&gt;Get(sgindex);</div>
+<div class="line"><span class="lineno">  347</span>  assert(_current_subgraph != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  350</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reader_html_af4cff3b58ad7abdf3df5ca5f944c21ae"><div class="ttname"><a href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">luci::CircleReader::num_subgraph</a></div><div class="ttdeci">uint32_t num_subgraph() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8h_source.html#l00111">CircleReader.h:111</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00111">num_subgraph()</a>.</p>
@@ -591,7 +591,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_reader_8h_source.html#l00081">luci::wrap()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_referencing_const_8cpp_source.html#l00037">luci_interpreter::CircleReferencingConstNodeBuilder::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_const_8cpp_source.html#l00110">luci::CircleConstNodeBuilder::build()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00089">luci_interpreter::GraphLoader::checkInplaceOps()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00245">luci_interpreter::RuntimeGraph::configureGraphInput()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00260">luci_interpreter::RuntimeGraph::configureGraphInput()</a>, <a class="el" href="import_2src_2_nodes_2_circle_variable_8cpp_source.html#l00048">luci::create_circlevariable()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00460">luci_interpreter::RuntimeGraph::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00424">luci_interpreter::RuntimeGraph::getCircleTensorByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00279">luci_interpreter::RuntimeGraph::getInputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00302">luci_interpreter::RuntimeGraph::getInputTensorByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00341">luci_interpreter::RuntimeGraph::getOutputDataByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00322">luci_interpreter::RuntimeGraph::getOutputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00312">luci_interpreter::RuntimeGraph::getOutputTensorByIndex()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00220">luci_interpreter::RuntimeGraph::resetOutputTensorsData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_referencing_const_8cpp_source.html#l00037">luci_interpreter::CircleReferencingConstNodeBuilder::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_const_8cpp_source.html#l00158">luci::CircleConstNodeBuilder::build()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00089">luci_interpreter::GraphLoader::checkInplaceOps()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00245">luci_interpreter::RuntimeGraph::configureGraphInput()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00260">luci_interpreter::RuntimeGraph::configureGraphInput()</a>, <a class="el" href="import_2src_2_nodes_2_circle_variable_8cpp_source.html#l00048">luci::create_circlevariable()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00460">luci_interpreter::RuntimeGraph::execute()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00424">luci_interpreter::RuntimeGraph::getCircleTensorByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00279">luci_interpreter::RuntimeGraph::getInputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00302">luci_interpreter::RuntimeGraph::getInputTensorByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00341">luci_interpreter::RuntimeGraph::getOutputDataByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00322">luci_interpreter::RuntimeGraph::getOutputDataSizeByIndex()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00312">luci_interpreter::RuntimeGraph::getOutputTensorByIndex()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00220">luci_interpreter::RuntimeGraph::resetOutputTensorsData()</a>.</p>
 
 </div>
 </div>

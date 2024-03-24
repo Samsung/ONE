@@ -1,5 +1,8 @@
 var NAVTREEINDEX26 =
 {
+"_reducer_options_8h.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[36,0,0,125,2,0,119,0],
+"_reducer_options_8h_source.html":[36,0,0,125,2,0,119],
+"_region_8h.html":[36,0,0,72,0,0,14],
 "_region_8h_source.html":[36,0,0,72,0,0,14],
 "_relative_epsilon_equal_8cpp.html":[36,0,0,80,1,1],
 "_relative_epsilon_equal_8cpp.html#ac8bad5e576ae5a8bab0dec7cef430d1d":[36,0,0,80,1,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX26 =
 "_s_b_serializer_8cpp_source.html":[36,0,0,81,0,2,3],
 "_s_b_serializer_8h.html":[36,0,0,81,0,2,4],
 "_s_b_serializer_8h_source.html":[36,0,0,81,0,2,4],
-"_s_g_d_8cc.html":[36,0,4,2,1,7,1,3],
-"_s_g_d_8cc_source.html":[36,0,4,2,1,7,1,3],
-"_s_i_s_o_kernel_8h.html":[36,0,3,4,2,1,91],
-"_s_i_s_o_kernel_8h_source.html":[36,0,3,4,2,1,91]
+"_s_g_d_8cc.html":[36,0,4,2,1,7,1,3]
 };

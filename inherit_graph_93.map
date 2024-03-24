@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structcoco_1_1_kernel_layout.html" title="A KernelLayout connectes each kernel index to an element (in a bag)" alt="" coords="5,78,137,104"/>
 <area shape="rect" id="Node000001" href="$classcoco_1_1_kernel_layouts_1_1_generic.html" title="Generic Kernel Layout." alt="" coords="185,5,323,46"/>
-<area shape="poly" id="edge180_Node000000_Node000001" title=" " alt="" coords="122,70,194,44,196,49,124,75"/>
+<area shape="poly" id="edge181_Node000000_Node000001" title=" " alt="" coords="122,70,194,44,196,49,124,75"/>
 <area shape="rect" id="Node000002" href="$classcoco_1_1_kernel_layouts_1_1_n_c_h_w.html" title="NCHW Kernel Layout." alt="" coords="185,71,323,111"/>
-<area shape="poly" id="edge181_Node000000_Node000002" title=" " alt="" coords="152,88,184,88,184,94,152,94"/>
+<area shape="poly" id="edge182_Node000000_Node000002" title=" " alt="" coords="152,88,184,88,184,94,152,94"/>
 <area shape="rect" id="Node000003" href="$classcoco_1_1_kernel_layouts_1_1_n_h_w_c.html" title="NHWC Kernel Layout." alt="" coords="185,136,323,177"/>
-<area shape="poly" id="edge182_Node000000_Node000003" title=" " alt="" coords="124,107,196,133,194,138,122,112"/>
+<area shape="poly" id="edge183_Node000000_Node000003" title=" " alt="" coords="124,107,196,133,194,138,122,112"/>
 </map>

@@ -121,10 +121,14 @@ Functions</h2></td></tr>
 <tr class="separator:a75898975c6a001c3512c07cfa60eedbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628527e5572c2a3e74d6e9e7ee9d89cd" id="r_a628527e5572c2a3e74d6e9e7ee9d89cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a628527e5572c2a3e74d6e9e7ee9d89cd">luci::INSTANTIATE</a> (loco::DataType::S8)</td></tr>
 <tr class="separator:a628527e5572c2a3e74d6e9e7ee9d89cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f5f4690ede93385642fc41a16611f36" id="r_a0f5f4690ede93385642fc41a16611f36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a0f5f4690ede93385642fc41a16611f36">luci::INSTANTIATE</a> (loco::DataType::S4)</td></tr>
+<tr class="separator:a0f5f4690ede93385642fc41a16611f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2e4dff2cee69eea869ce68685cc1433" id="r_aa2e4dff2cee69eea869ce68685cc1433"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#aa2e4dff2cee69eea869ce68685cc1433">luci::INSTANTIATE</a> (loco::DataType::FLOAT32)</td></tr>
 <tr class="separator:aa2e4dff2cee69eea869ce68685cc1433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf9586d85f84de7b2444a6fade46b81f" id="r_adf9586d85f84de7b2444a6fade46b81f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#adf9586d85f84de7b2444a6fade46b81f">luci::INSTANTIATE</a> (loco::DataType::U8)</td></tr>
 <tr class="separator:adf9586d85f84de7b2444a6fade46b81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceff879528b42d899fce5d7f7b4572ed" id="r_aceff879528b42d899fce5d7f7b4572ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#aceff879528b42d899fce5d7f7b4572ed">luci::INSTANTIATE</a> (loco::DataType::U4)</td></tr>
+<tr class="separator:aceff879528b42d899fce5d7f7b4572ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589367ae00c054ea1e34a8bb58135c3f" id="r_a589367ae00c054ea1e34a8bb58135c3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a589367ae00c054ea1e34a8bb58135c3f">luci::INSTANTIATE</a> (loco::DataType::BOOL)</td></tr>
 <tr class="separator:a589367ae00c054ea1e34a8bb58135c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb15ea1af738903fbcc603a7cf61e3ea" id="r_adb15ea1af738903fbcc603a7cf61e3ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#adb15ea1af738903fbcc603a7cf61e3ea">luci::INSTANTIATE</a> (loco::DataType::FLOAT16)</td></tr>
@@ -173,48 +177,48 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructloco_1_1_data_type_impl_html"><div class="ttname"><a href="structloco_1_1_data_type_impl.html">loco::DataTypeImpl</a></div><div class="ttdoc">C++ scalar type corresponding to each DataType.</div><div class="ttdef"><b>Definition</b> <a href="_data_type_traits_8h_source.html#l00032">DataTypeTraits.h:33</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00065">65</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_const_8cpp_source.html">CircleConst.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">   88</span>  assert(_data.size() == 0);</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> _strings.size();</div>
-<div class="line"><span class="lineno">   90</span>}</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span><span class="keyword">template</span> &lt;&gt; <span class="keywordtype">void</span> CircleConst::size&lt;loco::DataType::STRING&gt;(uint32_t l)</div>
-<div class="line"><span class="lineno">   93</span>{</div>
-<div class="line"><span class="lineno">   94</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">   95</span>  assert(_data.size() == 0);</div>
-<div class="line"><span class="lineno">   96</span>  _strings.resize(l);</div>
-<div class="line"><span class="lineno">   97</span>}</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span><span class="keyword">template</span> &lt;&gt; <span class="keyword">const</span> std::string &amp;CircleConst::at&lt;loco::DataType::STRING&gt;(uint32_t n)<span class="keyword"> const</span></div>
-<div class="line"><span class="lineno">  100</span><span class="keyword"></span>{</div>
-<div class="line"><span class="lineno">  101</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">  102</span>  assert(n &lt; _strings.size());</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">return</span> _strings.at(n);</div>
-<div class="line"><span class="lineno">  104</span>}</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span><span class="keyword">template</span> &lt;&gt; std::string &amp;CircleConst::at&lt;loco::DataType::STRING&gt;(uint32_t n)</div>
-<div class="line"><span class="lineno">  107</span>{</div>
-<div class="line"><span class="lineno">  108</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">  109</span>  assert(n &lt; _strings.size());</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">return</span> _strings.at(n);</div>
-<div class="line"><span class="lineno">  111</span>}</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span><span class="keyword">template</span> &lt;&gt; <span class="keyword">const</span> std::string &amp;CircleConst::scalar&lt;loco::DataType::STRING&gt;(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><span class="lineno">  114</span><span class="keyword"></span>{</div>
-<div class="line"><span class="lineno">  115</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">  116</span>  assert(1 == _strings.size());</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> _strings.at(0);</div>
-<div class="line"><span class="lineno">  118</span>}</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span><span class="keyword">template</span> &lt;&gt; std::string &amp;CircleConst::scalar&lt;loco::DataType::STRING&gt;(<span class="keywordtype">void</span>)</div>
-<div class="line"><span class="lineno">  121</span>{</div>
-<div class="line"><span class="lineno">  122</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
-<div class="line"><span class="lineno">  123</span>  assert(1 == _strings.size());</div>
-<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">return</span> _strings.at(0);</div>
-<div class="line"><span class="lineno">  125</span>}</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>} <span class="comment">// namespace luci</span></div>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
+<div class="line"><span class="lineno">   89</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">   90</span>  assert(_data.size() == 0);</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">return</span> _strings.size();</div>
+<div class="line"><span class="lineno">   92</span>}</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span><span class="keyword">template</span> &lt;&gt; <span class="keywordtype">void</span> CircleConst::size&lt;loco::DataType::STRING&gt;(uint32_t l)</div>
+<div class="line"><span class="lineno">   95</span>{</div>
+<div class="line"><span class="lineno">   96</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">   97</span>  assert(_data.size() == 0);</div>
+<div class="line"><span class="lineno">   98</span>  _strings.resize(l);</div>
+<div class="line"><span class="lineno">   99</span>}</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span><span class="keyword">template</span> &lt;&gt; <span class="keyword">const</span> std::string &amp;CircleConst::at&lt;loco::DataType::STRING&gt;(uint32_t n)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">  102</span><span class="keyword"></span>{</div>
+<div class="line"><span class="lineno">  103</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">  104</span>  assert(n &lt; _strings.size());</div>
+<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">return</span> _strings.at(n);</div>
+<div class="line"><span class="lineno">  106</span>}</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span><span class="keyword">template</span> &lt;&gt; std::string &amp;CircleConst::at&lt;loco::DataType::STRING&gt;(uint32_t n)</div>
+<div class="line"><span class="lineno">  109</span>{</div>
+<div class="line"><span class="lineno">  110</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">  111</span>  assert(n &lt; _strings.size());</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">return</span> _strings.at(n);</div>
+<div class="line"><span class="lineno">  113</span>}</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span><span class="keyword">template</span> &lt;&gt; <span class="keyword">const</span> std::string &amp;CircleConst::scalar&lt;loco::DataType::STRING&gt;(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">  116</span><span class="keyword"></span>{</div>
+<div class="line"><span class="lineno">  117</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">  118</span>  assert(1 == _strings.size());</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">return</span> _strings.at(0);</div>
+<div class="line"><span class="lineno">  120</span>}</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span><span class="keyword">template</span> &lt;&gt; std::string &amp;CircleConst::scalar&lt;loco::DataType::STRING&gt;(<span class="keywordtype">void</span>)</div>
+<div class="line"><span class="lineno">  123</span>{</div>
+<div class="line"><span class="lineno">  124</span>  assert(<a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>() == loco::DataType::STRING);</div>
+<div class="line"><span class="lineno">  125</span>  assert(1 == _strings.size());</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">return</span> _strings.at(0);</div>
+<div class="line"><span class="lineno">  127</span>}</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="anamespacecompare__tensors__all_html_aadd46f23b07171c5172769fa43fdae50"><div class="ttname"><a href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">compare_tensors_all.dtype</a></div><div class="ttdeci">dtype</div><div class="ttdef"><b>Definition</b> <a href="compare__tensors__all_8py_source.html#l00163">compare_tensors_all.py:163</a></div></div>
 </div><!-- fragment -->
 </div>

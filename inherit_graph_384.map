@@ -1,3 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classloco_1_1_use.html" title="The edge between a node definition and its user." alt="" coords="5,5,81,31"/>
+<area shape="rect" id="Node000000" href="$structloco_1_1_type_inference_rule.html" title=" " alt="" coords="5,153,165,179"/>
+<area shape="rect" id="Node000001" href="$structloco_1_1_canonical_type_inference_rule.html" title="Type Inference Rule for Canonical Dialect." alt="" coords="218,5,435,31"/>
+<area shape="poly" id="edge1115_Node000000_Node000001" title=" " alt="" coords="103,139,148,88,178,62,211,40,237,29,239,34,214,45,181,66,152,92,107,142"/>
+<area shape="rect" id="Node000002" href="$classloco_1_1_multi_dialect_type_inference_rule.html" title="Type Inference Rule for multiple dialects." alt="" coords="213,55,440,80"/>
+<area shape="poly" id="edge1116_Node000000_Node000002" title=" " alt="" coords="116,142,160,114,212,89,245,78,247,84,214,94,162,119,118,146"/>
+<area shape="rect" id="Node000003" href="$structlocoex_1_1_c_op_type_inference_rule.html" title="Type Inference Rule for COpDialect." alt="" coords="227,104,426,130"/>
+<area shape="poly" id="edge1117_Node000000_Node000003" title=" " alt="" coords="166,147,259,128,260,133,167,152"/>
+<area shape="rect" id="Node000004" href="$structlocoex_1_1_circle_type_inference_rule.html" title="Type Inference Rule for CircleDialect." alt="" coords="224,153,429,179"/>
+<area shape="poly" id="edge1118_Node000000_Node000004" title=" " alt="" coords="180,164,223,164,223,169,180,169"/>
+<area shape="rect" id="Node000005" href="$structlocoex_1_1_t_f_l_type_inference_rule.html" title="Type Inference Rule for TFLDialect." alt="" coords="228,203,425,228"/>
+<area shape="poly" id="edge1119_Node000000_Node000005" title=" " alt="" coords="167,180,260,199,259,205,166,185"/>
+<area shape="rect" id="Node000006" href="$structluci_1_1_circle_type_inference_rule.html" title="Type Inference Rule for CircleDialect." alt="" coords="232,252,421,278"/>
+<area shape="poly" id="edge1120_Node000000_Node000006" title=" " alt="" coords="118,186,162,213,214,238,247,249,245,254,212,243,160,218,116,190"/>
+<area shape="rect" id="Node000007" href="$structmoco_1_1_t_f_type_inference_rule.html" title="Type Inference Rule for TFDialect." alt="" coords="235,301,418,327"/>
+<area shape="poly" id="edge1121_Node000000_Node000007" title=" " alt="" coords="107,190,152,241,181,266,214,288,239,298,237,303,211,293,178,271,148,244,103,193"/>
 </map>

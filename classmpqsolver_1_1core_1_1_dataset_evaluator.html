@@ -148,11 +148,11 @@ Public Member Functions</h2></td></tr>
 
 <p>create Evaluator for comparing output of ref_module on provider </p>
 
-<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00096">96</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>  : _ref_module(ref_module), _provider(&amp;provider), _metric(&amp;metric)</div>
-<div class="line"><span class="lineno">   99</span>{</div>
-<div class="line"><span class="lineno">  100</span>  _ref_output = compute_outputs(_ref_module, _provider);</div>
-<div class="line"><span class="lineno">  101</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00098">98</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>  : _ref_module(ref_module), _provider(&amp;provider), _metric(&amp;metric)</div>
+<div class="line"><span class="lineno">  101</span>{</div>
+<div class="line"><span class="lineno">  102</span>  _ref_output = compute_outputs(_ref_module, _provider);</div>
+<div class="line"><span class="lineno">  103</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -225,20 +225,20 @@ Public Member Functions</h2></td></tr>
 
 <p>evaluate trgt_fq_module (fake-quantized) returns error-metric </p>
 
-<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00115">115</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">if</span> (trgt_fq_module == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid target module&quot;</span>);</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">if</span> (_metric == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid metric&quot;</span>);</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>  validate(trgt_fq_module);</div>
+<p class="definition">Definition at line <a class="el" href="_evaluator_8cpp_source.html#l00117">117</a> of file <a class="el" href="_evaluator_8cpp_source.html">Evaluator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (trgt_fq_module == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid target module&quot;</span>);</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (_metric == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Invalid metric&quot;</span>);</div>
 <div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">WholeOutput</a> &amp;cur_output = compute_outputs(trgt_fq_module, _provider);</div>
-<div class="line"><span class="lineno">  126</span>  <span class="keywordtype">float</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> = _metric-&gt;<a class="code hl_function" href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">compute</a>(_ref_output, cur_output);</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>;</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<div class="line"><span class="lineno">  125</span>  validate(trgt_fq_module);</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <a class="code hl_typedef" href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">WholeOutput</a> &amp;cur_output = compute_outputs(trgt_fq_module, _provider);</div>
+<div class="line"><span class="lineno">  128</span>  <span class="keywordtype">float</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a> = _metric-&gt;<a class="code hl_function" href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">compute</a>(_ref_output, cur_output);</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>;</div>
+<div class="line"><span class="lineno">  130</span>}</div>
 <div class="ttc" id="aclassmpqsolver_1_1core_1_1_error_metric_html_aadb2e066914b666590fa00ff448c3542"><div class="ttname"><a href="classmpqsolver_1_1core_1_1_error_metric.html#aadb2e066914b666590fa00ff448c3542">mpqsolver::core::ErrorMetric::compute</a></div><div class="ttdeci">virtual float compute(const WholeOutput &amp;first, const WholeOutput &amp;second) const =0</div><div class="ttdoc">abstract method for comparing first and second operands</div></div>
 <div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 <div class="ttc" id="anamespacempqsolver_1_1core_html_ad3c539d2e051cae08d654d4e7a8dee41"><div class="ttname"><a href="namespacempqsolver_1_1core.html#ad3c539d2e051cae08d654d4e7a8dee41">mpqsolver::core::WholeOutput</a></div><div class="ttdeci">std::vector&lt; Output &gt; WholeOutput</div><div class="ttdef"><b>Definition</b> <a href="_error_metric_8h_source.html#l00029">ErrorMetric.h:29</a></div></div>

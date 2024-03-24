@@ -205,20 +205,24 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   60</span>      <span class="keywordflow">return</span> circle::TensorType_INT32;</div>
 <div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> circlechef::UINT8:</div>
 <div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> circle::TensorType_UINT8;</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
-<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
-<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
-<div class="line"><span class="lineno">   76</span>}</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::UINT4:</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_UINT4;</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
+<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">case</span> circlechef::INT4:</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">return</span> circle::TensorType_INT4;</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
+<div class="line"><span class="lineno">   80</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 struct souschef::ConstantDataChefFactory&lt; T &gt;</div>
-<p class="definition">Definition at line <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html#l00056">56</a> of file <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html">Constant.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html#l00058">58</a> of file <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html">Constant.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac51361b369b3899a1ad8bf2033c80eb6" name="ac51361b369b3899a1ad8bf2033c80eb6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac51361b369b3899a1ad8bf2033c80eb6">&#9670;&#160;</a></span>create()</h2>
@@ -148,11 +148,11 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="structsouschef_1_1_data_chef_factory.html#a60c0a04b148d8048ef02c29409385b3e">souschef::DataChefFactory</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html#l00058">58</a> of file <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html">Constant.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> <span class="keyword">const</span> value = to_number&lt;T&gt;(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.value(0));</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> std::unique_ptr&lt;DataChef&gt;{<span class="keyword">new</span> ConstantDataChef&lt;T&gt;{value}};</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html#l00060">60</a> of file <a class="el" href="souschef_2include_2souschef_2_data_2_constant_8h_source.html">Constant.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> <span class="keyword">const</span> value = to_number&lt;T&gt;(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.value(0));</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">return</span> std::unique_ptr&lt;DataChef&gt;{<span class="keyword">new</span> ConstantDataChef&lt;T&gt;{value}};</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
 <div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
 </div><!-- fragment -->
 </div>

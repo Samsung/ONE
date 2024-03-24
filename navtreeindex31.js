@@ -1,5 +1,8 @@
 var NAVTREEINDEX31 =
 {
+"_tensor_reduce_converter_8h_source.html":[36,0,0,38,1,1,38],
+"_tensor_registries_8h.html":[36,0,4,2,2,1,1,27],
+"_tensor_registries_8h_source.html":[36,0,4,2,2,1,1,27],
 "_tensor_sets_8h.html":[36,0,0,89,1,0,0,0,0,3],
 "_tensor_sets_8h_source.html":[36,0,0,89,1,0,0,0,0,3],
 "_tensor_shape_8cpp.html":[36,0,0,45,1,1,30],
@@ -246,8 +249,5 @@ var NAVTREEINDEX31 =
 "_trainable_executors_8h.html":[36,0,4,2,2,1,3,1,3],
 "_trainable_executors_8h_source.html":[36,0,4,2,2,1,3,1,3],
 "_trainable_fn_sequence_8cc.html":[36,0,4,2,2,1,3,1,4],
-"_trainable_fn_sequence_8cc_source.html":[36,0,4,2,2,1,3,1,4],
-"_trainable_fn_sequence_8h.html":[36,0,4,2,2,0,2,0,3],
-"_trainable_fn_sequence_8h_source.html":[36,0,4,2,2,0,2,0,3],
-"_trainable_graph_8cc.html":[36,0,4,2,2,1,4,1,3]
+"_trainable_fn_sequence_8cc_source.html":[36,0,4,2,2,1,3,1,4]
 };
