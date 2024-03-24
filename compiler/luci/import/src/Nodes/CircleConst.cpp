@@ -68,54 +68,6 @@ void copy_data(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
 }
 
 template <>
-void copy_data<loco::DataType::S4>(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
-                                   CircleConst *const_node)
-{
-  // TODO support sparse?
-  assert(const_node->sparsityparam() == nullptr);
-  if (const_node->sparsityparam())
-    return;
-
-  uint32_t raw_size = (num_elements + 1) / 2;
-  assert(raw_data.size() == raw_size);
-
-  const uint8_t *data = raw_data.data();
-  const_node->size<loco::DataType::S4>(num_elements);
-  for (uint32_t i = 0; i < raw_size; ++i)
-  {
-    uint32_t idx = i * 2;
-    // 1bit for sign, 3bit for value
-    const_node->at<loco::DataType::S4>(idx++) = static_cast<int8_t>(data[i] << 4) >> 4;
-    if (idx < num_elements)
-      const_node->at<loco::DataType::S4>(idx) = static_cast<int8_t>(data[i]) >> 4;
-  }
-}
-
-template <>
-void copy_data<loco::DataType::U4>(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
-                                   CircleConst *const_node)
-{
-  // TODO support sparse?
-  assert(const_node->sparsityparam() == nullptr);
-  if (const_node->sparsityparam())
-    return;
-
-  uint32_t raw_size = (num_elements + 1) / 2;
-  assert(raw_data.size() == raw_size);
-
-  const uint8_t *data = raw_data.data();
-  const_node->size<loco::DataType::U4>(num_elements);
-  for (uint32_t i = 0; i < raw_size; ++i)
-  {
-    uint32_t idx = i * 2;
-    // 1bit for sign, 3bit for value
-    const_node->at<loco::DataType::U4>(idx++) = static_cast<uint8_t>(data[i] << 4) >> 4;
-    if (idx < num_elements)
-      const_node->at<loco::DataType::U4>(idx) = static_cast<uint8_t>(data[i]) >> 4;
-  }
-}
-
-template <>
 void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
                                        uint32_t num_elements, CircleConst *const_node)
 {
@@ -147,6 +99,38 @@ void copy_data<loco::DataType::STRING>(const VectorWrapper<uint8_t> &raw_data,
 
     std::string value(data + start, next - start);
     const_node->at<loco::DataType::STRING>(i) = value;
+  }
+}
+
+// NOTE copy_data for S4, U4.
+//      this method will unpack two 4bit elements, packed in 8bit,
+//      to two 8bit elements, having values -8~7, for S4 and 0~15 for U4.
+template <loco::DataType DT>
+void copy_data_4(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
+                 CircleConst *const_node)
+{
+  using T = typename loco::DataTypeImpl<DT>::Type;
+
+  // TODO support sparse?
+  assert(const_node->sparsityparam() == nullptr);
+  if (const_node->sparsityparam())
+    return;
+
+  uint32_t raw_size = (num_elements + 1) / 2;
+  assert(raw_data.size() == raw_size);
+
+  const uint8_t *data = raw_data.data();
+  const_node->size<DT>(num_elements);
+  for (uint32_t i = 0; i < raw_size; ++i)
+  {
+    uint32_t idx = i * 2;
+    // for S4, 1bit for sign, 3bit for value
+    const_node->at<DT>(idx) = static_cast<T>(data[i] << 4) >> 4;
+    if (idx < num_elements)
+    {
+      idx++;
+      const_node->at<DT>(idx) = static_cast<T>(data[i]) >> 4;
+    }
   }
 }
 
@@ -219,7 +203,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
         break;
 
       case loco::DataType::U4:
-        copy_data<loco::DataType::U4>(buffer, num_elements, const_node);
+        copy_data_4<loco::DataType::U4>(buffer, num_elements, const_node);
         break;
 
       case loco::DataType::U8:
@@ -227,7 +211,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
         break;
 
       case loco::DataType::S4:
-        copy_data<loco::DataType::S4>(buffer, num_elements, const_node);
+        copy_data_4<loco::DataType::S4>(buffer, num_elements, const_node);
         break;
 
       case loco::DataType::S8:
