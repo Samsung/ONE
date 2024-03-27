@@ -593,7 +593,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   for (auto node : loco::all_nodes(g))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    QuantizeActivation qa(_ctx->input_model_dtype, quantize_dtype(circle_node));
+    QuantizeActivation qa(quantize_dtype(circle_node));
     circle_node->accept(&qa);
   }
 
@@ -646,7 +646,7 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
     if (circle_node->quantparam() == nullptr)
       continue;
 
-    QuantizeSpecialActivation qsa(_ctx->input_model_dtype, quantize_dtype(circle_node));
+    QuantizeSpecialActivation qsa(quantize_dtype(circle_node));
     circle_node->accept(&qsa);
   }
 
