@@ -158,6 +158,7 @@ private:
   void visit(luci::CircleMul *node);
   void visit(luci::CircleNotEqual *node);
   void visit(luci::CirclePow *node);
+  void visit(luci::CircleSelectV2 *node);
   void visit(luci::CircleSub *node);
 
   // AddN has arbitrary number of inputs

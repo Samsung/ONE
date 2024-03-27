@@ -275,6 +275,7 @@ QUANTIZE_TWO_CONST_INPUTS(luci::CircleMinimum, x, y)
 QUANTIZE_TWO_CONST_INPUTS(luci::CircleMul, x, y)
 QUANTIZE_TWO_CONST_INPUTS(luci::CircleNotEqual, x, y)
 QUANTIZE_TWO_CONST_INPUTS(luci::CirclePow, x, y)
+QUANTIZE_TWO_CONST_INPUTS(luci::CircleSelectV2, t, e)
 QUANTIZE_TWO_CONST_INPUTS(luci::CircleSub, x, y)
 
 // AddN has arbitrary number of inputs
