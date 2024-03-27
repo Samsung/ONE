@@ -35,7 +35,8 @@ std::unique_ptr<Kernel> build_kernel_CircleFullyConnected(const luci::CircleNode
   FullyConnectedParams params{};
   params.activation = node->fusedActivationFunction();
   params.keep_num_dims = node->keep_num_dims();
-  if (weights->element_type() == loco::DataType::S4)
+  if (weights->element_type() == loco::DataType::S4 ||
+      weights->element_type() == loco::DataType::U4)
   {
     auto scratchpad =
       std::make_unique<Tensor>(input->element_type(), weights->shape(), AffineQuantization{}, "");
