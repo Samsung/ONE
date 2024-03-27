@@ -25,7 +25,7 @@ namespace
 
 using namespace luci;
 
-class OnnxQDQPattern final
+struct OnnxQDQPattern final
 {
 public:
   OnnxQDQPattern(luci::CircleCustomOut *candidate) { dq_out = candidate; }
