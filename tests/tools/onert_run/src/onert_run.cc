@@ -122,6 +122,10 @@ int main(const int argc, char **argv)
         quantize_type = NNFW_QUANTIZE_TYPE_U8_ASYM;
       if (quantize == "int16")
         quantize_type = NNFW_QUANTIZE_TYPE_I16_SYM;
+      if (quantize == "wo_int8")
+        quantize_type = NNFW_QUANTIZE_TYPE_WO_I8_SYM;
+      if (quantize == "wo_int16")
+        quantize_type = NNFW_QUANTIZE_TYPE_WO_I16_SYM;
       NNPR_ENSURE_STATUS(nnfw_set_quantization_type(session, quantize_type));
 
       if (args.getQuantizedModelPath() != "")
