@@ -151,6 +151,7 @@ void print_exclusive_options(void)
   std::cout << "    --requantize" << std::endl;
   std::cout << "    --force_quantparam" << std::endl;
   std::cout << "    --quantize_weights" << std::endl;
+  std::cout << "    --quantize_onnx_fq_model" << std::endl;
 }
 
 void print_version(void)
@@ -168,6 +169,7 @@ int entry(int argc, char **argv)
 
   const std::string qdqw = "--quantize_dequantize_weights";
   const std::string qwmm = "--quantize_with_minmax";
+  const std::string qofm = "--quantize_onnx_fq_model";
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
   const std::string cq = "--copy_quantparam";
@@ -185,6 +187,9 @@ int entry(int argc, char **argv)
 
   arser::Helper::add_version(arser, print_version);
   arser::Helper::add_verbose(arser);
+
+  arser.add_argument(qofm).nargs(0).default_value(false).help(
+    "Quantize Onnx fake-quantized (with QDQ) model");
 
   arser.add_argument(qdqw)
     .nargs(3)
@@ -276,7 +281,7 @@ int entry(int argc, char **argv)
   }
 
   {
-    // only one of qdqw, qwmm, rq, fq, cq, fake_quant, qw option can be used
+    // only one of qdqw, qwmm, rq, fq, cq, fake_quant, qw, qofm option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
@@ -284,6 +289,7 @@ int entry(int argc, char **argv)
     opt_used += arser[cq] ? 1 : 0;
     opt_used += arser[fake_quant] ? 1 : 0;
     opt_used += arser[qw] ? 1 : 0;
+    opt_used += arser.get<bool>(qofm) ? 1 : 0;
     if (opt_used != 1)
     {
       print_exclusive_options();
@@ -380,6 +386,13 @@ int entry(int argc, char **argv)
         return 255;
       }
     }
+  }
+
+  if (arser.get<bool>(qofm))
+  {
+    options->enable(Algorithms::QuantizeOnnxFakeQuantizedModel);
+
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, "onnx_fake_quant");
   }
 
   if (arser[rq])

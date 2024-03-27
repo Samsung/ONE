@@ -65,6 +65,7 @@ public:
       ForceQuantParam,
       ConvertToFakeQuantizedModel,
       QuantizeWeights,
+      QuantizeOnnxFakeQuantizedModel,
     };
 
     enum AlgorithmParameters
