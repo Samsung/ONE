@@ -40,6 +40,10 @@ bool is_foldable_const(luci::CircleConst *node)
   if (node->quantparam() == nullptr)
     return false;
 
+  if (node->dtype() == loco::DataType::S4)
+    return true;
+  if (node->dtype() == loco::DataType::U4)
+    return true;
   if (node->dtype() == loco::DataType::S8)
     return true;
   if (node->dtype() == loco::DataType::U8)
@@ -105,6 +109,18 @@ luci::CircleConst *dequantized_const_node(luci::CircleConst *const_node)
 
     switch (const_node->dtype())
     {
+      case loco::DataType::U4:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          static_cast<float>(const_node->at<loco::DataType::U4>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
+      case loco::DataType::S4:
+        new_const_node->at<loco::DataType::FLOAT32>(i) =
+          static_cast<float>(const_node->at<loco::DataType::S4>(i) -
+                             const_node->quantparam()->zerop.at(qd)) *
+          const_node->quantparam()->scale.at(qd);
+        break;
       case loco::DataType::S8:
         new_const_node->at<loco::DataType::FLOAT32>(i) =
           static_cast<float>(const_node->at<loco::DataType::S8>(i) -

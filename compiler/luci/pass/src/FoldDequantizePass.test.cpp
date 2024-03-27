@@ -86,6 +86,14 @@ protected:
   luci::CircleConst *_input = nullptr;
 };
 
+class U4FoldDequantizeTest : public FoldDequantizeTest<loco::DataType::U4>
+{
+};
+
+class S4FoldDequantizeTest : public FoldDequantizeTest<loco::DataType::S4>
+{
+};
+
 class S8FoldDequantizeTest : public FoldDequantizeTest<loco::DataType::S8>
 {
 };
@@ -194,6 +202,80 @@ TEST_F(U8FoldDequantizeTest, fold_dequant_basic)
 }
 
 TEST_F(U8FoldDequantizeTest, fold_dequant_basic_NEG)
+{
+  createNotFoldablePattern();
+
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_EQ(nullptr, folded_const);
+}
+
+TEST_F(U4FoldDequantizeTest, fold_dequant_basic)
+{
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_NE(nullptr, folded_const);
+
+  // Chec type, shape, values of folded const
+  EXPECT_EQ(loco::DataType::FLOAT32, folded_const->dtype());
+  EXPECT_EQ(3, folded_const->rank());
+  EXPECT_EQ(2, folded_const->dim(0).value());
+  EXPECT_EQ(2, folded_const->dim(1).value());
+  EXPECT_EQ(2, folded_const->dim(2).value());
+  EXPECT_EQ(-5.0, folded_const->at<loco::DataType::FLOAT32>(0));
+  EXPECT_EQ(0.0, folded_const->at<loco::DataType::FLOAT32>(1));
+  EXPECT_EQ(0.0, folded_const->at<loco::DataType::FLOAT32>(2));
+  EXPECT_EQ(10.0, folded_const->at<loco::DataType::FLOAT32>(3));
+  EXPECT_EQ(15.0, folded_const->at<loco::DataType::FLOAT32>(4));
+  EXPECT_EQ(20.0, folded_const->at<loco::DataType::FLOAT32>(5));
+  EXPECT_EQ(40.0, folded_const->at<loco::DataType::FLOAT32>(6));
+  EXPECT_EQ(50.0, folded_const->at<loco::DataType::FLOAT32>(7));
+}
+
+TEST_F(U4FoldDequantizeTest, fold_dequant_basic_NEG)
+{
+  createNotFoldablePattern();
+
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_EQ(nullptr, folded_const);
+}
+
+TEST_F(S4FoldDequantizeTest, fold_dequant_basic)
+{
+  luci::FoldDequantizePass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_NE(nullptr, folded_const);
+
+  // Chec type, shape, values of folded const
+  EXPECT_EQ(loco::DataType::FLOAT32, folded_const->dtype());
+  EXPECT_EQ(3, folded_const->rank());
+  EXPECT_EQ(2, folded_const->dim(0).value());
+  EXPECT_EQ(2, folded_const->dim(1).value());
+  EXPECT_EQ(2, folded_const->dim(2).value());
+  EXPECT_EQ(-5.0, folded_const->at<loco::DataType::FLOAT32>(0));
+  EXPECT_EQ(0.0, folded_const->at<loco::DataType::FLOAT32>(1));
+  EXPECT_EQ(0.0, folded_const->at<loco::DataType::FLOAT32>(2));
+  EXPECT_EQ(10.0, folded_const->at<loco::DataType::FLOAT32>(3));
+  EXPECT_EQ(15.0, folded_const->at<loco::DataType::FLOAT32>(4));
+  EXPECT_EQ(20.0, folded_const->at<loco::DataType::FLOAT32>(5));
+  EXPECT_EQ(40.0, folded_const->at<loco::DataType::FLOAT32>(6));
+  EXPECT_EQ(50.0, folded_const->at<loco::DataType::FLOAT32>(7));
+}
+
+TEST_F(S4FoldDequantizeTest, fold_dequant_basic_NEG)
 {
   createNotFoldablePattern();
 
