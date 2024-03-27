@@ -24,7 +24,7 @@
 #include "ops/LossMeanSquaredErrorLayer.h"
 #include "ops/LossCategoricalCrossentropyLayer.h"
 #include "ops/MeanLayer.h"
-#include "ops/GradientAppender.h"
+#include "ops/BackPropAccumulator.h"
 #include "ops/GradientApplier.h"
 #include "ops/PadLayer.h"
 #include "ops/PoolLayer.h"
@@ -82,11 +82,28 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
   return update_fn;
 }
 
-std::unique_ptr<ops::GradientAppender> generateGradientAppender(const IPortableTensor *temp,
-                                                                IPortableTensor *gradient)
+std::unique_ptr<ops::BackPropAccumulator>
+generateBackPropAccumulator(const IPortableTensor *disposable, BackPropTensor *gradient)
 {
-  auto update_fn = std::make_unique<ops::GradientAppender>(temp, gradient);
+  auto update_fn = std::make_unique<ops::BackPropAccumulator>(disposable, gradient);
   return update_fn;
+}
+
+void appendBackPropAccumulator(const ir::train::ITrainableOperation &op,
+                               const ir::OperationIndex &op_index, TensorRegistry *tensor_reg,
+                               exec::train::TrainableFnSequence *seq)
+{
+  for (const auto &input_index : (op.getInputs() | ir::Remove::UNDEFINED))
+  {
+    // TODO Use correct tensors
+    const auto disposable =
+      tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
+    if (disposable != nullptr)
+    {
+      auto back_prop = tensor_reg->getBackPropTensor(input_index);
+      seq->append(generateBackPropAccumulator(disposable, back_prop));
+    }
+  }
 }
 } // namespace
 
@@ -96,12 +113,7 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   const auto &op = _tgraph.operation(idx);
 
-  for (const auto &ind : (op.getInputs() | ir::Remove::UNDEFINED))
-  {
-    // TODO Use correct tensors
-    ret->append(generateGradientAppender(_tensor_reg->getBackPropTensor(ind),
-                                         _tensor_reg->getBackPropTensor(ind)));
-  }
+  appendBackPropAccumulator(op, idx, _tensor_reg.get(), ret.get());
 
   op.accept(*this);
   assert(_return_fn);
@@ -135,12 +147,18 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
     _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
     _update_funcs{}
 {
-  // DO NOTHING
+  tgraph.operations().iterate(
+    [&](const onert::ir::OperationIndex &idx, const onert::ir::IOperation &op) {
+      assert(_node_to_idx.find(&op) == _node_to_idx.end());
+      _node_to_idx[&op] = idx;
+    });
 }
 
 void KernelGenerator::visit(const ir::train::operation::BinaryArithmetic &node)
 {
   using ir::train::operation::BinaryArithmetic;
+
+  const auto &op_index = _node_to_idx[&node];
 
   const auto output_index{node.getOutputs().at(0)};
   const auto lhs_index{node.getInputs().at(BinaryArithmetic::Input::LHS)};
@@ -153,9 +171,9 @@ void KernelGenerator::visit(const ir::train::operation::BinaryArithmetic &node)
   auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
   auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
 
-  auto back_prop_output_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto back_prop_lhs_tensor = _tensor_reg->getBackPropTensor(lhs_index);
-  auto back_prop_rhs_tensor = _tensor_reg->getBackPropTensor(rhs_index);
+  auto back_prop_output_tensor = getBackPropOut(output_index);
+  auto back_prop_lhs_tensor = getBackPropIn(op_index, lhs_index);
+  auto back_prop_rhs_tensor = getBackPropIn(op_index, rhs_index);
 
   auto fn = std::make_unique<ops::BinaryArithmeticLayer>();
   fn->configure(lhs_tensor, rhs_tensor, output_tensor, back_prop_lhs_tensor, back_prop_rhs_tensor,
@@ -168,6 +186,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 {
   using ir::train::operation::Conv2D;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto out_index{node.getOutputs().at(0)};
   const auto in_index{node.getInputs().at(Conv2D::Input::INPUT)};
   const auto ker_index{node.getInputs().at(Conv2D::Input::KERNEL)};
@@ -178,8 +198,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
   auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
 
-  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(out_index);
-  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(in_index);
+  auto out_back_prop_tensor = getBackPropOut(out_index);
+  auto in_back_prop_tensor = getBackPropIn(op_index, in_index);
   auto ker_grad_tensor = _tensor_reg->getGradientTensor(ker_index);
   auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
 
@@ -219,6 +239,8 @@ void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
 {
   using ir::train::operation::DepthwiseConv2D;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(DepthwiseConv2D::Input::INPUT)};
   const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
@@ -229,8 +251,8 @@ void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
   auto ker_tensor = _tensor_reg->getTrainableTensor(ker_index);
   auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
 
-  auto ofm_back_prop_tensor = _tensor_reg->getBackPropTensor(ofm_index);
-  auto ifm_back_prop_tensor = _tensor_reg->getBackPropTensor(ifm_index);
+  auto ofm_back_prop_tensor = getBackPropOut(ofm_index);
+  auto ifm_back_prop_tensor = getBackPropIn(op_index, ifm_index);
   auto ker_grad_tensor = _tensor_reg->getGradientTensor(ker_index);
   auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
 
@@ -268,14 +290,16 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
 {
   using ir::train::operation::ElementwiseActivation;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ElementwiseActivation::Input::INPUT)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto back_prop_input_tensor = _tensor_reg->getBackPropTensor(input_index);
-  auto back_prop_output_tensor = _tensor_reg->getBackPropTensor(output_index);
+  auto back_prop_input_tensor = getBackPropIn(op_index, input_index);
+  auto back_prop_output_tensor = getBackPropOut(output_index);
 
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
@@ -290,6 +314,8 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
 {
   using ir::train::operation::FullyConnected;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto out_index{node.getOutputs().at(0)};
   const auto in_index{node.getInputs().at(FullyConnected::Input::INPUT)};
   const auto weights_index{node.getInputs().at(FullyConnected::Input::WEIGHT)};
@@ -300,8 +326,8 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
   auto weights_tensor = _tensor_reg->getTrainableTensor(weights_index);
   auto bias_tensor = _tensor_reg->getTrainableTensor(bias_index);
 
-  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(out_index);
-  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(in_index);
+  auto out_back_prop_tensor = getBackPropOut(out_index);
+  auto in_back_prop_tensor = getBackPropIn(op_index, in_index);
   auto weights_grad_tensor = _tensor_reg->getGradientTensor(weights_index);
   auto bias_grad_tensor = _tensor_reg->getGradientTensor(bias_index);
 
@@ -328,6 +354,8 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
 {
   using ir::train::operation::Loss;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto output_index{node.getOutputs().at(0)};
   const auto y_pred_index{node.getInputs().at(Loss::Y_PRED)};
   const auto y_true_index{node.getInputs().at(Loss::Y_TRUE)};
@@ -336,7 +364,10 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   auto y_pred_tensor = _tensor_reg->getPortableTensor(y_pred_index);
   auto y_true_tensor = _tensor_reg->getPortableTensor(y_true_index);
 
-  auto back_prop_y_pred_tensor = _tensor_reg->getBackPropTensor(y_pred_index);
+  // TODO Use BackPropTensor direcly instead of DisposableTensor if y_pred is always used by only
+  // loss auto back_prop_y_pred_tensor = getBackPropIn(DisposableTensorIndex{op_index,
+  // y_pred_index});
+  auto back_prop_y_pred_tensor = getBackPropIn(op_index, y_pred_index);
 
   auto loss_code = node.param().loss_code;
   auto loss_param = node.param().loss_param;
@@ -366,6 +397,8 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
 
 void KernelGenerator::visit(const ir::train::operation::Pad &node)
 {
+  const auto &op_index = _node_to_idx[&node];
+
   const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
   const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
   const auto output_index{node.getOutputs().at(0)};
@@ -383,8 +416,8 @@ void KernelGenerator::visit(const ir::train::operation::Pad &node)
     value = _tensor_reg->getPortableTensor(value_index);
   }
 
-  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto out_back_prop_tensor = getBackPropOut(output_index);
+  auto in_back_prop_tensor = getBackPropIn(op_index, input_index);
 
   fn->configure(input, pad, value, output, in_back_prop_tensor, out_back_prop_tensor);
   _return_fn = std::move(fn);
@@ -393,6 +426,8 @@ void KernelGenerator::visit(const ir::train::operation::Pad &node)
 void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
 {
   using ir::train::operation::Pool2D;
+
+  const auto &op_index = _node_to_idx[&node];
 
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(0)};
@@ -417,8 +452,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   auto out_tensor = _tensor_reg->getPortableTensor(output_index);
   auto in_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto in_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto out_back_prop_tensor = getBackPropOut(output_index);
+  auto in_back_prop_tensor = getBackPropIn(op_index, input_index);
 
   const auto activation = node.param().activation;
   const auto pool_type = convertPoolType(node.param().op_type);
@@ -436,6 +471,8 @@ void KernelGenerator::visit(const ir::train::operation::Reduce &node)
 {
   using ir::train::operation::Reduce;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(Reduce::Input::INPUT)};
   const auto axes_index{node.getInputs().at(Reduce::Input::AXES)};
@@ -446,8 +483,8 @@ void KernelGenerator::visit(const ir::train::operation::Reduce &node)
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
   auto axes_tensor = _tensor_reg->getPortableTensor(axes_index);
 
-  auto back_prop_output_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto back_prop_input_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto back_prop_output_tensor = getBackPropOut(output_index);
+  auto back_prop_input_tensor = getBackPropIn(op_index, input_index);
 
   if (node.param().reduce_type == ir::operation::Reduce::ReduceType::MEAN)
   {
@@ -466,14 +503,16 @@ void KernelGenerator::visit(const ir::train::operation::Reshape &node)
 {
   using ir::train::operation::Reshape;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto output_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto input_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto output_back_prop_tensor = getBackPropOut(output_index);
+  auto input_back_prop_tensor = getBackPropIn(op_index, input_index);
 
   // optional 2nd input
   IPortableTensor *shape_tensor = nullptr;
@@ -495,6 +534,8 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
 {
   using ir::train::operation::Softmax;
 
+  const auto &op_index = _node_to_idx[&node];
+
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Softmax::Input::INPUT)};
 
@@ -503,13 +544,31 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
 
-  auto output_back_prop_tensor = _tensor_reg->getBackPropTensor(output_index);
-  auto input_back_prop_tensor = _tensor_reg->getBackPropTensor(input_index);
+  auto output_back_prop_tensor = getBackPropOut(output_index);
+  auto input_back_prop_tensor = getBackPropIn(op_index, input_index);
 
   auto fn = std::make_unique<ops::SoftMaxLayer>();
 
   fn->configure(input_tensor, beta, output_tensor, input_back_prop_tensor, output_back_prop_tensor);
   _return_fn = std::move(fn);
+}
+
+IPortableTensor *KernelGenerator::getBackPropIn(const ir::OperationIndex &op_index,
+                                                const ir::OperandIndex &operand_index)
+{
+  auto temp_tensor =
+    _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
+  if (temp_tensor == nullptr)
+  {
+    temp_tensor = _tensor_reg->getBackPropTensor(operand_index);
+  }
+
+  return temp_tensor;
+}
+
+IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_index)
+{
+  return _tensor_reg->getBackPropTensor(output_index);
 }
 
 } // namespace train

@@ -14,43 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPENDER_H__
-#define __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPENDER_H__
+#ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
+#define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 
-#include <backend/IPortableTensor.h>
-#include <cker/Types.h>
-#include <exec/train/ITrainableFunction.h>
+#include "backend/basic/IMemoryPlanner.h"
+
+#include <string>
 
 namespace onert
 {
 namespace backend
 {
+namespace basic
+{
 namespace train
 {
-namespace ops
-{
 
-// TODO Introduce IFunction for only backward
-class GradientAppender : public exec::train::ITrainableFunction
+class MemoryPlannerFactory
 {
 public:
-  GradientAppender(const IPortableTensor *temp_tensor, IPortableTensor *gradient_tensor);
-  ~GradientAppender() = default;
-
-public:
-  void forward(bool training) override;
-  void backward() override;
+  static MemoryPlannerFactory &get();
 
 private:
-  const IPortableTensor *_temp_tensor;
-  IPortableTensor *_gradient_tensor;
+  MemoryPlannerFactory() = default;
 
-  nnfw::cker::BinaryArithmeticOpParam _op_params;
+public:
+  IMemoryPlanner *create(const std::string &key);
 };
 
-} // namespace ops
 } // namespace train
+} // namespace basic
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPENDER_H__
+#endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__

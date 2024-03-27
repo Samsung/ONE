@@ -17,7 +17,9 @@
 #ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 #define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 
-#include "backend/basic/IMemoryPlanner.h"
+#include "IMemoryPlanner.h"
+
+#include "MemoryPlanner.h"
 
 #include <string>
 
@@ -37,8 +39,26 @@ private:
   MemoryPlannerFactory() = default;
 
 public:
-  IMemoryPlanner *create(const std::string &key);
+  template <typename Index> IMemoryPlanner<Index> *create(const std::string &key);
 };
+
+template <typename Index>
+inline IMemoryPlanner<Index> *MemoryPlannerFactory::create(const std::string &key)
+{
+  if (key == "FirstFit")
+  {
+    return new FirstFitPlanner<Index>;
+  }
+  else if (key == "Bump")
+  {
+    return new BumpPlanner<Index>;
+  }
+  else if (key == "WIC")
+  {
+    return new WICPlanner<Index>;
+  }
+  return new FirstFitPlanner<Index>; // Default Planner
+}
 
 } // namespace basic
 } // namespace backend

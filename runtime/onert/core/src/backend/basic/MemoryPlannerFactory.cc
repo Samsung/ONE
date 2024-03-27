@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-#include "MemoryPlannerFactory.h"
-
-#include "MemoryPlanner.h"
+#include "backend/basic/MemoryPlannerFactory.h"
 
 namespace onert
 {
@@ -29,23 +27,6 @@ MemoryPlannerFactory &MemoryPlannerFactory::get()
 {
   static MemoryPlannerFactory instance;
   return instance;
-}
-
-IMemoryPlanner *MemoryPlannerFactory::create(const std::string &key)
-{
-  if (key == "FirstFit")
-  {
-    return new FirstFitPlanner;
-  }
-  else if (key == "Bump")
-  {
-    return new BumpPlanner;
-  }
-  else if (key == "WIC")
-  {
-    return new WICPlanner;
-  }
-  return new FirstFitPlanner; // Default Planner
 }
 
 } // namespace basic

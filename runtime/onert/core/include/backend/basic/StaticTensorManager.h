@@ -35,6 +35,9 @@ class DynamicTensorManager;
 
 class StaticTensorManager
 {
+private:
+  using MemoryManager = backend::basic::MemoryManager<ir::OperandIndex>;
+
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                       DynamicTensorManager *dynamic_tensor_manager);

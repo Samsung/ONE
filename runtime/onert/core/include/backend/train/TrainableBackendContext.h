@@ -35,6 +35,7 @@ namespace train
 
 using FunctionMap =
   std::vector<std::pair<ir::OperationIndex, std::unique_ptr<exec::train::TrainableFnSequence>>>;
+using GradientAppliers = std::vector<std::unique_ptr<exec::train::TrainableFnSequence>>;
 
 struct TrainableContextData
 {

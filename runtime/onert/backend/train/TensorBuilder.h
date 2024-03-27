@@ -19,6 +19,7 @@
 
 #include "TensorManager.h"
 #include "TensorRegistry.h"
+#include "DisposableTensorIndex.h"
 
 #include <exec/train/optimizer/Optimizer.h>
 
@@ -54,10 +55,15 @@ public:
   void registerBackwardTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
                                   ir::Layout backend_layout);
 
+  void registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
+                                            const ir::OperandInfo &info, ir::Layout layout);
+
   // TODO Support memory plan of all tensors
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
   void notifyBackwardFirstUse(const ir::OperandIndex &);
+  void notifyDisposableBackPropFirstUse(const DisposableTensorIndex &);
+  void notifyDisposableBackPropLastUse(const DisposableTensorIndex &);
 
   bool isRegistered(const ir::OperandIndex &) const;
   bool isRegisteredBackward(const ir::OperandIndex &) const;

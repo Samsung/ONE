@@ -71,6 +71,9 @@ public:
   backend::ITensorRegistry *genTensors() override;
   backend::train::ITensorRegistry *genTrainingTensors() override;
 
+private:
+  void planDisposableTensors();
+
 public:
   FunctionMap genKernels() override;
 
@@ -89,6 +92,7 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 
 private:
+  // TODO Remove tensor builder from data member
   std::shared_ptr<TensorBuilder> _tensor_builder;
 
 private:

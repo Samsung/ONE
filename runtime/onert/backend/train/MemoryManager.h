@@ -19,6 +19,10 @@
 
 #include <backend/basic/MemoryManager.h>
 
+#include "DisposableTensorIndex.h"
+
+#include <ir/OperationIndexMap.h>
+
 namespace onert
 {
 namespace backend
@@ -26,7 +30,9 @@ namespace backend
 namespace train
 {
 
-using MemoryManager = backend::basic::MemoryManager;
+using MemoryManager = backend::basic::MemoryManager<ir::OperandIndex>;
+
+using DisposableMemoryManager = backend::basic::MemoryManager<DisposableTensorIndex>;
 
 } // namespace train
 } // namespace backend

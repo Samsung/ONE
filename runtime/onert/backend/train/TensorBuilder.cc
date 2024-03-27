@@ -91,6 +91,19 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
   }
 }
 
+void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
+                                                         const ir::OperandInfo &info,
+                                                         ir::Layout layout)
+{
+  // Train backend supports only one layout as NHWC
+  assert(layout == ir::Layout::NHWC);
+  assert(!info.isDynamic());
+  assert(!_as_constants[index.operand_index()]);
+
+  auto disposable_tensor = std::make_unique<BackPropTensor>(info, layout);
+  _tensor_reg->setDisposableBackPropTensor(index, std::move(disposable_tensor));
+}
+
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &index)
 {
   // TODO Support momory plan
@@ -122,6 +135,16 @@ void TensorBuilder::notifyBackwardFirstUse(const ir::OperandIndex &index)
   }
 }
 
+void TensorBuilder::notifyDisposableBackPropFirstUse(const DisposableTensorIndex &index)
+{
+  _tensor_mgr->claimDisposableBackPropPlan(index);
+}
+
+void TensorBuilder::notifyDisposableBackPropLastUse(const DisposableTensorIndex &index)
+{
+  _tensor_mgr->releaseDisposableBackPropPlan(index);
+}
+
 bool TensorBuilder::isRegistered(const ir::OperandIndex &index) const
 {
   return _tensor_info_map.find(index) != _tensor_info_map.end();
@@ -142,6 +165,7 @@ void TensorBuilder::allocateBackward(void)
 {
   _tensor_mgr->allocateBackPropTensors();
   _tensor_mgr->allocateGradientTensors();
+  _tensor_mgr->allocateDisposableBackPropTensors();
 }
 
 } // namespace train

@@ -28,6 +28,36 @@ namespace backend
 namespace train
 {
 
+namespace
+{
+ir::OperandInfo createBackwardTensorInfo(const ir::Operand &operand)
+{
+  // TODO Different shape of back propagation tensor if it exists
+  return ir::OperandInfo{operand.shape(), operand.typeInfo(), operand.info().memAllocType(),
+                         operand.isConstant()};
+}
+
+// NOTE Even if there are duplicate indices, the duplicate backpropagation tensors may need
+//      to be updated respectively. So we use a sequence instead of a set.
+ir::OperandIndexSequence getBackPropSeq(const ir::train::TrainableGraph &tgraph,
+                                        const ir::OperationIndex &op_index)
+{
+  // TODO Add other disposable tensors
+  ir::OperandIndexSequence ret;
+
+  const auto &op = tgraph.operations().at(op_index);
+  for (const auto &input : (op.getInputs() | ir::Remove::UNDEFINED))
+  {
+    const auto &operand = tgraph.operands().at(input);
+    // TODO Remove other inputs that are not backpropagated
+    if (!operand.isConstant() && !tgraph.getInputs().contains(input))
+      ret.append(input);
+  }
+
+  return ret;
+}
+} // namespace
+
 backend::ITensorRegistry *BackendContext::genTensors()
 {
   return basic::train::genTensors(*this, _tensor_builder);
@@ -44,13 +74,13 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
+    // NOTE This means that gradient tensors for weights are never shared for now. If this happens,
+    // we need to carefully adjust updating gradient tensors like backprop tensors.
     if (obj.isConstant() && obj.getUses().size() > 1)
       throw std::runtime_error("Shared constant tensor is not supported yet");
 
-    // TODO Different shape of back propagation tensor
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-                                 obj.isConstant()};
-    tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(obj),
+                                               ir::Layout::NHWC);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
@@ -59,9 +89,51 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       tensor_builder->notifyBackwardFirstUse(ind);
   });
 
+  for (const auto &op_index : tgraph.btopolSortOperations())
+  {
+    const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
+    for (const auto &back_prop_index : back_prop_seq)
+    {
+      DisposableTensorIndex disposable_index{op_index, back_prop_index};
+      const auto &operand = tgraph.operands().at(back_prop_index);
+      tensor_builder->registerDisposableBackwardTensorInfo(
+        disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
+    }
+  }
+
+  planDisposableTensors();
+
   tensor_builder->allocateBackward();
 
   return _tensor_registry.get();
+}
+
+void BackendContext::planDisposableTensors()
+{
+  // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
+  const ir::train::TrainableGraph &tgraph = *trainable_graph();
+  auto tensor_builder = _tensor_builder;
+
+  std::vector<DisposableTensorIndex> prev_seq;
+  for (const auto &op_index : tgraph.btopolSortOperations())
+  {
+    for (const auto &index : prev_seq)
+    {
+      tensor_builder->notifyDisposableBackPropLastUse(index);
+    }
+
+    std::vector<DisposableTensorIndex> cur_seq;
+    const auto back_prop_indices = getBackPropSeq(tgraph, op_index);
+    for (const auto &back_prop_index : back_prop_indices)
+    {
+      DisposableTensorIndex cur_index{op_index, back_prop_index};
+      tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
+
+      cur_seq.emplace_back(cur_index);
+    }
+
+    prev_seq = cur_seq;
+  }
 }
 
 FunctionMap BackendContext::genKernels()

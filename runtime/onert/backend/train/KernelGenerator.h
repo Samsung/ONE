@@ -19,6 +19,7 @@
 
 #include "ExternalContext.h"
 #include "backend/basic/TensorRegistry.h"
+#include "DisposableTensorIndex.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
 
@@ -59,11 +60,17 @@ public:
   void visit(const ir::train::operation::Softmax &node) override;
 
 private:
+  IPortableTensor *getBackPropIn(const ir::OperationIndex &op_index,
+                                 const ir::OperandIndex &operand_index);
+  IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
+
+private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   const exec::train::optimizer::Optimizer *_optimizer;
   std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
+  std::unordered_map<const ir::IOperation *, ir::OperationIndex> _node_to_idx;
 };
 
 } // namespace train
