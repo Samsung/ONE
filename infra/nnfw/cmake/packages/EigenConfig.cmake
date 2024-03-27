@@ -1,5 +1,5 @@
 function(_Eigen_import)
-  nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
+  nnas_find_package(TensorFlowEigenSource EXACT 2.15.0 QUIET)
 
   if(NOT TensorFlowEigenSource_FOUND)
     set(Eigen_FOUND FALSE PARENT_SCOPE)

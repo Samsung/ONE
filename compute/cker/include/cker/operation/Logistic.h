@@ -39,7 +39,6 @@ namespace cker
  */
 template <typename T> struct scalar_logistic_op
 {
-  EIGEN_EMPTY_STRUCT_CTOR(scalar_logistic_op)
   EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE T operator()(const T &x) const
   {
     const T one = T(1);
