@@ -90,6 +90,12 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type);
 // Emits warnings to log with WARN
 void warn_accuracy_with_range(luci::CircleNode *n);
 
+// Return true if the node is OnnxDequantizeLinear
+bool is_onnx_dequantize_linear(const luci::CircleCustom *node);
+
+// Return true if the node is OnnxQuantizeLinear
+bool is_onnx_quantize_linear(const luci::CircleCustom *node);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__
