@@ -30,11 +30,17 @@ class FullyConnected : public KernelWithParams<FullyConnectedParams>
 public:
   FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias, Tensor *output,
                  const FullyConnectedParams &params);
-
+  FullyConnected(const Tensor *input, const Tensor *weights, const Tensor *bias, Tensor *output,
+                 Tensor *scratch, const FullyConnectedParams &params)
+    : FullyConnected(input, weights, bias, output, params)
+  {
+    _scratch = scratch;
+  }
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *weights() const { return _inputs[1]; }
   const Tensor *bias() const { return _inputs[2]; }
   Tensor *output() const { return _outputs[0]; }
+  Tensor *scratch() const { return _scratch; }
 
   void configure() override;
   void execute() const override;
@@ -43,6 +49,8 @@ private:
   void evalFloat() const;
   void evalQuantized() const;
   void evalQuantizedS8() const;
+  void evalHybridWI4AF32() const;
+  Tensor *_scratch = nullptr;
 };
 
 } // namespace kernels
