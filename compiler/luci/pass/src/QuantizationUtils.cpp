@@ -517,4 +517,32 @@ void warn_accuracy_with_range(luci::CircleNode *n)
   }
 }
 
+bool is_onnx_dequantize_linear(const luci::CircleCustom *node)
+{
+  if (node->numInputs() != 3)
+    return false;
+
+  if (node->numOutputs() != 1)
+    return false;
+
+  if (node->custom_code() != "ONNXDequantizeLinear")
+    return false;
+
+  return true;
+}
+
+bool is_onnx_quantize_linear(const luci::CircleCustom *node)
+{
+  if (node->numInputs() != 3)
+    return false;
+
+  if (node->numOutputs() != 1)
+    return false;
+
+  if (node->custom_code() != "ONNXQuantizeLinear")
+    return false;
+
+  return true;
+}
+
 } // namespace luci
