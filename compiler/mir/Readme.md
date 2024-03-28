@@ -21,7 +21,7 @@ special attributes specific to different operation types.
 Mir has a protobuf serializer/deserializer for shapes and tensors (see `mir.proto` schema).
 
 For list of currently supported operations, see `mir/ops/operations.lst.h`.
- 
+
 ### How to use
 Can be included as a `CMake` target.
 
@@ -29,8 +29,7 @@ Can be included as a `CMake` target.
 
 * Expand serialization
 * Add More to readme 
- 
+
 ### Dependencies
 
-Mir depends on `adtitas` library, which provides the `small_vector` data type.
-    
+Mir depends on the `adtitas` library, which provides the `small_vector` data type.
