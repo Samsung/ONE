@@ -101,6 +101,14 @@ typedef enum
    */
   NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED = 7,
 
+ /**
+   * A tensor of 4 bit signed integers that represent real numbers.
+   *
+   * real_value = (integer_value) * scale.
+   */
+  NNFW_TYPE_TENSOR_QUANT4_SYMM_SIGNED = 8,
+
+
 } NNFW_TYPE;
 
 /**

@@ -70,6 +70,7 @@ protected:
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
+  virtual ir::DataType tensorTypeToDataType(TensorType type) override;
 
 public:
   using BaseLoader::BaseLoader;
@@ -148,6 +149,21 @@ private:
     }
   }
 };
+
+
+ir::DataType CircleLoader::tensorTypeToDataType(const TensorType type)
+{
+  switch (type)
+  {
+    case TensorType::TensorType_INT4:
+      return ir::DataType::QUANT_INT4_SYMM;
+    case TensorType::TensorType_UINT4:
+      return ir::DataType::QUANT_UINT4_ASYMM;
+    default:
+      return BaseLoader::tensorTypeToDataType(type);
+  }
+}
+
 
 void CircleLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 {
