@@ -50,6 +50,7 @@ private:
   void evalQuantized() const;
   void evalQuantizedS8() const;
   void evalHybridWI4AF32() const;
+  void evalHybridWU4AF32() const;
   Tensor *_scratch = nullptr;
 };
 
