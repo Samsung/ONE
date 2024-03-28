@@ -162,6 +162,7 @@ Current transformation options are
 - fold_gather : This removes Gather operation which can be folded
 - fold_shape : This removes Shape operation which can be folded
 - fold_sparse_to_dense : This removes SparseToDense operation which can be folded
+- fold_strided_slice : This removes StridedSlice operation which can be folded
 - forward_reshape_to_unaryop: This will move Reshape after UnaryOp for centain condition
 - fuse_add_with_conv: This fuses Add operator with the preceding Convolution operator if possible
 - fuse_add_with_fully_connected: This fuses Add operator with the preceding FullyConnected operator if possible

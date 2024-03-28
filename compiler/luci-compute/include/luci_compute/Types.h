@@ -105,6 +105,24 @@ struct FullyConnectedParams
   FullyConnectedWeightsFormat weights_format;
 };
 
+// from tflite as-is
+struct StridedSliceParams
+{
+  int8_t start_indices_count;
+  int32_t start_indices[5];
+  int8_t stop_indices_count;
+  int32_t stop_indices[5];
+  int8_t strides_count;
+  int32_t strides[5];
+
+  uint16_t begin_mask;
+  uint16_t ellipsis_mask;
+  uint16_t end_mask;
+  uint16_t new_axis_mask;
+  uint16_t shrink_axis_mask;
+  bool offset;
+};
+
 // from luci as-is
 enum class FusedActFunc
 {
