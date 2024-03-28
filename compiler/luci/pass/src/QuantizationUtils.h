@@ -23,6 +23,9 @@
 namespace luci
 {
 
+// Compute max scale using given data type for symmetric quantization (int4/int8/int16)
+int32_t compute_sym_max_scale(const loco::DataType &type);
+
 // Compute scale using given min/max for symmetric quantization (int8/int16)
 void compute_sym_scale(float min, float max, float &scaling_factor, float &nudged_min,
                        float &nudged_max, loco::DataType out_type = loco::DataType::S16);
