@@ -68,9 +68,10 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
                             std::vector<float> &nudged_max, int32_t &channel_dim_index)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
-  assert(out_type == loco::DataType::S8 || out_type == loco::DataType::S16);
-  const int32_t kMaxScale = (out_type == loco::DataType::S8) ? std::numeric_limits<int8_t>::max()
-                                                             : std::numeric_limits<int16_t>::max();
+  assert(out_type == loco::DataType::S4 || out_type == loco::DataType::S8 ||
+         out_type == loco::DataType::S16);
+
+  const int32_t kMaxScale = max_for_sym_quant(out_type);
   const int32_t kMinScale = -kMaxScale;
 
   uint32_t size = node->size<loco::DataType::FLOAT32>();
@@ -163,7 +164,12 @@ void QuantizeWeightsOnly::quantize_weights(luci::CircleConst *weights)
       std::vector<float> scaling_factor(min.size());
       std::vector<int64_t> zp(min.size());
 
-      if (output_type == loco::DataType::S8)
+      if (output_type == loco::DataType::S4)
+      {
+        sym_wquant_per_channel<loco::DataType::S4>(weights, min, max, scaling_factor, nudged_min,
+                                                   nudged_max, channel_dim_index);
+      }
+      else if (output_type == loco::DataType::S8)
       {
         sym_wquant_per_channel<loco::DataType::S8>(weights, min, max, scaling_factor, nudged_min,
                                                    nudged_max, channel_dim_index);
