@@ -87,7 +87,8 @@ bool is_quant_act(const luci::CircleNode *node)
 // 1. dtype is not fp32
 // 2. node has qparam
 // NOTE Quantized const can have the following types
-// u8 (weights, activation), s16 (weights, activation), s32 (bias), s64 (bias)
+// s4 (weights), u4 (weights), u8 (weights, activation),
+// s16 (weights, activation), s32 (bias), s64 (bias)
 bool is_quant_const(const luci::CircleConst *node)
 {
   if (node->dtype() == loco::DataType::FLOAT32)
