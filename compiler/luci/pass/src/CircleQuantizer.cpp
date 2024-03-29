@@ -27,6 +27,7 @@
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
 #include "luci/Pass/QuantizeWeightsPass.h"
+#include "luci/Pass/QuantizeOnnxFakeQuantModelPass.h"
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
@@ -655,6 +656,30 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     luci::QuantizeWeightsPass weights_quantizer(std::move(ctx));
 
     weights_quantizer.run(g);
+  }
+
+  if (_options->query(Options::Algorithm::QuantizeOnnxFakeQuantizedModel))
+  {
+    auto ctx = std::make_unique<luci::QuantizeOnnxFakeQuantModelPass::Context>();
+    {
+      ctx->default_activation_dtype = loco::DataType::S16;
+    }
+
+    luci::QuantizeOnnxFakeQuantModelPass quantizer(std::move(ctx));
+
+    quantizer.run(g);
+
+    logo::Phase phase;
+
+    // Default passes
+    phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+    ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+    logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
   }
 
   // Requantize
