@@ -1,41 +1,21 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,308,161,333"/>
-<area shape="rect" id="Node000001" href="$class_mock_tensor.html" title=" " alt="" coords="229,185,352,211"/>
-<area shape="poly" id="edge2335_Node000000_Node000001" title=" " alt="" coords="107,295,152,257,207,221,236,209,238,214,210,225,155,261,111,299"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="209,235,372,275"/>
-<area shape="poly" id="edge2336_Node000000_Node000002" title=" " alt="" coords="140,300,223,273,224,278,142,305"/>
-<area shape="rect" id="Node000011" href="$classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html" title="Class representing Tensor for ACL." alt="" coords="213,332,368,373"/>
-<area shape="poly" id="edge2345_Node000000_Node000011" title=" " alt="" coords="176,332,213,338,212,343,176,337"/>
-<area shape="rect" id="Node000018" href="$classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="212,429,369,470"/>
-<area shape="poly" id="edge2352_Node000000_Node000018" title=" " alt="" coords="120,340,257,426,254,431,117,344"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="437,71,579,111"/>
-<area shape="poly" id="edge2337_Node000002_Node000003" title=" " alt="" coords="368,223,370,221,387,197,393,173,400,148,418,122,436,110,439,114,422,126,405,150,399,174,392,199,374,225,371,227"/>
-<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="436,136,581,177"/>
-<area shape="poly" id="edge2340_Node000002_Node000006" title=" " alt="" coords="362,225,371,221,394,204,419,187,446,175,448,180,421,192,397,208,373,225,364,230"/>
-<area shape="rect" id="Node000008" href="$classonert_1_1backend_1_1builtin_1_1_user_tensor.html" title="Tensor object that is for Input and Output tensors from the user." alt="" coords="436,201,581,242"/>
-<area shape="poly" id="edge2342_Node000002_Node000008" title=" " alt="" coords="387,238,434,230,435,235,388,243"/>
-<area shape="rect" id="Node000009" href="$classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html" title="A tensor class that can be trained." alt="" coords="440,267,576,307"/>
-<area shape="poly" id="edge2343_Node000002_Node000009" title=" " alt="" coords="387,267,440,274,439,280,387,272"/>
-<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1basic_1_1_external_tensor.html" title="Class that uses data from external memory that is not managed by a backend instead of allocating and ..." alt="" coords="678,5,820,46"/>
-<area shape="poly" id="edge2338_Node000003_Node000004" title=" " alt="" coords="594,65,676,42,678,48,595,70"/>
-<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1train_1_1_tensor.html" title=" " alt="" coords="681,71,817,111"/>
-<area shape="poly" id="edge2339_Node000003_Node000005" title=" " alt="" coords="595,88,680,88,680,94,595,94"/>
-<area shape="rect" id="Node000007" href="$classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html" title=" " alt="" coords="644,136,854,177"/>
-<area shape="poly" id="edge2341_Node000006_Node000007" title=" " alt="" coords="596,154,644,154,644,159,596,159"/>
-<area shape="rect" id="Node000010" href="$classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html" title=" " alt="" coords="673,201,825,242"/>
-<area shape="poly" id="edge2344_Node000009_Node000010" title=" " alt="" coords="591,262,672,240,674,245,592,267"/>
-<area shape="rect" id="Node000012" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="430,332,587,373"/>
-<area shape="poly" id="edge2346_Node000011_Node000012" title=" " alt="" coords="383,350,429,350,429,355,383,355"/>
-<area shape="rect" id="Node000015" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html" title=" " alt="" coords="420,397,596,438"/>
-<area shape="poly" id="edge2349_Node000011_Node000015" title=" " alt="" coords="375,375,438,394,437,399,374,380"/>
-<area shape="rect" id="Node000013" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html" title=" " alt="" coords="661,267,837,307"/>
-<area shape="poly" id="edge2347_Node000012_Node000013" title=" " alt="" coords="599,325,670,305,672,311,601,330"/>
-<area shape="rect" id="Node000014" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_tensor.html" title=" " alt="" coords="672,332,826,373"/>
-<area shape="poly" id="edge2348_Node000012_Node000014" title=" " alt="" coords="602,350,672,350,672,355,602,355"/>
-<area shape="rect" id="Node000016" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_sub_tensor.html" title=" " alt="" coords="651,397,847,438"/>
-<area shape="poly" id="edge2350_Node000015_Node000016" title=" " alt="" coords="612,415,651,415,651,420,612,420"/>
-<area shape="rect" id="Node000017" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html" title=" " alt="" coords="663,463,835,503"/>
-<area shape="poly" id="edge2351_Node000015_Node000017" title=" " alt="" coords="601,440,672,459,670,465,599,445"/>
-<area shape="rect" id="Node000019" href="$classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_c_l_tensor.html" title=" " alt="" coords="432,463,585,503"/>
-<area shape="poly" id="edge2353_Node000018_Node000019" title=" " alt="" coords="385,461,431,469,431,474,384,467"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1backend_1_1_i_config.html" title=" " alt="" coords="5,274,157,300"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1acl__cl_1_1_config.html" title=" " alt="" coords="220,5,349,46"/>
+<area shape="poly" id="edge2330_Node000000_Node000001" title=" " alt="" coords="88,258,103,215,128,162,161,106,203,57,221,44,224,49,206,61,165,109,132,164,108,217,93,260"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1acl__neon_1_1_config.html" title=" " alt="" coords="220,71,349,111"/>
+<area shape="poly" id="edge2331_Node000000_Node000002" title=" " alt="" coords="94,259,137,192,168,155,203,122,223,110,226,114,206,126,172,159,142,195,99,262"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1builtin_1_1_config.html" title=" " alt="" coords="212,136,357,177"/>
+<area shape="poly" id="edge2332_Node000000_Node000003" title=" " alt="" coords="106,262,150,225,203,187,227,175,230,180,206,192,153,229,109,266"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1cpu_1_1_config.html" title=" " alt="" coords="218,201,351,242"/>
+<area shape="poly" id="edge2333_Node000000_Node000004" title=" " alt="" coords="137,266,218,240,219,245,139,271"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1gpu__cl_1_1_config.html" title=" " alt="" coords="218,267,351,307"/>
+<area shape="poly" id="edge2334_Node000000_Node000005" title=" " alt="" coords="172,284,218,284,218,290,172,290"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1ruy_1_1_config.html" title=" " alt="" coords="220,332,349,373"/>
+<area shape="poly" id="edge2335_Node000000_Node000006" title=" " alt="" coords="139,303,221,329,219,334,137,308"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1train_1_1_config.html" title=" " alt="" coords="216,397,353,438"/>
+<area shape="poly" id="edge2336_Node000000_Node000007" title=" " alt="" coords="109,308,153,345,206,382,230,394,227,399,203,387,150,349,106,312"/>
+<area shape="rect" id="Node000008" href="$classonert_1_1backend_1_1trix_1_1_config.html" title=" " alt="" coords="220,463,349,503"/>
+<area shape="poly" id="edge2337_Node000000_Node000008" title=" " alt="" coords="99,312,142,379,172,415,206,448,226,460,223,464,203,452,168,419,137,382,94,315"/>
+<area shape="rect" id="Node000009" href="$classonert_1_1backend_1_1xnnpack_1_1_config.html" title=" " alt="" coords="205,528,364,569"/>
+<area shape="poly" id="edge2338_Node000000_Node000009" title=" " alt="" coords="93,314,108,357,132,410,165,465,206,513,224,525,221,530,203,517,161,468,128,412,103,359,88,316"/>
 </map>

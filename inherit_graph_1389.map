@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classsparsity_1_1_format_converter.html" title=" " alt="" coords="5,5,205,31"/>
+<area shape="rect" id="Node000000" href="$classsouschef_1_1_tensor_filler.html" title=" " alt="" coords="5,31,154,56"/>
+<area shape="rect" id="Node000001" href="$classcirclechef_1_1_circle_import.html" title="Loads TF lite file and provides helpers to access attributes." alt="" coords="202,5,355,31"/>
+<area shape="poly" id="edge3004_Node000000_Node000001" title=" " alt="" coords="169,29,201,25,202,31,169,35"/>
+<area shape="rect" id="Node000002" href="$classtflchef_1_1_t_flite_import.html" title="Loads TF lite file and provides helpers to access attributes." alt="" coords="212,55,345,80"/>
+<area shape="poly" id="edge3005_Node000000_Node000002" title=" " alt="" coords="169,52,212,57,211,62,168,57"/>
 </map>

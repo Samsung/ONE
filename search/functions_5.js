@@ -41,7 +41,7 @@ var searchData=
   ['eltwisemul_38',['EltwiseMul',['../classloco_1_1_eltwise_mul.html#a8009586683a4eed0580b97a794213ef6',1,'loco::EltwiseMul']]],
   ['eltwisesqrt_39',['EltwiseSqrt',['../classloco_1_1_eltwise_sqrt.html#ac6c2e27fbbafc3f1770464e9fab93ddd',1,'loco::EltwiseSqrt']]],
   ['eltwisesub_40',['EltwiseSub',['../classloco_1_1_eltwise_sub.html#a46c7ce80903a4afef5a438c9dc5ffecc',1,'loco::EltwiseSub']]],
-  ['elu_41',['elu',['../namespaceluci__interpreter__pal.html#a082bbfd3550743d851c953a7f4c51473',1,'luci_interpreter_pal::Elu()'],['../namespacennfw_1_1cker.html#aa6cd8baf6599a56672a509ddecb7a1ac',1,'nnfw::cker::ELU()'],['../namespacemir__interpreter.html#abfc0a12039df388f4ef7f38f563ccdd5',1,'mir_interpreter::ELU()'],['../classluci__interpreter_1_1kernels_1_1_elu.html#ab54d9eeb847540710e6e7a24cbbbef05',1,'luci_interpreter::kernels::Elu::Elu()']]],
+  ['elu_41',['elu',['../namespacemir__interpreter.html#abfc0a12039df388f4ef7f38f563ccdd5',1,'mir_interpreter::ELU()'],['../namespaceluci__interpreter__pal.html#a082bbfd3550743d851c953a7f4c51473',1,'luci_interpreter_pal::Elu()'],['../namespacennfw_1_1cker.html#aa6cd8baf6599a56672a509ddecb7a1ac',1,'nnfw::cker::ELU()'],['../classluci__interpreter_1_1kernels_1_1_elu.html#ab54d9eeb847540710e6e7a24cbbbef05',1,'luci_interpreter::kernels::Elu::Elu()']]],
   ['eluchef_42',['ELUChef',['../class_e_l_u_chef.html#a768e793ca7a0337268f7b1bfd3d98901',1,'ELUChef']]],
   ['eluop_43',['EluOp',['../classmir_1_1ops_1_1_elu_op.html#a4445afe63f54ab1291874b703946033d',1,'mir::ops::EluOp']]],
   ['embed_44',['embed',['../classminmax__embedder_1_1_embedder.html#aa3405215ab661a0e3d84e315c2a9484b',1,'minmax_embedder::Embedder']]],

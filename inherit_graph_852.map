@@ -1,3 +1,16 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_index_enumerator.html" title=" " alt="" coords="5,5,159,46"/>
+<area shape="rect" id="Node000000" href="$structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_accessor.html" title=" " alt="" coords="5,5,159,46"/>
+<area shape="rect" id="Node000001" href="$structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_view.html" title=" " alt="" coords="207,5,360,46"/>
+<area shape="poly" id="edge2249_Node000000_Node000001" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
+<area shape="rect" id="Node000003" href="$structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_view.html" title=" " alt="" coords="207,71,360,111"/>
+<area shape="poly" id="edge2250_Node000000_Node000003" title=" " alt="" coords="162,49,219,67,217,73,160,54"/>
+<area shape="rect" id="Node000004" href="$classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html" title=" " alt="" coords="408,5,561,46"/>
+<area shape="poly" id="edge2251_Node000003_Node000004" title=" " alt="" coords="361,63,419,44,420,49,363,68"/>
+<area shape="rect" id="Node000005" href="$classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_buffer.html" title=" " alt="" coords="408,71,561,111"/>
+<area shape="poly" id="edge2252_Node000003_Node000005" title=" " alt="" coords="376,88,408,88,408,94,376,94"/>
+<area shape="rect" id="Node000006" href="$classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_overlay.html" title=" " alt="" coords="408,136,561,177"/>
+<area shape="poly" id="edge2253_Node000003_Node000006" title=" " alt="" coords="363,114,420,133,419,138,361,119"/>
+<area shape="rect" id="Node000002" href="$structnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_reader.html" title=" " alt="" coords="5,71,159,111"/>
+<area shape="poly" id="edge2254_Node000002_Node000001" title=" " alt="" coords="160,63,217,44,219,49,162,68"/>
+<area shape="poly" id="edge2255_Node000002_Node000003" title=" " alt="" coords="174,88,207,88,207,94,174,94"/>
 </map>

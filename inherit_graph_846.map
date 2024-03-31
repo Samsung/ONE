@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structnnc_1_1sir_1_1_tensor_descriptor.html" title="Represents variable used in artifact. This variable can store inputs, outputs of network and temporar..." alt="" coords="5,5,173,31"/>
+<area shape="rect" id="Node000000" href="$structnnc_1_1sir_1_1_action.html" title="Action represents operation in inference sequence that is needed to." alt="" coords="5,80,111,106"/>
+<area shape="rect" id="Node000001" href="$structnnc_1_1sir_1_1_call_function.html" title=" " alt="" coords="173,5,314,31"/>
+<area shape="poly" id="edge2238_Node000000_Node000001" title=" " alt="" coords="94,70,158,40,189,29,190,34,160,45,97,75"/>
+<area shape="rect" id="Node000002" href="$structnnc_1_1sir_1_1_create_tmp.html" title=" " alt="" coords="177,55,310,80"/>
+<area shape="poly" id="edge2239_Node000000_Node000002" title=" " alt="" coords="126,81,176,74,177,79,126,86"/>
+<area shape="rect" id="Node000003" href="$structnnc_1_1sir_1_1_destroy_tmp.html" title=" " alt="" coords="174,104,313,130"/>
+<area shape="poly" id="edge2240_Node000000_Node000003" title=" " alt="" coords="127,99,174,105,173,110,126,104"/>
+<area shape="rect" id="Node000004" href="$structnnc_1_1sir_1_1_transpose_tensor.html" title=" " alt="" coords="159,153,328,179"/>
+<area shape="poly" id="edge2241_Node000000_Node000004" title=" " alt="" coords="97,111,160,140,191,150,189,155,158,145,95,116"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="luci::QuantizeOnnxQDQPass" name="luci::QuantizeOnnxQDQPass">
+<area shape="rect" id="Node000001" title="Class to quantize ONNX QuantizeLinear&#45;DequantizeLinear operator." alt="" coords="5,79,193,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="58,5,140,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,46,102,79,96,79,96,46"/>
+</map>
