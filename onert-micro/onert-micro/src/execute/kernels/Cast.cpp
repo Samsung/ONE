@@ -32,6 +32,13 @@ constexpr uint32_t outputTensorIdx = 0;
 template <typename FromT, typename ToT> void copyCast(const FromT *in, ToT *out, int num_elements)
 {
   std::transform(in, in + num_elements, out, [](FromT a) { return static_cast<ToT>(a); });
+
+  for (int i = 0; i < num_elements; ++i)
+  {
+    auto in_tmp = in[i];
+    auto out_tmp = out[i];
+   //printf("c");
+  }
 }
 
 } // namespace

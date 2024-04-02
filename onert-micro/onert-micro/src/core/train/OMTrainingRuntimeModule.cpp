@@ -463,12 +463,15 @@ OMStatus OMTrainingRuntimeModule::backward()
 
     if (_training_storage.getOptimizationStrategy() == SGD)
     {
+      printf("Calculated gradients\n");
       for (uint32_t j = 0; j < output_size; ++j)
       {
         auto tmp_1 = grad_data_f[j];
         auto tmp_2 = calculated_data_f[j];
+        printf("%f ", tmp_2);
         grad_data_f[j] += calculated_data_f[j];
       }
+      printf("\n");
     } else
     {
       for (uint32_t s = 0; s < output_size; ++s)
@@ -476,6 +479,7 @@ OMStatus OMTrainingRuntimeModule::backward()
         exp_data_f[s] = beta * exp_data_f[s] + (1 - beta) * calculated_data_f[s];
         exp_square_data_f[s] = beta_squares * exp_square_data_f[s] +
                              (1 - beta_squares) * std::pow(calculated_data_f[s], 2);
+        auto tmp_2 = calculated_data_f[s];
         auto tmp1 = exp_data_f[s];
         auto tmp2 = exp_square_data_f[s];
         auto tmp3 = tmp2 - tmp1;

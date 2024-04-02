@@ -702,7 +702,7 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleNode *
   // TODO: check transpose (maybe unnecessary)
   auto fc_node = training_graph->nodes()->create<luci::CircleFullyConnected>();
   fc_node->name(transpose_node->name() + input_grad_node->name());
-  fc_node->weights(softmax_grad_node);
+  fc_node->weights(transpose_node);
   fc_node->input(input_grad_node);
   fc_node->bias(empty_bias);
   fc_node->keep_num_dims(true);
@@ -997,7 +997,7 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleFullyC
   luci::CircleConst *weight = dynamic_cast<luci::CircleConst *>(fc_node->weights());
   assert(weight != nullptr);
   luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(fc_node->bias());
-  assert(bias != nullptr);
+  //assert(bias != nullptr);
   luci::CircleNode *fc_from = dynamic_cast<luci::CircleNode *>(fc_node->input());
   assert(fc_from != nullptr);
 
@@ -1010,18 +1010,21 @@ luci::CircleNode *backProp(luci::CircleNode *input_grad_node, luci::CircleFullyC
   link(weight_gradient_context, weight_gradient_node);
   copy_for_context(weight_gradient_context, weight_gradient_node);
 
-  // Create bias gradient output
-  auto bias_gradient_context = output_context->create();
-  auto bias_gradient_node = training_graph->nodes()->create<luci::CircleOutput>();
-  copy_nodes_params(bias_gradient_node, bias);
-  link(bias_gradient_context, bias_gradient_node);
-  copy_for_context(bias_gradient_context, bias_gradient_node);
+  if (bias != nullptr)
+  {
+    // Create bias gradient output
+    auto bias_gradient_context = output_context->create();
+    auto bias_gradient_node = training_graph->nodes()->create<luci::CircleOutput>();
+    copy_nodes_params(bias_gradient_node, bias);
+    link(bias_gradient_context, bias_gradient_node);
+    copy_for_context(bias_gradient_context, bias_gradient_node);
 
-  // change name input grad node due to bias gradient
-  input_grad_node->name(bias->name() + "_gradient");
+    // change name input grad node due to bias gradient
+    input_grad_node->name(bias->name() + "_gradient");
 
-  // Connect bias grad output and sub
-  bias_gradient_node->from(input_grad_node);
+    // Connect bias grad output and sub
+    bias_gradient_node->from(input_grad_node);
+  }
 
   // Create Fc_InputActivation node
   auto fc_input_activation_node = training_graph->nodes()->create<luci::CircleInput>();
@@ -1143,7 +1146,7 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
 //  index_const->at<loco::DataType::S32>(2) = 2;
 //  index_const->name("index");
 
-
+  int fc_count = 0;
   std::stack<luci::CircleNode *> nodes;
 
   luci::CircleNode *cur_input_grad_node = neg;
@@ -1184,6 +1187,9 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
       }
 
       cur_input_grad_node = backProp(cur_input_grad_node, fc_node, input_context, output_context);
+      fc_count += 1;
+      if (fc_count == 2)
+        break;
     } else if (auto reshape_node = dynamic_cast<luci::CircleReshape *>(circle_node))
     {
       cur_input_grad_node = backProp(cur_input_grad_node, reshape_node, input_context, output_context);
@@ -1209,7 +1215,10 @@ std::unique_ptr<loco::Graph> training_graph::GenerateTrainingGraph::createTraini
       cur_input_grad_node = backProp(cur_input_grad_node, conv_2d, input_context, output_context);
       //break; //tmp
     }
-    else
+    else if (auto output_exlude = dynamic_cast<luci::CircleOutputExclude *>(circle_node))
+    {
+      continue;
+    } else
     {
       break;
     }

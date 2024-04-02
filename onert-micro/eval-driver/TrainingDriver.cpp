@@ -45,6 +45,7 @@ void readDataFromFile(const std::string &filename, char *data, size_t data_size,
 
   if (fs.read(data, data_size).fail())
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+  fs.close();
 }
 
 void readDataFromFile(std::ifstream  &fs, const std::string &filename, char *data, size_t data_size, size_t start_position = 0)
@@ -169,20 +170,15 @@ void measure_accuracy(std::vector<int> &predicted_labels, std::vector<int> &targ
   std::cout << "Calculated accuracy = " << static_cast<float>(corrected_num) / static_cast<float>(predicted_labels.size()) << "\n";
 }
 
-//void printDataVector(float *data, int num_samples, int num_size)
-//{
-//  for (int i = 0; i < num_samples; i++)
-//  {
-//    std::cout << "Cur sample № = " << i + 1 << "\n";
-//    for (int j = 0; j < num_inputs; ++j)
-//    {
-//      for (int k = 0; k > num_size; ++k)
-//      {
-//        std::cout << data[k + j * num_size + i * num_size * num_inputs];
-//      }
-//    }
-//  }
-//}
+void printDataVector(float *data, int num_size, int count)
+{
+  std::cout << "Print data \n";
+  for (int k = 0; k < num_size; ++k)
+  {
+    std::cout << data[k] << " ";
+  }
+  std::cout << "\n";
+}
 
 } // namespace
 
@@ -221,7 +217,7 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 3;
+  const uint32_t training_epochs = 20;
   const float lambda = 0.001f;
 
   // Configure training mode
@@ -234,7 +230,7 @@ int entry(int argc, char **argv)
     trainConfig.optimization_strategy = onert_micro::ADAM;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
-    trainConfig.batches = 3;
+    trainConfig.batches = 150;
 
     config.train_config = trainConfig;
   }
@@ -283,6 +279,8 @@ int entry(int argc, char **argv)
         readDataFromFile(input_target_train_data_path, reinterpret_cast<char *>(train_target_data.get()),
                          sizeof(MODEL_TYPE) * target_size, sizeof(MODEL_TYPE) * target_size * (i + batch));
 
+  //   printDataVector(train_input_data.get(), input_size, i + batch);
+
         train_interpreter.allocateInputs();
         // Copy input data
         auto *cur_train_data = train_input_data.get();
@@ -301,10 +299,10 @@ int entry(int argc, char **argv)
         predicted_labels.push_back(predicted_class(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)), target_size));
         targets_labels.push_back(predicted_class(reinterpret_cast<float *>(cur_train_target_data), target_size));
 
-#if 1
-        calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-                              reinterpret_cast<float *>(cur_train_target_data),
-                              target_size);
+#if 0
+//        calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+//                              reinterpret_cast<float *>(cur_train_target_data),
+//                              target_size);
         printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
                                   reinterpret_cast<float *>(cur_train_target_data),
                                   target_size);

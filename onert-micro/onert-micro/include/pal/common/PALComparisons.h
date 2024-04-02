@@ -168,6 +168,9 @@ inline void BroadcastComparison4DSlowNoScaling(
           output_data[output_data_offset] =
             F(input1_data[subscriptToIndex(dims.desc1, b, y, x, c)],
               input2_data[subscriptToIndex(dims.desc2, b, y, x, c)]);
+          auto tmp_outu =output_data[output_data_offset];
+          auto tnmp_in = input1_data[subscriptToIndex(dims.desc1, b, y, x, c)];
+//          printf("g");
         }
       }
     }

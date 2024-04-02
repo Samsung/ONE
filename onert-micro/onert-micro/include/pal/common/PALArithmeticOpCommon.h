@@ -56,8 +56,14 @@ OMStatus ArithmeticOp(const core::BinaryArithmeticBroadcastParams &params, const
 
   Fn func;
   for (int i = 0; i < flat_size; ++i)
+  {
+    auto tmp_1 = input1_data[i];
+    auto tmp_2 = input2_data[i];
     output_data[i] =
-      std::min(std::max(func(input1_data[i], input2_data[i]), activation_min), activation_max);
+      std::min(std::max(func(input1_data[i], input2_data[i] + 0.000000000000001), activation_min), activation_max);
+    auto tmp3 = output_data[i];
+//    printf("1");
+  }
 
   return Ok;
 }
