@@ -125,6 +125,7 @@ set(ONE_PYTHON_FILES backends.py
                      export_constant.py
                      make_cmd.py
                      CfgRunner.py
+                     Command.py
                      OptionBuilder.py
                      TopologicalSortHelper.py
                      WorkflowRunner.py
