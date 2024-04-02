@@ -204,6 +204,193 @@ TEST(FullyConnectedTest, SimpleS4)
               FloatArrayNear(output_data, quantized_tolerance));
 }
 
+TEST(FullyConnectedTest, SimpleU4PerTensor)
+{
+  std::initializer_list<int32_t> input_shape{1, 2};
+  std::initializer_list<int32_t> weights_shape{4, 2};
+  std::initializer_list<int32_t> bias_shape{4};
+  std::initializer_list<int32_t> output_shape{1, 4};
+  std::initializer_list<float> input_data{
+    1, 3, // batch = 0
+  };
+  std::initializer_list<uint8_t> weights_initializer{
+    8, 9, // unit = 0
+    8, 8, // unit = 1
+    7, 7, // unit = 2
+    8, 8, // unit = 3
+  };
+  std::initializer_list<float> bias_data{0, 1, 2, 3};
+  std::initializer_list<float> output_data{
+    1.5, 1, 0, 3, // batch = 0
+  };
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  std::vector<uint8_t> quantized_data(weights_initializer);
+  Tensor weights_tensor(DataType::U4, weights_shape, {{0.5}, {8}}, "");
+  memory_manager->allocate_memory(weights_tensor);
+  weights_tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(uint8_t));
+  Tensor weights_scratch(DataType::FLOAT32, weights_shape, {}, "");
+  memory_manager->allocate_memory(weights_scratch);
+
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  const float quantized_tolerance = getTolerance(0, 15, 15);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor,
+                        &weights_scratch, params);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(extractTensorData<float>(output_tensor),
+              FloatArrayNear(output_data, quantized_tolerance));
+}
+
+TEST(FullyConnectedTest, SimpleU4PerChannel)
+{
+  std::initializer_list<int32_t> input_shape{1, 2};
+  std::initializer_list<int32_t> weights_shape{4, 2};
+  std::initializer_list<int32_t> bias_shape{4};
+  std::initializer_list<int32_t> output_shape{1, 4};
+  std::initializer_list<float> input_data{
+    1, 3, // batch = 0
+  };
+  std::initializer_list<uint8_t> weights_initializer{
+    8, 9, // unit = 0
+    8, 8, // unit = 1
+    7, 7, // unit = 2
+    8, 8, // unit = 3
+  };
+  std::initializer_list<float> bias_data{0, 1, 2, 3};
+  std::initializer_list<float> output_data{
+    1.5, 1, 0, 3, // batch = 0
+  };
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  std::vector<uint8_t> quantized_data(weights_initializer);
+  Tensor weights_tensor(DataType::U4, weights_shape, {{0.5, 0.5, 0.5, 0.5}, {8, 8, 8, 8}, 0}, "");
+  memory_manager->allocate_memory(weights_tensor);
+  weights_tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(uint8_t));
+  Tensor weights_scratch(DataType::FLOAT32, weights_shape, {}, "");
+  memory_manager->allocate_memory(weights_scratch);
+
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  const float quantized_tolerance = getTolerance(0, 15, 15);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor,
+                        &weights_scratch, params);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+  EXPECT_THAT(extractTensorData<float>(output_tensor),
+              FloatArrayNear(output_data, quantized_tolerance));
+}
+
+TEST(FullyConnectedTest, SimpleU4WrongBiasType_NEG)
+{
+  std::initializer_list<int32_t> input_shape{1, 2};
+  std::initializer_list<int32_t> weights_shape{4, 2};
+  std::initializer_list<int32_t> bias_shape{4};
+  std::initializer_list<int32_t> output_shape{1, 4};
+  std::initializer_list<float> input_data{
+    1, 3, // batch = 0
+  };
+  std::initializer_list<uint8_t> weights_initializer{
+    8, 9, // unit = 0
+    8, 8, // unit = 1
+    7, 7, // unit = 2
+    8, 8, // unit = 3
+  };
+  std::initializer_list<uint8_t> bias_data{0, 1, 2, 3};
+  std::initializer_list<float> output_data{
+    1.5, 1, 0, 3, // batch = 0
+  };
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, memory_manager.get());
+  std::vector<uint8_t> quantized_data(weights_initializer);
+  Tensor weights_tensor(DataType::U4, weights_shape, {{0.5, 0.5}, {8, 8}, 1}, "");
+  memory_manager->allocate_memory(weights_tensor);
+  weights_tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(uint8_t));
+  Tensor weights_scratch(DataType::FLOAT32, weights_shape, {}, "");
+  memory_manager->allocate_memory(weights_scratch);
+
+  Tensor bias_tensor = makeInputTensor<DataType::U8>(bias_shape, bias_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  const float quantized_tolerance = getTolerance(0, 15, 15);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor,
+                        &weights_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST(FullyConnectedTest, SimpleU4WrongInputType_NEG)
+{
+  std::initializer_list<int32_t> input_shape{1, 2};
+  std::initializer_list<int32_t> weights_shape{4, 2};
+  std::initializer_list<int32_t> bias_shape{4};
+  std::initializer_list<int32_t> output_shape{1, 4};
+  std::initializer_list<uint8_t> input_data{
+    1, 3, // batch = 0
+  };
+  std::initializer_list<uint8_t> weights_initializer{
+    8, 9, // unit = 0
+    8, 8, // unit = 1
+    7, 7, // unit = 2
+    8, 8, // unit = 3
+  };
+  std::initializer_list<float> bias_data{0, 1, 2, 3};
+  std::initializer_list<float> output_data{
+    1.5, 1, 0, 3, // batch = 0
+  };
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, input_data, memory_manager.get());
+  std::vector<uint8_t> quantized_data(weights_initializer);
+  Tensor weights_tensor(DataType::U4, weights_shape, {{0.5, 0.5}, {8, 8}, 1}, "");
+  memory_manager->allocate_memory(weights_tensor);
+  weights_tensor.writeData(quantized_data.data(), quantized_data.size() * sizeof(uint8_t));
+  Tensor weights_scratch(DataType::FLOAT32, weights_shape, {}, "");
+  memory_manager->allocate_memory(weights_scratch);
+
+  Tensor bias_tensor =
+    makeInputTensor<DataType::FLOAT32>(bias_shape, bias_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  const float quantized_tolerance = getTolerance(0, 15, 15);
+
+  FullyConnectedParams params{};
+  params.activation = Activation::RELU;
+
+  FullyConnected kernel(&input_tensor, &weights_tensor, &bias_tensor, &output_tensor,
+                        &weights_scratch, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 TEST(FullyConnectedTest, InvalidBiasType_NEG)
 {
   Shape input_shape{3, 2, 2, 1};
