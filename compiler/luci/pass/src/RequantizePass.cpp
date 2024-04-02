@@ -145,6 +145,26 @@ bool RequantizePass::run(loco::Graph *g)
     return false;
   }
 
+  // Fix wrong quantized_dimension
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    auto qparam = circle_node->quantparam();
+    if (not qparam)
+      continue;
+
+    if (circle_node->rank() != 1)
+      continue;
+
+    if (qparam->quantized_dimension == 0)
+      continue;
+
+    // For rank 1 node, quantized_dimension should be 0
+    qparam->quantized_dimension = 0;
+    WARN(l) << "Wrong quantized_dimension is fixed (" << circle_node->name() << ")" << std::endl;
+  }
+
   // Update output dtype
   auto graph_outputs = g->outputs();
   for (auto node : loco::output_nodes(g))
