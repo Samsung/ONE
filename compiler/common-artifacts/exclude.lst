@@ -39,6 +39,7 @@ tcgenerate(ExpandDims_002) # luci-interpreter doesn't support undefined shape
 tcgenerate(FakeQuant_000) # runtime and luci-interpreter doesn't support yet
 tcgenerate(FullyConnected_I4_000)
 tcgenerate(FullyConnected_I4_001)
+tcgenerate(FullyConnected_I4_002)
 tcgenerate(Fill_000)
 tcgenerate(Fill_001)
 tcgenerate(FloorMod_000)
