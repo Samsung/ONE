@@ -1,0 +1,2 @@
+# test with given reference data
+eval(FullyConnected_I4_002 0.1 0.1)
