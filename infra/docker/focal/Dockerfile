@@ -50,7 +50,7 @@ RUN apt-get update && apt-get -qqy install libgtest-dev
 # Install gbs & sdb
 RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_20.04/ /' | cat >> /etc/apt/sources.list
 RUN apt-get update && apt-get -qqy install gbs
-RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.19_ubuntu-64.zip -O sdb.zip
+RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.25_ubuntu-64.zip -O sdb.zip
 RUN unzip -d tmp sdb.zip && rm sdb.zip
 RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 

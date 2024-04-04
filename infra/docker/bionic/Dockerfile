@@ -41,12 +41,15 @@ RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 # Additonal tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip clang-format-8 python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
 RUN apt-get update && apt-get -qqy install python3.8 python3.8-venv python3.8-dev
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install yapf==0.22.0 numpy flatbuffers
 RUN python3.8 -m pip install --upgrade pip
 RUN python3.8 -m pip install numpy flatbuffers
+
+# Skip clang-format-16 install
+# Cannot install clang-formart-16
 
 # Install google test (source)
 RUN apt-get update && apt-get -qqy install libgtest-dev
@@ -84,7 +87,7 @@ RUN rm -rf gtest
 # Install gbs & sdb
 RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_18.04/ /' | cat >> /etc/apt/sources.list
 RUN apt-get update && apt-get -qqy install gbs
-RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_3.1.4_ubuntu-64.zip -O sdb.zip
+RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.25_ubuntu-64.zip -O sdb.zip
 RUN unzip -d tmp sdb.zip && rm sdb.zip
 RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 

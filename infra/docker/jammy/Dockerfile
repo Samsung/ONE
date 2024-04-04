@@ -32,7 +32,6 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 
 # Additonal tools
-# TODO install clang-format (No official clang-format-8 package for ubuntu jammy)
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
@@ -49,7 +48,11 @@ RUN apt-get update && apt-get install -qqy clang-format-16
 RUN apt-get update && apt-get -qqy install libgtest-dev
 
 # TODO: Install gbs & sdb
-# gbs & sdb are not support ubuntu jammy yet
+RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /' | cat >> /etc/apt/sources.list
+RUN apt-get update && apt-get -qqy install gbs
+RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.25_ubuntu-64.zip -O sdb.zip
+RUN unzip -d tmp sdb.zip && rm sdb.zip
+RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
