@@ -238,11 +238,47 @@ void FullyConnected::evalHybridWI4AF32() const
   const int8_t *weights_int4 = getTensorData<int8_t>(weights());
   float *weights_float = getTensorData<float>(scratch());
   const Shape &weights_shape = weights()->shape();
-  for (int32_t i = 0; i < weights_shape.num_elements(); ++i)
+  const auto weights_scales = weights()->scales();
+  const auto weights_quantized_dimension = weights()->quantized_dimension();
+  // Invariant for per-channel quantization of FC weights.
+  LUCI_INTERPRETER_CHECK(weights_quantized_dimension == 0);
+
+  if (weights_scales.size() == 1)
   {
-    // 1bit for sign, 3bit for value
-    weights_float[i] = weights()->scale() * weights_int4[i];
+    // Per tensor
+    const auto scale = weights()->scale();
+    for (int32_t i = 0; i < weights_shape.num_elements(); ++i)
+    {
+      weights_float[i] = scale * static_cast<float>(weights_int4[i]);
+    }
   }
+  else
+  {
+    // Per channel
+    const int32_t quant_dim_size = weights_shape.dim(weights_quantized_dimension);
+
+    size_t outer_dims_size = 1;
+    size_t inner_dims_size = 1;
+    for (int i = 0; i < weights_quantized_dimension; ++i)
+      outer_dims_size *= weights_shape.dim(i);
+    for (int i = weights_quantized_dimension + 1; i < weights_shape.num_dims(); ++i)
+      inner_dims_size *= weights_shape.dim(i);
+
+    for (size_t outer_it = 0; outer_it < outer_dims_size; ++outer_it)
+      for (int32_t channel = 0; channel < quant_dim_size; ++channel)
+      {
+        float scale = weights_scales[channel];
+        size_t offset = inner_dims_size * (quant_dim_size * outer_it + channel);
+        for (size_t inner_it = 0; inner_it < inner_dims_size; ++inner_it)
+        {
+          LUCI_INTERPRETER_CHECK(offset + inner_it <
+                                 static_cast<size_t>(weights_shape.num_elements()));
+          weights_float[offset + inner_it] =
+            scale * static_cast<float>(weights_int4[offset + inner_it]);
+        }
+      }
+  }
+
   tflite::reference_ops::FullyConnected(
     params, getTensorShape(input()), getTensorData<float>(input()), getTensorShape(scratch()),
     getTensorData<float>(scratch()), getTensorShape(bias()), getTensorData<float>(bias()),
