@@ -1,7 +1,7 @@
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 3 dim: 197 dim: 1 }
+  shape { dim: 3 dim: 5 dim: 1 }
 }
 operand {
   name: "mul_const"
@@ -12,7 +12,7 @@ operand {
 operand {
   name: "mul_out"
   type: FLOAT32
-  shape { dim: 3 dim: 197 dim: 1}
+  shape { dim: 3 dim: 5 dim: 1}
 }
 operation {
   type: "Mul"
@@ -32,7 +32,7 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 3 dim: 197 dim: 1 }
+  shape { dim: 3 dim: 5 dim: 1 }
 }
 operation {
   type: "Div"
