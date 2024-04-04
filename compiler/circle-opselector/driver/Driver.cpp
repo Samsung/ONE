@@ -80,10 +80,9 @@ int entry(int argc, char **argv)
   auto module = opselector::getModule(input_path);
 
   // TODO support two or more subgraphs
-  if (module.get()->size() != 1)
+  if (module.get()->size() > 1)
   {
-    std::cerr << "ERROR: Not support two or more subgraphs" << std::endl;
-    return EXIT_FAILURE;
+    std::cout << "WARNING: Only first subgraph's operators will be selected" << std::endl;
   }
 
   opselector::OpSelector op_selector{module.get()};
