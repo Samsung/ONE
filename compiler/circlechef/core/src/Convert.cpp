@@ -56,22 +56,22 @@ circle::TensorType as_circle_tensortype(const circlechef::TensorType &value)
   {
     case circlechef::FLOAT32:
       return circle::TensorType_FLOAT32;
-    case circlechef::INT32:
-      return circle::TensorType_INT32;
-    case circlechef::UINT8:
-      return circle::TensorType_UINT8;
-    case circlechef::UINT4:
-      return circle::TensorType_UINT4;
     case circlechef::INT64:
       return circle::TensorType_INT64;
-    case circlechef::STRING:
-      return circle::TensorType_STRING;
-    case circlechef::BOOL:
-      return circle::TensorType_BOOL;
+    case circlechef::INT32:
+      return circle::TensorType_INT32;
     case circlechef::INT16:
       return circle::TensorType_INT16;
     case circlechef::INT4:
       return circle::TensorType_INT4;
+    case circlechef::UINT8:
+      return circle::TensorType_UINT8;
+    case circlechef::UINT4:
+      return circle::TensorType_UINT4;
+    case circlechef::STRING:
+      return circle::TensorType_STRING;
+    case circlechef::BOOL:
+      return circle::TensorType_BOOL;
     default:
       break;
   }
