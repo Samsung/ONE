@@ -1,0 +1,6 @@
+# To check if Mul_Div pattern are fused
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "DIV_FUSED"               $(op_count DIV) '=' 0
+RULE    "MUL_SAVED"               $(op_count MUL) '=' 1
