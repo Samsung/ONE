@@ -1,0 +1,45 @@
+# This recipe is just to check processing of UINT4 models.
+# do not run this model in any interpreter or runtime as it may throw an error.
+operand {
+  name: "in"
+  type: UINT4
+  shape { dim: 1 dim: 4 }
+}
+operand {
+  name: "weight"
+  type: UINT4
+  shape { dim: 4 dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "1" arg: "2" arg: "3"
+    arg: "4" arg: "5" arg: "6" arg: "7"
+    arg: "8" arg: "9" arg: "10" arg: "11"
+    arg: "12" arg: "13" arg: "14" arg: "15"
+  }
+}
+operand {
+  name: "bias"
+  type: UINT4
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "1" arg: "1" arg: "3"
+  }
+}
+operand {
+  name: "out"
+  type: UINT4
+  shape { dim: 1 dim: 4 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "in"
+  input: "weight"
+  input: "bias"
+  output: "out"
+}
+input: "in"
+output: "out"
