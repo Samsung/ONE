@@ -94,6 +94,15 @@ public:
   bool visit(const luci::CircleNode *) final { return false; }
 };
 
+class IsMultiGraphNode final : public luci::CircleNodeVisitor<bool>
+{
+public:
+  bool visit(const luci::CircleIf *) final { return true; }
+  bool visit(const luci::CircleWhile *) final { return true; }
+  // default is false
+  bool visit(const luci::CircleNode *) final { return false; }
+};
+
 std::unique_ptr<loco::Graph> make_graph(const std::vector<const luci::CircleNode *> nodes)
 {
   auto graph = loco::make_graph();
@@ -255,10 +264,7 @@ namespace opselector
 
 OpSelector::OpSelector(const luci::Module *module) : _module{module}
 {
-  if (_module->size() != 1)
-  {
-    throw std::runtime_error{"ERROR: Not support two or more subgraphs"};
-  }
+  // DO NOTHING
 }
 
 template <>
@@ -375,8 +381,6 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
     throw std::runtime_error{"ERROR: Nothing was entered."};
   }
 
-  assert(_module->size() == 1);
-
   auto selected_nodes = select_by<SELECT_TYPE>(colon_tokens);
 
   // multiout node should be considered
@@ -394,6 +398,17 @@ std::unique_ptr<luci::Module> OpSelector::select_by(const std::string &str)
     }
   }
   selected_nodes.insert(selected_nodes.end(), output_nodes.begin(), output_nodes.end());
+
+  // TODO support two or more subgraphs
+  for (const auto &n : selected_nodes)
+  {
+    IsMultiGraphNode multigraph_visitor;
+    bool isMultiGraph = n->accept(&multigraph_visitor);
+    if (isMultiGraph)
+    {
+      throw std::runtime_error{"ERROR: If or While operator can't be selected."};
+    }
+  }
 
   auto new_module = std::make_unique<luci::Module>();
   new_module->add(::make_graph(selected_nodes));
