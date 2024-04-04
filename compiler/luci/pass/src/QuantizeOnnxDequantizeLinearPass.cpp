@@ -133,62 +133,6 @@ public:
   luci::CircleConst *zerop = nullptr;
 };
 
-// Temporary class for our in-house model
-// This is for per-tensor quantized LN const
-// uint8 weight, int16 zerop, fp32 scale
-// NOTE weight dtype != zerop dtype breaks invariant of
-// onnx DequantizeLinear. That's why this class is a hack.
-class OnnxDequantizeLinearPatternV2 final
-{
-public:
-  OnnxDequantizeLinearPatternV2(luci::CircleCustomOut *candidate) { custom_out = candidate; }
-
-public:
-  bool matched()
-  {
-    if (not custom_out)
-      return false;
-
-    dequantize = loco::must_cast<luci::CircleCustom *>(custom_out->input());
-    if (not is_onnx_dequantize_linear(dequantize))
-      return false;
-
-    input = dynamic_cast<luci::CircleConst *>(dequantize->inputs(0));
-    if (not input)
-      return false;
-
-    scale = dynamic_cast<luci::CircleConst *>(dequantize->inputs(1));
-    if (not scale)
-      return false;
-
-    zerop = dynamic_cast<luci::CircleConst *>(dequantize->inputs(2));
-    if (not zerop)
-      return false;
-
-    const auto input_dtype = input->dtype();
-    const auto scale_dtype = scale->dtype();
-    const auto zerop_dtype = zerop->dtype();
-
-    if (scale_dtype != loco::DataType::FLOAT32)
-      return false;
-
-    if (input_dtype != loco::DataType::U8)
-      return false;
-
-    if (zerop_dtype != loco::DataType::S16)
-      return false;
-
-    return true;
-  }
-
-public:
-  luci::CircleCustomOut *custom_out = nullptr;
-  luci::CircleCustom *dequantize = nullptr;
-  luci::CircleConst *input = nullptr;
-  luci::CircleConst *scale = nullptr;
-  luci::CircleConst *zerop = nullptr;
-};
-
 class QuantizeOnnxDequantizeLinear final
 {
 public:
@@ -391,90 +335,6 @@ private:
   const OnnxDequantizeLinearPattern &_p;
 };
 
-// Temporary class to handle our in-house model
-class QuantizeOnnxDequantizeLinearV2 final
-{
-public:
-  QuantizeOnnxDequantizeLinearV2(const OnnxDequantizeLinearPatternV2 &p) : _p(p) {}
-
-public:
-  void apply(void)
-  {
-    auto const_dtype = _p.zerop->dtype();
-
-    luci::CircleConst *quant_const = nullptr;
-    switch (const_dtype)
-    {
-      case loco::DataType::S16:
-        quant_const = gen_s16_quant();
-        break;
-      default:
-        throw std::runtime_error("Unsupported quantized dtype");
-    }
-
-    assert(quant_const); // FIX_ME_UNLESS
-
-    // set origin
-    std::vector<std::shared_ptr<luci::CircleNodeOrigin>> origin_vec{
-      luci::get_origin(_p.dequantize), luci::get_origin(_p.input), luci::get_origin(_p.scale),
-      luci::get_origin(_p.zerop)};
-
-    luci::add_origin(quant_const, luci::composite_origin(origin_vec));
-
-    replace(_p.custom_out).with(quant_const);
-  }
-
-private:
-  luci::CircleConst *gen_s16_quant(void)
-  {
-    assert(_p.input->dtype() == loco::DataType::U8);      // FIX_CALLER_UNLESS
-    assert(_p.scale->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
-    assert(_p.zerop->dtype() == loco::DataType::S16);     // FIX_CALLER_UNLESS
-
-    auto quantized_node = _p.dequantize->graph()->nodes()->create<luci::CircleConst>();
-    quantized_node->dtype(loco::DataType::S16);
-    quantized_node->rank(_p.input->rank());
-    for (uint32_t i = 0; i < _p.input->rank(); ++i)
-    {
-      quantized_node->dim(i) = _p.input->dim(i);
-    }
-    quantized_node->shape_status(luci::ShapeStatus::VALID);
-
-    // Create S16 CircleConst
-    const auto num_elems = _p.input->size<loco::DataType::U8>();
-    quantized_node->size<loco::DataType::S16>(num_elems);
-    for (uint32_t i = 0; i < num_elems; i++)
-    {
-      const uint8_t u8_val = _p.input->at<loco::DataType::U8>(i);
-      quantized_node->at<loco::DataType::S16>(i) = static_cast<int16_t>(u8_val);
-    }
-
-    auto qparam = std::make_unique<luci::CircleQuantParam>();
-    {
-      const std::vector<float> scale_vector = get_scales(_p.scale);
-      const std::vector<int64_t> zerop_vector = get_zerops<loco::DataType::S16>(_p.zerop);
-
-      if (scale_vector.size() != zerop_vector.size())
-        throw std::runtime_error("Scale/Zerop size mismatches in " + _p.dequantize->name());
-
-      const int32_t qdim = get_axis(_p.dequantize);
-
-      qparam->scale = scale_vector;
-      qparam->zerop = zerop_vector;
-      qparam->quantized_dimension = qdim;
-    }
-
-    quantized_node->quantparam(std::move(qparam));
-
-    quantized_node->name(_p.input->name());
-
-    return quantized_node;
-  }
-
-private:
-  const OnnxDequantizeLinearPatternV2 &_p;
-};
-
 } // namespace
 
 namespace luci
@@ -510,15 +370,6 @@ bool QuantizeOnnxDequantizeLinearPass::run(loco::Graph *g)
       if (p.matched())
       {
         QuantizeOnnxDequantizeLinear quantize(p);
-        quantize.apply();
-        changed = true;
-      }
-
-      // TODO Remove V2 classes
-      OnnxDequantizeLinearPatternV2 p2(circle_custom_out);
-      if (p2.matched())
-      {
-        QuantizeOnnxDequantizeLinearV2 quantize(p2);
         quantize.apply();
         changed = true;
       }
