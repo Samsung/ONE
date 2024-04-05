@@ -113,6 +113,26 @@ public:
   }
 };
 
+class FuseMulDivToMulPatternTestGraph : public TestIOGraph, public PatternMulDivGraphlet
+{
+public:
+  FuseMulDivToMulPatternTestGraph() = default;
+
+  void init(void)
+  {
+    TestIOGraph::init({1, 2, 3}, {1, 2, 3});
+    PatternMulDivGraphlet::init(g());
+
+    _mul->x(input());
+    _mul->y(_mul_const);
+
+    _div->x(_mul);
+    _div->y(_div_const);
+
+    output()->from(_div);
+  }
+};
+
 } // namespace
 
 TEST(FuseMulWithDivPassTest, fus_mul_div_pattern)
@@ -137,6 +157,38 @@ TEST(FuseMulWithDivPassTest, fuse_mul_div_NEG)
   relu->name("relu");
   relu->features(g.mul());
   g.div()->y(relu);
+
+  EXPECT_FALSE(pass.run(g.g()));
+}
+
+TEST(FuseMulWithDivPassTest, fuse_mul_div_to_mul_pattern)
+{
+  FuseMulDivToMulPatternTestGraph g;
+  luci::FuseMulWithDivPass pass;
+
+  g.init();
+
+  auto div = dynamic_cast<luci::CircleDiv *>(g.output()->from());
+  EXPECT_NE(div, nullptr);
+
+  EXPECT_TRUE(pass.run(g.g()));
+
+  auto mul = dynamic_cast<luci::CircleMul *>(g.output()->from());
+  EXPECT_NE(mul, nullptr);
+}
+
+TEST(FuseMulWithDivPassTest, fuse_mul_div_to_mul_NEG)
+{
+  FuseMulDivToMulPatternTestGraph g;
+  luci::FuseMulWithDivPass pass;
+
+  g.init();
+
+  // Add CircleRelu operation between CircleMul and Div operations
+  auto relu = g.g()->nodes()->create<luci::CircleRelu>();
+  relu->name("relu");
+  relu->features(g.mul());
+  g.div()->x(relu);
 
   EXPECT_FALSE(pass.run(g.g()));
 }
