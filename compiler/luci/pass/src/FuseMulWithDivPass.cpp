@@ -16,6 +16,8 @@
 
 #include "luci/Pass/FuseMulWithDivPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/IR/CircleNodes.h>
 
@@ -46,6 +48,28 @@ luci::CircleConst *create_div_const_with_new_value(luci::CircleConst *div_const,
                                     {luci::get_origin(div_const), luci::get_origin(mul_const)}));
 
   return new_div_const;
+}
+
+// Return a new CircleConst with a new value
+luci::CircleConst *create_mul_const_with_new_value(luci::CircleConst *mul_const,
+                                                   luci::CircleConst *div_const, float new_value)
+{
+  assert(mul_const);                                       // FIX_CALLER_UNLESS
+  assert(mul_const->dtype() == loco::DataType::FLOAT32);   // FIX_CALLER_UNLESS
+  assert(mul_const->size<loco::DataType::FLOAT32>() == 1); // FIX_CALLER_UNLESS
+
+  auto new_mul_const = mul_const->graph()->nodes()->create<luci::CircleConst>();
+  new_mul_const->dtype(loco::DataType::FLOAT32);
+  new_mul_const->rank(0);
+  new_mul_const->size<loco::DataType::FLOAT32>(1);
+  new_mul_const->scalar<loco::DataType::FLOAT32>() = new_value;
+  new_mul_const->shape_status(luci::ShapeStatus::VALID);
+  new_mul_const->name(mul_const->name() + ";" + div_const->name());
+
+  luci::add_origin(new_mul_const, luci::composite_origin(
+                                    {luci::get_origin(mul_const), luci::get_origin(div_const)}));
+
+  return new_mul_const;
 }
 
 /**
@@ -117,6 +141,79 @@ bool fuse_mul_with_div(luci::CircleDiv *div)
   return true;
 }
 
+/**
+ * Pass to fuse mul(one of the input is const scalar) and
+ * div(numerator is const scalar) as mul
+ *
+ * BEFORE
+ *             [CircleNode]                                [Scalar_Mul_Const]
+ *                  |                                               |
+ *          [CirlceMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
+ *                  |
+ *                  |                                     [Scalar_Div_Const]
+ *                  |                                             |
+ *           [CircleDiv, (x=CirlceMul, y=Scalar_Div_Const)] ------
+ *                  |
+ *             [CircleNode]
+ *
+ *  AFTER
+ *            [CircleNode]
+ *                 |                                          [Scalar_new_Mul_Const]
+ *                 |                                                   |
+ *          [CircleMul, (x=CircleNode, y=Scalar_new_Mul_Const)] -------
+ *                 |
+ *            [CircleNode]
+ *
+ *          where Scalar_new_Mul_Const = Scalar_Mul_Const / Scalar_Div_Const
+ *
+ **/
+bool fuse_mul_with_div_to_mul(luci::CircleDiv *div)
+{
+  if (div->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return false;
+
+  luci::CircleMul *mul = nullptr;
+  luci::CircleConst *div_const = nullptr;
+  if (not luci::fill(&mul, &div_const).with_args_of(div))
+    return false;
+
+  if (mul->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return false;
+
+  if (div_const->dtype() != loco::DataType::FLOAT32)
+    return false;
+  // TODO support other shape
+  if (div_const->size<loco::DataType::FLOAT32>() != 1)
+    return false;
+
+  luci::CircleNode *mul_input = nullptr;
+  luci::CircleConst *mul_const = nullptr;
+  if (not luci::fill(&mul_input, &mul_const).with_commutative_args_of(mul))
+    return false;
+
+  if (mul_const->dtype() != loco::DataType::FLOAT32)
+    return false;
+  // TODO support other shape
+  if (mul_const->size<loco::DataType::FLOAT32>() != 1)
+    return false;
+
+  const auto mul_value = mul_const->at<loco::DataType::FLOAT32>(0);
+  const auto div_value = div_const->at<loco::DataType::FLOAT32>(0);
+  const auto new_value = mul_value / div_value;
+  auto new_mul_const = create_mul_const_with_new_value(mul_const, div_const, new_value);
+
+  auto new_mul = div->graph()->nodes()->create<luci::CircleMul>();
+  new_mul->fusedActivationFunction(luci::FusedActFunc::NONE);
+  new_mul->x(mul_input);
+  new_mul->y(new_mul_const);
+  new_mul->name(mul->name());
+  luci::add_origin(new_mul, luci::composite_origin({luci::get_origin(div), luci::get_origin(mul)}));
+
+  replace(div).with(new_mul);
+
+  return true;
+}
+
 } // namespace
 
 bool FuseMulWithDivPass::run(loco::Graph *g)
@@ -129,6 +226,9 @@ bool FuseMulWithDivPass::run(loco::Graph *g)
       continue;
 
     if (fuse_mul_with_div(div))
+      changed = true;
+
+    if (fuse_mul_with_div_to_mul(div))
       changed = true;
   }
 
