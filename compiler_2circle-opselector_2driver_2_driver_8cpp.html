@@ -187,36 +187,35 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = opselector::getModule(input_path);</div>
 <div class="line"><span class="lineno">   81</span> </div>
 <div class="line"><span class="lineno">   82</span>  <span class="comment">// TODO support two or more subgraphs</span></div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get()-&gt;size() != 1)</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get()-&gt;size() &gt; 1)</div>
 <div class="line"><span class="lineno">   84</span>  {</div>
-<div class="line"><span class="lineno">   85</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Not support two or more subgraphs&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  <a class="code hl_class" href="classopselector_1_1_op_selector.html">opselector::OpSelector</a> op_selector{<span class="keyword">module</span>.get()};</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  std::unique_ptr&lt;luci::Module&gt; new_module;</div>
-<div class="line"><span class="lineno">   92</span>  std::string operator_input;</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--by_id&quot;</span>])</div>
-<div class="line"><span class="lineno">   95</span>  {</div>
-<div class="line"><span class="lineno">   96</span>    operator_input = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--by_id&quot;</span>);</div>
-<div class="line"><span class="lineno">   97</span>    new_module = op_selector.select_by&lt;<a class="code hl_enumvalue" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46ab718adec73e04ce3ec720dd11a06a308">opselector::SelectType::ID</a>&gt;(operator_input);</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--by_name&quot;</span>])</div>
-<div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    operator_input = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--by_name&quot;</span>);</div>
-<div class="line"><span class="lineno">  102</span>    new_module = op_selector.select_by&lt;<a class="code hl_enumvalue" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46aad32e604e17467fc435538334fbddf3e">opselector::SelectType::NAME</a>&gt;(operator_input);</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">if</span> (not <a class="code hl_function" href="namespaceopselector.html#a6d94db6d0cc5886d326f921781701c51">opselector::exportModule</a>(new_module.get(), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a>))</div>
-<div class="line"><span class="lineno">  106</span>  {</div>
-<div class="line"><span class="lineno">  107</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Cannot export the module&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">  109</span>  }</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  112</span>}</div>
+<div class="line"><span class="lineno">   85</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;WARNING: Only first subgraph&#39;s operators will be selected&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>  <a class="code hl_class" href="classopselector_1_1_op_selector.html">opselector::OpSelector</a> op_selector{<span class="keyword">module</span>.get()};</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  std::unique_ptr&lt;luci::Module&gt; new_module;</div>
+<div class="line"><span class="lineno">   91</span>  std::string operator_input;</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--by_id&quot;</span>])</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    operator_input = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--by_id&quot;</span>);</div>
+<div class="line"><span class="lineno">   96</span>    new_module = op_selector.select_by&lt;<a class="code hl_enumvalue" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46ab718adec73e04ce3ec720dd11a06a308">opselector::SelectType::ID</a>&gt;(operator_input);</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--by_name&quot;</span>])</div>
+<div class="line"><span class="lineno">   99</span>  {</div>
+<div class="line"><span class="lineno">  100</span>    operator_input = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--by_name&quot;</span>);</div>
+<div class="line"><span class="lineno">  101</span>    new_module = op_selector.select_by&lt;<a class="code hl_enumvalue" href="namespaceopselector.html#a156e509cd8c9530ba732aa90110ccf46aad32e604e17467fc435538334fbddf3e">opselector::SelectType::NAME</a>&gt;(operator_input);</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (not <a class="code hl_function" href="namespaceopselector.html#a6d94db6d0cc5886d326f921781701c51">opselector::exportModule</a>(new_module.get(), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a>))</div>
+<div class="line"><span class="lineno">  105</span>  {</div>
+<div class="line"><span class="lineno">  106</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Cannot export the module&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">  108</span>  }</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="aclassarser_1_1_arser_html"><div class="ttname"><a href="classarser_1_1_arser.html">arser::Arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00319">arser.h:320</a></div></div>
 <div class="ttc" id="aclassarser_1_1_helper_html_a679d0a65011da0aeb71d1dc967f846fa"><div class="ttname"><a href="classarser_1_1_helper.html#a679d0a65011da0aeb71d1dc967f846fa">arser::Helper::add_version</a></div><div class="ttdeci">static void add_version(Arser &amp;arser, const std::function&lt; void(void)&gt; &amp;func)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00733">arser.h:733</a></div></div>
 <div class="ttc" id="aclassopselector_1_1_op_selector_html"><div class="ttname"><a href="classopselector_1_1_op_selector.html">opselector::OpSelector</a></div><div class="ttdef"><b>Definition</b> <a href="_op_selector_8h_source.html#l00031">OpSelector.h:32</a></div></div>

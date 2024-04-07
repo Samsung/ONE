@@ -12,6 +12,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "pack", "dir_d8b5620bf7cf3bc574d034971f996601.html", "dir_d8b5620bf7cf3bc574d034971f996601" ],
     [ "reshape", "dir_06ce190702d45972e50649e275ec9989.html", "dir_06ce190702d45972e50649e275ec9989" ],
     [ "shape", "dir_08873abb609651e6dd2ad6aaac41a5d3.html", "dir_08873abb609651e6dd2ad6aaac41a5d3" ],
+    [ "softmax", "dir_fa43d2a49e8d24cc78f9d1c336fe2990.html", "dir_fa43d2a49e8d24cc78f9d1c336fe2990" ],
     [ "strided_slice", "dir_8a16f45c00bf88f14e75c85c32088f61.html", "dir_8a16f45c00bf88f14e75c85c32088f61" ],
     [ "sub", "dir_68bc21887fe61f1a5bbf67997e076948.html", "dir_68bc21887fe61f1a5bbf67997e076948" ],
     [ "TestDataBase.h", "onert-micro_2include_2test__models_2_test_data_base_8h.html", "onert-micro_2include_2test__models_2_test_data_base_8h" ]

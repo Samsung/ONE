@@ -249,30 +249,30 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>        output_data = np.fromfile(circle_model + <span class="stringliteral">&quot;.output&quot;</span> + str(idx), output_dtype)</div>
 <div class="line"><span class="lineno">   95</span>        luci_output_data = np.reshape(output_data, output_shape)</div>
 <div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">if</span> output_dtype == np.uint8:</div>
-<div class="line"><span class="lineno">   98</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">   99</span>                luci_output_data, luci_output_data_ref, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  100</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">elif</span> output_dtype == np.float32:</div>
-<div class="line"><span class="lineno">  102</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  103</span>                luci_output_data, luci_output_data_ref, rtol=rtolf32, atol=atolf32</div>
-<div class="line"><span class="lineno">  104</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">elif</span> output_dtype == np.int64:</div>
-<div class="line"><span class="lineno">  106</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  107</span>                luci_output_data, luci_output_data_ref, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  108</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">elif</span> output_dtype == np.int32:</div>
-<div class="line"><span class="lineno">  110</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  111</span>                luci_output_data, luci_output_data_ref, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  112</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">elif</span> output_dtype == np.int16:</div>
-<div class="line"><span class="lineno">  114</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  115</span>                luci_output_data, luci_output_data_ref, rtol=rtolint, atol=atolint</div>
-<div class="line"><span class="lineno">  116</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">elif</span> output_dtype == np.bool_:</div>
-<div class="line"><span class="lineno">  118</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  119</span>                luci_output_data, luci_output_data_ref, rtol=0, atol=0</div>
-<div class="line"><span class="lineno">  120</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">   97</span>        err_msg = <span class="stringliteral">&quot;Execution result of &quot;</span> + circle_model_ref + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">if</span> output_dtype == np.uint8:</div>
+<div class="line"><span class="lineno">   99</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  100</span>                luci_output_data, luci_output_data_ref, rtol=rtolint,</div>
+<div class="line"><span class="lineno">  101</span>                atol=atolint), err_msg</div>
+<div class="line"><span class="lineno">  102</span>        <span class="keywordflow">elif</span> output_dtype == np.float32:</div>
+<div class="line"><span class="lineno">  103</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  104</span>                luci_output_data, luci_output_data_ref, rtol=rtolf32,</div>
+<div class="line"><span class="lineno">  105</span>                atol=atolf32), err_msg</div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">elif</span> output_dtype == np.int64:</div>
+<div class="line"><span class="lineno">  107</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  108</span>                luci_output_data, luci_output_data_ref, rtol=rtolint,</div>
+<div class="line"><span class="lineno">  109</span>                atol=atolint), err_msg</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">elif</span> output_dtype == np.int32:</div>
+<div class="line"><span class="lineno">  111</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  112</span>                luci_output_data, luci_output_data_ref, rtol=rtolint,</div>
+<div class="line"><span class="lineno">  113</span>                atol=atolint), err_msg</div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">elif</span> output_dtype == np.int16:</div>
+<div class="line"><span class="lineno">  115</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  116</span>                luci_output_data, luci_output_data_ref, rtol=rtolint,</div>
+<div class="line"><span class="lineno">  117</span>                atol=atolint), err_msg</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">elif</span> output_dtype == np.bool_:</div>
+<div class="line"><span class="lineno">  119</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  120</span>                luci_output_data, luci_output_data_ref, rtol=0, atol=0), err_msg</div>
 <div class="line"><span class="lineno">  121</span>        <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  122</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_dtype</div>
 <div class="line"><span class="lineno">  123</span> </div>

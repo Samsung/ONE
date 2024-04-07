@@ -3429,6 +3429,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_softmax_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", null ],
@@ -3437,6 +3438,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataNoQuantParamsLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_max_pool2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataNoQuantParamsSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_softmax_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongAxisGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongBiasShapeFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel.html", null ],
@@ -3659,6 +3661,7 @@ var hierarchy =
       [ "FloorDivChef", "class_floor_div_chef.html", null ],
       [ "FloorModChef", "class_floor_mod_chef.html", null ],
       [ "FullyConnectedChef", "class_fully_connected_chef.html", null ],
+      [ "FullyConnectedChef", "class_fully_connected_chef.html", null ],
       [ "GRUChef", "class_g_r_u_chef.html", null ],
       [ "GatherChef", "class_gather_chef.html", null ],
       [ "GatherNdChef", "class_gather_nd_chef.html", null ],
@@ -3790,6 +3793,7 @@ var hierarchy =
       [ "FloorChefFactory", "struct_floor_chef_factory.html", null ],
       [ "FloorDivChefFactory", "struct_floor_div_chef_factory.html", null ],
       [ "FloorModChefFactory", "struct_floor_mod_chef_factory.html", null ],
+      [ "FullyConnectedChefFactory", "struct_fully_connected_chef_factory.html", null ],
       [ "FullyConnectedChefFactory", "struct_fully_connected_chef_factory.html", null ],
       [ "GRUChefFactory", "struct_g_r_u_chef_factory.html", null ],
       [ "GatherChefFactory", "struct_gather_chef_factory.html", null ],
@@ -5330,6 +5334,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataFullyConnectedBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_fully_connected_base.html", [
         [ "onert_micro::test_model::TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataSoftmaxBase< float >", "classonert__micro_1_1test__model_1_1_test_data_softmax_base.html", [
+        [ "onert_micro::test_model::TestDataFloatSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_softmax.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataAbsBase< T >", "classonert__micro_1_1test__model_1_1_test_data_abs_base.html", [
         [ "onert_micro::test_model::TestDataFloatAbs", "classonert__micro_1_1test__model_1_1_test_data_float_abs.html", null ]
       ] ],
@@ -5370,6 +5377,7 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataReshapeKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_reshape_kernel.html", null ],
       [ "onert_micro::test_model::TestDataShapeKernel< T, U >", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", null ],
+      [ "onert_micro::test_model::TestDataSoftmaxBase< T >", "classonert__micro_1_1test__model_1_1_test_data_softmax_base.html", null ],
       [ "onert_micro::test_model::TestDataStridedSliceKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_kernel.html", null ],
       [ "onert_micro::test_model::TestDataSubBase< T >", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", [
         [ "onert_micro::test_model::TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", null ],

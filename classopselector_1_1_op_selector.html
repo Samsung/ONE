@@ -125,17 +125,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_op_selector_8cpp_source.html#l00256">256</a> of file <a class="el" href="_op_selector_8cpp_source.html">OpSelector.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  256</span>                                               : _module{<span class="keyword">module</span>}</div>
-<div class="line"><span class="lineno">  257</span>{</div>
-<div class="line"><span class="lineno">  258</span>  if (_module-&gt;size() != 1)</div>
-<div class="line"><span class="lineno">  259</span>  {</div>
-<div class="line"><span class="lineno">  260</span>    throw std::runtime_error{&quot;ERROR: Not support two or more subgraphs&quot;};</div>
-<div class="line"><span class="lineno">  261</span>  }</div>
-<div class="line"><span class="lineno">  262</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_op_selector_8cpp_source.html#l00265">265</a> of file <a class="el" href="_op_selector_8cpp_source.html">OpSelector.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>                                               : _module{<span class="keyword">module</span>}</div>
+<div class="line"><span class="lineno">  266</span>{</div>
+<div class="line"><span class="lineno">  267</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  268</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_module_8h_source.html#l00044">luci::Module::size()</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -157,45 +152,53 @@ template&lt;<a class="el" href="namespaceopselector.html#a156e509cd8c9530ba732aa
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_op_selector_8cpp_source.html#l00370">370</a> of file <a class="el" href="_op_selector_8cpp_source.html">OpSelector.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  371</span>{</div>
-<div class="line"><span class="lineno">  372</span>  <span class="keyword">auto</span> colon_tokens = ::split_into_vector(str, <span class="charliteral">&#39;,&#39;</span>);</div>
-<div class="line"><span class="lineno">  373</span>  <span class="keywordflow">if</span> (colon_tokens.empty())</div>
-<div class="line"><span class="lineno">  374</span>  {</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ERROR: Nothing was entered.&quot;</span>};</div>
-<div class="line"><span class="lineno">  376</span>  }</div>
-<div class="line"><span class="lineno">  377</span> </div>
-<div class="line"><span class="lineno">  378</span>  assert(_module-&gt;<a class="code hl_function" href="classluci_1_1_module.html#a518d610875a09acf04b378f148b0a88d">size</a>() == 1);</div>
-<div class="line"><span class="lineno">  379</span> </div>
-<div class="line"><span class="lineno">  380</span>  <span class="keyword">auto</span> selected_nodes = select_by&lt;SELECT_TYPE&gt;(colon_tokens);</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>  <span class="comment">// multiout node should be considered</span></div>
-<div class="line"><span class="lineno">  383</span>  IsMultiOutputNode multiout_visitor;</div>
-<div class="line"><span class="lineno">  384</span>  std::vector&lt;const luci::CircleNode *&gt; <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>;</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;node : selected_nodes)</div>
-<div class="line"><span class="lineno">  386</span>  {</div>
-<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">if</span> (node-&gt;accept(&amp;multiout_visitor))</div>
-<div class="line"><span class="lineno">  388</span>    {</div>
-<div class="line"><span class="lineno">  389</span>      <span class="keyword">auto</span> outputs = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(node);</div>
-<div class="line"><span class="lineno">  390</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : outputs)</div>
-<div class="line"><span class="lineno">  391</span>      {</div>
-<div class="line"><span class="lineno">  392</span>        <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.push_back(<span class="keyword">dynamic_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(o));</div>
-<div class="line"><span class="lineno">  393</span>      }</div>
-<div class="line"><span class="lineno">  394</span>    }</div>
-<div class="line"><span class="lineno">  395</span>  }</div>
-<div class="line"><span class="lineno">  396</span>  selected_nodes.insert(selected_nodes.end(), <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.begin(), <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.end());</div>
-<div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>  <span class="keyword">auto</span> new_module = std::make_unique&lt;luci::Module&gt;();</div>
-<div class="line"><span class="lineno">  399</span>  new_module-&gt;add(::make_graph(selected_nodes));</div>
-<div class="line"><span class="lineno">  400</span> </div>
-<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> new_module;</div>
-<div class="line"><span class="lineno">  402</span>}</div>
-<div class="ttc" id="aclassluci_1_1_module_html_a518d610875a09acf04b378f148b0a88d"><div class="ttname"><a href="classluci_1_1_module.html#a518d610875a09acf04b378f148b0a88d">luci::Module::size</a></div><div class="ttdeci">size_t size(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_module_8h_source.html#l00044">Module.h:44</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_op_selector_8cpp_source.html#l00376">376</a> of file <a class="el" href="_op_selector_8cpp_source.html">OpSelector.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  377</span>{</div>
+<div class="line"><span class="lineno">  378</span>  <span class="keyword">auto</span> colon_tokens = ::split_into_vector(str, <span class="charliteral">&#39;,&#39;</span>);</div>
+<div class="line"><span class="lineno">  379</span>  <span class="keywordflow">if</span> (colon_tokens.empty())</div>
+<div class="line"><span class="lineno">  380</span>  {</div>
+<div class="line"><span class="lineno">  381</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ERROR: Nothing was entered.&quot;</span>};</div>
+<div class="line"><span class="lineno">  382</span>  }</div>
+<div class="line"><span class="lineno">  383</span> </div>
+<div class="line"><span class="lineno">  384</span>  <span class="keyword">auto</span> selected_nodes = select_by&lt;SELECT_TYPE&gt;(colon_tokens);</div>
+<div class="line"><span class="lineno">  385</span> </div>
+<div class="line"><span class="lineno">  386</span>  <span class="comment">// multiout node should be considered</span></div>
+<div class="line"><span class="lineno">  387</span>  IsMultiOutputNode multiout_visitor;</div>
+<div class="line"><span class="lineno">  388</span>  std::vector&lt;const luci::CircleNode *&gt; <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>;</div>
+<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;node : selected_nodes)</div>
+<div class="line"><span class="lineno">  390</span>  {</div>
+<div class="line"><span class="lineno">  391</span>    <span class="keywordflow">if</span> (node-&gt;accept(&amp;multiout_visitor))</div>
+<div class="line"><span class="lineno">  392</span>    {</div>
+<div class="line"><span class="lineno">  393</span>      <span class="keyword">auto</span> outputs = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(node);</div>
+<div class="line"><span class="lineno">  394</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;o : outputs)</div>
+<div class="line"><span class="lineno">  395</span>      {</div>
+<div class="line"><span class="lineno">  396</span>        <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.push_back(<span class="keyword">dynamic_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(o));</div>
+<div class="line"><span class="lineno">  397</span>      }</div>
+<div class="line"><span class="lineno">  398</span>    }</div>
+<div class="line"><span class="lineno">  399</span>  }</div>
+<div class="line"><span class="lineno">  400</span>  selected_nodes.insert(selected_nodes.end(), <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.begin(), <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>.end());</div>
+<div class="line"><span class="lineno">  401</span> </div>
+<div class="line"><span class="lineno">  402</span>  <span class="comment">// TODO support two or more subgraphs</span></div>
+<div class="line"><span class="lineno">  403</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;n : selected_nodes)</div>
+<div class="line"><span class="lineno">  404</span>  {</div>
+<div class="line"><span class="lineno">  405</span>    IsMultiGraphNode multigraph_visitor;</div>
+<div class="line"><span class="lineno">  406</span>    <span class="keywordtype">bool</span> isMultiGraph = n-&gt;accept(&amp;multigraph_visitor);</div>
+<div class="line"><span class="lineno">  407</span>    <span class="keywordflow">if</span> (isMultiGraph)</div>
+<div class="line"><span class="lineno">  408</span>    {</div>
+<div class="line"><span class="lineno">  409</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ERROR: If or While operator can&#39;t be selected.&quot;</span>};</div>
+<div class="line"><span class="lineno">  410</span>    }</div>
+<div class="line"><span class="lineno">  411</span>  }</div>
+<div class="line"><span class="lineno">  412</span> </div>
+<div class="line"><span class="lineno">  413</span>  <span class="keyword">auto</span> new_module = std::make_unique&lt;luci::Module&gt;();</div>
+<div class="line"><span class="lineno">  414</span>  new_module-&gt;add(::make_graph(selected_nodes));</div>
+<div class="line"><span class="lineno">  415</span> </div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">return</span> new_module;</div>
+<div class="line"><span class="lineno">  417</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_module_8h_source.html#l00044">luci::Module::size()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
+<p class="reference">References <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
 
 </div>
 </div>

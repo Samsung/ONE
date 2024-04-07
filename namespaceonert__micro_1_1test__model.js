@@ -189,6 +189,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel.html#a23a32422639796a98c5cf5206bbf4460", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel.html#a4daef57c6cd5768b9aee1af3d8a9836b", null ]
     ] ],
+    [ "neg_softmax_input_output_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html#a336734ad7014ea12f46a339758bcf71d", null ]
+    ] ],
+    [ "neg_softmax_no_quant_params", "namespaceonert__micro_1_1test__model_1_1neg__softmax__no__quant__params.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__softmax__no__quant__params.html#ad6226522acfe5f5faf63671abd2ff7c8", null ]
+    ] ],
     [ "pack_float", "namespaceonert__micro_1_1test__model_1_1pack__float.html", [
       [ "input_data_1", "namespaceonert__micro_1_1test__model_1_1pack__float.html#a9926d746382ca8b316e371b4a2dc7535", null ],
       [ "input_data_2", "namespaceonert__micro_1_1test__model_1_1pack__float.html#a5dec97744d497895b0e224948983dc34", null ],
@@ -221,6 +227,11 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1shape__kernel.html#abcacbff9c300732fefb71af5c682ed20", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1shape__kernel.html#affcc491817ce7d9c284aa1f4280c0c9e", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1shape__kernel.html#a8534396445f150e881cd7650fbfbd42e", null ]
+    ] ],
+    [ "softmax_float", "namespaceonert__micro_1_1test__model_1_1softmax__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1softmax__float.html#ac991962a0912230e5f8f63589f28bf31", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1softmax__float.html#a235eb130b3d2bc18c271ca2597548703", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1softmax__float.html#a3e2a8a0b21ab721f301b159af253ffff", null ]
     ] ],
     [ "strided_slice_kernel", "namespaceonert__micro_1_1test__model_1_1strided__slice__kernel.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1strided__slice__kernel.html#a8efec7e7612bb265ba7716d27b456df9", null ],
@@ -264,6 +275,7 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInputOutputTypeMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_gather_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_softmax_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_softmax_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel" ],
     [ "NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel" ],
     [ "NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul" ],
@@ -272,6 +284,7 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataNoQuantParamsLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel" ],
     [ "NegTestDataNoQuantParamsMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_max_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_max_pool2_d_kernel" ],
     [ "NegTestDataNoQuantParamsS16AddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_s16_add_kernel" ],
+    [ "NegTestDataNoQuantParamsSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_softmax_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_softmax_kernel" ],
     [ "NegTestDataNoQuantParamsSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_sub_kernel" ],
     [ "NegTestDataWrongAxisGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel" ],
     [ "NegTestDataWrongBiasShapeFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel" ],
@@ -295,6 +308,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatMaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d" ],
     [ "TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", "classonert__micro_1_1test__model_1_1_test_data_float_mul" ],
     [ "TestDataFloatPack", "classonert__micro_1_1test__model_1_1_test_data_float_pack.html", "classonert__micro_1_1test__model_1_1_test_data_float_pack" ],
+    [ "TestDataFloatSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_float_softmax" ],
     [ "TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", "classonert__micro_1_1test__model_1_1_test_data_float_sub" ],
     [ "TestDataFullyConnectedBase", "classonert__micro_1_1test__model_1_1_test_data_fully_connected_base.html", "classonert__micro_1_1test__model_1_1_test_data_fully_connected_base" ],
     [ "TestDataGatherBase", "classonert__micro_1_1test__model_1_1_test_data_gather_base.html", "classonert__micro_1_1test__model_1_1_test_data_gather_base" ],
@@ -314,6 +328,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation" ],
     [ "TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected" ],
     [ "TestDataShapeKernel", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel" ],
+    [ "TestDataSoftmaxBase", "classonert__micro_1_1test__model_1_1_test_data_softmax_base.html", "classonert__micro_1_1test__model_1_1_test_data_softmax_base" ],
     [ "TestDataStridedSliceKernel", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_kernel" ],
     [ "TestDataSubBase", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", "classonert__micro_1_1test__model_1_1_test_data_sub_base" ],
     [ "TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation" ]

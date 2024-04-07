@@ -1,15 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,104,106,130"/>
 <area shape="rect" id="Node000001" href="$classnnc_1_1_driver_exception.html" title="exceptions description class for compiler driver" alt="" coords="157,5,295,31"/>
-<area shape="poly" id="edge3007_Node000000_Node000001" title=" " alt="" coords="80,92,113,65,152,40,176,29,179,34,155,45,116,69,84,96"/>
+<area shape="poly" id="edge3012_Node000000_Node000001" title=" " alt="" coords="80,92,113,65,152,40,176,29,179,34,155,45,116,69,84,96"/>
 <area shape="rect" id="Node000002" href="$classnnc_1_1_pass_exception.html" title="objects of this class are to be thrown from Passes if errors are occurred" alt="" coords="159,55,293,80"/>
-<area shape="poly" id="edge3008_Node000000_Node000002" title=" " alt="" coords="116,97,178,78,179,84,118,102"/>
+<area shape="poly" id="edge3013_Node000000_Node000002" title=" " alt="" coords="116,97,178,78,179,84,118,102"/>
 <area shape="rect" id="Node000003" href="$classonert_1_1_onert_exception.html" title=" " alt="" coords="154,104,298,130"/>
-<area shape="poly" id="edge3009_Node000000_Node000003" title=" " alt="" coords="122,114,153,114,153,120,122,120"/>
+<area shape="poly" id="edge3014_Node000000_Node000003" title=" " alt="" coords="122,114,153,114,153,120,122,120"/>
 <area shape="rect" id="Node000005" href="$classoops_1_1_internal_exn.html" title="Exception caused by internal error." alt="" coords="166,153,286,179"/>
-<area shape="poly" id="edge3011_Node000000_Node000005" title=" " alt="" coords="118,132,179,150,178,155,116,137"/>
+<area shape="poly" id="edge3016_Node000000_Node000005" title=" " alt="" coords="118,132,179,150,178,155,116,137"/>
 <area shape="rect" id="Node000006" href="$classoops_1_1_user_exn.html" title="Exception to user." alt="" coords="174,203,278,228"/>
-<area shape="poly" id="edge3012_Node000000_Node000006" title=" " alt="" coords="84,138,116,164,155,189,179,200,176,204,152,194,113,169,80,142"/>
+<area shape="poly" id="edge3017_Node000000_Node000006" title=" " alt="" coords="84,138,116,164,155,189,179,200,176,204,152,194,113,169,80,142"/>
 <area shape="rect" id="Node000004" href="$classonert_1_1_insufficient_buffer_size_exception.html" title=" " alt="" coords="346,97,498,137"/>
-<area shape="poly" id="edge3010_Node000003_Node000004" title=" " alt="" coords="313,114,346,114,346,120,313,120"/>
+<area shape="poly" id="edge3015_Node000003_Node000004" title=" " alt="" coords="313,114,346,114,346,120,313,120"/>
 </map>

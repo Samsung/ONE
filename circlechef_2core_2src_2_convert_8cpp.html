@@ -142,7 +142,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   50</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown activation&quot;</span>};</div>
 <div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="core_2src_2_op_2_b_c_q_fully_connected_8cpp_source.html#l00021">BCQFullyConnectedChef::value()</a>, <a class="el" href="core_2src_2_op_2_g_r_u_8cpp_source.html#l00021">GRUChef::value()</a>, and <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_instance_norm_8cpp_source.html#l00021">InstanceNormChef::value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2_op_2_b_c_q_fully_connected_8cpp_source.html#l00021">BCQFullyConnectedChef::value()</a>, <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_fully_connected_8cpp_source.html#l00022">FullyConnectedChef::value()</a>, <a class="el" href="core_2src_2_op_2_g_r_u_8cpp_source.html#l00021">GRUChef::value()</a>, and <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_instance_norm_8cpp_source.html#l00021">InstanceNormChef::value()</a>.</p>
 
 </div>
 </div>
@@ -201,22 +201,22 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>  {</div>
 <div class="line"><span class="lineno">   57</span>    <span class="keywordflow">case</span> circlechef::FLOAT32:</div>
 <div class="line"><span class="lineno">   58</span>      <span class="keywordflow">return</span> circle::TensorType_FLOAT32;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> circlechef::INT32:</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">return</span> circle::TensorType_INT32;</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> circlechef::UINT8:</div>
-<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> circle::TensorType_UINT8;</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::UINT4:</div>
-<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_UINT4;</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
-<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
-<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">case</span> circlechef::INT4:</div>
-<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">return</span> circle::TensorType_INT4;</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> circlechef::INT64:</div>
+<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">return</span> circle::TensorType_INT64;</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> circlechef::INT32:</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> circle::TensorType_INT32;</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">case</span> circlechef::INT16:</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> circle::TensorType_INT16;</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">case</span> circlechef::INT4:</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle::TensorType_INT4;</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">case</span> circlechef::UINT8:</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> circle::TensorType_UINT8;</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> circlechef::UINT4:</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> circle::TensorType_UINT4;</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">case</span> circlechef::STRING:</div>
+<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
 <div class="line"><span class="lineno">   75</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">   76</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   77</span>  }</div>

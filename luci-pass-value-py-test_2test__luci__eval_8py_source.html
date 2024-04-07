@@ -190,40 +190,35 @@ $(document).ready(function(){initNavTree('luci-pass-value-py-test_2test__luci__e
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">if</span> full_signatures_outputs_remap != <span class="keywordtype">None</span>:</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            output_tensor = full_signatures_outputs_remap[idx]</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        intp_output_data = interpreter.get_tensor(output_tensor)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.uint8:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        err_msg = <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keywordflow">if</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.uint8:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32), err_msg</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                luci_output_data, intp_output_data, rtol=0, atol=0), err_msg</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
 </div>
-<div class="foldopen" id="foldopen00122" data-start="" data-end="">
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="namespacetest__luci__eval.html#a8535a6ca849d5bb86624649fc1abcebb">  122</a></span><span class="keyword">def </span><a class="code hl_namespace" href="namespacetest__luci__eval.html">test_luci_eval</a>(test_name: str, tflite_dir: str, circle_dir: str,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                   eval_driver_path: str):</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <a class="code hl_function" href="namespacetest__luci__eval.html#ac7f24712340d3488b638d8267c5f6328">luci_eval_verify</a>(test_name, tflite_dir, circle_dir, eval_driver_path)</div>
+<div class="foldopen" id="foldopen00117" data-start="" data-end="">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="namespacetest__luci__eval.html#a8535a6ca849d5bb86624649fc1abcebb">  117</a></span><span class="keyword">def </span><a class="code hl_namespace" href="namespacetest__luci__eval.html">test_luci_eval</a>(test_name: str, tflite_dir: str, circle_dir: str,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                   eval_driver_path: str):</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <a class="code hl_function" href="namespacetest__luci__eval.html#ac7f24712340d3488b638d8267c5f6328">luci_eval_verify</a>(test_name, tflite_dir, circle_dir, eval_driver_path)</div>
 </div>
 <div class="ttc" id="anamespacetest__luci__eval_html"><div class="ttname"><a href="namespacetest__luci__eval.html">test_luci_eval</a></div><div class="ttdef"><b>Definition</b> <a href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00001">test_luci_eval.py:1</a></div></div>
 <div class="ttc" id="anamespacetest__luci__eval_html_ac7f24712340d3488b638d8267c5f6328"><div class="ttname"><a href="namespacetest__luci__eval.html#ac7f24712340d3488b638d8267c5f6328">test_luci_eval.luci_eval_verify</a></div><div class="ttdeci">luci_eval_verify(test_name, tflite_dir, circle_dir, eval_driver, rtolf32=1e-5, atolf32=1e-5)</div><div class="ttdef"><b>Definition</b> <a href="luci-pass-value-py-test_2test__luci__eval_8py_source.html#l00007">test_luci_eval.py:12</a></div></div>

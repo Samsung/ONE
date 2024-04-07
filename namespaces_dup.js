@@ -83,7 +83,11 @@ var namespaces_dup =
     [ "compat", "namespacecompat.html", null ],
     [ "Concatenation_000", "namespace_concatenation__000.html", "namespace_concatenation__000" ],
     [ "conftest", "namespaceconftest.html", [
+      [ "copy_circle_model", "namespaceconftest.html#a75d62488b4b7d872c21a4b73a41e0a4a", null ],
+      [ "copy_if_changed", "namespaceconftest.html#a0e47fc8f1e3bdd68017a9ad7cb295761", null ],
+      [ "copy_ref_files", "namespaceconftest.html#a9efc4c6a0c69ad25f607736492181581", null ],
       [ "extract_test_args", "namespaceconftest.html#af477898ec1680a5189af3ab5eca4fdcb", null ],
+      [ "prepare_materials", "namespaceconftest.html#a7e2da5bd192340344f3a033e4adc7aa8", null ],
       [ "pytest_addoption", "namespaceconftest.html#a61c7cced37dffae2b2c6edf883c44c12", null ],
       [ "pytest_generate_tests", "namespaceconftest.html#a4c9f38a95a92b4f580fb13c0e6b58373", null ]
     ] ],
@@ -612,11 +616,15 @@ var namespaces_dup =
       [ "test_circle_part_value", "namespacetest__circle__part__value.html#afd7b9cb962f4a7110c210e3b56c5bece", null ]
     ] ],
     [ "test_luci_eval", "namespacetest__luci__eval.html", [
-      [ "luci_eval_verify", "namespacetest__luci__eval.html#a07385bfad9fcb7dfe8ffa866ca107435", null ],
+      [ "luci_eval_verify", "namespacetest__luci__eval.html#a031d8185f1be6e03a3fbda989a7b9070", null ],
       [ "luci_eval_verify", "namespacetest__luci__eval.html#ac7f24712340d3488b638d8267c5f6328", null ],
-      [ "test_luci_eval", "namespacetest__luci__eval.html#a70c3a5a475ab62279ba635beb8e86e5f", null ],
+      [ "recover_fromfile", "namespacetest__luci__eval.html#a033016b5ca8d85015c56f67706e07fe8", null ],
+      [ "recover_inputs", "namespacetest__luci__eval.html#a869bc35a187205c11afbee3023ed1373", null ],
+      [ "recover_outputs", "namespacetest__luci__eval.html#ab58859b5bab4a4e3b95e52e0d030e07a", null ],
+      [ "save_binary_inputs", "namespacetest__luci__eval.html#a640d96b5d00ab853c185725ffe4a140b", null ],
+      [ "test_luci_eval", "namespacetest__luci__eval.html#a9a927666210565341f0024ca281c765e", null ],
       [ "test_luci_eval", "namespacetest__luci__eval.html#a8535a6ca849d5bb86624649fc1abcebb", null ],
-      [ "test_luci_eval_tol", "namespacetest__luci__eval.html#a12d14b923ce3004377e1bca201528303", null ]
+      [ "test_luci_eval_tol", "namespacetest__luci__eval.html#a6ccfad5e1f12f70feb5c2e391921a5da", null ]
     ] ],
     [ "test_luci_eval_ref", "namespacetest__luci__eval__ref.html", [
       [ "dtype_from_file", "namespacetest__luci__eval__ref.html#adbeee6f85a441cd94f9c77e473d89fa8", null ],

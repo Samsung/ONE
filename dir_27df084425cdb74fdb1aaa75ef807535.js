@@ -5,5 +5,6 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALFullyConnected.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_fully_connected_8h.html", null ],
     [ "PALMaxPool2D.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_max_pool2_d_8h.html", "onert-micro_2include_2pal_2mcu_2_p_a_l_max_pool2_d_8h" ],
     [ "PALMul.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_mul_8h.html", null ],
+    [ "PALSoftmax.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_softmax_8h.html", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_softmax_8h" ],
     [ "PALSub.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_sub_8h.html", null ]
 ];
