@@ -37,6 +37,25 @@ struct LayerInfo
   QuantizationGranularity granularity;
 };
 
+enum struct QuantizationAlgorithmType
+{
+  Base = 0,
+  MinimumMSE = 1
+};
+
+struct QuantizationAlgorithmParams
+{
+  QuantizationAlgorithmType type = QuantizationAlgorithmType::Base;
+
+  // Params of Golden-section search algorithm
+  // Number of iterations of Golden-section search
+  size_t iterations_num = 100;
+
+  // scaling_factor_max = scaling_factor_base * (1 + range)
+  // scaling_factor_min = scaling_factor_base * (1 - range)
+  float range = 0.1;
+};
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_PARAMETERS_H__
