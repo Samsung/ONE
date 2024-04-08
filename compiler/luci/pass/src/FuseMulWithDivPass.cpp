@@ -98,10 +98,14 @@ luci::CircleConst *create_mul_const_with_new_value(luci::CircleConst *mul_const,
  *          where Scalar_new_Div_Const = Scalar_Div_Const / Scalar_Mul_Const
  *
  **/
-bool fuse_mul_with_div(luci::CircleDiv *div)
+bool fuse_mul_with_div_to_div(luci::CircleDiv *div)
 {
-  auto div_const = dynamic_cast<luci::CircleConst *>(div->x());
-  if (not div_const)
+  if (div->fusedActivationFunction() != luci::FusedActFunc::NONE)
+    return false;
+
+  luci::CircleConst *div_const = nullptr;
+  luci::CircleMul *mul = nullptr;
+  if (not luci::fill(&div_const, &mul).with_args_of(div))
     return false;
 
   if (div_const->dtype() != loco::DataType::FLOAT32)
@@ -110,12 +114,12 @@ bool fuse_mul_with_div(luci::CircleDiv *div)
   if (div_const->size<loco::DataType::FLOAT32>() != 1)
     return false;
 
-  auto mul = dynamic_cast<luci::CircleMul *>(div->y());
-  if (not mul)
+  if (mul->fusedActivationFunction() != luci::FusedActFunc::NONE)
     return false;
 
-  auto mul_const = dynamic_cast<luci::CircleConst *>(mul->y());
-  if (not mul_const)
+  luci::CircleNode *mul_input = nullptr;
+  luci::CircleConst *mul_const = nullptr;
+  if (not luci::fill(&mul_input, &mul_const).with_commutative_args_of(mul))
     return false;
 
   if (mul_const->dtype() != loco::DataType::FLOAT32)
@@ -133,10 +137,14 @@ bool fuse_mul_with_div(luci::CircleDiv *div)
   const auto new_value = div_value / mul_value;
 
   auto new_div_const = create_div_const_with_new_value(div_const, mul_const, new_value);
+  auto new_div = div->graph()->nodes()->create<luci::CircleDiv>();
+  new_div->fusedActivationFunction(luci::FusedActFunc::NONE);
+  new_div->x(new_div_const);
+  new_div->y(mul_input);
+  new_div->name(div->name());
+  luci::add_origin(new_div, luci::composite_origin({luci::get_origin(div), luci::get_origin(mul)}));
 
-  div->x(new_div_const);
-
-  div->y(mul->x());
+  replace(div).with(new_div);
 
   return true;
 }
@@ -225,7 +233,7 @@ bool FuseMulWithDivPass::run(loco::Graph *g)
     if (not div)
       continue;
 
-    if (fuse_mul_with_div(div))
+    if (fuse_mul_with_div_to_div(div))
       changed = true;
 
     if (fuse_mul_with_div_to_mul(div))
