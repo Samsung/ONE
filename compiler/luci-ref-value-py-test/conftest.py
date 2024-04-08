@@ -13,6 +13,7 @@ def pytest_addoption(parser):
     parser.addoption("--test_list", action="store", help="Path to test list")
     parser.addoption("--artifacts", action="store", help="Path to test artifacts")
     parser.addoption("--tflrecipe", action="store", help="Path to tfl recipies")
+    parser.addoption("--circlerecipe", action="store", help="Path to circle recipies")
     parser.addoption("--binary", action="store", help="Path to test binary")
     parser.addoption(
         "--luci_eval_driver", action="store", help="Path to luci eval driver")
@@ -53,12 +54,20 @@ def copy_circle_model(model_src, model_dst):
     copy_if_changed(model_src, model_dst)
 
 
-def prepare_materials(test_name, tflrecipe_path, binary_path, artifacts_path):
-    ref_input_src = os.path.join(tflrecipe_path, test_name, 'ref.input')
+def prepare_materials(test_name, tflrecipe_path, circlerecipe_path, binary_path,
+                      artifacts_path):
+    # tfl? or circle?
+    recipe_path = tflrecipe_path
+    # check with 'test.recipe' file as 'ref.input?' can be absent for no input model
+    test_recipe = os.path.join(recipe_path, test_name, 'test.recipe')
+    if (not os.path.isfile(test_recipe)):
+        recipe_path = circlerecipe_path
+
+    ref_input_src = os.path.join(recipe_path, test_name, 'ref.input')
     ref_input_dst = os.path.join(binary_path, test_name + '.ref.input')
     copy_ref_files(ref_input_src, ref_input_dst)
 
-    ref_input_src = os.path.join(tflrecipe_path, test_name, 'ref.output')
+    ref_input_src = os.path.join(recipe_path, test_name, 'ref.output')
     ref_input_dst = os.path.join(binary_path, test_name + '.ref.output')
     copy_ref_files(ref_input_src, ref_input_dst)
 
@@ -71,6 +80,7 @@ def pytest_generate_tests(metafunc):
     list_path = metafunc.config.getoption('test_list')
     artifacts_path = metafunc.config.getoption('artifacts')
     tflrecipe_path = metafunc.config.getoption('tflrecipe')
+    circlerecipe_path = metafunc.config.getoption('circlerecipe')
     binary_path = metafunc.config.getoption('binary')
     eval_driver_path = metafunc.config.getoption('luci_eval_driver')
     if list_path is None:
@@ -92,10 +102,12 @@ def pytest_generate_tests(metafunc):
 
         # copy circle file to binary
         for test_item in tests_default_tol:
-            prepare_materials(test_item[0], tflrecipe_path, binary_path, artifacts_path)
+            prepare_materials(test_item[0], tflrecipe_path, circlerecipe_path,
+                              binary_path, artifacts_path)
 
         for test_item in tests_with_tol:
-            prepare_materials(test_item[0], tflrecipe_path, binary_path, artifacts_path)
+            prepare_materials(test_item[0], tflrecipe_path, circlerecipe_path,
+                              binary_path, artifacts_path)
 
     if 'default_test_name' in metafunc.fixturenames:
         metafunc.parametrize('default_test_name,binary_path,eval_driver_path',

@@ -1,2 +1,5 @@
 # test with given reference data
 eval(FullyConnected_I4_002 0.1 0.1)
+
+# circle recipes
+eval(CircleFullyConnected_U4_002 0.1 0.1)
