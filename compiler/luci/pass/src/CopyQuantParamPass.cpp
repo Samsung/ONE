@@ -71,6 +71,12 @@ bool CopyQuantParamPass::run(loco::Graph *g)
 
     copy_quantparam(nodes.src, nodes.dst);
 
+    if (auto output = dynamic_cast<luci::CircleOutput *>(nodes.dst))
+    {
+      auto from_node = loco::must_cast<luci::CircleNode *>(output->from());
+      copy_quantparam(output, from_node);
+    }
+
     INFO(l) << "Quantparam of " << src << " is copied to " << dst << std::endl;
   }
 
