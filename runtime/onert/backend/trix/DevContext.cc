@@ -31,7 +31,7 @@ namespace trix
 // deamon, others except the context roles should be seperated.
 DevContext::DevContext() : _dev_handles{}, _model_ids{}, _meta_map{}
 {
-  auto dev_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);
+  auto dev_count = getnumNPUdeviceByType(NPUCOND_TRIV24_CONN_SOCIP);
   if (dev_count <= 0)
   {
     throw std::runtime_error("Unable to find TRIX NPU device");
@@ -41,7 +41,7 @@ DevContext::DevContext() : _dev_handles{}, _model_ids{}, _meta_map{}
   for (int i = 0; i < dev_count; ++i)
   {
     npudev_h handle;
-    if (getNPUdeviceByType(&handle, NPUCOND_TRIV2_CONN_SOCIP, i) < 0)
+    if (getNPUdeviceByType(&handle, NPUCOND_TRIV24_CONN_SOCIP, i) < 0)
     {
       throw std::runtime_error("Failed to get TRIX NPU device handle");
     }
