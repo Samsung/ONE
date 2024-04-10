@@ -18,7 +18,6 @@
 #ifndef ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_COMMON_H
 #define ONERT_MICRO_EXECUTE_PAL_MAX_POOL_2D_COMMON_H
 
-#include "Params.h"
 #include "PALUtils.h"
 
 #include "core/OMKernelData.h"
