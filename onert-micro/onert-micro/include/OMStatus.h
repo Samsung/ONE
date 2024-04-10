@@ -31,7 +31,6 @@ enum OMStatus
   ModelNotImport,
   FailedCheckCondition,
   NoQuantization,
-  UnsupportedQuantizationType,
   UnsupportedDynamicShapeCase,
 };
 

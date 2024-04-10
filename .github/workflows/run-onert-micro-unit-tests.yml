@@ -43,5 +43,5 @@ jobs:
           mkdir build
           cd build
           cmake ../infra/onert-micro/ -DENABLE_ONERT_MICRO_TEST=1 -DENABLE_TEST=1
-          make -j$(nproc) luci_interpreter_kernels_micro_test
-          ./onert-micro/eval-driver/luci-interpreter/src/kernels/luci_interpreter_kernels_micro_test
+          make -j$(nproc) onert_micro_execute_kernels_test
+          ./onert-micro/eval-driver/onert-micro/src/execute/onert_micro_execute_kernels_test
