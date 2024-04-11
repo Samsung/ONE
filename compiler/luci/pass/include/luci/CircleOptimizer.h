@@ -63,6 +63,7 @@ public:
       FoldGather,
       FoldShape,
       FoldSparseToDense,
+      FoldStridedSlice,
       ForwardReshapeToUnaryOp,
       ForwardTransposeOp,
       SparsifyTensorPass,
