@@ -978,8 +978,8 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
       const auto *shape_buf = reinterpret_cast<const int32_t *>(shape.data()->base());
       assert(shape_buf);
 
-      ir::Shape new_shape = shape_inference::inferReshapeShape(
-        shape_buf, shape.shape().num_elements(), input.shape().num_elements());
+      ir::Shape new_shape =
+        shape_inference::inferReshapeShape(input.shape(), shape_buf, shape.shape().num_elements());
 
       // if shape is from Const, TFLC put the shape of output into tensor
       if (new_shape != output.shape())
@@ -1000,7 +1000,7 @@ void StaticShapeInferer::visit(const ir::operation::Reshape &op)
     // Let's check the new_shape option
     auto shape = op.param().new_shape;
     ir::Shape new_shape =
-      shape_inference::inferReshapeShape(shape.data(), shape.size(), input.shape().num_elements());
+      shape_inference::inferReshapeShape(input.shape(), shape.data(), shape.size());
 
     if (new_shape != output.shape())
     {

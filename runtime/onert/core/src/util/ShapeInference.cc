@@ -604,11 +604,12 @@ template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delt
 template ir::Shape inferRangeShape(int start_val, int limit_val, int delta_val);
 template ir::Shape inferRangeShape(float start_val, float limit_val, float delta_val);
 
-ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_elements,
-                            const size_t total_num_elements)
+ir::Shape inferReshapeShape(const ir::Shape &input_shape, const int32_t *shape_buf,
+                            const int32_t shape_num_elements)
 {
   ir::Shape ret(shape_num_elements);
   int32_t flatten_dim = ir::Shape::kUnspecifiedDim;
+  auto total_num_elements = input_shape.num_elements();
   for (int32_t i = 0; i < shape_num_elements; ++i)
   {
     if (shape_buf[i] < 0)
@@ -628,7 +629,15 @@ ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_el
 
   // Check reshapable
   if (total_num_elements != static_cast<size_t>(ret.num_elements()))
-    throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
+  {
+    // Multi batch case
+    // TODO Handle multi batch case more precisely on runtime level
+    if ((ret.dim(0) == 1) &&
+        (total_num_elements == static_cast<size_t>(ret.num_elements() * input_shape.dim(0))))
+      ret.dim(0) = input_shape.dim(0);
+    else
+      throw std::runtime_error("Reshape: 2nd param is not compatible with the shape of input");
+  }
 
   return ret;
 }
