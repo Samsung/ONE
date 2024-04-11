@@ -35,6 +35,10 @@ namespace backend
 {
 namespace train
 {
+namespace ops
+{
+class GradientApplier;
+}
 
 // TODO Unify TensorRegistry
 class KernelGenerator : public backend::train::KernelGeneratorBase
@@ -60,6 +64,8 @@ public:
   void visit(const ir::train::operation::Softmax &node) override;
 
 private:
+  std::unique_ptr<ops::GradientApplier> generateGradientApplier(const IPortableTensor *gradient,
+                                                                ITrainableTensor *trainable);
   IPortableTensor *getBackPropIn(const ir::OperationIndex &op_index,
                                  const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
@@ -71,6 +77,7 @@ private:
   const exec::train::optimizer::Optimizer *_optimizer;
   std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
   std::unordered_map<const ir::IOperation *, ir::OperationIndex> _node_to_idx;
+  std::unordered_set<ITrainableTensor *> _trainable_tensor_set;
 };
 
 } // namespace train

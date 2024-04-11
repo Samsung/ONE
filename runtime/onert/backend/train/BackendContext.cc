@@ -74,11 +74,6 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // NOTE This means that gradient tensors for weights are never shared for now. If this happens,
-    // we need to carefully adjust updating gradient tensors like backprop tensors.
-    if (obj.isConstant() && obj.getUses().size() > 1)
-      throw std::runtime_error("Shared constant tensor is not supported yet");
-
     tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(obj),
                                                ir::Layout::NHWC);
   });

@@ -73,15 +73,6 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
   }
 }
 
-std::unique_ptr<ops::GradientApplier>
-generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
-                        const IPortableTensor *gradient, ITrainableTensor *trainable)
-{
-  auto update_fn = std::make_unique<ops::GradientApplier>();
-  update_fn->configure(optimizer, gradient, trainable);
-  return update_fn;
-}
-
 std::unique_ptr<ops::BackPropAccumulator>
 generateBackPropAccumulator(const IPortableTensor *disposable, BackPropTensor *gradient)
 {
@@ -145,7 +136,7 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const exec::train::optimizer::Optimizer *optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
-    _update_funcs{}
+    _update_funcs{}, _trainable_tensor_set{}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &idx, const onert::ir::IOperation &op) {
@@ -231,8 +222,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
 
   // Generate GradientApplier
   if (bias_tensor)
-    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
-  _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));
+    _update_funcs.emplace_back(generateGradientApplier(bias_grad_tensor, bias_tensor));
+  _update_funcs.emplace_back(generateGradientApplier(ker_grad_tensor, ker_tensor));
 }
 
 void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
@@ -282,8 +273,8 @@ void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
 
   // Generate GradientApplier
   if (bias_tensor)
-    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
-  _update_funcs.emplace_back(generateGradientApplier(_optimizer, ker_grad_tensor, ker_tensor));
+    _update_funcs.emplace_back(generateGradientApplier(bias_grad_tensor, bias_tensor));
+  _update_funcs.emplace_back(generateGradientApplier(ker_grad_tensor, ker_tensor));
 }
 
 void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &node)
@@ -345,9 +336,8 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
 
   // Generate GradientAppliers
   if (bias_tensor)
-    _update_funcs.emplace_back(generateGradientApplier(_optimizer, bias_grad_tensor, bias_tensor));
-  _update_funcs.emplace_back(
-    generateGradientApplier(_optimizer, weights_grad_tensor, weights_tensor));
+    _update_funcs.emplace_back(generateGradientApplier(bias_grad_tensor, bias_tensor));
+  _update_funcs.emplace_back(generateGradientApplier(weights_grad_tensor, weights_tensor));
 }
 
 void KernelGenerator::visit(const ir::train::operation::Loss &node)
@@ -551,6 +541,23 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
 
   fn->configure(input_tensor, beta, output_tensor, input_back_prop_tensor, output_back_prop_tensor);
   _return_fn = std::move(fn);
+}
+
+std::unique_ptr<ops::GradientApplier>
+KernelGenerator::generateGradientApplier(const IPortableTensor *gradient,
+                                         ITrainableTensor *trainable)
+{
+  // NOTE This means that gradient tensors for weights are never shared for now. If this happens,
+  // we need to carefully adjust updating gradient tensors like backprop tensors.
+  // TODO Consider to introduce use/def into ITrainableTensor to use that info in backend
+  //      and replace using _trainable_tensor_set with it like the below code
+  //      `if (trainable.getUses().size() > 1)`
+  if (_trainable_tensor_set.find(trainable) != _trainable_tensor_set.end())
+    throw std::runtime_error("Shared trainable tensor is not supported yet");
+
+  auto update_fn = std::make_unique<ops::GradientApplier>();
+  update_fn->configure(_optimizer, gradient, trainable);
+  return update_fn;
 }
 
 IPortableTensor *KernelGenerator::getBackPropIn(const ir::OperationIndex &op_index,
