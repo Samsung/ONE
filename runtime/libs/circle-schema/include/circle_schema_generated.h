@@ -495,6 +495,9 @@ struct DilateOptionsBuilder;
 struct ReduceWindowOptions;
 struct ReduceWindowOptionsBuilder;
 
+struct GRUOptions;
+struct GRUOptionsBuilder;
+
 struct BCQGatherOptions;
 struct BCQGatherOptionsBuilder;
 
@@ -530,6 +533,7 @@ struct ModelBuilder;
 
 enum TensorType : int8_t
 {
+  TensorType_UINT4 = -1,
   TensorType_FLOAT32 = 0,
   TensorType_FLOAT16 = 1,
   TensorType_INT32 = 2,
@@ -548,35 +552,35 @@ enum TensorType : int8_t
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
   TensorType_INT4 = 17,
-  TensorType_MIN = TensorType_FLOAT32,
+  TensorType_MIN = TensorType_UINT4,
   TensorType_MAX = TensorType_INT4
 };
 
-inline const TensorType (&EnumValuesTensorType())[18]
+inline const TensorType (&EnumValuesTensorType())[19]
 {
   static const TensorType values[] = {
-    TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,   TensorType_UINT8,
-    TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,    TensorType_INT16,
-    TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64, TensorType_COMPLEX128,
-    TensorType_UINT64,    TensorType_RESOURCE, TensorType_VARIANT, TensorType_UINT32,
-    TensorType_UINT16,    TensorType_INT4};
+    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,
+    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,
+    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64,
+    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE, TensorType_VARIANT,
+    TensorType_UINT32,     TensorType_UINT16,    TensorType_INT4};
   return values;
 }
 
 inline const char *const *EnumNamesTensorType()
 {
-  static const char *const names[19] = {"FLOAT32", "FLOAT16",    "INT32",  "UINT8",     "INT64",
-                                        "STRING",  "BOOL",       "INT16",  "COMPLEX64", "INT8",
-                                        "FLOAT64", "COMPLEX128", "UINT64", "RESOURCE",  "VARIANT",
-                                        "UINT32",  "UINT16",     "INT4",   nullptr};
+  static const char *const names[20] = {"UINT4",   "FLOAT32", "FLOAT16",    "INT32",  "UINT8",
+                                        "INT64",   "STRING",  "BOOL",       "INT16",  "COMPLEX64",
+                                        "INT8",    "FLOAT64", "COMPLEX128", "UINT64", "RESOURCE",
+                                        "VARIANT", "UINT32",  "UINT16",     "INT4",   nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (::flatbuffers::IsOutRange(e, TensorType_FLOAT32, TensorType_INT4))
+  if (::flatbuffers::IsOutRange(e, TensorType_UINT4, TensorType_INT4))
     return "";
-  const size_t index = static_cast<size_t>(e);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_UINT4);
   return EnumNamesTensorType()[index];
 }
 
@@ -716,6 +720,7 @@ bool VerifySparseIndexVectorVector(::flatbuffers::Verifier &verifier,
 
 enum BuiltinOperator : int32_t
 {
+  BuiltinOperator_GRU = -5,
   BuiltinOperator_BCQ_GATHER = -4,
   BuiltinOperator_BCQ_FULLY_CONNECTED = -3,
   BuiltinOperator_INSTANCE_NORM = -2,
@@ -925,13 +930,14 @@ enum BuiltinOperator : int32_t
   BuiltinOperator_DILATE = 203,
   BuiltinOperator_STABLEHLO_RNG_BIT_GENERATOR = 204,
   BuiltinOperator_REDUCE_WINDOW = 205,
-  BuiltinOperator_MIN = BuiltinOperator_BCQ_GATHER,
+  BuiltinOperator_MIN = BuiltinOperator_GRU,
   BuiltinOperator_MAX = BuiltinOperator_REDUCE_WINDOW
 };
 
-inline const BuiltinOperator (&EnumValuesBuiltinOperator())[209]
+inline const BuiltinOperator (&EnumValuesBuiltinOperator())[210]
 {
-  static const BuiltinOperator values[] = {BuiltinOperator_BCQ_GATHER,
+  static const BuiltinOperator values[] = {BuiltinOperator_GRU,
+                                           BuiltinOperator_BCQ_GATHER,
                                            BuiltinOperator_BCQ_FULLY_CONNECTED,
                                            BuiltinOperator_INSTANCE_NORM,
                                            BuiltinOperator_ADD,
@@ -1145,7 +1151,8 @@ inline const BuiltinOperator (&EnumValuesBuiltinOperator())[209]
 
 inline const char *const *EnumNamesBuiltinOperator()
 {
-  static const char *const names[211] = {"BCQ_GATHER",
+  static const char *const names[212] = {"GRU",
+                                         "BCQ_GATHER",
                                          "BCQ_FULLY_CONNECTED",
                                          "INSTANCE_NORM",
                                          "",
@@ -1361,9 +1368,9 @@ inline const char *const *EnumNamesBuiltinOperator()
 
 inline const char *EnumNameBuiltinOperator(BuiltinOperator e)
 {
-  if (::flatbuffers::IsOutRange(e, BuiltinOperator_BCQ_GATHER, BuiltinOperator_REDUCE_WINDOW))
+  if (::flatbuffers::IsOutRange(e, BuiltinOperator_GRU, BuiltinOperator_REDUCE_WINDOW))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(BuiltinOperator_BCQ_GATHER);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(BuiltinOperator_GRU);
   return EnumNamesBuiltinOperator()[index];
 }
 
@@ -1496,6 +1503,7 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_BitcastOptions = 124,
   BuiltinOptions_BitwiseXorOptions = 125,
   BuiltinOptions_RightShiftOptions = 126,
+  BuiltinOptions_GRUOptions = 251,
   BuiltinOptions_BCQGatherOptions = 252,
   BuiltinOptions_BCQFullyConnectedOptions = 253,
   BuiltinOptions_InstanceNormOptions = 254,
@@ -1503,7 +1511,7 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_MAX = BuiltinOptions_InstanceNormOptions
 };
 
-inline const BuiltinOptions (&EnumValuesBuiltinOptions())[130]
+inline const BuiltinOptions (&EnumValuesBuiltinOptions())[131]
 {
   static const BuiltinOptions values[] = {BuiltinOptions_NONE,
                                           BuiltinOptions_Conv2DOptions,
@@ -1632,6 +1640,7 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[130]
                                           BuiltinOptions_BitcastOptions,
                                           BuiltinOptions_BitwiseXorOptions,
                                           BuiltinOptions_RightShiftOptions,
+                                          BuiltinOptions_GRUOptions,
                                           BuiltinOptions_BCQGatherOptions,
                                           BuiltinOptions_BCQFullyConnectedOptions,
                                           BuiltinOptions_InstanceNormOptions};
@@ -1891,7 +1900,7 @@ inline const char *const *EnumNamesBuiltinOptions()
                                          "",
                                          "",
                                          "",
-                                         "",
+                                         "GRUOptions",
                                          "BCQGatherOptions",
                                          "BCQFullyConnectedOptions",
                                          "InstanceNormOptions",
@@ -2540,6 +2549,11 @@ template <> struct BuiltinOptionsTraits<circle::BitwiseXorOptions>
 template <> struct BuiltinOptionsTraits<circle::RightShiftOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_RightShiftOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::GRUOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_GRUOptions;
 };
 
 template <> struct BuiltinOptionsTraits<circle::BCQGatherOptions>
@@ -11652,6 +11666,74 @@ inline ::flatbuffers::Offset<ReduceWindowOptions> CreateReduceWindowOptions(
   return builder_.Finish();
 }
 
+struct GRUOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
+{
+  typedef GRUOptionsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_FUSED_ACTIVATION_FUNCTION = 4,
+    VT_RETURN_SEQUENCES = 6,
+    VT_TIME_MAJOR = 8
+  };
+  circle::ActivationFunctionType fused_activation_function() const
+  {
+    return static_cast<circle::ActivationFunctionType>(
+      GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
+  }
+  bool return_sequences() const { return GetField<uint8_t>(VT_RETURN_SEQUENCES, 0) != 0; }
+  bool time_major() const { return GetField<uint8_t>(VT_TIME_MAJOR, 0) != 0; }
+  bool Verify(::flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int8_t>(verifier, VT_FUSED_ACTIVATION_FUNCTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_RETURN_SEQUENCES, 1) &&
+           VerifyField<uint8_t>(verifier, VT_TIME_MAJOR, 1) && verifier.EndTable();
+  }
+};
+
+struct GRUOptionsBuilder
+{
+  typedef GRUOptions Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_fused_activation_function(circle::ActivationFunctionType fused_activation_function)
+  {
+    fbb_.AddElement<int8_t>(GRUOptions::VT_FUSED_ACTIVATION_FUNCTION,
+                            static_cast<int8_t>(fused_activation_function), 0);
+  }
+  void add_return_sequences(bool return_sequences)
+  {
+    fbb_.AddElement<uint8_t>(GRUOptions::VT_RETURN_SEQUENCES,
+                             static_cast<uint8_t>(return_sequences), 0);
+  }
+  void add_time_major(bool time_major)
+  {
+    fbb_.AddElement<uint8_t>(GRUOptions::VT_TIME_MAJOR, static_cast<uint8_t>(time_major), 0);
+  }
+  explicit GRUOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GRUOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GRUOptions>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GRUOptions> CreateGRUOptions(
+  ::flatbuffers::FlatBufferBuilder &_fbb,
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  bool return_sequences = false, bool time_major = false)
+{
+  GRUOptionsBuilder builder_(_fbb);
+  builder_.add_time_major(time_major);
+  builder_.add_return_sequences(return_sequences);
+  builder_.add_fused_activation_function(fused_activation_function);
+  return builder_.Finish();
+}
+
 struct BCQGatherOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
 {
   typedef BCQGatherOptionsBuilder Builder;
@@ -12700,6 +12782,12 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
              ? static_cast<const circle::RightShiftOptions *>(builtin_options())
              : nullptr;
   }
+  const circle::GRUOptions *builtin_options_as_GRUOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_GRUOptions
+             ? static_cast<const circle::GRUOptions *>(builtin_options())
+             : nullptr;
+  }
   const circle::BCQGatherOptions *builtin_options_as_BCQGatherOptions() const
   {
     return builtin_options_type() == circle::BuiltinOptions_BCQGatherOptions
@@ -13710,6 +13798,12 @@ inline const circle::RightShiftOptions *
 Operator::builtin_options_as<circle::RightShiftOptions>() const
 {
   return builtin_options_as_RightShiftOptions();
+}
+
+template <>
+inline const circle::GRUOptions *Operator::builtin_options_as<circle::GRUOptions>() const
+{
+  return builtin_options_as_GRUOptions();
 }
 
 template <>
@@ -15310,6 +15404,11 @@ inline bool VerifyBuiltinOptions(::flatbuffers::Verifier &verifier, const void *
     case BuiltinOptions_RightShiftOptions:
     {
       auto ptr = reinterpret_cast<const circle::RightShiftOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_GRUOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::GRUOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case BuiltinOptions_BCQGatherOptions:
