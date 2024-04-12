@@ -87,8 +87,8 @@ ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D:
 
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
 
-ir::Shape inferReshapeShape(const int32_t *shape_buf, const int32_t shape_num_elements,
-                            const size_t total_num_elements);
+ir::Shape inferReshapeShape(const ir::Shape &input_shape, const int32_t *shape_buf,
+                            const int32_t shape_num_elements);
 
 ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> &axes,
                            bool keep_dims);
