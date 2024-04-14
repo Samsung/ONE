@@ -153,8 +153,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ab469fe1fd407f0eaeb48415cec5de99d" id="r_ab469fe1fd407f0eaeb48415cec5de99d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab469fe1fd407f0eaeb48415cec5de99d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1shape__inference.html#ab469fe1fd407f0eaeb48415cec5de99d">inferRangeShape</a> (T start_val, T limit_val, T delta_val)</td></tr>
 <tr class="separator:ab469fe1fd407f0eaeb48415cec5de99d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ad2ed111272459a82784bf8a382db38" id="r_a0ad2ed111272459a82784bf8a382db38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38">inferReshapeShape</a> (const int32_t *shape_buf, const int32_t shape_num_elements, const size_t total_num_elements)</td></tr>
-<tr class="separator:a0ad2ed111272459a82784bf8a382db38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881c6c24af01fe9a0d87e65c51698e43" id="r_a881c6c24af01fe9a0d87e65c51698e43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1shape__inference.html#a881c6c24af01fe9a0d87e65c51698e43">inferReshapeShape</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_shape, const int32_t *shape_buf, const int32_t shape_num_elements)</td></tr>
+<tr class="separator:a881c6c24af01fe9a0d87e65c51698e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e87ee4364b92bbf36d2dfd8c90ae18b" id="r_a2e87ee4364b92bbf36d2dfd8c90ae18b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1shape__inference.html#a2e87ee4364b92bbf36d2dfd8c90ae18b">inferReduceShape</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_shape, const std::vector&lt; int &gt; &amp;axes, bool keep_dims)</td></tr>
 <tr class="separator:a2e87ee4364b92bbf36d2dfd8c90ae18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a655599a3999fe85c31d2f9485afe445b" id="r_a655599a3999fe85c31d2f9485afe445b"><td class="memTemplParams" colspan="2">template&lt;float * &gt; </td></tr>
@@ -283,32 +283,32 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00872">872</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  875</span>{</div>
-<div class="line"><span class="lineno">  876</span>  <a class="code hl_struct" href="structonert_1_1shape__inference_1_1_strided_slice_params.html">StridedSliceParams</a> op_params;</div>
-<div class="line"><span class="lineno">  877</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#addeaea4a95a1958be69fa49304816ad2">start_indices_count</a> = rank;</div>
-<div class="line"><span class="lineno">  878</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a83cd06acc0e9bd137c4f7c8f99362afe">stop_indices_count</a> = rank;</div>
-<div class="line"><span class="lineno">  879</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a3efd84c8b01caf453e1b3e2e7760b583">strides_count</a> = rank;</div>
-<div class="line"><span class="lineno">  880</span> </div>
-<div class="line"><span class="lineno">  881</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a3efd84c8b01caf453e1b3e2e7760b583">strides_count</a>; ++i)</div>
-<div class="line"><span class="lineno">  882</span>  {</div>
-<div class="line"><span class="lineno">  883</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#abe94b65b6fa202b385624295929570a0">start_indices</a>[i] = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>[i];</div>
-<div class="line"><span class="lineno">  884</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a64fdd2d217e0c345d366582a5cc16507">stop_indices</a>[i] = end[i];</div>
-<div class="line"><span class="lineno">  885</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[i] = strides[i];</div>
-<div class="line"><span class="lineno">  886</span> </div>
-<div class="line"><span class="lineno">  887</span>    assert(op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[i] != 0);</div>
-<div class="line"><span class="lineno">  888</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00881">881</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  884</span>{</div>
+<div class="line"><span class="lineno">  885</span>  <a class="code hl_struct" href="structonert_1_1shape__inference_1_1_strided_slice_params.html">StridedSliceParams</a> op_params;</div>
+<div class="line"><span class="lineno">  886</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#addeaea4a95a1958be69fa49304816ad2">start_indices_count</a> = rank;</div>
+<div class="line"><span class="lineno">  887</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a83cd06acc0e9bd137c4f7c8f99362afe">stop_indices_count</a> = rank;</div>
+<div class="line"><span class="lineno">  888</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a3efd84c8b01caf453e1b3e2e7760b583">strides_count</a> = rank;</div>
 <div class="line"><span class="lineno">  889</span> </div>
-<div class="line"><span class="lineno">  890</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a> = begin_mask;</div>
-<div class="line"><span class="lineno">  891</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a4454c1bcc168c6b3b47d554ab82c5a0e">ellipsis_mask</a> = 0; <span class="comment">// NYI</span></div>
-<div class="line"><span class="lineno">  892</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a02756d563a88bcf34878af2ed15ae16a">end_mask</a> = end_mask;</div>
-<div class="line"><span class="lineno">  893</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a523d8fea551ee3259e4571056d556549">new_axis_mask</a> = 0; <span class="comment">// NYI</span></div>
-<div class="line"><span class="lineno">  894</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a> = shrink_axis_mask;</div>
+<div class="line"><span class="lineno">  890</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a3efd84c8b01caf453e1b3e2e7760b583">strides_count</a>; ++i)</div>
+<div class="line"><span class="lineno">  891</span>  {</div>
+<div class="line"><span class="lineno">  892</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#abe94b65b6fa202b385624295929570a0">start_indices</a>[i] = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>[i];</div>
+<div class="line"><span class="lineno">  893</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a64fdd2d217e0c345d366582a5cc16507">stop_indices</a>[i] = end[i];</div>
+<div class="line"><span class="lineno">  894</span>    op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[i] = strides[i];</div>
 <div class="line"><span class="lineno">  895</span> </div>
-<div class="line"><span class="lineno">  896</span>  assert(<span class="keyword">sizeof</span>(op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a>) * 4 &gt;= rank);</div>
-<div class="line"><span class="lineno">  897</span> </div>
-<div class="line"><span class="lineno">  898</span>  <span class="keywordflow">return</span> op_params;</div>
-<div class="line"><span class="lineno">  899</span>}</div>
+<div class="line"><span class="lineno">  896</span>    assert(op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[i] != 0);</div>
+<div class="line"><span class="lineno">  897</span>  }</div>
+<div class="line"><span class="lineno">  898</span> </div>
+<div class="line"><span class="lineno">  899</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a> = begin_mask;</div>
+<div class="line"><span class="lineno">  900</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a4454c1bcc168c6b3b47d554ab82c5a0e">ellipsis_mask</a> = 0; <span class="comment">// NYI</span></div>
+<div class="line"><span class="lineno">  901</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a02756d563a88bcf34878af2ed15ae16a">end_mask</a> = end_mask;</div>
+<div class="line"><span class="lineno">  902</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a523d8fea551ee3259e4571056d556549">new_axis_mask</a> = 0; <span class="comment">// NYI</span></div>
+<div class="line"><span class="lineno">  903</span>  op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a> = shrink_axis_mask;</div>
+<div class="line"><span class="lineno">  904</span> </div>
+<div class="line"><span class="lineno">  905</span>  assert(<span class="keyword">sizeof</span>(op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a>) * 4 &gt;= rank);</div>
+<div class="line"><span class="lineno">  906</span> </div>
+<div class="line"><span class="lineno">  907</span>  <span class="keywordflow">return</span> op_params;</div>
+<div class="line"><span class="lineno">  908</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 <div class="ttc" id="astructonert_1_1shape__inference_1_1_strided_slice_params_html"><div class="ttname"><a href="structonert_1_1shape__inference_1_1_strided_slice_params.html">onert::shape_inference::StridedSliceParams</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00117">ShapeInference.h:118</a></div></div>
 <div class="ttc" id="astructonert_1_1shape__inference_1_1_strided_slice_params_html_a02756d563a88bcf34878af2ed15ae16a"><div class="ttname"><a href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a02756d563a88bcf34878af2ed15ae16a">onert::shape_inference::StridedSliceParams::end_mask</a></div><div class="ttdeci">int16_t end_mask</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00128">ShapeInference.h:128</a></div></div>
@@ -325,7 +325,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00126">onert::shape_inference::StridedSliceParams::begin_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00127">onert::shape_inference::StridedSliceParams::ellipsis_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00128">onert::shape_inference::StridedSliceParams::end_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00129">onert::shape_inference::StridedSliceParams::new_axis_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00130">onert::shape_inference::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00120">onert::shape_inference::StridedSliceParams::start_indices</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00119">onert::shape_inference::StridedSliceParams::start_indices_count</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00122">onert::shape_inference::StridedSliceParams::stop_indices</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00121">onert::shape_inference::StridedSliceParams::stop_indices_count</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00123">onert::shape_inference::StridedSliceParams::strides_count</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01106">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01126">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -518,17 +518,17 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00907">907</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  908</span>{</div>
-<div class="line"><span class="lineno">  909</span>  assert(!(hi &lt; lo));</div>
-<div class="line"><span class="lineno">  910</span>  <span class="keywordflow">if</span> (hi &lt; v)</div>
-<div class="line"><span class="lineno">  911</span>    <span class="keywordflow">return</span> hi;</div>
-<div class="line"><span class="lineno">  912</span>  <span class="keywordflow">if</span> (v &lt; lo)</div>
-<div class="line"><span class="lineno">  913</span>    <span class="keywordflow">return</span> lo;</div>
-<div class="line"><span class="lineno">  914</span>  <span class="keywordflow">return</span> v;</div>
-<div class="line"><span class="lineno">  915</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00916">916</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  917</span>{</div>
+<div class="line"><span class="lineno">  918</span>  assert(!(hi &lt; lo));</div>
+<div class="line"><span class="lineno">  919</span>  <span class="keywordflow">if</span> (hi &lt; v)</div>
+<div class="line"><span class="lineno">  920</span>    <span class="keywordflow">return</span> hi;</div>
+<div class="line"><span class="lineno">  921</span>  <span class="keywordflow">if</span> (v &lt; lo)</div>
+<div class="line"><span class="lineno">  922</span>    <span class="keywordflow">return</span> lo;</div>
+<div class="line"><span class="lineno">  923</span>  <span class="keywordflow">return</span> v;</div>
+<div class="line"><span class="lineno">  924</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l00917">StartForAxis()</a>, and <a class="el" href="_shape_inference_8cc_source.html#l00960">StopForAxis()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l00926">StartForAxis()</a>, and <a class="el" href="_shape_inference_8cc_source.html#l00969">StopForAxis()</a>.</p>
 
 </div>
 </div>
@@ -1563,6 +1563,8 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_shape_inference_8cc_source.html#l00094">calcConvLikeHeightAndWidth()</a>, <a class="el" href="_internal_type_8h_source.html#l00040">onert::ir::Stride::horizontal</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00051">onert::ir::operation::Pool2D::Param::kh</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00052">onert::ir::operation::Pool2D::Param::kw</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00054">onert::ir::operation::Pool2D::Param::padding</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00053">onert::ir::operation::Pool2D::Param::stride</a>, and <a class="el" href="_internal_type_8h_source.html#l00039">onert::ir::Stride::vertical</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00708">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+
 </div>
 </div>
 <a id="a655599a3999fe85c31d2f9485afe445b" name="a655599a3999fe85c31d2f9485afe445b"></a>
@@ -1834,12 +1836,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  233</span>  }</div>
 <div class="line"><span class="lineno">  234</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00753">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00773">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
-<a id="a0ad2ed111272459a82784bf8a382db38" name="a0ad2ed111272459a82784bf8a382db38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ad2ed111272459a82784bf8a382db38">&#9670;&#160;</a></span>inferReshapeShape()</h2>
+<a id="a881c6c24af01fe9a0d87e65c51698e43" name="a881c6c24af01fe9a0d87e65c51698e43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881c6c24af01fe9a0d87e65c51698e43">&#9670;&#160;</a></span>inferReshapeShape()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1847,6 +1849,12 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> onert::shape_inference::inferReshapeShape </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const int32_t *&#160;</td>
           <td class="paramname"><em>shape_buf</em>, </td>
         </tr>
@@ -1854,13 +1862,7 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int32_t&#160;</td>
-          <td class="paramname"><em>shape_num_elements</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>total_num_elements</em>&#160;</td>
+          <td class="paramname"><em>shape_num_elements</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1874,31 +1876,40 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">  609</span>{</div>
 <div class="line"><span class="lineno">  610</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> ret(shape_num_elements);</div>
 <div class="line"><span class="lineno">  611</span>  int32_t flatten_dim = ir::Shape::kUnspecifiedDim;</div>
-<div class="line"><span class="lineno">  612</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; shape_num_elements; ++i)</div>
-<div class="line"><span class="lineno">  613</span>  {</div>
-<div class="line"><span class="lineno">  614</span>    <span class="keywordflow">if</span> (shape_buf[i] &lt; 0)</div>
-<div class="line"><span class="lineno">  615</span>    {</div>
-<div class="line"><span class="lineno">  616</span>      <span class="keywordflow">if</span> (flatten_dim != ir::Shape::kUnspecifiedDim)</div>
-<div class="line"><span class="lineno">  617</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Reshape: 2nd param has special dim(for flatten) more than twice&quot;</span>);</div>
-<div class="line"><span class="lineno">  618</span>      flatten_dim = i;</div>
-<div class="line"><span class="lineno">  619</span>      ret.dim(i) = 1;</div>
-<div class="line"><span class="lineno">  620</span>    }</div>
-<div class="line"><span class="lineno">  621</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  622</span>    {</div>
-<div class="line"><span class="lineno">  623</span>      ret.dim(i) = shape_buf[i];</div>
-<div class="line"><span class="lineno">  624</span>    }</div>
-<div class="line"><span class="lineno">  625</span>  }</div>
-<div class="line"><span class="lineno">  626</span>  <span class="keywordflow">if</span> (flatten_dim != ir::Shape::kUnspecifiedDim)</div>
-<div class="line"><span class="lineno">  627</span>    ret.dim(flatten_dim) = total_num_elements / ret.num_elements();</div>
-<div class="line"><span class="lineno">  628</span> </div>
-<div class="line"><span class="lineno">  629</span>  <span class="comment">// Check reshapable</span></div>
-<div class="line"><span class="lineno">  630</span>  <span class="keywordflow">if</span> (total_num_elements != <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(ret.num_elements()))</div>
-<div class="line"><span class="lineno">  631</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Reshape: 2nd param is not compatible with the shape of input&quot;</span>);</div>
-<div class="line"><span class="lineno">  632</span> </div>
-<div class="line"><span class="lineno">  633</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">  634</span>}</div>
+<div class="line"><span class="lineno">  612</span>  <span class="keyword">auto</span> total_num_elements = input_shape.num_elements();</div>
+<div class="line"><span class="lineno">  613</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; shape_num_elements; ++i)</div>
+<div class="line"><span class="lineno">  614</span>  {</div>
+<div class="line"><span class="lineno">  615</span>    <span class="keywordflow">if</span> (shape_buf[i] &lt; 0)</div>
+<div class="line"><span class="lineno">  616</span>    {</div>
+<div class="line"><span class="lineno">  617</span>      <span class="keywordflow">if</span> (flatten_dim != ir::Shape::kUnspecifiedDim)</div>
+<div class="line"><span class="lineno">  618</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Reshape: 2nd param has special dim(for flatten) more than twice&quot;</span>);</div>
+<div class="line"><span class="lineno">  619</span>      flatten_dim = i;</div>
+<div class="line"><span class="lineno">  620</span>      ret.dim(i) = 1;</div>
+<div class="line"><span class="lineno">  621</span>    }</div>
+<div class="line"><span class="lineno">  622</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  623</span>    {</div>
+<div class="line"><span class="lineno">  624</span>      ret.dim(i) = shape_buf[i];</div>
+<div class="line"><span class="lineno">  625</span>    }</div>
+<div class="line"><span class="lineno">  626</span>  }</div>
+<div class="line"><span class="lineno">  627</span>  <span class="keywordflow">if</span> (flatten_dim != ir::Shape::kUnspecifiedDim)</div>
+<div class="line"><span class="lineno">  628</span>    ret.dim(flatten_dim) = total_num_elements / ret.num_elements();</div>
+<div class="line"><span class="lineno">  629</span> </div>
+<div class="line"><span class="lineno">  630</span>  <span class="comment">// Check reshapable</span></div>
+<div class="line"><span class="lineno">  631</span>  <span class="keywordflow">if</span> (total_num_elements != <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(ret.num_elements()))</div>
+<div class="line"><span class="lineno">  632</span>  {</div>
+<div class="line"><span class="lineno">  633</span>    <span class="comment">// Multi batch case</span></div>
+<div class="line"><span class="lineno">  634</span>    <span class="comment">// TODO Handle multi batch case more precisely on runtime level</span></div>
+<div class="line"><span class="lineno">  635</span>    <span class="keywordflow">if</span> ((ret.dim(0) == 1) &amp;&amp;</div>
+<div class="line"><span class="lineno">  636</span>        (total_num_elements == <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(ret.num_elements() * input_shape.dim(0))))</div>
+<div class="line"><span class="lineno">  637</span>      ret.dim(0) = input_shape.dim(0);</div>
+<div class="line"><span class="lineno">  638</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  639</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Reshape: 2nd param is not compatible with the shape of input&quot;</span>);</div>
+<div class="line"><span class="lineno">  640</span>  }</div>
+<div class="line"><span class="lineno">  641</span> </div>
+<div class="line"><span class="lineno">  642</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">  643</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00797">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00817">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -1958,7 +1969,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  589</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">  590</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00874">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00894">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -1994,83 +2005,83 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00636">636</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  638</span>{</div>
-<div class="line"><span class="lineno">  639</span>  <span class="keyword">auto</span> haveSameShapes = [](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_cond_shape, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_true_shape,</div>
-<div class="line"><span class="lineno">  640</span>                           <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_false_shape) {</div>
-<div class="line"><span class="lineno">  641</span>    <span class="keywordflow">if</span> ((input_cond_shape.rank() != input_true_shape.rank()) ||</div>
-<div class="line"><span class="lineno">  642</span>        input_cond_shape.rank() != input_false_shape.rank())</div>
-<div class="line"><span class="lineno">  643</span>    {</div>
-<div class="line"><span class="lineno">  644</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  645</span>    }</div>
-<div class="line"><span class="lineno">  646</span> </div>
-<div class="line"><span class="lineno">  647</span>    <span class="keywordtype">int</span> rank = input_cond_shape.rank();</div>
-<div class="line"><span class="lineno">  648</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; rank; ++i)</div>
-<div class="line"><span class="lineno">  649</span>    {</div>
-<div class="line"><span class="lineno">  650</span>      <span class="keywordflow">if</span> (input_cond_shape.dim(i) != input_true_shape.dim(i) ||</div>
-<div class="line"><span class="lineno">  651</span>          input_cond_shape.dim(i) != input_false_shape.dim(i))</div>
-<div class="line"><span class="lineno">  652</span>      {</div>
-<div class="line"><span class="lineno">  653</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  654</span>      }</div>
-<div class="line"><span class="lineno">  655</span>    }</div>
-<div class="line"><span class="lineno">  656</span> </div>
-<div class="line"><span class="lineno">  657</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  658</span>  };</div>
-<div class="line"><span class="lineno">  659</span> </div>
-<div class="line"><span class="lineno">  660</span>  <span class="keyword">auto</span> calculateShape = [](<span class="keyword">const</span> ir::Shape &amp;input_cond_shape, <span class="keyword">const</span> ir::Shape &amp;input_true_shape,</div>
-<div class="line"><span class="lineno">  661</span>                           <span class="keyword">const</span> ir::Shape &amp;input_false_shape, ir::Shape &amp;new_shape) {</div>
-<div class="line"><span class="lineno">  662</span>    ir::Shape cond_shape = input_cond_shape;</div>
-<div class="line"><span class="lineno">  663</span>    ir::Shape true_shape = input_true_shape;</div>
-<div class="line"><span class="lineno">  664</span>    ir::Shape false_shape = input_false_shape;</div>
-<div class="line"><span class="lineno">  665</span>    <span class="keywordtype">int</span> most_rank =</div>
-<div class="line"><span class="lineno">  666</span>      (cond_shape.rank() &gt;= true_shape.rank()) &amp;&amp; (cond_shape.rank() &gt;= false_shape.rank())</div>
-<div class="line"><span class="lineno">  667</span>        ? cond_shape.rank()</div>
-<div class="line"><span class="lineno">  668</span>        : (false_shape.rank() &gt;= true_shape.rank() ? false_shape.rank() : true_shape.rank());</div>
-<div class="line"><span class="lineno">  669</span> </div>
-<div class="line"><span class="lineno">  670</span>    ir::Shape calculate_shape(most_rank);</div>
-<div class="line"><span class="lineno">  671</span> </div>
-<div class="line"><span class="lineno">  672</span>    cond_shape.extendRank(most_rank);</div>
-<div class="line"><span class="lineno">  673</span>    true_shape.extendRank(most_rank);</div>
-<div class="line"><span class="lineno">  674</span>    false_shape.extendRank(most_rank);</div>
-<div class="line"><span class="lineno">  675</span> </div>
-<div class="line"><span class="lineno">  676</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; most_rank; ++i)</div>
-<div class="line"><span class="lineno">  677</span>    {</div>
-<div class="line"><span class="lineno">  678</span>      calculate_shape.dim(i) =</div>
-<div class="line"><span class="lineno">  679</span>        (cond_shape.dim(i) &gt;= true_shape.dim(i)) &amp;&amp; (cond_shape.dim(i) &gt;= false_shape.dim(i))</div>
-<div class="line"><span class="lineno">  680</span>          ? cond_shape.dim(i)</div>
-<div class="line"><span class="lineno">  681</span>          : (false_shape.dim(i) &gt;= true_shape.dim(i) ? false_shape.dim(i) : true_shape.dim(i));</div>
-<div class="line"><span class="lineno">  682</span> </div>
-<div class="line"><span class="lineno">  683</span>      <span class="keywordflow">if</span> ((cond_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; cond_shape.dim(i) != 1) ||</div>
-<div class="line"><span class="lineno">  684</span>          (true_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; true_shape.dim(i) != 1) ||</div>
-<div class="line"><span class="lineno">  685</span>          (false_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; false_shape.dim(i) != 1))</div>
-<div class="line"><span class="lineno">  686</span>      {</div>
-<div class="line"><span class="lineno">  687</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  688</span>      }</div>
-<div class="line"><span class="lineno">  689</span>    }</div>
-<div class="line"><span class="lineno">  690</span> </div>
-<div class="line"><span class="lineno">  691</span>    new_shape = calculate_shape;</div>
-<div class="line"><span class="lineno">  692</span> </div>
-<div class="line"><span class="lineno">  693</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  694</span>  };</div>
-<div class="line"><span class="lineno">  695</span> </div>
-<div class="line"><span class="lineno">  696</span>  <span class="keywordtype">bool</span> havesame = haveSameShapes(input_cond_shape, input_true_shape, input_false_shape);</div>
-<div class="line"><span class="lineno">  697</span>  <span class="keywordflow">if</span> (havesame)</div>
-<div class="line"><span class="lineno">  698</span>  {</div>
-<div class="line"><span class="lineno">  699</span>    <span class="keywordflow">return</span> input_cond_shape;</div>
-<div class="line"><span class="lineno">  700</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00645">645</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  647</span>{</div>
+<div class="line"><span class="lineno">  648</span>  <span class="keyword">auto</span> haveSameShapes = [](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_cond_shape, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_true_shape,</div>
+<div class="line"><span class="lineno">  649</span>                           <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;input_false_shape) {</div>
+<div class="line"><span class="lineno">  650</span>    <span class="keywordflow">if</span> ((input_cond_shape.rank() != input_true_shape.rank()) ||</div>
+<div class="line"><span class="lineno">  651</span>        input_cond_shape.rank() != input_false_shape.rank())</div>
+<div class="line"><span class="lineno">  652</span>    {</div>
+<div class="line"><span class="lineno">  653</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  654</span>    }</div>
+<div class="line"><span class="lineno">  655</span> </div>
+<div class="line"><span class="lineno">  656</span>    <span class="keywordtype">int</span> rank = input_cond_shape.rank();</div>
+<div class="line"><span class="lineno">  657</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; rank; ++i)</div>
+<div class="line"><span class="lineno">  658</span>    {</div>
+<div class="line"><span class="lineno">  659</span>      <span class="keywordflow">if</span> (input_cond_shape.dim(i) != input_true_shape.dim(i) ||</div>
+<div class="line"><span class="lineno">  660</span>          input_cond_shape.dim(i) != input_false_shape.dim(i))</div>
+<div class="line"><span class="lineno">  661</span>      {</div>
+<div class="line"><span class="lineno">  662</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  663</span>      }</div>
+<div class="line"><span class="lineno">  664</span>    }</div>
+<div class="line"><span class="lineno">  665</span> </div>
+<div class="line"><span class="lineno">  666</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  667</span>  };</div>
+<div class="line"><span class="lineno">  668</span> </div>
+<div class="line"><span class="lineno">  669</span>  <span class="keyword">auto</span> calculateShape = [](<span class="keyword">const</span> ir::Shape &amp;input_cond_shape, <span class="keyword">const</span> ir::Shape &amp;input_true_shape,</div>
+<div class="line"><span class="lineno">  670</span>                           <span class="keyword">const</span> ir::Shape &amp;input_false_shape, ir::Shape &amp;new_shape) {</div>
+<div class="line"><span class="lineno">  671</span>    ir::Shape cond_shape = input_cond_shape;</div>
+<div class="line"><span class="lineno">  672</span>    ir::Shape true_shape = input_true_shape;</div>
+<div class="line"><span class="lineno">  673</span>    ir::Shape false_shape = input_false_shape;</div>
+<div class="line"><span class="lineno">  674</span>    <span class="keywordtype">int</span> most_rank =</div>
+<div class="line"><span class="lineno">  675</span>      (cond_shape.rank() &gt;= true_shape.rank()) &amp;&amp; (cond_shape.rank() &gt;= false_shape.rank())</div>
+<div class="line"><span class="lineno">  676</span>        ? cond_shape.rank()</div>
+<div class="line"><span class="lineno">  677</span>        : (false_shape.rank() &gt;= true_shape.rank() ? false_shape.rank() : true_shape.rank());</div>
+<div class="line"><span class="lineno">  678</span> </div>
+<div class="line"><span class="lineno">  679</span>    ir::Shape calculate_shape(most_rank);</div>
+<div class="line"><span class="lineno">  680</span> </div>
+<div class="line"><span class="lineno">  681</span>    cond_shape.extendRank(most_rank);</div>
+<div class="line"><span class="lineno">  682</span>    true_shape.extendRank(most_rank);</div>
+<div class="line"><span class="lineno">  683</span>    false_shape.extendRank(most_rank);</div>
+<div class="line"><span class="lineno">  684</span> </div>
+<div class="line"><span class="lineno">  685</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; most_rank; ++i)</div>
+<div class="line"><span class="lineno">  686</span>    {</div>
+<div class="line"><span class="lineno">  687</span>      calculate_shape.dim(i) =</div>
+<div class="line"><span class="lineno">  688</span>        (cond_shape.dim(i) &gt;= true_shape.dim(i)) &amp;&amp; (cond_shape.dim(i) &gt;= false_shape.dim(i))</div>
+<div class="line"><span class="lineno">  689</span>          ? cond_shape.dim(i)</div>
+<div class="line"><span class="lineno">  690</span>          : (false_shape.dim(i) &gt;= true_shape.dim(i) ? false_shape.dim(i) : true_shape.dim(i));</div>
+<div class="line"><span class="lineno">  691</span> </div>
+<div class="line"><span class="lineno">  692</span>      <span class="keywordflow">if</span> ((cond_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; cond_shape.dim(i) != 1) ||</div>
+<div class="line"><span class="lineno">  693</span>          (true_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; true_shape.dim(i) != 1) ||</div>
+<div class="line"><span class="lineno">  694</span>          (false_shape.dim(i) != calculate_shape.dim(i) &amp;&amp; false_shape.dim(i) != 1))</div>
+<div class="line"><span class="lineno">  695</span>      {</div>
+<div class="line"><span class="lineno">  696</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  697</span>      }</div>
+<div class="line"><span class="lineno">  698</span>    }</div>
+<div class="line"><span class="lineno">  699</span> </div>
+<div class="line"><span class="lineno">  700</span>    new_shape = calculate_shape;</div>
 <div class="line"><span class="lineno">  701</span> </div>
-<div class="line"><span class="lineno">  702</span>  ir::Shape new_shape;</div>
-<div class="line"><span class="lineno">  703</span>  <span class="keywordtype">bool</span> possible = calculateShape(input_cond_shape, input_true_shape, input_false_shape, new_shape);</div>
+<div class="line"><span class="lineno">  702</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  703</span>  };</div>
 <div class="line"><span class="lineno">  704</span> </div>
-<div class="line"><span class="lineno">  705</span>  <span class="keywordflow">if</span> (!possible)</div>
-<div class="line"><span class="lineno">  706</span>  {</div>
-<div class="line"><span class="lineno">  707</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Broadcasting is not possible.&quot;</span>);</div>
-<div class="line"><span class="lineno">  708</span>  }</div>
-<div class="line"><span class="lineno">  709</span> </div>
-<div class="line"><span class="lineno">  710</span>  <span class="keywordflow">return</span> new_shape;</div>
-<div class="line"><span class="lineno">  711</span>}</div>
+<div class="line"><span class="lineno">  705</span>  <span class="keywordtype">bool</span> havesame = haveSameShapes(input_cond_shape, input_true_shape, input_false_shape);</div>
+<div class="line"><span class="lineno">  706</span>  <span class="keywordflow">if</span> (havesame)</div>
+<div class="line"><span class="lineno">  707</span>  {</div>
+<div class="line"><span class="lineno">  708</span>    <span class="keywordflow">return</span> input_cond_shape;</div>
+<div class="line"><span class="lineno">  709</span>  }</div>
+<div class="line"><span class="lineno">  710</span> </div>
+<div class="line"><span class="lineno">  711</span>  ir::Shape new_shape;</div>
+<div class="line"><span class="lineno">  712</span>  <span class="keywordtype">bool</span> possible = calculateShape(input_cond_shape, input_true_shape, input_false_shape, new_shape);</div>
+<div class="line"><span class="lineno">  713</span> </div>
+<div class="line"><span class="lineno">  714</span>  <span class="keywordflow">if</span> (!possible)</div>
+<div class="line"><span class="lineno">  715</span>  {</div>
+<div class="line"><span class="lineno">  716</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Broadcasting is not possible.&quot;</span>);</div>
+<div class="line"><span class="lineno">  717</span>  }</div>
+<div class="line"><span class="lineno">  718</span> </div>
+<div class="line"><span class="lineno">  719</span>  <span class="keywordflow">return</span> new_shape;</div>
+<div class="line"><span class="lineno">  720</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00925">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00945">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2176,44 +2187,44 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00714">714</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  715</span>{</div>
-<div class="line"><span class="lineno">  716</span>  <span class="keyword">const</span> uint32_t rank = input_shape.rank();</div>
-<div class="line"><span class="lineno">  717</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape(rank);</div>
-<div class="line"><span class="lineno">  718</span> </div>
-<div class="line"><span class="lineno">  719</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; rank; ++idx)</div>
-<div class="line"><span class="lineno">  720</span>  {</div>
-<div class="line"><span class="lineno">  721</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_dim = input_shape.dim(idx);</div>
-<div class="line"><span class="lineno">  722</span> </div>
-<div class="line"><span class="lineno">  723</span>    <span class="comment">// begin is zero-based</span></div>
-<div class="line"><span class="lineno">  724</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = begins_buf[idx];</div>
-<div class="line"><span class="lineno">  725</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> &lt; 0)</div>
-<div class="line"><span class="lineno">  726</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid begin.&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00723">723</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  724</span>{</div>
+<div class="line"><span class="lineno">  725</span>  <span class="keyword">const</span> uint32_t rank = input_shape.rank();</div>
+<div class="line"><span class="lineno">  726</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape(rank);</div>
 <div class="line"><span class="lineno">  727</span> </div>
-<div class="line"><span class="lineno">  728</span>    <span class="comment">// size is one-based</span></div>
-<div class="line"><span class="lineno">  729</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = sizes_buf[idx];</div>
-<div class="line"><span class="lineno">  730</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt; -1)</div>
-<div class="line"><span class="lineno">  731</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid size.&quot;</span>);</div>
-<div class="line"><span class="lineno">  732</span> </div>
-<div class="line"><span class="lineno">  733</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> == -1)</div>
-<div class="line"><span class="lineno">  734</span>    {</div>
-<div class="line"><span class="lineno">  735</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = input_dim - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>;</div>
-<div class="line"><span class="lineno">  736</span>    }</div>
-<div class="line"><span class="lineno">  737</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  738</span>    {</div>
-<div class="line"><span class="lineno">  739</span>      <span class="keywordflow">if</span> (input_dim &lt; <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>))</div>
-<div class="line"><span class="lineno">  740</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid begin and size.&quot;</span>);</div>
-<div class="line"><span class="lineno">  741</span>    }</div>
-<div class="line"><span class="lineno">  742</span>    out_shape.dim(idx) = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  743</span>  }</div>
-<div class="line"><span class="lineno">  744</span> </div>
-<div class="line"><span class="lineno">  745</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno">  746</span>}</div>
+<div class="line"><span class="lineno">  728</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; rank; ++idx)</div>
+<div class="line"><span class="lineno">  729</span>  {</div>
+<div class="line"><span class="lineno">  730</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_dim = input_shape.dim(idx);</div>
+<div class="line"><span class="lineno">  731</span> </div>
+<div class="line"><span class="lineno">  732</span>    <span class="comment">// begin is zero-based</span></div>
+<div class="line"><span class="lineno">  733</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = begins_buf[idx];</div>
+<div class="line"><span class="lineno">  734</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> &lt; 0)</div>
+<div class="line"><span class="lineno">  735</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid begin.&quot;</span>);</div>
+<div class="line"><span class="lineno">  736</span> </div>
+<div class="line"><span class="lineno">  737</span>    <span class="comment">// size is one-based</span></div>
+<div class="line"><span class="lineno">  738</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = sizes_buf[idx];</div>
+<div class="line"><span class="lineno">  739</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt; -1)</div>
+<div class="line"><span class="lineno">  740</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid size.&quot;</span>);</div>
+<div class="line"><span class="lineno">  741</span> </div>
+<div class="line"><span class="lineno">  742</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> == -1)</div>
+<div class="line"><span class="lineno">  743</span>    {</div>
+<div class="line"><span class="lineno">  744</span>      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = input_dim - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>;</div>
+<div class="line"><span class="lineno">  745</span>    }</div>
+<div class="line"><span class="lineno">  746</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  747</span>    {</div>
+<div class="line"><span class="lineno">  748</span>      <span class="keywordflow">if</span> (input_dim &lt; <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>))</div>
+<div class="line"><span class="lineno">  749</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;shape inference Slice: Invalid begin and size.&quot;</span>);</div>
+<div class="line"><span class="lineno">  750</span>    }</div>
+<div class="line"><span class="lineno">  751</span>    out_shape.dim(idx) = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  752</span>  }</div>
+<div class="line"><span class="lineno">  753</span> </div>
+<div class="line"><span class="lineno">  754</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno">  755</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00975">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00995">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2261,54 +2272,54 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00753">753</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  756</span>{</div>
-<div class="line"><span class="lineno">  757</span>  <span class="keyword">const</span> uint32_t rank = input_shape.rank();</div>
-<div class="line"><span class="lineno">  758</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape(rank);</div>
-<div class="line"><span class="lineno">  759</span> </div>
-<div class="line"><span class="lineno">  760</span>  <span class="comment">// Currently, only 4D NHWC input/output op_context are supported.</span></div>
-<div class="line"><span class="lineno">  761</span>  <span class="comment">// The 4D array need to have exactly 2 spatial dimensions.</span></div>
-<div class="line"><span class="lineno">  762</span>  <span class="comment">// TODO(nupurgarg): Support arbitrary dimension in SpaceToBatchND.</span></div>
-<div class="line"><span class="lineno">  763</span>  <span class="keyword">const</span> int32_t kInputDimensionNum = 4;</div>
-<div class="line"><span class="lineno">  764</span>  <span class="keyword">const</span> int32_t kBlockSizeDimensionNum = 1;</div>
-<div class="line"><span class="lineno">  765</span>  <span class="keyword">const</span> int32_t kSpatialDimensionNum = 2;</div>
-<div class="line"><span class="lineno">  766</span> </div>
-<div class="line"><span class="lineno">  767</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(kInputDimensionNum);</div>
-<div class="line"><span class="lineno">  768</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(kBlockSizeDimensionNum);</div>
-<div class="line"><span class="lineno">  769</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(block_shape_shape);</div>
-<div class="line"><span class="lineno">  770</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(padding_shape);</div>
-<div class="line"><span class="lineno">  771</span> </div>
-<div class="line"><span class="lineno">  772</span>  assert(block_shape_shape.rank() == kBlockSizeDimensionNum);</div>
-<div class="line"><span class="lineno">  773</span>  assert(block_shape_shape.dim(0) == kSpatialDimensionNum);</div>
-<div class="line"><span class="lineno">  774</span>  assert(padding_shape.dim(0) == kSpatialDimensionNum);</div>
-<div class="line"><span class="lineno">  775</span>  assert(padding_shape.dim(1) == 2); <span class="comment">// fixed, meaning left/right padding for each element</span></div>
-<div class="line"><span class="lineno">  776</span>  assert(padding_shape.rank() == 2); <span class="comment">// fixed, meaning dimension(dim 0) and padding length(dim 1)</span></div>
-<div class="line"><span class="lineno">  777</span> </div>
-<div class="line"><span class="lineno">  778</span>  <span class="comment">// Ensures the input height and width (with padding) is a multiple of block</span></div>
-<div class="line"><span class="lineno">  779</span>  <span class="comment">// shape height and width.</span></div>
-<div class="line"><span class="lineno">  780</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dim = 0; dim &lt; kSpatialDimensionNum; ++dim)</div>
-<div class="line"><span class="lineno">  781</span>  {</div>
-<div class="line"><span class="lineno">  782</span>    <span class="keywordtype">int</span> final_dim_size =</div>
-<div class="line"><span class="lineno">  783</span>      (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);</div>
-<div class="line"><span class="lineno">  784</span> </div>
-<div class="line"><span class="lineno">  785</span>    assert(final_dim_size % block_shape_buf[dim] == 0);</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00762">762</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  765</span>{</div>
+<div class="line"><span class="lineno">  766</span>  <span class="keyword">const</span> uint32_t rank = input_shape.rank();</div>
+<div class="line"><span class="lineno">  767</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape(rank);</div>
+<div class="line"><span class="lineno">  768</span> </div>
+<div class="line"><span class="lineno">  769</span>  <span class="comment">// Currently, only 4D NHWC input/output op_context are supported.</span></div>
+<div class="line"><span class="lineno">  770</span>  <span class="comment">// The 4D array need to have exactly 2 spatial dimensions.</span></div>
+<div class="line"><span class="lineno">  771</span>  <span class="comment">// TODO(nupurgarg): Support arbitrary dimension in SpaceToBatchND.</span></div>
+<div class="line"><span class="lineno">  772</span>  <span class="keyword">const</span> int32_t kInputDimensionNum = 4;</div>
+<div class="line"><span class="lineno">  773</span>  <span class="keyword">const</span> int32_t kBlockSizeDimensionNum = 1;</div>
+<div class="line"><span class="lineno">  774</span>  <span class="keyword">const</span> int32_t kSpatialDimensionNum = 2;</div>
+<div class="line"><span class="lineno">  775</span> </div>
+<div class="line"><span class="lineno">  776</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(kInputDimensionNum);</div>
+<div class="line"><span class="lineno">  777</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(kBlockSizeDimensionNum);</div>
+<div class="line"><span class="lineno">  778</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(block_shape_shape);</div>
+<div class="line"><span class="lineno">  779</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(padding_shape);</div>
+<div class="line"><span class="lineno">  780</span> </div>
+<div class="line"><span class="lineno">  781</span>  assert(block_shape_shape.rank() == kBlockSizeDimensionNum);</div>
+<div class="line"><span class="lineno">  782</span>  assert(block_shape_shape.dim(0) == kSpatialDimensionNum);</div>
+<div class="line"><span class="lineno">  783</span>  assert(padding_shape.dim(0) == kSpatialDimensionNum);</div>
+<div class="line"><span class="lineno">  784</span>  assert(padding_shape.dim(1) == 2); <span class="comment">// fixed, meaning left/right padding for each element</span></div>
+<div class="line"><span class="lineno">  785</span>  assert(padding_shape.rank() == 2); <span class="comment">// fixed, meaning dimension(dim 0) and padding length(dim 1)</span></div>
 <div class="line"><span class="lineno">  786</span> </div>
-<div class="line"><span class="lineno">  787</span>    out_shape.dim(dim + 1) = final_dim_size / block_shape_buf[dim];</div>
-<div class="line"><span class="lineno">  788</span>  }</div>
-<div class="line"><span class="lineno">  789</span> </div>
-<div class="line"><span class="lineno">  790</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch_size = input_shape.dim(0) * block_shape_buf[0] * block_shape_buf[1];</div>
-<div class="line"><span class="lineno">  791</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_channel_size = input_shape.dim(3);</div>
-<div class="line"><span class="lineno">  792</span> </div>
-<div class="line"><span class="lineno">  793</span>  out_shape.dim(0) = output_batch_size;</div>
-<div class="line"><span class="lineno">  794</span>  out_shape.dim(3) = output_channel_size;</div>
+<div class="line"><span class="lineno">  787</span>  <span class="comment">// Ensures the input height and width (with padding) is a multiple of block</span></div>
+<div class="line"><span class="lineno">  788</span>  <span class="comment">// shape height and width.</span></div>
+<div class="line"><span class="lineno">  789</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> dim = 0; dim &lt; kSpatialDimensionNum; ++dim)</div>
+<div class="line"><span class="lineno">  790</span>  {</div>
+<div class="line"><span class="lineno">  791</span>    <span class="keywordtype">int</span> final_dim_size =</div>
+<div class="line"><span class="lineno">  792</span>      (input_shape.dim(dim + 1) + padding_buf[dim * 2] + padding_buf[dim * 2 + 1]);</div>
+<div class="line"><span class="lineno">  793</span> </div>
+<div class="line"><span class="lineno">  794</span>    assert(final_dim_size % block_shape_buf[dim] == 0);</div>
 <div class="line"><span class="lineno">  795</span> </div>
-<div class="line"><span class="lineno">  796</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno">  797</span>}</div>
+<div class="line"><span class="lineno">  796</span>    out_shape.dim(dim + 1) = final_dim_size / block_shape_buf[dim];</div>
+<div class="line"><span class="lineno">  797</span>  }</div>
+<div class="line"><span class="lineno">  798</span> </div>
+<div class="line"><span class="lineno">  799</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch_size = input_shape.dim(0) * block_shape_buf[0] * block_shape_buf[1];</div>
+<div class="line"><span class="lineno">  800</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_channel_size = input_shape.dim(3);</div>
+<div class="line"><span class="lineno">  801</span> </div>
+<div class="line"><span class="lineno">  802</span>  out_shape.dim(0) = output_batch_size;</div>
+<div class="line"><span class="lineno">  803</span>  out_shape.dim(3) = output_channel_size;</div>
+<div class="line"><span class="lineno">  804</span> </div>
+<div class="line"><span class="lineno">  805</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno">  806</span>}</div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01006">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01026">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2344,23 +2355,23 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00799">799</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  800</span>{</div>
-<div class="line"><span class="lineno">  801</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> newShape(input_shape);</div>
-<div class="line"><span class="lineno">  802</span> </div>
-<div class="line"><span class="lineno">  803</span>  assert(axis_value &gt;= 0);</div>
-<div class="line"><span class="lineno">  804</span>  assert(axis_value &lt; input_shape.rank());</div>
-<div class="line"><span class="lineno">  805</span> </div>
-<div class="line"><span class="lineno">  806</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_size = input_shape.dim(axis_value);</div>
-<div class="line"><span class="lineno">  807</span>  assert(input_size % num_splits == 0);</div>
-<div class="line"><span class="lineno">  808</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> slice_size = input_size / num_splits;</div>
-<div class="line"><span class="lineno">  809</span> </div>
-<div class="line"><span class="lineno">  810</span>  newShape.dim(axis_value) = slice_size;</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00808">808</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  809</span>{</div>
+<div class="line"><span class="lineno">  810</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> newShape(input_shape);</div>
 <div class="line"><span class="lineno">  811</span> </div>
-<div class="line"><span class="lineno">  812</span>  <span class="keywordflow">return</span> newShape;</div>
-<div class="line"><span class="lineno">  813</span>}</div>
+<div class="line"><span class="lineno">  812</span>  assert(axis_value &gt;= 0);</div>
+<div class="line"><span class="lineno">  813</span>  assert(axis_value &lt; input_shape.rank());</div>
+<div class="line"><span class="lineno">  814</span> </div>
+<div class="line"><span class="lineno">  815</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_size = input_shape.dim(axis_value);</div>
+<div class="line"><span class="lineno">  816</span>  assert(input_size % num_splits == 0);</div>
+<div class="line"><span class="lineno">  817</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> slice_size = input_size / num_splits;</div>
+<div class="line"><span class="lineno">  818</span> </div>
+<div class="line"><span class="lineno">  819</span>  newShape.dim(axis_value) = slice_size;</div>
+<div class="line"><span class="lineno">  820</span> </div>
+<div class="line"><span class="lineno">  821</span>  <span class="keywordflow">return</span> newShape;</div>
+<div class="line"><span class="lineno">  822</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01038">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01058">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2390,66 +2401,66 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00815">815</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  816</span>{</div>
-<div class="line"><span class="lineno">  817</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> ndims = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a8a945053e6192953762ea1dca17e024c">ndim</a>;</div>
-<div class="line"><span class="lineno">  818</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *squeeze_dims = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a4756fbe68c1eaf1f58035329551409c2">dims</a>;</div>
-<div class="line"><span class="lineno">  819</span>  <span class="keywordtype">bool</span> should_squeeze[8] = {<span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  820</span>  <span class="keywordtype">int</span> num_squeezed_dims = 0;</div>
-<div class="line"><span class="lineno">  821</span>  <span class="keywordtype">int</span> shape_rank = in_shape.rank();</div>
-<div class="line"><span class="lineno">  822</span>  <span class="keywordflow">if</span> (ndims == 0)</div>
-<div class="line"><span class="lineno">  823</span>  {</div>
-<div class="line"><span class="lineno">  824</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; shape_rank; ++idx)</div>
-<div class="line"><span class="lineno">  825</span>    {</div>
-<div class="line"><span class="lineno">  826</span>      <span class="keywordflow">if</span> (in_shape.dim(idx) == 1)</div>
-<div class="line"><span class="lineno">  827</span>      {</div>
-<div class="line"><span class="lineno">  828</span>        should_squeeze[idx] = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  829</span>        ++num_squeezed_dims;</div>
-<div class="line"><span class="lineno">  830</span>      }</div>
-<div class="line"><span class="lineno">  831</span>    }</div>
-<div class="line"><span class="lineno">  832</span>  }</div>
-<div class="line"><span class="lineno">  833</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  834</span>  {</div>
-<div class="line"><span class="lineno">  835</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; ndims; ++idx)</div>
-<div class="line"><span class="lineno">  836</span>    {</div>
-<div class="line"><span class="lineno">  837</span>      <span class="keywordtype">int</span> current = squeeze_dims[idx];</div>
-<div class="line"><span class="lineno">  838</span>      <span class="keywordflow">if</span> (current &lt; 0)</div>
-<div class="line"><span class="lineno">  839</span>      {</div>
-<div class="line"><span class="lineno">  840</span>        current += shape_rank;</div>
-<div class="line"><span class="lineno">  841</span>      }</div>
-<div class="line"><span class="lineno">  842</span> </div>
-<div class="line"><span class="lineno">  843</span>      <span class="keywordflow">if</span> (!(current &gt;= 0 &amp;&amp; current &lt; shape_rank &amp;&amp; in_shape.dim(current) == 1))</div>
-<div class="line"><span class="lineno">  844</span>      {</div>
-<div class="line"><span class="lineno">  845</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">  846</span>          <span class="stringliteral">&quot;The following conditions must be met: 0 &lt;= dim &lt; Shape rank, dim == 1&quot;</span>);</div>
-<div class="line"><span class="lineno">  847</span>      }</div>
-<div class="line"><span class="lineno">  848</span> </div>
-<div class="line"><span class="lineno">  849</span>      <span class="keywordflow">if</span> (!should_squeeze[current])</div>
-<div class="line"><span class="lineno">  850</span>      {</div>
-<div class="line"><span class="lineno">  851</span>        ++num_squeezed_dims;</div>
-<div class="line"><span class="lineno">  852</span>      }</div>
-<div class="line"><span class="lineno">  853</span>      should_squeeze[current] = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  854</span>    }</div>
-<div class="line"><span class="lineno">  855</span>  }</div>
-<div class="line"><span class="lineno">  856</span> </div>
-<div class="line"><span class="lineno">  857</span>  <span class="comment">// Set output shape.</span></div>
-<div class="line"><span class="lineno">  858</span>  ir::Shape out_shape(shape_rank - num_squeezed_dims);</div>
-<div class="line"><span class="lineno">  859</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_idx = 0, out_idx = 0; in_idx &lt; shape_rank; ++in_idx)</div>
-<div class="line"><span class="lineno">  860</span>  {</div>
-<div class="line"><span class="lineno">  861</span>    <span class="keywordflow">if</span> (!should_squeeze[in_idx])</div>
-<div class="line"><span class="lineno">  862</span>    {</div>
-<div class="line"><span class="lineno">  863</span>      out_shape.dim(out_idx++) = in_shape.dim(in_idx);</div>
-<div class="line"><span class="lineno">  864</span>    }</div>
-<div class="line"><span class="lineno">  865</span>  }</div>
-<div class="line"><span class="lineno">  866</span> </div>
-<div class="line"><span class="lineno">  867</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno">  868</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00824">824</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  825</span>{</div>
+<div class="line"><span class="lineno">  826</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> ndims = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a8a945053e6192953762ea1dca17e024c">ndim</a>;</div>
+<div class="line"><span class="lineno">  827</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *squeeze_dims = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a4756fbe68c1eaf1f58035329551409c2">dims</a>;</div>
+<div class="line"><span class="lineno">  828</span>  <span class="keywordtype">bool</span> should_squeeze[8] = {<span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  829</span>  <span class="keywordtype">int</span> num_squeezed_dims = 0;</div>
+<div class="line"><span class="lineno">  830</span>  <span class="keywordtype">int</span> shape_rank = in_shape.rank();</div>
+<div class="line"><span class="lineno">  831</span>  <span class="keywordflow">if</span> (ndims == 0)</div>
+<div class="line"><span class="lineno">  832</span>  {</div>
+<div class="line"><span class="lineno">  833</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; shape_rank; ++idx)</div>
+<div class="line"><span class="lineno">  834</span>    {</div>
+<div class="line"><span class="lineno">  835</span>      <span class="keywordflow">if</span> (in_shape.dim(idx) == 1)</div>
+<div class="line"><span class="lineno">  836</span>      {</div>
+<div class="line"><span class="lineno">  837</span>        should_squeeze[idx] = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  838</span>        ++num_squeezed_dims;</div>
+<div class="line"><span class="lineno">  839</span>      }</div>
+<div class="line"><span class="lineno">  840</span>    }</div>
+<div class="line"><span class="lineno">  841</span>  }</div>
+<div class="line"><span class="lineno">  842</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  843</span>  {</div>
+<div class="line"><span class="lineno">  844</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; ndims; ++idx)</div>
+<div class="line"><span class="lineno">  845</span>    {</div>
+<div class="line"><span class="lineno">  846</span>      <span class="keywordtype">int</span> current = squeeze_dims[idx];</div>
+<div class="line"><span class="lineno">  847</span>      <span class="keywordflow">if</span> (current &lt; 0)</div>
+<div class="line"><span class="lineno">  848</span>      {</div>
+<div class="line"><span class="lineno">  849</span>        current += shape_rank;</div>
+<div class="line"><span class="lineno">  850</span>      }</div>
+<div class="line"><span class="lineno">  851</span> </div>
+<div class="line"><span class="lineno">  852</span>      <span class="keywordflow">if</span> (!(current &gt;= 0 &amp;&amp; current &lt; shape_rank &amp;&amp; in_shape.dim(current) == 1))</div>
+<div class="line"><span class="lineno">  853</span>      {</div>
+<div class="line"><span class="lineno">  854</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  855</span>          <span class="stringliteral">&quot;The following conditions must be met: 0 &lt;= dim &lt; Shape rank, dim == 1&quot;</span>);</div>
+<div class="line"><span class="lineno">  856</span>      }</div>
+<div class="line"><span class="lineno">  857</span> </div>
+<div class="line"><span class="lineno">  858</span>      <span class="keywordflow">if</span> (!should_squeeze[current])</div>
+<div class="line"><span class="lineno">  859</span>      {</div>
+<div class="line"><span class="lineno">  860</span>        ++num_squeezed_dims;</div>
+<div class="line"><span class="lineno">  861</span>      }</div>
+<div class="line"><span class="lineno">  862</span>      should_squeeze[current] = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  863</span>    }</div>
+<div class="line"><span class="lineno">  864</span>  }</div>
+<div class="line"><span class="lineno">  865</span> </div>
+<div class="line"><span class="lineno">  866</span>  <span class="comment">// Set output shape.</span></div>
+<div class="line"><span class="lineno">  867</span>  ir::Shape out_shape(shape_rank - num_squeezed_dims);</div>
+<div class="line"><span class="lineno">  868</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_idx = 0, out_idx = 0; in_idx &lt; shape_rank; ++in_idx)</div>
+<div class="line"><span class="lineno">  869</span>  {</div>
+<div class="line"><span class="lineno">  870</span>    <span class="keywordflow">if</span> (!should_squeeze[in_idx])</div>
+<div class="line"><span class="lineno">  871</span>    {</div>
+<div class="line"><span class="lineno">  872</span>      out_shape.dim(out_idx++) = in_shape.dim(in_idx);</div>
+<div class="line"><span class="lineno">  873</span>    }</div>
+<div class="line"><span class="lineno">  874</span>  }</div>
+<div class="line"><span class="lineno">  875</span> </div>
+<div class="line"><span class="lineno">  876</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno">  877</span>}</div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_squeeze_1_1_param_html_a4756fbe68c1eaf1f58035329551409c2"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a4756fbe68c1eaf1f58035329551409c2">onert::ir::operation::Squeeze::Param::dims</a></div><div class="ttdeci">int dims[8]</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_squeeze_8h_source.html#l00041">Squeeze.h:41</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_squeeze_1_1_param_html_a8a945053e6192953762ea1dca17e024c"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_squeeze_1_1_param.html#a8a945053e6192953762ea1dca17e024c">onert::ir::operation::Squeeze::Param::ndim</a></div><div class="ttdeci">int ndim</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_squeeze_8h_source.html#l00042">Squeeze.h:42</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_squeeze_8h_source.html#l00041">onert::ir::operation::Squeeze::Param::dims</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_squeeze_8h_source.html#l00042">onert::ir::operation::Squeeze::Param::ndim</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01084">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01104">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2485,40 +2496,40 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01022">1022</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1024</span>{</div>
-<div class="line"><span class="lineno"> 1025</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape;</div>
-<div class="line"><span class="lineno"> 1026</span> </div>
-<div class="line"><span class="lineno"> 1027</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; rank; ++idx)</div>
-<div class="line"><span class="lineno"> 1028</span>  {</div>
-<div class="line"><span class="lineno"> 1029</span>    int32_t stride = op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[idx];</div>
-<div class="line"><span class="lineno"> 1030</span>    int32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = StartForAxis(op_params, input_shape, idx);</div>
-<div class="line"><span class="lineno"> 1031</span>    int32_t end = StopForAxis(op_params, input_shape, idx, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>);</div>
-<div class="line"><span class="lineno"> 1032</span> </div>
-<div class="line"><span class="lineno"> 1033</span>    <span class="comment">// When shrinking an axis, the end position does not matter (and can be</span></div>
-<div class="line"><span class="lineno"> 1034</span>    <span class="comment">// incorrect when negative indexing is used, see Issue #19260). Always use</span></div>
-<div class="line"><span class="lineno"> 1035</span>    <span class="comment">// begin + 1 to generate a length 1 slice, since begin has</span></div>
-<div class="line"><span class="lineno"> 1036</span>    <span class="comment">// already been adjusted for negative indices by StartForAxis.</span></div>
-<div class="line"><span class="lineno"> 1037</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> shrink_axis = op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a> &amp; (1 &lt;&lt; idx);</div>
-<div class="line"><span class="lineno"> 1038</span>    <span class="keywordflow">if</span> (shrink_axis)</div>
-<div class="line"><span class="lineno"> 1039</span>    {</div>
-<div class="line"><span class="lineno"> 1040</span>      end = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> + 1;</div>
-<div class="line"><span class="lineno"> 1041</span>    }</div>
-<div class="line"><span class="lineno"> 1042</span> </div>
-<div class="line"><span class="lineno"> 1043</span>    int32_t dim_shape = std::ceil((end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(stride));</div>
-<div class="line"><span class="lineno"> 1044</span>    dim_shape = dim_shape &lt; 0 ? 0 : dim_shape;</div>
-<div class="line"><span class="lineno"> 1045</span>    <span class="keywordflow">if</span> (!shrink_axis)</div>
-<div class="line"><span class="lineno"> 1046</span>    {</div>
-<div class="line"><span class="lineno"> 1047</span>      out_shape.append(dim_shape);</div>
-<div class="line"><span class="lineno"> 1048</span>    }</div>
-<div class="line"><span class="lineno"> 1049</span>  }</div>
-<div class="line"><span class="lineno"> 1050</span> </div>
-<div class="line"><span class="lineno"> 1051</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno"> 1052</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01031">1031</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1033</span>{</div>
+<div class="line"><span class="lineno"> 1034</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape;</div>
+<div class="line"><span class="lineno"> 1035</span> </div>
+<div class="line"><span class="lineno"> 1036</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; rank; ++idx)</div>
+<div class="line"><span class="lineno"> 1037</span>  {</div>
+<div class="line"><span class="lineno"> 1038</span>    int32_t stride = op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>[idx];</div>
+<div class="line"><span class="lineno"> 1039</span>    int32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> = StartForAxis(op_params, input_shape, idx);</div>
+<div class="line"><span class="lineno"> 1040</span>    int32_t end = StopForAxis(op_params, input_shape, idx, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>);</div>
+<div class="line"><span class="lineno"> 1041</span> </div>
+<div class="line"><span class="lineno"> 1042</span>    <span class="comment">// When shrinking an axis, the end position does not matter (and can be</span></div>
+<div class="line"><span class="lineno"> 1043</span>    <span class="comment">// incorrect when negative indexing is used, see Issue #19260). Always use</span></div>
+<div class="line"><span class="lineno"> 1044</span>    <span class="comment">// begin + 1 to generate a length 1 slice, since begin has</span></div>
+<div class="line"><span class="lineno"> 1045</span>    <span class="comment">// already been adjusted for negative indices by StartForAxis.</span></div>
+<div class="line"><span class="lineno"> 1046</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> shrink_axis = op_params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a> &amp; (1 &lt;&lt; idx);</div>
+<div class="line"><span class="lineno"> 1047</span>    <span class="keywordflow">if</span> (shrink_axis)</div>
+<div class="line"><span class="lineno"> 1048</span>    {</div>
+<div class="line"><span class="lineno"> 1049</span>      end = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a> + 1;</div>
+<div class="line"><span class="lineno"> 1050</span>    }</div>
+<div class="line"><span class="lineno"> 1051</span> </div>
+<div class="line"><span class="lineno"> 1052</span>    int32_t dim_shape = std::ceil((end - <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>) / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(stride));</div>
+<div class="line"><span class="lineno"> 1053</span>    dim_shape = dim_shape &lt; 0 ? 0 : dim_shape;</div>
+<div class="line"><span class="lineno"> 1054</span>    <span class="keywordflow">if</span> (!shrink_axis)</div>
+<div class="line"><span class="lineno"> 1055</span>    {</div>
+<div class="line"><span class="lineno"> 1056</span>      out_shape.append(dim_shape);</div>
+<div class="line"><span class="lineno"> 1057</span>    }</div>
+<div class="line"><span class="lineno"> 1058</span>  }</div>
+<div class="line"><span class="lineno"> 1059</span> </div>
+<div class="line"><span class="lineno"> 1060</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno"> 1061</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00130">onert::shape_inference::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="_shape_inference_8cc_source.html#l00917">StartForAxis()</a>, <a class="el" href="_shape_inference_8cc_source.html#l00960">StopForAxis()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00130">onert::shape_inference::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="_shape_inference_8cc_source.html#l00926">StartForAxis()</a>, <a class="el" href="_shape_inference_8cc_source.html#l00969">StopForAxis()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01106">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01126">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2554,25 +2565,25 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01054">1054</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1056</span>{</div>
-<div class="line"><span class="lineno"> 1057</span>  <span class="keywordflow">if</span> (multiplier_size != in_shape.rank())</div>
-<div class="line"><span class="lineno"> 1058</span>  {</div>
-<div class="line"><span class="lineno"> 1059</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno"> 1060</span>      <span class="stringliteral">&quot;inferTileShape failed, input rank: &quot;</span> + std::to_string(in_shape.rank()) +</div>
-<div class="line"><span class="lineno"> 1061</span>      <span class="stringliteral">&quot;, bad multipliers size: &quot;</span> + std::to_string(multiplier_size) + <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1062</span>  }</div>
-<div class="line"><span class="lineno"> 1063</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> new_Shape(in_shape.rank());</div>
-<div class="line"><span class="lineno"> 1064</span> </div>
-<div class="line"><span class="lineno"> 1065</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; in_shape.rank(); ++i)</div>
-<div class="line"><span class="lineno"> 1066</span>  {</div>
-<div class="line"><span class="lineno"> 1067</span>    assert(multiplier_buf[i]); <span class="comment">// multiplier_buf[i] shuld not be 0.</span></div>
-<div class="line"><span class="lineno"> 1068</span>    new_Shape.dim(i) = in_shape.dim(i) * multiplier_buf[i];</div>
-<div class="line"><span class="lineno"> 1069</span>  }</div>
-<div class="line"><span class="lineno"> 1070</span>  <span class="keywordflow">return</span> new_Shape;</div>
-<div class="line"><span class="lineno"> 1071</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01063">1063</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1065</span>{</div>
+<div class="line"><span class="lineno"> 1066</span>  <span class="keywordflow">if</span> (multiplier_size != in_shape.rank())</div>
+<div class="line"><span class="lineno"> 1067</span>  {</div>
+<div class="line"><span class="lineno"> 1068</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno"> 1069</span>      <span class="stringliteral">&quot;inferTileShape failed, input rank: &quot;</span> + std::to_string(in_shape.rank()) +</div>
+<div class="line"><span class="lineno"> 1070</span>      <span class="stringliteral">&quot;, bad multipliers size: &quot;</span> + std::to_string(multiplier_size) + <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1071</span>  }</div>
+<div class="line"><span class="lineno"> 1072</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> new_Shape(in_shape.rank());</div>
+<div class="line"><span class="lineno"> 1073</span> </div>
+<div class="line"><span class="lineno"> 1074</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; in_shape.rank(); ++i)</div>
+<div class="line"><span class="lineno"> 1075</span>  {</div>
+<div class="line"><span class="lineno"> 1076</span>    assert(multiplier_buf[i]); <span class="comment">// multiplier_buf[i] shuld not be 0.</span></div>
+<div class="line"><span class="lineno"> 1077</span>    new_Shape.dim(i) = in_shape.dim(i) * multiplier_buf[i];</div>
+<div class="line"><span class="lineno"> 1078</span>  }</div>
+<div class="line"><span class="lineno"> 1079</span>  <span class="keywordflow">return</span> new_Shape;</div>
+<div class="line"><span class="lineno"> 1080</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01146">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01166">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2608,56 +2619,56 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01073">1073</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1075</span>{</div>
-<div class="line"><span class="lineno"> 1076</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = in_shape.rank();</div>
-<div class="line"><span class="lineno"> 1077</span>  <span class="keywordflow">if</span> (perm_size &gt; rank)</div>
-<div class="line"><span class="lineno"> 1078</span>  {</div>
-<div class="line"><span class="lineno"> 1079</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, bad permutation size: &quot;</span> +</div>
-<div class="line"><span class="lineno"> 1080</span>                             std::to_string(perm_size));</div>
-<div class="line"><span class="lineno"> 1081</span>  }</div>
-<div class="line"><span class="lineno"> 1082</span> </div>
-<div class="line"><span class="lineno"> 1083</span>  <span class="keyword">const</span> int32_t *perm_data = perm_buf;</div>
-<div class="line"><span class="lineno"> 1084</span>  std::vector&lt;int32_t&gt; regular_perm_vec;</div>
-<div class="line"><span class="lineno"> 1085</span>  <span class="keywordflow">if</span> (perm_size == 0)</div>
-<div class="line"><span class="lineno"> 1086</span>  {</div>
-<div class="line"><span class="lineno"> 1087</span>    <span class="comment">// perm_data will be set to (n-1...0)</span></div>
-<div class="line"><span class="lineno"> 1088</span>    regular_perm_vec.resize(rank);</div>
-<div class="line"><span class="lineno"> 1089</span>    std::iota(regular_perm_vec.begin(), regular_perm_vec.end(), 0);</div>
-<div class="line"><span class="lineno"> 1090</span>    std::reverse(regular_perm_vec.begin(), regular_perm_vec.end());</div>
-<div class="line"><span class="lineno"> 1091</span>    perm_data = regular_perm_vec.data();</div>
-<div class="line"><span class="lineno"> 1092</span>  }</div>
-<div class="line"><span class="lineno"> 1093</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1094</span>  {</div>
-<div class="line"><span class="lineno"> 1095</span>    assert(rank == perm_size);</div>
-<div class="line"><span class="lineno"> 1096</span>  }</div>
-<div class="line"><span class="lineno"> 1097</span> </div>
-<div class="line"><span class="lineno"> 1098</span>  ir::Shape out_shape(rank);</div>
-<div class="line"><span class="lineno"> 1099</span>  std::vector&lt;bool&gt; visit_perms(rank, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno"> 1100</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; rank; idx++)</div>
-<div class="line"><span class="lineno"> 1101</span>  {</div>
-<div class="line"><span class="lineno"> 1102</span>    <span class="keyword">const</span> <span class="keyword">auto</span> perm_val = perm_data[idx];</div>
-<div class="line"><span class="lineno"> 1103</span>    <span class="comment">// Check invalid permutation value</span></div>
-<div class="line"><span class="lineno"> 1104</span>    <span class="keywordflow">if</span> (perm_val &lt; 0 || perm_val &gt;= rank)</div>
-<div class="line"><span class="lineno"> 1105</span>    {</div>
-<div class="line"><span class="lineno"> 1106</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, bad permutation value: &quot;</span> +</div>
-<div class="line"><span class="lineno"> 1107</span>                               std::to_string(perm_val));</div>
-<div class="line"><span class="lineno"> 1108</span>    }</div>
-<div class="line"><span class="lineno"> 1109</span> </div>
-<div class="line"><span class="lineno"> 1110</span>    <span class="comment">// Check duplicated permutation value</span></div>
-<div class="line"><span class="lineno"> 1111</span>    <span class="keywordflow">if</span> (visit_perms.at(perm_val))</div>
-<div class="line"><span class="lineno"> 1112</span>    {</div>
-<div class="line"><span class="lineno"> 1113</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, duplicated permutation value: &quot;</span> +</div>
-<div class="line"><span class="lineno"> 1114</span>                               std::to_string(perm_val));</div>
-<div class="line"><span class="lineno"> 1115</span>    }</div>
-<div class="line"><span class="lineno"> 1116</span>    visit_perms.at(perm_val) = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1117</span> </div>
-<div class="line"><span class="lineno"> 1118</span>    out_shape.dim(idx) = in_shape.dim(perm_val);</div>
-<div class="line"><span class="lineno"> 1119</span>  }</div>
-<div class="line"><span class="lineno"> 1120</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno"> 1121</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01082">1082</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1084</span>{</div>
+<div class="line"><span class="lineno"> 1085</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = in_shape.rank();</div>
+<div class="line"><span class="lineno"> 1086</span>  <span class="keywordflow">if</span> (perm_size &gt; rank)</div>
+<div class="line"><span class="lineno"> 1087</span>  {</div>
+<div class="line"><span class="lineno"> 1088</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, bad permutation size: &quot;</span> +</div>
+<div class="line"><span class="lineno"> 1089</span>                             std::to_string(perm_size));</div>
+<div class="line"><span class="lineno"> 1090</span>  }</div>
+<div class="line"><span class="lineno"> 1091</span> </div>
+<div class="line"><span class="lineno"> 1092</span>  <span class="keyword">const</span> int32_t *perm_data = perm_buf;</div>
+<div class="line"><span class="lineno"> 1093</span>  std::vector&lt;int32_t&gt; regular_perm_vec;</div>
+<div class="line"><span class="lineno"> 1094</span>  <span class="keywordflow">if</span> (perm_size == 0)</div>
+<div class="line"><span class="lineno"> 1095</span>  {</div>
+<div class="line"><span class="lineno"> 1096</span>    <span class="comment">// perm_data will be set to (n-1...0)</span></div>
+<div class="line"><span class="lineno"> 1097</span>    regular_perm_vec.resize(rank);</div>
+<div class="line"><span class="lineno"> 1098</span>    std::iota(regular_perm_vec.begin(), regular_perm_vec.end(), 0);</div>
+<div class="line"><span class="lineno"> 1099</span>    std::reverse(regular_perm_vec.begin(), regular_perm_vec.end());</div>
+<div class="line"><span class="lineno"> 1100</span>    perm_data = regular_perm_vec.data();</div>
+<div class="line"><span class="lineno"> 1101</span>  }</div>
+<div class="line"><span class="lineno"> 1102</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1103</span>  {</div>
+<div class="line"><span class="lineno"> 1104</span>    assert(rank == perm_size);</div>
+<div class="line"><span class="lineno"> 1105</span>  }</div>
+<div class="line"><span class="lineno"> 1106</span> </div>
+<div class="line"><span class="lineno"> 1107</span>  ir::Shape out_shape(rank);</div>
+<div class="line"><span class="lineno"> 1108</span>  std::vector&lt;bool&gt; visit_perms(rank, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno"> 1109</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; rank; idx++)</div>
+<div class="line"><span class="lineno"> 1110</span>  {</div>
+<div class="line"><span class="lineno"> 1111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> perm_val = perm_data[idx];</div>
+<div class="line"><span class="lineno"> 1112</span>    <span class="comment">// Check invalid permutation value</span></div>
+<div class="line"><span class="lineno"> 1113</span>    <span class="keywordflow">if</span> (perm_val &lt; 0 || perm_val &gt;= rank)</div>
+<div class="line"><span class="lineno"> 1114</span>    {</div>
+<div class="line"><span class="lineno"> 1115</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, bad permutation value: &quot;</span> +</div>
+<div class="line"><span class="lineno"> 1116</span>                               std::to_string(perm_val));</div>
+<div class="line"><span class="lineno"> 1117</span>    }</div>
+<div class="line"><span class="lineno"> 1118</span> </div>
+<div class="line"><span class="lineno"> 1119</span>    <span class="comment">// Check duplicated permutation value</span></div>
+<div class="line"><span class="lineno"> 1120</span>    <span class="keywordflow">if</span> (visit_perms.at(perm_val))</div>
+<div class="line"><span class="lineno"> 1121</span>    {</div>
+<div class="line"><span class="lineno"> 1122</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;inferTransposeShape failed, duplicated permutation value: &quot;</span> +</div>
+<div class="line"><span class="lineno"> 1123</span>                               std::to_string(perm_val));</div>
+<div class="line"><span class="lineno"> 1124</span>    }</div>
+<div class="line"><span class="lineno"> 1125</span>    visit_perms.at(perm_val) = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1126</span> </div>
+<div class="line"><span class="lineno"> 1127</span>    out_shape.dim(idx) = in_shape.dim(perm_val);</div>
+<div class="line"><span class="lineno"> 1128</span>  }</div>
+<div class="line"><span class="lineno"> 1129</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno"> 1130</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01173">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01193">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2693,22 +2704,22 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01123">1123</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1124</span>{</div>
-<div class="line"><span class="lineno"> 1125</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape;</div>
-<div class="line"><span class="lineno"> 1126</span> </div>
-<div class="line"><span class="lineno"> 1127</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_idx = 0; out_idx &lt; rank; out_idx++)</div>
-<div class="line"><span class="lineno"> 1128</span>  {</div>
-<div class="line"><span class="lineno"> 1129</span>    <span class="keywordflow">if</span> (out_idx != axis)</div>
-<div class="line"><span class="lineno"> 1130</span>    {</div>
-<div class="line"><span class="lineno"> 1131</span>      out_shape.append(input_shape.dim(out_idx));</div>
-<div class="line"><span class="lineno"> 1132</span>    }</div>
-<div class="line"><span class="lineno"> 1133</span>  }</div>
-<div class="line"><span class="lineno"> 1134</span> </div>
-<div class="line"><span class="lineno"> 1135</span>  <span class="keywordflow">return</span> out_shape;</div>
-<div class="line"><span class="lineno"> 1136</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l01132">1132</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1133</span>{</div>
+<div class="line"><span class="lineno"> 1134</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> out_shape;</div>
+<div class="line"><span class="lineno"> 1135</span> </div>
+<div class="line"><span class="lineno"> 1136</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_idx = 0; out_idx &lt; rank; out_idx++)</div>
+<div class="line"><span class="lineno"> 1137</span>  {</div>
+<div class="line"><span class="lineno"> 1138</span>    <span class="keywordflow">if</span> (out_idx != axis)</div>
+<div class="line"><span class="lineno"> 1139</span>    {</div>
+<div class="line"><span class="lineno"> 1140</span>      out_shape.append(input_shape.dim(out_idx));</div>
+<div class="line"><span class="lineno"> 1141</span>    }</div>
+<div class="line"><span class="lineno"> 1142</span>  }</div>
+<div class="line"><span class="lineno"> 1143</span> </div>
+<div class="line"><span class="lineno"> 1144</span>  <span class="keywordflow">return</span> out_shape;</div>
+<div class="line"><span class="lineno"> 1145</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01227">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l01247">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -2744,48 +2755,48 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00917">917</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  918</span>{</div>
-<div class="line"><span class="lineno">  919</span>  <span class="keyword">const</span> <span class="keyword">auto</span> begin_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a>;</div>
-<div class="line"><span class="lineno">  920</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *start_indices = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#abe94b65b6fa202b385624295929570a0">start_indices</a>;</div>
-<div class="line"><span class="lineno">  921</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *strides = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>;</div>
-<div class="line"><span class="lineno">  922</span>  <span class="comment">// Begin with the specified index.</span></div>
-<div class="line"><span class="lineno">  923</span>  <span class="keywordtype">int</span> start = start_indices[axis];</div>
-<div class="line"><span class="lineno">  924</span> </div>
-<div class="line"><span class="lineno">  925</span>  <span class="comment">// begin_mask override</span></div>
-<div class="line"><span class="lineno">  926</span>  <span class="keywordflow">if</span> (begin_mask &amp; 1 &lt;&lt; axis)</div>
-<div class="line"><span class="lineno">  927</span>  {</div>
-<div class="line"><span class="lineno">  928</span>    <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
-<div class="line"><span class="lineno">  929</span>    {</div>
-<div class="line"><span class="lineno">  930</span>      <span class="comment">// Forward iteration - use the first element. These values will get</span></div>
-<div class="line"><span class="lineno">  931</span>      <span class="comment">// clamped below (Note: We could have set them to 0 and axis_size-1, but</span></div>
-<div class="line"><span class="lineno">  932</span>      <span class="comment">// use lowest() and max() to maintain symmetry with StopForAxis())</span></div>
-<div class="line"><span class="lineno">  933</span>      start = std::numeric_limits&lt;int&gt;::lowest();</div>
-<div class="line"><span class="lineno">  934</span>    }</div>
-<div class="line"><span class="lineno">  935</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  936</span>    {</div>
-<div class="line"><span class="lineno">  937</span>      <span class="comment">// Backward iteration - use the last element.</span></div>
-<div class="line"><span class="lineno">  938</span>      start = std::numeric_limits&lt;int&gt;::max();</div>
-<div class="line"><span class="lineno">  939</span>    }</div>
-<div class="line"><span class="lineno">  940</span>  }</div>
-<div class="line"><span class="lineno">  941</span> </div>
-<div class="line"><span class="lineno">  942</span>  <span class="comment">// Handle negative indices</span></div>
-<div class="line"><span class="lineno">  943</span>  <span class="keywordtype">int</span> axis_size = input_shape.dim(axis);</div>
-<div class="line"><span class="lineno">  944</span>  <span class="keywordflow">if</span> (start &lt; 0)</div>
-<div class="line"><span class="lineno">  945</span>  {</div>
-<div class="line"><span class="lineno">  946</span>    start += axis_size;</div>
-<div class="line"><span class="lineno">  947</span>  }</div>
-<div class="line"><span class="lineno">  948</span> </div>
-<div class="line"><span class="lineno">  949</span>  <span class="comment">// Clamping</span></div>
-<div class="line"><span class="lineno">  950</span>  start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(start, 0, axis_size - 1);</div>
-<div class="line"><span class="lineno">  951</span> </div>
-<div class="line"><span class="lineno">  952</span>  <span class="keywordflow">return</span> start;</div>
-<div class="line"><span class="lineno">  953</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00926">926</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  927</span>{</div>
+<div class="line"><span class="lineno">  928</span>  <span class="keyword">const</span> <span class="keyword">auto</span> begin_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a33387bb10142d74922c255aee05d9d84">begin_mask</a>;</div>
+<div class="line"><span class="lineno">  929</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *start_indices = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#abe94b65b6fa202b385624295929570a0">start_indices</a>;</div>
+<div class="line"><span class="lineno">  930</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *strides = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>;</div>
+<div class="line"><span class="lineno">  931</span>  <span class="comment">// Begin with the specified index.</span></div>
+<div class="line"><span class="lineno">  932</span>  <span class="keywordtype">int</span> start = start_indices[axis];</div>
+<div class="line"><span class="lineno">  933</span> </div>
+<div class="line"><span class="lineno">  934</span>  <span class="comment">// begin_mask override</span></div>
+<div class="line"><span class="lineno">  935</span>  <span class="keywordflow">if</span> (begin_mask &amp; 1 &lt;&lt; axis)</div>
+<div class="line"><span class="lineno">  936</span>  {</div>
+<div class="line"><span class="lineno">  937</span>    <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
+<div class="line"><span class="lineno">  938</span>    {</div>
+<div class="line"><span class="lineno">  939</span>      <span class="comment">// Forward iteration - use the first element. These values will get</span></div>
+<div class="line"><span class="lineno">  940</span>      <span class="comment">// clamped below (Note: We could have set them to 0 and axis_size-1, but</span></div>
+<div class="line"><span class="lineno">  941</span>      <span class="comment">// use lowest() and max() to maintain symmetry with StopForAxis())</span></div>
+<div class="line"><span class="lineno">  942</span>      start = std::numeric_limits&lt;int&gt;::lowest();</div>
+<div class="line"><span class="lineno">  943</span>    }</div>
+<div class="line"><span class="lineno">  944</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  945</span>    {</div>
+<div class="line"><span class="lineno">  946</span>      <span class="comment">// Backward iteration - use the last element.</span></div>
+<div class="line"><span class="lineno">  947</span>      start = std::numeric_limits&lt;int&gt;::max();</div>
+<div class="line"><span class="lineno">  948</span>    }</div>
+<div class="line"><span class="lineno">  949</span>  }</div>
+<div class="line"><span class="lineno">  950</span> </div>
+<div class="line"><span class="lineno">  951</span>  <span class="comment">// Handle negative indices</span></div>
+<div class="line"><span class="lineno">  952</span>  <span class="keywordtype">int</span> axis_size = input_shape.dim(axis);</div>
+<div class="line"><span class="lineno">  953</span>  <span class="keywordflow">if</span> (start &lt; 0)</div>
+<div class="line"><span class="lineno">  954</span>  {</div>
+<div class="line"><span class="lineno">  955</span>    start += axis_size;</div>
+<div class="line"><span class="lineno">  956</span>  }</div>
+<div class="line"><span class="lineno">  957</span> </div>
+<div class="line"><span class="lineno">  958</span>  <span class="comment">// Clamping</span></div>
+<div class="line"><span class="lineno">  959</span>  start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(start, 0, axis_size - 1);</div>
+<div class="line"><span class="lineno">  960</span> </div>
+<div class="line"><span class="lineno">  961</span>  <span class="keywordflow">return</span> start;</div>
+<div class="line"><span class="lineno">  962</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a1189dfd5fde5db4cd13ca50c4d7de48b"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">nnfw::cker::Clamp</a></div><div class="ttdeci">int Clamp(const int v, const int lo, const int hi)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00032">StridedSlice.h:32</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00126">onert::shape_inference::StridedSliceParams::begin_mask</a>, <a class="el" href="_shape_inference_8cc_source.html#l00907">Clamp()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00120">onert::shape_inference::StridedSliceParams::start_indices</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00126">onert::shape_inference::StridedSliceParams::begin_mask</a>, <a class="el" href="_shape_inference_8cc_source.html#l00916">Clamp()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00120">onert::shape_inference::StridedSliceParams::start_indices</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l01022">inferStridedSliceShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l01031">inferStridedSliceShape()</a>.</p>
 
 </div>
 </div>
@@ -2827,70 +2838,70 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00960">960</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  962</span>{</div>
-<div class="line"><span class="lineno">  963</span>  <span class="keyword">const</span> <span class="keyword">auto</span> end_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a02756d563a88bcf34878af2ed15ae16a">end_mask</a>;</div>
-<div class="line"><span class="lineno">  964</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shrink_axis_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a>;</div>
-<div class="line"><span class="lineno">  965</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *stop_indices = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a64fdd2d217e0c345d366582a5cc16507">stop_indices</a>;</div>
-<div class="line"><span class="lineno">  966</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *strides = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>;</div>
-<div class="line"><span class="lineno">  967</span> </div>
-<div class="line"><span class="lineno">  968</span>  <span class="comment">// Begin with the specified index</span></div>
-<div class="line"><span class="lineno">  969</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> shrink_axis = shrink_axis_mask &amp; (1 &lt;&lt; axis);</div>
-<div class="line"><span class="lineno">  970</span>  <span class="keywordtype">int</span> stop = stop_indices[axis];</div>
-<div class="line"><span class="lineno">  971</span> </div>
-<div class="line"><span class="lineno">  972</span>  <span class="comment">// When shrinking an axis, the end position does not matter (and can be</span></div>
-<div class="line"><span class="lineno">  973</span>  <span class="comment">// incorrect when negative indexing is used, see Issue #19260). Always use</span></div>
-<div class="line"><span class="lineno">  974</span>  <span class="comment">// start_for_axis + 1 to generate a length 1 slice, since start_for_axis has</span></div>
-<div class="line"><span class="lineno">  975</span>  <span class="comment">// already been adjusted for negative indices.</span></div>
-<div class="line"><span class="lineno">  976</span>  <span class="keywordflow">if</span> (shrink_axis)</div>
-<div class="line"><span class="lineno">  977</span>  {</div>
-<div class="line"><span class="lineno">  978</span>    stop = start_for_axis + 1;</div>
-<div class="line"><span class="lineno">  979</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_shape_inference_8cc_source.html#l00969">969</a> of file <a class="el" href="_shape_inference_8cc_source.html">ShapeInference.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  971</span>{</div>
+<div class="line"><span class="lineno">  972</span>  <span class="keyword">const</span> <span class="keyword">auto</span> end_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a02756d563a88bcf34878af2ed15ae16a">end_mask</a>;</div>
+<div class="line"><span class="lineno">  973</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shrink_axis_mask = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#ad28411be7f986e3e1335939c56f386a2">shrink_axis_mask</a>;</div>
+<div class="line"><span class="lineno">  974</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *stop_indices = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a64fdd2d217e0c345d366582a5cc16507">stop_indices</a>;</div>
+<div class="line"><span class="lineno">  975</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *strides = params.<a class="code hl_variable" href="structonert_1_1shape__inference_1_1_strided_slice_params.html#a60858b561c9f2ab3bd3f5e745762ae7e">strides</a>;</div>
+<div class="line"><span class="lineno">  976</span> </div>
+<div class="line"><span class="lineno">  977</span>  <span class="comment">// Begin with the specified index</span></div>
+<div class="line"><span class="lineno">  978</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> shrink_axis = shrink_axis_mask &amp; (1 &lt;&lt; axis);</div>
+<div class="line"><span class="lineno">  979</span>  <span class="keywordtype">int</span> stop = stop_indices[axis];</div>
 <div class="line"><span class="lineno">  980</span> </div>
-<div class="line"><span class="lineno">  981</span>  <span class="comment">// end_mask override</span></div>
-<div class="line"><span class="lineno">  982</span>  <span class="keywordflow">if</span> (end_mask &amp; (1 &lt;&lt; axis))</div>
-<div class="line"><span class="lineno">  983</span>  {</div>
-<div class="line"><span class="lineno">  984</span>    <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
-<div class="line"><span class="lineno">  985</span>    {</div>
-<div class="line"><span class="lineno">  986</span>      <span class="comment">// Forward iteration - use the last element. These values will get</span></div>
-<div class="line"><span class="lineno">  987</span>      <span class="comment">// clamped below</span></div>
-<div class="line"><span class="lineno">  988</span>      stop = std::numeric_limits&lt;int&gt;::max();</div>
-<div class="line"><span class="lineno">  989</span>    }</div>
-<div class="line"><span class="lineno">  990</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  991</span>    {</div>
-<div class="line"><span class="lineno">  992</span>      <span class="comment">// Backward iteration - use the first element.</span></div>
-<div class="line"><span class="lineno">  993</span>      stop = std::numeric_limits&lt;int&gt;::lowest();</div>
-<div class="line"><span class="lineno">  994</span>    }</div>
-<div class="line"><span class="lineno">  995</span>  }</div>
-<div class="line"><span class="lineno">  996</span> </div>
-<div class="line"><span class="lineno">  997</span>  <span class="comment">// Handle negative indices</span></div>
-<div class="line"><span class="lineno">  998</span> </div>
-<div class="line"><span class="lineno">  999</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> axis_size = input_shape.dim(axis);</div>
-<div class="line"><span class="lineno"> 1000</span>  <span class="keywordflow">if</span> (stop &lt; 0)</div>
-<div class="line"><span class="lineno"> 1001</span>  {</div>
-<div class="line"><span class="lineno"> 1002</span>    stop += axis_size;</div>
-<div class="line"><span class="lineno"> 1003</span>  }</div>
-<div class="line"><span class="lineno"> 1004</span> </div>
-<div class="line"><span class="lineno"> 1005</span>  <span class="comment">// Clamping</span></div>
-<div class="line"><span class="lineno"> 1006</span>  <span class="comment">// Because the end index points one past the last element, we need slightly</span></div>
-<div class="line"><span class="lineno"> 1007</span>  <span class="comment">// different clamping ranges depending on the direction.</span></div>
-<div class="line"><span class="lineno"> 1008</span>  <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
-<div class="line"><span class="lineno"> 1009</span>  {</div>
-<div class="line"><span class="lineno"> 1010</span>    <span class="comment">// Forward iteration</span></div>
-<div class="line"><span class="lineno"> 1011</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, 0, axis_size);</div>
+<div class="line"><span class="lineno">  981</span>  <span class="comment">// When shrinking an axis, the end position does not matter (and can be</span></div>
+<div class="line"><span class="lineno">  982</span>  <span class="comment">// incorrect when negative indexing is used, see Issue #19260). Always use</span></div>
+<div class="line"><span class="lineno">  983</span>  <span class="comment">// start_for_axis + 1 to generate a length 1 slice, since start_for_axis has</span></div>
+<div class="line"><span class="lineno">  984</span>  <span class="comment">// already been adjusted for negative indices.</span></div>
+<div class="line"><span class="lineno">  985</span>  <span class="keywordflow">if</span> (shrink_axis)</div>
+<div class="line"><span class="lineno">  986</span>  {</div>
+<div class="line"><span class="lineno">  987</span>    stop = start_for_axis + 1;</div>
+<div class="line"><span class="lineno">  988</span>  }</div>
+<div class="line"><span class="lineno">  989</span> </div>
+<div class="line"><span class="lineno">  990</span>  <span class="comment">// end_mask override</span></div>
+<div class="line"><span class="lineno">  991</span>  <span class="keywordflow">if</span> (end_mask &amp; (1 &lt;&lt; axis))</div>
+<div class="line"><span class="lineno">  992</span>  {</div>
+<div class="line"><span class="lineno">  993</span>    <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
+<div class="line"><span class="lineno">  994</span>    {</div>
+<div class="line"><span class="lineno">  995</span>      <span class="comment">// Forward iteration - use the last element. These values will get</span></div>
+<div class="line"><span class="lineno">  996</span>      <span class="comment">// clamped below</span></div>
+<div class="line"><span class="lineno">  997</span>      stop = std::numeric_limits&lt;int&gt;::max();</div>
+<div class="line"><span class="lineno">  998</span>    }</div>
+<div class="line"><span class="lineno">  999</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1000</span>    {</div>
+<div class="line"><span class="lineno"> 1001</span>      <span class="comment">// Backward iteration - use the first element.</span></div>
+<div class="line"><span class="lineno"> 1002</span>      stop = std::numeric_limits&lt;int&gt;::lowest();</div>
+<div class="line"><span class="lineno"> 1003</span>    }</div>
+<div class="line"><span class="lineno"> 1004</span>  }</div>
+<div class="line"><span class="lineno"> 1005</span> </div>
+<div class="line"><span class="lineno"> 1006</span>  <span class="comment">// Handle negative indices</span></div>
+<div class="line"><span class="lineno"> 1007</span> </div>
+<div class="line"><span class="lineno"> 1008</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> axis_size = input_shape.dim(axis);</div>
+<div class="line"><span class="lineno"> 1009</span>  <span class="keywordflow">if</span> (stop &lt; 0)</div>
+<div class="line"><span class="lineno"> 1010</span>  {</div>
+<div class="line"><span class="lineno"> 1011</span>    stop += axis_size;</div>
 <div class="line"><span class="lineno"> 1012</span>  }</div>
-<div class="line"><span class="lineno"> 1013</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1014</span>  {</div>
-<div class="line"><span class="lineno"> 1015</span>    <span class="comment">// Backward iteration</span></div>
-<div class="line"><span class="lineno"> 1016</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, -1, axis_size - 1);</div>
-<div class="line"><span class="lineno"> 1017</span>  }</div>
-<div class="line"><span class="lineno"> 1018</span> </div>
-<div class="line"><span class="lineno"> 1019</span>  <span class="keywordflow">return</span> stop;</div>
-<div class="line"><span class="lineno"> 1020</span>}</div>
+<div class="line"><span class="lineno"> 1013</span> </div>
+<div class="line"><span class="lineno"> 1014</span>  <span class="comment">// Clamping</span></div>
+<div class="line"><span class="lineno"> 1015</span>  <span class="comment">// Because the end index points one past the last element, we need slightly</span></div>
+<div class="line"><span class="lineno"> 1016</span>  <span class="comment">// different clamping ranges depending on the direction.</span></div>
+<div class="line"><span class="lineno"> 1017</span>  <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
+<div class="line"><span class="lineno"> 1018</span>  {</div>
+<div class="line"><span class="lineno"> 1019</span>    <span class="comment">// Forward iteration</span></div>
+<div class="line"><span class="lineno"> 1020</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, 0, axis_size);</div>
+<div class="line"><span class="lineno"> 1021</span>  }</div>
+<div class="line"><span class="lineno"> 1022</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1023</span>  {</div>
+<div class="line"><span class="lineno"> 1024</span>    <span class="comment">// Backward iteration</span></div>
+<div class="line"><span class="lineno"> 1025</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, -1, axis_size - 1);</div>
+<div class="line"><span class="lineno"> 1026</span>  }</div>
+<div class="line"><span class="lineno"> 1027</span> </div>
+<div class="line"><span class="lineno"> 1028</span>  <span class="keywordflow">return</span> stop;</div>
+<div class="line"><span class="lineno"> 1029</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_shape_inference_8cc_source.html#l00907">Clamp()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00128">onert::shape_inference::StridedSliceParams::end_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00130">onert::shape_inference::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00122">onert::shape_inference::StridedSliceParams::stop_indices</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
+<p class="reference">References <a class="el" href="_shape_inference_8cc_source.html#l00916">Clamp()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00128">onert::shape_inference::StridedSliceParams::end_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00130">onert::shape_inference::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00122">onert::shape_inference::StridedSliceParams::stop_indices</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00124">onert::shape_inference::StridedSliceParams::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l01022">inferStridedSliceShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_shape_inference_8cc_source.html#l01031">inferStridedSliceShape()</a>.</p>
 
 </div>
 </div>

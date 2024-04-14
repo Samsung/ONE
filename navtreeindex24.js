@@ -1,6 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_pass_exception_test_8cpp_source.html":[36,0,0,82,6,2,0],
 "_pass_manager_8cpp.html":[36,0,0,82,3,0],
 "_pass_manager_8cpp_source.html":[36,0,0,82,3,0],
 "_pass_manager_8h.html":[36,0,0,82,2,1,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX24 =
 "_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d":[36,0,0,52,7,1,57,4],
 "_quantization_utils_8h.html#a1ef77fe953130949713bdae6c170b133":[36,0,0,52,7,1,57,19],
 "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28e":[36,0,0,52,7,1,57,0],
-"_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea":[36,0,0,52,7,1,57,0,4]
+"_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea":[36,0,0,52,7,1,57,0,4],
+"_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ea516ab7fb3e844b3223a06ccb657f1c59":[36,0,0,52,7,1,57,0,1]
 };

@@ -123,7 +123,7 @@ var searchData=
   ['unsupportedactivation_120',['UnsupportedActivation',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d',1,'onert_micro']]],
   ['unsupporteddynamicshapecase_121',['UnsupportedDynamicShapeCase',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3',1,'onert_micro']]],
   ['unsupportedop_122',['UnsupportedOp',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351',1,'onert_micro']]],
-  ['unsupportedquantizationtype_123',['UnsupportedQuantizationType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba6a3c4e0f6d459abc62a8f25d6319079d',1,'onert_micro']]],
+  ['unsupportedquantizationtype_123',['UnsupportedQuantizationType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674',1,'onert_micro']]],
   ['unsupportedtype_124',['UnsupportedType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b',1,'onert_micro']]],
   ['untrainableoperation_125',['untrainableoperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#abc0583cc6eff3f99c9869101e1f9a8cd',1,'onert::ir::train::operation::UntrainableOperation::UntrainableOperation()'],['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html',1,'onert::ir::train::operation::UntrainableOperation&lt; OperationType, typename &gt;']]],
   ['untrainableoperation_2eh_126',['UntrainableOperation.h',['../_untrainable_operation_8h.html',1,'']]],

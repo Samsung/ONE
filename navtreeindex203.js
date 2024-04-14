@@ -1,5 +1,6 @@
 var NAVTREEINDEX203 =
 {
+"mir-interpreter_2src_2ops_2_sigmoid_8cpp.html":[36,0,0,74,1,0,54],
 "mir-interpreter_2src_2ops_2_sigmoid_8cpp.html#a2a2aab0eefb7fbafe836ad95d45f047a":[36,0,0,74,1,0,54,2],
 "mir-interpreter_2src_2ops_2_sigmoid_8cpp_source.html":[36,0,0,74,1,0,54],
 "mir-interpreter_2src_2ops_2_sigmoid_8h.html":[36,0,0,74,1,0,55],
@@ -18,9 +19,9 @@ var NAVTREEINDEX203 =
 "mir_2include_2mir_2_quantization_8h.html":[36,0,0,73,0,0,13],
 "mir_2include_2mir_2_quantization_8h_source.html":[36,0,0,73,0,0,13],
 "mir_2include_2mir_2_visitor_8h.html":[36,0,0,73,0,0,21],
-"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[36,0,0,73,0,0,21,2],
-"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[36,0,0,73,0,0,21,3],
 "mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[36,0,0,73,0,0,21,4],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[36,0,0,73,0,0,21,3],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[36,0,0,73,0,0,21,2],
 "mir_2include_2mir_2_visitor_8h_source.html":[36,0,0,73,0,0,21],
 "mir_2src_2_graph_8cpp.html":[36,0,0,73,1,9],
 "mir_2src_2_graph_8cpp.html#aaf7f8fc0215983ba36a402319779e34e":[36,0,0,73,1,9,0],
@@ -168,8 +169,8 @@ var NAVTREEINDEX203 =
 "moco-tf_2src_2_knob_8h.html#a13f64637204bc67b4190d4658a175c7f":[36,0,0,78,1,14,3],
 "moco-tf_2src_2_knob_8h.html#a348bd9a171d16d3c09ee2a0b5785358b":[36,0,0,78,1,14,2],
 "moco-tf_2src_2_knob_8h.html#a348bd9a171d16d3c09ee2a0b5785358ba775eed87efaf3ee5b77c66c0254e634f":[36,0,0,78,1,14,2,0],
-"moco-tf_2src_2_knob_8h.html#acc97fd86228de973ed272a3ed7bb6d54":[36,0,0,78,1,14,0],
 "moco-tf_2src_2_knob_8h.html#acc97fd86228de973ed272a3ed7bb6d54":[36,0,0,78,1,14,1],
+"moco-tf_2src_2_knob_8h.html#acc97fd86228de973ed272a3ed7bb6d54":[36,0,0,78,1,14,0],
 "moco-tf_2src_2_knob_8h_source.html":[36,0,0,78,1,14],
 "moco-tf_2src_2_log_helper_8cpp.html":[36,0,0,78,1,15],
 "moco-tf_2src_2_log_helper_8cpp.html#a6ddede5686aa95a79ddebc5188d985f3":[36,0,0,78,1,15,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX203 =
 "moco_2import_2src_2_nodes_2_bias_add_8cpp.html":[36,0,0,76,0,1,0,2],
 "moco_2import_2src_2_nodes_2_bias_add_8cpp_source.html":[36,0,0,76,0,1,0,2],
 "moco_2import_2src_2_nodes_2_concat_8cpp.html":[36,0,0,76,0,1,0,3],
-"moco_2import_2src_2_nodes_2_concat_8cpp_source.html":[36,0,0,76,0,1,0,3],
-"moco_2import_2src_2_nodes_2_identity_8cpp.html":[36,0,0,76,0,1,0,10]
+"moco_2import_2src_2_nodes_2_concat_8cpp_source.html":[36,0,0,76,0,1,0,3]
 };

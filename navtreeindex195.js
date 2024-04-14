@@ -1,5 +1,6 @@
 var NAVTREEINDEX195 =
 {
+"infer__testcases_8py.html#a08d8d9d5b54a8b1f5b221d2cc5af4de2":[36,0,0,82,7,2,0,20],
 "infer__testcases_8py.html#a11c6a09386127249cc9c787e3b4027a4":[36,0,0,82,7,2,0,2],
 "infer__testcases_8py.html#a126aca5a441bec47fc7118a662076bbd":[36,0,0,82,7,2,0,3],
 "infer__testcases_8py.html#a220b78c82f9d1a2baaddf5800c7a1f86":[36,0,0,82,7,2,0,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX195 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_pad_v2_8h_source.html":[36,0,0,52,3,0,0,0,0,78],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_pow_8h.html":[36,0,0,52,3,0,0,0,0,79],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_pow_8h_source.html":[36,0,0,52,3,0,0,0,0,79],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_quantize_8h.html":[36,0,0,52,3,0,0,0,0,81],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_quantize_8h_source.html":[36,0,0,52,3,0,0,0,0,81]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_quantize_8h.html":[36,0,0,52,3,0,0,0,0,81]
 };

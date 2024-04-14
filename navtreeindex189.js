@@ -1,5 +1,6 @@
 var NAVTREEINDEX189 =
 {
+"gemm__helpers_8h.html#a52c05af3164b53689378c4db6939bd0e":[36,0,1,0,1,0,0,0,1,77],
 "gemm__helpers_8h.html#a5470fa6b475080a826d74ddd61bcb609":[36,0,1,0,1,0,0,0,1,135],
 "gemm__helpers_8h.html#a5639eaa43eaf94060f8a43877bc7f293":[36,0,1,0,1,0,0,0,1,15],
 "gemm__helpers_8h.html#a56e7c9eb57b4100b98b7883357557730":[36,0,1,0,1,0,0,0,1,71],
@@ -248,6 +249,5 @@ var NAVTREEINDEX189 =
 "globals_defs_d.html":[36,1,6,4],
 "globals_defs_e.html":[36,1,6,5],
 "globals_defs_f.html":[36,1,6,6],
-"globals_defs_g.html":[36,1,6,7],
-"globals_defs_h.html":[36,1,6,8]
+"globals_defs_g.html":[36,1,6,7]
 };

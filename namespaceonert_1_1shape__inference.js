@@ -33,7 +33,7 @@ var namespaceonert_1_1shape__inference =
     [ "inferRangeShape", "namespaceonert_1_1shape__inference.html#aa104b8fb65378a68f27ba8eb7295ead7", null ],
     [ "inferRangeShape", "namespaceonert_1_1shape__inference.html#ab469fe1fd407f0eaeb48415cec5de99d", null ],
     [ "inferReduceShape", "namespaceonert_1_1shape__inference.html#a2e87ee4364b92bbf36d2dfd8c90ae18b", null ],
-    [ "inferReshapeShape", "namespaceonert_1_1shape__inference.html#a0ad2ed111272459a82784bf8a382db38", null ],
+    [ "inferReshapeShape", "namespaceonert_1_1shape__inference.html#a881c6c24af01fe9a0d87e65c51698e43", null ],
     [ "inferResizeBilinearShape", "namespaceonert_1_1shape__inference.html#a95e6b5239a720ee8b7c7695757204053", null ],
     [ "inferSelectShape", "namespaceonert_1_1shape__inference.html#a3e50d586546d461ab6a0c205b7d44f13", null ],
     [ "inferSliceShape", "namespaceonert_1_1shape__inference.html#a516302401b2eea8d8afade4629cebf51", null ],

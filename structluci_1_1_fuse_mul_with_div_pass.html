@@ -186,24 +186,24 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_fuse_mul_with_div_pass_8cpp_source.html#l00219">219</a> of file <a class="el" href="_fuse_mul_with_div_pass_8cpp_source.html">FuseMulWithDivPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span>{</div>
-<div class="line"><span class="lineno">  221</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  223</span>  {</div>
-<div class="line"><span class="lineno">  224</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacennc.html#a958b56e423709246f446a0dd3e7255a9a38696558dc98494c08d951c052900a2a">div</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">if</span> (not div)</div>
-<div class="line"><span class="lineno">  226</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">if</span> (fuse_mul_with_div(div))</div>
-<div class="line"><span class="lineno">  229</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> (fuse_mul_with_div_to_mul(div))</div>
-<div class="line"><span class="lineno">  232</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  233</span>  }</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  236</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_fuse_mul_with_div_pass_8cpp_source.html#l00227">227</a> of file <a class="el" href="_fuse_mul_with_div_pass_8cpp_source.html">FuseMulWithDivPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  228</span>{</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  231</span>  {</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacennc.html#a958b56e423709246f446a0dd3e7255a9a38696558dc98494c08d951c052900a2a">div</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">if</span> (not div)</div>
+<div class="line"><span class="lineno">  234</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">if</span> (fuse_mul_with_div_to_div(div))</div>
+<div class="line"><span class="lineno">  237</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>    <span class="keywordflow">if</span> (fuse_mul_with_div_to_mul(div))</div>
+<div class="line"><span class="lineno">  240</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  241</span>  }</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  244</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_div_html"><div class="ttname"><a href="classluci_1_1_circle_div.html">luci::CircleDiv</a></div><div class="ttdoc">DIV in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_div_8h_source.html#l00035">CircleDiv.h:37</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>

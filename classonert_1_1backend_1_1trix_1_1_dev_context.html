@@ -147,7 +147,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_dev_context_8cc_source.html#l00032">32</a> of file <a class="el" href="_dev_context_8cc_source.html">DevContext.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>                       : _dev_handles{}, _model_ids{}, _meta_map{}</div>
 <div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> dev_count = getnumNPUdeviceByType(NPUCOND_TRIV2_CONN_SOCIP);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> dev_count = getnumNPUdeviceByType(NPUCOND_TRIV24_CONN_SOCIP);</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (dev_count &lt;= 0)</div>
 <div class="line"><span class="lineno">   36</span>  {</div>
 <div class="line"><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unable to find TRIX NPU device&quot;</span>);</div>
@@ -157,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dev_count; ++i)</div>
 <div class="line"><span class="lineno">   42</span>  {</div>
 <div class="line"><span class="lineno">   43</span>    npudev_h handle;</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (getNPUdeviceByType(&amp;handle, NPUCOND_TRIV2_CONN_SOCIP, i) &lt; 0)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (getNPUdeviceByType(&amp;handle, NPUCOND_TRIV24_CONN_SOCIP, i) &lt; 0)</div>
 <div class="line"><span class="lineno">   45</span>    {</div>
 <div class="line"><span class="lineno">   46</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to get TRIX NPU device handle&quot;</span>);</div>
 <div class="line"><span class="lineno">   47</span>    }</div>

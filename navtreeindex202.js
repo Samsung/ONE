@@ -1,5 +1,6 @@
 var NAVTREEINDEX202 =
 {
+"minireflect_8h.html#adabceb6e262734baf99947aa21759283":[36,0,3,2,0,9,4],
 "minireflect_8h_source.html":[36,0,3,2,0,9],
 "minmax-embedder-value-test_2gen_2src_2_cast_8h.html":[36,0,0,62,0,0,0],
 "minmax-embedder-value-test_2gen_2src_2_cast_8h.html#acd5a0709ff0cd7ee4975c90f294292cb":[36,0,0,62,0,0,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX202 =
 "mir-interpreter_2src_2ops_2_reduce_mean_8cpp.html":[36,0,0,74,1,0,48],
 "mir-interpreter_2src_2ops_2_reduce_mean_8cpp.html#a3b568da9ec370f45e74339c0da1a2597":[36,0,0,74,1,0,48,2],
 "mir-interpreter_2src_2ops_2_reduce_mean_8cpp.html#aa536cc698dedf2274736fc13b3caa74f":[36,0,0,74,1,0,48,1],
-"mir-interpreter_2src_2ops_2_reduce_mean_8cpp_source.html":[36,0,0,74,1,0,48],
-"mir-interpreter_2src_2ops_2_sigmoid_8cpp.html":[36,0,0,74,1,0,54]
+"mir-interpreter_2src_2ops_2_reduce_mean_8cpp_source.html":[36,0,0,74,1,0,48]
 };

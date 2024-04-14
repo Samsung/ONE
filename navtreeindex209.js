@@ -1,5 +1,6 @@
 var NAVTREEINDEX209 =
 {
+"namespacelogo.html#a3325e3be7ab7f3a0b13fe91c35d30494a2a90766822ad1788db33fb654fdd2d68":[34,0,74,24,2],
 "namespacelogo.html#a3325e3be7ab7f3a0b13fe91c35d30494a38068a448ee2872f5d697451ef28bd6f":[34,0,74,24,0],
 "namespacelogo.html#a3325e3be7ab7f3a0b13fe91c35d30494a41f15bfef9822b77cb05967e8e783264":[34,0,74,24,1],
 "namespacelogo.html#a3325e3be7ab7f3a0b13fe91c35d30494aed83fbbafbb1bc671af2473fffe784d1":[34,0,74,24,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX209 =
 "namespaceluci.html#afd5ce70d0a50c7aa0e718d36f6358c04":[34,0,75,555],
 "namespaceluci_1_1compute.html":[34,0,75,0],
 "namespaceluci_1_1compute.html#a01e2269d95c82f55a227d9382504be10":[34,0,75,0,9],
-"namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518":[34,0,75,0,5],
-"namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518a3373f5dce891a3dd9ad189b7d42842f7":[34,0,75,0,5,1]
+"namespaceluci_1_1compute.html#a156ca988c8cb195bf32faef3c4521518":[34,0,75,0,5]
 };

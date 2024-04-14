@@ -19,6 +19,6 @@ var searchData=
   ['unsupportedactivation_16',['UnsupportedActivation',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d',1,'onert_micro']]],
   ['unsupporteddynamicshapecase_17',['UnsupportedDynamicShapeCase',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3',1,'onert_micro']]],
   ['unsupportedop_18',['UnsupportedOp',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351',1,'onert_micro']]],
-  ['unsupportedquantizationtype_19',['UnsupportedQuantizationType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba6a3c4e0f6d459abc62a8f25d6319079d',1,'onert_micro']]],
+  ['unsupportedquantizationtype_19',['UnsupportedQuantizationType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674',1,'onert_micro']]],
   ['unsupportedtype_20',['UnsupportedType',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b',1,'onert_micro']]]
 ];

@@ -1,5 +1,6 @@
 var NAVTREEINDEX193 =
 {
+"import_2include_2luci_2_import_2_nodes_2_circle_abs_8h.html":[36,0,0,52,2,0,0,0,0,0],
 "import_2include_2luci_2_import_2_nodes_2_circle_abs_8h_source.html":[36,0,0,52,2,0,0,0,0,0],
 "import_2include_2luci_2_import_2_nodes_2_circle_add_8h.html":[36,0,0,52,2,0,0,0,0,1],
 "import_2include_2luci_2_import_2_nodes_2_circle_add_8h_source.html":[36,0,0,52,2,0,0,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX193 =
 "import_2include_2luci_2_import_2_nodes_2_circle_while_8h_source.html":[36,0,0,52,2,0,0,0,0,122],
 "import_2include_2luci_2_import_2_nodes_2_circle_zeros_like_8h.html":[36,0,0,52,2,0,0,0,0,123],
 "import_2include_2luci_2_import_2_nodes_2_circle_zeros_like_8h_source.html":[36,0,0,52,2,0,0,0,0,123],
-"import_2src_2_nodes_2_circle_abs_8cpp.html":[36,0,0,52,2,1,0,0],
-"import_2src_2_nodes_2_circle_abs_8cpp_source.html":[36,0,0,52,2,1,0,0]
+"import_2src_2_nodes_2_circle_abs_8cpp.html":[36,0,0,52,2,1,0,0]
 };
