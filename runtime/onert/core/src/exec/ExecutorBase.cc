@@ -114,11 +114,11 @@ void ExecutorBase::execute(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
                           desc.inputs[i]->size);
 
-    auto input_shape = desc.dynamic_input_shapes.find(ir::IOIndex{i});
-    if (input_shape != desc.dynamic_input_shapes.end())
+    if (desc.updated)
     {
+      auto &input_shape = desc.inputs.at(i)->info.shape();
       tensor->set_dynamic();
-      tensor->setShape(input_shape->second);
+      tensor->setShape(input_shape);
       /*
        * Changes tensor shape and allocate memory since its shape was changed
        * perhaps by nnfw_set_input_tensorinfo()
@@ -138,7 +138,7 @@ void ExecutorBase::execute(const IODescription &desc)
        *                                       since it has not been allocated yet
        * at (b), operand is dynamic, tensor is dynamic - memory dealloc is needed
        */
-      tensor->applyShape(input_shape->second);
+      tensor->applyShape(input_shape);
     }
   }
 
@@ -146,8 +146,11 @@ void ExecutorBase::execute(const IODescription &desc)
   for (uint32_t i = 0; i < _output_tensors.size(); ++i)
   {
     auto tensor = _output_tensors[i];
+    auto &output_desc = desc.outputs[i];
 
-    if (desc.outputs[i] == nullptr)
+    // If output element size is 0, buffer is nullptr
+    if (output_desc == nullptr ||
+        (output_desc->info.total_size() != 0 && output_desc->buffer == nullptr))
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
     tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
     tensor->set_dynamic(); // It can't be resized but shape could change
