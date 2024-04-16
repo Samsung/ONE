@@ -19,6 +19,9 @@
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
+#include <luci/Service/Nodes/CircleConst.h>
+
+#include <cmath>
 
 namespace
 {
@@ -103,6 +106,10 @@ public:
         q_zerop_size = q_zerop->size<loco::DataType::S16>();
         dq_zerop_size = dq_zerop->size<loco::DataType::S16>();
         break;
+      case loco::DataType::U8:
+        q_zerop_size = q_zerop->size<loco::DataType::U8>();
+        dq_zerop_size = dq_zerop->size<loco::DataType::U8>();
+        break;
       default:
         throw std::runtime_error("Unsupported zerop dtype in " + q_zerop->name());
     }
@@ -161,6 +168,12 @@ public:
         q_zerop = _p.q_zerop->at<loco::DataType::S16>(0);
         dq_zerop = _p.dq_zerop->at<loco::DataType::S16>(0);
         break;
+      case loco::DataType::U8:
+        assert(_p.q_zerop->size<loco::DataType::U8>() == 1);  // FIX_CALLER_UNLESS
+        assert(_p.dq_zerop->size<loco::DataType::U8>() == 1); // FIX_CALLER_UNLESS
+        q_zerop = _p.q_zerop->at<loco::DataType::U8>(0);
+        dq_zerop = _p.dq_zerop->at<loco::DataType::U8>(0);
+        break;
       default:
         throw std::runtime_error("Unsupported zerop dtype in " + _p.q_zerop->name());
     }
@@ -175,6 +188,44 @@ public:
       qparam->quantized_dimension = 0;
     }
 
+    if (auto const_input = dynamic_cast<luci::CircleConst *>(_p.input))
+    {
+      assert(const_input->dtype() == loco::DataType::FLOAT32); // FIX_ME_UNLESS
+      const auto num_elem = const_input->size<loco::DataType::FLOAT32>();
+
+      auto new_const = luci::clone(const_input);
+      new_const->name(new_const->name() + "_quant");
+      add_origin(new_const, luci::get_origin(const_input));
+
+      new_const->dtype(quantized_dtype);
+
+      // Quantize const
+      switch (quantized_dtype)
+      {
+        case loco::DataType::S16:
+        {
+          new_const->size<loco::DataType::S16>(num_elem);
+
+          const int64_t max_val = std::numeric_limits<int16_t>::max();
+          const int64_t min_val = -max_val;
+          for (uint32_t i = 0; i < num_elem; i++)
+          {
+            const float fp_val = const_input->at<loco::DataType::FLOAT32>(i);
+            const int64_t q_val = std::round(fp_val / q_scale) + q_zerop;
+            new_const->at<loco::DataType::S16>(i) = std::min(max_val, std::max(min_val, q_val));
+          }
+          break;
+        }
+        default:
+          throw std::runtime_error("Unsupported quantized_dtype");
+      }
+      new_const->quantparam(std::move(qparam));
+
+      replace(_p.dq_out).with(new_const);
+    }
+    else
+    {
+      // clang-format off
     // NOTE We overwrite dtype and qparam to _p.input
     // This can be problematic if a single tensor has
     // multiple different qparams. Let's fix later.
@@ -182,6 +233,8 @@ public:
     _p.input->quantparam(std::move(qparam));
 
     replace(_p.dq_out).with(_p.input);
+      // clang-format on
+    }
   }
 
 private:
