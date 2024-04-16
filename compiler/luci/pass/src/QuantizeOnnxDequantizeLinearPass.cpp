@@ -172,6 +172,9 @@ public:
       case loco::DataType::U8:
         quant_const = gen_u8_quant();
         break;
+      case loco::DataType::S16:
+        quant_const = gen_s16_quant();
+        break;
       default:
         throw std::runtime_error("Unsupported quantized dtype");
     }
@@ -313,6 +316,52 @@ private:
     {
       const std::vector<float> scale_vector = get_scales(_p.scale);
       const std::vector<int64_t> zerop_vector = get_zerops<loco::DataType::U8>(_p.zerop);
+
+      if (scale_vector.size() != zerop_vector.size())
+        throw std::runtime_error("Scale/Zerop size mismatches in " + _p.dequantize->name());
+
+      const int32_t qdim = get_axis(_p.dequantize);
+
+      qparam->scale = scale_vector;
+      qparam->zerop = zerop_vector;
+      qparam->quantized_dimension = qdim;
+    }
+
+    quantized_node->quantparam(std::move(qparam));
+
+    quantized_node->name(_p.input->name());
+
+    return quantized_node;
+  }
+
+  luci::CircleConst *gen_s16_quant(void)
+  {
+    assert(_p.input->dtype() == loco::DataType::S16);     // FIX_CALLER_UNLESS
+    assert(_p.scale->dtype() == loco::DataType::FLOAT32); // FIX_CALLER_UNLESS
+    assert(_p.zerop->dtype() == loco::DataType::S16);     // FIX_CALLER_UNLESS
+
+    auto quantized_node = _p.dequantize->graph()->nodes()->create<luci::CircleConst>();
+    quantized_node->dtype(loco::DataType::S16);
+    quantized_node->rank(_p.input->rank());
+    for (uint32_t i = 0; i < _p.input->rank(); ++i)
+    {
+      quantized_node->dim(i) = _p.input->dim(i);
+    }
+    quantized_node->shape_status(luci::ShapeStatus::VALID);
+
+    // Create S16 CircleConst
+    const auto num_elems = _p.input->size<loco::DataType::S16>();
+    quantized_node->size<loco::DataType::S16>(num_elems);
+    for (uint32_t i = 0; i < num_elems; i++)
+    {
+      const int16_t s16_val = _p.input->at<loco::DataType::S16>(i);
+      quantized_node->at<loco::DataType::S16>(i) = s16_val;
+    }
+
+    auto qparam = std::make_unique<luci::CircleQuantParam>();
+    {
+      const std::vector<float> scale_vector = get_scales(_p.scale);
+      const std::vector<int64_t> zerop_vector = get_zerops<loco::DataType::S16>(_p.zerop);
 
       if (scale_vector.size() != zerop_vector.size())
         throw std::runtime_error("Scale/Zerop size mismatches in " + _p.dequantize->name());

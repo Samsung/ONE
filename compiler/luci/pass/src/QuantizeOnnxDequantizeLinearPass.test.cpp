@@ -155,6 +155,25 @@ class U8QuantizeOnnxDequantizeLinearTest
   }
 };
 
+class S16QuantizeOnnxDequantizeLinearTest
+  : public QuantizeOnnxDequantizeLinearTest<loco::DataType::S16>
+{
+  virtual void SetUp() override
+  {
+    init();
+
+    for (uint32_t i = 0; i < _input->size<loco::DataType::S16>(); i++)
+    {
+      _input->at<loco::DataType::S16>(i) = 1024;
+    }
+
+    for (uint32_t i = 0; i < _zerop->size<loco::DataType::S16>(); i++)
+    {
+      _zerop->at<loco::DataType::S16>(i) = 0;
+    }
+  }
+};
+
 } // namespace
 
 TEST_F(S4QuantizeOnnxDequantizeLinearTest, quantize_onnx_dq_linear_basic)
@@ -218,6 +237,30 @@ TEST_F(U8QuantizeOnnxDequantizeLinearTest, quantize_onnx_dq_linear_basic)
 }
 
 TEST_F(U8QuantizeOnnxDequantizeLinearTest, quantize_onnx_dq_linear_basic_NEG)
+{
+  createNotQuantizablePattern();
+
+  luci::QuantizeOnnxDequantizeLinearPass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_EQ(nullptr, folded_const);
+}
+
+TEST_F(S16QuantizeOnnxDequantizeLinearTest, quantize_onnx_dq_linear_basic)
+{
+  luci::QuantizeOnnxDequantizeLinearPass pass;
+  while (pass.run(graph()))
+    ;
+
+  auto folded_const = getFoldedPattern();
+  EXPECT_NE(nullptr, folded_const);
+
+  EXPECT_EQ(loco::DataType::S16, folded_const->dtype());
+}
+
+TEST_F(S16QuantizeOnnxDequantizeLinearTest, quantize_onnx_dq_linear_basic_NEG)
 {
   createNotQuantizablePattern();
 
