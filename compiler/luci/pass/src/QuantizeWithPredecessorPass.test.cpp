@@ -83,6 +83,57 @@ public:
   luci::CircleOutput *output = nullptr;
 };
 
+/**
+ *  Simple graph for test
+ *
+ *  BEFORE
+ *
+ *        [Conv] (int16)
+ *           |
+ *       [Squeeze] (fp32)
+ *
+ *  AFTER
+ *
+ *        [Conv] (int16)
+ *           |
+ *       [Squeeze] (int16)
+ *
+ */
+class ConvSqueezeGraph
+{
+public:
+  ConvSqueezeGraph()
+  {
+    input = g.nodes()->create<luci::CircleInput>();
+    conv = g.nodes()->create<luci::CircleConv2D>();
+    squeeze = g.nodes()->create<luci::CircleSqueeze>();
+    output = g.nodes()->create<luci::CircleOutput>();
+
+    auto graph_input = g.inputs()->create();
+    input->index(graph_input->index());
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
+
+    conv->dtype(loco::DataType::S16);
+    squeeze->dtype(loco::DataType::FLOAT32);
+
+    addQuantParam(conv, {1.0}, {0});
+
+    squeeze->squeeze_dims({0});
+
+    conv->input(input);
+    squeeze->input(conv);
+    output->from(squeeze);
+  }
+
+public:
+  loco::Graph g;
+  luci::CircleInput *input = nullptr;
+  luci::CircleConv2D *conv = nullptr;
+  luci::CircleSqueeze *squeeze = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
+
 } // namespace
 
 TEST(QuantizeWithPredecessor, reshape)
@@ -101,6 +152,28 @@ TEST(QuantizeWithPredecessor, reshape)
 TEST(QuantizeWithPredecessor, reshape_NEG)
 {
   ConvReshapeGraph g;
+  g.conv->quantparam(nullptr);
+
+  luci::QuantizeWithPredecessorPass pass;
+  EXPECT_FALSE(pass.run(&g.g));
+}
+
+TEST(QuantizeWithPredecessor, squeeze)
+{
+  ConvSqueezeGraph g;
+
+  luci::QuantizeWithPredecessorPass pass;
+  while (pass.run(&g.g))
+    ;
+
+  EXPECT_NE(nullptr, g.squeeze->quantparam());
+  EXPECT_FLOAT_EQ(1.0, g.squeeze->quantparam()->scale[0]);
+  EXPECT_EQ(0, g.squeeze->quantparam()->zerop[0]);
+}
+
+TEST(QuantizeWithPredecessor, squeeze_NEG)
+{
+  ConvSqueezeGraph g;
   g.conv->quantparam(nullptr);
 
   luci::QuantizeWithPredecessorPass pass;
