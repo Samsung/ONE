@@ -28,6 +28,7 @@
 #include "luci/Pass/FoldGatherPass.h"
 #include "luci/Pass/FoldShapePass.h"
 #include "luci/Pass/FoldSparseToDensePass.h"
+#include "luci/Pass/FoldSqueezePass.h"
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 #include "luci/Pass/ForwardTransposeOpPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
@@ -379,6 +380,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FoldSparseToDense))
   {
     phase.emplace_back(std::make_unique<luci::FoldSparseToDensePass>());
+  }
+  if (_options->query(Options::Algorithm::FoldSqueeze))
+  {
+    phase.emplace_back(std::make_unique<luci::FoldSqueezePass>());
   }
   if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
   {
