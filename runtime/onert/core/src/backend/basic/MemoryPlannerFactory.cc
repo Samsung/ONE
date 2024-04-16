@@ -31,23 +31,6 @@ MemoryPlannerFactory &MemoryPlannerFactory::get()
   return instance;
 }
 
-IMemoryPlanner *MemoryPlannerFactory::create(const std::string &key)
-{
-  if (key == "FirstFit")
-  {
-    return new FirstFitPlanner;
-  }
-  else if (key == "Bump")
-  {
-    return new BumpPlanner;
-  }
-  else if (key == "WIC")
-  {
-    return new WICPlanner;
-  }
-  return new FirstFitPlanner; // Default Planner
-}
-
 } // namespace basic
 } // namespace backend
 } // namespace onert
