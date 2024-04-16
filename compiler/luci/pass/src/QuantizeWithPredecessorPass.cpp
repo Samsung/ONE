@@ -74,6 +74,12 @@ struct QuantizeWithPredecessor final : public luci::CircleNodeMutableVisitor<boo
     return quantize_with_same_qparam(input_node, node);
   }
 
+  bool visit(luci::CircleSqueeze *node)
+  {
+    auto input_node = loco::must_cast<luci::CircleNode *>(node->input());
+    return quantize_with_same_qparam(input_node, node);
+  }
+
   bool visit(luci::CircleGather *node)
   {
     auto input_node = loco::must_cast<luci::CircleNode *>(node->params());
