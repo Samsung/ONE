@@ -129,3 +129,20 @@ TEST(InsertQuantizeOpOnDTypeMismatchTest, mul)
   // Mul's dtype is changed from U8 to S16
   EXPECT_EQ(loco::DataType::S16, g.mul()->dtype());
 }
+
+TEST(InsertQuantizeOpOnDTypeMismatchTest, mul_dtype_match_NEG)
+{
+  DtypeMisMatchMulTestGraph g;
+
+  luci::InsertQuantizeOpOnDTypeMismatch visitor;
+
+  g.init();
+
+  auto node = g.mul();
+  node->dtype(loco::DataType::S16);
+
+  node->accept(&visitor);
+
+  // Quantize Op is not created
+  EXPECT_EQ(nullptr, dynamic_cast<luci::CircleQuantize *>(g.output()->from()));
+}
