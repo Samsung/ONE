@@ -19,6 +19,7 @@ if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
 endif()
 
 install(TARGETS onert_odc LIBRARY DESTINATION lib/nnfw/odc)
+set_target_properties(onert_odc PROPERTIES INSTALL_RPATH "$ORIGIN/../../:$ORIGIN/")
 
 if(NOT ENABLE_TEST)
   return()
@@ -37,3 +38,4 @@ target_include_directories(${TEST_ONERT_ODC} PRIVATE $<TARGET_PROPERTY:onert_odc
 
 add_test(${TEST_ONERT_ODC} ${TEST_ONERT_ODC})
 install(TARGETS ${TEST_ONERT_ODC} DESTINATION unittest)
+set_target_properties(${TEST_ONERT_ODC} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib/nnfw/odc:$ORIGIN/../lib/")
