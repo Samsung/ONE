@@ -108,6 +108,11 @@ public:
    */
   const TypeInfo &typeInfo() const { return _typeInfo; }
   /**
+   * @brief     Set type information
+   * @param[in] typeInfo Type information
+   */
+  void typeInfo(const ir::TypeInfo &typeInfo) { _typeInfo = typeInfo; }
+  /**
    * @brief   Set tensor data type
    */
   void type(const DataType type) { _typeInfo.type(type); }

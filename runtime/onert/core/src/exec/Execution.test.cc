@@ -616,12 +616,15 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   onert::exec::Execution execution{executors};
 
   onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
-  execution.setInput(input1, type_info, execution.getInputShape(input1),
-                     reinterpret_cast<const void *>(input1_buffer), 4, onert::ir::Layout::NHWC);
-  execution.setInput(input2, type_info, execution.getInputShape(input2),
-                     reinterpret_cast<const void *>(input2_buffer), 4, onert::ir::Layout::NHWC);
-  execution.setOutput(output, type_info, execution.getOutputShape(output),
-                      reinterpret_cast<void *>(output_buffer), 4, onert::ir::Layout::NHWC);
+  execution.setInputType(input1, type_info);
+  execution.setInput(input1, execution.getInputShape(input1),
+                     reinterpret_cast<const void *>(input1_buffer), 4);
+  execution.setInputType(input2, type_info);
+  execution.setInput(input2, execution.getInputShape(input2),
+                     reinterpret_cast<const void *>(input2_buffer), 4);
+  execution.setOutputType(output, type_info);
+  execution.setOutput(output, execution.getOutputShape(output),
+                      reinterpret_cast<void *>(output_buffer), 4);
   execution.execute();
 
   for (auto i = 0; i < 4; i++)

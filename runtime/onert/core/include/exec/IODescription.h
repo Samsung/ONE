@@ -31,30 +31,28 @@ namespace exec
 
 struct InputDesc
 {
-  const ir::OperandInfo info;
+  ir::OperandInfo info;
   const void *buffer;
-  const size_t size;
-  const ir::Layout layout;
+  size_t size;
+  ir::Layout layout;
 
   InputDesc(void) = delete;
-  InputDesc(const ir::OperandInfo &info, const void *buffer, const size_t size, ir::Layout layout)
-    : info(info), buffer(buffer), size(size), layout(layout)
+  InputDesc(const ir::OperandInfo &info)
+    : info(info), buffer(nullptr), size(0), layout(ir::Layout::NHWC)
   {
   }
 };
 
 struct OutputDesc
 {
-  // not `const` because shape should be modified after execution in case when output is
-  // a dynamic tensor
   ir::OperandInfo info;
   void *buffer;
-  const size_t size;
-  const ir::Layout layout;
+  size_t size;
+  ir::Layout layout;
 
   OutputDesc(void) = delete;
-  OutputDesc(const ir::OperandInfo &info, void *buffer, const size_t size, ir::Layout layout)
-    : info(info), buffer(buffer), size(size), layout(layout)
+  OutputDesc(const ir::OperandInfo &info)
+    : info(info), buffer(nullptr), size(0), layout(ir::Layout::NHWC)
   {
   }
 };
@@ -63,8 +61,7 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
-  // Contains shape of input set by nnfw_set_input_tensorinfo(..)
-  std::unordered_map<ir::IOIndex, ir::Shape> dynamic_input_shapes;
+  bool updated; // Require shape inference and buffer size calculation
 };
 
 } // namespace exec

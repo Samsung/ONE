@@ -16,8 +16,8 @@
 
 #include "exec/Execution.h"
 
+#include "ir/DataType.h"
 #include "train/TrainableExecutors.h"
-
 #include "util/logging.h"
 
 namespace onert
@@ -29,8 +29,16 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
 {
   assert(executors != nullptr);
   assert(executors->entryExecutor() != nullptr);
+
+  // Initialize I/O description
   _io_desc.inputs.resize(_executors->inputSize());
+  for (uint32_t i = 0; i < _executors->inputSize(); ++i)
+    _io_desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
+
   _io_desc.outputs.resize(_executors->outputSize());
+  for (uint32_t i = 0; i < _executors->outputSize(); ++i)
+    _io_desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
+  _io_desc.updated = false;
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -38,92 +46,87 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   // This will be used later to set input tensor dynamic
   // Note that 'compiled' model will not be updated with new_shape
   // but new_shape will change model input shape while 'running' the model
-  _io_desc.dynamic_input_shapes[index] = new_shape;
+  auto &input_desc = _io_desc.inputs.at(index.value());
+  if (new_shape != input_desc->info.shape())
+  {
+    input_desc->info.shape(new_shape);
+    _io_desc.updated = true;
 
-  VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
-                     << "(index: " << index << ")" << std::endl;
+    VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
+                       << "(index: " << index << ")" << std::endl;
+  }
 }
 
 // TODO Remove default parameter
-void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length,
-                         ir::Layout layout)
+void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length)
 {
-  const auto &info = _executors->inputInfo(index);
-
   // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
 
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
   // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
-  {
-    auto input_shape_sig = _io_desc.dynamic_input_shapes.find(index);
-    auto size_required =
-      (input_shape_sig != _io_desc.dynamic_input_shapes.end())
-        ? input_shape_sig->second.num_elements() * onert::ir::sizeOfDataType(info.typeInfo().type())
-        : info.total_size();
-
-    if (length < size_required)
-    {
-      throw std::runtime_error{"Too small length"};
-    }
-  }
-
-  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
-}
-
-// TODO Remove default parameter
-void Execution::setInput(const ir::IOIndex &index, const ir::TypeInfo &type, const ir::Shape &shape,
-                         const void *buffer, size_t length, ir::Layout layout)
-{
-  auto info = ir::OperandInfo::createStaticInfo(shape, type);
-
-  if (length < info.total_size())
+  auto &input_desc = _io_desc.inputs.at(index.value());
+  if (length < input_desc->info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
 
-  _io_desc.inputs.at(index.value()) = std::make_unique<InputDesc>(info, buffer, length, layout);
+  input_desc->buffer = buffer;
+  input_desc->size = length;
 }
 
 // TODO Remove default parameter
-void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length, ir::Layout layout)
+void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const void *buffer,
+                         size_t length)
 {
-  const auto &info = _executors->outputInfo(index);
+  changeInputShape(index, shape);
+  setInput(index, buffer, length);
+}
 
-  if (length < info.total_size())
+// TODO Remove default parameter
+void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
+{
+  auto &output_desc = _io_desc.outputs.at(index.value());
+  // Check lenght when output shape is valid
+  if (!_io_desc.updated && length < output_desc->info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
 
-  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length, layout);
+  output_desc->buffer = buffer;
+  output_desc->size = length;
 }
 
 // TODO Remove default parameter
-void Execution::setOutput(const ir::IOIndex &index, const ir::TypeInfo &type,
-                          const ir::Shape &shape, void *buffer, size_t length, ir::Layout layout)
+void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer,
+                          size_t length)
 {
-  const auto &info = ir::OperandInfo::createStaticInfo(shape, type);
+  auto &output_desc = _io_desc.outputs.at(index.value());
+  output_desc->info.shape(shape);
 
-  if (length < info.total_size())
-  {
-    throw std::runtime_error{"Too small length"};
-  }
-
-  _io_desc.outputs.at(index.value()) = std::make_unique<OutputDesc>(info, buffer, length, layout);
+  setOutput(index, buffer, length);
 }
 
 void Execution::setInputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
-  const auto &input_desc = _io_desc.inputs.at(index.value());
-  _io_desc.inputs.at(index.value()) =
-    std::make_unique<InputDesc>(input_desc->info, input_desc->buffer, input_desc->size, layout);
+  _io_desc.inputs.at(index.value())->layout = layout;
 }
 
 void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
-  const auto &output_desc = _io_desc.outputs.at(index.value());
-  _io_desc.outputs.at(index.value()) =
-    std::make_unique<OutputDesc>(output_desc->info, output_desc->buffer, output_desc->size, layout);
+  _io_desc.outputs.at(index.value())->layout = layout;
+}
+
+void Execution::setInputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
+{
+  _io_desc.inputs.at(index.value())->info.typeInfo(typeInfo);
+  _io_desc.updated = true;
+}
+
+void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
+{
+  _io_desc.outputs.at(index.value())->info.typeInfo(typeInfo);
+  _io_desc.updated = true;
 }
 
 void Execution::execute()
@@ -190,15 +193,7 @@ void Execution::iterateTrainableTensors(
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {
-  auto itr = _io_desc.dynamic_input_shapes.find(ind);
-  if (itr == _io_desc.dynamic_input_shapes.end())
-  {
-    return _executors->inputInfo(ind).shape();
-  }
-  else
-  {
-    return itr->second;
-  }
+  return _io_desc.inputs.at(ind.value())->info.shape();
 }
 
 // NNAPI return fail if ANeuralNetworksExecution_getOutputOperandRank or
@@ -209,23 +204,18 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 // NNAPI frontend.
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
-  if (!isFinished())
-    return _executors->outputInfo(ind).shape();
-
-  const auto &output_desc = _io_desc.outputs.at(ind.value());
-
-  return output_desc->info.shape();
+  return _io_desc.outputs.at(ind.value())->info.shape();
 }
 
 size_t Execution::getInputTotalSize(ir::IOIndex ind) const
 {
   // TODO Support dynamic shape
-  return _executors->inputInfo(ind).total_size();
+  return _io_desc.inputs.at(ind.value())->info.total_size();
 }
 
 size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
 {
-  return _executors->outputInfo(ind).total_size();
+  return _io_desc.outputs.at(ind.value())->info.total_size();
 }
 
 } // namespace exec

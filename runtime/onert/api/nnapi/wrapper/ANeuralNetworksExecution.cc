@@ -136,18 +136,10 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
   try
   {
     onert::ir::IOIndex input_index{index};
-    const auto operand_index = getInputOperandIndex(index);
+    const auto shape =
+      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
 
-    const auto &type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
-    const auto shape = (type != nullptr)
-                         ? NNAPIConvert::getShape(type)
-                         : _execution->primary_subgraph().operands().at(operand_index).shape();
-
-    // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
-    // words, we can assume that io_layout from nnapi always is the same as layout of the used
-    // model.
-    // TODO Set layout of model
-    _execution->setInput(input_index, type_info, shape, buffer, length, onert::ir::Layout::NHWC);
+    _execution->setInput(input_index, shape, buffer, length);
   }
   catch (const std::exception &e)
   {
@@ -169,11 +161,8 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
   try
   {
     onert::ir::IOIndex input_index{index};
-    const auto operand_index = getInputOperandIndex(index);
-
-    const auto shape = (type != nullptr)
-                         ? NNAPIConvert::getShape(type)
-                         : _execution->primary_subgraph().operands().at(operand_index).shape();
+    const auto shape =
+      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
 
     // ANeuralNetworksExecution::setInput() uses only shape information
     ANeuralNetworksOperandType optional_input_type;
@@ -203,18 +192,10 @@ bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOp
   try
   {
     onert::ir::IOIndex output_index{index};
-    const auto operand_index = getOutputOperandIndex(index);
+    const auto shape =
+      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getOutputShape(output_index);
 
-    const auto &type_info = _execution->primary_subgraph().operands().at(operand_index).typeInfo();
-    const auto shape = (type != nullptr)
-                         ? NNAPIConvert::getShape(type)
-                         : _execution->primary_subgraph().operands().at(operand_index).shape();
-
-    // NOTE The nnapi does not provide setting io_layout and not support changing layout. In other
-    // words, we can assume that io_layout from nnapi always is the same as layout of the used
-    // model.
-    // TODO Set layout of model
-    _execution->setOutput(output_index, type_info, shape, buffer, length, onert::ir::Layout::NHWC);
+    _execution->setOutput(output_index, shape, buffer, length);
   }
   catch (const std::exception &e)
   {
