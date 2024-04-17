@@ -17,6 +17,7 @@
 #include "QuantizeOnnxQDQPass.h"
 #include "QuantizeOnnxDequantizeLinearPass.h"
 #include "QuantizeWithPredecessorPass.h"
+#include "InsertQuantizeOpOnDTypeMismatch.h"
 #include "QuantizeActivation.h"
 #include "QuantizationUtils.h"
 
@@ -56,6 +57,8 @@ namespace luci
  * 4. Quantize with predecessors' qparams
  *
  * 5. Update qparams of special operators
+ *
+ * 6. Insert Quantize Op if an Op's input dtype and output dtype mismatch
  */
 bool QuantizeOnnxFakeQuantModelPass::run(loco::Graph *g)
 {
@@ -99,6 +102,15 @@ bool QuantizeOnnxFakeQuantModelPass::run(loco::Graph *g)
       QuantizeSpecialActivation qsa(circle_node->dtype());
       circle_node->accept(&qsa);
     }
+  }
+
+  // Insert QuantizeOp if input/output dtype does not match
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+
+    InsertQuantizeOpOnDTypeMismatch iqoodm;
+    circle_node->accept(&iqoodm);
   }
 
   // Update output dtype
