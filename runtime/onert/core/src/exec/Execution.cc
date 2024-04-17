@@ -75,7 +75,6 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   input_desc->size = length;
 }
 
-// TODO Remove default parameter
 void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const void *buffer,
                          size_t length)
 {
@@ -83,7 +82,6 @@ void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const
   setInput(index, buffer, length);
 }
 
-// TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
 {
   auto &output_desc = _io_desc.outputs.at(index.value());
@@ -97,7 +95,6 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
   output_desc->size = length;
 }
 
-// TODO Remove default parameter
 void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer,
                           size_t length)
 {
