@@ -20,7 +20,6 @@
 # limitations under the License.
 
 import argparse
-import configparser
 import os
 import subprocess
 import sys
@@ -121,8 +120,7 @@ def _verify_backend_args(parser, args):
 
     This verification logic comes from each drivers' codes.
     """
-    cfgparser = configparser.ConfigParser()
-    cfgparser.optionxform = str
+    cfgparser = oneutils.get_config_parser()
     cfgparser.read(args.config)
 
     for driver in ['one-profile', 'one-codegen']:
