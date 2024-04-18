@@ -28,8 +28,8 @@
 #include <unordered_set>
 #include <memory>
 
-#include "backend/basic/Allocator.h"
-#include "backend/basic/IMemoryPlanner.h"
+#include "Allocator.h"
+#include "IMemoryPlanner.h"
 #include "util/logging.h"
 
 namespace onert

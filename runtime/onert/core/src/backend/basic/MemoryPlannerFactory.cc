@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-#include "MemoryPlannerFactory.h"
-
-#include "MemoryPlanner.h"
+#include "backend/basic/MemoryPlannerFactory.h"
 
 namespace onert
 {

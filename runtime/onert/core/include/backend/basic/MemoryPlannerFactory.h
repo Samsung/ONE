@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 #define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
 
-#include "backend/basic/IMemoryPlanner.h"
 #include "MemoryPlanner.h"
 
 #include <string>

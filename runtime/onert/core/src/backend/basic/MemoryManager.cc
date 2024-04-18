@@ -18,7 +18,7 @@
 
 #include <cassert>
 
-#include "MemoryPlannerFactory.h"
+#include "backend/basic/MemoryPlannerFactory.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 

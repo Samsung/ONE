@@ -16,7 +16,7 @@
 
 #include <gtest/gtest.h>
 
-#include "MemoryPlanner.h"
+#include "backend/basic/MemoryPlanner.h"
 #include "ir/Index.h"
 
 TEST(Allocator, allocate_test)
