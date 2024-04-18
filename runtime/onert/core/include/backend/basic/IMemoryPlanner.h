@@ -17,7 +17,9 @@
 #ifndef __ONERT_BACKEND_IMEMORY_PLANNER_H__
 #define __ONERT_BACKEND_IMEMORY_PLANNER_H__
 
-#include "ir/OperandIndexMap.h"
+#include <cstddef>
+#include <cstdint>
+#include <unordered_map>
 
 namespace onert
 {
@@ -38,21 +40,21 @@ struct Block
 /**
  * @brief Interface to plan memory
  */
-struct IMemoryPlanner
+template <typename Index> struct IMemoryPlanner
 {
-  using MemoryPlans = ir::OperandIndexMap<Block>;
+  using MemoryPlans = std::unordered_map<Index, Block>;
 
   /**
-   * @brief Claim memory for operand
-   * @param[in] index The operand index
+   * @brief Claim memory for tensor
+   * @param[in] index The tensor index
    * @param[in] size The size of the memory
    */
-  virtual void claim(const ir::OperandIndex &, size_t) = 0;
+  virtual void claim(const Index &, size_t) = 0;
   /**
-   * @brief Release memory for operand
-   * @param[in] index The operand index
+   * @brief Release memory for tensor
+   * @param[in] index The tensor index
    */
-  virtual void release(const ir::OperandIndex &) = 0;
+  virtual void release(const Index &) = 0;
   /**
    * @brief Get capacity for memory planning
    * @return The value of capacity

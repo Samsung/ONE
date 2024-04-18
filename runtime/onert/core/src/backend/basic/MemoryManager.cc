@@ -40,15 +40,16 @@ MemoryManager::MemoryManager(const std::string planner_id)
   // DO NOTHING
 }
 
-basic::IMemoryPlanner *MemoryManager::createMemoryPlanner()
+basic::IMemoryPlanner<ir::OperandIndex> *MemoryManager::createMemoryPlanner()
 {
   auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-  return basic::MemoryPlannerFactory::get().create(planner_id);
+  return basic::MemoryPlannerFactory::get().create<ir::OperandIndex>(planner_id);
 }
 
-basic::IMemoryPlanner *MemoryManager::createMemoryPlanner(const std::string planner_id)
+basic::IMemoryPlanner<ir::OperandIndex> *
+MemoryManager::createMemoryPlanner(const std::string planner_id)
 {
-  return basic::MemoryPlannerFactory::get().create(planner_id);
+  return basic::MemoryPlannerFactory::get().create<ir::OperandIndex>(planner_id);
 }
 
 void MemoryManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)

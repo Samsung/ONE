@@ -27,7 +27,7 @@ TEST(Allocator, allocate_test)
 
 TEST(BumpPlanner, claim_test)
 {
-  ::onert::backend::basic::BumpPlanner planner;
+  ::onert::backend::basic::BumpPlanner<onert::ir::OperandIndex> planner;
 
   auto claim = [&planner](uint32_t index, size_t size, uint32_t expected_offset) {
     onert::ir::OperandIndex mem_idx(index);
@@ -44,7 +44,7 @@ TEST(BumpPlanner, claim_test)
 
 TEST(FirstFitPlanner, claim_release_test)
 {
-  ::onert::backend::basic::FirstFitPlanner planner;
+  ::onert::backend::basic::FirstFitPlanner<onert::ir::OperandIndex> planner;
 
   auto claim = [&planner](uint32_t index, size_t size, uint32_t expected_offset) {
     onert::ir::OperandIndex mem_idx(index);
@@ -128,7 +128,7 @@ TEST(FirstFitPlanner, claim_release_test)
 
 TEST(WICPlanner, claim_release_test)
 {
-  ::onert::backend::basic::WICPlanner planner;
+  ::onert::backend::basic::WICPlanner<onert::ir::OperandIndex> planner;
 
   auto claim = [&planner](uint32_t index, size_t size) {
     onert::ir::OperandIndex mem_idx(index);

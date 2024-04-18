@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__
 
 #include "Allocator.h"
+#include "ir/Index.h"
 #include "IMemoryPlanner.h"
 
 namespace onert
@@ -45,12 +46,12 @@ public:
   void releasePlan(const ir::OperandIndex &ind);
 
 private:
-  IMemoryPlanner *createMemoryPlanner();
-  IMemoryPlanner *createMemoryPlanner(const std::string);
+  IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner();
+  IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner(const std::string);
 
 private:
-  ir::OperandIndexMap<Block> _tensor_mem_map;
-  std::shared_ptr<IMemoryPlanner> _mem_planner;
+  std::unordered_map<ir::OperandIndex, Block> _tensor_mem_map;
+  std::shared_ptr<IMemoryPlanner<ir::OperandIndex>> _mem_planner;
   std::shared_ptr<Allocator> _mem_alloc;
 };
 
