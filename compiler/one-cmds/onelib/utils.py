@@ -84,6 +84,18 @@ def is_valid_attr(args, attr):
     return hasattr(args, attr) and getattr(args, attr)
 
 
+def get_config_parser() -> configparser.ConfigParser:
+    """
+    Initialize configparser and set default option
+
+    This funciton has been introduced for all the one-cmds tools having same parsing option.
+    """
+    parser = configparser.ConfigParser(inline_comment_prefixes=('#', ';'))
+    parser.optionxform = str
+
+    return parser
+
+
 def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
     """
     parse configuration file and store the information to args
@@ -95,8 +107,7 @@ def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
     if config_path is None:
         return
 
-    parser = configparser.ConfigParser()
-    parser.optionxform = str
+    parser = get_config_parser()
     parser.read(config_path)
 
     if not parser.has_section(section_to_parse):

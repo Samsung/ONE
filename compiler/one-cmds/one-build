@@ -20,7 +20,6 @@
 # limitations under the License.
 
 import argparse
-import configparser
 import os
 import sys
 
@@ -89,8 +88,7 @@ def _get_driver_name(driver_name):
 
 
 def parse_cfg(args):
-    config = configparser.ConfigParser()
-    config.optionxform = str
+    config = oneutils.get_config_parser()
     parsed = config.read(os.path.expanduser(getattr(args, 'config')))
     if not parsed:
         raise FileNotFoundError('Not found given configuration file')
@@ -122,8 +120,7 @@ def _verify_cfg(driver_list, config):
 # verify given optimization option file
 def _verify_opt(args):
     if oneutils.is_valid_attr(args, 'O'):
-        config = configparser.ConfigParser()
-        config.optionxform = str
+        config = oneutils.get_config_parser()
         opt_name_path_dic = dict(
             zip(oneutils.get_optimization_list(get_name=True),
                 oneutils.get_optimization_list()))
