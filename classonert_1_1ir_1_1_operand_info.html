@@ -124,6 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a40f2daaa24d4855d98b2bb2cd7f42036" id="r_a40f2daaa24d4855d98b2bb2cd7f42036"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1ir_1_1_type_info.html">TypeInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a> () const</td></tr>
 <tr class="memdesc:a40f2daaa24d4855d98b2bb2cd7f42036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return tensor data type info.  <br /></td></tr>
 <tr class="separator:a40f2daaa24d4855d98b2bb2cd7f42036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4990f77349128f1e25efe4a59017e19c" id="r_a4990f77349128f1e25efe4a59017e19c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_info.html#a4990f77349128f1e25efe4a59017e19c">typeInfo</a> (const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;typeInfo)</td></tr>
+<tr class="memdesc:a4990f77349128f1e25efe4a59017e19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set type information.  <br /></td></tr>
+<tr class="separator:a4990f77349128f1e25efe4a59017e19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ac489517a0b5a4999fe63cb94ace5fa" id="r_a8ac489517a0b5a4999fe63cb94ace5fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a> (const <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">DataType</a> type)</td></tr>
 <tr class="memdesc:a8ac489517a0b5a4999fe63cb94ace5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tensor data type.  <br /></td></tr>
 <tr class="separator:a8ac489517a0b5a4999fe63cb94ace5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -350,7 +353,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">OperandInfo()</a>, <a class="el" href="_operand_info_8h_source.html#l00095">shape()</a>, <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::STATIC</a>, and <a class="el" href="_operand_info_8h_source.html#l00109">typeInfo()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_acl_tensor_builder_8h_source.html#l00139">onert::backend::acl_common::AclTensorBuilder&lt; T_ITensor, T_Tensor, T_SubTensor &gt;::registerTensorInfo()</a>, <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00075">onert::exec::Execution::setInput()</a>, and <a class="el" href="core_2src_2exec_2execution_8cc_source.html#l00102">onert::exec::Execution::setOutput()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_tensor_builder_8h_source.html#l00139">onert::backend::acl_common::AclTensorBuilder&lt; T_ITensor, T_Tensor, T_SubTensor &gt;::registerTensorInfo()</a>.</p>
 
 </div>
 </div>
@@ -377,15 +380,15 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00123">123</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>  {</div>
-<div class="line"><span class="lineno">  125</span>    <span class="comment">// Impossible case: constant and dynamic operand</span></div>
-<div class="line"><span class="lineno">  126</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() &amp;&amp; _const));</div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> _const;</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00137">OperandInfo.h:137</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00128">128</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>  {</div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment">// Impossible case: constant and dynamic operand</span></div>
+<div class="line"><span class="lineno">  131</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() &amp;&amp; _const));</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> _const;</div>
+<div class="line"><span class="lineno">  133</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00142">OperandInfo.h:142</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00137">isDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00142">isDynamic()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00176">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00088">onert::backend::basic::Tensor::is_constant()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">onert::ir::Operand::isConstant()</a>.</p>
 
@@ -414,13 +417,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00137">137</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  137</span>{ <span class="keywordflow">return</span> _alloc_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00142">142</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{ <span class="keywordflow">return</span> _alloc_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::MemAllocType::DYNAMIC</a></div><div class="ttdeci">@ DYNAMIC</div><div class="ttdoc">At kernel execution time, shape for a tensor is known, thus requried memory capacity can be calculate...</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::DYNAMIC</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00176">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00089">onert::backend::basic::Tensor::is_dynamic()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00062">onert::backend::builtin::IOTensor::is_dynamic()</a>, <a class="el" href="_operand_info_8h_source.html#l00123">isConstant()</a>, and <a class="el" href="_operand_info_8h_source.html#l00129">setAsVariable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00176">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00089">onert::backend::basic::Tensor::is_dynamic()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00062">onert::backend::builtin::IOTensor::is_dynamic()</a>, <a class="el" href="_operand_info_8h_source.html#l00128">isConstant()</a>, and <a class="el" href="_operand_info_8h_source.html#l00134">setAsVariable()</a>.</p>
 
 </div>
 </div>
@@ -447,8 +450,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00136">136</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  136</span>{ <span class="keywordflow">return</span> _variable; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00141">141</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{ <span class="keywordflow">return</span> _variable; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -475,8 +478,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00120">120</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>{ <span class="keywordflow">return</span> _alloc_type; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00125">125</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>{ <span class="keywordflow">return</span> _alloc_type; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -503,8 +506,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00139">139</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  139</span>{ <span class="keywordflow">return</span> _origin; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00144">144</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>{ <span class="keywordflow">return</span> _origin; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00108">onert::ir::Operand::originIndex()</a>.</p>
 
@@ -533,8 +536,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00121">121</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span>{ _const = <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00126">126</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>{ _const = <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00064">onert::ir::Operand::data()</a>.</p>
 
@@ -563,8 +566,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00122">122</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  122</span>{ _const = <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00127">127</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>{ _const = <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -591,15 +594,15 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00129">129</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span>  {</div>
-<div class="line"><span class="lineno">  131</span>    <span class="comment">// Impossible case: constant or dynamic operand</span></div>
-<div class="line"><span class="lineno">  132</span>    <span class="comment">// The variable operand with buffer is not supported yet</span></div>
-<div class="line"><span class="lineno">  133</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() || _const));</div>
-<div class="line"><span class="lineno">  134</span>    _variable = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  135</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00134">134</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>  {</div>
+<div class="line"><span class="lineno">  136</span>    <span class="comment">// Impossible case: constant or dynamic operand</span></div>
+<div class="line"><span class="lineno">  137</span>    <span class="comment">// The variable operand with buffer is not supported yet</span></div>
+<div class="line"><span class="lineno">  138</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() || _const));</div>
+<div class="line"><span class="lineno">  139</span>    _variable = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  140</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00137">isDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00142">isDynamic()</a>.</p>
 
 </div>
 </div>
@@ -626,8 +629,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00138">138</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span>{ _alloc_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00143">143</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{ _alloc_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::DYNAMIC</a>.</p>
 
@@ -659,8 +662,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00140">140</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{ _origin = origin; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00145">145</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>{ _origin = origin; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00107">onert::ir::Operand::setOriginIndex()</a>.</p>
 
@@ -791,8 +794,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Return size of tensor (bytes) </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00118">118</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{ <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(_typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>()); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00123">123</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{ <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(_typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>()); }</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html_ac59d0c3025a812eba13a113a7c7c85a5"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">onert::ir::TypeInfo::type</a></div><div class="ttdeci">DataType type() const</div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00052">TypeInfo.h:52</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00029">DataType.cc:29</a></div></div>
 </div><!-- fragment -->
@@ -828,18 +831,18 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Set tensor data type. </p>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00113">113</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00113">OperandInfo.h:113</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00118">118</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{ _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00118">OperandInfo.h:118</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00113">type()</a>.</p>
+<p class="reference">References <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00118">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">onert::ir::Operand::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00113">type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">onert::ir::Operand::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00118">type()</a>.</p>
 
 </div>
 </div>
 <a id="a40f2daaa24d4855d98b2bb2cd7f42036" name="a40f2daaa24d4855d98b2bb2cd7f42036"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40f2daaa24d4855d98b2bb2cd7f42036">&#9670;&#160;</a></span>typeInfo()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a40f2daaa24d4855d98b2bb2cd7f42036">&#9670;&#160;</a></span>typeInfo() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -868,6 +871,47 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>{ <span class="keywordflow">return</span> _typeInfo; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00085">createStaticInfo()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00046">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00087">onert::backend::basic::Tensor::data_type()</a>, <a class="el" href="_user_tensor_8h_source.html#l00062">onert::backend::builtin::UserTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00047">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00049">onert::backend::IPortableTensor::data_zero_points()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00092">onert::backend::basic::Tensor::sparsity()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00047">onert::ir::Operand::typeInfo()</a>.</p>
+
+</div>
+</div>
+<a id="a4990f77349128f1e25efe4a59017e19c" name="a4990f77349128f1e25efe4a59017e19c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4990f77349128f1e25efe4a59017e19c">&#9670;&#160;</a></span>typeInfo() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::ir::OperandInfo::typeInfo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>typeInfo</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set type information. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeInfo</td><td>Type information </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00114">114</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{ _typeInfo = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>; }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00114">typeInfo()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00114">typeInfo()</a>.</p>
 
 </div>
 </div>

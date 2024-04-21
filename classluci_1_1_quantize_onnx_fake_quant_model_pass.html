@@ -239,70 +239,80 @@ Public Member Functions</h2></td></tr>
 <ol type="1">
 <li>Quantize constant activations</li>
 <li>Quantize with predecessors' qparams</li>
-<li>Update qparams of special operators </li>
+<li>Update qparams of special operators</li>
+<li>Insert Quantize Op if an Op's input dtype and output dtype mismatch </li>
 </ol>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html#l00060">60</a> of file <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html">QuantizeOnnxFakeQuantModelPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">   63</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeOnnxFakeQuantModelPass Start&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="comment">// Quantize Onnx QuantizeLinear-DequantizeLinear pattern</span></div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    QuantizeOnnxQDQPass pass;</div>
-<div class="line"><span class="lineno">   68</span>    pass.run(g);</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>  <span class="comment">// Quantize Onnx const-DequantizeLinear pattern</span></div>
-<div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    QuantizeOnnxDequantizeLinearPass pass;</div>
-<div class="line"><span class="lineno">   74</span>    pass.run(g);</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="comment">// Quantize const input activation</span></div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    QuantizeConstInputActivation qcia(_ctx-&gt;default_activation_dtype);</div>
-<div class="line"><span class="lineno">   83</span>    circle_node-&gt;accept(&amp;qcia);</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <span class="comment">// Quantize nodes using their predecessors&#39; qparams</span></div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    QuantizeWithPredecessorPass pass;</div>
-<div class="line"><span class="lineno">   89</span>    pass.run(g);</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  <span class="comment">// Update qparam of output of special Ops</span></div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">   94</span>  {</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a92c776392acf3d65c602775dcf6078e8">is_quantized</a>(circle_node))</div>
-<div class="line"><span class="lineno">   98</span>    {</div>
-<div class="line"><span class="lineno">   99</span>      QuantizeSpecialActivation qsa(circle_node-&gt;dtype());</div>
-<div class="line"><span class="lineno">  100</span>      circle_node-&gt;accept(&amp;qsa);</div>
-<div class="line"><span class="lineno">  101</span>    }</div>
-<div class="line"><span class="lineno">  102</span>  }</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>  <span class="comment">// Update output dtype</span></div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">auto</span> graph_outputs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;outputs();</div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>))</div>
-<div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleOutput *&gt;(node);</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">auto</span> from = loco::must_cast&lt;luci::CircleNode *&gt;(circle_node-&gt;from());</div>
-<div class="line"><span class="lineno">  110</span>    circle_node-&gt;dtype(from-&gt;dtype());</div>
+<p class="definition">Definition at line <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html#l00063">63</a> of file <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html">QuantizeOnnxFakeQuantModelPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeOnnxFakeQuantModelPass Start&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <span class="comment">// Quantize Onnx QuantizeLinear-DequantizeLinear pattern</span></div>
+<div class="line"><span class="lineno">   69</span>  {</div>
+<div class="line"><span class="lineno">   70</span>    QuantizeOnnxQDQPass pass;</div>
+<div class="line"><span class="lineno">   71</span>    pass.run(g);</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>  <span class="comment">// Quantize Onnx const-DequantizeLinear pattern</span></div>
+<div class="line"><span class="lineno">   75</span>  {</div>
+<div class="line"><span class="lineno">   76</span>    QuantizeOnnxDequantizeLinearPass pass;</div>
+<div class="line"><span class="lineno">   77</span>    pass.run(g);</div>
+<div class="line"><span class="lineno">   78</span>  }</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// Quantize const input activation</span></div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>    QuantizeConstInputActivation qcia(_ctx-&gt;default_activation_dtype);</div>
+<div class="line"><span class="lineno">   86</span>    circle_node-&gt;accept(&amp;qcia);</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="comment">// Quantize nodes using their predecessors&#39; qparams</span></div>
+<div class="line"><span class="lineno">   90</span>  {</div>
+<div class="line"><span class="lineno">   91</span>    QuantizeWithPredecessorPass pass;</div>
+<div class="line"><span class="lineno">   92</span>    pass.run(g);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// Update qparam of output of special Ops</span></div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">   97</span>  {</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a92c776392acf3d65c602775dcf6078e8">is_quantized</a>(circle_node))</div>
+<div class="line"><span class="lineno">  101</span>    {</div>
+<div class="line"><span class="lineno">  102</span>      QuantizeSpecialActivation qsa(circle_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">  103</span>      circle_node-&gt;accept(&amp;qsa);</div>
+<div class="line"><span class="lineno">  104</span>    }</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <span class="comment">// Insert QuantizeOp if input/output dtype does not match</span></div>
+<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  109</span>  {</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
 <div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    <span class="keyword">auto</span> graph_output = graph_outputs-&gt;at(circle_node-&gt;index());</div>
-<div class="line"><span class="lineno">  113</span>    graph_output-&gt;dtype(circle_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">  112</span>    InsertQuantizeOpOnDTypeMismatch iqoodm;</div>
+<div class="line"><span class="lineno">  113</span>    circle_node-&gt;accept(&amp;iqoodm);</div>
 <div class="line"><span class="lineno">  114</span>  }</div>
 <div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeOnnxFakeQuantModelPass End&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
-<div class="line"><span class="lineno">  118</span>}</div>
+<div class="line"><span class="lineno">  116</span>  <span class="comment">// Update output dtype</span></div>
+<div class="line"><span class="lineno">  117</span>  <span class="keyword">auto</span> graph_outputs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;outputs();</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>))</div>
+<div class="line"><span class="lineno">  119</span>  {</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleOutput *&gt;(node);</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keyword">auto</span> from = loco::must_cast&lt;luci::CircleNode *&gt;(circle_node-&gt;from());</div>
+<div class="line"><span class="lineno">  122</span>    circle_node-&gt;dtype(from-&gt;dtype());</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    <span class="keyword">auto</span> graph_output = graph_outputs-&gt;at(circle_node-&gt;index());</div>
+<div class="line"><span class="lineno">  125</span>    graph_output-&gt;dtype(circle_node-&gt;dtype());</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeOnnxFakeQuantModelPass End&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
+<div class="line"><span class="lineno">  130</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
@@ -311,7 +321,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a92c776392acf3d65c602775dcf6078e8"><div class="ttname"><a href="namespaceluci.html#a92c776392acf3d65c602775dcf6078e8">luci::is_quantized</a></div><div class="ttdeci">bool is_quantized(const CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00028">QuantizationUtils.cpp:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00028">luci::is_quantized()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_quantize_onnx_dequantize_linear_pass_8cpp_source.html#l00361">luci::QuantizeOnnxDequantizeLinearPass::run()</a>, <a class="el" href="_quantize_onnx_q_d_q_pass_8cpp_source.html#l00216">luci::QuantizeOnnxQDQPass::run()</a>, and <a class="el" href="_quantize_with_predecessor_pass_8cpp_source.html#l00136">luci::QuantizeWithPredecessorPass::run()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="_quantization_utils_8cpp_source.html#l00028">luci::is_quantized()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="_quantize_onnx_dequantize_linear_pass_8cpp_source.html#l00410">luci::QuantizeOnnxDequantizeLinearPass::run()</a>, <a class="el" href="_quantize_onnx_q_d_q_pass_8cpp_source.html#l00269">luci::QuantizeOnnxQDQPass::run()</a>, and <a class="el" href="_quantize_with_predecessor_pass_8cpp_source.html#l00142">luci::QuantizeWithPredecessorPass::run()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>, and <a class="el" href="luci_2pass_2src_2_circle_quantizer_8cpp_source.html#l00391">luci::CircleQuantizer::quantize()</a>.</p>
 

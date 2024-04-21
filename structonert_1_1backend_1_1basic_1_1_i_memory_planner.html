@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: onert::backend::basic::IMemoryPlanner Struct Reference</title>
+<title>ONE - On-device Neural Engine: onert::backend::basic::IMemoryPlanner&lt; Index &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('structonert_1_1backend_1_1basic_1_1_i_
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
-  <div class="headertitle"><div class="title">onert::backend::basic::IMemoryPlanner Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">onert::backend::basic::IMemoryPlanner&lt; Index &gt; Struct Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -103,59 +103,64 @@ $(document).ready(function(){initNavTree('structonert_1_1backend_1_1basic_1_1_i_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa8395e112911426c87e6158cb38e0166" id="r_aa8395e112911426c87e6158cb38e0166"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166">MemoryPlans</a> = <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; <a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a> &gt;</td></tr>
-<tr class="separator:aa8395e112911426c87e6158cb38e0166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b82a4e84aa5fea2224a47da146dd600" id="r_a9b82a4e84aa5fea2224a47da146dd600"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a9b82a4e84aa5fea2224a47da146dd600">MemoryPlans</a> = std::unordered_map&lt; Index, <a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a> &gt;</td></tr>
+<tr class="separator:a9b82a4e84aa5fea2224a47da146dd600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6b149afaa9fc95685bed4e8c32d4ffb1" id="r_a6b149afaa9fc95685bed4e8c32d4ffb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a6b149afaa9fc95685bed4e8c32d4ffb1">claim</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;, size_t)=0</td></tr>
-<tr class="memdesc:a6b149afaa9fc95685bed4e8c32d4ffb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim memory for operand.  <br /></td></tr>
-<tr class="separator:a6b149afaa9fc95685bed4e8c32d4ffb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39ff835724db2cf846a4efb4047575cf" id="r_a39ff835724db2cf846a4efb4047575cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a39ff835724db2cf846a4efb4047575cf">release</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)=0</td></tr>
-<tr class="memdesc:a39ff835724db2cf846a4efb4047575cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release memory for operand.  <br /></td></tr>
-<tr class="separator:a39ff835724db2cf846a4efb4047575cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a4a6395182ded34b137367663878cd4" id="r_a4a4a6395182ded34b137367663878cd4"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a4a4a6395182ded34b137367663878cd4">capacity</a> ()=0</td></tr>
-<tr class="memdesc:a4a4a6395182ded34b137367663878cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get capacity for memory planning.  <br /></td></tr>
-<tr class="separator:a4a4a6395182ded34b137367663878cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb3a6bcd9992df49738d15589d5c7c64" id="r_abb3a6bcd9992df49738d15589d5c7c64"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166">MemoryPlans</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#abb3a6bcd9992df49738d15589d5c7c64">memory_plans</a> ()=0</td></tr>
-<tr class="memdesc:abb3a6bcd9992df49738d15589d5c7c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MemoryPlans.  <br /></td></tr>
-<tr class="separator:abb3a6bcd9992df49738d15589d5c7c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5c2d6dccd9ccffd84091f1e3c30475e" id="r_ac5c2d6dccd9ccffd84091f1e3c30475e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#ac5c2d6dccd9ccffd84091f1e3c30475e">~IMemoryPlanner</a> ()=default</td></tr>
-<tr class="separator:ac5c2d6dccd9ccffd84091f1e3c30475e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac094797bf0270dfc07cadcc4d3ced8" id="r_aaac094797bf0270dfc07cadcc4d3ced8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aaac094797bf0270dfc07cadcc4d3ced8">claim</a> (const Index &amp;, size_t)=0</td></tr>
+<tr class="memdesc:aaac094797bf0270dfc07cadcc4d3ced8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim memory for tensor.  <br /></td></tr>
+<tr class="separator:aaac094797bf0270dfc07cadcc4d3ced8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5683e212f4896e4ba7e46d997aa2580d" id="r_a5683e212f4896e4ba7e46d997aa2580d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a5683e212f4896e4ba7e46d997aa2580d">release</a> (const Index &amp;)=0</td></tr>
+<tr class="memdesc:a5683e212f4896e4ba7e46d997aa2580d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release memory for tensor.  <br /></td></tr>
+<tr class="separator:a5683e212f4896e4ba7e46d997aa2580d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c49db0930ca87324a96e239136f638" id="r_a19c49db0930ca87324a96e239136f638"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a19c49db0930ca87324a96e239136f638">capacity</a> ()=0</td></tr>
+<tr class="memdesc:a19c49db0930ca87324a96e239136f638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get capacity for memory planning.  <br /></td></tr>
+<tr class="separator:a19c49db0930ca87324a96e239136f638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41a044a591ead5a0074b5b63869df065" id="r_a41a044a591ead5a0074b5b63869df065"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a9b82a4e84aa5fea2224a47da146dd600">MemoryPlans</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a41a044a591ead5a0074b5b63869df065">memory_plans</a> ()=0</td></tr>
+<tr class="memdesc:a41a044a591ead5a0074b5b63869df065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MemoryPlans.  <br /></td></tr>
+<tr class="separator:a41a044a591ead5a0074b5b63869df065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2da13e9abe09fb168525ce0e748715bc" id="r_a2da13e9abe09fb168525ce0e748715bc"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a2da13e9abe09fb168525ce0e748715bc">~IMemoryPlanner</a> ()=default</td></tr>
+<tr class="separator:a2da13e9abe09fb168525ce0e748715bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface to plan memory. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename Index&gt;<br />
+struct onert::backend::basic::IMemoryPlanner&lt; Index &gt;</div><p>Interface to plan memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_memory_planner_8h_source.html#l00041">41</a> of file <a class="el" href="_i_memory_planner_8h_source.html">IMemoryPlanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_memory_planner_8h_source.html#l00043">43</a> of file <a class="el" href="_i_memory_planner_8h_source.html">IMemoryPlanner.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa8395e112911426c87e6158cb38e0166" name="aa8395e112911426c87e6158cb38e0166"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8395e112911426c87e6158cb38e0166">&#9670;&#160;</a></span>MemoryPlans</h2>
+<a id="a9b82a4e84aa5fea2224a47da146dd600" name="a9b82a4e84aa5fea2224a47da146dd600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b82a4e84aa5fea2224a47da146dd600">&#9670;&#160;</a></span>MemoryPlans</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166">onert::backend::basic::IMemoryPlanner::MemoryPlans</a> =  <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt;<a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a>&gt;</td>
+          <td class="memname">using <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::MemoryPlans =  std::unordered_map&lt;Index, <a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_memory_planner_8h_source.html#l00043">43</a> of file <a class="el" href="_i_memory_planner_8h_source.html">IMemoryPlanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_memory_planner_8h_source.html#l00045">45</a> of file <a class="el" href="_i_memory_planner_8h_source.html">IMemoryPlanner.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac5c2d6dccd9ccffd84091f1e3c30475e" name="ac5c2d6dccd9ccffd84091f1e3c30475e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5c2d6dccd9ccffd84091f1e3c30475e">&#9670;&#160;</a></span>~IMemoryPlanner()</h2>
+<a id="a2da13e9abe09fb168525ce0e748715bc" name="a2da13e9abe09fb168525ce0e748715bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2da13e9abe09fb168525ce0e748715bc">&#9670;&#160;</a></span>~IMemoryPlanner()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual onert::backend::basic::IMemoryPlanner::~IMemoryPlanner </td>
+          <td class="memname">virtual <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::~<a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -171,17 +176,19 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4a4a6395182ded34b137367663878cd4" name="a4a4a6395182ded34b137367663878cd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a4a6395182ded34b137367663878cd4">&#9670;&#160;</a></span>capacity()</h2>
+<a id="a19c49db0930ca87324a96e239136f638" name="a19c49db0930ca87324a96e239136f638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c49db0930ca87324a96e239136f638">&#9670;&#160;</a></span>capacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint32_t onert::backend::basic::IMemoryPlanner::capacity </td>
+          <td class="memname">virtual uint32_t <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::capacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -197,23 +204,25 @@ Public Member Functions</h2></td></tr>
 <p>Get capacity for memory planning. </p>
 <dl class="section return"><dt>Returns</dt><dd>The value of capacity </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#af57b660cbcebde822127a10a2d18e2ed">onert::backend::basic::BumpPlanner</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a0af375d01bb998a061e5d95e4f58c3dc">onert::backend::basic::FirstFitPlanner</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a69a4c55199091e4240bcc46a4c5349e2">onert::backend::basic::WICPlanner</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#a85e7845f1174eeb6cc2c1cccf9df3d0b">onert::backend::basic::BumpPlanner&lt; Index &gt;</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#aa2101d168e2514d90c23726a345126d5">onert::backend::basic::FirstFitPlanner&lt; Index &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a16bde60d707aad4dbc285338f395d9f1">onert::backend::basic::WICPlanner&lt; Index &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a6b149afaa9fc95685bed4e8c32d4ffb1" name="a6b149afaa9fc95685bed4e8c32d4ffb1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b149afaa9fc95685bed4e8c32d4ffb1">&#9670;&#160;</a></span>claim()</h2>
+<a id="aaac094797bf0270dfc07cadcc4d3ced8" name="aaac094797bf0270dfc07cadcc4d3ced8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaac094797bf0270dfc07cadcc4d3ced8">&#9670;&#160;</a></span>claim()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void onert::backend::basic::IMemoryPlanner::claim </td>
+          <td class="memname">virtual void <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::claim </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
+          <td class="paramtype">const Index &amp;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -235,30 +244,32 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Claim memory for operand. </p>
+<p>Claim memory for tensor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The operand index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The tensor index </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>The size of the memory </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#ad8236572a23fe50e0fd627d193aaa5fc">onert::backend::basic::BumpPlanner</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a739a47b3d8998e1790bce1188496536c">onert::backend::basic::FirstFitPlanner</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a0b750f0cc2a3b150daea4f974be2f86b">onert::backend::basic::WICPlanner</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#aac1452475634b7a142f46b5e04a8520d">onert::backend::basic::BumpPlanner&lt; Index &gt;</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#af0f53754a67c2ae22f461bc5f8e8ee8f">onert::backend::basic::FirstFitPlanner&lt; Index &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#aa5c4e8c7c184b4e15ef45ec9f1da7f63">onert::backend::basic::WICPlanner&lt; Index &gt;</a>.</p>
 
 </div>
 </div>
-<a id="abb3a6bcd9992df49738d15589d5c7c64" name="abb3a6bcd9992df49738d15589d5c7c64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb3a6bcd9992df49738d15589d5c7c64">&#9670;&#160;</a></span>memory_plans()</h2>
+<a id="a41a044a591ead5a0074b5b63869df065" name="a41a044a591ead5a0074b5b63869df065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41a044a591ead5a0074b5b63869df065">&#9670;&#160;</a></span>memory_plans()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166">MemoryPlans</a> &amp; onert::backend::basic::IMemoryPlanner::memory_plans </td>
+          <td class="memname">virtual <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a9b82a4e84aa5fea2224a47da146dd600">MemoryPlans</a> &amp; <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::memory_plans </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -274,23 +285,25 @@ Public Member Functions</h2></td></tr>
 <p>Get MemoryPlans. </p>
 <dl class="section return"><dt>Returns</dt><dd>MemoryPlans </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#ade16fe31383ee05c58ef477d1fd44865">onert::backend::basic::BumpPlanner</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#aaf086e5f74ac923eedf0d1c0151d6c00">onert::backend::basic::FirstFitPlanner</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a25c553b7d8967801cc1f85abc5279cc0">onert::backend::basic::WICPlanner</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#af9e1ab1f5dd71328cd74e845b62639d0">onert::backend::basic::BumpPlanner&lt; Index &gt;</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a6a32650d69c41e03d9c3621946128e58">onert::backend::basic::FirstFitPlanner&lt; Index &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a2f2123d18741d2b3903c43115d819887">onert::backend::basic::WICPlanner&lt; Index &gt;</a>.</p>
 
 </div>
 </div>
-<a id="a39ff835724db2cf846a4efb4047575cf" name="a39ff835724db2cf846a4efb4047575cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39ff835724db2cf846a4efb4047575cf">&#9670;&#160;</a></span>release()</h2>
+<a id="a5683e212f4896e4ba7e46d997aa2580d" name="a5683e212f4896e4ba7e46d997aa2580d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5683e212f4896e4ba7e46d997aa2580d">&#9670;&#160;</a></span>release()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Index &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void onert::backend::basic::IMemoryPlanner::release </td>
+          <td class="memname">virtual void <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">onert::backend::basic::IMemoryPlanner</a>&lt; Index &gt;::release </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;&#160;</td>
+          <td class="paramtype">const Index &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -302,15 +315,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Release memory for operand. </p>
+<p>Release memory for tensor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The operand index </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>The tensor index </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#a2004d7a46591a108b50d20e2824c7cbc">onert::backend::basic::BumpPlanner</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#ae6d91fffb108c33ea8fa5edf9d63e135">onert::backend::basic::FirstFitPlanner</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#aa75bd8194c8a655ab60d9a20c233d938">onert::backend::basic::WICPlanner</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_bump_planner.html#ac0ac1b73422d8f2ca8a33665da94becc">onert::backend::basic::BumpPlanner&lt; Index &gt;</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a58f5b2fd0f72abcb8283c990aa45b609">onert::backend::basic::FirstFitPlanner&lt; Index &gt;</a>, and <a class="el" href="classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html#a330305662f07460e74abb6dc81df0a13">onert::backend::basic::WICPlanner&lt; Index &gt;</a>.</p>
 
 </div>
 </div>

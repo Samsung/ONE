@@ -1,5 +1,15 @@
 var NAVTREEINDEX35 =
 {
+"backend_2xnnpack_2_config_8cc_source.html":[36,0,4,2,1,9,4],
+"backend_2xnnpack_2_external_context_8h.html":[36,0,4,2,1,9,7],
+"backend_2xnnpack_2_external_context_8h_source.html":[36,0,4,2,1,9,7],
+"backend_2xnnpack_2_kernel_generator_8cc.html":[36,0,4,2,1,9,8],
+"backend_2xnnpack_2_kernel_generator_8cc_source.html":[36,0,4,2,1,9,8],
+"backend_2xnnpack_2_kernel_generator_8h.html":[36,0,4,2,1,9,9],
+"backend_2xnnpack_2_kernel_generator_8h_source.html":[36,0,4,2,1,9,9],
+"backend_2xnnpack_2_static_tensor_manager_8h.html":[36,0,4,2,1,9,10],
+"backend_2xnnpack_2_static_tensor_manager_8h.html#a30e0cc8dd7c58ee616eca3f0abdd576d":[36,0,4,2,1,9,10,0],
+"backend_2xnnpack_2_static_tensor_manager_8h_source.html":[36,0,4,2,1,9,10],
 "backend_2xnnpack_2_tensor_builder_8h.html":[36,0,4,2,1,9,12],
 "backend_2xnnpack_2_tensor_builder_8h.html#a7bdc3b5c4ab9d40871f080f99c4f7b72":[36,0,4,2,1,9,12,0],
 "backend_2xnnpack_2_tensor_builder_8h_source.html":[36,0,4,2,1,9,12],
@@ -239,15 +249,5 @@ var NAVTREEINDEX35 =
 "circle_2src_2_op_2_b_c_q_gather_8cpp.html":[36,0,0,24,0,1,0,4],
 "circle_2src_2_op_2_b_c_q_gather_8cpp_source.html":[36,0,0,24,0,1,0,4],
 "circle_2src_2_op_2_g_r_u_8cpp.html":[36,0,0,24,0,1,0,6],
-"circle_2src_2_op_2_g_r_u_8cpp_source.html":[36,0,0,24,0,1,0,6],
-"circle_2src_2_op_2_g_r_u_8h.html":[36,0,0,24,0,1,0,7],
-"circle_2src_2_op_2_g_r_u_8h_source.html":[36,0,0,24,0,1,0,7],
-"circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html":[36,0,0,24,0,0,0,0],
-"circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html#a248232d535b4887d59946e05e84ac253":[36,0,0,24,0,0,0,0,0],
-"circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html#a634de774edf3fd5763dba0d65eb5e181":[36,0,0,24,0,0,0,0,1],
-"circlechef_2circle_2include_2circlechef_2_recipe_chef_8h_source.html":[36,0,0,24,0,0,0,0],
-"circlechef_2circle_2src_2_convert_8cpp.html":[36,0,0,24,0,1,6],
-"circlechef_2circle_2src_2_convert_8cpp.html#adb4577f6c6c4c848a2700a6ec3b56fd0":[36,0,0,24,0,1,6,0],
-"circlechef_2circle_2src_2_convert_8cpp.html#ae7b7698118bdd3637da18c710d92b744":[36,0,0,24,0,1,6,2],
-"circlechef_2circle_2src_2_convert_8cpp.html#aeb725f50d14f303fae51b5494b603c40":[36,0,0,24,0,1,6,1]
+"circle_2src_2_op_2_g_r_u_8cpp_source.html":[36,0,0,24,0,1,0,6]
 };

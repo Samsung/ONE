@@ -1,5 +1,17 @@
 var NAVTREEINDEX15 =
 {
+"_instr_manager_8h_source.html":[36,0,0,27,0,0,0,1,28],
+"_instrs_8h.html":[36,0,0,27,0,0,0,1,29],
+"_instrs_8h_source.html":[36,0,0,27,0,0,0,1,29],
+"_int_equal_kernel_8h.html":[36,0,3,4,0,0,1,18,1],
+"_int_equal_kernel_8h.html#a0ba0967e3189a5b477aa82e18c1e10c3":[36,0,3,4,0,0,1,18,1,9],
+"_int_equal_kernel_8h.html#a225c79dd1078427936513bb9c3a7fc2f":[36,0,3,4,0,0,1,18,1,2],
+"_int_equal_kernel_8h.html#a3207549beac470b29aafe30748727c18":[36,0,3,4,0,0,1,18,1,10],
+"_int_equal_kernel_8h.html#a400911252f736fc2eae9957bd99e4ac5":[36,0,3,4,0,0,1,18,1,12],
+"_int_equal_kernel_8h.html#a47a99a2aa2eb8ade5d70fa6611c3831c":[36,0,3,4,0,0,1,18,1,11],
+"_int_equal_kernel_8h.html#a585cd757553bfd12f879f7fe8c7d263d":[36,0,3,4,0,0,1,18,1,14],
+"_int_equal_kernel_8h.html#a5e3e36ad19bf8992be8cd179b60d9a70":[36,0,3,4,0,0,1,18,1,16],
+"_int_equal_kernel_8h.html#a65122a07c37f32b8e6cc4ecb45dbabff":[36,0,3,4,0,0,1,18,1,6],
 "_int_equal_kernel_8h.html#a80eb6ac7ae90ff1ccfe8942a4605aa90":[36,0,3,4,0,0,1,18,1,7],
 "_int_equal_kernel_8h.html#a89242eebc46385768d5671bdcf142bbd":[36,0,3,4,0,0,1,18,1,3],
 "_int_equal_kernel_8h.html#a8db666343906d8c8037d1bedfde94623":[36,0,3,4,0,0,1,18,1,1],
@@ -237,17 +249,5 @@ var NAVTREEINDEX15 =
 "_local_response_normalization_options_8h_source.html":[36,0,0,126,2,0,75],
 "_locatable_8h.html":[36,0,0,27,0,0,0,1,34],
 "_locatable_8h_source.html":[36,0,0,27,0,0,0,1,34],
-"_log_soft_max_layer_8cc.html":[36,0,4,2,1,4,0,44],
-"_log_soft_max_layer_8cc_source.html":[36,0,4,2,1,4,0,44],
-"_log_soft_max_layer_8h.html":[36,0,4,2,1,4,0,45],
-"_log_soft_max_layer_8h_source.html":[36,0,4,2,1,4,0,45],
-"_log_softmax_8cc.html":[36,0,4,2,2,1,4,0,33],
-"_log_softmax_8cc_source.html":[36,0,4,2,2,1,4,0,33],
-"_log_softmax_options_8cpp.html":[36,0,0,126,2,0,82],
-"_log_softmax_options_8cpp.html#af0709276dbc81956b573bdc852cb7f68":[36,0,0,126,2,0,82,0],
-"_log_softmax_options_8cpp_source.html":[36,0,0,126,2,0,82],
-"_log_softmax_options_8h.html":[36,0,0,126,2,0,83],
-"_log_softmax_options_8h.html#af0709276dbc81956b573bdc852cb7f68":[36,0,0,126,2,0,83,0],
-"_log_softmax_options_8h_source.html":[36,0,0,126,2,0,83],
-"_logging_8cpp.html":[36,0,0,3,0,8]
+"_log_soft_max_layer_8cc.html":[36,0,4,2,1,4,0,44]
 };

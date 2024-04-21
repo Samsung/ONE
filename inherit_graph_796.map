@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classmpqsolver_1_1pattern_1_1_pattern_resolver.html" title=" " alt="" coords="5,49,133,90"/>
 <area shape="rect" id="Node000001" href="$classmpqsolver_1_1pattern_1_1_q8_layer_norm_with_q16_variance_resolver.html" title=" " alt="" coords="195,5,404,61"/>
-<area shape="poly" id="edge2190_Node000000_Node000001" title=" " alt="" coords="148,54,194,47,195,52,149,59"/>
+<area shape="poly" id="edge2192_Node000000_Node000001" title=" " alt="" coords="148,54,194,47,195,52,149,59"/>
 <area shape="rect" id="Node000002" href="$classmpqsolver_1_1pattern_1_1_q8_softmax_with_q16_sub_exp_resolver.html" title=" " alt="" coords="181,85,418,126"/>
-<area shape="poly" id="edge2191_Node000000_Node000002" title=" " alt="" coords="148,79,181,84,180,89,148,84"/>
+<area shape="poly" id="edge2193_Node000000_Node000002" title=" " alt="" coords="148,79,181,84,180,89,148,84"/>
 </map>

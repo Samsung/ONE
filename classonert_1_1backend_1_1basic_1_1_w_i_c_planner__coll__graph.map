@@ -1,5 +1,5 @@
-<map id="onert::backend::basic::WICPlanner" name="onert::backend::basic::WICPlanner">
-<area shape="rect" id="Node000001" title="Class to plan memory by Weighted Interval Color algorithm." alt="" coords="5,94,148,135"/>
-<area shape="rect" id="Node000002" href="$structonert_1_1backend_1_1basic_1_1_i_memory_planner.html" title="Interface to plan memory." alt="" coords="5,5,148,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,62,79,94,74,94,74,62"/>
+<map id="onert::backend::basic::WICPlanner&lt; Index &gt;" name="onert::backend::basic::WICPlanner&lt; Index &gt;">
+<area shape="rect" id="Node000001" title="Class to plan memory by Weighted Interval Color algorithm." alt="" coords="18,94,167,135"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1backend_1_1basic_1_1_i_memory_planner.html" title="Interface to plan memory." alt="" coords="5,5,180,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,62,95,94,90,94,90,62"/>
 </map>

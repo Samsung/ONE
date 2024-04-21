@@ -1412,6 +1412,7 @@ var hierarchy =
         [ "luci::BuiltinOptionsExtractor", "classluci_1_1_builtin_options_extractor.html", null ]
       ] ],
       [ "luci::CircleNodeMutableVisitor< void >", "structluci_1_1_circle_node_mutable_visitor.html", [
+        [ "luci::InsertQuantizeOpOnDTypeMismatch", "structluci_1_1_insert_quantize_op_on_d_type_mismatch.html", null ],
         [ "luci::OperationExporterRule", "classluci_1_1_operation_exporter_rule.html", null ],
         [ "luci::QuantizeActivation", "structluci_1_1_quantize_activation.html", null ],
         [ "luci::QuantizeBias", "structluci_1_1_quantize_bias.html", null ],
@@ -1760,6 +1761,7 @@ var hierarchy =
     [ "loco::Dimension", "classloco_1_1_dimension.html", null ],
     [ "luci::DimMetaData", "classluci_1_1_dim_meta_data.html", null ],
     [ "Dims< N >", "struct_dims.html", null ],
+    [ "onert::backend::train::DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", null ],
     [ "luci_interpreter_pal::DivFn< T >", "structluci__interpreter__pal_1_1_div_fn.html", null ],
     [ "onert_micro::execute::pal::DivFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_div_fn.html", null ],
     [ "mir_interpreter::DivImpl< T >", "structmir__interpreter_1_1_div_impl.html", null ],
@@ -2497,10 +2499,10 @@ var hierarchy =
       [ "luci_interpreter::StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", null ],
       [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", null ]
     ] ],
-    [ "onert::backend::basic::IMemoryPlanner", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
-      [ "onert::backend::basic::BumpPlanner", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", null ],
-      [ "onert::backend::basic::FirstFitPlanner", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html", null ],
-      [ "onert::backend::basic::WICPlanner", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html", null ]
+    [ "onert::backend::basic::IMemoryPlanner< Index >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
+      [ "onert::backend::basic::BumpPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", null ],
+      [ "onert::backend::basic::FirstFitPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html", null ],
+      [ "onert::backend::basic::WICPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html", null ]
     ] ],
     [ "circlechef::GeneratedModel::Impl", "structcirclechef_1_1_generated_model_1_1_impl.html", null ],
     [ "exo::CircleExporter::Impl", "classexo_1_1_circle_exporter_1_1_impl.html", null ],
@@ -4388,6 +4390,7 @@ var hierarchy =
       [ "luci::FoldGatherPass", "structluci_1_1_fold_gather_pass.html", null ],
       [ "luci::FoldShapePass", "structluci_1_1_fold_shape_pass.html", null ],
       [ "luci::FoldSparseToDensePass", "structluci_1_1_fold_sparse_to_dense_pass.html", null ],
+      [ "luci::FoldSqueezePass", "structluci_1_1_fold_squeeze_pass.html", null ],
       [ "luci::ForceQuantParamPass", "classluci_1_1_force_quant_param_pass.html", null ],
       [ "luci::ForwardReshapeToUnaryOpPass", "structluci_1_1_forward_reshape_to_unary_op_pass.html", null ],
       [ "luci::ForwardTransposeOpPass", "structluci_1_1_forward_transpose_op_pass.html", null ],

@@ -8,7 +8,7 @@ var searchData=
   ['measurementdata_5',['MeasurementData',['../namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef',1,'onert::exec']]],
   ['memorymanager_6',['memorymanager',['../namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548',1,'luci_interpreter::MemoryManager'],['../namespaceonert_1_1backend_1_1acl__cl.html#aec9f8d43988a9d43b9dcbfaa13891484',1,'onert::backend::acl_cl::MemoryManager'],['../namespaceonert_1_1backend_1_1acl__neon.html#ab6b72123ac53105035f0411fa9ca2391',1,'onert::backend::acl_neon::MemoryManager'],['../namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0',1,'onert::backend::train::MemoryManager']]],
   ['memoryoffset_7',['MemoryOffset',['../namespacekuma.html#a56eb60c063d89aaef20b7ad37a5aa2be',1,'kuma']]],
-  ['memoryplans_8',['MemoryPlans',['../structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aa8395e112911426c87e6158cb38e0166',1,'onert::backend::basic::IMemoryPlanner']]],
+  ['memoryplans_8',['MemoryPlans',['../structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a9b82a4e84aa5fea2224a47da146dd600',1,'onert::backend::basic::IMemoryPlanner']]],
   ['memorysize_9',['MemorySize',['../namespacekuma.html#aa887f95a62bbe57942ed4fb85cdaeedb',1,'kuma']]],
   ['metadata_10',['Metadata',['../classonert_1_1loader_1_1_base_loader.html#a9ef370926b11c82790762678dc59194d',1,'onert::loader::BaseLoader']]],
   ['milliseconds_5ff_11',['milliseconds_f',['../_benchmark_8cpp.html#a9eec4a33e9d57587c6ffb9ca180f620a',1,'Benchmark.cpp']]],

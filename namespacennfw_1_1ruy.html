@@ -611,7 +611,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  163</span>      {</div>
 <div class="line"><span class="lineno">  164</span>        <span class="comment">// Each im2col row is an output pixel. Arrange the input data in this</span></div>
 <div class="line"><span class="lineno">  165</span>        <span class="comment">// row in an order we can conveniently multiply with the filter data.</span></div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordtype">int</span> row_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(row_shape, 0, batch, out_y, out_x);</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordtype">int</span> row_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(row_shape, 0, batch, out_y, out_x);</div>
 <div class="line"><span class="lineno">  167</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> in_x_origin = (out_x * stride_width) - pad_width;</div>
 <div class="line"><span class="lineno">  168</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> in_y_origin = (out_y * stride_height) - pad_height;</div>
 <div class="line"><span class="lineno">  169</span>        <span class="comment">// Loop through all the pixels of the filter (Kh x Kw)</span></div>
@@ -625,12 +625,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  177</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_x = 0; filter_x &lt; filter_width; ++filter_x)</div>
 <div class="line"><span class="lineno">  178</span>            {</div>
 <div class="line"><span class="lineno">  179</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_x = in_x_origin + dilation_width_factor * filter_x;</div>
-<div class="line"><span class="lineno">  180</span>              <span class="keywordtype">int</span> col_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(col_shape, 0, filter_y, filter_x, 0);</div>
-<div class="line"><span class="lineno">  181</span>              T *dst = im2col_data + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(im2col_shape, 0, 0, row_offset, col_offset);</div>
+<div class="line"><span class="lineno">  180</span>              <span class="keywordtype">int</span> col_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(col_shape, 0, filter_y, filter_x, 0);</div>
+<div class="line"><span class="lineno">  181</span>              T *dst = im2col_data + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(im2col_shape, 0, 0, row_offset, col_offset);</div>
 <div class="line"><span class="lineno">  182</span>              <span class="keywordflow">if</span> ((in_x &gt;= 0) &amp;&amp; (in_x &lt; input_width))</div>
 <div class="line"><span class="lineno">  183</span>              {</div>
 <div class="line"><span class="lineno">  184</span>                <span class="comment">// Filter pixel is within the input, copy the input data.</span></div>
-<div class="line"><span class="lineno">  185</span>                T <span class="keyword">const</span> *src = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, 0);</div>
+<div class="line"><span class="lineno">  185</span>                T <span class="keyword">const</span> *src = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, 0);</div>
 <div class="line"><span class="lineno">  186</span>                memcpy(dst, src, input_depth * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><span class="lineno">  187</span>              }</div>
 <div class="line"><span class="lineno">  188</span>              <span class="keywordflow">else</span></div>
@@ -643,8 +643,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  195</span>          <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  196</span>          {</div>
 <div class="line"><span class="lineno">  197</span>            <span class="comment">// Filter row is outside the input, zero out the entire filter row.</span></div>
-<div class="line"><span class="lineno">  198</span>            <span class="keywordtype">int</span> col_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(col_shape, 0, filter_y, 0, 0);</div>
-<div class="line"><span class="lineno">  199</span>            T *dst = im2col_data + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(im2col_shape, 0, 0, row_offset, col_offset);</div>
+<div class="line"><span class="lineno">  198</span>            <span class="keywordtype">int</span> col_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(col_shape, 0, filter_y, 0, 0);</div>
+<div class="line"><span class="lineno">  199</span>            T *dst = im2col_data + <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(im2col_shape, 0, 0, row_offset, col_offset);</div>
 <div class="line"><span class="lineno">  200</span>            memset(dst, zero_byte, filter_width * input_depth * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><span class="lineno">  201</span>          }</div>
 <div class="line"><span class="lineno">  202</span>        }</div>
@@ -653,7 +653,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  205</span>  }</div>
 <div class="line"><span class="lineno">  206</span>}</div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Dims.h:64</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Dims.h:64</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_conv_params_html_a1e6ea8c3dbf27068d5d6ea2d42583e61"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_conv_params.html#a1e6ea8c3dbf27068d5d6ea2d42583e61">nnfw::ruy::ConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">Types.h:59</a></div></div>
@@ -891,7 +891,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> single_row_num = std::min(kwidth - w_offset, in_width - iw_start) * in_depth;</div>
 <div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_row_offset = (buffer_id * single_buffer_length);</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordtype">int</span> out_offset = output_row_offset + (h_offset * kwidth + w_offset) * in_depth;</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordtype">int</span> in_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, b, ih_start, iw_start, 0);</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordtype">int</span> in_offset = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, b, ih_start, iw_start, 0);</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>  <span class="comment">// Express all of the calculations as padding around the input patch.</span></div>
 <div class="line"><span class="lineno">   60</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> top_padding = h_offset;</div>
@@ -1713,7 +1713,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00253">253</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  254</span>{</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(shape, index[0], index[1], index[2], index[3]);</div>
+<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(shape, index[0], index[1], index[2], index[3]);</div>
 <div class="line"><span class="lineno">  256</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00242">Offset()</a>.</p>

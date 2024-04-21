@@ -943,6 +943,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fold_sparse_to_dense_pass.html">FoldSparseToDensePass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fold SparseToDense to a constant tensor.  <a href="structluci_1_1_fold_sparse_to_dense_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fold_squeeze_pass.html">FoldSqueezePass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fold Squeeze to a constant tensor.  <a href="structluci_1_1_fold_squeeze_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_force_quant_param_pass.html">ForceQuantParamPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass to write quantparam (scale, zerop) to the specified tensors.  <a href="classluci_1_1_force_quant_param_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1030,6 +1033,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_tensor_outputs.html">IndexTensorOutputs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set of Tensor Index of outputs of operators including graph input nodes.  <a href="classluci_1_1_index_tensor_outputs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_insert_quantize_op_on_d_type_mismatch.html">InsertQuantizeOpOnDTypeMismatch</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_layer_info.html">LayerInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -6248,7 +6253,7 @@ template&lt;class ARG_TYPE_1 , class ARG_TYPE_2 &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">luci::CircleNode::quantparam()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00385">propagate_pad_v2_quantparam()</a>, and <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html#l00060">luci::QuantizeOnnxFakeQuantModelPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_propagate_q_param_backward_pass_8cpp_source.html#l00385">propagate_pad_v2_quantparam()</a>, and <a class="el" href="_quantize_onnx_fake_quant_model_pass_8cpp_source.html#l00063">luci::QuantizeOnnxFakeQuantModelPass::run()</a>.</p>
 
 </div>
 </div>
@@ -8912,7 +8917,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00541">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00546">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>

@@ -30,6 +30,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FoldGather", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaa7de78cdafc3f834d1464ccb3cf2ec75", null ],
       [ "FoldShape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf9452bd26cbc617873efca34f780db17", null ],
       [ "FoldSparseToDense", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aead9c4d4bc9ee1d208b693999349bd2696", null ],
+      [ "FoldSqueeze", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab058b8a7578d86b6281bff4fd0d80b34", null ],
       [ "ForwardReshapeToUnaryOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabdf92e9063280587624db6c121c1a689", null ],
       [ "ForwardTransposeOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea01ebac88ff9f66146710e127483cd6b6", null ],
       [ "SparsifyTensorPass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeac75a21d76bbfbca78d5a888017334956", null ],

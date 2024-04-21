@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"_float_l2_normalize_kernel_8h.html#ad9a5d551fb2750c63ac6ae75ea55f361":[36,0,3,4,0,0,1,31,0,2],
+"_float_l2_normalize_kernel_8h_source.html":[36,0,3,4,0,0,1,31,0],
+"_float_l2_pool2_d_kernel_8h.html":[36,0,3,4,0,0,1,32,0],
+"_float_l2_pool2_d_kernel_8h.html#a3f49ea0524b76d6c68ac5f667d407f16":[36,0,3,4,0,0,1,32,0,3],
 "_float_l2_pool2_d_kernel_8h.html#a413a82d7368b7ba73c7ec61dcd1bb1ac":[36,0,3,4,0,0,1,32,0,2],
 "_float_l2_pool2_d_kernel_8h.html#a71c39c42fe9ceb1a0b330eb777996e6e":[36,0,3,4,0,0,1,32,0,1],
 "_float_l2_pool2_d_kernel_8h_source.html":[36,0,3,4,0,0,1,32,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "_float_unpack_kernel_8h_source.html":[36,0,3,4,0,0,1,84,0],
 "_float_zeros_like_kernel_8h.html":[36,0,3,4,0,0,1,86,0],
 "_float_zeros_like_kernel_8h.html#a3496984ea00cb0305d20df03e3bbe994":[36,0,3,4,0,0,1,86,0,3],
-"_float_zeros_like_kernel_8h.html#a442c8ddc6eebc6db81729da3681ee291":[36,0,3,4,0,0,1,86,0,2],
-"_float_zeros_like_kernel_8h.html#aafa50cb8ef961b2ab2e8e7630cc87ccc":[36,0,3,4,0,0,1,86,0,1],
-"_float_zeros_like_kernel_8h_source.html":[36,0,3,4,0,0,1,86,0],
-"_floor_div_options_8cpp.html":[36,0,0,126,2,0,48],
-"_floor_div_options_8cpp.html#a2ba900453c2c578a2dd4df6d88181703":[36,0,0,126,2,0,48,0]
+"_float_zeros_like_kernel_8h.html#a442c8ddc6eebc6db81729da3681ee291":[36,0,3,4,0,0,1,86,0,2]
 };

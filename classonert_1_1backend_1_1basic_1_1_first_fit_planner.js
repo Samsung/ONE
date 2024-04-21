@@ -1,7 +1,7 @@
 var classonert_1_1backend_1_1basic_1_1_first_fit_planner =
 [
-    [ "capacity", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a0af375d01bb998a061e5d95e4f58c3dc", null ],
-    [ "claim", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a739a47b3d8998e1790bce1188496536c", null ],
-    [ "memory_plans", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#aaf086e5f74ac923eedf0d1c0151d6c00", null ],
-    [ "release", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#ae6d91fffb108c33ea8fa5edf9d63e135", null ]
+    [ "capacity", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#aa2101d168e2514d90c23726a345126d5", null ],
+    [ "claim", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#af0f53754a67c2ae22f461bc5f8e8ee8f", null ],
+    [ "memory_plans", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a6a32650d69c41e03d9c3621946128e58", null ],
+    [ "release", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html#a58f5b2fd0f72abcb8283c990aa45b609", null ]
 ];

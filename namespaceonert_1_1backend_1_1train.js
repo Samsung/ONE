@@ -5,6 +5,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "Backend", "classonert_1_1backend_1_1train_1_1_backend.html", "classonert_1_1backend_1_1train_1_1_backend" ],
     [ "BackendContext", "classonert_1_1backend_1_1train_1_1_backend_context.html", "classonert_1_1backend_1_1train_1_1_backend_context" ],
     [ "Config", "classonert_1_1backend_1_1train_1_1_config.html", "classonert_1_1backend_1_1train_1_1_config" ],
+    [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
     [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
     [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
     [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
@@ -18,6 +19,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
     [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ],
     [ "BackPropTensor", "namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745", null ],
+    [ "DisposableTensorIndexMap", "namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4", null ],
     [ "ExternalContext", "namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66", null ],
     [ "FunctionMap", "namespaceonert_1_1backend_1_1train.html#a77098c4c53ca5551dbc93aca80ed2ae4", null ],
     [ "GradientTensor", "namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0", null ],
@@ -25,5 +27,6 @@ var namespaceonert_1_1backend_1_1train =
     [ "TensorRegistry", "namespaceonert_1_1backend_1_1train.html#a94fc41f335ee28aeb159e7cc3f330d33", null ],
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],
-    [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ]
+    [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ],
+    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ad643bd209405eb6d4500363a4687ccc4", null ]
 ];

@@ -18,5 +18,6 @@ var classonert_1_1ir_1_1_operand_info =
     [ "shape", "classonert_1_1ir_1_1_operand_info.html#a6b601b1003a5b688f6494cbfd16638da", null ],
     [ "total_size", "classonert_1_1ir_1_1_operand_info.html#a0a8795e5b155f413a7974ce0786257d8", null ],
     [ "type", "classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa", null ],
-    [ "typeInfo", "classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036", null ]
+    [ "typeInfo", "classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036", null ],
+    [ "typeInfo", "classonert_1_1ir_1_1_operand_info.html#a4990f77349128f1e25efe4a59017e19c", null ]
 ];
