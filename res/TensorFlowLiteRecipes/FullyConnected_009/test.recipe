@@ -1,12 +1,12 @@
 operand {
   name: "in"
   type: FLOAT32
-  shape { dim: 1 dim: 3 }
+  shape { dim: 1 dim: 2 dim: 3 }
 }
 operand {
   name: "weight"
   type: FLOAT32
-  shape { dim: 1 dim: 3 }
+  shape { dim: 4 dim: 3 }
   filler {
     tag: "gaussian"
     arg: "0.0"
@@ -16,7 +16,7 @@ operand {
 operand {
   name: "bias"
   type: FLOAT32
-  shape { dim: 1 }
+  shape { dim: 4 }
   filler {
     tag: "gaussian"
     arg: "0.0"
@@ -26,7 +26,7 @@ operand {
 operand {
   name: "out"
   type: FLOAT32
-  shape { dim: 1 dim: 1 }
+  shape { dim: 1 dim: 2 dim: 4 }
 }
 operation {
   type: "FullyConnected"

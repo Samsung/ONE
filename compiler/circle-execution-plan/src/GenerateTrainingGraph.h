@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ class GenerateTrainingGraph
 public:
   GenerateTrainingGraph(luci::Module *module): _module(module) {}
 
-  std::unique_ptr<loco::Graph> createTrainingGraph();
+  std::unique_ptr<loco::Graph> createTrainingGraph(const std::vector<uint32_t> &nodes_ind);
 
   std::map<uint32_t, uint32_t> createMapTensorsIndexes(const circle::Model *origin, const circle::Model *train);
 

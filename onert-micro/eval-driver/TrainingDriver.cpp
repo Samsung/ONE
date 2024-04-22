@@ -217,8 +217,8 @@ int entry(int argc, char **argv)
   DataBuffer wof_data = readFile(wof_file_path);
 
   // Set user defined training settings
-  const uint32_t training_epochs = 20;
-  const float lambda = 0.001f;
+  const uint32_t training_epochs = 50;
+  const float lambda = 0.01f;
 
   // Configure training mode
   onert_micro::OMConfig config;
@@ -227,10 +227,10 @@ int entry(int argc, char **argv)
   {
     onert_micro::OMTrainingConfig trainConfig;
     trainConfig.lambda = lambda;
-    trainConfig.optimization_strategy = onert_micro::ADAM;
+    trainConfig.optimization_strategy = onert_micro::SGD;
     trainConfig.beta_squares = 0.999f;
     trainConfig.beta = 0.9f;
-    trainConfig.batches = 150;
+    trainConfig.batches = 1;
 
     config.train_config = trainConfig;
   }
@@ -279,7 +279,9 @@ int entry(int argc, char **argv)
         readDataFromFile(input_target_train_data_path, reinterpret_cast<char *>(train_target_data.get()),
                          sizeof(MODEL_TYPE) * target_size, sizeof(MODEL_TYPE) * target_size * (i + batch));
 
-  //   printDataVector(train_input_data.get(), input_size, i + batch);
+#if 0
+       printDataVector(train_input_data.get(), input_size, i + batch);
+#endif
 
         train_interpreter.allocateInputs();
         // Copy input data
@@ -300,9 +302,9 @@ int entry(int argc, char **argv)
         targets_labels.push_back(predicted_class(reinterpret_cast<float *>(cur_train_target_data), target_size));
 
 #if 0
-//        calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
-//                              reinterpret_cast<float *>(cur_train_target_data),
-//                              target_size);
+        calculateCrossEntropy(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
+                              reinterpret_cast<float *>(cur_train_target_data),
+                              target_size);
         printPredAndTargetsValues(reinterpret_cast<float *>(train_interpreter.getOutputDataAt(0)),
                                   reinterpret_cast<float *>(cur_train_target_data),
                                   target_size);

@@ -31,7 +31,17 @@ template <typename T>
 OMStatus Div(const core::BinaryArithmeticBroadcastParams &params, const int flat_size,
              const T *input1_data, const T *input2_data, T *output_data)
 {
-  ArithmeticOp<T, DivFn<T>>(params, flat_size, input1_data, input2_data, output_data);
+  T activation_min, activation_max;
+  getActivationParams(params, &activation_min, &activation_max);
+
+  // To prevent division by zero
+  const T non_zero = (T)(10.0e-32);
+
+  for (int i = 0; i < flat_size; ++i)
+  {
+    output_data[i] =
+      std::min(std::max((input1_data[i] / (input2_data[i] + non_zero)), activation_min), activation_max);
+  }
   return Ok;
 }
 

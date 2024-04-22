@@ -31,12 +31,123 @@
 
 #include "GenerateTrainingGraph.h"
 
+namespace
+{
+/**
+ * @brief Tokenize given string
+ *
+ * Assumes given string looks like below.
+ *
+ * - '1,2,5,7,9'
+ * - '1-5,6,7,9,12-14'
+ * - 'tensor_a,tensor_b,tensor_d'
+ *
+ * NOTE. 1-5 is same with '1,2,3,4,5'.
+ *
+ * WARNING. SelectType::NAME doesn't allow '-' like 'tensor_a-tensor_c'.
+ */
+std::vector<std::string> split_into_vector(const std::string &str, const char &delim)
+{
+  std::vector<std::string> ret;
+  std::istringstream is(str);
+  for (std::string item; std::getline(is, item, delim);)
+  {
+    ret.push_back(item);
+  }
+
+  // Remove empty string
+  ret.erase(std::remove_if(ret.begin(), ret.end(), [](const std::string &s) { return s.empty(); }),
+            ret.end());
+
+  return ret;
+}
+
+bool is_number(const std::string &s)
+{
+  return !s.empty() && std::find_if(s.begin(), s.end(),
+                                    [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+}
+
+bool is_number(const std::vector<std::string> &vec)
+{
+  for (const auto &s : vec)
+  {
+    if (not ::is_number(s))
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+std::vector<uint32_t> parse_id(const std::string &str)
+{
+  std::vector<uint32_t> by_id;
+  auto colon_tokens = ::split_into_vector(str, ',');
+
+  for (const auto &comma_token : colon_tokens)
+  {
+    auto dash_tokens = ::split_into_vector(comma_token, '-');
+    if (not ::is_number(dash_tokens))
+    {
+      throw std::runtime_error{
+        "ERROR: To select operator by id, please use these args: [0-9], '-', ','"};
+    }
+
+    // Convert string into integer
+    std::vector<uint32_t> int_tokens;
+    try
+    {
+      std::transform(dash_tokens.begin(), dash_tokens.end(), std::back_inserter(int_tokens),
+                     [](const std::string &str) { return static_cast<uint32_t>(std::stoi(str)); });
+    }
+    catch (const std::out_of_range &)
+    {
+      // Uf input is big integer like '123467891234', stoi throws this exception.
+      throw std::runtime_error{"ERROR: Argument is out of range."};
+    }
+    catch (...)
+    {
+      throw std::runtime_error{"ERROR: Unknown error"};
+    }
+
+    switch (int_tokens.size())
+    {
+      case 0: // inputs like "-"
+      {
+        throw std::runtime_error{"ERROR: Nothing was entered"};
+      }
+      case 1: // inputs like "1", "2"
+      {
+        by_id.push_back(int_tokens.at(0));
+        break;
+      }
+      case 2: // inputs like "1-2", "11-50"
+      {
+        for (uint32_t i = int_tokens.at(0); i <= int_tokens.at(1); i++)
+        {
+          by_id.push_back(i);
+        }
+        break;
+      }
+      default: // inputs like "1-2-3"
+      {
+        throw std::runtime_error{"ERROR: Too many '-' in str."};
+      }
+    }
+  }
+  return by_id;
+}
+
+} // namespace
+
 int entry(int argc, char **argv)
 {
   arser::Arser arser("circle training configure provides training graph model for current model");
 
   arser.add_argument("input").help("Input circle model");
   arser.add_argument("output").help("Output circle model");
+  arser.add_argument("--by_id").help("Input operation id to select nodes.");
 
   try
   {
@@ -54,6 +165,17 @@ int entry(int argc, char **argv)
 
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
+
+  if (!arser["--by_id"])
+  {
+    std::cerr << "ERROR: Either option '--by_id' " << std::endl;
+    std::cerr << arser;
+    return EXIT_FAILURE;
+  }
+
+  auto operator_input = arser.get<std::string>("--by_id");
+
+  std::vector<uint32_t> div_ids = parse_id(operator_input);
 
   try
   {
@@ -85,7 +207,7 @@ int entry(int argc, char **argv)
 
   // Generate training graph
   training_graph::GenerateTrainingGraph gen_graph(module.get());
-  auto training_graph = gen_graph.createTrainingGraph();
+  auto training_graph = gen_graph.createTrainingGraph(div_ids);
 
   std::unique_ptr<luci::Module> module1 = std::make_unique<luci::Module>();
   module1->add(std::move(training_graph));
@@ -151,43 +273,6 @@ int entry(int argc, char **argv)
       }
     }
   }
-//
-//  // Check metada
-//  {
-//    foder::FileLoader file_loader_2{output_path};
-//    std::vector<char> model_data_2;
-//
-//    try
-//    {
-//      model_data_2 = file_loader_2.load();
-//    }
-//    catch (const std::runtime_error &err)
-//    {
-//      std::cerr << err.what() << std::endl;
-//      return EXIT_FAILURE;
-//    }
-//
-//    flatbuffers::Verifier verifier_2{reinterpret_cast<uint8_t *>(model_data_2.data()), model_data_2.size()};
-//    if (!circle::VerifyModelBuffer(verifier))
-//    {
-//      std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-//      return EXIT_FAILURE;
-//    }
-//
-//    const circle::Model *circle_model_2 = circle::GetModel(model_data_2.data());
-//    if (circle_model_2 == nullptr)
-//    {
-//      std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-//      return EXIT_FAILURE;
-//    }
-//
-//    // Import from input Circle file
-//    auto module_2 = importer.importModule(circle_model_2);
-//    auto tmp = module_2->map_tenros_indexes();
-//    std::cout << "tmp\n";
-//
-//  }
-
 
   return 0;
 }

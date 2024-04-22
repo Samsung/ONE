@@ -96,7 +96,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleReduceSum(const OMExecuteArg
         utils::castInputData<float>(input_data), input_shape.dimsData(),
         input_shape.dimensionsCount(), utils::castOutputData<float>(output_data),
         utils::castInputData<int32_t>(axis_data), axis_shape.flatSize(),
-        /*init_value=*/1.0f, output_shape.flatSize(),
+        /*init_value=*/0.0f, output_shape.flatSize(),
         [](const float current, const float in) -> float { return in + current; });
     }
     break;
@@ -107,7 +107,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleReduceSum(const OMExecuteArg
         utils::castInputData<int32_t>(input_data), input_shape.dimsData(),
         input_shape.dimensionsCount(), utils::castOutputData<int32_t>(output_data),
         utils::castInputData<int32_t>(axis_data), axis_shape.flatSize(),
-        /*init_value=*/1, output_shape.flatSize(),
+        /*init_value=*/0, output_shape.flatSize(),
         [](const int32_t current, const int32_t in) -> int32_t { return in + current; });
     }
     break;
@@ -117,7 +117,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleReduceSum(const OMExecuteArg
         utils::castInputData<int64_t>(input_data), input_shape.dimsData(),
         input_shape.dimensionsCount(), utils::castOutputData<int64_t>(output_data),
         utils::castInputData<int32_t>(axis_data), axis_shape.flatSize(),
-        /*init_value=*/1, output_shape.flatSize(),
+        /*init_value=*/0, output_shape.flatSize(),
         [](const int64_t current, const int64_t in) -> int64_t { return in + current; });
     }
     break;

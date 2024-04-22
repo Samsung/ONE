@@ -31,7 +31,7 @@ namespace
 {
 
 constexpr uint32_t inputGradTensorIdx = 0;
-constexpr uint32_t inputActivationTensorIdx = 0;
+constexpr uint32_t inputActivationTensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace

@@ -19,10 +19,7 @@
 #define LUCI_INTERPRETER_PAL_UNIDIRECTIONAL_SEQUENCE_LSTM_H
 
 #include "arm_nnfunctions.h"
-#include "core/KernelParams.h"
-#include "tensorflow/lite/kernels/internal/reference/integer_ops/logistic.h"
-#include "tensorflow/lite/kernels/internal/reference/integer_ops/tanh.h"
-#include "fixedpoint/fixedpoint.h"
+#include "PALUnidirectionalSequenceLSTMCommon.h"
 
 namespace luci_interpreter_pal
 {

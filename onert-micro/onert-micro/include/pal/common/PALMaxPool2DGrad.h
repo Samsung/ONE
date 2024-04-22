@@ -60,6 +60,7 @@ OMStatus MaxPoolGrad(const core::Pool2DParams &params, const core::OMRuntimeShap
           const int filter_y_start = std::max(0, -in_y_origin);
           const int filter_y_end = std::min(params.filter_h, input_height - in_y_origin);
           float max = std::numeric_limits<float>::lowest();
+          int max_index = 0;
 
           const int input_grad_data_offset =
             ((batch * input_grad_shape.dims(1) + out_y) * input_grad_shape.dims(2) + out_x) *
@@ -78,18 +79,16 @@ OMStatus MaxPoolGrad(const core::Pool2DParams &params, const core::OMRuntimeShap
                 input_activation_shape.dims(3) +
                 channel;
 
-              if (input_activation_data[input_data_offset] == input_grad_data[input_grad_data_offset])
+              output_data[input_data_offset] = 0.f;
+
+              if (input_activation_data[input_data_offset] > max)
               {
-                output_data[input_data_offset] = input_grad_data[input_grad_data_offset];
-              } else
-              {
-                output_data[input_data_offset] = 0;
+                max = input_activation_data[input_data_offset];
+                max_index = input_data_offset;
               }
-              auto tmp = output_data[input_data_offset];
-              auto tmp_1 = input_activation_data[input_data_offset];
-              //printf("1");
             }
           }
+          output_data[max_index] = input_grad_data[input_grad_data_offset];
         }
       }
     }
