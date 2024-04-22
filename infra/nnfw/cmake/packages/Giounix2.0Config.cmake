@@ -2,7 +2,7 @@ function(_GIO_UNIX_2_0_import)
   nnfw_find_package(Gio2.0 REQUIRED)
 
   find_path(GIO_UNIX_INCLUDE_DIR
-    NAMES gio/gunixfdlist.h
+    NAMES gio/gfiledescriptorbased.h
     PATH_SUFFIXES gio-unix-2.0)
 
   # The gio-unix-2.0 requires gio-2.0 and link the gio-2.0 library.
