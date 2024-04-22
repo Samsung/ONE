@@ -138,7 +138,6 @@ public:
   NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout);
   NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout);
 
-  NNFW_STATUS apply_tensorinfo(uint32_t index, nnfw_tensorinfo ti); // Will be deprecated
   NNFW_STATUS set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti);
 
   NNFW_STATUS input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
