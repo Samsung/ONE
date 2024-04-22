@@ -13,7 +13,7 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OF
 option(BUILD_XNNPACK "Build XNNPACK" OFF)
 option(DOWNLOAD_OPENCL_HEADERS "Download opencl headers" OFF)
 
-option(BUILD_NPUD "Build NPU daemon" ON)
+option(BUILD_NPUD "Build NPU daemon" OFF)
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 

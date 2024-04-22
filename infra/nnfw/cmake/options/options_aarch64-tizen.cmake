@@ -11,7 +11,7 @@ option(BUILD_LOGGING "Build logging runtime" OFF)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" OFF)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OFF)
 
-option(BUILD_NPUD "Build NPU daemon" ON)
+option(BUILD_NPUD "Build NPU daemon" OFF)
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 
