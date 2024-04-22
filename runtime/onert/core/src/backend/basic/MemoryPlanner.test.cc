@@ -16,13 +16,8 @@
 
 #include <gtest/gtest.h>
 
-#include "backend/basic/MemoryPlanner.h"
+#include "MemoryPlanner.h"
 #include "ir/Index.h"
-
-namespace
-{
-using Index = onert::ir::OperandIndex;
-}
 
 TEST(Allocator, allocate_test)
 {
@@ -32,10 +27,10 @@ TEST(Allocator, allocate_test)
 
 TEST(BumpPlanner, claim_test)
 {
-  ::onert::backend::basic::BumpPlanner<Index> planner;
+  ::onert::backend::basic::BumpPlanner planner;
 
   auto claim = [&planner](uint32_t index, size_t size, uint32_t expected_offset) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     planner.claim(mem_idx, size);
     auto mem_blk = planner.memory_plans()[mem_idx];
     ASSERT_EQ(mem_blk.offset, expected_offset);
@@ -49,10 +44,10 @@ TEST(BumpPlanner, claim_test)
 
 TEST(FirstFitPlanner, claim_release_test)
 {
-  ::onert::backend::basic::FirstFitPlanner<Index> planner;
+  ::onert::backend::basic::FirstFitPlanner planner;
 
   auto claim = [&planner](uint32_t index, size_t size, uint32_t expected_offset) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     planner.claim(mem_idx, size);
     auto mem_blk = planner.memory_plans()[mem_idx];
     ASSERT_EQ(mem_blk.offset, expected_offset);
@@ -60,7 +55,7 @@ TEST(FirstFitPlanner, claim_release_test)
   };
 
   auto release = [&planner](uint32_t index) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     planner.release(mem_idx);
   };
 
@@ -133,20 +128,20 @@ TEST(FirstFitPlanner, claim_release_test)
 
 TEST(WICPlanner, claim_release_test)
 {
-  ::onert::backend::basic::WICPlanner<Index> planner;
+  ::onert::backend::basic::WICPlanner planner;
 
   auto claim = [&planner](uint32_t index, size_t size) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     planner.claim(mem_idx, size);
   };
 
   auto release = [&planner](uint32_t index) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     planner.release(mem_idx);
   };
 
   auto verify = [&planner](uint32_t index, uint32_t size, uint32_t expected_offset) {
-    Index mem_idx(index);
+    onert::ir::OperandIndex mem_idx(index);
     auto mem_blk = planner.memory_plans()[mem_idx];
     ASSERT_EQ(mem_blk.offset, expected_offset);
     ASSERT_EQ(mem_blk.size, size);

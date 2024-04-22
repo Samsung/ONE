@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 #include "MemoryPlannerFactory.h"
 
-#include "MemoryPlanner.h"
-
 namespace onert
 {
 namespace backend
 {
-namespace basic
+namespace train
 {
 
 MemoryPlannerFactory &MemoryPlannerFactory::get()
@@ -31,23 +29,6 @@ MemoryPlannerFactory &MemoryPlannerFactory::get()
   return instance;
 }
 
-IMemoryPlanner<ir::OperandIndex> *MemoryPlannerFactory::create(const std::string &key)
-{
-  if (key == "FirstFit")
-  {
-    return new FirstFitPlanner;
-  }
-  else if (key == "Bump")
-  {
-    return new BumpPlanner;
-  }
-  else if (key == "WIC")
-  {
-    return new WICPlanner;
-  }
-  return new FirstFitPlanner; // Default Planner
-}
-
-} // namespace basic
+} // namespace train
 } // namespace backend
 } // namespace onert

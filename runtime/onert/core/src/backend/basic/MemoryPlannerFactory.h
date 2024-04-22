@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,6 @@ namespace backend
 {
 namespace basic
 {
-namespace train
-{
 
 class MemoryPlannerFactory
 {
@@ -39,10 +37,9 @@ private:
   MemoryPlannerFactory() = default;
 
 public:
-  IMemoryPlanner *create(const std::string &key);
+  IMemoryPlanner<ir::OperandIndex> *create(const std::string &key);
 };
 
-} // namespace train
 } // namespace basic
 } // namespace backend
 } // namespace onert

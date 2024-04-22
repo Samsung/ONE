@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
-#define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
-
-#include "IMemoryPlanner.h"
+#ifndef __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_FACTORY_H__
+#define __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_FACTORY_H__
 
 #include "MemoryPlanner.h"
 
@@ -27,7 +25,7 @@ namespace onert
 {
 namespace backend
 {
-namespace basic
+namespace train
 {
 
 class MemoryPlannerFactory
@@ -39,11 +37,11 @@ private:
   MemoryPlannerFactory() = default;
 
 public:
-  template <typename Index> IMemoryPlanner<Index> *create(const std::string &key);
+  template <typename Index> basic::IMemoryPlanner<Index> *create(const std::string &key);
 };
 
 template <typename Index>
-inline IMemoryPlanner<Index> *MemoryPlannerFactory::create(const std::string &key)
+inline basic::IMemoryPlanner<Index> *MemoryPlannerFactory::create(const std::string &key)
 {
   if (key == "FirstFit")
   {
@@ -60,8 +58,8 @@ inline IMemoryPlanner<Index> *MemoryPlannerFactory::create(const std::string &ke
   return new FirstFitPlanner<Index>; // Default Planner
 }
 
-} // namespace basic
+} // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_FACTORY_H__
+#endif // __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_FACTORY_H__

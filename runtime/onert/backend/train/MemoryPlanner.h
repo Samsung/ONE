@@ -19,8 +19,8 @@
  * @brief       This file contains Memory Planning related classes
  */
 
-#ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
-#define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
+#ifndef __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__
+#define __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__
 
 #include <cassert>
 #include <map>
@@ -28,21 +28,21 @@
 #include <unordered_set>
 #include <memory>
 
-#include "Allocator.h"
-#include "IMemoryPlanner.h"
+#include <backend/basic/Allocator.h>
+#include <backend/basic/IMemoryPlanner.h>
 #include "util/logging.h"
 
 namespace onert
 {
 namespace backend
 {
-namespace basic
+namespace train
 {
 
 /**
  * @brief Class to plan memory by bump way
  */
-template <typename Index> class BumpPlanner : public IMemoryPlanner<Index>
+template <typename Index> class BumpPlanner : public basic::IMemoryPlanner<Index>
 {
 public:
   /**
@@ -65,16 +65,16 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<Index, Block> &memory_plans() override { return _mem_plans; }
+  std::unordered_map<Index, basic::Block> &memory_plans() override { return _mem_plans; }
 
 private:
   uint32_t _capacity = 0;
-  std::unordered_map<Index, Block> _mem_plans;
+  std::unordered_map<Index, basic::Block> _mem_plans;
 };
 
 template <typename Index> inline void BumpPlanner<Index>::claim(const Index &ind, size_t size)
 {
-  Block blk{_capacity, size};
+  basic::Block blk{_capacity, size};
   _mem_plans[ind] = blk;
   _capacity += size;
 
@@ -90,7 +90,7 @@ template <typename Index> inline void BumpPlanner<Index>::release(const Index &i
 /**
  * @brief Class to plan memory by firstfit way
  */
-template <typename Index> class FirstFitPlanner : public IMemoryPlanner<Index>
+template <typename Index> class FirstFitPlanner : public basic::IMemoryPlanner<Index>
 {
 public:
   /**
@@ -113,11 +113,11 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<Index, Block> &memory_plans() override { return _mem_plans; }
+  std::unordered_map<Index, basic::Block> &memory_plans() override { return _mem_plans; }
 
 private:
   uint32_t _capacity = 0;
-  std::unordered_map<Index, Block> _mem_plans;
+  std::unordered_map<Index, basic::Block> _mem_plans;
   // Use std::map because claim() assumes that _claim_table is sorted by uint32_t(base_offset)
   std::map<uint32_t, Index> _claim_table;
 };
@@ -191,7 +191,7 @@ template <typename Index> inline void FirstFitPlanner<Index>::release(const Inde
 /**
  * @brief Class to plan memory by Weighted Interval Color algorithm
  */
-template <typename Index> class WICPlanner : public IMemoryPlanner<Index>
+template <typename Index> class WICPlanner : public basic::IMemoryPlanner<Index>
 {
 public:
   WICPlanner();
@@ -221,14 +221,14 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<Index, Block> &memory_plans() override;
+  std::unordered_map<Index, basic::Block> &memory_plans() override;
 
 private:
   void buildMemoryPlans();
 
   bool _initialized;
   uint32_t _capacity;
-  std::unordered_map<Index, Block> _mem_plans;
+  std::unordered_map<Index, basic::Block> _mem_plans;
   std::unordered_set<Index> _live_indices;
   std::unordered_map<Index, std::vector<Index>> _interference_graph;
   // Sort indices by descending order of size
@@ -327,15 +327,16 @@ template <typename Index> inline void WICPlanner<Index>::buildMemoryPlans()
   _indices.clear();
 }
 
-template <typename Index> inline std::unordered_map<Index, Block> &WICPlanner<Index>::memory_plans()
+template <typename Index>
+inline std::unordered_map<Index, basic::Block> &WICPlanner<Index>::memory_plans()
 {
   if (!_initialized)
     buildMemoryPlans();
   return _mem_plans;
 }
 
-} // namespace basic
+} // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
+#endif // __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__

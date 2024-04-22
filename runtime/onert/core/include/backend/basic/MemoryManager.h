@@ -19,10 +19,6 @@
 
 #include "Allocator.h"
 #include "IMemoryPlanner.h"
-#include "MemoryPlannerFactory.h"
-#include "util/logging.h"
-
-#include <cassert>
 
 namespace onert
 {
@@ -34,57 +30,30 @@ class ITensor;
 namespace basic
 {
 
-template <typename Index> class MemoryManager
+class MemoryManager
 {
 public:
-  MemoryManager() : _mem_planner{createMemoryPlanner()}
-  {
-    // DO NOTHING
-  }
-
-  MemoryManager(const std::string planner_id) : _mem_planner{createMemoryPlanner(planner_id)}
-  {
-    // DO NOTHING
-  }
+  MemoryManager();
+  MemoryManager(const std::string);
 
   virtual ~MemoryManager() = default;
 
-  void allocate(void)
-  {
-    _mem_alloc = std::make_shared<basic::Allocator>(_mem_planner->capacity());
-    assert(_mem_alloc->base());
-  }
-
-  uint8_t *getBuffer(const Index &ind) const
-  {
-    assert(_mem_planner->memory_plans().find(ind) != _mem_planner->memory_plans().end());
-    const auto &mem_blk = _mem_planner->memory_plans().at(ind);
-    return _mem_alloc->base() + mem_blk.offset;
-  }
-
+  void allocate(void);
+  uint8_t *getBuffer(const ir::OperandIndex &ind) const;
   void deallocate(void) { _mem_alloc->release(); }
 
-  void claimPlan(const Index &ind, uint32_t size) { _mem_planner->claim(ind, size); }
-
-  void releasePlan(const Index &ind) { _mem_planner->release(ind); }
+  void claimPlan(const ir::OperandIndex &ind, uint32_t size);
+  void releasePlan(const ir::OperandIndex &ind);
 
   std::shared_ptr<Allocator> getMemAlloc() { return _mem_alloc; }
 
 private:
-  IMemoryPlanner<Index> *createMemoryPlanner()
-  {
-    auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-    return basic::MemoryPlannerFactory::get().create<Index>(planner_id);
-  }
-
-  IMemoryPlanner<Index> *createMemoryPlanner(const std::string planner_id)
-  {
-    return basic::MemoryPlannerFactory::get().create<Index>(planner_id);
-  }
+  IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner();
+  IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner(const std::string);
 
 private:
   ir::OperandIndexMap<Block> _tensor_mem_map;
-  std::shared_ptr<IMemoryPlanner<Index>> _mem_planner;
+  std::shared_ptr<IMemoryPlanner<ir::OperandIndex>> _mem_planner;
   std::shared_ptr<Allocator> _mem_alloc;
 };
 

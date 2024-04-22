@@ -21,7 +21,7 @@
 
 #include "DisposableTensorIndex.h"
 
-#include <ir/OperationIndexMap.h>
+#include <unordered_map>
 
 namespace onert
 {
@@ -30,9 +30,32 @@ namespace backend
 namespace train
 {
 
-using MemoryManager = backend::basic::MemoryManager<ir::OperandIndex>;
+using MemoryManager = backend::basic::MemoryManager;
 
-using DisposableMemoryManager = backend::basic::MemoryManager<DisposableTensorIndex>;
+class DisposableMemoryManager
+{
+public:
+  DisposableMemoryManager();
+  DisposableMemoryManager(const std::string planner_id);
+
+  void allocate(void);
+  uint8_t *getBuffer(const DisposableTensorIndex &ind) const;
+  void deallocate(void) { _mem_alloc->release(); }
+
+  void claimPlan(const DisposableTensorIndex &ind, uint32_t size);
+  void releasePlan(const DisposableTensorIndex &ind);
+
+  std::shared_ptr<basic::Allocator> getMemAlloc() { return _mem_alloc; }
+
+private:
+  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner();
+  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner(const std::string planner_id);
+
+private:
+  std::unordered_map<DisposableTensorIndex, basic::Block> _tensor_mem_map;
+  std::shared_ptr<basic::IMemoryPlanner<DisposableTensorIndex>> _mem_planner;
+  std::shared_ptr<basic::Allocator> _mem_alloc;
+};
 
 } // namespace train
 } // namespace backend
