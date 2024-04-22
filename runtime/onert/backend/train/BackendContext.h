@@ -74,6 +74,9 @@ public:
 private:
   void planDisposableTensors();
 
+private:
+  FunctionMap generateFunctionMap();
+
 public:
   FunctionMap genKernels() override;
 

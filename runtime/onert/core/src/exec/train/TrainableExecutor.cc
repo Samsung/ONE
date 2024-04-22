@@ -152,17 +152,6 @@ void TrainableExecutor::backward(const IODescription &, uint32_t training_step)
 
 void TrainableExecutor::backwardImpl(uint32_t training_step)
 {
-  // TODO Plan to initialize backpropagation tensors and remove the intializing code below
-  _trainable_graph.operands().iterate(
-    [&](const onert::ir::OperandIndex &index, const onert::ir::Operand &operand) {
-      if (!operand.isConstant())
-      {
-        auto back_prop_tensor = _tensor_regs.getBackPropITensor(index);
-        if (back_prop_tensor)
-          memset(back_prop_tensor->buffer(), 0, back_prop_tensor->total_size());
-      }
-    });
-
   if (_tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
