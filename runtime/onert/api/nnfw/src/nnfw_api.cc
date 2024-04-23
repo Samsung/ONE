@@ -268,11 +268,9 @@ NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
   return session->register_custom_operation(id, info->eval_function);
 }
 
-NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
-                                  nnfw_tensorinfo tensor_info)
+NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *, uint32_t, nnfw_tensorinfo)
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->apply_tensorinfo(index, tensor_info);
+  return NNFW_STATUS_DEPRECATED_API;
 }
 
 NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
