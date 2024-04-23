@@ -916,6 +916,10 @@ template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeBilinear(const Operator *op, ir::Graph &subg)
 {
   ir::operation::ResizeBilinear::Param param;
+  // heigh_out and width_out is used on NNAPI only
+  assert(op->inputs()->size() == 2);
+  param.height_out = 0;
+  param.width_out = 0;
   param.align_corners = op->builtin_options_as_ResizeBilinearOptions()->align_corners();
   param.half_pixel_centers = op->builtin_options_as_ResizeBilinearOptions()->half_pixel_centers();
 
@@ -926,6 +930,10 @@ template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg)
 {
   ir::operation::ResizeNearestNeighbor::Param param;
+  // heigh_out and width_out is used on NNAPI only
+  assert(op->inputs()->size() == 2);
+  param.height_out = 0;
+  param.width_out = 0;
   param.align_corners = op->builtin_options_as_ResizeNearestNeighborOptions()->align_corners();
 
   loadOperationTo<ir::operation::ResizeNearestNeighbor>(op, subg, param);
@@ -1206,6 +1214,8 @@ void BaseLoader<LoaderDomain>::loadSqueeze(const Operator *op, ir::Graph &subg)
     for (int i = 0; i < param.ndim; ++i)
       param.dims[i] = dims->Get(i);
   }
+  else
+    param.ndim = 0;
 
   loadOperationTo<ir::operation::Squeeze>(op, subg, param);
 }
