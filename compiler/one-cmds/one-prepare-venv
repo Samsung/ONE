@@ -69,16 +69,14 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.20.1
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.20.0
 
 # Install PyTorch and ONNX related
-# NOTE set ONE_PREPVENV_TORCH_STABLE to override 'torch_stable.html' URL.
-#      torch_stable.html points to download URL of torch wheel file(s)
-#      but sometimes the server gets unstable, especially from in-house CI.
-TORCH_STABLE_URL="https://download.pytorch.org/whl/torch_stable.html"
-if [[ ! -z "$ONE_PREPVENV_TORCH_STABLE" ]]; then
-  TORCH_STABLE_URL="${ONE_PREPVENV_TORCH_STABLE}"
+# NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
+TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch_stable.html"
+if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
+  TORCH_SOURCE_OPTION="${ONE_PREPVENV_TORCH_SOURCE}"
 fi
 # TODO remove torch message
-echo "Torch from '${ONE_PREPVENV_TORCH_STABLE}' -> '${TORCH_STABLE_URL}'"
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.13.1+cpu -f ${TORCH_STABLE_URL}
+echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.13.1+cpu ${TORCH_SOURCE_OPTION}
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
 
