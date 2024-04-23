@@ -136,7 +136,7 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
   try
   {
     onert::ir::IOIndex input_index{index};
-    const auto shape =
+    const auto &shape =
       (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
 
     _execution->setInput(input_index, shape, buffer, length);
@@ -161,7 +161,7 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
   try
   {
     onert::ir::IOIndex input_index{index};
-    const auto shape =
+    const auto &shape =
       (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
 
     // ANeuralNetworksExecution::setInput() uses only shape information
@@ -192,7 +192,7 @@ bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOp
   try
   {
     onert::ir::IOIndex output_index{index};
-    const auto shape =
+    const auto &shape =
       (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getOutputShape(output_index);
 
     _execution->setOutput(output_index, shape, buffer, length);
