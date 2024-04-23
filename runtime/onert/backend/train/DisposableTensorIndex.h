@@ -45,6 +45,10 @@ public:
   {
     assert(op_index.valid());
     assert(operand_index.valid());
+    // NOTE This constraint is necessary to check overflow of hash value
+    assert((op_index.value() < (1 << 16) && operand_index.value() < (1 << 16)) &&
+           "DisposableTensorIndex does not support index value of operation or "
+           "operand greater than 65535");
   }
 
 public:
@@ -109,9 +113,11 @@ template <> struct hash<onert::backend::train::DisposableTensorIndex>
 
     assert(sizeof(op_index) <= 4);
     assert(sizeof(operand_index) <= 4);
-    static_assert(sizeof(size_t) >= sizeof(uint64_t));
-    return (static_cast<uint64_t>(op_index.value())) << 32 |
-           static_cast<uint64_t>(operand_index.value());
+    static_assert(sizeof(size_t) >= sizeof(uint32_t),
+                  "DisposableTensorIndex's hash creation error, size_t size is less than uint32_t");
+
+    return (static_cast<size_t>(op_index.value())) << 16 |
+           static_cast<size_t>(operand_index.value());
   }
 };
 
