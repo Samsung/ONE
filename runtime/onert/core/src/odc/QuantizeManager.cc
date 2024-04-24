@@ -27,19 +27,19 @@ namespace odc
 
 bool QuantizeManager::quantize()
 {
+  if (_model_path.empty() || _export_model_path.empty())
+    return false;
+
   // Compile function is thread-unsafe
   static std::mutex lock;
   std::lock_guard<std::mutex> guard(lock);
-
-  if (_export_model_path.empty())
-    throw std::runtime_error("Export model path is not set");
 
   auto &quantize_loader = QuantizerLoader::instance();
   if (quantize_loader.loadLibrary() != 0)
     return false;
 
   auto quantizer = quantize_loader.get();
-  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _is_q16);
+  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _qtype);
 
   // TODO Unload quantize library to reduce memory usage
 

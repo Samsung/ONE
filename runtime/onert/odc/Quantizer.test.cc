@@ -21,22 +21,24 @@
 using namespace onert::odc;
 
 // Test model input path is not set
-TEST(odc_Quantizer, neg_model_input_path)
+TEST(odc_Quantizer, neg_model_input_path_null)
 {
   Quantizer quantizer;
-  ASSERT_THROW(quantizer.quantize(nullptr, "out", false), std::logic_error);
+  ASSERT_NE(quantizer.quantize(nullptr, "out", QuantizeType::ODC_QTYPE_WO_I8_SYM), 0);
 }
 
 // Test model output path is not set
-TEST(odc_Quantizer, neg_model_output_path)
+TEST(odc_Quantizer, neg_model_output_path_null)
 {
   Quantizer quantizer;
-  ASSERT_NE(quantizer.quantize("in", nullptr, false), 0);
+  ASSERT_NE(quantizer.quantize("in", nullptr, QuantizeType::ODC_QTYPE_WO_I8_SYM), 0);
 }
 
 // Test invalid model input path
 TEST(odc_Quantizer, neg_invalid_model_input_path)
 {
   Quantizer quantizer;
-  ASSERT_NE(quantizer.quantize("invalid_model_input_path.circle", "out", false), 0);
+  ASSERT_NE(
+    quantizer.quantize("invalid_model_input_path.circle", "out", QuantizeType::ODC_QTYPE_WO_I8_SYM),
+    0);
 }
