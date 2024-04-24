@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-#include "odc/QuantizeManager.h"
+#include "Embedder.h"
 
 #include <gtest/gtest.h>
 
 using namespace onert::odc;
 
-// Test export model path is not set
-TEST(odc_QuantizeManager, neg_export_model_path_not_set)
+namespace
 {
-  QuantizeManager manager("model_path", ".");
-  manager.quantizeType(ODC_QTYPE_WO_I8_SYM);
-  ASSERT_EQ(manager.quantize(), false);
-}
+struct MinMaxEmbedderTest : public ::testing::Test
+{
+  EmbedderOptions _opt{0, 100};
+};
 
-// Test invalid model path
-TEST(odc_QuantizeManager, neg_invalid_model_path)
+} // namespace
+
+TEST_F(MinMaxEmbedderTest, invalid_input_NEG)
 {
-  QuantizeManager manager("invalid_model_path.circle", ".");
-  manager.exportModelPath("export_model_path.circle");
-  manager.quantizeType(ODC_QTYPE_WO_I8_SYM);
-  ASSERT_EQ(manager.quantize(), false);
+  Embedder embedder;
+  EXPECT_THROW(embedder.embed(nullptr, "not_existing", _opt), std::runtime_error);
 }

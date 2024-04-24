@@ -35,7 +35,10 @@ class QuantizeManager
 public:
   // Non-copyable
   QuantizeManager() = delete;
-  QuantizeManager(const std::string &model_path) : _model_path(model_path) {}
+  QuantizeManager(const std::string &model_path, const std::string &workspace_dir)
+    : _model_path(model_path), _workspace_dir(workspace_dir)
+  {
+  }
   QuantizeManager(QuantizeManager const &) = delete;
   QuantizeManager &operator=(QuantizeManager const &) = delete;
 
@@ -46,6 +49,13 @@ public:
    * @param model_path  Model path to export quantized model
    */
   void exportModelPath(const std::string &model_path) { _export_model_path = model_path; }
+
+  /**
+   * @brief     Set the Workspace Dir object
+   *
+   * @param[in] workspace_dir Workspace directory path
+   */
+  void setWorkspaceDir(const std::string &workspace_dir) { _workspace_dir = workspace_dir; }
 
   /**
    * @brief   Get model path to export quantized model
@@ -72,6 +82,7 @@ public:
 
 private:
   std::string _model_path = "";
+  std::string _workspace_dir = "";
   std::string _export_model_path = "";
   QuantizeType _qtype = ODC_QTYPE_NOT_SET;
 };

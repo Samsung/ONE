@@ -115,9 +115,7 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
     }
 
     // Record minmax by minmax-embedder
-    // TODO use workspace to find minmax file
-    auto minmax_path = util::getConfigString(util::config::WORKSPACE_DIR) + "/minmax.bin";
-    Embedder().embed(module.get(), minmax_path, {1.f, 99.f});
+    Embedder().embed(module.get(), _minmax_path, {1.f, 99.f});
   }
 
   if (full_quantize)
@@ -131,16 +129,6 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
 
     // quantize the graph
     quantizer.quantize(graph);
-
-    // Skip validate
-    // TODO Validate if needed
-#if 0
-    if (!luci::validate(graph))
-    {
-      std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
-      return 1;
-    }
-#endif
   }
 
   // Export to output Circle file

@@ -30,7 +30,11 @@ public:
   Quantizer() = default;
   ~Quantizer() = default;
 
+  void setMinMaxPath(const std::string &path) override { _minmax_path = path; }
   int quantize(const char *in, const char *out, QuantizeType qtype) override;
+
+private:
+  std::string _minmax_path = "";
 };
 
 } // namespace odc

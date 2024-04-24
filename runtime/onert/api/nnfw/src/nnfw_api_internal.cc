@@ -320,7 +320,8 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   }
 
   // Create quantize manager
-  _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path));
+  _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path),
+                                                                 _coptions->workspace_dir);
   // Create codegen manager
   _codegen_manager = std::make_unique<onert::odc::CodegenManager>(std::string{model_file_path});
 
@@ -420,7 +421,8 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
     // Create quantize manager
     // TODO Support multiple models
     auto const model_filename = package_path + std::string("/") + models[0].asString();
-    _quant_manager = std::make_unique<onert::odc::QuantizeManager>(model_filename);
+    _quant_manager =
+      std::make_unique<onert::odc::QuantizeManager>(model_filename, _coptions->workspace_dir);
     // Create codegen manager
     _codegen_manager = std::make_unique<onert::odc::CodegenManager>(model_filename);
 
@@ -979,10 +981,12 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   if (isStatePrepared())
     return NNFW_STATUS_ERROR;
 
-  _coptions->workspace_dir = std::string(dir);
+  auto sdir = std::string(dir);
+  _coptions->workspace_dir = sdir;
 
   // TODO Set workspace dir to workspace user (ex. quantization manager, etc)
   //      if model is already loaded
+  _quant_manager->setWorkspaceDir(sdir);
 
   return NNFW_STATUS_NO_ERROR;
 }

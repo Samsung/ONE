@@ -19,6 +19,8 @@
 
 #include "odc/QuantizeType.h"
 
+#include <string>
+
 namespace onert
 {
 namespace odc
@@ -29,6 +31,7 @@ class IQuantizer
 public:
   virtual ~IQuantizer() = default;
 
+  virtual void setMinMaxPath(const std::string &path) = 0;
   virtual int quantize(const char *in, const char *out, QuantizeType qtype) = 0;
 };
 

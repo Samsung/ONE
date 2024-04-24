@@ -20,6 +20,41 @@
 #include <iostream>
 #include <mutex>
 
+namespace
+{
+
+std::string inline getModelName(const std::string &model_path)
+{
+  auto extension_pos = model_path.find(".circle");
+  auto model_dir_pos = model_path.find_last_of("/");
+  if (model_dir_pos == std::string::npos)
+    model_dir_pos = 0;
+  else
+    model_dir_pos++;
+  return model_path.substr(model_dir_pos, extension_pos - model_dir_pos);
+}
+
+std::string inline getExportModelFile(const std::string &model_name, onert::odc::QuantizeType type)
+{
+  switch (type)
+  {
+    case onert::odc::QuantizeType::ODC_QTYPE_U8_ASYM:
+      return model_name + ".q8.circle";
+    case onert::odc::QuantizeType::ODC_QTYPE_I16_SYM:
+      return model_name + ".q16.circle";
+    case onert::odc::QuantizeType::ODC_QTYPE_WO_I8_SYM:
+      return model_name + ".q8wo.circle";
+    case onert::odc::QuantizeType::ODC_QTYPE_WO_I16_SYM:
+      return model_name + ".q16wo.circle";
+    default:
+      throw std::runtime_error{"Not supported quantization type"};
+  }
+
+  throw std::runtime_error{"Not supported quantization type"};
+}
+
+} // namespace
+
 namespace onert
 {
 namespace odc
@@ -27,8 +62,11 @@ namespace odc
 
 bool QuantizeManager::quantize()
 {
-  if (_model_path.empty() || _export_model_path.empty())
+  if (_model_path.empty())
     return false;
+
+  auto model_name = getModelName(_model_path);
+  _export_model_path = _workspace_dir + "/" + getExportModelFile(model_name, _qtype);
 
   // Compile function is thread-unsafe
   static std::mutex lock;
@@ -39,6 +77,8 @@ bool QuantizeManager::quantize()
     return false;
 
   auto quantizer = quantize_loader.get();
+
+  quantizer->setMinMaxPath(_workspace_dir + "/minmax.bin");
   auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _qtype);
 
   // TODO Unload quantize library to reduce memory usage
