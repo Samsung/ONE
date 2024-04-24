@@ -24,8 +24,7 @@ using namespace onert::odc;
 TEST(odc_Quantizer, neg_model_input_path)
 {
   Quantizer quantizer;
-  ASSERT_THROW(quantizer.quantize(nullptr, "out", QuantizeType::ODC_QTYPE_WO_I8_SYM),
-               std::logic_error);
+  ASSERT_NE(quantizer.quantize(nullptr, "out", QuantizeType::ODC_QTYPE_WO_I8_SYM), 0);
 }
 
 // Test model output path is not set

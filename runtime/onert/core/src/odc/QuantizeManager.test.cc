@@ -32,5 +32,6 @@ TEST(odc_QuantizeManager, neg_invalid_model_path)
 {
   QuantizeManager manager("invalid_model_path.circle");
   manager.exportModelPath("export_model_path.circle");
+  manager.quantizeType(ODC_QTYPE_WO_I8_SYM);
   ASSERT_EQ(manager.quantize(), false);
 }

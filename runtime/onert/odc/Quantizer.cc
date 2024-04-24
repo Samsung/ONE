@@ -34,7 +34,7 @@ namespace odc
 int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
 {
   if (qtype != QuantizeType::ODC_QTYPE_WO_I8_SYM || qtype != QuantizeType::ODC_QTYPE_WO_I16_SYM)
-    throw std::runtime_error{"quantize API supports weight quantization only"};
+    return 1;
 
   // Load model from the file
   luci::ImporterEx importerex;
