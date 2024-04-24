@@ -35,7 +35,7 @@ Source3021: FLATBUFFERS-2.0.tar.gz
 %{!?build_type:     %define build_type      Release}
 %{!?npud_build:     %define npud_build      0}
 %{!?trix_support:   %define trix_support    1}
-%{!?odc_build:      %define odc_build       0}
+%{!?odc_build:      %define odc_build       1}
 %{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
