@@ -1,6 +1,6 @@
 # TODO Remove other Flatbuffers versions
 function(_FlatBuffers_import)
-  find_package(Flatbuffers 2.0 QUIET PATHS ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0)
+  find_package(Flatbuffers 23.5.26 QUIET)
   set(FlatBuffers_FOUND ${Flatbuffers_FOUND} PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 
@@ -10,7 +10,7 @@ function(_FlatBuffers_build)
     return()
   endif(NOT BUILD_FLATBUFFERS)
 
-  nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
+  nnas_find_package(FlatBuffersSource EXACT 23.5.26 QUIET)
 
   if(NOT FlatBuffersSource_FOUND)
     # Source is not available
@@ -28,13 +28,13 @@ function(_FlatBuffers_build)
 
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${FlatBuffersSource_DIR}
-                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-2.0/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0
+                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/FLATBUFFERS-23.5.26/build
+                      INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS ${ADDITIONAL_CXX_FLAGS}
-                      IDENTIFIER  "2.0"
+                      IDENTIFIER  "23.5.26"
                       EXTRA_OPTS  "-DFLATBUFFERS_BUILD_TESTS:BOOL=OFF"
                                   "-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON"
-                      PKG_NAME    "FLATBUFFERS-2.0")
+                      PKG_NAME    "FLATBUFFERS-23.5.26")
 
 endfunction(_FlatBuffers_build)
 
@@ -47,18 +47,18 @@ _FlatBuffers_import()
 set(FLATC_PATH "$<TARGET_FILE:flatbuffers::flatc>")
 
 if(DEFINED ENV{BUILD_HOST_EXEC})
-  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/FLATBUFFERS-2.0/bin/flatc)
+  set(FLATC_PATH $ENV{BUILD_HOST_EXEC}/overlay/bin/flatc)
 endif(DEFINED ENV{BUILD_HOST_EXEC})
 if(DEFINED ENV{EXTERNAL_FLATC})
   set(FLATC_PATH $ENV{EXTERNAL_FLATC})
 endif(DEFINED ENV{EXTERNAL_FLATC})
 
 if(FlatBuffers_FOUND)
-  if(NOT TARGET flatbuffers-2.0)
-    add_library(flatbuffers-2.0 INTERFACE)
-    target_link_libraries(flatbuffers-2.0 INTERFACE flatbuffers::flatbuffers)
-    message(STATUS "Found flatbuffers-2.0: TRUE")
-  endif(NOT TARGET flatbuffers-2.0)
+  if(NOT TARGET flatbuffers-23.5.26)
+    add_library(flatbuffers-23.5.26 INTERFACE)
+    target_link_libraries(flatbuffers-23.5.26 INTERFACE flatbuffers::flatbuffers)
+    message(STATUS "Found flatbuffers-23.5.26: TRUE")
+  endif(NOT TARGET flatbuffers-23.5.26)
 
   function(FlatBuffers_Generate PREFIX OUTPUT_DIR SCHEMA_DIR)
     get_filename_component(abs_output_dir ${OUTPUT_DIR} ABSOLUTE)
@@ -130,6 +130,6 @@ if(FlatBuffers_FOUND)
     add_library(${TGT} STATIC ${OUTPUT_FILES})
     set_target_properties(${TGT} PROPERTIES LINKER_LANGUAGE CXX)
     target_include_directories(${TGT} PUBLIC "${ARG_INCLUDE_DIR}")
-    target_link_libraries(${TGT} PUBLIC flatbuffers-2.0)
+    target_link_libraries(${TGT} PUBLIC flatbuffers-23.5.26)
   endfunction(FlatBuffers_Target)
 endif(FlatBuffers_FOUND)
