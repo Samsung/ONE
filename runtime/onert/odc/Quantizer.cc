@@ -33,6 +33,9 @@ namespace odc
 
 int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
 {
+  if (not in || not out)
+    return 1;
+
   if (qtype != QuantizeType::ODC_QTYPE_WO_I8_SYM && qtype != QuantizeType::ODC_QTYPE_WO_I16_SYM)
     return 1;
 

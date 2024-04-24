@@ -21,10 +21,11 @@
 using namespace onert::odc;
 
 // Test export model path is not set
-TEST(odc_QuantizeManager, neg_export_model_path)
+TEST(odc_QuantizeManager, neg_export_model_path_not_set)
 {
   QuantizeManager manager("model_path");
-  ASSERT_THROW(manager.quantize(), std::runtime_error);
+  manager.quantizeType(ODC_QTYPE_WO_I8_SYM);
+  ASSERT_EQ(manager.quantize(), false);
 }
 
 // Test invalid model path
