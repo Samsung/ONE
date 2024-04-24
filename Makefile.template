@@ -110,7 +110,8 @@ export NNCC_WORKSPACE=$(NNCC_FOLDER)
 ###
 ### Default target
 ###
-all: prepare-buildtool prepare-nncc configure build install
+#all: prepare-buildtool prepare-nncc configure build install
+all: prepare-buildtool configure build install
 
 ###
 ### Command (build step)
