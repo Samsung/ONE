@@ -47,6 +47,8 @@
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
 #include "luci/Pass/FuseSliceWithTConvPass.h"
+#include "luci/Pass/FuseStridedSlicesNegAsMulPass.h"
+#include "luci/Pass/FuseMulWithFullyConnectedPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
@@ -312,6 +314,14 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseSliceWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseSliceWithTConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseStridedSlicesNegAsMul))
+  {
+    phase.emplace_back(std::make_unique<FuseStridedSlicesNegAsMulPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseMulWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseMulWithFullyConnectedPass>());
   }
   if (_options->query(Options::Algorithm::FuseAddWithConv))
   {

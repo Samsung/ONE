@@ -161,6 +161,8 @@ bool fuse_horizontal_fc_nodes(CircleAdd *add_node)
   fused_fc_node->fusedActivationFunction(add_node->fusedActivationFunction());
   fused_fc_node->name(left_fc_node->name() + "_" + right_fc_node->name() + "_fused");
 
+  fused_fc_node->keep_num_dims(left_fc_node->keep_num_dims());
+
   add_origin(fused_fc_node, composite_origin({get_origin(left_fc_node), get_origin(right_fc_node),
                                               get_origin(add_node)}));
 

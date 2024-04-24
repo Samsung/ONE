@@ -110,10 +110,14 @@ int entry(int argc, char **argv)
              "into one operation and merge reduction indices.");
   add_switch(arser, "--fuse_mul_with_conv",
              "This will fuse Mul operation with a preceding Conv if possible.");
+  add_switch(arser, "--fuse_mul_with_fully_connected",
+             "This will fuse Mul operator to FullyConnected operator.");
   add_switch(arser, "--fuse_mul_with_div",
              "This will fuse Mul operation with a Div operation whose numerator is const.");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
+  add_switch(arser, "--fuse_strided_slices_neg_as_mul_pattern",
+             "fuse strided slices with neg pattern as mul.");
   add_switch(arser, "--fuse_transpose_with_mean",
              "This will fuse Mean operation with a preceding Transpose under certain conditions.");
   add_switch(arser, "--make_batchnorm_gamma_positive",
@@ -297,6 +301,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBatchNormWithTConv);
   if (arser.get<bool>("--fuse_slice_with_tconv"))
     options->enable(Algorithms::FuseSliceWithTConv);
+  if (arser.get<bool>("--fuse_strided_slices_neg_as_mul_pattern"))
+    options->enable(Algorithms::FuseStridedSlicesNegAsMul);
   if (arser.get<bool>("--fuse_bcq"))
     options->enable(Algorithms::FuseBCQ);
   if (arser.get<bool>("--fuse_instnorm"))
@@ -305,6 +311,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseMeanWithMean);
   if (arser.get<bool>("--fuse_mul_with_conv"))
     options->enable(Algorithms::FuseMulWithConv);
+  if (arser.get<bool>("--fuse_mul_with_fully_connected"))
+    options->enable(Algorithms::FuseMulWithFullyConnected);
   if (arser.get<bool>("--fuse_mul_with_div"))
     options->enable(Algorithms::FuseMulWithDiv);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
