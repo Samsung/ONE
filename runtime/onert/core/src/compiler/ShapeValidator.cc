@@ -169,9 +169,14 @@ void ShapeValidator::visit(const ir::operation::Conv2D &node)
   if (operands.at(ofm_index).info().isDynamic())
     return;
 
+  const auto ifm_index{node.getInputs().at(ir::operation::Conv2D::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(ir::operation::Conv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(ir::operation::Conv2D::Input::BIAS)};
 
-  OP_REQUIRES(operands.at(bias_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ker_index).shape().rank() == 4);
+  OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
 }
 
 void ShapeValidator::visit(const ir::operation::Comparison &)
@@ -186,9 +191,14 @@ void ShapeValidator::visit(const ir::operation::DepthwiseConv2D &node)
   if (operands.at(ofm_index).info().isDynamic())
     return;
 
+  const auto ifm_index{node.getInputs().at(ir::operation::DepthwiseConv2D::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(ir::operation::DepthwiseConv2D::Input::KERNEL)};
   const auto bias_index{node.getInputs().at(ir::operation::DepthwiseConv2D::Input::BIAS)};
 
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ker_index).shape().rank() == 4);
   OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
 }
 
 void ShapeValidator::visit(const ir::operation::FullyConnected &node)
@@ -198,8 +208,12 @@ void ShapeValidator::visit(const ir::operation::FullyConnected &node)
   if (operands.at(ofm_index).info().isDynamic())
     return;
 
+  const auto ifm_index{node.getInputs().at(ir::operation::FullyConnected::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(ir::operation::FullyConnected::Input::WEIGHT)};
   const auto bias_index{node.getInputs().at(ir::operation::FullyConnected::Input::BIAS)};
 
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() >= 2);
+  OP_REQUIRES(operands.at(ker_index).shape().rank() == 2);
   OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
 }
 
