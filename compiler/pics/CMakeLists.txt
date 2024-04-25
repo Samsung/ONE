@@ -1,4 +1,4 @@
-nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+nnas_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 if(NOT FlatBuffers_FOUND)
   message(STATUS "Configure pics: FAILED (missing FlatBuffers)")
   return()
