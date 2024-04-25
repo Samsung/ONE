@@ -1,0 +1,6 @@
+# To check if Mul is fused
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "FC_EXIST"                 $(op_count FULLY_CONNECTED) '=' 1
+RULE    "NO_MUL"                   $(op_count MUL) '=' 0

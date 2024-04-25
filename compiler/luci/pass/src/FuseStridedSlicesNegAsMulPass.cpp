@@ -50,7 +50,7 @@ luci::CircleConst *create_mul_const(luci::CircleStridedSlice *strided_slice_with
   for (uint32_t i = 0; i < concat_node->rank() - 1; ++i)
   {
     if (begin_node->at<loco::DataType::S32>(i) != 0 or
-        end_node->at<loco::DataType::S32>(i) != concat_node->dim(i).value() or
+        end_node->at<loco::DataType::S32>(i) != static_cast<int32_t>(concat_node->dim(i).value()) or
         concat_node->dim(i).value() != 1)
       return nullptr;
   }
@@ -62,7 +62,7 @@ luci::CircleConst *create_mul_const(luci::CircleStridedSlice *strided_slice_with
   new_node->name(concat_node->name() + strided_slice_with_neg->name() + "_const");
   new_node->dtype(loco::DataType::FLOAT32);
   new_node->rank(concat_node->rank());
-  auto size = 1;
+  uint32_t size = 1;
   for (uint32_t i = 0; i < new_node->rank(); i++)
   {
     new_node->dim(i).set(concat_node->dim(i).value());

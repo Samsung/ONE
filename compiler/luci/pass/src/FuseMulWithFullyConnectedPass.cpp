@@ -136,7 +136,7 @@ bool fuse_mul_with_fully_connected(luci::CircleMul *mul)
   // Configure new FullyConnected operation.
   auto *fused_fc =
     loco::must_cast<luci::CircleFullyConnected *>(luci::clone_node(fc, mul->graph()));
-  fused_fc->input(fc->input());
+  fused_fc->input(fc_input);
   fused_fc->weights(fused_fc_weight);
   if (fused_fc_bias != nullptr)
   {

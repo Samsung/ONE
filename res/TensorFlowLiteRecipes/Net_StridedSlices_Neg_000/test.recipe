@@ -1,0 +1,102 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 4 }
+}
+operand {
+  name: "begin"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "0" arg: "0" }
+}
+operand {
+  name: "end"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "1" arg: "2" }
+}
+operand {
+  name: "strides"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "1" arg: "1" }
+}
+operand {
+  name: "output_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 2 }
+}
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+  input: "ifm"
+  input: "begin"
+  input: "end"
+  input: "strides"
+  output: "output_1"
+}
+operand {
+  name: "begin_2"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "0" arg: "2" }
+}
+operand {
+  name: "end_2"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "1" arg: "1" arg: "4" }
+}
+operand {
+  name: "output_2"
+  type: FLOAT32
+  shape { dim: 1 dim:1 dim: 2 }
+}
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+  input: "ifm"
+  input: "begin_2"
+  input: "end_2"
+  input: "strides"
+  output: "output_2"
+}
+operand {
+  name: "output_neg"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 2 }
+}
+operation {
+  type: "Neg"
+  input: "output_2"
+  output: "output_neg"
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 4 }
+}
+operation {
+  type: "Concatenation"
+  concatenation_options {
+    axis: -1
+    activation: NONE
+  }
+  input: "output_1"
+  input: "output_neg"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

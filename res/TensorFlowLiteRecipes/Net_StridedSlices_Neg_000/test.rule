@@ -1,0 +1,5 @@
+# To check if StridedSlicesNeg pattern fused as mul.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+RULE    "MUL_EXIST"      $(op_count MUL) '=' 1
+RULE    "NO_STRIDEDSLICES"      $(op_count STRIDEDSLICE) '=' 0
