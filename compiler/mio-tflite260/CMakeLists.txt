@@ -1,7 +1,7 @@
-nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+nnas_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 
 if(NOT FlatBuffers_FOUND)
-  message(STATUS "Build mio-tflite260: FAILED (missing Flatbuffers 2.0)")
+  message(STATUS "Build mio-tflite260: FAILED (missing Flatbuffers 23.5.26)")
   return()
 endif(NOT FlatBuffers_FOUND)
 
