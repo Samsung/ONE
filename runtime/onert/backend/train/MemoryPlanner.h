@@ -64,14 +64,11 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<DisposableTensorIndex, basic::Block> &memory_plans() override
-  {
-    return _mem_plans;
-  }
+  MemoryPlans &memory_plans() override { return _mem_plans; }
 
 private:
   uint32_t _capacity = 0;
-  std::unordered_map<DisposableTensorIndex, basic::Block> _mem_plans;
+  MemoryPlans _mem_plans;
 };
 
 /**
@@ -100,14 +97,11 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<DisposableTensorIndex, basic::Block> &memory_plans() override
-  {
-    return _mem_plans;
-  }
+  MemoryPlans &memory_plans() override { return _mem_plans; }
 
 private:
   uint32_t _capacity = 0;
-  std::unordered_map<DisposableTensorIndex, basic::Block> _mem_plans;
+  MemoryPlans _mem_plans;
   // Use std::map because claim() assumes that _claim_table is sorted by uint32_t(base_offset)
   std::map<uint32_t, DisposableTensorIndex> _claim_table;
 };
@@ -145,17 +139,17 @@ public:
    * @brief Get MemoryPlans
    * @return MemoryPlans
    */
-  std::unordered_map<DisposableTensorIndex, basic::Block> &memory_plans() override;
+  MemoryPlans &memory_plans() override;
 
 private:
   void buildMemoryPlans();
 
   bool _initialized;
   uint32_t _capacity;
-  std::unordered_map<DisposableTensorIndex, basic::Block> _mem_plans;
+  MemoryPlans _mem_plans;
   std::unordered_set<DisposableTensorIndex> _live_indices;
-  std::unordered_map<DisposableTensorIndex, std::vector<DisposableTensorIndex>> _interference_graph;
-  // Sort indices by descending order of size
+  DisposableTensorIndexMap<std::vector<DisposableTensorIndex>> _interference_graph;
+  // Sort tensors by descending order of size
   std::multimap<uint32_t, DisposableTensorIndex, std::greater<uint32_t>> _indices;
 };
 
