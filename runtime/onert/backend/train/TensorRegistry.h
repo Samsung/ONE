@@ -19,6 +19,7 @@
 
 #include <backend/train/ITensorRegistry.h>
 
+#include "DisposableTensorIndex.h"
 #include "Tensor.h"
 
 namespace onert
@@ -28,8 +29,41 @@ namespace backend
 namespace train
 {
 
-using TensorRegistry =
-  PortableTensorRegistryTemplate<Tensor, TrainableTensor, BackPropTensor, GradientTensor>;
+class TensorRegistry
+  : public PortableTensorRegistryTemplate<Tensor, TrainableTensor, BackPropTensor, GradientTensor>
+{
+public:
+  BackPropTensor *getDisposableBackPropTensor(const DisposableTensorIndex &index)
+  {
+    auto itr = _disposable_back_prop.find(index);
+    if (itr != _disposable_back_prop.end())
+      return itr->second.get();
+
+    return nullptr;
+  }
+
+  void setDisposableBackPropTensor(const DisposableTensorIndex &index,
+                                   std::unique_ptr<BackPropTensor> tensor)
+  {
+    assert(tensor != nullptr);
+    auto itr = _disposable_back_prop.find(index);
+    if (itr != _disposable_back_prop.end())
+      throw std::runtime_error{
+        "Tried to set a disposable tensor but another disposable tensor already exists."};
+
+    _disposable_back_prop[index] = std::move(tensor);
+  }
+
+  const std::unordered_map<DisposableTensorIndex, std::unique_ptr<BackPropTensor>> &
+  disposable_back_prop_tensors()
+  {
+    return _disposable_back_prop;
+  }
+
+private:
+  // Disposable Tensors to be accumulated to BackPropTensor
+  std::unordered_map<DisposableTensorIndex, std::unique_ptr<BackPropTensor>> _disposable_back_prop;
+};
 
 } // namespace train
 } // namespace backend
