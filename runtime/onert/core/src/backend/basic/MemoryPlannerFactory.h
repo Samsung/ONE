@@ -38,26 +38,8 @@ private:
   MemoryPlannerFactory() = default;
 
 public:
-  template <typename Index> IMemoryPlanner<Index> *create(const std::string &key);
+  IMemoryPlanner<ir::OperandIndex> *create(const std::string &key);
 };
-
-template <typename Index>
-inline IMemoryPlanner<Index> *MemoryPlannerFactory::create(const std::string &key)
-{
-  if (key == "FirstFit")
-  {
-    return new FirstFitPlanner<Index>;
-  }
-  else if (key == "Bump")
-  {
-    return new BumpPlanner<Index>;
-  }
-  else if (key == "WIC")
-  {
-    return new WICPlanner<Index>;
-  }
-  return new FirstFitPlanner<Index>; // Default Planner
-}
 
 } // namespace basic
 } // namespace backend
