@@ -1,11 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"_quantization_utils_8cpp_source.html":[36,0,0,52,7,1,59],
-"_quantization_utils_8h.html":[36,0,0,52,7,1,60],
-"_quantization_utils_8h.html#a0157f75d4d983ccb4e0a520d16d277e7":[36,0,0,52,7,1,60,15],
-"_quantization_utils_8h.html#a08927f7d3d5ed8512d8958335add0378":[36,0,0,52,7,1,60,14],
-"_quantization_utils_8h.html#a167803de156057780a81a39cbc694672":[36,0,0,52,7,1,60,8],
-"_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d":[36,0,0,52,7,1,60,4],
 "_quantization_utils_8h.html#a1ef77fe953130949713bdae6c170b133":[36,0,0,52,7,1,60,19],
 "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28e":[36,0,0,52,7,1,60,0],
 "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea":[36,0,0,52,7,1,60,0,4],
@@ -73,6 +67,14 @@ var NAVTREEINDEX25 =
 "_quantize_pre_checker_pass_8cpp_source.html":[36,0,0,52,7,1,73],
 "_quantize_pre_checker_pass_8h.html":[36,0,0,52,7,0,0,0,47],
 "_quantize_pre_checker_pass_8h_source.html":[36,0,0,52,7,0,0,0,47],
+"_quantize_type_8h.html":[36,0,4,2,2,0,5,4],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55":[36,0,4,2,2,0,5,4,0],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b":[36,0,4,2,2,0,5,4,0,3],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1":[36,0,4,2,2,0,5,4,0,0],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407":[36,0,4,2,2,0,5,4,0,2],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb":[36,0,4,2,2,0,5,4,0,4],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a9f0b7ad8a78f69948560ec00225edcf0":[36,0,4,2,2,0,5,4,0,1],
+"_quantize_type_8h_source.html":[36,0,4,2,2,0,5,4],
 "_quantize_weights_8cpp.html":[36,0,0,52,7,1,74],
 "_quantize_weights_8cpp_source.html":[36,0,0,52,7,1,74],
 "_quantize_weights_8h.html":[36,0,0,52,7,1,75],
@@ -247,7 +249,5 @@ var NAVTREEINDEX25 =
 "_record_min_max_8cpp.html":[36,0,0,110,2,3],
 "_record_min_max_8cpp.html#a60fe2dd4ed605a6b0eb5965a7f0339d8":[36,0,0,110,2,3,1],
 "_record_min_max_8cpp.html#a8a8ce3b06f5919e4c1ce87cd95bcdbe8":[36,0,0,110,2,3,0],
-"_record_min_max_8cpp_source.html":[36,0,0,110,2,3],
-"_record_min_max_8h.html":[36,0,0,110,1,4],
-"_record_min_max_8h.html#a3d03f63a604eb9c053ce1c9578a7d30f":[36,0,0,110,1,4,2]
+"_record_min_max_8cpp_source.html":[36,0,0,110,2,3]
 };

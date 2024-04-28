@@ -2,7 +2,7 @@ var nnfw__api_8cc =
 [
     [ "NNFW_RETURN_ERROR_IF_NULL", "nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c", null ],
     [ "STATIC_ASSERT_ENUM_CHECK", "nnfw__api_8cc.html#a19a52f9f8e5933ddddadbe1a17242b72", null ],
-    [ "nnfw_apply_tensorinfo", "nnfw__api_8cc.html#a1803eaf2caed5342bed98c5920e834da", null ],
+    [ "nnfw_apply_tensorinfo", "nnfw__api_8cc.html#a7163be649de6c1b7fe41bb8dfff63e07", null ],
     [ "nnfw_await", "nnfw__api_8cc.html#a1793e00e368f906c3492554f762faed8", null ],
     [ "nnfw_close_session", "nnfw__api_8cc.html#a1918cc4210b397466f99bd7bfd5c4fce", null ],
     [ "nnfw_codegen", "nnfw__api_8cc.html#a9c434de04d0c57bf7e28a1c7721bdd49", null ],

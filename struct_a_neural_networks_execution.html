@@ -802,7 +802,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  136</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">  137</span>  {</div>
 <div class="line"><span class="lineno">  138</span>    <a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::IOIndex</a> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>};</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keyword">const</span> <span class="keyword">auto</span> shape =</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape =</div>
 <div class="line"><span class="lineno">  140</span>      (<a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a> != <span class="keyword">nullptr</span>) ? <a class="code hl_function" href="class_n_n_a_p_i_convert.html#ab1a93e3fccb83e3c63407e1197f5c31b">NNAPIConvert::getShape</a>(type) : _execution-&gt;getInputShape(input_index);</div>
 <div class="line"><span class="lineno">  141</span> </div>
 <div class="line"><span class="lineno">  142</span>    _execution-&gt;setInput(input_index, shape, buffer, length);</div>
@@ -878,7 +878,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  161</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">  162</span>  {</div>
 <div class="line"><span class="lineno">  163</span>    <a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::IOIndex</a> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>};</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keyword">const</span> <span class="keyword">auto</span> shape =</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape =</div>
 <div class="line"><span class="lineno">  165</span>      (<a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a> != <span class="keyword">nullptr</span>) ? <a class="code hl_function" href="class_n_n_a_p_i_convert.html#ab1a93e3fccb83e3c63407e1197f5c31b">NNAPIConvert::getShape</a>(type) : _execution-&gt;getInputShape(input_index);</div>
 <div class="line"><span class="lineno">  166</span> </div>
 <div class="line"><span class="lineno">  167</span>    <span class="comment">// ANeuralNetworksExecution::setInput() uses only shape information</span></div>
@@ -964,7 +964,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  192</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">  193</span>  {</div>
 <div class="line"><span class="lineno">  194</span>    <a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::IOIndex</a> output_index{<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>};</div>
-<div class="line"><span class="lineno">  195</span>    <span class="keyword">const</span> <span class="keyword">auto</span> shape =</div>
+<div class="line"><span class="lineno">  195</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;shape =</div>
 <div class="line"><span class="lineno">  196</span>      (<a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a> != <span class="keyword">nullptr</span>) ? <a class="code hl_function" href="class_n_n_a_p_i_convert.html#ab1a93e3fccb83e3c63407e1197f5c31b">NNAPIConvert::getShape</a>(type) : _execution-&gt;getOutputShape(output_index);</div>
 <div class="line"><span class="lineno">  197</span> </div>
 <div class="line"><span class="lineno">  198</span>    _execution-&gt;setOutput(output_index, shape, buffer, length);</div>

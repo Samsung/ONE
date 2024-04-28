@@ -229,7 +229,6 @@ var NAVTREEINDEX34 =
 "backend_2train_2_tensor_builder_8h.html":[36,0,4,2,1,7,14],
 "backend_2train_2_tensor_builder_8h_source.html":[36,0,4,2,1,7,14],
 "backend_2train_2_tensor_registry_8h.html":[36,0,4,2,1,7,17],
-"backend_2train_2_tensor_registry_8h.html#a94fc41f335ee28aeb159e7cc3f330d33":[36,0,4,2,1,7,17,0],
 "backend_2train_2_tensor_registry_8h_source.html":[36,0,4,2,1,7,17],
 "backend_2trix_2_backend_context_8cc.html":[36,0,4,2,1,8,2],
 "backend_2trix_2_backend_context_8cc_source.html":[36,0,4,2,1,8,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX34 =
 "backend_2xnnpack_2_backend_context_8h.html":[36,0,4,2,1,9,3],
 "backend_2xnnpack_2_backend_context_8h.html#a469588946e21e0b51dfb54345ac55325":[36,0,4,2,1,9,3,1],
 "backend_2xnnpack_2_backend_context_8h_source.html":[36,0,4,2,1,9,3],
-"backend_2xnnpack_2_config_8cc.html":[36,0,4,2,1,9,4]
+"backend_2xnnpack_2_config_8cc.html":[36,0,4,2,1,9,4],
+"backend_2xnnpack_2_config_8cc_source.html":[36,0,4,2,1,9,4]
 };

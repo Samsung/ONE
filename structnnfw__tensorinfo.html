@@ -124,7 +124,7 @@ Data Fields</h2></td></tr>
 <p>This structure is used to describe input and output tensors. Application can get input and output tensor type and shape described in model by using <code><a class="el" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a></code> and <code><a class="el" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a></code></p>
 <p>Maximum rank is 6 (NNFW_MAX_RANK). And tensor's dimension value is filled in 'dims' field from index 0. For example, if tensor's rank is 4, application can get dimension value from dims[0], dims[1], dims[2], and dims[3] </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00175">175</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00177">177</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a702458a1d73a5c90f00b7214d0fce0ce" name="a702458a1d73a5c90f00b7214d0fce0ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a702458a1d73a5c90f00b7214d0fce0ce">&#9670;&#160;</a></span>dims</h2>
@@ -139,9 +139,9 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK). </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00185">185</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00187">187</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00732">nnfw_session::apply_tensorinfo()</a>, <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00732">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>
@@ -158,7 +158,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The data type </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00178">178</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00180">180</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00131">NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00145">NNFW_SESSION::set_output()</a>.</p>
 
@@ -177,9 +177,9 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The number of dimensions (rank) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00180">180</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00182">182</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00732">nnfw_session::apply_tensorinfo()</a>, <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00238">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00732">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00187">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>

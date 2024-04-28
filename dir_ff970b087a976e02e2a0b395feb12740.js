@@ -4,6 +4,7 @@ var dir_ff970b087a976e02e2a0b395feb12740 =
     [ "Add.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_add_8cpp.html", null ],
     [ "Concatenation.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_concatenation_8cpp.html", null ],
     [ "Conv2D.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_conv2_d_8cpp.html", null ],
+    [ "Floor.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_floor_8cpp.html", null ],
     [ "FullyConnected.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_fully_connected_8cpp.html", null ],
     [ "Gather.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_gather_8cpp.html", null ],
     [ "Logistic.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_logistic_8cpp.html", null ],

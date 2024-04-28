@@ -1,5 +1,9 @@
 var dir_504e02a0f7d8c51a809a1972aae7e644 =
 [
+    [ "BackPropAccumulator.cc", "_back_prop_accumulator_8cc.html", null ],
+    [ "BackPropAccumulator.h", "_back_prop_accumulator_8h.html", "_back_prop_accumulator_8h" ],
+    [ "BackPropInitializer.cc", "_back_prop_initializer_8cc.html", null ],
+    [ "BackPropInitializer.h", "_back_prop_initializer_8h.html", "_back_prop_initializer_8h" ],
     [ "BinaryArithmeticLayer.cc", "train_2ops_2_binary_arithmetic_layer_8cc.html", null ],
     [ "BinaryArithmeticLayer.h", "train_2ops_2_binary_arithmetic_layer_8h.html", "train_2ops_2_binary_arithmetic_layer_8h" ],
     [ "ConvolutionLayer.cc", "train_2ops_2_convolution_layer_8cc.html", null ],

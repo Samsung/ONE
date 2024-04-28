@@ -1,0 +1,9 @@
+<map id="onert::backend::train::TensorRegistry" name="onert::backend::train::TensorRegistry">
+<area shape="rect" id="Node000001" title=" " alt="" coords="768,20,905,61"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html" title=" " alt="" coords="440,5,720,76"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="736,38,768,38,768,43,736,43"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1train_1_1_i_tensor_registry.html" title=" " alt="" coords="256,20,392,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="408,38,440,38,440,43,408,43"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1backend_1_1_i_tensor_registry.html" title=" " alt="" coords="5,28,208,54"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="224,38,255,38,255,43,224,43"/>
+</map>

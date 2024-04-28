@@ -7,5 +7,5 @@ var classonert_1_1odc_1_1_quantize_manager =
     [ "exportModelPath", "classonert_1_1odc_1_1_quantize_manager.html#a1d93fad80251107e33bd6130f6bb5f96", null ],
     [ "operator=", "classonert_1_1odc_1_1_quantize_manager.html#aa5f370e21dbca19ae7cbb8dcea410cdb", null ],
     [ "quantize", "classonert_1_1odc_1_1_quantize_manager.html#af32e4173526dbc8bd04ff6b7363b2462", null ],
-    [ "quantizeType", "classonert_1_1odc_1_1_quantize_manager.html#af6e38cacddaeccd2d8dc8f62c60fd508", null ]
+    [ "quantizeType", "classonert_1_1odc_1_1_quantize_manager.html#a7f175e3de52427eec5a5e5a56d05348f", null ]
 ];

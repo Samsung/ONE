@@ -1,5 +1,13 @@
 var NAVTREEINDEX10 =
 {
+"_feature_axis_8h.html#ac9f207997cef8d437eb2e86f2a78a1eba675056ad1441b6375b2c5abd48c27ef1":[36,0,0,45,0,0,1,20,0,1],
+"_feature_axis_8h.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9":[36,0,0,45,0,0,1,20,0,0],
+"_feature_axis_8h.html#ac9f207997cef8d437eb2e86f2a78a1ebaeec6c4bdbd339edf8cbea68becb85244":[36,0,0,45,0,0,1,20,0,2],
+"_feature_axis_8h_source.html":[36,0,0,45,0,0,1,20],
+"_feature_bias_add_converter_8cpp.html":[36,0,0,38,1,1,23],
+"_feature_bias_add_converter_8cpp_source.html":[36,0,0,38,1,1,23],
+"_feature_bias_add_converter_8h.html":[36,0,0,38,1,1,24],
+"_feature_bias_add_converter_8h_source.html":[36,0,0,38,1,1,24],
 "_feature_codec_8cpp.html":[36,0,0,45,1,1,12],
 "_feature_codec_8cpp_source.html":[36,0,0,45,1,1,12],
 "_feature_codec_8h.html":[36,0,0,45,0,0,1,21],
@@ -207,11 +215,6 @@ var NAVTREEINDEX10 =
 "_float_floor_div_kernel_8h.html#aefd7111c518d0da97953b209db3e1b4e":[36,0,3,4,0,0,1,23,0,2],
 "_float_floor_div_kernel_8h.html#af158e7370778b988b62494b7121e49cc":[36,0,3,4,0,0,1,23,0,3],
 "_float_floor_div_kernel_8h_source.html":[36,0,3,4,0,0,1,23,0],
-"_float_floor_kernel_8h.html":[36,0,3,4,0,0,1,22,0],
-"_float_floor_kernel_8h.html#a30cf789998ccb48275e5b1bb01b98dd7":[36,0,3,4,0,0,1,22,0,2],
-"_float_floor_kernel_8h.html#acdd0ba2c00b28dfdf76b7ee21c9b05cf":[36,0,3,4,0,0,1,22,0,3],
-"_float_floor_kernel_8h.html#afdf868a2ae271b916212c9d216e29799":[36,0,3,4,0,0,1,22,0,1],
-"_float_floor_kernel_8h_source.html":[36,0,3,4,0,0,1,22,0],
 "_float_floor_mod_kernel_8h.html":[36,0,3,4,0,0,1,24,0],
 "_float_floor_mod_kernel_8h.html#a12b13772ed23f2f7ffad854ab0a893fd":[36,0,3,4,0,0,1,24,0,5],
 "_float_floor_mod_kernel_8h.html#a1a4737a41c5d1ef42f48bfffd30a52f7":[36,0,3,4,0,0,1,24,0,8],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "_float_greater_kernel_8h.html#aa9de7f915028cd1fbe648c984ac9d592":[36,0,3,4,0,0,1,28,0,2],
 "_float_greater_kernel_8h.html#ac12d5583bf19346de810734a0e25c901":[36,0,3,4,0,0,1,28,0,8],
 "_float_greater_kernel_8h.html#af6ce10ac8c4393e0d46cd15a6264091d":[36,0,3,4,0,0,1,28,0,7],
-"_float_greater_kernel_8h_source.html":[36,0,3,4,0,0,1,28,0],
-"_float_l2_normalize_kernel_8h.html":[36,0,3,4,0,0,1,31,0],
-"_float_l2_normalize_kernel_8h.html#a33141b446a7d528ac845bcf8e9ffff2d":[36,0,3,4,0,0,1,31,0,3],
-"_float_l2_normalize_kernel_8h.html#aa33f5d9d7422c0ad444193b8e8f46439":[36,0,3,4,0,0,1,31,0,1]
+"_float_greater_kernel_8h_source.html":[36,0,3,4,0,0,1,28,0]
 };

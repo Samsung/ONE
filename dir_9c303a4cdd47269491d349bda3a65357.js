@@ -4,6 +4,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "add", "dir_8d456c05a4cb9ec2960d78933d5ee3eb.html", "dir_8d456c05a4cb9ec2960d78933d5ee3eb" ],
     [ "concatenation", "dir_d707ebc8d5bf446e1aa43b548cdfb2de.html", "dir_d707ebc8d5bf446e1aa43b548cdfb2de" ],
     [ "conv2d", "dir_3d45e6f6a3eddb1f79cb00d529f14460.html", "dir_3d45e6f6a3eddb1f79cb00d529f14460" ],
+    [ "floor", "dir_d507fc8a61172f2df382b36506424c9b.html", "dir_d507fc8a61172f2df382b36506424c9b" ],
     [ "fully_connected", "dir_07ce635ea2b2c0b9e6924a24afd4423c.html", "dir_07ce635ea2b2c0b9e6924a24afd4423c" ],
     [ "gather", "dir_3357c55f0c2b1e6d89ad910b27eb6d7a.html", "dir_3357c55f0c2b1e6d89ad910b27eb6d7a" ],
     [ "logistic", "dir_22eef7d2e5b5ea4159481cf6de3ed799.html", "dir_22eef7d2e5b5ea4159481cf6de3ed799" ],

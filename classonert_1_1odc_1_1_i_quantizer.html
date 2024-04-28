@@ -101,12 +101,12 @@ $(document).ready(function(){initNavTree('classonert_1_1odc_1_1_i_quantizer.html
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1411217322d5e66a53f9732987497291" id="r_a1411217322d5e66a53f9732987497291"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#a1411217322d5e66a53f9732987497291">~IQuantizer</a> ()=default</td></tr>
 <tr class="separator:a1411217322d5e66a53f9732987497291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fd400cb8ec6ee482195329bf3329e1e" id="r_a4fd400cb8ec6ee482195329bf3329e1e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#a4fd400cb8ec6ee482195329bf3329e1e">quantize</a> (const char *in, const char *out, bool is_q16)=0</td></tr>
-<tr class="separator:a4fd400cb8ec6ee482195329bf3329e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2ba0ffa15fda5b080346c36a1f0ec4b" id="r_ad2ba0ffa15fda5b080346c36a1f0ec4b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#ad2ba0ffa15fda5b080346c36a1f0ec4b">quantize</a> (const char *in, const char *out, <a class="el" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">QuantizeType</a> qtype)=0</td></tr>
+<tr class="separator:ad2ba0ffa15fda5b080346c36a1f0ec4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i_quantizer_8h_source.html#l00025">25</a> of file <a class="el" href="_i_quantizer_8h_source.html">IQuantizer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_quantizer_8h_source.html#l00027">27</a> of file <a class="el" href="_i_quantizer_8h_source.html">IQuantizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1411217322d5e66a53f9732987497291" name="a1411217322d5e66a53f9732987497291"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1411217322d5e66a53f9732987497291">&#9670;&#160;</a></span>~IQuantizer()</h2>
@@ -134,8 +134,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4fd400cb8ec6ee482195329bf3329e1e" name="a4fd400cb8ec6ee482195329bf3329e1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fd400cb8ec6ee482195329bf3329e1e">&#9670;&#160;</a></span>quantize()</h2>
+<a id="ad2ba0ffa15fda5b080346c36a1f0ec4b" name="ad2ba0ffa15fda5b080346c36a1f0ec4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2ba0ffa15fda5b080346c36a1f0ec4b">&#9670;&#160;</a></span>quantize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,8 +158,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>is_q16</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">QuantizeType</a>&#160;</td>
+          <td class="paramname"><em>qtype</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -174,7 +174,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#a328b316226669123f2ab86691d7a6508">onert::odc::Quantizer</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#a68acd767b22a286a63a173cb7ab3938c">onert::odc::Quantizer</a>.</p>
 
 </div>
 </div>

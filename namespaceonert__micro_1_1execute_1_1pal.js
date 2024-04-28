@@ -20,6 +20,7 @@ var namespaceonert__micro_1_1execute_1_1pal =
     [ "ConvFloat", "namespaceonert__micro_1_1execute_1_1pal.html#af01773e304fad3af24dd0525170ec86c", null ],
     [ "copyDimsToDesc", "namespaceonert__micro_1_1execute_1_1pal.html#aaeb5859c7b3b2745b6deaf5a12b87a20", null ],
     [ "flatSizeSkipDim", "namespaceonert__micro_1_1execute_1_1pal.html#a0e920b35ff417ca8a6278ace0624f19c", null ],
+    [ "Floor", "namespaceonert__micro_1_1execute_1_1pal.html#a1b3d5f96dd80b3c918600bea1335ffcc", null ],
     [ "FullyConnected", "namespaceonert__micro_1_1execute_1_1pal.html#a52ce32e64d3501b8114c84f3b424cee0", null ],
     [ "FullyConnected< float >", "namespaceonert__micro_1_1execute_1_1pal.html#aab8bd1317e0077b2429a7db7f4903429", null ],
     [ "getActivationParams", "namespaceonert__micro_1_1execute_1_1pal.html#af33827c2f608f48e2569856e2a080abe", null ],

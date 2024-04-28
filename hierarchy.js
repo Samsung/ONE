@@ -2797,7 +2797,9 @@ var hierarchy =
       [ "onert::backend::gpu_cl::TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", null ],
       [ "onert::backend::train::ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", [
         [ "onert::backend::builtin::train::TensorRegistry", "classonert_1_1backend_1_1builtin_1_1train_1_1_tensor_registry.html", null ],
-        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, BackPropTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", null ]
+        [ "onert::backend::train::PortableTensorRegistryTemplate< Tensor, TrainableTensor, BackPropTensor, GradientTensor >", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", [
+          [ "onert::backend::train::TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "flatbuffers::IterationVisitor", "structflatbuffers_1_1_iteration_visitor.html", [
@@ -2816,6 +2818,8 @@ var hierarchy =
     ] ],
     [ "onert::exec::train::ITrainableFunction", "classonert_1_1exec_1_1train_1_1_i_trainable_function.html", [
       [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ],
+      [ "onert::backend::train::ops::BackPropAccumulator", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_accumulator.html", null ],
+      [ "onert::backend::train::ops::BackPropInitializer", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_initializer.html", null ],
       [ "onert::backend::train::ops::BinaryArithmeticLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_binary_arithmetic_layer.html", null ],
       [ "onert::backend::train::ops::ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::train::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", null ],
@@ -3428,6 +3432,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchFloorKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_floor_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_logistic_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", null ],
@@ -3435,6 +3440,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", null ],
+      [ "onert_micro::test_model::NegTestDataInvalidInputOutputShapeFloorKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_output_shape_floor_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInvalidInputShapeConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_shape_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInvalidInputShapeMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_shape_max_pool2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsLogisticKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_logistic_kernel.html", null ],
@@ -3458,8 +3464,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -5355,6 +5361,9 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataConv2DBase< T >", "classonert__micro_1_1test__model_1_1_test_data_conv2_d_base.html", [
         [ "onert_micro::test_model::TestDataFloatConv2D", "classonert__micro_1_1test__model_1_1_test_data_float_conv2_d.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataFloorBase< T >", "classonert__micro_1_1test__model_1_1_test_data_floor_base.html", [
+        [ "onert_micro::test_model::TestDataFloatFloor", "classonert__micro_1_1test__model_1_1_test_data_float_floor.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataFullyConnectedBase< T >", "classonert__micro_1_1test__model_1_1_test_data_fully_connected_base.html", [
         [ "onert_micro::test_model::TestDataFloatFullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_fully_connected.html", null ]

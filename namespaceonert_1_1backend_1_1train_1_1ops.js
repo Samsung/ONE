@@ -1,5 +1,7 @@
 var namespaceonert_1_1backend_1_1train_1_1ops =
 [
+    [ "BackPropAccumulator", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_accumulator.html", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_accumulator" ],
+    [ "BackPropInitializer", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_initializer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_initializer" ],
     [ "BinaryArithmeticLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_binary_arithmetic_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_binary_arithmetic_layer" ],
     [ "ConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer" ],
     [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer" ],

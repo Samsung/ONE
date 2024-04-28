@@ -18,7 +18,8 @@ var nnfw_8h =
       [ "NNFW_STATUS_UNEXPECTED_NULL", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3", null ],
       [ "NNFW_STATUS_INVALID_STATE", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53", null ],
       [ "NNFW_STATUS_OUT_OF_MEMORY", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453", null ],
-      [ "NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693", null ]
+      [ "NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693", null ],
+      [ "NNFW_STATUS_DEPRECATED_API", "nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ad189c6cda8b7416368ac4c28cd714fc7", null ]
     ] ],
     [ "NNFW_TYPE", "nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757", [
       [ "NNFW_TYPE_TENSOR_FLOAT32", "nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78", null ],

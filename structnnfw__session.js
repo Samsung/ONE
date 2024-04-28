@@ -1,7 +1,6 @@
 var structnnfw__session =
 [
     [ "~nnfw_session", "structnnfw__session.html#a9aae83b6b2bf60d45bf7b43830e9817c", null ],
-    [ "apply_tensorinfo", "structnnfw__session.html#a96e6b27844f54172439a82236ee3cc9b", null ],
     [ "await", "structnnfw__session.html#a84220f9c706eb556dedb715a0205ff1b", null ],
     [ "codegen", "structnnfw__session.html#a90dafdf20e9ad18b1a2f14718a32ba36", null ],
     [ "get_config", "structnnfw__session.html#a876d94a6d7933b3a5a74aaa5aaeacccb", null ],

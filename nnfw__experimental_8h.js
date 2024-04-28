@@ -17,7 +17,9 @@ var nnfw__experimental_8h =
     [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
       [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],
       [ "NNFW_QUANTIZE_TYPE_U8_ASYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72", null ],
-      [ "NNFW_QUANTIZE_TYPE_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64", null ]
+      [ "NNFW_QUANTIZE_TYPE_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64", null ],
+      [ "NNFW_QUANTIZE_TYPE_WO_I8_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10", null ],
+      [ "NNFW_QUANTIZE_TYPE_WO_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8", null ]
     ] ],
     [ "NNFW_TRAIN_LOSS", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660", [
       [ "NNFW_TRAIN_LOSS_UNDEFINED", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841", null ],

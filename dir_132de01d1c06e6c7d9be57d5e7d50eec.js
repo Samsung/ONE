@@ -5,7 +5,7 @@ var dir_132de01d1c06e6c7d9be57d5e7d50eec =
     [ "PALConv2d.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_conv2d_8h.html", null ],
     [ "PALCos.h", "_p_a_l_cos_8h.html", null ],
     [ "PALDepthwiseConv2D.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_depthwise_conv2d_8h.html", null ],
-    [ "PALFloor.h", "_p_a_l_floor_8h.html", null ],
+    [ "PALFloor.h", "luci-interpreter_2pal_2mcu_2_p_a_l_floor_8h.html", null ],
     [ "PALFloorDiv.h", "_p_a_l_floor_div_8h.html", null ],
     [ "PALFloorMod.h", "_p_a_l_floor_mod_8h.html", null ],
     [ "PALFullyConnected.h", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html", "onert-micro_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h" ],

@@ -1,11 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_partition_validate_8h_source.html":[36,0,0,52,6,0,0,3],
-"_pass_8cpp.html":[36,0,0,50,1,0],
-"_pass_8cpp.html#a21ee92457f144aaf4739e885342dcfff":[36,0,0,50,1,0,0],
-"_pass_8cpp_source.html":[36,0,0,50,1,0],
-"_pass_data_8h.html":[36,0,0,82,2,1,1],
-"_pass_data_8h_source.html":[36,0,0,82,2,1,1],
 "_pass_exception_8h.html":[36,0,0,82,2,1,2],
 "_pass_exception_8h_source.html":[36,0,0,82,2,1,2],
 "_pass_exception_test_8cpp.html":[36,0,0,82,6,2,0],
@@ -180,11 +174,11 @@ var NAVTREEINDEX24 =
 "_q_implant_8cpp_source.html":[36,0,0,108,2,0],
 "_q_implant_8h.html":[36,0,0,108,1,0],
 "_q_implant_8h_source.html":[36,0,0,108,1,0],
-"_quant_fully_connected_kernel_8h.html":[36,0,3,5,0,5,4,2],
-"_quant_fully_connected_kernel_8h.html#a0ef04ef28dee66fa069d818973e211a7":[36,0,3,5,0,5,4,2,3],
-"_quant_fully_connected_kernel_8h.html#a3da8a528c97d16ae0f60093557252f52":[36,0,3,5,0,5,4,2,1],
-"_quant_fully_connected_kernel_8h.html#ab6b131c92d65f6044f4bccea0955c1b2":[36,0,3,5,0,5,4,2,2],
-"_quant_fully_connected_kernel_8h_source.html":[36,0,3,5,0,5,4,2],
+"_quant_fully_connected_kernel_8h.html":[36,0,3,5,0,5,5,2],
+"_quant_fully_connected_kernel_8h.html#a0ef04ef28dee66fa069d818973e211a7":[36,0,3,5,0,5,5,2,3],
+"_quant_fully_connected_kernel_8h.html#a3da8a528c97d16ae0f60093557252f52":[36,0,3,5,0,5,5,2,1],
+"_quant_fully_connected_kernel_8h.html#ab6b131c92d65f6044f4bccea0955c1b2":[36,0,3,5,0,5,5,2,2],
+"_quant_fully_connected_kernel_8h_source.html":[36,0,3,5,0,5,5,2],
 "_quant_less_kernel_8h.html":[36,0,3,4,0,0,1,34,3],
 "_quant_less_kernel_8h.html#a0071dfced3a26c4a4e90c1d6d76532bf":[36,0,3,4,0,0,1,34,3,4],
 "_quant_less_kernel_8h.html#a1a6cfd9db3e11e93f1e33c741202a653":[36,0,3,4,0,0,1,34,3,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX24 =
 "_quantization_utils_8cpp.html#abbde06f4d0bf6ed2a3c9438df8eed7ed":[36,0,0,52,7,1,59,3],
 "_quantization_utils_8cpp.html#acdb994408bbb18d392a5c4f82570cd9a":[36,0,0,52,7,1,59,10],
 "_quantization_utils_8cpp.html#aea047022a3da2315c60cedd6e75647b7":[36,0,0,52,7,1,59,13],
-"_quantization_utils_8cpp.html#af8c3d8539c31e704fa69644422109306":[36,0,0,52,7,1,59,8]
+"_quantization_utils_8cpp.html#af8c3d8539c31e704fa69644422109306":[36,0,0,52,7,1,59,8],
+"_quantization_utils_8cpp_source.html":[36,0,0,52,7,1,59],
+"_quantization_utils_8h.html":[36,0,0,52,7,1,60],
+"_quantization_utils_8h.html#a0157f75d4d983ccb4e0a520d16d277e7":[36,0,0,52,7,1,60,15],
+"_quantization_utils_8h.html#a08927f7d3d5ed8512d8958335add0378":[36,0,0,52,7,1,60,14],
+"_quantization_utils_8h.html#a167803de156057780a81a39cbc694672":[36,0,0,52,7,1,60,8],
+"_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d":[36,0,0,52,7,1,60,4]
 };
