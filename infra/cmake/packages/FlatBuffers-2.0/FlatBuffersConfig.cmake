@@ -1,6 +1,5 @@
-# TODO Remove other Flatbuffers versions
 function(_FlatBuffers_import)
-  find_package(Flatbuffers 2.0 QUIET PATHS ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0)
+  find_package(Flatbuffers 2.0 EXACT QUIET PATHS ${EXT_OVERLAY_DIR}/FLATBUFFERS-2.0)
   set(FlatBuffers_FOUND ${Flatbuffers_FOUND} PARENT_SCOPE)
 endfunction(_FlatBuffers_import)
 
