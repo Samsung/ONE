@@ -38,6 +38,7 @@ VER_ONNX=1.16.0
 VER_ONNXRUNTIME=1.17.3
 VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
+VER_TORCH="2.1.2+cpu"
 
 # Install tensorflow
 
@@ -76,7 +77,7 @@ if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
 fi
 # TODO remove torch message
 echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==1.13.1+cpu ${TORCH_SOURCE_OPTION}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==${VER_TORCH} ${TORCH_SOURCE_OPTION}
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
 
