@@ -296,6 +296,7 @@ private:
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceMax, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReduceMin, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRelu, features)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRelu0To1, features)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRelu6, features)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReshape, tensor)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleResizeBilinear, input)

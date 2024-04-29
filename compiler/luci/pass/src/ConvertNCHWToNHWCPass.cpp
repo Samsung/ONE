@@ -1258,6 +1258,11 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
   bool visit(luci::CircleRelu *node) { return convert_unary_features<luci::CircleRelu>(node); }
 
+  bool visit(luci::CircleRelu0To1 *node)
+  {
+    return convert_unary_features<luci::CircleRelu0To1>(node);
+  }
+
   bool visit(luci::CircleRelu6 *node) { return convert_unary_features<luci::CircleRelu6>(node); }
 
   bool visit(luci::CircleRsqrt *node) { return convert_unary_x<luci::CircleRsqrt>(node); }
