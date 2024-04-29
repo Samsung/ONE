@@ -10,37 +10,25 @@ function(_HDF5_build)
     return()
   endif(NOT HDF5Source_FOUND)
 
-  if(DEFINED ENV{BUILD_HOST_EXEC})
-    set(EXTERNAL_H5MAKE_LIBSETTINGS $ENV{BUILD_HOST_EXEC}/externals/HDF5/build/bin/H5make_libsettings)
-    set(ENV{EXTERNAL_H5MAKE_LIBSETTINGS} ${EXTERNAL_H5MAKE_LIBSETTINGS})
-
-    # NOTE https://github.com/Samsung/ONE/issues/8762
-    # TODO generalize to select 'linux-armv7l'
-    set(H5TINIT_C_FROM_NATIVE ${CMAKE_CURRENT_LIST_DIR}/H5Tinit.c.linux-armv7l)
-    set(H5TINIT_C_COPY ${CMAKE_BINARY_DIR}/externals/HDF5/build/H5Tinit.c)
-    message(STATUS "Copy H5Tinit.c generated from target native build")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E copy "${H5TINIT_C_FROM_NATIVE}" "${H5TINIT_C_COPY}"
-    )
-  endif(DEFINED ENV{BUILD_HOST_EXEC})
-
   nnas_include(ExternalBuildTools)
   ExternalBuild_CMake(CMAKE_DIR   ${HDF5Source_DIR}
                       BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/HDF5/build
-                      INSTALL_DIR ${EXT_OVERLAY_DIR}
-                      IDENTIFIER  "1.8.16"
+                      INSTALL_DIR ${EXT_OVERLAY_DIR}/HDF5-1.14.4.2
+                      IDENTIFIER  "1.14.4.2"
                       PKG_NAME    "HDF5"
                       EXTRA_OPTS "-DBUILD_SHARED_LIBS:BOOL=ON"
+                                 "-DHDF5_BUILD_CPP_LIB:BOOL=ON"
                                  "-DHDF5_BUILD_TOOLS:BOOL=ON"
                                  "-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF"
-                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
+                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF"
+                                 "-DBUILD_TESTING:BOOL=OFF")
 
 endfunction(_HDF5_build)
 
 _HDF5_build()
 
 find_path(HDF5_CONFIG_DIR "hdf5-config.cmake"
-          PATHS ${EXT_OVERLAY_DIR}
+          PATHS ${EXT_OVERLAY_DIR}/HDF5-1.14.4.2
           NO_CMAKE_FIND_ROOT_PATH
           PATH_SUFFIXES
             cmake
