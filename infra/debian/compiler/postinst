@@ -9,4 +9,4 @@ set -e
 # which causes invalid permission problem.
 # e.g. When `pip` installs user packages, it proceeds based on $HOME.
 # To proper installation, $HOME should be root.
-su - $(whoami) -p -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
+su - $(whoami) -w ONE_PREPVENV_TORCH_SOURCE -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
