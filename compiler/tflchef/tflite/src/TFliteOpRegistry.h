@@ -129,6 +129,7 @@ private:
     REG_TFL_OP(REDUCE_MIN, TFliteOpReduceMin);
     REG_TFL_OP(REDUCE_PROD, TFliteOpReduceProd);
     REG_TFL_OP(RELU, TFliteOpReLU);
+    REG_TFL_OP(RELU_0_TO_1, TFliteOpReLU0To1);
     REG_TFL_OP(RELU6, TFliteOpReLU6);
     REG_TFL_OP(RELU_N1_TO_1, TFliteOpReLUN1To1);
     REG_TFL_OP(RESHAPE, TFliteOpReshape);
