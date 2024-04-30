@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__
 
+#include "DisposableTensorIndex.h"
 #include "MemoryManager.h"
 #include "TensorRegistry.h"
 
@@ -47,6 +48,7 @@ public:
   void allocateTrainableTensors();
   void allocateBackPropTensors();
   void allocateGradientTensors();
+  void allocateDisposableBackPropTensors();
   // TODO Add member functions to deallocate tensors
 
   void claimNonConstPlan(const ir::OperandIndex &ind);
@@ -57,12 +59,15 @@ public:
   void releaseBackPropPlan(const ir::OperandIndex &ind);
   void claimGradientPlan(const ir::OperandIndex &ind);
   void releaseGradientPlan(const ir::OperandIndex &ind);
+  void claimDisposableBackPropPlan(const DisposableTensorIndex &ind);
+  void releaseDisposableBackPropPlan(const DisposableTensorIndex &ind);
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   std::unique_ptr<MemoryManager> _trainable_mgr;
   std::unique_ptr<MemoryManager> _back_prop_mgr;
   std::unique_ptr<MemoryManager> _gradient_mgr;
+  std::unique_ptr<DisposableMemoryManager> _disposable_back_prop_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
 
