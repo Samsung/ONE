@@ -54,7 +54,7 @@ public:
     for (auto &&op_ind : _data.op_order)
     {
       auto fn_seq = kernel_gen->generate(op_ind);
-      ret.emplace_back(op_ind, std::move(fn_seq));
+      ret.emplace(op_ind, std::move(fn_seq));
     }
 
     tensor_builder->allocate();

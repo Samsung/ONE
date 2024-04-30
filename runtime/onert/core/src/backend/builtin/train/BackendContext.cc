@@ -50,7 +50,7 @@ backend::train::FunctionMap BackendContext::genKernels()
   for (auto &&op_ind : _tdata->op_order)
   {
     auto tn_seq = kernel_gen->generate(op_ind);
-    ret.emplace_back(op_ind, std::move(tn_seq));
+    ret.emplace(op_ind, std::move(tn_seq));
   }
 
   trainable_graph()->operands().iterate(

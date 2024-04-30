@@ -34,7 +34,7 @@ namespace train
 {
 
 using FunctionMap =
-  std::vector<std::pair<ir::OperationIndex, std::unique_ptr<exec::train::TrainableFnSequence>>>;
+  std::unordered_map<ir::OperationIndex, std::unique_ptr<exec::train::TrainableFnSequence>>;
 
 struct TrainableContextData
 {
