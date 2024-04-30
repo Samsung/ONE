@@ -40,7 +40,6 @@
 #include <vector>
 #include <dirent.h>
 #include <misc/string_helpers.h>
-#include <misc/polymorphic_downcast.h>
 
 #include <fcntl.h>    // O_RDONLY
 #include <sys/mman.h> // mmap, munmap
