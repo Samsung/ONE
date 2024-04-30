@@ -92,6 +92,7 @@
 #include "Op/include/ReduceMin.h"
 #include "Op/include/ReduceProd.h"
 #include "Op/include/ReLU.h"
+#include "Op/include/ReLU0To1.h"
 #include "Op/include/ReLU6.h"
 #include "Op/include/ReLUN1To1.h"
 #include "Op/include/Reshape.h"
