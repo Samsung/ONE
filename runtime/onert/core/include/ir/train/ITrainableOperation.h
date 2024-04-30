@@ -40,7 +40,21 @@ public:
   virtual void accept(OperationVisitor &v) const override = 0;
   virtual void accept(TrainableOperationVisitor &v) const = 0;
   virtual bool hasTrainableParameter() const = 0;
-  // TODO Add virtual methods related to training
+
+  // Note that the update is enable by default
+  // Update of the node will be disabled during traning
+  virtual void disableWeightsUpdate() = 0;
+  // Update of the node will be enable during traning
+  virtual void enableWeightsUpdate() = 0;
+  // Check if the node is trainable
+  virtual bool isTrainable() const = 0;
+
+  // Mark the node as not needed for backward propagation part of the traning
+  virtual void disableBackward() = 0;
+  // Check if the nodes is required for backward propagation part of the traning.
+  // If returns false, it means that there are no nodes before (in topological sense) which are
+  // trainable.
+  virtual bool isRequiredForBackward() const = 0;
 };
 
 } // namespace train

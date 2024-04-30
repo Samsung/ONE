@@ -38,15 +38,9 @@ public:
   ConvolutionLayer();
   ~ConvolutionLayer();
 
-  void configure(const IPortableTensor *input, const IPortableTensor *weights,
-                 const IPortableTensor *bias, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
-                 IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
-                 ir::PaddingType paddingType, const uint32_t paddingLeft,
-                 const uint32_t paddingRight, const uint32_t paddingTop,
-                 const uint32_t paddingBottom, const uint32_t strideWidth,
-                 const uint32_t strideHeight, const uint32_t dilationWidthFactor,
-                 const uint32_t dilationHeightFactor, const ir::Activation activation);
+  void configureBackward(const IPortableTensor *weights, IPortableTensor *back_prop_input,
+                         IPortableTensor *grad_weights, IPortableTensor *grad_bias,
+                         const IPortableTensor *back_prop_output, const ir::Activation activation);
   void forward(bool training) override;
   void backward() override;
 

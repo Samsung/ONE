@@ -37,8 +37,7 @@ public:
   SoftMaxLayer();
 
 public:
-  void configure(const IPortableTensor *input, const float beta, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
+  void configureBackward(IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
   void forward(bool training) override;
   void backward() override;
 

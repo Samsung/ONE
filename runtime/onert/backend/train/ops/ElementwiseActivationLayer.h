@@ -42,9 +42,9 @@ class ElementwiseActivationLayer : public ::onert::exec::train::ITrainableFuncti
 public:
   ElementwiseActivationLayer();
 
-  void configure(const IPortableTensor *input, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output,
-                 float alpha, float beta, ElementwiseActivationType op_type);
+  void configureBackward(const IPortableTensor *input, IPortableTensor *back_prop_input,
+                         const IPortableTensor *back_prop_output, float alpha, float beta,
+                         ElementwiseActivationType op_type);
   void forward(bool training) override;
   void backward() override;
 

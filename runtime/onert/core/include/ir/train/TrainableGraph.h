@@ -139,6 +139,9 @@ public:
 public:
   std::vector<ir::OperationIndex>
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
+  // Mark the ops which are unnecessary for backward propagation part of the training.
+  // It means that there are no nodes before (in topological sense) which are trainable.
+  void markOpsUnnecessaryForBackward();
 
 private:
   Graph _graph;

@@ -65,21 +65,12 @@ ConvolutionLayer::ConvolutionLayer()
 
 ConvolutionLayer::~ConvolutionLayer() = default;
 
-void ConvolutionLayer::configure(
-  const IPortableTensor *input, const IPortableTensor *weights, const IPortableTensor *bias,
-  IPortableTensor *output, IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
-  IPortableTensor *grad_bias, const IPortableTensor *back_prop_output, ir::PaddingType paddingType,
-  const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
-  const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight,
-  const uint32_t dilationWidthFactor, const uint32_t dilationHeightFactor,
-  const ir::Activation activation)
+void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
+                                         IPortableTensor *back_prop_input,
+                                         IPortableTensor *grad_weights, IPortableTensor *grad_bias,
+                                         const IPortableTensor *back_prop_output,
+                                         const ir::Activation activation)
 {
-  const bool is_cacheable_weights = false;
-  cpu::ops::ConvolutionLayer::configure(input, weights, bias, paddingType, paddingLeft,
-                                        paddingRight, paddingTop, paddingBottom, strideWidth,
-                                        strideHeight, dilationWidthFactor, dilationHeightFactor,
-                                        activation, output, is_cacheable_weights);
-
   _back_prop_input = back_prop_input;
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;

@@ -35,12 +35,9 @@ SoftMaxLayer::SoftMaxLayer()
   // DO NOTHING
 }
 
-void SoftMaxLayer::configure(const IPortableTensor *input, const float beta,
-                             IPortableTensor *output, IPortableTensor *back_prop_input,
-                             const IPortableTensor *back_prop_output)
+void SoftMaxLayer::configureBackward(IPortableTensor *back_prop_input,
+                                     const IPortableTensor *back_prop_output)
 {
-  cpu::ops::SoftMaxLayer::configure(input, beta, output);
-
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }

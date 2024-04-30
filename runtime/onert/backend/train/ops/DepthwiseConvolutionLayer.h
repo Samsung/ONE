@@ -40,16 +40,9 @@ class DepthwiseConvolutionLayer : public ::onert::exec::train::ITrainableFunctio
 public:
   DepthwiseConvolutionLayer();
 
-  void configure(const IPortableTensor *input, const IPortableTensor *kernel,
-                 const IPortableTensor *bias, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
-                 IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
-                 const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop,
-                 const uint32_t paddingBottom, const uint32_t strideWidth,
-                 const uint32_t strideHeight, const uint32_t multiplier,
-                 const uint32_t dilationWidth, const uint32_t dilationHeight,
-                 const ir::Activation activation,
-                 const std::shared_ptr<ExternalContext> &external_context);
+  void configureBackward(IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
+                         IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
+                         const ir::Activation activation);
   void forward(bool training) override;
   void backward() override;
 

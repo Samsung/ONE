@@ -53,13 +53,13 @@ public:
   PoolLayer();
 
 public:
-  void configure(const IPortableTensor *input, const uint32_t paddingLeft,
-                 const uint32_t paddingRight, const uint32_t paddingTop,
-                 const uint32_t paddingBottom, const uint32_t strideWidth,
-                 const uint32_t strideHeight, const uint32_t kernelWidth,
-                 const uint32_t kernelHeight, const ir::Activation activation,
-                 IPortableTensor *output, const PoolType op_type, IPortableTensor *back_prop_input,
-                 const IPortableTensor *back_prop_output);
+  void configureBackward(const uint32_t paddingLeft, const uint32_t paddingRight,
+                         const uint32_t paddingTop, const uint32_t paddingBottom,
+                         const uint32_t strideWidth, const uint32_t strideHeight,
+                         const uint32_t kernelWidth, const uint32_t kernelHeight,
+                         const ir::Activation activation, const PoolType op_type,
+                         IPortableTensor *output, IPortableTensor *back_prop_input,
+                         const IPortableTensor *back_prop_output);
 
   void forward(bool training) override;
   void backward() override;

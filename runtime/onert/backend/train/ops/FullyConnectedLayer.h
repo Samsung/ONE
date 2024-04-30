@@ -40,12 +40,11 @@ public:
   ~FullyConnectedLayer();
 
 public:
-  void configure(const IPortableTensor *input, const IPortableTensor *weights,
-                 const IPortableTensor *bias, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
-                 IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
-                 ir::Activation activation, ir::FullyConnectedWeightsFormat weights_format,
-                 const std::shared_ptr<train::ExternalContext> &external_context);
+  void configureBackward(const IPortableTensor *input, const IPortableTensor *weights,
+                         IPortableTensor *output, IPortableTensor *back_prop_input,
+                         IPortableTensor *grad_weights, IPortableTensor *grad_bias,
+                         const IPortableTensor *back_prop_output, ir::Activation activation,
+                         ir::FullyConnectedWeightsFormat weights_format);
 
   void forward(bool training) override;
   void backward() override;

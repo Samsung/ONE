@@ -40,6 +40,7 @@
 #include <vector>
 #include <dirent.h>
 #include <misc/string_helpers.h>
+#include <misc/polymorphic_downcast.h>
 
 #include <fcntl.h>    // O_RDONLY
 #include <sys/mman.h> // mmap, munmap
@@ -1545,6 +1546,53 @@ NNFW_STATUS nnfw_session::train_set_output(uint32_t index, NNFW_TYPE /*type*/, v
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::nnfw_train_disable_node_update(uint32_t op_index)
+{
+  if (!isStateModelLoaded() || isStatePreparedTraining())
+  {
+    std::cerr << "Error during nnfw_session::nnfw_train_disable_node_update: invalid session state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (op_index >= primary_subgraph()->operations().size())
+  {
+    std::cerr << "Error during nnfw_session::nnfw_train_disable_node_update: provided op_index="
+              << op_index << " is out of operators range" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  const auto ir_op_index = onert::ir::OperationIndex{op_index};
+  auto &options = _coptions[0];
+  options->frozen_train_ops.emplace(ir_op_index);
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::nnfw_train_enable_node_update(uint32_t op_index)
+{
+  if (!isStateModelLoaded() || isStatePreparedTraining())
+  {
+    std::cerr << "Error during nnfw_session::nnfw_train_enable_node_update: invalid session state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  if (op_index >= primary_subgraph()->operations().size())
+  {
+    std::cerr << "Error during nnfw_session::nnfw_train_enable_node_update: provided op_index="
+              << op_index << " is out of operators range" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  const auto ir_op_index = onert::ir::OperationIndex{op_index};
+  auto &options = _coptions[0];
+  if (options->frozen_train_ops.find(ir_op_index) != std::end(options->frozen_train_ops))
+  {
+    options->frozen_train_ops.erase(ir_op_index);
+  }
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::train_run(bool update_weights)
 {
   if (!isStatePreparedOrFinishedTraining())
@@ -1699,7 +1747,7 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
 
       auto subg = subgs->Get(0); // Get 1st subgraph
       if (!idx.valid() || idx.value() >= subg->tensors()->size())
-        throw std::runtime_error("Trainable tensor index is out of range");
+        return;
 
       auto buf_idx = subg->tensors()->Get(idx.value())->buffer();
       const ::circle::Buffer *buffer = (*model->buffers())[buf_idx];
