@@ -30,7 +30,11 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
 #include "TFLOperator.lst"
 #undef TFL_OPERATOR
     default:
-      throw std::runtime_error("tflite2circle: wrong op");
+    {
+      std::string msg = "tflite2circle: Unsupported op ";
+      msg = msg + tflite::EnumNameBuiltinOperator(tfl_bop);
+      throw std::runtime_error(msg.c_str());
+    }
   }
 }
 
@@ -53,7 +57,11 @@ int32_t get_circle_builtin_code(int32_t tfl_bop_i32)
     case tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES:
       return static_cast<int32_t>(circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     default:
-      throw std::runtime_error("tflite2circle: wrong op");
+    {
+      std::string msg = "tflite2circle: Unsupported op ";
+      msg = msg + tflite::EnumNameBuiltinOperator(tfl_bop);
+      throw std::runtime_error(msg.c_str());
+    }
   }
 }
 
