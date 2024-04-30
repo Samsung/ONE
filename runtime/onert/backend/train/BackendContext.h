@@ -78,6 +78,9 @@ public:
 
   const exec::train::optimizer::Optimizer *optimizer() const { return _optimizer.get(); }
 
+private:
+  FunctionMap generateFunctionMap();
+
 public:
   // TODO Make it private
   std::shared_ptr<KernelGenerator> kernel_gen;
