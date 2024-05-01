@@ -94,6 +94,7 @@ CIRCLE_NODE(CircleReduceMax, BuiltinOperator_REDUCE_MAX, BuiltinOptions_ReducerO
 CIRCLE_NODE(CircleReduceMin, BuiltinOperator_REDUCE_MIN, BuiltinOptions_ReducerOptions)
 CIRCLE_NODE(CircleReduceProd, BuiltinOperator_REDUCE_PROD, BuiltinOptions_ReducerOptions)
 CIRCLE_NODE(CircleRelu, BuiltinOperator_RELU, BuiltinOptions_NONE)
+CIRCLE_NODE(CircleRelu0To1, BuiltinOperator_RELU_0_TO_1, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleRelu6, BuiltinOperator_RELU6, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleReluN1To1, BuiltinOperator_RELU_N1_TO_1, BuiltinOptions_NONE)
 CIRCLE_NODE(CircleReshape, BuiltinOperator_RESHAPE, BuiltinOptions_ReshapeOptions)

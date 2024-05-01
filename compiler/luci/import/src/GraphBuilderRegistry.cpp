@@ -108,6 +108,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(REDUCE_MIN, CircleReduceMinGraphBuilder);                                    // 89
   CIRCLE_NODE(REDUCE_PROD, CircleReduceProdGraphBuilder);                                  // 81
   CIRCLE_NODE(RELU, CircleReluGraphBuilder);                                               // 19
+  CIRCLE_NODE(RELU_0_TO_1, CircleRelu0To1GraphBuilder);                                    // 152
   CIRCLE_NODE(RELU6, CircleRelu6GraphBuilder);                                             // 21
   CIRCLE_NODE(RELU_N1_TO_1, CircleReluN1To1GraphBuilder);                                  // 20
   CIRCLE_NODE(RESHAPE, CircleReshapeGraphBuilder);                                         // 22

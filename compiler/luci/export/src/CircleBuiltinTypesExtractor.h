@@ -358,6 +358,7 @@ public:
     return circle::CreateReducerOptions(_builder, node->keep_dims()).Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleRelu *) { return _no_option; }
+  flatbuffers::Offset<void> visit(luci::CircleRelu0To1 *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleRelu6 *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleReluN1To1 *) { return _no_option; }
   flatbuffers::Offset<void> visit(luci::CircleReshape *node)
