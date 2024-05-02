@@ -139,6 +139,7 @@ public:
   void visit(const luci::CircleReduceMin *) final;
   void visit(const luci::CircleReduceProd *) final;
   void visit(const luci::CircleRelu *) final;
+  void visit(const luci::CircleRelu0To1 *) final;
   void visit(const luci::CircleRelu6 *) final;
   void visit(const luci::CircleReluN1To1 *) final;
   void visit(const luci::CircleReshape *) final;

@@ -173,6 +173,7 @@ public:
   luci::CircleNode *visit(const luci::CircleReduceMin *) final;
   luci::CircleNode *visit(const luci::CircleReduceProd *) final;
   luci::CircleNode *visit(const luci::CircleRelu *) final;
+  luci::CircleNode *visit(const luci::CircleRelu0To1 *) final;
   luci::CircleNode *visit(const luci::CircleRelu6 *) final;
   luci::CircleNode *visit(const luci::CircleReluN1To1 *) final;
   luci::CircleNode *visit(const luci::CircleReshape *) final;
