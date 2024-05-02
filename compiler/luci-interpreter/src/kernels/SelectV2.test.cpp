@@ -44,35 +44,59 @@ std::vector<unsigned char> c_data{
   0, 0, 0, // Row 2
 };
 
-std::vector<float> t_data_single{-0.5};
+std::vector<float> f32t_data_single{-0.5};
 
-std::vector<float> t_data{
+std::vector<float> f32t_data{
   0.5, 0.7, 0.9, // Row 1
   1,   0,   -1,  // Row 2
 };
 
-std::vector<float> e_data{
+std::vector<float> f32e_data{
   0.9, 0.7, 0.5, // Row 1
   -1,  0,   1,   // Row 2
 };
 
-std::vector<float> ref_output_data{
+std::vector<float> ref_f32o_data{
   0.5, 0.7, 0.9, // Row 1
   -1,  0,   1,   // Row 2
 };
 
-std::vector<float> ref_broadcast_output_data{
+std::vector<float> ref_broadcast_f32o_data{
   -0.5, -0.5, -0.5, // Row 1
-  0.9,  0.7,  0.5,  // Row 1
+  0.9,  0.7,  0.5,  // Row 2
   -0.5, -0.5, -0.5, // Row 3
   -1,   0,    1,    // Row 4
+};
+
+std::vector<int32_t> i32t_data_single{2};
+
+std::vector<int32_t> i32t_data{
+  5, -7, 9,  // Row 1
+  1, 0,  -1, // Row 2
+};
+
+std::vector<int32_t> i32e_data{
+  9,  7, -5, // Row 1
+  -1, 0, 1,  // Row 2
+};
+
+std::vector<int32_t> ref_i32o_data{
+  5,  -7, 9, // Row 1
+  -1, 0,  1, // Row 2
+};
+
+std::vector<int32_t> ref_broadcast_i32o_data{
+  2,  2, 2,  // Row 1
+  9,  7, -5, // Row 2
+  2,  2, 2,  // Row 3
+  -1, 0, 1,  // Row 4
 };
 
 TEST_F(SelectV2Test, FloatSimple)
 {
   Tensor c_tensor = makeInputTensor<DataType::BOOL>({2, 3}, c_data, _memory_manager.get());
-  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, t_data, _memory_manager.get());
-  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, e_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32t_data, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32e_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
@@ -80,16 +104,17 @@ TEST_F(SelectV2Test, FloatSimple)
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
 
-  EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorData<float>(output_tensor), ::testing::ElementsAreArray(ref_f32o_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
 }
 
 TEST_F(SelectV2Test, FloatBroadcast4D)
 {
   Tensor c_tensor = makeInputTensor<DataType::BOOL>({1, 2, 3, 1}, c_data, _memory_manager.get());
-  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({1}, t_data_single, _memory_manager.get());
-  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 1, 3, 1}, e_data, _memory_manager.get());
+  Tensor t_tensor =
+    makeInputTensor<DataType::FLOAT32>({1}, f32t_data_single, _memory_manager.get());
+  Tensor e_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 1, 3, 1}, f32e_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
@@ -98,7 +123,41 @@ TEST_F(SelectV2Test, FloatBroadcast4D)
   kernel.execute();
 
   EXPECT_THAT(extractTensorData<float>(output_tensor),
-              ::testing::ElementsAreArray(ref_broadcast_output_data));
+              ::testing::ElementsAreArray(ref_broadcast_f32o_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 2, 3, 1}));
+}
+
+TEST_F(SelectV2Test, Int32Simple)
+{
+  Tensor c_tensor = makeInputTensor<DataType::BOOL>({2, 3}, c_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::S32>({2, 3}, i32t_data, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::S32>({2, 3}, i32e_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<int32_t>(output_tensor),
+              ::testing::ElementsAreArray(ref_i32o_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
+}
+
+TEST_F(SelectV2Test, Int32Broadcast4D)
+{
+  Tensor c_tensor = makeInputTensor<DataType::BOOL>({1, 2, 3, 1}, c_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::S32>({1}, i32t_data_single, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::S32>({2, 1, 3, 1}, i32e_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<int32_t>(output_tensor),
+              ::testing::ElementsAreArray(ref_broadcast_i32o_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 2, 3, 1}));
 }
 
@@ -110,8 +169,8 @@ TEST_F(SelectV2Test, Invalid_C_Type_NEG)
   };
 
   Tensor c_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, i_c_data, _memory_manager.get());
-  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, t_data, _memory_manager.get());
-  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, e_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32t_data, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32e_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
@@ -121,9 +180,20 @@ TEST_F(SelectV2Test, Invalid_C_Type_NEG)
 TEST_F(SelectV2Test, Invalid_O_Type_NEG)
 {
   Tensor c_tensor = makeInputTensor<DataType::BOOL>({2, 3}, c_data, _memory_manager.get());
-  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, t_data, _memory_manager.get());
-  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, e_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32t_data, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32e_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(SelectV2Test, MixedType_NEG)
+{
+  Tensor c_tensor = makeInputTensor<DataType::BOOL>({2, 3}, c_data, _memory_manager.get());
+  Tensor t_tensor = makeInputTensor<DataType::S32>({2, 3}, i32t_data, _memory_manager.get());
+  Tensor e_tensor = makeInputTensor<DataType::FLOAT32>({2, 3}, f32e_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   SelectV2 kernel(&c_tensor, &t_tensor, &e_tensor, &output_tensor);
   EXPECT_ANY_THROW(kernel.configure());
