@@ -50,29 +50,33 @@ void SelectV2::configure()
 
 void SelectV2::execute() const
 {
-  switch (t()->element_type())
+  auto t_type = t()->element_type();
+  switch (t_type)
   {
     case DataType::FLOAT32:
-      evalFloat();
+      evaluate<float>();
+      break;
+    case DataType::S32:
+      evaluate<int32_t>();
       break;
     default:
       throw std::runtime_error("luci-intp SelectV2 unsupported type.");
   }
 }
 
-void SelectV2::evalFloat() const
+template <typename T> void SelectV2::evaluate() const
 {
   const auto condition_shape = getTensorShape(condition());
   const auto condition_data = getTensorData<bool>(condition());
   const auto t_shape = getTensorShape(t());
-  const auto t_data = getTensorData<float>(t());
+  const auto t_data = getTensorData<T>(t());
   const auto e_shape = getTensorShape(e());
-  const auto e_data = getTensorData<float>(e());
+  const auto e_data = getTensorData<T>(e());
   const auto output_shape = getTensorShape(output());
-  auto output_data = getTensorData<float>(output());
+  auto output_data = getTensorData<T>(output());
 
-  tflite::reference_ops::BroadcastSelect5DSlow(condition_shape, condition_data, t_shape, t_data,
-                                               e_shape, e_data, output_shape, output_data);
+  tflite::reference_ops::BroadcastSelect5DSlow<bool, T>(
+    condition_shape, condition_data, t_shape, t_data, e_shape, e_data, output_shape, output_data);
 }
 
 } // namespace kernels

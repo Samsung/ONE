@@ -39,7 +39,7 @@ public:
   void execute() const override;
 
 private:
-  void evalFloat() const;
+  template <typename T> void evaluate() const;
 };
 
 } // namespace kernels
