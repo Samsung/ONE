@@ -38,8 +38,8 @@ luci::CircleConst *create_mul_const(luci::CircleStridedSlice *strided_slice_with
   assert(strides_node->dtype() == loco::DataType::S32);
 
   auto ss_const_size = begin_node->size<loco::DataType::S32>();
-  assert(ss_const_size = end_node->size<loco::DataType::S32>());
-  assert(ss_const_size = strides_node->size<loco::DataType::S32>());
+  assert(ss_const_size == end_node->size<loco::DataType::S32>());
+  assert(ss_const_size == strides_node->size<loco::DataType::S32>());
 
   // Check rank
   if (ss_const_size != concat_node->rank())
