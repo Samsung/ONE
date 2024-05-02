@@ -52,7 +52,12 @@ bool fuse_mul_with_fully_connected(luci::CircleMul *mul)
   luci::CircleFullyConnected *fc = nullptr;
   luci::CircleConst *mul_const = nullptr;
   if (not luci::fill(&fc, &mul_const).with_args_of(mul))
-    return false;
+  {
+    if (not luci::fill(&mul_const, &fc).with_args_of(mul))
+    {
+      return false;
+    }
+  }
 
   if (fc->fusedActivationFunction() != luci::FusedActFunc::NONE)
     return false;
@@ -109,7 +114,7 @@ bool fuse_mul_with_fully_connected(luci::CircleMul *mul)
                                         : mul_const->at<loco::DataType::FLOAT32>(i);
       for (uint32_t j = 0; j < fc_weight->dim(1).value(); ++j)
       {
-        fc_weight->at<loco::DataType::FLOAT32>(i * fc_weight->dim(0).value() + j) *= mult;
+        fc_weight->at<loco::DataType::FLOAT32>(i * fc_weight->dim(1).value() + j) *= mult;
       }
     }
     fused_fc_weight->name(fused_fc_weight->name() + "/FusedMul");
