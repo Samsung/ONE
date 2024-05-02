@@ -1,0 +1,17 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operation {
+  type: "ReLU0To1"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
