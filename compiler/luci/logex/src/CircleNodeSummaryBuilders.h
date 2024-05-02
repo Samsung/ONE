@@ -537,6 +537,10 @@ class CircleReluSummaryBuilder final : public CircleNodeWithFEATURESSummaryBuild
 {
 };
 
+class CircleRelu0To1SummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
+{
+};
+
 class CircleRelu6SummaryBuilder final : public CircleNodeWithFEATURESSummaryBuilder
 {
 };

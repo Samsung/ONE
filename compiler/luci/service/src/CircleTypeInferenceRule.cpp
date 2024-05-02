@@ -382,6 +382,11 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
     return luci::dtype_get(node->features());
   }
 
+  loco::DataType visit(const luci::CircleRelu0To1 *node) final
+  {
+    return luci::dtype_get(node->features());
+  }
+
   loco::DataType visit(const luci::CircleRelu6 *node) final
   {
     return luci::dtype_get(node->features());

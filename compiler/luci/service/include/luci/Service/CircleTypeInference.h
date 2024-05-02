@@ -118,6 +118,7 @@ public:
   // loco::DataType visit(const luci::CircleReduceMin *node) final;
   // loco::DataType visit(const luci::CircleReduceProd *node) final;
   // loco::DataType visit(const luci::CircleRelu *node) final;
+  // loco::DataType visit(const luci::CircleRelu0To1 *node) final;
   // loco::DataType visit(const luci::CircleRelu6 *node) final;
   // loco::DataType visit(const luci::CircleReluN1To1 *node) final;
   // loco::DataType visit(const luci::CircleReshape *node) final;
