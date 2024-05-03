@@ -3,14 +3,17 @@
 # https://www.debian.org/doc/debian-policy/ch-maintainerscripts.html
 # Boradly speaking, the `postinst` is called after a package is unpacked.
 
-set +e
+set -e
 
 # `postinst` script is invoked as root except given environmental variables specified in the w option,
 # which causes invalid permission problem.
 # e.g. When `pip` installs user packages, it proceeds based on $HOME.
 # To proper installation, $HOME should be root.
-su - $(whoami) -w ONE_PREPVENV_TORCH_SOURCE -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
-if [[ $? == 1 ]]; then
-    # Ubuntu 18.04 doesn't support w option.
-    su - $(whoami) -p -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
+CODENAME=$(awk -F "=" '/UBUNTU_CODENAME/ {print $2}' /etc/os-release)
+if [[ $CODENAME == "bionic" ]]; then
+  # Ubuntu 18.04 doesn't support w option.
+  su - $(whoami) -p -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
+else
+  su - $(whoami) -w ONE_PREPVENV_TORCH_SOURCE -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
 fi
+
