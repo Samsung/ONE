@@ -129,6 +129,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--remove_gather_guard",
              "This will remove Add/FloorMod guards of Gather indices with certain conditions. "
              "CAUTION: user must guarantee that indices are all non-negative values.");
+  add_switch(arser, "--remove_qdq_for_mpo",
+             "This will remove QDQ to simulate mixed-precision operator");
   add_switch(arser, "--remove_quantdequant", "This will remove Quantize-Dequantize sequence");
   add_switch(arser, "--remove_redundant_quantize", "This will remove redundant Quantize operators");
   add_switch(arser, "--remove_redundant_reshape",
@@ -323,6 +325,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveFakeQuant);
   if (arser.get<bool>("--remove_gather_guard"))
     options->enable(Algorithms::RemoveGatherGuard);
+  if (arser.get<bool>("--remove_qdq_for_mpo"))
+    options->enable(Algorithms::RemoveQDQForMixedPrecisionOp);
   if (arser.get<bool>("--remove_quantdequant"))
     options->enable(Algorithms::RemoveQuantDequantSeq);
   if (arser.get<bool>("--remove_redundant_quantize"))
