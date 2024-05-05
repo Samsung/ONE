@@ -82,6 +82,7 @@ var dir_823f9ebc7d496448aae7bd1fd3ebded4 =
     [ "CircleReduceMin.cpp", "import_2src_2_nodes_2_circle_reduce_min_8cpp.html", null ],
     [ "CircleReduceProd.cpp", "import_2src_2_nodes_2_circle_reduce_prod_8cpp.html", null ],
     [ "CircleRelu.cpp", "import_2src_2_nodes_2_circle_relu_8cpp.html", null ],
+    [ "CircleRelu0To1.cpp", "import_2src_2_nodes_2_circle_relu0_to1_8cpp.html", null ],
     [ "CircleRelu6.cpp", "import_2src_2_nodes_2_circle_relu6_8cpp.html", null ],
     [ "CircleReluN1To1.cpp", "import_2src_2_nodes_2_circle_relu_n1_to1_8cpp.html", null ],
     [ "CircleReshape.cpp", "import_2src_2_nodes_2_circle_reshape_8cpp.html", null ],

@@ -24,6 +24,7 @@ var dir_87d3c94e6949fc8b1232f1fb92051577 =
     [ "PALQuantize.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_quantize_8h.html", null ],
     [ "PALreference_ops.h", "linux_2_p_a_lreference__ops_8h.html", null ],
     [ "PALRelu.h", "_p_a_l_relu_8h.html", null ],
+    [ "PALRelu0To1.h", "_p_a_l_relu0_to1_8h.html", null ],
     [ "PALRelu6.h", "_p_a_l_relu6_8h.html", null ],
     [ "PALResizeBilinear.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_resize_bilinear_8h.html", null ],
     [ "PALResizeNearestNeighbor.h", "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_resize_nearest_neighbor_8h.html", null ],

@@ -207,6 +207,8 @@ var namespaceluci =
     [ "CircleReduceProd", "classluci_1_1_circle_reduce_prod.html", "classluci_1_1_circle_reduce_prod" ],
     [ "CircleReduceProdGraphBuilder", "classluci_1_1_circle_reduce_prod_graph_builder.html", "classluci_1_1_circle_reduce_prod_graph_builder" ],
     [ "CircleRelu", "classluci_1_1_circle_relu.html", "classluci_1_1_circle_relu" ],
+    [ "CircleRelu0To1", "classluci_1_1_circle_relu0_to1.html", "classluci_1_1_circle_relu0_to1" ],
+    [ "CircleRelu0To1GraphBuilder", "classluci_1_1_circle_relu0_to1_graph_builder.html", "classluci_1_1_circle_relu0_to1_graph_builder" ],
     [ "CircleRelu6", "classluci_1_1_circle_relu6.html", "classluci_1_1_circle_relu6" ],
     [ "CircleRelu6GraphBuilder", "classluci_1_1_circle_relu6_graph_builder.html", "classluci_1_1_circle_relu6_graph_builder" ],
     [ "CircleReluGraphBuilder", "classluci_1_1_circle_relu_graph_builder.html", "classluci_1_1_circle_relu_graph_builder" ],

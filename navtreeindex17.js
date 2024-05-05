@@ -1,11 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"_merge_command_8cpp.html":[36,0,0,8,0,7],
-"_merge_command_8cpp_source.html":[36,0,0,8,0,7],
-"_merge_command_8h.html":[36,0,0,8,0,8],
-"_merge_command_8h_source.html":[36,0,0,8,0,8],
-"_merge_concat_nodes_pass_8cpp.html":[36,0,0,38,1,3,14],
-"_merge_concat_nodes_pass_8cpp_source.html":[36,0,0,38,1,3,14],
 "_merge_concat_nodes_pass_8h.html":[36,0,0,38,1,3,15],
 "_merge_concat_nodes_pass_8h_source.html":[36,0,0,38,1,3,15],
 "_message_8cpp.html":[36,0,0,41,1,0,1],
@@ -249,5 +243,11 @@ var NAVTREEINDEX17 =
 "_n_e_instance_normalization_layer_ex_8cpp.html":[36,0,1,0,1,1,1,0,8],
 "_n_e_instance_normalization_layer_ex_8cpp_source.html":[36,0,1,0,1,1,1,0,8],
 "_n_e_instance_normalization_layer_ex_8h.html":[36,0,1,0,0,1,1,0,8],
-"_n_e_instance_normalization_layer_ex_8h_source.html":[36,0,1,0,0,1,1,0,8]
+"_n_e_instance_normalization_layer_ex_8h_source.html":[36,0,1,0,0,1,1,0,8],
+"_n_e_instance_normalization_layer_kernel_ex_8cpp.html":[36,0,1,0,1,0,1,0,6],
+"_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html":[36,0,1,0,1,0,1,0,6],
+"_n_e_instance_normalization_layer_kernel_ex_8h.html":[36,0,1,0,0,0,1,0,6],
+"_n_e_instance_normalization_layer_kernel_ex_8h_source.html":[36,0,1,0,0,0,1,0,6],
+"_n_e_muliply_scale_factor_kernel_8h.html":[36,0,1,0,0,0,1,0,7],
+"_n_e_muliply_scale_factor_kernel_8h_source.html":[36,0,1,0,0,0,1,0,7]
 };

@@ -469,6 +469,8 @@ Functions</h2></td></tr>
 <tr class="separator:a8b254c0fcd26bed8d33a55907dd07ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a514f3783038dcd8ef0e655f749019cdc" id="r_a514f3783038dcd8ef0e655f749019cdc"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a514f3783038dcd8ef0e655f749019cdc">build_kernel_CircleRelu</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
 <tr class="separator:a514f3783038dcd8ef0e655f749019cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec328a9a37f722d0fecaae84be1cab0" id="r_a2ec328a9a37f722d0fecaae84be1cab0"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a2ec328a9a37f722d0fecaae84be1cab0">build_kernel_CircleRelu0To1</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
+<tr class="separator:a2ec328a9a37f722d0fecaae84be1cab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab09fc2d0519e76de7fb4248266045864" id="r_ab09fc2d0519e76de7fb4248266045864"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#ab09fc2d0519e76de7fb4248266045864">build_kernel_CircleRelu6</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
 <tr class="separator:ab09fc2d0519e76de7fb4248266045864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70a534932a8b5dfdf970afb089d707be" id="r_a70a534932a8b5dfdf970afb089d707be"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci__interpreter.html#a70a534932a8b5dfdf970afb089d707be">build_kernel_CircleReshape</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *circle_node, <a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;helper)</td></tr>
@@ -4214,6 +4216,47 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <div class="line"><span class="lineno">   31</span>  <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *output = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2ea9a2ac873262a66e1afe27583941fb">getOutputTensor</a>(node);</div>
 <div class="line"><span class="lineno">   32</span> </div>
 <div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Relu&gt;(input, output);</div>
+<div class="line"><span class="lineno">   34</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>
+
+</div>
+</div>
+<a id="a2ec328a9a37f722d0fecaae84be1cab0" name="a2ec328a9a37f722d0fecaae84be1cab0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ec328a9a37f722d0fecaae84be1cab0">&#9670;&#160;</a></span>build_kernel_CircleRelu0To1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classluci__interpreter_1_1_kernel.html">Kernel</a> &gt; luci_interpreter::build_kernel_CircleRelu0To1 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *&#160;</td>
+          <td class="paramname"><em>circle_node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classluci__interpreter_1_1_kernel_builder_helper.html">KernelBuilderHelper</a> &amp;&#160;</td>
+          <td class="paramname"><em>helper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_re_l_u0_to1_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_re_l_u0_to1_8cpp_source.html">Relu0To1.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleRelu0To1 *&gt;(circle_node);</div>
+<div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *input = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#af56fb1d91e86cb79711563991f0ccbb3">getInputTensor</a>(node-&gt;features());</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *output = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2ea9a2ac873262a66e1afe27583941fb">getOutputTensor</a>(node);</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::Relu0To1&gt;(input, output);</div>
 <div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00024">luci_interpreter::KernelBuilderHelper::getInputTensor()</a>, and <a class="el" href="_kernel_builder_helper_8cpp_source.html#l00040">luci_interpreter::KernelBuilderHelper::getOutputTensor()</a>.</p>

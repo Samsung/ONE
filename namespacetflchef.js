@@ -82,6 +82,7 @@ var namespacetflchef =
     [ "TFliteOpReduceProd", "classtflchef_1_1_t_flite_op_reduce_prod.html", "classtflchef_1_1_t_flite_op_reduce_prod" ],
     [ "TFliteOpRegistry", "classtflchef_1_1_t_flite_op_registry.html", "classtflchef_1_1_t_flite_op_registry" ],
     [ "TFliteOpReLU", "classtflchef_1_1_t_flite_op_re_l_u.html", "classtflchef_1_1_t_flite_op_re_l_u" ],
+    [ "TFliteOpReLU0To1", "classtflchef_1_1_t_flite_op_re_l_u0_to1.html", "classtflchef_1_1_t_flite_op_re_l_u0_to1" ],
     [ "TFliteOpReLU6", "classtflchef_1_1_t_flite_op_re_l_u6.html", "classtflchef_1_1_t_flite_op_re_l_u6" ],
     [ "TFliteOpReLUN1To1", "classtflchef_1_1_t_flite_op_re_l_u_n1_to1.html", "classtflchef_1_1_t_flite_op_re_l_u_n1_to1" ],
     [ "TFliteOpReshape", "classtflchef_1_1_t_flite_op_reshape.html", "classtflchef_1_1_t_flite_op_reshape" ],

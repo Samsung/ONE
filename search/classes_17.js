@@ -10,7 +10,7 @@ var searchData=
   ['whilecheffactory_7',['WhileChefFactory',['../struct_while_chef_factory.html',1,'']]],
   ['whilelayer_8',['WhileLayer',['../classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer.html',1,'onert::backend::builtin::kernel']]],
   ['whileprinter_9',['whileprinter',['../classcircledump_1_1_while_printer.html',1,'circledump::WhilePrinter'],['../classtfldump_1_1_while_printer.html',1,'tfldump::WhilePrinter']]],
-  ['wicplanner_10',['WICPlanner',['../classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html',1,'onert::backend::basic']]],
+  ['wicplanner_10',['wicplanner',['../classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html',1,'onert::backend::basic::WICPlanner'],['../classonert_1_1backend_1_1train_1_1_w_i_c_planner.html',1,'onert::backend::train::WICPlanner']]],
   ['window_11',['Window',['../classloco_1_1_window.html',1,'loco']]],
   ['window2d_12',['Window2D',['../classcoco_1_1_window2_d.html',1,'coco']]],
   ['window_3c_202_20_3e_13',['Window&lt; 2 &gt;',['../classloco_1_1_window_3_012_01_4.html',1,'loco']]],

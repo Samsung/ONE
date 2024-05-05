@@ -1,3 +1,23 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtflimport_1_1_tensor_bags.html" title="Pre&#45;creates coco:Bags for each operands(tensors)" alt="" coords="5,5,149,31"/>
+<area shape="rect" id="Node000000" href="$classtflimport_1_1_graph_builder.html" title="Parent class of tflite operation graph builders (e.g., Conv2DGraphBuilder)" alt="" coords="5,280,154,305"/>
+<area shape="rect" id="Node000001" href="$classtflimport_1_1_avg_pool2_d_graph_builder.html" title="GraphBuilder for AvgPool2D operator." alt="" coords="215,5,388,46"/>
+<area shape="poly" id="edge3237_Node000000_Node000001" title=" " alt="" coords="85,264,100,219,123,164,156,107,177,80,200,57,219,44,222,49,203,61,180,84,160,110,128,166,105,221,90,266"/>
+<area shape="rect" id="Node000002" href="$classtflimport_1_1_concatenation_graph_builder.html" title="GraphBuilder for Concatenation operator." alt="" coords="223,71,380,111"/>
+<area shape="poly" id="edge3238_Node000000_Node000002" title=" " alt="" coords="91,264,133,193,163,154,200,121,222,108,224,113,203,125,167,158,137,196,95,267"/>
+<area shape="rect" id="Node000003" href="$classtflimport_1_1_conv2_d_graph_builder.html" title="GraphBuilder for Conv2D operator." alt="" coords="204,136,399,161"/>
+<area shape="poly" id="edge3239_Node000000_Node000003" title=" " alt="" coords="98,265,141,217,169,192,200,171,228,159,231,164,203,176,173,197,145,221,102,269"/>
+<area shape="rect" id="Node000004" href="$classtflimport_1_1_depthwise_conv2_d_graph_builder.html" title="GraphBuilder for DepthwiseConv2D operator." alt="" coords="216,185,387,226"/>
+<area shape="poly" id="edge3240_Node000000_Node000004" title=" " alt="" coords="121,270,201,235,232,224,233,229,203,240,123,275"/>
+<area shape="rect" id="Node000005" href="$classtflimport_1_1_div_graph_builder.html" title="GraphBuilder for Div operator." alt="" coords="218,250,385,276"/>
+<area shape="poly" id="edge3241_Node000000_Node000005" title=" " alt="" coords="168,278,217,271,217,277,169,283"/>
+<area shape="rect" id="Node000006" href="$classtflimport_1_1_max_pool2_d_graph_builder.html" title="GraphBuilder for AvgPool2D operator." alt="" coords="214,300,389,341"/>
+<area shape="poly" id="edge3242_Node000000_Node000006" title=" " alt="" coords="169,301,214,307,213,312,169,306"/>
+<area shape="rect" id="Node000007" href="$classtflimport_1_1_re_l_u6_graph_builder.html" title="GraphBuilder for ReLU6 operator." alt="" coords="207,365,396,391"/>
+<area shape="poly" id="edge3243_Node000000_Node000007" title=" " alt="" coords="118,310,203,350,240,362,239,367,201,355,116,315"/>
+<area shape="rect" id="Node000008" href="$classtflimport_1_1_re_l_u_graph_builder.html" title="GraphBuilder for ReLU operator." alt="" coords="210,414,393,440"/>
+<area shape="poly" id="edge3244_Node000000_Node000008" title=" " alt="" coords="103,315,146,359,173,382,203,401,228,411,226,416,200,405,170,386,143,363,99,319"/>
+<area shape="rect" id="Node000009" href="$classtflimport_1_1_reshape_graph_builder.html" title="GraphBuilder for Reshape operator." alt="" coords="202,464,401,489"/>
+<area shape="poly" id="edge3245_Node000000_Node000009" title=" " alt="" coords="96,318,138,385,168,420,203,450,224,461,221,465,200,455,164,424,133,388,91,321"/>
+<area shape="rect" id="Node000010" href="$classtflimport_1_1_sub_graph_builder.html" title="GraphBuilder for Sub operator." alt="" coords="216,513,387,539"/>
+<area shape="poly" id="edge3246_Node000000_Node000010" title=" " alt="" coords="91,319,106,360,130,409,162,458,181,480,203,499,221,510,219,515,200,504,178,484,158,462,125,412,102,362,86,321"/>
 </map>

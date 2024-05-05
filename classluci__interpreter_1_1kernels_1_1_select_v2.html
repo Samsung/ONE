@@ -338,17 +338,22 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_select_v2_8cpp_source.html#l00051">51</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_select_v2_8cpp_source.html">SelectV2.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_select_v2.html#a697aacd0edb6864bfb524e79ad0d84ba">t</a>()-&gt;element_type())</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">   56</span>      evalFloat();</div>
-<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp SelectV2 unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> t_type = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_select_v2.html#a697aacd0edb6864bfb524e79ad0d84ba">t</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>();</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">switch</span> (t_type)</div>
+<div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">   57</span>      evaluate&lt;float&gt;();</div>
+<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> DataType::S32:</div>
+<div class="line"><span class="lineno">   60</span>      evaluate&lt;int32_t&gt;();</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp SelectV2 unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
+<div class="line"><span class="lineno">   65</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_aac75c6e4ff38ac71545c4e6d112c1d57"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">luci_interpreter::Tensor::element_type</a></div><div class="ttdeci">DataType element_type() const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00105">Tensor.h:105</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_select_v2_8h_source.html#l00034">t()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00105">luci_interpreter::Tensor::element_type()</a>, and <a class="el" href="luci-interpreter_2src_2kernels_2_select_v2_8h_source.html#l00034">t()</a>.</p>
 
 </div>
 </div>

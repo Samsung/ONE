@@ -1,11 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"_op_code_8cc.html#af4b897c94610035ef1fcaccd251a8eaa":[36,0,4,2,2,1,4,9,0],
-"_op_code_8cc.html#afe04a99d2d44ce1351ed3af3ca56063a":[36,0,4,2,2,1,4,9,2],
-"_op_code_8cc_source.html":[36,0,4,2,2,1,4,9],
-"_op_code_8h.html":[36,0,4,2,2,0,3,13],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7":[36,0,4,2,2,0,3,13,2],
-"_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a11686a18ad6773e75e7b2100b3785932":[36,0,4,2,2,0,3,13,2,1],
 "_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d":[36,0,4,2,2,0,3,13,2,2],
 "_op_code_8h.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b":[36,0,4,2,2,0,3,13,2,0],
 "_op_code_8h.html#a7d9fa9cc526f6b52c4f951a0a9a19ef3":[36,0,4,2,2,0,3,13,4],
@@ -100,8 +94,8 @@ var NAVTREEINDEX21 =
 "_operation_8cc_source.html":[36,0,4,2,2,1,4,13],
 "_operation_cloner_8cc.html":[36,0,4,2,2,1,4,14],
 "_operation_cloner_8cc.html#a0ea35d40e64c151039c40fed046e88e8":[36,0,4,2,2,1,4,14,2],
-"_operation_cloner_8cc.html#af4b897c94610035ef1fcaccd251a8eaa":[36,0,4,2,2,1,4,14,0],
 "_operation_cloner_8cc.html#af4b897c94610035ef1fcaccd251a8eaa":[36,0,4,2,2,1,4,14,1],
+"_operation_cloner_8cc.html#af4b897c94610035ef1fcaccd251a8eaa":[36,0,4,2,2,1,4,14,0],
 "_operation_cloner_8cc_source.html":[36,0,4,2,2,1,4,14],
 "_operation_cloner_8h.html":[36,0,4,2,2,1,4,15],
 "_operation_cloner_8h.html#a0ea35d40e64c151039c40fed046e88e8":[36,0,4,2,2,1,4,15,0],
@@ -249,5 +243,11 @@ var NAVTREEINDEX21 =
 "_optimizers_8h_source.html":[36,0,4,2,1,7,1,2],
 "_option_builder_8py.html":[36,0,0,93,1,6],
 "_option_builder_8py_source.html":[36,0,0,93,1,6],
-"_options_8cpp.html":[36,0,0,82,1,3]
+"_options_8cpp.html":[36,0,0,82,1,3],
+"_options_8cpp.html#a00ec6a33778fc023f1861a9d95a8c882":[36,0,0,82,1,3,11],
+"_options_8cpp.html#a24ba35cc97614e98a715207d4b5347cc":[36,0,0,82,1,3,1],
+"_options_8cpp.html#a3f073f4c8e5c4178989b726901990a91":[36,0,0,82,1,3,8],
+"_options_8cpp.html#a40e5fa0dd1d55d8822150ecc75b7bea7":[36,0,0,82,1,3,9],
+"_options_8cpp.html#a46288a471779d2d700f982815a8e7312":[36,0,0,82,1,3,2],
+"_options_8cpp.html#a49199d6d65451ccf7fe06611d0f20afb":[36,0,0,82,1,3,4]
 };

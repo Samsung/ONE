@@ -186,6 +186,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleReduceMax", "namespaceluci__interpreter.html#a98039cf78e0a6c2004f54adcaaafb664", null ],
     [ "build_kernel_CircleReduceProd", "namespaceluci__interpreter.html#a8b254c0fcd26bed8d33a55907dd07ad0", null ],
     [ "build_kernel_CircleRelu", "namespaceluci__interpreter.html#a514f3783038dcd8ef0e655f749019cdc", null ],
+    [ "build_kernel_CircleRelu0To1", "namespaceluci__interpreter.html#a2ec328a9a37f722d0fecaae84be1cab0", null ],
     [ "build_kernel_CircleRelu6", "namespaceluci__interpreter.html#ab09fc2d0519e76de7fb4248266045864", null ],
     [ "build_kernel_CircleReshape", "namespaceluci__interpreter.html#a70a534932a8b5dfdf970afb089d707be", null ],
     [ "build_kernel_CircleResizeBilinear", "namespaceluci__interpreter.html#aef32125fabae67f6b78bf112dc5e74d7", null ],

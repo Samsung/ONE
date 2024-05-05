@@ -175,47 +175,48 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  871</span>  <span class="comment">// There is no Option for PRELU</span></div>
 <div class="line"><span class="lineno">  872</span>  <span class="comment">// There is no Option for RELU</span></div>
 <div class="line"><span class="lineno">  873</span>  <span class="comment">// There is no Option for RELU6</span></div>
-<div class="line"><span class="lineno">  874</span>  <span class="comment">// There is no Option for RELU_N1_TO_1</span></div>
-<div class="line"><span class="lineno">  875</span>  _op_map[circle::BuiltinOperator_REDUCE_ANY] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  876</span>  _op_map[circle::BuiltinOperator_REDUCE_MAX] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  877</span>  _op_map[circle::BuiltinOperator_REDUCE_MIN] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  878</span>  _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  879</span>  _op_map[circle::BuiltinOperator_RESHAPE] = make_unique&lt;ReshapePrinter&gt;();</div>
-<div class="line"><span class="lineno">  880</span>  _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] = make_unique&lt;ResizeBilinearPrinter&gt;();</div>
-<div class="line"><span class="lineno">  881</span>  _op_map[circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =</div>
-<div class="line"><span class="lineno">  882</span>    make_unique&lt;ResizeNearestNeighborPrinter&gt;();</div>
-<div class="line"><span class="lineno">  883</span>  _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique&lt;ReverseSequencePrinter&gt;();</div>
-<div class="line"><span class="lineno">  884</span>  <span class="comment">// There is no Option for ROUND</span></div>
-<div class="line"><span class="lineno">  885</span>  <span class="comment">// There is no Option for SELECT</span></div>
-<div class="line"><span class="lineno">  886</span>  <span class="comment">// There is no Option for SELECT_V2</span></div>
-<div class="line"><span class="lineno">  887</span>  _op_map[circle::BuiltinOperator_SHAPE] = make_unique&lt;ShapePrinter&gt;();</div>
-<div class="line"><span class="lineno">  888</span>  <span class="comment">// There is no Option for SIN</span></div>
-<div class="line"><span class="lineno">  889</span>  <span class="comment">// There is no Option for SLICE</span></div>
-<div class="line"><span class="lineno">  890</span>  _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique&lt;SoftmaxPrinter&gt;();</div>
-<div class="line"><span class="lineno">  891</span>  _op_map[circle::BuiltinOperator_SPACE_TO_DEPTH] = make_unique&lt;SpaceToDepthPrinter&gt;();</div>
-<div class="line"><span class="lineno">  892</span>  <span class="comment">// There is no Option for SPACE_TO_BATCH_ND</span></div>
-<div class="line"><span class="lineno">  893</span>  _op_map[circle::BuiltinOperator_SPARSE_TO_DENSE] = make_unique&lt;SparseToDensePrinter&gt;();</div>
-<div class="line"><span class="lineno">  894</span>  _op_map[circle::BuiltinOperator_SPLIT] = make_unique&lt;SplitPrinter&gt;();</div>
-<div class="line"><span class="lineno">  895</span>  _op_map[circle::BuiltinOperator_SPLIT_V] = make_unique&lt;SplitVPrinter&gt;();</div>
-<div class="line"><span class="lineno">  896</span>  _op_map[circle::BuiltinOperator_SQUEEZE] = make_unique&lt;SqueezePrinter&gt;();</div>
-<div class="line"><span class="lineno">  897</span>  _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique&lt;StridedSlicePrinter&gt;();</div>
-<div class="line"><span class="lineno">  898</span>  _op_map[circle::BuiltinOperator_SUB] = make_unique&lt;SubPrinter&gt;();</div>
-<div class="line"><span class="lineno">  899</span>  _op_map[circle::BuiltinOperator_SUM] = make_unique&lt;ReducerPrinter&gt;();</div>
-<div class="line"><span class="lineno">  900</span>  _op_map[circle::BuiltinOperator_SVDF] = make_unique&lt;SVDFPrinter&gt;();</div>
-<div class="line"><span class="lineno">  901</span>  _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique&lt;TransposeConvPrinter&gt;();</div>
-<div class="line"><span class="lineno">  902</span>  <span class="comment">// There is no Option for TOPK_V2</span></div>
-<div class="line"><span class="lineno">  903</span>  _op_map[circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =</div>
-<div class="line"><span class="lineno">  904</span>    make_unique&lt;UnidirectionalSequenceLSTMPrinter&gt;();</div>
-<div class="line"><span class="lineno">  905</span>  _op_map[circle::BuiltinOperator_UNIQUE] = make_unique&lt;UniquePrinter&gt;();</div>
-<div class="line"><span class="lineno">  906</span>  _op_map[circle::BuiltinOperator_WHILE] = make_unique&lt;WhilePrinter&gt;();</div>
-<div class="line"><span class="lineno">  907</span>  _op_map[circle::BuiltinOperator_CUSTOM] = make_unique&lt;CustomOpPrinter&gt;();</div>
-<div class="line"><span class="lineno">  908</span> </div>
-<div class="line"><span class="lineno">  909</span>  <span class="comment">// Circle only</span></div>
-<div class="line"><span class="lineno">  910</span>  _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique&lt;BCQFullyConnectedPrinter&gt;();</div>
-<div class="line"><span class="lineno">  911</span>  _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique&lt;BCQGatherPrinter&gt;();</div>
-<div class="line"><span class="lineno">  912</span>  _op_map[circle::BuiltinOperator_GRU] = make_unique&lt;GRUPrinter&gt;();</div>
-<div class="line"><span class="lineno">  913</span>  _op_map[circle::BuiltinOperator_INSTANCE_NORM] = make_unique&lt;InstanceNormPrinter&gt;();</div>
-<div class="line"><span class="lineno">  914</span>}</div>
+<div class="line"><span class="lineno">  874</span>  <span class="comment">// There is no Option for RELU_0_TO_1</span></div>
+<div class="line"><span class="lineno">  875</span>  <span class="comment">// There is no Option for RELU_N1_TO_1</span></div>
+<div class="line"><span class="lineno">  876</span>  _op_map[circle::BuiltinOperator_REDUCE_ANY] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  877</span>  _op_map[circle::BuiltinOperator_REDUCE_MAX] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  878</span>  _op_map[circle::BuiltinOperator_REDUCE_MIN] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  879</span>  _op_map[circle::BuiltinOperator_REDUCE_PROD] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  880</span>  _op_map[circle::BuiltinOperator_RESHAPE] = make_unique&lt;ReshapePrinter&gt;();</div>
+<div class="line"><span class="lineno">  881</span>  _op_map[circle::BuiltinOperator_RESIZE_BILINEAR] = make_unique&lt;ResizeBilinearPrinter&gt;();</div>
+<div class="line"><span class="lineno">  882</span>  _op_map[circle::BuiltinOperator_RESIZE_NEAREST_NEIGHBOR] =</div>
+<div class="line"><span class="lineno">  883</span>    make_unique&lt;ResizeNearestNeighborPrinter&gt;();</div>
+<div class="line"><span class="lineno">  884</span>  _op_map[circle::BuiltinOperator_REVERSE_SEQUENCE] = make_unique&lt;ReverseSequencePrinter&gt;();</div>
+<div class="line"><span class="lineno">  885</span>  <span class="comment">// There is no Option for ROUND</span></div>
+<div class="line"><span class="lineno">  886</span>  <span class="comment">// There is no Option for SELECT</span></div>
+<div class="line"><span class="lineno">  887</span>  <span class="comment">// There is no Option for SELECT_V2</span></div>
+<div class="line"><span class="lineno">  888</span>  _op_map[circle::BuiltinOperator_SHAPE] = make_unique&lt;ShapePrinter&gt;();</div>
+<div class="line"><span class="lineno">  889</span>  <span class="comment">// There is no Option for SIN</span></div>
+<div class="line"><span class="lineno">  890</span>  <span class="comment">// There is no Option for SLICE</span></div>
+<div class="line"><span class="lineno">  891</span>  _op_map[circle::BuiltinOperator_SOFTMAX] = make_unique&lt;SoftmaxPrinter&gt;();</div>
+<div class="line"><span class="lineno">  892</span>  _op_map[circle::BuiltinOperator_SPACE_TO_DEPTH] = make_unique&lt;SpaceToDepthPrinter&gt;();</div>
+<div class="line"><span class="lineno">  893</span>  <span class="comment">// There is no Option for SPACE_TO_BATCH_ND</span></div>
+<div class="line"><span class="lineno">  894</span>  _op_map[circle::BuiltinOperator_SPARSE_TO_DENSE] = make_unique&lt;SparseToDensePrinter&gt;();</div>
+<div class="line"><span class="lineno">  895</span>  _op_map[circle::BuiltinOperator_SPLIT] = make_unique&lt;SplitPrinter&gt;();</div>
+<div class="line"><span class="lineno">  896</span>  _op_map[circle::BuiltinOperator_SPLIT_V] = make_unique&lt;SplitVPrinter&gt;();</div>
+<div class="line"><span class="lineno">  897</span>  _op_map[circle::BuiltinOperator_SQUEEZE] = make_unique&lt;SqueezePrinter&gt;();</div>
+<div class="line"><span class="lineno">  898</span>  _op_map[circle::BuiltinOperator_STRIDED_SLICE] = make_unique&lt;StridedSlicePrinter&gt;();</div>
+<div class="line"><span class="lineno">  899</span>  _op_map[circle::BuiltinOperator_SUB] = make_unique&lt;SubPrinter&gt;();</div>
+<div class="line"><span class="lineno">  900</span>  _op_map[circle::BuiltinOperator_SUM] = make_unique&lt;ReducerPrinter&gt;();</div>
+<div class="line"><span class="lineno">  901</span>  _op_map[circle::BuiltinOperator_SVDF] = make_unique&lt;SVDFPrinter&gt;();</div>
+<div class="line"><span class="lineno">  902</span>  _op_map[circle::BuiltinOperator_TRANSPOSE_CONV] = make_unique&lt;TransposeConvPrinter&gt;();</div>
+<div class="line"><span class="lineno">  903</span>  <span class="comment">// There is no Option for TOPK_V2</span></div>
+<div class="line"><span class="lineno">  904</span>  _op_map[circle::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM] =</div>
+<div class="line"><span class="lineno">  905</span>    make_unique&lt;UnidirectionalSequenceLSTMPrinter&gt;();</div>
+<div class="line"><span class="lineno">  906</span>  _op_map[circle::BuiltinOperator_UNIQUE] = make_unique&lt;UniquePrinter&gt;();</div>
+<div class="line"><span class="lineno">  907</span>  _op_map[circle::BuiltinOperator_WHILE] = make_unique&lt;WhilePrinter&gt;();</div>
+<div class="line"><span class="lineno">  908</span>  _op_map[circle::BuiltinOperator_CUSTOM] = make_unique&lt;CustomOpPrinter&gt;();</div>
+<div class="line"><span class="lineno">  909</span> </div>
+<div class="line"><span class="lineno">  910</span>  <span class="comment">// Circle only</span></div>
+<div class="line"><span class="lineno">  911</span>  _op_map[circle::BuiltinOperator_BCQ_FULLY_CONNECTED] = make_unique&lt;BCQFullyConnectedPrinter&gt;();</div>
+<div class="line"><span class="lineno">  912</span>  _op_map[circle::BuiltinOperator_BCQ_GATHER] = make_unique&lt;BCQGatherPrinter&gt;();</div>
+<div class="line"><span class="lineno">  913</span>  _op_map[circle::BuiltinOperator_GRU] = make_unique&lt;GRUPrinter&gt;();</div>
+<div class="line"><span class="lineno">  914</span>  _op_map[circle::BuiltinOperator_INSTANCE_NORM] = make_unique&lt;InstanceNormPrinter&gt;();</div>
+<div class="line"><span class="lineno">  915</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

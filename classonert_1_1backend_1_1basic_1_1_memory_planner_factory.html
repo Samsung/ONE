@@ -96,13 +96,12 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1basic_1_1_mem
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae583f96832d3e2dad96ead82fd16621c" id="r_ae583f96832d3e2dad96ead82fd16621c"><td class="memTemplParams" colspan="2">template&lt;typename Index &gt; </td></tr>
-<tr class="memitem:ae583f96832d3e2dad96ead82fd16621c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt; Index &gt; *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html#ae583f96832d3e2dad96ead82fd16621c">create</a> (const std::string &amp;key)</td></tr>
-<tr class="separator:ae583f96832d3e2dad96ead82fd16621c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f84d4fd1b9ecddeb613a8cd2059eb7" id="r_a44f84d4fd1b9ecddeb613a8cd2059eb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html#a44f84d4fd1b9ecddeb613a8cd2059eb7">create</a> (const std::string &amp;key)</td></tr>
+<tr class="separator:a44f84d4fd1b9ecddeb613a8cd2059eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -111,50 +110,40 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_memory_planner_factory_8h_source.html#l00032">32</a> of file <a class="el" href="_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html#l00032">32</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae583f96832d3e2dad96ead82fd16621c" name="ae583f96832d3e2dad96ead82fd16621c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae583f96832d3e2dad96ead82fd16621c">&#9670;&#160;</a></span>create()</h2>
+<a id="a44f84d4fd1b9ecddeb613a8cd2059eb7" name="a44f84d4fd1b9ecddeb613a8cd2059eb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44f84d4fd1b9ecddeb613a8cd2059eb7">&#9670;&#160;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename Index &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt; Index &gt; * onert::backend::basic::MemoryPlannerFactory::create </td>
+          <td class="memname"><a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &gt; * onert::backend::basic::MemoryPlannerFactory::create </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_memory_planner_factory_8h_source.html#l00045">45</a> of file <a class="el" href="_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;FirstFit&quot;</span>)</div>
-<div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner&lt;Index&gt;;</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;Bump&quot;</span>)</div>
-<div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> BumpPlanner&lt;Index&gt;;</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;WIC&quot;</span>)</div>
-<div class="line"><span class="lineno">   56</span>  {</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> WICPlanner&lt;Index&gt;;</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner&lt;Index&gt;; <span class="comment">// Default Planner</span></div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00034">34</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;FirstFit&quot;</span>)</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner;</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;Bump&quot;</span>)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> BumpPlanner;</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;WIC&quot;</span>)</div>
+<div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> WICPlanner;</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner; <span class="comment">// Default Planner</span></div>
+<div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -181,7 +170,7 @@ template&lt;typename Index &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_memory_planner_factory_8cc_source.html#l00028">28</a> of file <a class="el" href="_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00028">28</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keyword">static</span> MemoryPlannerFactory instance;</div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> instance;</div>
@@ -190,8 +179,8 @@ template&lt;typename Index &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/core/src/backend/basic/<a class="el" href="_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a></li>
-<li>runtime/onert/core/src/backend/basic/<a class="el" href="_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a></li>
+<li>runtime/onert/core/src/backend/basic/<a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a></li>
+<li>runtime/onert/core/src/backend/basic/<a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

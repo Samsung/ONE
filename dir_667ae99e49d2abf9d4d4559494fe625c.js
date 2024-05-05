@@ -74,6 +74,7 @@ var dir_667ae99e49d2abf9d4d4559494fe625c =
     [ "ReduceMin.h", "tflite_2src_2_op_2include_2_reduce_min_8h.html", "tflite_2src_2_op_2include_2_reduce_min_8h" ],
     [ "ReduceProd.h", "tflchef_2tflite_2src_2_op_2include_2_reduce_prod_8h.html", "tflchef_2tflite_2src_2_op_2include_2_reduce_prod_8h" ],
     [ "ReLU.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u_8h" ],
+    [ "ReLU0To1.h", "tflchef_2tflite_2src_2_op_2include_2_re_l_u0_to1_8h.html", "tflchef_2tflite_2src_2_op_2include_2_re_l_u0_to1_8h" ],
     [ "ReLU6.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u6_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u6_8h" ],
     [ "ReLUN1To1.h", "tflite_2src_2_op_2include_2_re_l_u_n1_to1_8h.html", "tflite_2src_2_op_2include_2_re_l_u_n1_to1_8h" ],
     [ "Reshape.h", "compiler_2tflchef_2tflite_2src_2_op_2include_2_reshape_8h.html", "compiler_2tflchef_2tflite_2src_2_op_2include_2_reshape_8h" ],

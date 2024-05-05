@@ -771,6 +771,11 @@ var hierarchy =
               [ "luci::CircleRelu", "classluci_1_1_circle_relu.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::RELU_0_TO_1 >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::RELU_0_TO_1 > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleRelu0To1", "classluci_1_1_circle_relu0_to1.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::RELU6 >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::RELU6 > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleRelu6", "classluci_1_1_circle_relu6.html", null ]
@@ -2179,6 +2184,7 @@ var hierarchy =
         [ "luci::CircleReduceMaxGraphBuilder", "classluci_1_1_circle_reduce_max_graph_builder.html", null ],
         [ "luci::CircleReduceMinGraphBuilder", "classluci_1_1_circle_reduce_min_graph_builder.html", null ],
         [ "luci::CircleReduceProdGraphBuilder", "classluci_1_1_circle_reduce_prod_graph_builder.html", null ],
+        [ "luci::CircleRelu0To1GraphBuilder", "classluci_1_1_circle_relu0_to1_graph_builder.html", null ],
         [ "luci::CircleRelu6GraphBuilder", "classluci_1_1_circle_relu6_graph_builder.html", null ],
         [ "luci::CircleReluGraphBuilder", "classluci_1_1_circle_relu_graph_builder.html", null ],
         [ "luci::CircleReluN1To1GraphBuilder", "classluci_1_1_circle_relu_n1_to1_graph_builder.html", null ],
@@ -2499,10 +2505,16 @@ var hierarchy =
       [ "luci_interpreter::StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", null ],
       [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", null ]
     ] ],
-    [ "onert::backend::basic::IMemoryPlanner< Index >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
-      [ "onert::backend::basic::BumpPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", null ],
-      [ "onert::backend::basic::FirstFitPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html", null ],
-      [ "onert::backend::basic::WICPlanner< Index >", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html", null ]
+    [ "onert::backend::basic::IMemoryPlanner< Index >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", null ],
+    [ "onert::backend::basic::IMemoryPlanner< DisposableTensorIndex >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
+      [ "onert::backend::train::BumpPlanner", "classonert_1_1backend_1_1train_1_1_bump_planner.html", null ],
+      [ "onert::backend::train::FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", null ],
+      [ "onert::backend::train::WICPlanner", "classonert_1_1backend_1_1train_1_1_w_i_c_planner.html", null ]
+    ] ],
+    [ "onert::backend::basic::IMemoryPlanner< ir::OperandIndex >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
+      [ "onert::backend::basic::BumpPlanner", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", null ],
+      [ "onert::backend::basic::FirstFitPlanner", "classonert_1_1backend_1_1basic_1_1_first_fit_planner.html", null ],
+      [ "onert::backend::basic::WICPlanner", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html", null ]
     ] ],
     [ "circlechef::GeneratedModel::Impl", "structcirclechef_1_1_generated_model_1_1_impl.html", null ],
     [ "exo::CircleExporter::Impl", "classexo_1_1_circle_exporter_1_1_impl.html", null ],
@@ -3024,6 +3036,7 @@ var hierarchy =
       [ "luci_interpreter::kernels::Pow", "classluci__interpreter_1_1kernels_1_1_pow.html", null ],
       [ "luci_interpreter::kernels::Quantize", "classluci__interpreter_1_1kernels_1_1_quantize.html", null ],
       [ "luci_interpreter::kernels::Relu", "classluci__interpreter_1_1kernels_1_1_relu.html", null ],
+      [ "luci_interpreter::kernels::Relu0To1", "classluci__interpreter_1_1kernels_1_1_relu0_to1.html", null ],
       [ "luci_interpreter::kernels::Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", null ],
       [ "luci_interpreter::kernels::Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
@@ -3169,6 +3182,7 @@ var hierarchy =
     [ "onert::backend::basic::MemoryManager", "classonert_1_1backend_1_1basic_1_1_memory_manager.html", null ],
     [ "onert::backend::gpu_cl::MemoryManager", "classonert_1_1backend_1_1gpu__cl_1_1_memory_manager.html", null ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
+    [ "onert::backend::train::MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
     [ "rua::MemoryService", "structrua_1_1_memory_service.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
     [ "flatbuffers::grpc::Message< T >", "classflatbuffers_1_1grpc_1_1_message.html", null ],
@@ -3715,6 +3729,7 @@ var hierarchy =
       [ "QuantizeChef", "class_quantize_chef.html", null ],
       [ "RangeChef", "class_range_chef.html", null ],
       [ "RankChef", "class_rank_chef.html", null ],
+      [ "ReLU0To1Chef", "class_re_l_u0_to1_chef.html", null ],
       [ "ReLU6Chef", "class_re_l_u6_chef.html", null ],
       [ "ReLUChef", "class_re_l_u_chef.html", null ],
       [ "ReLUN1To1Chef", "class_re_l_u_n1_to1_chef.html", null ],
@@ -3848,6 +3863,7 @@ var hierarchy =
       [ "QuantizeChefFactory", "struct_quantize_chef_factory.html", null ],
       [ "RangeChefFactory", "struct_range_chef_factory.html", null ],
       [ "RankChefFactory", "struct_rank_chef_factory.html", null ],
+      [ "ReLU0To1ChefFactory", "struct_re_l_u0_to1_chef_factory.html", null ],
       [ "ReLU6ChefFactory", "struct_re_l_u6_chef_factory.html", null ],
       [ "ReLUChefFactory", "struct_re_l_u_chef_factory.html", null ],
       [ "ReLUN1To1ChefFactory", "struct_re_l_u_n1_to1_chef_factory.html", null ],
@@ -5524,6 +5540,7 @@ var hierarchy =
       [ "tflchef::TFliteOpRange", "classtflchef_1_1_t_flite_op_range.html", null ],
       [ "tflchef::TFliteOpRank", "classtflchef_1_1_t_flite_op_rank.html", null ],
       [ "tflchef::TFliteOpReLU", "classtflchef_1_1_t_flite_op_re_l_u.html", null ],
+      [ "tflchef::TFliteOpReLU0To1", "classtflchef_1_1_t_flite_op_re_l_u0_to1.html", null ],
       [ "tflchef::TFliteOpReLU6", "classtflchef_1_1_t_flite_op_re_l_u6.html", null ],
       [ "tflchef::TFliteOpReLUN1To1", "classtflchef_1_1_t_flite_op_re_l_u_n1_to1.html", null ],
       [ "tflchef::TFliteOpReduceAny", "classtflchef_1_1_t_flite_op_reduce_any.html", null ],

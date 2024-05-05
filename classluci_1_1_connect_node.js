@@ -89,6 +89,7 @@ var classluci_1_1_connect_node =
     [ "visit", "classluci_1_1_connect_node.html#adff5934f9a50a31e9683aba1e461c172", null ],
     [ "visit", "classluci_1_1_connect_node.html#a1e3cf92ae97b3dfdcb3ddc259d2646fc", null ],
     [ "visit", "classluci_1_1_connect_node.html#a093e06208a3414f4dd97044e475e6a61", null ],
+    [ "visit", "classluci_1_1_connect_node.html#af66ebb25a31a39458859396971e634f5", null ],
     [ "visit", "classluci_1_1_connect_node.html#a83443058caa7ec481a256f58bc743edd", null ],
     [ "visit", "classluci_1_1_connect_node.html#a072d43b229b03feaba0fd7e504036dd2", null ],
     [ "visit", "classluci_1_1_connect_node.html#aab2a501de3c4313ebe491713c27a6809", null ],

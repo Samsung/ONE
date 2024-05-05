@@ -85,6 +85,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "ReduceMax", "classluci__interpreter_1_1kernels_1_1_reduce_max.html", "classluci__interpreter_1_1kernels_1_1_reduce_max" ],
     [ "ReduceProd", "classluci__interpreter_1_1kernels_1_1_reduce_prod.html", "classluci__interpreter_1_1kernels_1_1_reduce_prod" ],
     [ "Relu", "classluci__interpreter_1_1kernels_1_1_relu.html", "classluci__interpreter_1_1kernels_1_1_relu" ],
+    [ "Relu0To1", "classluci__interpreter_1_1kernels_1_1_relu0_to1.html", "classluci__interpreter_1_1kernels_1_1_relu0_to1" ],
     [ "Relu6", "classluci__interpreter_1_1kernels_1_1_relu6.html", "classluci__interpreter_1_1kernels_1_1_relu6" ],
     [ "Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", "classluci__interpreter_1_1kernels_1_1_reshape" ],
     [ "ResizeBilinear", "classluci__interpreter_1_1kernels_1_1_resize_bilinear.html", "classluci__interpreter_1_1kernels_1_1_resize_bilinear" ],
