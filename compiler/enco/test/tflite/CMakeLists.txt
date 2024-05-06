@@ -18,6 +18,10 @@ endfunction(get_test_configuration)
 ###
 ### Prepare test(s)
 ###
+if(NOT TARGET nnkit_tflite_backend)
+  return()
+endif(NOT TARGET nnkit_tflite_backend)
+
 if(NOT TARGET tflchef-file)
   return()
 endif(NOT TARGET tflchef-file)
