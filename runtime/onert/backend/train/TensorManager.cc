@@ -23,10 +23,8 @@ namespace
 
 using namespace onert;
 
-template <typename Tensor>
-void allocateMemory(backend::train::MemoryManager *mgr,
-                    const ir::OperandIndexMap<std::unique_ptr<Tensor>> &tensors,
-                    const std::string tensor_type)
+template <typename MemoryManager, typename TensorMap>
+void allocateMemory(MemoryManager *mgr, const TensorMap &tensors, const std::string tensor_type)
 {
   mgr->allocate();
 
@@ -61,7 +59,8 @@ TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
                              const std::string planner_id)
   : _nonconst_mgr{new MemoryManager(planner_id)}, _trainable_mgr{new MemoryManager(planner_id)},
     _back_prop_mgr{new MemoryManager(planner_id)}, _gradient_mgr{new MemoryManager(planner_id)},
-    _tensors{reg}
+    // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
+    _disposable_back_prop_mgr{new DisposableMemoryManager(std::string("WIC"))}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -69,25 +68,31 @@ TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
 void TensorManager::allocateNonConstTensors()
 {
   allocateMemory(_nonconst_mgr.get(), _tensors->nonconst_tensors(),
-                 std::string{"          TENSOR "});
+                 std::string{"               TENSOR "});
 }
 
 void TensorManager::allocateTrainableTensors()
 {
   allocateMemory(_trainable_mgr.get(), _tensors->trainable_tensors(),
-                 std::string{"TRAINABLE TENSOR "});
+                 std::string{"     TRAINABLE TENSOR "});
 }
 
 void TensorManager::allocateBackPropTensors()
 {
   allocateMemory(_back_prop_mgr.get(), _tensors->back_prop_tensors(),
-                 std::string{"BACK_PROP TENSOR "});
+                 std::string{"     BACK_PROP TENSOR "});
 }
 
 void TensorManager::allocateGradientTensors()
 {
   allocateMemory(_gradient_mgr.get(), _tensors->gradient_tensors(),
-                 std::string{"GRADIENT TENSOR "});
+                 std::string{"     GRADIENT TENSOR "});
+}
+
+void TensorManager::allocateDisposableBackPropTensors()
+{
+  allocateMemory(_disposable_back_prop_mgr.get(), _tensors->disposable_back_prop_tensors(),
+                 std::string{"DISPOSABLE BACK_PROP TENSOR "});
 }
 
 void TensorManager::claimNonConstPlan(const ir::OperandIndex &index)
@@ -152,6 +157,23 @@ void TensorManager::releaseGradientPlan(const ir::OperandIndex &index)
   assert(_tensors->getGradientTensor(index) && !_tensors->getGradientTensor(index)->is_dynamic());
 
   _gradient_mgr->releasePlan(index);
+}
+
+void TensorManager::claimDisposableBackPropPlan(const DisposableTensorIndex &index)
+{
+  const auto tensor = _tensors->getDisposableBackPropTensor(index);
+  assert(tensor && !tensor->is_dynamic());
+
+  auto size = alignedSize(tensor->total_size(), _align);
+  _disposable_back_prop_mgr->claimPlan(index, size);
+}
+
+void TensorManager::releaseDisposableBackPropPlan(const DisposableTensorIndex &index)
+{
+  assert(_tensors->getDisposableBackPropTensor(index) &&
+         !_tensors->getDisposableBackPropTensor(index)->is_dynamic());
+
+  _disposable_back_prop_mgr->releasePlan(index);
 }
 
 } // namespace train

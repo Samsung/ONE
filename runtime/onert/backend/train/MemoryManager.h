@@ -19,6 +19,8 @@
 
 #include <backend/basic/MemoryManager.h>
 
+#include "DisposableTensorIndex.h"
+
 namespace onert
 {
 namespace backend
@@ -27,6 +29,30 @@ namespace train
 {
 
 using MemoryManager = backend::basic::MemoryManager;
+
+class DisposableMemoryManager
+{
+public:
+  DisposableMemoryManager();
+  DisposableMemoryManager(const std::string planner_id);
+
+  void allocate(void);
+  uint8_t *getBuffer(const DisposableTensorIndex &ind) const;
+  void deallocate(void) { _mem_alloc->release(); }
+
+  void claimPlan(const DisposableTensorIndex &ind, uint32_t size);
+  void releasePlan(const DisposableTensorIndex &ind);
+
+  std::shared_ptr<basic::Allocator> getMemAlloc() { return _mem_alloc; }
+
+private:
+  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner();
+  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner(const std::string planner_id);
+
+private:
+  std::shared_ptr<basic::IMemoryPlanner<DisposableTensorIndex>> _mem_planner;
+  std::shared_ptr<basic::Allocator> _mem_alloc;
+};
 
 } // namespace train
 } // namespace backend
