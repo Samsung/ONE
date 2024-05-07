@@ -53,6 +53,7 @@
 #include "luci/Pass/RemoveDuplicateConstPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
 #include "luci/Pass/RemoveGatherGuardPass.h"
+#include "luci/Pass/RemoveQDQForMixedPrecisionOpPass.h"
 #include "luci/Pass/RemoveQuantDequantSeqPass.h"
 #include "luci/Pass/RemoveRedundantReshapePass.h"
 #include "luci/Pass/RemoveRedundantTransposePass.h"
@@ -412,6 +413,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::RemoveGatherGuard))
   {
     phase.emplace_back(std::make_unique<luci::RemoveGatherGuardPass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveQDQForMixedPrecisionOp))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveQDQForMixedPrecisionOpPass>());
   }
   if (_options->query(Options::Algorithm::RemoveQuantDequantSeq))
   {

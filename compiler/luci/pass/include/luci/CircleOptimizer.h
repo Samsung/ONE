@@ -100,6 +100,7 @@ public:
       RemoveRedundantQuantize,
       RemoveRedundantReshape,
       RemoveFakeQuant,
+      RemoveQDQForMixedPrecisionOp,
       RemoveQuantDequantSeq,
       RemoveDuplicateConst,
       UnrollUnidirSeqLSTM,
