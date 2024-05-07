@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "ir/train/ITrainableOperation.h"
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/operation/BinaryArithmetic.h"
 #include "ir/train/operation/ElementwiseActivation.h"
@@ -25,45 +26,61 @@
 
 using namespace onert::ir;
 
+std::unique_ptr<train::ITrainableOperation>
+applyTrainability(std::unique_ptr<train::ITrainableOperation> &&train_op, bool is_training_op)
+{
+  if (!is_training_op)
+  {
+    train_op->disableWeightsUpdate();
+  }
+  return std::move(train_op);
+}
+
 OperationIndex addAddOperation(train::TrainableGraph &tgraph, const OperandIndexSequence inputs,
-                               const OperandIndexSequence outputs)
+                               const OperandIndexSequence outputs, bool is_training_op = true)
 {
   // Add "ADD" operation
   operation::BinaryArithmetic::Param param;
   param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
   param.activation = Activation::NONE;
   auto add_op = operation::BinaryArithmetic(inputs, outputs, param);
-  return tgraph.addOperation(std::make_unique<train::operation::BinaryArithmetic>(add_op));
+  return tgraph.addOperation(applyTrainability(
+    std::make_unique<train::operation::BinaryArithmetic>(add_op), is_training_op));
 }
 
 OperationIndex addElementwiseActivationOperation(train::TrainableGraph &tgraph,
                                                  const OperandIndexSequence inputs,
-                                                 const OperandIndexSequence outputs)
+                                                 const OperandIndexSequence outputs,
+                                                 bool is_training_op = true)
 {
   // Add "ElementwiseActivation" operation
   operation::ElementwiseActivation::Param param;
   auto ea_op = operation::ElementwiseActivation(inputs, outputs, param);
-  return tgraph.addOperation(std::make_unique<train::operation::ElementwiseActivation>(ea_op));
+  return tgraph.addOperation(applyTrainability(
+    std::make_unique<train::operation::ElementwiseActivation>(ea_op), is_training_op));
 }
 
 OperationIndex addFullyConnectedOperation(train::TrainableGraph &tgraph,
                                           const OperandIndexSequence inputs,
-                                          const OperandIndexSequence outputs)
+                                          const OperandIndexSequence outputs,
+                                          bool is_training_op = true)
 {
   // Add "FullyConnected" operation
   operation::FullyConnected::Param param;
   param.weights_format = FullyConnectedWeightsFormat::Default;
   param.activation = Activation::NONE;
   auto fc_op = operation::FullyConnected(inputs, outputs, param);
-  return tgraph.addOperation(std::make_unique<train::operation::FullyConnected>(fc_op));
+  return tgraph.addOperation(
+    applyTrainability(std::make_unique<train::operation::FullyConnected>(fc_op), is_training_op));
 }
 
 OperationIndex addLossOperation(train::TrainableGraph &tgraph, const OperandIndexSequence inputs,
-                                const OperandIndexSequence outputs)
+                                const OperandIndexSequence outputs, bool is_training_op = true)
 {
   // Add "Loss" operation
   auto loss_op = operation::Loss(inputs, outputs);
-  return tgraph.addOperation(std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}));
+  return tgraph.addOperation(applyTrainability(
+    std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}), is_training_op));
 }
 
 TEST(TrainableGraph, topological_sort_linear)
@@ -272,4 +289,113 @@ TEST(TrainableGraph, truncating_backward_topological_order_nonlinear)
     tgraph.truncateBackwardOrder(tgraph.btopolSortOperations());
 
   ASSERT_TRUE(truncation == expected_truncation_1 || truncation == expected_truncation_2);
+}
+
+TEST(TrainableGraph, mark_head_ops_unecessary_for_backward_at_the_beginning)
+{
+  train::TrainableGraph tgraph;
+
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+
+  /*
+            [EA1]⎼> (u)
+           ╱           ╲
+          ╱  (weight1) ⎼[FC1]⎼> (v)
+         ╱             ╱           ╲
+        ╱       (bias1)             [Add]⎼> (y_pred)
+ (input)                           ╱                ╲
+        ╲                         ╱                  [Loss]⎼> (output)
+         [EA2]⎼> (w)             ╱                  ╱
+                    ╲           ╱           (y_true)
+          (weight2) ⎼[FC2]⎼> (x)
+                    ╱
+            (bias2)
+  */
+
+  auto input = tgraph.addOperand(shape, type);
+  auto u = tgraph.addOperand(shape, type);
+  auto weight1 = tgraph.addOperand(shape, type);
+  auto bias1 = tgraph.addOperand(shape, type);
+  auto v = tgraph.addOperand(shape, type);
+  auto w = tgraph.addOperand(shape, type);
+  auto weight2 = tgraph.addOperand(shape, type);
+  auto bias2 = tgraph.addOperand(shape, type);
+  auto x = tgraph.addOperand(shape, type);
+  auto y_pred = tgraph.addOperand(shape, type);
+  auto y_true = tgraph.addOperand(shape, type);
+  auto output = tgraph.addOperand(shape, type);
+
+  tgraph.addInput({input});
+  tgraph.addInput({weight1});
+  tgraph.addInput({bias1});
+  tgraph.addInput({weight2});
+  tgraph.addInput({bias2});
+  tgraph.addInput({y_true});
+  tgraph.addOutput({output});
+
+  auto ea1 = addElementwiseActivationOperation(tgraph, {input}, {u}, false);
+  auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v}, false);
+  auto ea2 = addElementwiseActivationOperation(tgraph, {input}, {w});
+  auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
+  auto add = addAddOperation(tgraph, {v, x}, {y_pred});
+  auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+  EXPECT_NO_THROW(tgraph.topolSortOperations());
+  EXPECT_NO_THROW(tgraph.btopolSortOperations());
+  tgraph.markOpsUnnecessaryForBackward();
+
+  tgraph.operations().iterate(
+    [&](const onert::ir::OperationIndex &op_idx, const onert::ir::IOperation &op) {
+      const auto &train_op = dynamic_cast<const onert::ir::train::ITrainableOperation *>(&op);
+      if (op_idx.value() < ea2.value())
+      {
+        ASSERT_FALSE(train_op->isRequiredForBackward());
+      }
+    });
+}
+
+TEST(TrainableGraph, mark_ops_unecessary_for_backward_in_the_middle)
+{
+  train::TrainableGraph tgraph;
+
+  Shape shape{1, 2, 2, 1};
+  TypeInfo type{DataType::FLOAT32};
+
+  /*
+                          [EA]⎼> (lhs)
+                         ╱            ╲
+  (input) ⎼[EA]⎼> (split)              [Add]⎼> (y_pred)
+                         ╲            ╱                ╲
+                          [EA]⎼> (rhs)                  [Loss]⎼> (output)
+                                                       ╱
+                                               (y_true)
+  */
+
+  auto input = tgraph.addOperand(shape, type);
+  auto split = tgraph.addOperand(shape, type);
+  auto lhs = tgraph.addOperand(shape, type);
+  auto rhs = tgraph.addOperand(shape, type);
+  auto y_pred = tgraph.addOperand(shape, type);
+  auto y_true = tgraph.addOperand(shape, type);
+  auto output = tgraph.addOperand(shape, type);
+
+  tgraph.addInput({input});
+  tgraph.addInput({y_true});
+  tgraph.addOutput({output});
+
+  addElementwiseActivationOperation(tgraph, {input}, {split});
+  addElementwiseActivationOperation(tgraph, {split}, {lhs}, false);
+  addElementwiseActivationOperation(tgraph, {split}, {rhs});
+  addAddOperation(tgraph, {lhs, rhs}, {y_pred});
+  addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+  EXPECT_NO_THROW(tgraph.topolSortOperations());
+  EXPECT_NO_THROW(tgraph.btopolSortOperations());
+
+  tgraph.operations().iterate(
+    [&](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
+      const auto &train_op = dynamic_cast<const onert::ir::train::ITrainableOperation *>(&op);
+      ASSERT_TRUE(train_op->isRequiredForBackward());
+    });
 }
