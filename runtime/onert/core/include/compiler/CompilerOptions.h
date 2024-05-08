@@ -24,7 +24,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <unordered_set>
 
 namespace onert
 {
@@ -85,7 +84,6 @@ public:
   bool he_scheduler;      //< HEScheduler if true, ManualScheduler otherwise
   bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
   bool fp16_enable;       //< Whether fp16 mode ON/OFF
-  std::unordered_set<onert::ir::OperationIndex> frozen_train_ops;
 };
 
 } // namespace compiler

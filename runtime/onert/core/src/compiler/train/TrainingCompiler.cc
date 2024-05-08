@@ -117,7 +117,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
           auto trainable_op = converter(op);
-          if (_options->frozen_train_ops.find(op_index) != std::end(_options->frozen_train_ops))
+          if (_training_info.getFrozenTrainOps().find(op_index) !=
+              std::end(_training_info.getFrozenTrainOps()))
           {
             trainable_op->disableWeightsUpdate();
           }

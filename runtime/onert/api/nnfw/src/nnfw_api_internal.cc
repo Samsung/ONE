@@ -1562,8 +1562,7 @@ NNFW_STATUS nnfw_session::nnfw_train_disable_node_update(uint32_t op_index)
   }
 
   const auto ir_op_index = onert::ir::OperationIndex{op_index};
-  auto &options = _coptions[0];
-  options->frozen_train_ops.emplace(ir_op_index);
+  _train_info->disableTrainNodeUpdate(ir_op_index);
   return NNFW_STATUS_NO_ERROR;
 }
 
@@ -1584,11 +1583,7 @@ NNFW_STATUS nnfw_session::nnfw_train_enable_node_update(uint32_t op_index)
   }
 
   const auto ir_op_index = onert::ir::OperationIndex{op_index};
-  auto &options = _coptions[0];
-  if (options->frozen_train_ops.find(ir_op_index) != std::end(options->frozen_train_ops))
-  {
-    options->frozen_train_ops.erase(ir_op_index);
-  }
+  _train_info->enableTrainNodeUpdate(ir_op_index);
   return NNFW_STATUS_NO_ERROR;
 }
 
