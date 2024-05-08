@@ -93,7 +93,7 @@ FunctionMap BackendContext::genKernels()
   for (auto &&op_ind : _data.op_order)
   {
     auto fn_seq = kernel_gen->generate(op_ind);
-    fn_map.emplace_back(op_ind, std::move(fn_seq));
+    fn_map.emplace(op_ind, std::move(fn_seq));
   }
 
   kernel_gen->get_operation(fn_map);

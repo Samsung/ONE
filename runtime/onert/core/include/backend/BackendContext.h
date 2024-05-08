@@ -32,8 +32,7 @@ namespace backend
 class Backend;
 struct ITensorRegistry;
 
-using FunctionMap =
-  std::vector<std::pair<ir::OperationIndex, std::unique_ptr<exec::FunctionSequence>>>;
+using FunctionMap = std::unordered_map<ir::OperationIndex, std::unique_ptr<exec::FunctionSequence>>;
 
 struct ContextData
 {
