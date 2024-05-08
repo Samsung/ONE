@@ -94,7 +94,7 @@ protected:
 
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
-  ir::DataType tensorTypeToDataType(TensorType type);
+  virtual ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
   flexbuffers::Map getCustomOpAttrMap(const Operator *op);
 
