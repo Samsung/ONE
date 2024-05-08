@@ -60,6 +60,8 @@ public:
 
   void readOutputTensor(const luci::CircleOutput *output_node, void *data, size_t data_size);
 
+  size_t getOutputTensorSize(const luci::CircleOutput *output_node);
+
   void interpret();
 
   void attachObserver(ExecutionObserver *observer);
