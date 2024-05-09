@@ -34,6 +34,32 @@ namespace train
 
 namespace
 {
+ir::OperandInfo createBackwardTensorInfo(const ir::Operand &operand)
+{
+  // TODO Use different shape of back-propagated tensor if it exists
+  return ir::OperandInfo{operand.shape(), operand.typeInfo(), operand.info().memAllocType(),
+                         operand.isConstant()};
+}
+
+// NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
+//      to be updated respectively. So we use a sequence instead of a set.
+ir::OperandIndexSequence getBackPropSeq(const ir::train::TrainableGraph &tgraph,
+                                        const ir::OperationIndex &op_index)
+{
+  ir::OperandIndexSequence ret;
+
+  const auto &op = tgraph.operations().at(op_index);
+  for (const auto &input : (op.getInputs() | ir::Remove::UNDEFINED))
+  {
+    const auto &operand = tgraph.operands().at(input);
+    // TODO Remove other inputs that are not back-propagated
+    if (!operand.isConstant() && !tgraph.getInputs().contains(input))
+      ret.append(input);
+  }
+
+  return ret;
+}
+
 void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegistry &tensor_reg,
                              FunctionMap &fn_map)
 {
@@ -91,10 +117,8 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
 
-    // TODO Different shape of back propagation tensor
-    ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
-                                 obj.isConstant()};
-    tensor_builder->registerBackwardTensorInfo(ind, backend_info, ir::Layout::NHWC);
+    tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(obj),
+                                               ir::Layout::NHWC);
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
@@ -103,9 +127,50 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       tensor_builder->notifyBackwardFirstUse(ind);
   });
 
+  for (const auto &op_index : tgraph.btopolSortOperations())
+  {
+    const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
+    for (const auto &back_prop_index : back_prop_seq)
+    {
+      DisposableTensorIndex disposable_index{op_index, back_prop_index};
+      const auto &operand = tgraph.operands().at(back_prop_index);
+      tensor_builder->registerDisposableBackwardTensorInfo(
+        disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
+    }
+  }
+
+  planDisposableBackPropTensors();
+
   tensor_builder->allocateBackward();
 
   return _tensor_registry.get();
+}
+
+void BackendContext::planDisposableBackPropTensors()
+{
+  const ir::train::TrainableGraph &tgraph = *trainable_graph();
+  auto tensor_builder = _tensor_builder;
+
+  std::vector<DisposableTensorIndex> prev_seq;
+  for (const auto &op_index : tgraph.btopolSortOperations())
+  {
+    for (const auto &index : prev_seq)
+    {
+      tensor_builder->notifyDisposableBackPropLastUse(index);
+    }
+
+    std::vector<DisposableTensorIndex> cur_seq;
+    const auto back_prop_indices = getBackPropSeq(tgraph, op_index);
+    for (const auto &back_prop_index : back_prop_indices)
+    {
+      DisposableTensorIndex cur_index{op_index, back_prop_index};
+      tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
+
+      cur_seq.emplace_back(cur_index);
+    }
+
+    prev_seq = cur_seq;
+  }
 }
 
 FunctionMap BackendContext::genKernels()
