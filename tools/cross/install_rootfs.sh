@@ -6,7 +6,7 @@ usage()
 {
     echo "Usage: $0 [BuildArch] [LinuxCodeName] [--setproxy=IP] [--skipunmount]"
     echo "BuildArch can be: arm(default), aarch64"
-    echo "LinuxCodeName - optional, Code name for Linux, can be: bionic, focal, jammy"
+    echo "LinuxCodeName - optional, Code name for Linux, can be: focal, jammy, noble"
     echo "                          default is host codename: ${DISTRIB_CODENAME} (DISTRIB_CODENAME in /etc/lsb-release)"
     echo "--setproxy=IP - optional, IP is the proxy server IP address or url with portnumber"
     echo "                           default no proxy. Example: --setproxy=127.1.2.3:8080"
@@ -57,14 +57,14 @@ for i in "$@" ; do
             __BuildArch=aarch64
             __QemuArch=arm64
             ;;
-        bionic)
-            __LinuxCodeName=bionic
-            ;;
         focal)
             __LinuxCodeName=focal
             ;;
         jammy)
             __LinuxCodeName=jammy
+            ;;
+        noble)
+            __LinuxCodeName=noble
             ;;
         --setproxy*)
             proxyip="${i#*=}"
