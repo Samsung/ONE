@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `bionic`, `focal`, and `jammy` release
+- supports `focal`,`jammy`, and `noble` release
 
 To see the options,
 ```
