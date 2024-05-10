@@ -49,7 +49,8 @@ void overwriteShapeMap(onert_run::TensorShapeMap &shape_map,
     shape_map[i] = shapes[i];
 }
 
-std::string genQuantizedModelPathFromModelPath(const std::string &model_path, bool is_q16)
+std::string genQuantizedModelPathFromModelPath(const std::string &model_path,
+                                               NNFW_QUANTIZE_TYPE qtype)
 {
   auto const extension_pos = model_path.find(".circle");
   if (extension_pos == std::string::npos)
@@ -57,11 +58,23 @@ std::string genQuantizedModelPathFromModelPath(const std::string &model_path, bo
     std::cerr << "Input model isn't .circle." << std::endl;
     exit(-1);
   }
-  auto const qstring = std::string("_quantized_") + (is_q16 ? "q16" : "q8");
-  return model_path.substr(0, extension_pos) + qstring + ".circle";
+  switch (qtype)
+  {
+    case NNFW_QUANTIZE_TYPE_U8_ASYM:
+      return model_path.substr(0, extension_pos) + "_quantized_q8.circle";
+    case NNFW_QUANTIZE_TYPE_I16_SYM:
+      return model_path.substr(0, extension_pos) + "_quantized_q16.circle";
+    case NNFW_QUANTIZE_TYPE_WO_I8_SYM:
+      return model_path.substr(0, extension_pos) + "_quantized_q8wo.circle";
+    case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
+      return model_path.substr(0, extension_pos) + "_quantized_q16wo.circle";
+  }
+
+  throw std::runtime_error{"Invalid quantization type"};
 }
 
-std::string genQuantizedModelPathFromPackagePath(const std::string &package_path, bool is_q16)
+std::string genQuantizedModelPathFromPackagePath(const std::string &package_path,
+                                                 NNFW_QUANTIZE_TYPE qtype)
 {
   auto package_path_without_slash = package_path;
   if (package_path_without_slash.back() == '/')
@@ -72,8 +85,19 @@ std::string genQuantizedModelPathFromPackagePath(const std::string &package_path
   else
     package_name_pos++;
   auto package_name = package_path_without_slash.substr(package_name_pos);
-  auto const qstring = std::string("_quantized_") + (is_q16 ? "q16" : "q8");
-  return package_path_without_slash + "/" + package_name + qstring + ".circle";
+  switch (qtype)
+  {
+    case NNFW_QUANTIZE_TYPE_U8_ASYM:
+      return package_path_without_slash + "/" + package_name + "_quantized_q8.circle";
+    case NNFW_QUANTIZE_TYPE_I16_SYM:
+      return package_path_without_slash + "/" + package_name + "_quantized_q16.circle";
+    case NNFW_QUANTIZE_TYPE_WO_I8_SYM:
+      return package_path_without_slash + "/" + package_name + "_quantized_q8wo.circle";
+    case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
+      return package_path_without_slash + "/" + package_name + "_quantized_q16wo.circle";
+  }
+
+  throw std::runtime_error{"Invalid quantization type"};
 }
 
 int main(const int argc, char **argv)
@@ -118,10 +142,14 @@ int main(const int argc, char **argv)
     if (!quantize.empty())
     {
       NNFW_QUANTIZE_TYPE quantize_type = NNFW_QUANTIZE_TYPE_NOT_SET;
-      if (quantize == "int8")
+      if (quantize == "uint8")
         quantize_type = NNFW_QUANTIZE_TYPE_U8_ASYM;
       if (quantize == "int16")
         quantize_type = NNFW_QUANTIZE_TYPE_I16_SYM;
+      if (quantize == "int8_wo")
+        quantize_type = NNFW_QUANTIZE_TYPE_WO_I8_SYM;
+      if (quantize == "int16_wo")
+        quantize_type = NNFW_QUANTIZE_TYPE_WO_I16_SYM;
       NNPR_ENSURE_STATUS(nnfw_set_quantization_type(session, quantize_type));
 
       if (args.getQuantizedModelPath() != "")
@@ -132,13 +160,11 @@ int main(const int argc, char **argv)
         if (args.useSingleModel())
           NNPR_ENSURE_STATUS(nnfw_set_quantized_model_path(
             session,
-            genQuantizedModelPathFromModelPath(args.getModelFilename(), quantize == "int16")
-              .c_str()));
+            genQuantizedModelPathFromModelPath(args.getModelFilename(), quantize_type).c_str()));
         else
           NNPR_ENSURE_STATUS(nnfw_set_quantized_model_path(
-            session,
-            genQuantizedModelPathFromPackagePath(args.getPackageFilename(), quantize == "int16")
-              .c_str()));
+            session, genQuantizedModelPathFromPackagePath(args.getPackageFilename(), quantize_type)
+                       .c_str()));
       }
 
       NNPR_ENSURE_STATUS(nnfw_quantize(session));
