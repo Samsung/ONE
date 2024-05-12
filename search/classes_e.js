@@ -150,7 +150,7 @@ var searchData=
   ['nnfw_5fcustom_5fkernel_5fparams_147',['nnfw_custom_kernel_params',['../structnnfw__custom__kernel__params.html',1,'']]],
   ['nnfw_5floss_5finfo_148',['nnfw_loss_info',['../structnnfw__loss__info.html',1,'']]],
   ['nnfw_5foperand_149',['nnfw_operand',['../structnnfw__operand.html',1,'']]],
-  ['nnfw_5fsession_150',['nnfw_session',['../structnnfw__session.html',1,'nnfw_session'],['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION']]],
+  ['nnfw_5fsession_150',['nnfw_session',['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION'],['../structnnfw__session.html',1,'nnfw_session']]],
   ['nnfw_5fsession_5fwrapper_151',['nnfw_session_wrapper',['../classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html',1,'package::libnnfw_api_pybind']]],
   ['nnfw_5ftensorinfo_152',['nnfw_tensorinfo',['../structnnfw__tensorinfo.html',1,'']]],
   ['nnfw_5ftrain_5finfo_153',['nnfw_train_info',['../structnnfw__train__info.html',1,'']]],

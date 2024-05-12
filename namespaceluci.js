@@ -417,6 +417,7 @@ var namespaceluci =
     [ "RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", "structluci_1_1_remove_duplicate_const_pass" ],
     [ "RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", "structluci_1_1_remove_fake_quant_pass" ],
     [ "RemoveGatherGuardPass", "structluci_1_1_remove_gather_guard_pass.html", "structluci_1_1_remove_gather_guard_pass" ],
+    [ "RemoveQDQForMixedPrecisionOpPass", "structluci_1_1_remove_q_d_q_for_mixed_precision_op_pass.html", "structluci_1_1_remove_q_d_q_for_mixed_precision_op_pass" ],
     [ "RemoveQuantDequantSeqPass", "structluci_1_1_remove_quant_dequant_seq_pass.html", "structluci_1_1_remove_quant_dequant_seq_pass" ],
     [ "RemoveRedundantDequantizePass", "structluci_1_1_remove_redundant_dequantize_pass.html", "structluci_1_1_remove_redundant_dequantize_pass" ],
     [ "RemoveRedundantQuantizePass", "structluci_1_1_remove_redundant_quantize_pass.html", "structluci_1_1_remove_redundant_quantize_pass" ],

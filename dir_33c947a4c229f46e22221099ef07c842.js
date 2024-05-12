@@ -4,7 +4,7 @@ var dir_33c947a4c229f46e22221099ef07c842 =
     [ "Allocator.cc", "_allocator_8cc.html", null ],
     [ "BackendContextHelpers.cc", "_backend_context_helpers_8cc.html", null ],
     [ "DynamicTensorManager.cc", "_dynamic_tensor_manager_8cc.html", null ],
-    [ "MemoryManager.cc", "_memory_manager_8cc.html", null ],
+    [ "MemoryManager.cc", "core_2src_2backend_2basic_2_memory_manager_8cc.html", null ],
     [ "MemoryPlanner.cc", "core_2src_2backend_2basic_2_memory_planner_8cc.html", null ],
     [ "MemoryPlanner.h", "core_2src_2backend_2basic_2_memory_planner_8h.html", "core_2src_2backend_2basic_2_memory_planner_8h" ],
     [ "MemoryPlannerFactory.cc", "core_2src_2backend_2basic_2_memory_planner_factory_8cc.html", null ],

@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that is index of DisposableTensor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00035">35</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00036">36</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a19d07b0e9d2cf9c7b2f6f062400e1ffb" name="a19d07b0e9d2cf9c7b2f6f062400e1ffb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a19d07b0e9d2cf9c7b2f6f062400e1ffb">&#9670;&#160;</a></span>DisposableTensorIndex()</h2>
@@ -166,22 +166,22 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00043">43</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>    : _op_index{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>}, _operand_index{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>}</div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    assert(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>());</div>
-<div class="line"><span class="lineno">   47</span>    assert(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>());</div>
-<div class="line"><span class="lineno">   48</span>    <span class="comment">// NOTE This constraint is necessary to check overflow of hash value</span></div>
-<div class="line"><span class="lineno">   49</span>    assert((<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; (1 &lt;&lt; 16) &amp;&amp; <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; (1 &lt;&lt; 16)) &amp;&amp;</div>
-<div class="line"><span class="lineno">   50</span>           <span class="stringliteral">&quot;DisposableTensorIndex does not support index value of operation or &quot;</span></div>
-<div class="line"><span class="lineno">   51</span>           <span class="stringliteral">&quot;operand greater than 65535&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_disposable_tensor_index_html_a2b8b52ab48b63a5c2d49289977df20d1"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">onert::backend::train::DisposableTensorIndex::operand_index</a></div><div class="ttdeci">const ir::OperandIndex &amp; operand_index() const</div><div class="ttdoc">Get operand index.</div><div class="ttdef"><b>Definition</b> <a href="_disposable_tensor_index_8h_source.html#l00066">DisposableTensorIndex.h:66</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_disposable_tensor_index_html_a88f4a240c17965d63585bfdfb1e97689"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">onert::backend::train::DisposableTensorIndex::op_index</a></div><div class="ttdeci">const ir::OperationIndex &amp; op_index() const</div><div class="ttdoc">Get Operation index.</div><div class="ttdef"><b>Definition</b> <a href="_disposable_tensor_index_8h_source.html#l00060">DisposableTensorIndex.h:60</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00044">44</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>    : _op_index{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>}, _operand_index{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>}</div>
+<div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    assert(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>());</div>
+<div class="line"><span class="lineno">   48</span>    assert(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>());</div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment">// NOTE This constraint is necessary to check overflow of hash value</span></div>
+<div class="line"><span class="lineno">   50</span>    assert((<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">op_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; (1 &lt;&lt; 16) &amp;&amp; <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &lt; (1 &lt;&lt; 16)) &amp;&amp;</div>
+<div class="line"><span class="lineno">   51</span>           <span class="stringliteral">&quot;DisposableTensorIndex does not support index value of operation or &quot;</span></div>
+<div class="line"><span class="lineno">   52</span>           <span class="stringliteral">&quot;operand greater than 65535&quot;</span>);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_disposable_tensor_index_html_a2b8b52ab48b63a5c2d49289977df20d1"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">onert::backend::train::DisposableTensorIndex::operand_index</a></div><div class="ttdeci">const ir::OperandIndex &amp; operand_index() const</div><div class="ttdoc">Get operand index.</div><div class="ttdef"><b>Definition</b> <a href="_disposable_tensor_index_8h_source.html#l00067">DisposableTensorIndex.h:67</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_disposable_tensor_index_html_a88f4a240c17965d63585bfdfb1e97689"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a88f4a240c17965d63585bfdfb1e97689">onert::backend::train::DisposableTensorIndex::op_index</a></div><div class="ttdeci">const ir::OperationIndex &amp; op_index() const</div><div class="ttdoc">Get Operation index.</div><div class="ttdef"><b>Definition</b> <a href="_disposable_tensor_index_8h_source.html#l00061">DisposableTensorIndex.h:61</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a3337c49628abf54b36b4d81594b15565"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">onert::util::Index::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">Check whether the value is valid or not.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">Index.h:127</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html_a94c365fc1cb51e44ff8be2a384d4177d"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">onert::util::Index::value</a></div><div class="ttdeci">T value() const</div><div class="ttdoc">Return underlying value.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">Index.h:139</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00060">op_index()</a>, <a class="el" href="_disposable_tensor_index_8h_source.html#l00066">operand_index()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
+<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00061">op_index()</a>, <a class="el" href="_disposable_tensor_index_8h_source.html#l00067">operand_index()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
 </div>
 </div>
@@ -212,10 +212,10 @@ Public Member Functions</h2></td></tr>
 <p>Get Operation index. </p>
 <dl class="section return"><dt>Returns</dt><dd>Operation index </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00060">60</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> _op_index; }</div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00061">61</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>{ <span class="keywordflow">return</span> _op_index; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00043">DisposableTensorIndex()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00074">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00044">DisposableTensorIndex()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00075">operator==()</a>.</p>
 
 </div>
 </div>
@@ -245,10 +245,10 @@ Public Member Functions</h2></td></tr>
 <p>Get operand index. </p>
 <dl class="section return"><dt>Returns</dt><dd>Operand index </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00066">66</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> _operand_index; }</div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00067">67</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> _operand_index; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00043">DisposableTensorIndex()</a>, <a class="el" href="_disposable_tensor_index_8h_source.html#l00092">onert::backend::train::operator&lt;&lt;()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00074">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00044">DisposableTensorIndex()</a>, <a class="el" href="_disposable_tensor_index_8h_source.html#l00093">onert::backend::train::operator&lt;&lt;()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00075">operator==()</a>.</p>
 
 </div>
 </div>
@@ -279,8 +279,8 @@ Public Member Functions</h2></td></tr>
 <p>operator overloading function for <code>!=</code> </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether two DisposableTensorIndex are differenct </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00083">83</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other); }</div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00084">84</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> !(*<span class="keyword">this</span> == other); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -311,12 +311,12 @@ Public Member Functions</h2></td></tr>
 <p>operator overloading function for <code>==</code> </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether two DisposableTensorIndex are the same </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00074">74</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> _op_index == other.op_index() &amp;&amp; _operand_index == other.operand_index();</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00075">75</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>  {</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> _op_index == other.op_index() &amp;&amp; _operand_index == other.operand_index();</div>
+<div class="line"><span class="lineno">   78</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00060">op_index()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00066">operand_index()</a>.</p>
+<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00061">op_index()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00067">operand_index()</a>.</p>
 
 </div>
 </div>

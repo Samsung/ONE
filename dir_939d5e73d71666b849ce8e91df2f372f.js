@@ -85,6 +85,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "RemoveDuplicateConstPass.cpp", "_remove_duplicate_const_pass_8cpp.html", null ],
     [ "RemoveFakeQuantPass.cpp", "_remove_fake_quant_pass_8cpp.html", null ],
     [ "RemoveGatherGuardPass.cpp", "_remove_gather_guard_pass_8cpp.html", null ],
+    [ "RemoveQDQForMixedPrecisionOpPass.cpp", "_remove_q_d_q_for_mixed_precision_op_pass_8cpp.html", null ],
     [ "RemoveQuantDequantSeqPass.cpp", "_remove_quant_dequant_seq_pass_8cpp.html", null ],
     [ "RemoveRedundantDequantizePass.cpp", "_remove_redundant_dequantize_pass_8cpp.html", null ],
     [ "RemoveRedundantQuantizePass.cpp", "_remove_redundant_quantize_pass_8cpp.html", null ],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX35 =
 {
+"backend_2trix_2_tensor_builder_8h_source.html":[36,0,4,2,1,8,15],
+"backend_2xnnpack_2_backend_context_8cc.html":[36,0,4,2,1,9,2],
+"backend_2xnnpack_2_backend_context_8cc_source.html":[36,0,4,2,1,9,2],
+"backend_2xnnpack_2_backend_context_8h.html":[36,0,4,2,1,9,3],
 "backend_2xnnpack_2_backend_context_8h.html#a469588946e21e0b51dfb54345ac55325":[36,0,4,2,1,9,3,1],
 "backend_2xnnpack_2_backend_context_8h_source.html":[36,0,4,2,1,9,3],
 "backend_2xnnpack_2_config_8cc.html":[36,0,4,2,1,9,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX35 =
 "circle-verify_2src_2_verify_flat_buffers_8h.html":[36,0,0,22,0,2],
 "circle-verify_2src_2_verify_flat_buffers_8h_source.html":[36,0,0,22,0,2],
 "circle2circle_2src_2_test_helper_8h.html":[36,0,0,23,0,1],
-"circle2circle_2src_2_test_helper_8h.html#a0bd2da0b208d77121c01ef3a7e7ae198":[36,0,0,23,0,1,1],
-"circle2circle_2src_2_test_helper_8h_source.html":[36,0,0,23,0,1],
-"circle_2src_2_op_2_b_c_q_fully_connected_8cpp.html":[36,0,0,24,0,1,0,2],
-"circle_2src_2_op_2_b_c_q_fully_connected_8cpp_source.html":[36,0,0,24,0,1,0,2],
-"circle_2src_2_op_2_b_c_q_gather_8cpp.html":[36,0,0,24,0,1,0,4]
+"circle2circle_2src_2_test_helper_8h.html#a0bd2da0b208d77121c01ef3a7e7ae198":[36,0,0,23,0,1,1]
 };

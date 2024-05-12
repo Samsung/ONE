@@ -67,6 +67,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "RemoveRedundantQuantize", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabc1d12e31b952f8b30b78ce01a2474ee", null ],
       [ "RemoveRedundantReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2cb6a9408b35a163490baee92befa696", null ],
       [ "RemoveFakeQuant", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea3129c5c49404f0f149efa0d78b75e1e2", null ],
+      [ "RemoveQDQForMixedPrecisionOp", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeac38b1f6d07f8df2e91a5f59d92a8c1ce", null ],
       [ "RemoveQuantDequantSeq", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeae9e6d566688e9cb42dec2763f9dafb14", null ],
       [ "RemoveDuplicateConst", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2eb11f2f873eae0c36da4f53f79c5d89", null ],
       [ "UnrollUnidirSeqLSTM", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea74482129fb47feefee89fd91a7421964", null ],

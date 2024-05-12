@@ -1766,6 +1766,7 @@ var hierarchy =
     [ "loco::Dimension", "classloco_1_1_dimension.html", null ],
     [ "luci::DimMetaData", "classluci_1_1_dim_meta_data.html", null ],
     [ "Dims< N >", "struct_dims.html", null ],
+    [ "onert::backend::train::DisposableMemoryManager", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager.html", null ],
     [ "onert::backend::train::DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", null ],
     [ "luci_interpreter_pal::DivFn< T >", "structluci__interpreter__pal_1_1_div_fn.html", null ],
     [ "onert_micro::execute::pal::DivFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_div_fn.html", null ],
@@ -3478,8 +3479,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4452,6 +4453,7 @@ var hierarchy =
       [ "luci::RemoveDuplicateConstPass", "structluci_1_1_remove_duplicate_const_pass.html", null ],
       [ "luci::RemoveFakeQuantPass", "structluci_1_1_remove_fake_quant_pass.html", null ],
       [ "luci::RemoveGatherGuardPass", "structluci_1_1_remove_gather_guard_pass.html", null ],
+      [ "luci::RemoveQDQForMixedPrecisionOpPass", "structluci_1_1_remove_q_d_q_for_mixed_precision_op_pass.html", null ],
       [ "luci::RemoveQuantDequantSeqPass", "structluci_1_1_remove_quant_dequant_seq_pass.html", null ],
       [ "luci::RemoveRedundantDequantizePass", "structluci_1_1_remove_redundant_dequantize_pass.html", null ],
       [ "luci::RemoveRedundantQuantizePass", "structluci_1_1_remove_redundant_quantize_pass.html", null ],

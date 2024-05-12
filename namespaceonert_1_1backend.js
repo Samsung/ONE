@@ -22,5 +22,5 @@ var namespaceonert_1_1backend =
     [ "ITensorRegistry", "structonert_1_1backend_1_1_i_tensor_registry.html", "structonert_1_1backend_1_1_i_tensor_registry" ],
     [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1_portable_tensor_registry_template" ],
     [ "BackendContexts", "namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62", null ],
-    [ "FunctionMap", "namespaceonert_1_1backend.html#a70c193539c226041330719aae7e2b52f", null ]
+    [ "FunctionMap", "namespaceonert_1_1backend.html#a0aaedc7641b82b747730d1814145a754", null ]
 ];

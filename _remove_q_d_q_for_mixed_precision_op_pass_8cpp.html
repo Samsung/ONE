@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: runtime/onert/core/src/backend/basic/MemoryManager.cc File Reference</title>
+<title>ONE - On-device Neural Engine: compiler/luci/pass/src/RemoveQDQForMixedPrecisionOpPass.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('_memory_manager_8cc.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('_remove_q_d_q_for_mixed_precision_op_pass_8cpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -91,24 +91,17 @@ $(document).ready(function(){initNavTree('_memory_manager_8cc.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a>  </div>
-  <div class="headertitle"><div class="title">MemoryManager.cc File Reference</div></div>
+  <div class="headertitle"><div class="title">RemoveQDQForMixedPrecisionOpPass.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html">backend/basic/MemoryManager.h</a>&gt;</code><br />
-<code>#include &lt;cassert&gt;</code><br />
-<code>#include &quot;<a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>&quot;</code><br />
-<code>#include &quot;util/ConfigSource.h&quot;</code><br />
-<code>#include &quot;util/logging.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_remove_q_d_q_for_mixed_precision_op_pass_8h_source.html">luci/Pass/RemoveQDQForMixedPrecisionOpPass.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h_source.html">luci/IR/CircleNode.h</a>&gt;</code><br />
 </div>
-<p><a href="_memory_manager_8cc_source.html">Go to the source code of this file.</a></p>
+<p><a href="_remove_q_d_q_for_mixed_precision_op_pass_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceonert" id="r_namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend" id="r_namespaceonert_1_1backend"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend.html">onert::backend</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend_1_1basic" id="r_namespaceonert_1_1backend_1_1basic"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1basic.html">onert::backend::basic</a></td></tr>
+<tr class="memitem:namespaceluci" id="r_namespaceluci"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html">luci</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -116,7 +109,7 @@ Namespaces</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cb031e414f281a658b23dddb30bb9d2c.html">runtime</a></li><li class="navelem"><a class="el" href="dir_e8e2d335b1be314b4aeca39d410c6e2f.html">onert</a></li><li class="navelem"><a class="el" href="dir_e3ccf6623f9f3bff466090fdb94ba31c.html">core</a></li><li class="navelem"><a class="el" href="dir_8ea121fb9ddeebd13575ba6eec205704.html">src</a></li><li class="navelem"><a class="el" href="dir_d83c4d126f9a1632e7789bbd36fd8171.html">backend</a></li><li class="navelem"><a class="el" href="dir_33c947a4c229f46e22221099ef07c842.html">basic</a></li><li class="navelem"><a class="el" href="_memory_manager_8cc.html">MemoryManager.cc</a></li>
+    <li class="navelem"><a class="el" href="dir_e955afc72e8af59637c9070b8690ff98.html">compiler</a></li><li class="navelem"><a class="el" href="dir_d868bd9b9ef6b656f76179dd48055579.html">luci</a></li><li class="navelem"><a class="el" href="dir_591e609db43d7de209e651ac54485af8.html">pass</a></li><li class="navelem"><a class="el" href="dir_939d5e73d71666b849ce8e91df2f372f.html">src</a></li><li class="navelem"><a class="el" href="_remove_q_d_q_for_mixed_precision_op_pass_8cpp.html">RemoveQDQForMixedPrecisionOpPass.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

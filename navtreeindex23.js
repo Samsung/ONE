@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_p_config_ini_8h.html#ae90c48db60e66a440cfa66322f0bb42c":[36,0,0,29,0,0,1,5],
-"_p_config_ini_8h_source.html":[36,0,0,29,0,0,1],
 "_p_config_ini_dump_8cpp.html":[36,0,0,29,1,2],
 "_p_config_ini_dump_8cpp.html#a905bac98b37fd7a53952cbf66e8621cf":[36,0,0,29,1,2,0],
 "_p_config_ini_dump_8cpp.html#aacfc158a88c88adc4d35008c7d6c6c09":[36,0,0,29,1,2,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "_pass_exception_8h.html":[36,0,0,82,2,1,2],
 "_pass_exception_8h_source.html":[36,0,0,82,2,1,2],
 "_pass_exception_test_8cpp.html":[36,0,0,82,6,2,0],
-"_pass_exception_test_8cpp_source.html":[36,0,0,82,6,2,0]
+"_pass_exception_test_8cpp_source.html":[36,0,0,82,6,2,0],
+"_pass_manager_8cpp.html":[36,0,0,82,3,0],
+"_pass_manager_8cpp_source.html":[36,0,0,82,3,0]
 };

@@ -1,0 +1,5 @@
+<map id="luci::RemoveQDQForMixedPrecisionOpPass" name="luci::RemoveQDQForMixedPrecisionOpPass">
+<area shape="rect" id="Node000001" title="Class to remove QDQ pattern for mixed&#45;precision Ops." alt="" coords="5,79,237,120"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="80,5,162,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,46,124,79,118,79,118,46"/>
+</map>

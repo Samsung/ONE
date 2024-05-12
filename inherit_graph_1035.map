@@ -1,15 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structnnkit_1_1_backend.html" title=" " alt="" coords="5,144,112,169"/>
 <area shape="rect" id="Node000001" href="$classnnkit_1_1support_1_1caffe_1_1_backend.html" title=" " alt="" coords="160,5,297,46"/>
-<area shape="poly" id="edge2289_Node000000_Node000001" title=" " alt="" coords="79,130,114,93,158,57,179,44,181,49,161,61,118,97,83,134"/>
+<area shape="poly" id="edge2290_Node000000_Node000001" title=" " alt="" coords="79,130,114,93,158,57,179,44,181,49,161,61,118,97,83,134"/>
 <area shape="rect" id="Node000002" href="$classnnkit_1_1support_1_1moco_1_1tf_1_1_backend.html" title=" " alt="" coords="160,71,297,111"/>
-<area shape="poly" id="edge2290_Node000000_Node000002" title=" " alt="" coords="107,135,173,109,175,114,109,140"/>
+<area shape="poly" id="edge2291_Node000000_Node000002" title=" " alt="" coords="107,135,173,109,175,114,109,140"/>
 <area shape="rect" id="Node000003" href="$classnnkit_1_1support_1_1onnx_1_1_backend.html" title=" " alt="" coords="163,136,294,177"/>
-<area shape="poly" id="edge2291_Node000000_Node000003" title=" " alt="" coords="128,154,162,154,162,159,128,159"/>
+<area shape="poly" id="edge2292_Node000000_Node000003" title=" " alt="" coords="128,154,162,154,162,159,128,159"/>
 <area shape="rect" id="Node000004" href="$classnnkit_1_1support_1_1tf_1_1_backend.html" title=" " alt="" coords="172,201,285,242"/>
-<area shape="poly" id="edge2292_Node000000_Node000004" title=" " alt="" coords="109,173,175,198,173,203,107,178"/>
+<area shape="poly" id="edge2293_Node000000_Node000004" title=" " alt="" coords="109,173,175,198,173,203,107,178"/>
 <area shape="rect" id="Node000005" href="$classnnkit_1_1support_1_1tflite_1_1_abstract_backend.html" title=" " alt="" coords="164,267,293,307"/>
-<area shape="poly" id="edge2293_Node000000_Node000005" title=" " alt="" coords="83,179,118,215,161,252,181,264,179,268,158,256,114,219,79,183"/>
+<area shape="poly" id="edge2294_Node000000_Node000005" title=" " alt="" coords="83,179,118,215,161,252,181,264,179,268,158,256,114,219,79,183"/>
 <area shape="rect" id="Node000006" href="$struct_conv_backend.html" title=" " alt="" coords="345,274,447,300"/>
-<area shape="poly" id="edge2294_Node000005_Node000006" title=" " alt="" coords="308,284,345,284,345,290,308,290"/>
+<area shape="poly" id="edge2295_Node000005_Node000006" title=" " alt="" coords="308,284,345,284,345,290,308,290"/>
 </map>

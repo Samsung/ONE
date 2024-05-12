@@ -237,8 +237,6 @@ var NAVTREEINDEX16 =
 "_memory_context_8cpp_source.html":[36,0,0,35,1,1,2,2],
 "_memory_context_8h.html":[36,0,0,35,1,1,2,3],
 "_memory_context_8h_source.html":[36,0,0,35,1,1,2,3],
-"_memory_manager_8cc.html":[36,0,4,2,2,1,0,0,4],
-"_memory_manager_8cc_source.html":[36,0,4,2,2,1,0,0,4],
 "_memory_tracker_8cpp.html":[36,0,0,3,0,13],
 "_memory_tracker_8cpp.html#a7ce0df38eb467e59f209470c8f5ac4e6":[36,0,0,3,0,13,0],
 "_memory_tracker_8cpp_source.html":[36,0,0,3,0,13],
@@ -249,5 +247,7 @@ var NAVTREEINDEX16 =
 "_merge_command_8h.html":[36,0,0,8,0,8],
 "_merge_command_8h_source.html":[36,0,0,8,0,8],
 "_merge_concat_nodes_pass_8cpp.html":[36,0,0,38,1,3,14],
-"_merge_concat_nodes_pass_8cpp_source.html":[36,0,0,38,1,3,14]
+"_merge_concat_nodes_pass_8cpp_source.html":[36,0,0,38,1,3,14],
+"_merge_concat_nodes_pass_8h.html":[36,0,0,38,1,3,15],
+"_merge_concat_nodes_pass_8h_source.html":[36,0,0,38,1,3,15]
 };
