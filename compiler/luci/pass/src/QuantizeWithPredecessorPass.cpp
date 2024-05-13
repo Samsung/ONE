@@ -22,7 +22,7 @@
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Log.h>
 
-#include <iostream>
+#include <limits>
 
 namespace
 {
