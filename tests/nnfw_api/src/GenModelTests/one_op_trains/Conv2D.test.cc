@@ -49,3 +49,117 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTrain, OneOp_Conv2D_Stride)
+{
+  CirclePlusGen cgen;
+
+  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
+  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_SAME, 2, 2,
+                         circle::ActivationFunctionType_NONE, 1, 1);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  float learning_rate = 1.0f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->addTrainCase(uniformTCD<float>(
+    {{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
+      1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}},                              // inputs
+    {{22, 27, -10, -2, 5, -8, 7, 3, -14, -26, -10, 18, 4, -13, -28, 9, 14, 1}}, // expected
+    {{19202.662109375f}}                                                        // loss
+    ));
+  _context->setBackends({"train"});
+  // To apply backward to loss, epoch should be >= 2
+  _context->setEpoch(2);
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTrain, neg_OneOp_Conv2D_Type)
+{
+  CirclePlusGen cgen;
+  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
+  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT16});
+  cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
+                         circle::ActivationFunctionType_NONE, 1, 1);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  float learning_rate = 1.0f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->setBackends({"train"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTrain, neg_OneOp_Conv2D_Stride)
+{
+  CirclePlusGen cgen;
+
+  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
+  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 0, 0,
+                         circle::ActivationFunctionType_NONE, 1, 1);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  float learning_rate = 1.0f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->setBackends({"train"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTrain, neg_OneOp_Conv2D_Dilation)
+{
+  CirclePlusGen cgen;
+
+  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
+  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+  int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
+                         circle::ActivationFunctionType_NONE, 0, 0);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  float learning_rate = 1.0f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->setBackends({"train"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
