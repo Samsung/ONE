@@ -129,7 +129,7 @@ class TrainInfoBuilder:
 
     def __init__(self, lossfn: int, lossfnOptType: int, lossfnOpt, optimizer: int,
                  optimizerOptType: int, optimizerOpt, batchSize: int,
-                 lossReductionType: int):
+                 lossReductionType: int, trainable: [int]):
         self.tinfo = ModelTrainingT()
         self.tinfo.version = self.TRAINING_FILE_VERSION
         self.tinfo.lossfn = lossfn
@@ -140,6 +140,7 @@ class TrainInfoBuilder:
         self.tinfo.optimizerOpt = optimizerOpt
         self.tinfo.batchSize = batchSize
         self.tinfo.lossReductionType = lossReductionType
+        self.tinfo.trainable = trainable
 
     def get(self):
         builder = flatbuffers.Builder(0)
