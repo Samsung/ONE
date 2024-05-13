@@ -152,9 +152,9 @@ int main(const int argc, char **argv)
     // set training information
     NNPR_ENSURE_STATUS(nnfw_train_set_traininfo(session, &tri));
 
-    for (auto const &idx : args.getFrozenOpsIdx())
+    for (auto const &idx : args.getTrainableOpsIdx())
     {
-      nnfw_train_disable_node_update(session, idx);
+      nnfw_train_enable_node_update(session, idx);
     }
 
     // prepare execution

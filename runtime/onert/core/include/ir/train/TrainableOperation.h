@@ -46,7 +46,7 @@ public:
   virtual bool isRequiredForBackward() const final { return _required_for_backward; }
 
 private:
-  bool _trainable = true;
+  bool _trainable = false;
   bool _required_for_backward = true;
 };
 

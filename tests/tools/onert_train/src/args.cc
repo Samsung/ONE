@@ -230,7 +230,7 @@ void Args::Initialize(void)
     }
   };
 
-  auto process_frozen_ops = [&](const std::string &trainable_ops_idx_str) {
+  auto process_trainable_ops = [&](const std::string &trainable_ops_idx_str) {
     std::stringstream ss(trainable_ops_idx_str);
     std::string token;
     try
@@ -251,9 +251,9 @@ void Args::Initialize(void)
           }
           std::vector<uint32_t> range(end_idx - begin_idx + 1);
           std::iota(std::begin(range), std::end(range), begin_idx);
-          _frozen_ops_idx.insert(std::begin(range), std::end(range));
+          _trainable_ops_idx.insert(std::begin(range), std::end(range));
         }
-        _frozen_ops_idx.emplace(std::stoi(token));
+        _trainable_ops_idx.emplace(std::stoi(token));
       }
     }
     catch (const std::invalid_argument &ex)
@@ -324,8 +324,8 @@ void Args::Initialize(void)
         "The output buffer size in JSON 1D array\n"
         "If not given, the model's output sizes are used\n"
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.")
-    ("frozen_ops_idx", po::value<std::string>()->notifier(process_frozen_ops),
-        "Indexes of untrainable nodes in the graph (indexes numeration starts with 0). "
+    ("trainable_ops_idx", po::value<std::string>()->notifier(process_trainable_ops),
+        "Indexes of trainable nodes in the graph (indexes numeration starts with 0). "
         "The indexes can be passed as a comma-separated list (like 65,68,70) or in range form (like 60-70).")
     ;
   // clang-format on

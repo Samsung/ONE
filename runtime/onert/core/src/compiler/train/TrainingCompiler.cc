@@ -117,10 +117,10 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
           auto trainable_op = converter(op);
-          if (_training_info.getFrozenTrainOps().find(op_index) !=
-              std::end(_training_info.getFrozenTrainOps()))
+          if (_training_info.getTrainableOps().find(op_index) !=
+              std::end(_training_info.getTrainableOps()))
           {
-            trainable_op->disableWeightsUpdate();
+            trainable_op->enableWeightsUpdate();
           }
           auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           UNUSED_RELEASE(gen_index);
