@@ -86,6 +86,55 @@ struct QuantizeWithPredecessor final : public luci::CircleNodeMutableVisitor<boo
     return quantize_with_same_qparam(input_node, node);
   }
 
+  bool visit(luci::CircleMul *node)
+  {
+    // Skip if node is already quantized
+    if (luci::is_quantized(node))
+      return false;
+
+    auto x = loco::must_cast<luci::CircleNode *>(node->x());
+    auto y = loco::must_cast<luci::CircleNode *>(node->y());
+
+    // Only support square for now
+    if (x != y)
+      return false;
+
+    // Only support S16 for now
+    if (x->dtype() != loco::DataType::S16)
+      return false;
+
+    const auto input_qparam = x->quantparam();
+    if (not input_qparam)
+      return false;
+
+    if (input_qparam->scale.size() != 1)
+      return false;
+
+    const auto input_scale = input_qparam->scale.at(0);
+
+    const auto s16_max = std::numeric_limits<int16_t>::max();
+    // How to determine a new scale of x^2?
+    // x's scale would have been determined by its max or min
+    //
+    // Max value of x^2 = (s * s16_max)^2
+    // Min value of x^2 = 0
+    // New scale = (s * s16_max)^2 / s16_max = s^2 * s16_max
+    //
+    // NOTE s16_max = -s16_min (symmetric quantization)
+    const auto output_scale = input_scale * input_scale * s16_max;
+
+    auto new_qparam = std::make_unique<luci::CircleQuantParam>();
+    {
+      new_qparam->scale.push_back(output_scale);
+      new_qparam->zerop.push_back(0);
+    }
+
+    node->quantparam(std::move(new_qparam));
+    node->dtype(x->dtype());
+
+    return true;
+  }
+
   bool visit(luci::CircleNeg *node)
   {
     auto input_node = loco::must_cast<luci::CircleNode *>(node->x());
