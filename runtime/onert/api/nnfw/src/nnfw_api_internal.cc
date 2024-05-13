@@ -1778,7 +1778,7 @@ NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
     switch (qtype)
     {
       case NNFW_QUANTIZE_TYPE_U8_ASYM:
-        odc_qtype = onert::odc::ODC_QTYPE_WO_I8_SYM;
+        odc_qtype = onert::odc::ODC_QTYPE_U8_ASYM;
         break;
       case NNFW_QUANTIZE_TYPE_I16_SYM:
         odc_qtype = onert::odc::ODC_QTYPE_I16_SYM;
