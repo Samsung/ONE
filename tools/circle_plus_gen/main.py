@@ -1,16 +1,14 @@
 import argparse
-import logging
-import json
 import typing
 
 from lib.circle_plus import CirclePlus
-from lib.train_info import TrainInfo
+from lib.train_param import TrainParam
 
 
 def get_cmd_args():
     parser = argparse.ArgumentParser(
         prog='circle plus generator',
-        description='help handle circle file with training hyper parameters')
+        description='help handle circle file with training hyperparameters')
 
     parser.add_argument(
         'input_circle_file', metavar="input.circle", type=str, help='input circle file')
@@ -19,14 +17,15 @@ def get_cmd_args():
     return args
 
 
-def check(in_circle_file) -> typing.NoReturn:
+def print_training_hparameters(in_circle_file) -> typing.NoReturn:
     '''
-    Check in_circle_file has training hyperparameters and print it.
+    if in_circle_file has training hyperparameters, print it out
     '''
-    circle_model: CirclePlus = CirclePlus.from_file(in_circle_file)
-    tinfo = circle_model.get_train_info()
-
     print(f"check hyperparameters in {in_circle_file}")
+
+    circle_model: CirclePlus = CirclePlus.from_file(in_circle_file)
+    tinfo: typing.Union[TrainParam, None] = circle_model.get_train_param()
+
     if tinfo == None:
         print("No hyperparameters")
     else:
@@ -36,6 +35,6 @@ def check(in_circle_file) -> typing.NoReturn:
 if __name__ == "__main__":
     args = get_cmd_args()
 
-    check(args.input_circle_file)
+    print_training_hparameters(args.input_circle_file)
 
     # TODO: add a function that injects training parameter into circle file
