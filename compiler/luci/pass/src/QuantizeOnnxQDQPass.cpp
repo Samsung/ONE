@@ -22,6 +22,7 @@
 #include <luci/Service/Nodes/CircleConst.h>
 
 #include <cmath>
+#include <limits>
 
 namespace
 {
