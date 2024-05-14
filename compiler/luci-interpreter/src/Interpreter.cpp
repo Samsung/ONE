@@ -134,9 +134,8 @@ size_t Interpreter::getOutputTensorSize(const luci::CircleOutput *output_node)
     throw std::runtime_error("Cannot find tensor size for output node named \"" + name + "\".");
   }
 
-  size_t tensor_size = luci::size(output_node->dtype());
-  for (int i = 0; i < tensor->shape().num_dims(); i++)
-    tensor_size *= tensor->shape().dim(i);
+  size_t tensor_size = luci_interpreter::getDataTypeSize(tensor->element_type());
+  tensor_size *= tensor->shape().num_elements();
   return tensor_size;
 }
 
