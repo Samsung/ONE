@@ -60,9 +60,8 @@ public:
         CHECK_OR_FALSE(_div_const->quantparam()->zerop.size() == 1);
         CHECK_OR_FALSE(_div_const->quantparam()->zerop.at(0) == 0);
         CHECK_OR_FALSE(_div_const->size<loco::DataType::S16>() == 1);
-        CHECK_OR_FALSE(same(
-          1.0,
-          _div_const->at<loco::DataType::S16>(0) * _div_const->quantparam()->scale.at(0) == 1));
+        CHECK_OR_FALSE(same(1.0, _div_const->at<loco::DataType::S16>(0) *
+                                   _div_const->quantparam()->scale.at(0)));
         break;
       // TODO Support more dtypes
       default:
