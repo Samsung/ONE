@@ -72,6 +72,7 @@ public:
       FuseActivationFunction,
       FusePRelu,
       FuseGelu,
+      FuseRsqrt,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
