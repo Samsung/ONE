@@ -136,7 +136,8 @@ int entry(int argc, char **argv)
   for (int i = 0; i < module->graph()->outputs()->size(); i++)
   {
     const auto *output_node = loco::must_cast<const luci::CircleOutput *>(output_nodes[i]);
-    std::vector<char> output_data(getTensorSize(output_node));
+    size_t output_size = interpreter.getOutputTensorSize(output_node);
+    std::vector<char> output_data(output_size);
     interpreter.readOutputTensor(output_node, output_data.data(), output_data.size());
 
     // Output data is written in ${output_file}n
