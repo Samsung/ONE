@@ -7,11 +7,11 @@ from lib.train_param import TrainParam
 
 def get_cmd_args():
     parser = argparse.ArgumentParser(
-        prog='circle plus generator',
-        description='help handle circle file with training hyperparameters')
+        prog='circle_plus_gen',
+        description='circle_plus_gen help handle circle file with training hyperparameters'
+    )
 
-    parser.add_argument(
-        'input_circle_file', metavar="input.circle", type=str, help='input circle file')
+    parser.add_argument('input', help='input circle file')
 
     args = parser.parse_args()
     return args
@@ -35,6 +35,6 @@ def print_training_hparameters(in_circle_file) -> typing.NoReturn:
 if __name__ == "__main__":
     args = get_cmd_args()
 
-    print_training_hparameters(args.input_circle_file)
+    print_training_hparameters(args.input)
 
     # TODO: add a function that injects training parameter into circle file

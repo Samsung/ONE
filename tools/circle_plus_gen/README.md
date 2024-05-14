@@ -17,7 +17,7 @@ This tool tested on python3.8.
 
 2. Install required pakcages. 
 
-    Currently, only `flatbuffers==24.3.25` is needed.
+    Currently, only `flatbuffers` is needed.
     ```bash
     python3 -m pip install -r requirements.txt
     ```
