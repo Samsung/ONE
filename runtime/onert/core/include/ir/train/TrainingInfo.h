@@ -53,12 +53,13 @@ public:
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
+  void setTrainableOps(const std::unordered_set<OperationIndex> &trainable_ops)
+  {
+    _trainable_ops = trainable_ops;
+  }
   uint32_t &trainingStep() { return _training_step; }
 
-  void enableTrainNodeUpdate(const OperationIndex &op_idx)
-  {
-    _trainable_ops.emplace(op_idx);
-  }
+  void enableTrainNodeUpdate(const OperationIndex &op_idx) { _trainable_ops.emplace(op_idx); }
 
   void disableTrainNodeUpdate(const OperationIndex &op_idx)
   {

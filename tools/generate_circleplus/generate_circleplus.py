@@ -5,24 +5,27 @@ import os
 from circle_plus_builder import CirclePlusBuilder
 from train_info_builder import TrainInfoBuilder, TrainInfoLoss, TrainInfoOptimizer, TrainInfoLossReduction
 
-class StoreTrainableAction(argparse.Action):
-  """Store trainable Operation index"""
 
-  def __call__(self, parser, namespace, values, option_string=None):
-    regex = re.compile(r'[^0-9-,]')
-    if len(regex.findall(values)) != 0:
-        sys.exit('{}: error: argument trainable: invalid format'.format(os.path.basename(__file__).split('.')[0]))
-    strs = values.split(',')
-    lists = []
-    for s in strs:
-        if '-' in s:
-            start, end = s.split('-')
-            for i in range(int(start), int(end) + 1):
-                lists.append(i)
-        else:
-            lists.append(int(s))
-    setattr(namespace, self.dest, lists)
-    
+class StoreTrainableAction(argparse.Action):
+    """Store trainable Operation index"""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        regex = re.compile(r'[^0-9-,]')
+        if len(regex.findall(values)) != 0:
+            sys.exit('{}: error: argument trainable: invalid format'.format(
+                os.path.basename(__file__).split('.')[0]))
+        strs = values.split(',')
+        lists = []
+        for s in strs:
+            if '-' in s:
+                start, end = s.split('-')
+                for i in range(int(start), int(end) + 1):
+                    lists.append(i)
+            else:
+                lists.append(int(s))
+        setattr(namespace, self.dest, lists)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog='generate_circleplus', description='Generate circleplus file')
@@ -50,10 +53,12 @@ if __name__ == '__main__':
         default=TrainInfoLossReduction.default(),
         help='Loss reduction type')
     # TODO Support multiple trainable operation index
-    parser.add_argument('--trainable', action=StoreTrainableAction,
-                        help='Indexes of trainable nodes in graph\n'
-                             'The indexes can be passed as a comma-separated list or range form\n'
-                             'e.g. 1,2,3 or 1,2-5')
+    parser.add_argument(
+        '--trainable',
+        action=StoreTrainableAction,
+        help='Indexes of trainable nodes in graph\n'
+        'The indexes can be passed as a comma-separated list or range form\n'
+        'e.g. 1,2,3 or 1,2-5')
 
     args = parser.parse_args()
 

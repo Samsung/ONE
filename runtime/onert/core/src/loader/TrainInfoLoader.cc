@@ -91,6 +91,24 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
 
   return ir_loss;
 }
+
+std::unordered_set<ir::OperationIndex> loadTrainableInfo(const circle::ModelTraining *circle_model)
+{
+  assert(circle_model != nullptr);
+
+  std::unordered_set<ir::OperationIndex> ir_trainable;
+  const auto lists = circle_model->trainable_ops();
+  if (lists != nullptr)
+  {
+    for (::flatbuffers::uoffset_t i = 0; i < lists->size(); ++i)
+    {
+      const uint32_t op_index = lists->Get(i);
+      const auto ir_op_index = ir::OperationIndex{op_index};
+      ir_trainable.emplace(ir_op_index);
+    }
+  }
+  return ir_trainable;
+}
 } // namespace
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size)
@@ -112,6 +130,7 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
     tinfo->setBatchSize(circle_model->batch_size());
     tinfo->setOptimizerInfo(loadOptimizerInfo(circle_model));
     tinfo->setLossInfo(loadLossInfo(circle_model));
+    tinfo->setTrainableOps(loadTrainableInfo(circle_model));
   }
   return tinfo;
 }
