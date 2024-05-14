@@ -91,7 +91,7 @@ private:
   luci::CircleRsqrt *create_rsqrt(loco::Graph *graph);
 
 private:
-  const RsqrtPattern *_p;
+  const RsqrtPattern *_p = nullptr;
 };
 
 luci::CircleRsqrt *FuseRsqrt::create_rsqrt(loco::Graph *graph)
