@@ -70,5 +70,5 @@ If it doesn't work well with example files, please check their md5sum to make su
 $ md5sum example/sample.circle example/sample_tpram.circle
 
 df287dea52cf5bf16bc9dc720e8bca04  example/sample.circle
-e8c737488ce3ab1b60d4fd15dea770c8  example/sample_tpram.circle
+6e736e0544acc7ccb727cbc8f77add94  example/sample_tpram.circle
 ```
