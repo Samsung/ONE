@@ -18,7 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATION_LOSS_H__
 
 #include "ir/operation/Loss.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 #include "ir/train/LossCode.h"
 #include "ir/train/LossInfo.h"
@@ -32,7 +32,7 @@ namespace train
 namespace operation
 {
 
-class Loss : public ir::operation::Loss, public ITrainableOperation
+class Loss : public ir::operation::Loss, public TrainableOperation
 {
 private:
   using OperationType = ir::operation::Loss;

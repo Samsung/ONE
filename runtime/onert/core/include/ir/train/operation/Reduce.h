@@ -18,7 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATION_REDUCE_H__
 
 #include "ir/operation/Reduce.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 namespace onert
 {
@@ -29,7 +29,7 @@ namespace train
 namespace operation
 {
 
-class Reduce : public ir::operation::Reduce, public ITrainableOperation
+class Reduce : public ir::operation::Reduce, public TrainableOperation
 {
 private:
   using OperationType = ir::operation::Reduce;

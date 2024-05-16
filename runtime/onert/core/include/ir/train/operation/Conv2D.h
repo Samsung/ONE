@@ -18,7 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATION_CONV2D_H__
 
 #include "ir/operation/Conv2D.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 namespace onert
 {
@@ -29,7 +29,7 @@ namespace train
 namespace operation
 {
 
-class Conv2D : public ir::operation::Conv2D, public ITrainableOperation
+class Conv2D : public ir::operation::Conv2D, public TrainableOperation
 {
 private:
   using OperationType = ir::operation::Conv2D;
