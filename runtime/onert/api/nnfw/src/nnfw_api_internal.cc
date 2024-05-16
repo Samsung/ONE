@@ -1674,6 +1674,10 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
     size_t _buf_sz = 0;
   };
 
+  std::ifstream src(_model_path, std::ios::binary);
+  std::ofstream dst(path, std::ios::binary);
+  dst << src.rdbuf();
+
   MMappedFile mmapfile(path);
   if (!mmapfile.ensure_mmap())
     return NNFW_STATUS_ERROR;
