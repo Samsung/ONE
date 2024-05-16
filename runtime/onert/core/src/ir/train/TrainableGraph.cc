@@ -265,6 +265,24 @@ TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_o
   return backward_order;
 }
 
+void TrainableGraph::markOpsRequiredForBackward()
+{
+  ir::OperationIndex min_trainable_op_idx{static_cast<uint32_t>(operations().size() - 1)};
+  operations().iterate([&](const ir::OperationIndex &op_idx, const ir::IOperation &op) {
+    const auto &train_op = dynamic_cast<const ir::train::ITrainableOperation *>(&op);
+    if (train_op->isWeightsUpdateEnabled() && op_idx.value() < min_trainable_op_idx.value())
+    {
+      min_trainable_op_idx = op_idx;
+    }
+  });
+  for (ir::OperationIndex idx{min_trainable_op_idx}; idx.value() < operations().size(); idx++)
+  {
+    auto train_op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(idx));
+    assert(train_op);
+    train_op->enableBackward();
+  }
+}
+
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
 {
   _losses.emplace(pred_ioind, loss_ind);

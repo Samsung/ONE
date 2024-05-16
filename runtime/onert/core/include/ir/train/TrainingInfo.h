@@ -18,9 +18,12 @@
 #ifndef __ONERT_IR_TRAIN_TRAINING_INFO_H__
 #define __ONERT_IR_TRAIN_TRAINING_INFO_H__
 
+#include "ir/Index.h"
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
 #include "ir/train/LossInfo.h"
+
+#include <unordered_set>
 
 namespace onert
 {
@@ -44,12 +47,23 @@ public:
   const OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   uint32_t batchSize() const { return _batch_size; }
   const uint32_t &trainingStep() const { return _training_step; }
+  const std::unordered_set<OperationIndex> &getTrainableOps() const { return _trainable_ops; }
 
   // setter
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   uint32_t &trainingStep() { return _training_step; }
+
+  void enableTrainNodeUpdate(const OperationIndex &op_idx) { _trainable_ops.emplace(op_idx); }
+
+  void disableTrainNodeUpdate(const OperationIndex &op_idx)
+  {
+    if (_trainable_ops.find(op_idx) != std::end(_trainable_ops))
+    {
+      _trainable_ops.erase(op_idx);
+    }
+  }
 
   bool isValid() const;
 
@@ -58,6 +72,7 @@ private:
   OptimizerInfo _optimizer_info;
   uint32_t _batch_size;
   uint32_t _training_step;
+  std::unordered_set<OperationIndex> _trainable_ops;
 };
 
 } // namespace train

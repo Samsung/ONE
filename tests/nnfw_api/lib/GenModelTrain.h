@@ -20,6 +20,8 @@
 #include "GenModelTest.h"
 #include "CirclePlusGen.h"
 
+#include <unordered_set>
+
 struct SessionObjectTraining : public SessionObjectGeneric
 {
   std::vector<std::vector<uint8_t>> losses;
@@ -116,10 +118,14 @@ public:
     _epoch = epoch;
   }
 
+  void disableTrainNodeUpdate(const int op_idx) { _frozen_train_ops_idx.emplace(op_idx); }
+  const std::unordered_set<int> &getFrozenTrainOpsIdx() const { return _frozen_train_ops_idx; }
+
 private:
   CircleBuffer _cpbuf;
   std::vector<TrainCaseData> _train_cases;
   int32_t _epoch;
+  std::unordered_set<int> _frozen_train_ops_idx;
 };
 
 /**
@@ -164,6 +170,11 @@ protected:
       }
       NNFW_ENSURE_SUCCESS(model_load_result);
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+
+      for (const auto &frozen_op_idx : _context->getFrozenTrainOpsIdx())
+      {
+        nnfw_train_disable_node_update(_so.session, frozen_op_idx);
+      }
 
       if (_context->expected_fail_compile())
       {

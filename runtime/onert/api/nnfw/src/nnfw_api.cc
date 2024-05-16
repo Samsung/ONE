@@ -418,6 +418,18 @@ NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index
   return session->train_expected_tensorinfo(index, info);
 }
 
+NNFW_STATUS nnfw_train_disable_node_update(nnfw_session *session, uint32_t op_index)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->nnfw_train_disable_node_update(op_index);
+}
+
+NNFW_STATUS nnfw_train_enable_node_update(nnfw_session *session, uint32_t op_index)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->nnfw_train_enable_node_update(op_index);
+}
+
 NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, const void *input,
                                  const nnfw_tensorinfo *input_info)
 {

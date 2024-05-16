@@ -152,6 +152,11 @@ int main(const int argc, char **argv)
     // set training information
     NNPR_ENSURE_STATUS(nnfw_train_set_traininfo(session, &tri));
 
+    for (auto const &idx : args.getTrainableOpsIdx())
+    {
+      nnfw_train_enable_node_update(session, idx);
+    }
+
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time

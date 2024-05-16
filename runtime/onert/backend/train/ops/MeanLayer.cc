@@ -37,12 +37,9 @@ MeanLayer::MeanLayer()
   // DO NOTHING
 }
 
-void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,
-                          IPortableTensor *output, bool keep_dims, IPortableTensor *back_prop_input,
-                          const IPortableTensor *back_prop_output)
+void MeanLayer::configureBackward(IPortableTensor *back_prop_input,
+                                  const IPortableTensor *back_prop_output)
 {
-  cpu::ops::MeanLayer::configure(input, axes, output, keep_dims);
-
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }

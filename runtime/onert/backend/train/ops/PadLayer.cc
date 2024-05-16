@@ -43,11 +43,9 @@ template <typename T> void PadLayer::depad()
                               getBuffer<T>(_back_prop_input));
 }
 
-void PadLayer::configure(const IPortableTensor *input, const IPortableTensor *pad,
-                         const IPortableTensor *value, IPortableTensor *output,
-                         IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
+void PadLayer::configureBackward(IPortableTensor *back_prop_input,
+                                 const IPortableTensor *back_prop_output)
 {
-  cpu::ops::PadLayer::configure(input, pad, value, output);
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }

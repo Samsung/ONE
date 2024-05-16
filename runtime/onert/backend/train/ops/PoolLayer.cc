@@ -34,17 +34,6 @@ namespace ops
 namespace
 {
 
-cpu::ops::PoolType convertToInfer(const train::ops::PoolType &pool_type)
-{
-  switch (pool_type)
-  {
-    case train::ops::PoolType::kMax:
-      return cpu::ops::PoolType::kMax;
-    default:
-      throw std::runtime_error("PoolLayer: Unsupported pool type yet");
-  }
-}
-
 class MaxPool2D final : public TrainingKernelRegistry
 {
 private:
@@ -131,24 +120,16 @@ PoolLayer::PoolLayer()
   // DO NOTHING
 }
 
-void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLeft,
-                          const uint32_t paddingRight, const uint32_t paddingTop,
-                          const uint32_t paddingBottom, const uint32_t strideWidth,
-                          const uint32_t strideHeight, const uint32_t kernelWidth,
-                          const uint32_t kernelHeight, const ir::Activation activation,
-                          IPortableTensor *output, const PoolType op_type,
-                          IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output)
+void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t paddingRight,
+                                  const uint32_t paddingTop, const uint32_t paddingBottom,
+                                  const uint32_t strideWidth, const uint32_t strideHeight,
+                                  const uint32_t kernelWidth, const uint32_t kernelHeight,
+                                  const ir::Activation activation, const PoolType op_type,
+                                  IPortableTensor *output, IPortableTensor *back_prop_input,
+                                  const IPortableTensor *back_prop_output)
 {
-  _input = input;
-  _output = output;
-
   _back_prop_output = back_prop_output;
   _back_prop_input = back_prop_input;
-
-  // ready inference kernel
-  cpu::ops::PoolLayer::configure(input, paddingLeft, paddingRight, paddingTop, paddingBottom,
-                                 strideWidth, strideHeight, kernelWidth, kernelHeight, activation,
-                                 output, convertToInfer(op_type));
 
   if (output->data_type() != OperandType::FLOAT32)
   {

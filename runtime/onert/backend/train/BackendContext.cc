@@ -110,15 +110,27 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _tensor_builder;
-
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if (external_operands().contains(ind))
+  tgraph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
+    const auto trainable_op = dynamic_cast<const ir::train::TrainableOperation *>(&op);
+    assert(trainable_op);
+    if (!trainable_op->isRequiredForBackward())
+    {
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
+    }
+    for (auto &&ind :
+         (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    {
+      if (tensor_builder->isRegisteredBackward(ind))
+        continue;
+      if (external_operands().contains(ind))
+        continue;
+      // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+      assert(tgraph.layout() != ir::Layout::NCHW);
 
-    tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(obj),
+    const auto &operand = tgraph.operands().at(ind);
+    tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand),
                                                ir::Layout::NHWC);
+    }
   });
 
   // TODO Plan tensor builds to reduce peak memory usage
