@@ -118,6 +118,7 @@ table ModelTraining {
   epochs: int;
   batch_size: int;
   loss_reduction_type : LossReductionType;
+  trainable_ops : [int];
 }
 
 root_type ModelTraining;
