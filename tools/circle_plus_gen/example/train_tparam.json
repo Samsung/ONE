@@ -1,0 +1,19 @@
+{
+  "optimizer": {
+      "type": "adam",
+      "args": {
+          "learningRate": 0.01,
+          "beta1": 0.9,
+          "beta2": 0.999,
+          "epsilon": 1e-07
+      }
+  },
+  "loss": {
+      "type": "categorical crossentropy",
+      "args": {
+          "fromLogits": true,
+          "reduction": "sum over batch size"
+      }
+  },
+  "batchSize": 32
+}
