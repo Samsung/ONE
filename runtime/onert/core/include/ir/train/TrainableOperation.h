@@ -42,12 +42,12 @@ public:
 
   virtual bool isTrainable() const final { return _trainable; }
 
-  void disableBackward() final { _required_for_backward = false; }
+  void enableBackward() final { _required_for_backward = true; }
   virtual bool isRequiredForBackward() const final { return _required_for_backward; }
 
 private:
   bool _trainable = false;
-  bool _required_for_backward = true;
+  bool _required_for_backward = false;
 };
 
 } // namespace train
