@@ -9,6 +9,9 @@ endif(NOT BUILD_ONERT)
 
 nnfw_find_package(GTest)
 
+# Use C++17 for nnfw_api test
+set(CMAKE_CXX_STANDARD 17)
+
 set(RUNTIME_NNFW_API_TEST nnfw_api_gtest)
 file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_LIB "lib/*.cc" "lib/*.cpp")
 file(GLOB_RECURSE RUNTIME_NNFW_API_TEST_SRC "main.cc" "src/*.test.cc" "src/*.test.cpp")

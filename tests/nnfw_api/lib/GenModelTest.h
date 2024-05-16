@@ -100,7 +100,7 @@ struct TestCaseData
   }
   bool expected_fail_run() const { return _expected_fail_run; }
 
-protected:
+private:
   template <typename T>
   static void addData(std::vector<std::vector<uint8_t>> &dest, const std::vector<T> &data)
   {
