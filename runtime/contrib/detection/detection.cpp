@@ -22,7 +22,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "misc/benchmark.h"
+#include <benchmark/Accumulator.h>
 
 #define CHECK_TF(e)                                \
   {                                                \
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
   {
     std::chrono::milliseconds elapsed(0);
 
-    nnfw::misc::benchmark::measure(elapsed) << [&](void) {
+    benchmark::measure(elapsed) << [&](void) {
       CHECK_TF(sess->Run({{"input_node", input}}, output_nodes, {}, &outputs));
     };
 

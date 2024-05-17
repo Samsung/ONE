@@ -17,17 +17,13 @@
 /**
  * @file benchmark.h
  * @ingroup COM_AI_RUNTIME
- * @brief This file contains nnfw::misc::benchmark::Accumulator class
+ * @brief This file contains benchmark::Accumulator class
  */
-#ifndef __NNFW_MISC_BENCHMARK_H__
-#define __NNFW_MISC_BENCHMARK_H__
+#ifndef __NNFW_BENCHMARK_ACCUMULATOR_H__
+#define __NNFW_BENCHMARK_ACCUMULATOR_H__
 
 #include <chrono>
 
-namespace nnfw
-{
-namespace misc
-{
 // Benckmark support
 namespace benchmark
 {
@@ -81,7 +77,5 @@ Accumulator<T> &operator<<(Accumulator<T> &&acc, Callable cb)
 template <typename T> Accumulator<T> measure(T &out) { return Accumulator<T>(out); }
 
 } // namespace benchmark
-} // namespace misc
-} // namespace nnfw
 
-#endif // __NNFW_MISC_BENCHMARK_H__
+#endif // __NNFW_BENCHMARK_ACCUMULATOR_H__

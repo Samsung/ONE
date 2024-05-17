@@ -16,11 +16,12 @@
 
 #include "mlapse/benchmark_runner.h"
 
-// From 'nnfw_lib_misc'
-#include <misc/benchmark.h>
+// From 'nnfw_lib_benchmark'
+#include <benchmark/Accumulator.h>
 
 // From C++ Standard Library
 #include <cassert>
+#include <stdexcept>
 
 namespace mlapse
 {
@@ -61,7 +62,7 @@ void BenchmarkRunner::run(nnfw::tflite::Session *sess) const
         notify(arg);
       };
 
-      nnfw::misc::benchmark::measure(elapsed) << [&](void) {
+      benchmark::measure(elapsed) << [&](void) {
         if (!sess->run())
         {
           throw std::runtime_error{"run failed"};

@@ -17,7 +17,6 @@
 #include "args.h"
 #include "tensor_dumper.h"
 #include "tensor_loader.h"
-#include "misc/benchmark.h"
 #include "misc/EnvVar.h"
 #include "misc/fp32.h"
 #include "tflite/Diff.h"
