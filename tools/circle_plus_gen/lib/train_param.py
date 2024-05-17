@@ -26,14 +26,14 @@ class TrainParam():
 
         json_form = {}
         json_form["optimizer"] = {
-            "type": name_opt(tparam.optimizerOpt),
+            "type": name_opt(type(tparam.optimizerOpt))[0],
             "args": tparam.optimizerOpt.__dict__
         }
         json_form["loss"] = {
-            "type": name_loss(tparam.lossfnOpt),
+            "type": name_loss(type(tparam.lossfnOpt))[0],
             "args": tparam.lossfnOpt.__dict__,
         }
-        json_form["loss"]["args"]["reduction"] = name_rdt(tparam.lossReductionType)
+        json_form["loss"]["args"]["reduction"] = name_rdt(tparam.lossReductionType)[0]
         json_form["batchSize"] = tparam.batchSize
 
         return json.dumps(json_form, indent=4)
