@@ -1,0 +1,52 @@
+--- a/src/configs/dwconv-config.c
++++ b/src/configs/dwconv-config.c
+@@ -688,6 +688,7 @@
+     const struct xnn_hardware_config* hardware_config = xnn_init_hardware_config();
+     assert(hardware_config != NULL);
+     if (hardware_config->use_arm_neon) {
++#if defined(XNN_ENABLE_ASSEMBLY) && XNN_ENABLE_ASSEMBLY
+       if (hardware_config->use_arm_neon_v8) {
+         qs8_qc8w_dwconv_config[0].minmax.unipass = (xnn_dwconv_unipass_ukernel_fn) xnn_qs8_qc8w_dwconv_minmax_fp32_ukernel_3p16c__asm_aarch32_neonv8_mla8_cortex_a35;
+         qs8_qc8w_dwconv_config[0].init.qs8_qc8w = xnn_init_qs8_qc8w_conv_minmax_fp32_neonv8_params;
+@@ -708,6 +709,9 @@
+         qs8_qc8w_dwconv_config[2].channel_round = 1;
+         qs8_qc8w_dwconv_config[2].primary_tile = 25;
+       } else {
++#else
++      {
++#endif
+         qs8_qc8w_dwconv_config[0].minmax.unipass = (xnn_dwconv_unipass_ukernel_fn) xnn_qs8_qc8w_dwconv_minmax_fp32_ukernel_3p16c__neon_mla8_ld128;
+         qs8_qc8w_dwconv_config[0].init.qs8_qc8w = xnn_init_qs8_qc8w_conv_minmax_fp32_neon_params;
+         qs8_qc8w_dwconv_config[0].channel_tile = 16;
+--- a/src/configs/hardware-config.c
++++ b/src/configs/hardware-config.c
+@@ -99,7 +99,11 @@
+     hardware_config.use_arm_neon = cpuinfo_has_arm_neon();
+     hardware_config.use_arm_neon_fp16 = cpuinfo_has_arm_neon_fp16();
+     hardware_config.use_arm_neon_fma = cpuinfo_has_arm_neon_fma();
++#if defined(XNN_ENABLE_ASSEMBLY) && XNN_ENABLE_ASSEMBLY
+     hardware_config.use_arm_neon_v8 = cpuinfo_has_arm_neon_v8();
++#else
++    hardware_config.use_arm_neon_v8 = false;
++#endif
+   #endif
+
+   #if XNN_ARCH_ARM64
+--- a/src/configs/unary-elementwise-config.c
++++ b/src/configs/unary-elementwise-config.c
+@@ -1806,11 +1806,15 @@
+   #if XNN_ARCH_ARM
+     const struct xnn_hardware_config* hardware_config = xnn_init_hardware_config();
+     assert(hardware_config != NULL);
++#if defined(XNN_ENABLE_ASSEMBLY) && XNN_ENABLE_ASSEMBLY
+     if (hardware_config->use_arm_neon) {
+       qs16_to_qs8_cvt_config.ukernel = (xnn_vunary_ukernel_fn) xnn_qs16_qs8_vcvt_ukernel__asm_aarch32_neon_u16;
+       qs16_to_qs8_cvt_config.init.qs16_qs8_cvt = xnn_init_qs16_qs8_cvt_neon_params;
+       qs16_to_qs8_cvt_config.element_tile = 16;
+     } else if (!XNN_PLATFORM_MOBILE) {
++#else
++    if (!XNN_PLATFORM_MOBILE) {
++#endif
+       qs16_to_qs8_cvt_config.ukernel = (xnn_vunary_ukernel_fn) xnn_qs16_qs8_vcvt_ukernel__scalar_u4;
+       qs16_to_qs8_cvt_config.init.qs16_qs8_cvt = xnn_init_qs16_qs8_cvt_scalar_params;
+       qs16_to_qs8_cvt_config.element_tile = 4;

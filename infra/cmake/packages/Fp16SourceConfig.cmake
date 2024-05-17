@@ -8,8 +8,8 @@ function(_Fp16Source_import)
   nnas_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  # fp16 commit in xnnpack 8b283aa30a31
-  envoption(FP16_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/FP16/archive/4dfe081cf6bcd15db339cf2680b9281b8451eeb3.tar.gz)
+  # fp16 commit in xnnpack (tflite v2.16.1)
+  envoption(FP16_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/FP16/archive/0a92994d729ff76a58f692d3028ca1b64b145d91.tar.gz)
   ExternalSource_Download(FP16
     DIRNAME FP16
     URL ${FP16_URL})

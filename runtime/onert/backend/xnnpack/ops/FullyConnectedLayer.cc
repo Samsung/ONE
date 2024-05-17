@@ -104,7 +104,7 @@ bool FullyConnectedLayer::create()
   enum xnn_status status = xnn_create_fully_connected_nc_f32(
     input_channels, output_channels, input_channels /* input stride */,
     output_channels /* output stride */, kernel_buffer, bias_buffer, output_activation_min,
-    output_activation_max, flag, &_kernel_op);
+    output_activation_max, flag, nullptr, nullptr, &_kernel_op);
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 FullyConnected operator"};
@@ -122,9 +122,16 @@ bool FullyConnectedLayer::setup()
   }
 
   uint32_t batch_size = _input->getShape().num_elements() / _kernel->getShape().dim(1);
-  enum xnn_status status = xnn_setup_fully_connected_nc_f32(
-    _kernel_op, batch_size, reinterpret_cast<const float *>(_input->buffer()),
-    reinterpret_cast<float *>(_output->buffer()), _external_context->getThreadPool());
+  enum xnn_status status =
+    xnn_reshape_fully_connected_nc_f32(_kernel_op, batch_size, _external_context->getThreadPool());
+  if (status != xnn_status_success)
+  {
+    throw std::runtime_error{"failed to create FP32 FullyConnected operator"};
+  }
+
+  status =
+    xnn_setup_fully_connected_nc_f32(_kernel_op, reinterpret_cast<const float *>(_input->buffer()),
+                                     reinterpret_cast<float *>(_output->buffer()));
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 FullyConnected operator"};

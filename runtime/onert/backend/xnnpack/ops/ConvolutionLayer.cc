@@ -111,7 +111,7 @@ bool ConvolutionLayer::create()
     input_channels /* input_channel_stride */, output_channels /* output_channel_stride */,
     reinterpret_cast<const float *>(_kernel->buffer()),
     reinterpret_cast<const float *>(_bias->buffer()), output_activation_min, output_activation_max,
-    0, &_kernel_op);
+    0, nullptr, nullptr, &_kernel_op);
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
@@ -131,10 +131,20 @@ bool ConvolutionLayer::setup()
   uint32_t input_width = _input->getShape().dim(2);
   uint32_t input_height = _input->getShape().dim(1);
   uint32_t batch_size = _input->getShape().dim(0);
-  enum xnn_status status = xnn_setup_convolution2d_nhwc_f32(
-    _kernel_op, batch_size, input_height, input_width,
-    reinterpret_cast<const float *>(_input->buffer()), reinterpret_cast<float *>(_output->buffer()),
-    _external_context->getThreadPool());
+  size_t workspace_size = 0;
+  size_t workspace_alignment = 0;
+  enum xnn_status status = xnn_reshape_convolution2d_nhwc_f32(
+    _kernel_op, batch_size, input_height, input_width, &workspace_size, &workspace_alignment,
+    nullptr, nullptr, _external_context->getThreadPool());
+  if (status != xnn_status_success)
+  {
+    throw std::runtime_error{"failed to create FP32 DepthwiseConvolution operator"};
+  }
+
+  std::vector<uint8_t> workspace(workspace_size);
+  status = xnn_setup_convolution2d_nhwc_f32(_kernel_op, workspace.data(),
+                                            reinterpret_cast<const float *>(_input->buffer()),
+                                            reinterpret_cast<float *>(_output->buffer()));
   if (status != xnn_status_success)
   {
     throw std::runtime_error{"failed to create FP32 Convolution operator"};
