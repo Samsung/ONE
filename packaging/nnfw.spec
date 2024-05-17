@@ -189,6 +189,11 @@ NPU daemon for optimal management of NPU hardware
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
+%define strip_options %{nil}
+%if %{build_type} == "Release"
+%define strip_options --strip
+%endif
+
 %prep
 %setup -q
 cp %{SOURCE1} .
@@ -224,7 +229,7 @@ tar -xf %{SOURCE3021} -C ./externals
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle08;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
 %{nncc_env} ./nncc build %{build_jobs}
-cmake --install %{nncc_workspace}
+cmake --install %{nncc_workspace} %{strip_options}
 %endif # odc_build
 
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
@@ -238,7 +243,7 @@ cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 %{build_env} ./nnfw build %{build_jobs}
 # install in workspace
 # TODO Set install path
-%{build_env} ./nnfw install --prefix %{nnfw_workspace}/out
+%{build_env} ./nnfw install --prefix %{nnfw_workspace}/out %{strip_options}
 
 %if %{test_build} == 1
 %if %{coverage_build} == 1

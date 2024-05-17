@@ -9,6 +9,7 @@ TARGET_OS?=linux
 COVERAGE_BUILD?=0
 OPTIONS?=
 OPTIONS_NNCC?=
+INSTALL_OPTIONS?=
 
 # make TARGET and TYPE to lowercase
 HOST_ARCH_LC=$(shell echo $(HOST_ARCH) | tr A-Z a-z)
@@ -80,6 +81,10 @@ ifeq ($(HOST_OS),linux)
 	NPROCS?=$(shell grep -c ^processor /proc/cpuinfo)
 else
 	NPROCS?=1
+endif
+
+ifeq ($(BUILD_TYPE_LC),release)
+	INSTALL_OPTIONS+= --strip
 endif
 
 WORKHOME=$(CURDIR)/Product
@@ -160,7 +165,7 @@ ifeq (,$(findstring android,$(TARGET_OS)))
 		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle08;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str" \
 		$(OPTIONS_NNCC)
 	./nncc build -j$(NPROCS)
-	cmake --install $(NNCC_FOLDER)
+	cmake --install $(NNCC_FOLDER) $(INSTALL_OPTIONS)
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
 	@mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@mkdir -p ${OVERLAY_FOLDER}/include/oops
@@ -184,7 +189,7 @@ build_internal:
 	./nnfw build -j $(NPROCS)
 
 install_internal:
-	./nnfw install --prefix $(INSTALL_PATH)
+	./nnfw install --prefix $(INSTALL_PATH) $(INSTALL_OPTIONS)
 	rm -rf $(INSTALL_ALIAS)
 	ln -s $(INSTALL_PATH) $(INSTALL_ALIAS)
 

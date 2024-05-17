@@ -21,7 +21,7 @@ override_dh_auto_build:
 		-DBUILD_PYTHON_BINDING=OFF
 	./nnfw build -j$(NPROC)
 override_dh_auto_install:
-	./nnfw install --prefix $(NNFW_INSTALL_PREFIX)
+	./nnfw install --prefix $(NNFW_INSTALL_PREFIX) --strip
 override_dh_install:
 	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
 	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
