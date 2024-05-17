@@ -23,9 +23,8 @@
 #ifndef __NNFW_TFLITE_DIFF_H__
 #define __NNFW_TFLITE_DIFF_H__
 
-#include "tflite/TensorView.h"
+#include "TensorView.h"
 
-#include "misc/RandomGenerator.h"
 #include "misc/tensor/Index.h"
 #include "misc/tensor/Diff.h"
 #include "misc/tensor/Shape.h"
@@ -33,8 +32,10 @@
 
 #include <tensorflow/lite/c/c_api.h>
 
-#include <functional>
-#include <vector>
+namespace nnfw
+{
+namespace tflite
+{
 
 /**
  * @brief Class to define TfLite interpreter match application
@@ -78,11 +79,14 @@ public:
    * @return  @c true if two TensorView values are same, otherwise @c false
    */
   template <typename T>
-  bool compareSingleTensorView(const nnfw::tflite::TensorView<T> &expected,
-                               const nnfw::tflite::TensorView<T> &obtained, int id) const;
+  bool compareSingleTensorView(const TensorView<T> &expected, const TensorView<T> &obtained,
+                               int id) const;
 
 private:
   const nnfw::misc::tensor::Comparator &_comparator;
 };
+
+} // namespace tflite
+} // namespace nnfw
 
 #endif // __NNFW_TFLITE_DIFF_H__

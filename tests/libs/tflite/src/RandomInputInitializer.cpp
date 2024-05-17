@@ -29,7 +29,7 @@ namespace
 template <typename T>
 void setValue(nnfw::misc::RandomGenerator &randgen, const TfLiteTensor *tensor)
 {
-  auto tensor_view = nnfw::tflite::TensorView<T>::make(tensor);
+  auto tensor_view = TensorView<T>::make(tensor);
 
   nnfw::misc::tensor::iterate(tensor_view.shape())
     << [&](const nnfw::misc::tensor::Index &ind) { tensor_view.at(ind) = randgen.generate<T>(); };
