@@ -47,7 +47,7 @@ public:
   // Update of the node will be enabled during traning
   virtual void enableWeightsUpdate() = 0;
   // Check if the node is trainable
-  virtual bool isTrainable() const = 0;
+  virtual bool isWeightsUpdateEnabled() const = 0;
 
   // Mark the node as needed for backward propagation part of the traning
   virtual void enableBackward() = 0;
