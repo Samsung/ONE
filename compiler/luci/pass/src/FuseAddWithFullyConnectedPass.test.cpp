@@ -307,6 +307,11 @@ TEST_F(S16FuseAddWithFullyConnectedPassTest, fuse_s16)
   {
     EXPECT_EQ(2 * i, bias->at<loco::DataType::S64>(i));
   }
+
+  auto qparam = bias->quantparam();
+  EXPECT_NE(nullptr, qparam);
+  EXPECT_EQ(1.0, qparam->scale.at(0));
+  EXPECT_EQ(0, qparam->zerop.at(0));
 }
 
 TEST_F(S16FuseAddWithFullyConnectedPassTest, fc_with_null_weights_NEG)
