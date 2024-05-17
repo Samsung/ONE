@@ -26,16 +26,12 @@ namespace ir
 namespace train
 {
 
-class TrainableOperation : public virtual ITrainableOperation
+class TrainableOperation : public ITrainableOperation
 {
 public:
   virtual ~TrainableOperation() = default;
 
 public:
-  virtual std::unique_ptr<ITrainableOperation> clone() const override = 0;
-  virtual void accept(OperationVisitor &v) const override = 0;
-  virtual void accept(TrainableOperationVisitor &v) const override = 0;
-
   void disableWeightsUpdate() final { _trainable = false; }
 
   void enableWeightsUpdate() final { _trainable = true; }
