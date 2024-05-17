@@ -42,6 +42,7 @@ public:
                     const backend::Backend *) override;
   void handleSubgraphBegin(ir::SubgraphIndex) override;
   void handleSubgraphEnd(ir::SubgraphIndex) override;
+  ObserverType type() const override { return ObserverType::MINMAX_DUMP; }
 
 private:
   const ir::Graph &_graph;

@@ -59,7 +59,8 @@ public:
   void execute(const ExecutionContext &ctx) override { forward(ctx, false); };
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
-               const std::vector<backend::IPortableTensor *> &outputs) override;
+               const std::vector<backend::IPortableTensor *> &outputs,
+               const ExecutionOptions &options) override;
 
   void forward(const ExecutionContext &ctx, bool training);
   void backward(const ExecutionContext &ctx, uint32_t training_step);
@@ -68,9 +69,9 @@ public:
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
   {
     _indexed_ranks = std::move(ranks);
-  };
+  }
 
-  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
+  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
   const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
   {
@@ -90,15 +91,17 @@ public:
 
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
+  const ExecutionOptions &currentOptions() const override { return _current_options; }
+
 private:
-  void forwardImpl(bool training);
-  void backwardImpl(uint32_t training_step);
+  void forwardImpl(const ExecutionObservee &subject, bool training);
+  void backwardImpl(const ExecutionObservee &subject, uint32_t training_step);
 
 private:
   compiler::train::TrainableCodeMap _code_map;
   std::vector<ir::OperationIndex> _forward_order;
   std::vector<ir::OperationIndex> _backward_order;
-  ExecutionObservee _subject;
+  ExecObservers _observers;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;
   backend::train::TrainableBackendContexts _backend_contexts;
@@ -109,6 +112,14 @@ private:
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
   const ir::train::LossInfo _loss_info;
+  /**
+   * It is set by execute() method only in thread-safe environment.
+   * It is used for non-primary executor call on builtin backend
+   * and accessed by entryExecutor's currentOptions() method.
+   *
+   * TODO: Find better way to pass config to non-primary executor
+   */
+  ExecutionOptions _current_options;
 };
 
 } // namespace train

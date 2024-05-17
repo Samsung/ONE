@@ -16,6 +16,10 @@
 
 #include "ExecutorBase.h"
 
+#include "DataflowExecutor.h"
+#include "LinearExecutor.h"
+#include "MinMaxRecorder.h"
+#include "ExecutionObservers.h"
 #include "ShapeConverter.h"
 
 #include <misc/polymorphic_downcast.h>
@@ -47,13 +51,15 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
 }
 
 void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs,
-                           const std::vector<backend::IPortableTensor *> &outputs)
+                           const std::vector<backend::IPortableTensor *> &outputs,
+                           const ExecutionOptions &options)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = options;
 
   assert(inputs.size() == _graph.getInputs().size());
   assert(inputs.size() == _input_tensors.size());
@@ -93,7 +99,10 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     output_tensor->setTensor(output);
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers, options);
+
+  executeImpl(subject);
 }
 
 void ExecutorBase::execute(const ExecutionContext &ctx)
@@ -102,6 +111,7 @@ void ExecutorBase::execute(const ExecutionContext &ctx)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = ctx.options;
 
   // Set input(s)
   auto &desc = ctx.desc;
@@ -157,7 +167,10 @@ void ExecutorBase::execute(const ExecutionContext &ctx)
     tensor->set_dynamic(); // It can't be resized but shape could change
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers, ctx.options);
+
+  executeImpl(subject);
 
   // Update output(s) desc
   for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)

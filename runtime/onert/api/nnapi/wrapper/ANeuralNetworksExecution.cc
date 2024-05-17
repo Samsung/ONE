@@ -17,6 +17,7 @@
 #include "ANeuralNetworksExecution.h"
 #include "NNAPIConvert.h"
 #include "util/logging.h"
+#include "exec/ExecutionContext.h"
 
 const onert::ir::OperandIndex ANeuralNetworksExecution::getInputOperandIndex(int32_t index) noexcept
 {
@@ -211,7 +212,8 @@ bool ANeuralNetworksExecution::startExecute(void) noexcept
 {
   try
   {
-    _execution->startExecute();
+    auto options = onert::exec::ExecutionOptions::fromGlobalConfig();
+    _execution->startExecute(*options.get());
   }
   catch (const std::exception &e)
   {
@@ -227,7 +229,9 @@ bool ANeuralNetworksExecution::execute(void) noexcept
 {
   try
   {
-    _execution->execute();
+    auto options = onert::exec::ExecutionOptions::fromGlobalConfig();
+    // TODO Read environment variable and set config
+    _execution->execute(*options.get());
   }
   catch (const std::exception &e)
   {

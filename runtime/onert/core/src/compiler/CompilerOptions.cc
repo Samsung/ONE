@@ -78,8 +78,6 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 {
   auto o = std::make_unique<CompilerOptions>();
   o->backend_list = nnfw::misc::split(util::getConfigString(util::config::BACKENDS), ';');
-  o->minmax_dump = util::getConfigBool(util::config::MINMAX_DUMP);
-  o->tracing_mode = util::getConfigBool(util::config::TRACING_MODE);
   o->graph_dump_level = util::getConfigInt(util::config::GRAPH_DOT_DUMP);
   o->executor = util::getConfigString(util::config::EXECUTOR);
   o->he_scheduler = util::getConfigBool(util::config::USE_SCHEDULER);
@@ -133,7 +131,6 @@ void CompilerOptions::verboseOptions()
   VERBOSE(Compiler) << std::boolalpha << "==== Compiler Options ====" << std::endl;
   VERBOSE(Compiler) << "backend_list             : "
                     << nnfw::misc::join(backend_list.begin(), backend_list.end(), "/") << std::endl;
-  VERBOSE(Compiler) << "tracing_mode             : " << tracing_mode << std::endl;
   VERBOSE(Compiler) << "graph_dump_level         : " << graph_dump_level << std::endl;
   VERBOSE(Compiler) << "executor                 : " << executor << std::endl;
   VERBOSE(Compiler) << "manual backend_for_all   : " << manual_scheduler_options.backend_for_all

@@ -18,8 +18,7 @@
 #define __ONERT_EXEC_EXECUTION_CONTEXT_H__
 
 #include <vector>
-#include <unordered_map>
-#include <semaphore.h>
+#include <memory>
 
 #include "ir/OperandInfo.h"
 #include "ir/Index.h"
@@ -68,13 +67,15 @@ struct ExecutionOptions
   bool dump_minmax = false;
   bool trace = false;
   bool profile = false;
+
+  static std::unique_ptr<ExecutionOptions> fromGlobalConfig();
 };
 
 struct ExecutionContext
 {
   IODescription desc;
   bool shape_updated = false; // Require shape inference and buffer size calculation
-  ExecutionOptions optoins;
+  ExecutionOptions options;
 };
 
 } // namespace exec

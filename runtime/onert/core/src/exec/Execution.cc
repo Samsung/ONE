@@ -126,21 +126,22 @@ void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &type
   _ctx.shape_updated = true;
 }
 
-void Execution::execute()
+void Execution::execute(const ExecutionOptions &options)
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
+  _ctx.options = options;
   _executors->execute(_ctx);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
 }
 
-void Execution::startExecute()
+void Execution::startExecute(const ExecutionOptions &options)
 {
   VERBOSE(Execution) << "Create asynchronous execution thread" << std::endl;
 
-  _exec_thread = std::make_unique<std::thread>(&Execution::execute, this);
+  _exec_thread = std::make_unique<std::thread>(&Execution::execute, this, options);
 }
 
 void Execution::waitFinish()
@@ -153,7 +154,7 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
-void Execution::train(uint32_t training_step)
+void Execution::train(const ExecutionOptions &options, uint32_t training_step)
 {
   auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
   if (!execs)
@@ -161,6 +162,7 @@ void Execution::train(uint32_t training_step)
     throw std::runtime_error{"Supported only TrainableExecutors"};
   }
 
+  _ctx.options = options;
   execs->train(_ctx, training_step);
   finished = true;
 }

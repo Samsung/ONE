@@ -556,7 +556,7 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
 
     _pkg_input_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
 
-    executor->execute(inputs_inter, outputs_inter);
+    executor->execute(inputs_inter, outputs_inter, ctx.options);
 
     _edge_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
     _pkg_output_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();

@@ -56,7 +56,8 @@ public:
   void execute(const ExecutionContext &ctx) final;
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
-               const std::vector<backend::IPortableTensor *> &outputs) override;
+               const std::vector<backend::IPortableTensor *> &outputs,
+               const ExecutionOptions &options) override;
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
@@ -64,9 +65,9 @@ public:
     _indexed_ranks = std::move(ranks);
   };
 
-  virtual void executeImpl(void) = 0;
+  virtual void executeImpl(const ExecutionObservee &subject) = 0;
 
-  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
+  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
   const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
   {
@@ -79,6 +80,8 @@ public:
   }
   backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
 
+  const ExecutionOptions &currentOptions() const override { return _current_options; }
+
 protected:
   /**
    * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
@@ -86,7 +89,7 @@ protected:
   bool hasDynamicInput();
 
 protected:
-  ExecutionObservee _subject;
+  ExecObservers _observers;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   backend::BackendContexts _backend_contexts;
@@ -95,6 +98,14 @@ protected:
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
+  /**
+   * It is set by execute() method only in thread-safe environment.
+   * It is used for non-primary executor call on builtin backend
+   * and accessed by entryExecutor's currentOptions() method.
+   *
+   * TODO: Find better way to pass config to non-primary executor
+   */
+  ExecutionOptions _current_options;
 };
 
 } // namespace exec

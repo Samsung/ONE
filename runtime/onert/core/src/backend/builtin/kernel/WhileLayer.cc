@@ -74,7 +74,8 @@ void WhileLayer::run()
   }();
 
   VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-  cond_exec->execute(_input_tensors, {cond_output_tensor.get()});
+  const auto &options = _executors->entryExecutor()->currentOptions();
+  cond_exec->execute(_input_tensors, {cond_output_tensor.get()}, options);
   VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
 
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
@@ -111,20 +112,20 @@ void WhileLayer::run()
 
   const auto body_execute_with_op_inputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
-    body_exec->execute(_input_tensors, temp_outputs);
+    body_exec->execute(_input_tensors, temp_outputs, options);
     VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   const auto body_execute_with_body_outputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;
-    body_exec->execute(_output_tensors, temp_outputs);
+    body_exec->execute(_output_tensors, temp_outputs, options);
     VERBOSE(While) << "Return from $" << _body_subg_index << std::endl;
   };
 
   std::function<void()> body_execute = body_execute_with_op_inputs;
   const auto cond_execute = [&]() {
     VERBOSE(While) << "Call to $" << _cond_subg_index << " (cond)" << std::endl;
-    cond_exec->execute(_output_tensors, {cond_output_tensor.get()});
+    cond_exec->execute(_output_tensors, {cond_output_tensor.get()}, options);
     VERBOSE(While) << "Return from $" << _cond_subg_index << std::endl;
   };
 
