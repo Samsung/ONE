@@ -346,6 +346,17 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
  */
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
 
+/**
+ * @brief Export circle+ model
+ * @note  This function should be called on training mode
+ *        This function should be called before or after {@link nnfw_train}
+ *
+ * @param[in] session The session to export training model
+ * @param[in] path    The path to export training model
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path);
+
 //////////////////////////////////////////////
 // Optional APIs for training
 //////////////////////////////////////////////
