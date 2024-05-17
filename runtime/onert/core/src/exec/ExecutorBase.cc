@@ -16,6 +16,10 @@
 
 #include "ExecutorBase.h"
 
+#include "DataflowExecutor.h"
+#include "LinearExecutor.h"
+#include "MinMaxRecorder.h"
+#include "ExecutionObservers.h"
 #include "ShapeConverter.h"
 
 #include <misc/polymorphic_downcast.h>
@@ -47,13 +51,15 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
 }
 
 void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs,
-                           const std::vector<backend::IPortableTensor *> &outputs)
+                           const std::vector<backend::IPortableTensor *> &outputs,
+                           const ExecutionOptions &options)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = options;
 
   assert(inputs.size() == _graph.getInputs().size());
   assert(inputs.size() == _input_tensors.size());
@@ -93,30 +99,34 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     output_tensor->setTensor(output);
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers, options);
+
+  executeImpl(subject);
 }
 
-void ExecutorBase::execute(const IODescription &desc)
+void ExecutorBase::execute(const ExecutionContext &ctx)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = ctx.options;
 
   // Set input(s)
-  assert(_input_tensors.size() == desc.inputs.size());
+  assert(_input_tensors.size() == ctx.desc.inputs.size());
   for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
     auto tensor = _input_tensors[i];
 
     // TODO Check if (desc.inputs[i] == nullptr)
     // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
-    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
-                          desc.inputs[i]->size);
+    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(ctx.desc.inputs[i]->buffer)),
+                          ctx.desc.inputs[i]->size);
 
-    if (desc.updated)
+    if (ctx.shape_updated)
     {
-      auto &input_shape = desc.inputs.at(i)->info.shape();
+      auto &input_shape = ctx.desc.inputs.at(i)->info.shape();
       tensor->set_dynamic();
       tensor->setShape(input_shape);
       /*
@@ -142,32 +152,36 @@ void ExecutorBase::execute(const IODescription &desc)
     }
   }
 
-  assert(_output_tensors.size() == desc.outputs.size());
+  assert(_output_tensors.size() == ctx.desc.outputs.size());
   for (uint32_t i = 0; i < _output_tensors.size(); ++i)
   {
     auto tensor = _output_tensors[i];
-    auto &output_desc = desc.outputs[i];
+    auto &output_desc = ctx.desc.outputs[i];
 
     // If output element size is 0, buffer is nullptr
     if (output_desc == nullptr ||
         (output_desc->info.total_size() != 0 && output_desc->buffer == nullptr))
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
-    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    tensor->setUserTensor(static_cast<uint8_t *>(ctx.desc.outputs[i]->buffer),
+                          ctx.desc.outputs[i]->size);
     tensor->set_dynamic(); // It can't be resized but shape could change
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers, ctx.options);
+
+  executeImpl(subject);
 
   // Update output(s) desc
   for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)
   {
     ir::IOIndex output_index{n};
     // Optional output
-    if (desc.outputs.at(n) == nullptr)
+    if (ctx.desc.outputs.at(n) == nullptr)
     {
       continue;
     }
-    auto &output = *desc.outputs.at(n);
+    auto &output = *ctx.desc.outputs.at(n);
 
     // set shape of outputDesc to tensor shape since tensor can be dynamic
     const auto output_tensor_shape = _output_tensors[n]->getShape();

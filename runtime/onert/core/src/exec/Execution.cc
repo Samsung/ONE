@@ -31,14 +31,15 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   assert(executors->entryExecutor() != nullptr);
 
   // Initialize I/O description
-  _io_desc.inputs.resize(_executors->inputSize());
+  _context.desc.inputs.resize(_executors->inputSize());
   for (uint32_t i = 0; i < _executors->inputSize(); ++i)
-    _io_desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
+    _context.desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
 
-  _io_desc.outputs.resize(_executors->outputSize());
+  _context.desc.outputs.resize(_executors->outputSize());
   for (uint32_t i = 0; i < _executors->outputSize(); ++i)
-    _io_desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
-  _io_desc.updated = false;
+    _context.desc.outputs.at(i) =
+      std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
+  _context.shape_updated = false;
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -46,11 +47,11 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   // This will be used later to set input tensor dynamic
   // Note that 'compiled' model will not be updated with new_shape
   // but new_shape will change model input shape while 'running' the model
-  auto &input_desc = _io_desc.inputs.at(index.value());
+  auto &input_desc = _context.desc.inputs.at(index.value());
   if (new_shape != input_desc->info.shape())
   {
     input_desc->info.shape(new_shape);
-    _io_desc.updated = true;
+    _context.shape_updated = true;
 
     VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
                        << "(index: " << index << ")" << std::endl;
@@ -65,7 +66,7 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
   // check if size enough for input is passed
   // if input_shape_sig is set, input_shape_sig overrides shape in info
   // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
-  auto &input_desc = _io_desc.inputs.at(index.value());
+  auto &input_desc = _context.desc.inputs.at(index.value());
   if (length < input_desc->info.total_size())
   {
     throw std::runtime_error{"Too small length"};
@@ -84,9 +85,9 @@ void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const
 
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
 {
-  auto &output_desc = _io_desc.outputs.at(index.value());
+  auto &output_desc = _context.desc.outputs.at(index.value());
   // Check lenght when output shape is valid
-  if (!_io_desc.updated && length < output_desc->info.total_size())
+  if (!_context.shape_updated && length < output_desc->info.total_size())
   {
     throw std::runtime_error{"Too small length"};
   }
@@ -98,7 +99,7 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
 void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer,
                           size_t length)
 {
-  auto &output_desc = _io_desc.outputs.at(index.value());
+  auto &output_desc = _context.desc.outputs.at(index.value());
   output_desc->info.shape(shape);
 
   setOutput(index, buffer, length);
@@ -106,41 +107,42 @@ void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void
 
 void Execution::setInputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
-  _io_desc.inputs.at(index.value())->layout = layout;
+  _context.desc.inputs.at(index.value())->layout = layout;
 }
 
 void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 {
-  _io_desc.outputs.at(index.value())->layout = layout;
+  _context.desc.outputs.at(index.value())->layout = layout;
 }
 
 void Execution::setInputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
 {
-  _io_desc.inputs.at(index.value())->info.typeInfo(typeInfo);
-  _io_desc.updated = true;
+  _context.desc.inputs.at(index.value())->info.typeInfo(typeInfo);
+  _context.shape_updated = true;
 }
 
 void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
 {
-  _io_desc.outputs.at(index.value())->info.typeInfo(typeInfo);
-  _io_desc.updated = true;
+  _context.desc.outputs.at(index.value())->info.typeInfo(typeInfo);
+  _context.shape_updated = true;
 }
 
-void Execution::execute()
+void Execution::execute(const ExecutionOptions &options)
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
 
-  _executors->execute(_io_desc);
+  _context.options = options;
+  _executors->execute(_context);
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;
 }
 
-void Execution::startExecute()
+void Execution::startExecute(const ExecutionOptions &options)
 {
   VERBOSE(Execution) << "Create asynchronous execution thread" << std::endl;
 
-  _exec_thread = std::make_unique<std::thread>(&Execution::execute, this);
+  _exec_thread = std::make_unique<std::thread>(&Execution::execute, this, options);
 }
 
 void Execution::waitFinish()
@@ -153,7 +155,7 @@ void Execution::waitFinish()
 
 bool Execution::isFinished(void) const { return finished; }
 
-void Execution::train(uint32_t training_step)
+void Execution::train(const ExecutionOptions &options, uint32_t training_step)
 {
   auto execs = dynamic_cast<exec::train::TrainableExecutors *>(_executors.get());
   if (!execs)
@@ -161,7 +163,8 @@ void Execution::train(uint32_t training_step)
     throw std::runtime_error{"Supported only TrainableExecutors"};
   }
 
-  execs->train(_io_desc, training_step);
+  _context.options = options;
+  execs->train(_context, training_step);
   finished = true;
 }
 
@@ -190,7 +193,7 @@ void Execution::iterateTrainableTensors(
 
 ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 {
-  return _io_desc.inputs.at(ind.value())->info.shape();
+  return _context.desc.inputs.at(ind.value())->info.shape();
 }
 
 // NNAPI return fail if ANeuralNetworksExecution_getOutputOperandRank or
@@ -201,18 +204,18 @@ ir::Shape Execution::getInputShape(ir::IOIndex ind) const
 // NNAPI frontend.
 ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
 {
-  return _io_desc.outputs.at(ind.value())->info.shape();
+  return _context.desc.outputs.at(ind.value())->info.shape();
 }
 
 size_t Execution::getInputTotalSize(ir::IOIndex ind) const
 {
   // TODO Support dynamic shape
-  return _io_desc.inputs.at(ind.value())->info.total_size();
+  return _context.desc.inputs.at(ind.value())->info.total_size();
 }
 
 size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
 {
-  return _io_desc.outputs.at(ind.value())->info.total_size();
+  return _context.desc.outputs.at(ind.value())->info.total_size();
 }
 
 } // namespace exec

@@ -501,15 +501,14 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                        order,
                                        tracing_ctx};
 
-  if (options->tracing_mode)
+  // TODO use workspace
+  if (!options->workspace_dir.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
-  }
-  if (options->minmax_dump)
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
     exec->addObserver(std::make_unique<exec::MinMaxRecorder>(options->workspace_dir, exec->graph(),
                                                              exec->getBackendContexts()));
+  }
 
   return exec;
 }
@@ -578,27 +577,27 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
     auto dataflow_exec =
       new exec::DataflowExecutor{std::move(lowered_graph), std::move(backend_contexts), tensor_regs,
                                  std::move(code_map), tracing_ctx};
-    if (options->he_profiling_mode)
+    if (!options->workspace_dir.empty())
     {
-      std::vector<const backend::Backend *> backends;
-      for (const auto &pair : backend_contexts)
+      if (options->he_profiling_mode)
       {
-        backends.push_back(pair.first);
+        std::vector<const backend::Backend *> backends;
+        for (const auto &pair : dataflow_exec->getBackendContexts())
+        {
+          backends.push_back(pair.first);
+        }
+        auto et = std::make_shared<exec::ExecTime>(backends);
+        dataflow_exec->addObserver(
+          std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph()));
       }
-      auto et = std::make_shared<exec::ExecTime>(backends);
-      std::unique_ptr<exec::IExecutionObserver> obs =
-        std::make_unique<exec::ProfileObserver>(et, dataflow_exec->graph());
-      dataflow_exec->addObserver(std::move(obs));
+      exec = dataflow_exec;
     }
-    exec = dataflow_exec;
+
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
 
-  if (options->tracing_mode)
-  {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
-  }
+  // TODO Support MINMAX_H5DUMPER
 
   return exec;
 }
@@ -650,7 +649,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   const std::shared_ptr<exec::IExecutors> &, const ExecutorFactoryArgs &args,
   const ir::train::TrainingInfo &training_info)
 {
-  const auto options = args.options;
+  const auto &options = args.options;
   const auto tracing_ctx = args.tracing_ctx;
   auto custom_kernel_builder = args.custom_kernel_builder;
 
@@ -886,11 +885,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tracing_ctx,
                                                  training_info.lossInfo()};
 
-  if (options->tracing_mode)
+  if (!options->workspace_dir.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
   // TODO Support MINMAX_H5DUMPER
 

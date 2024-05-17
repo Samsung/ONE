@@ -50,7 +50,7 @@ public:
                    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                    const util::TracingCtx *tracing_ctx);
 
-  void executeImpl() override;
+  void executeImpl(const ExecutionObservee &subject) override;
 
 private:
   std::condition_variable _cv_jobs;

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_EXEC_IO_DESCRIPTION_H__
-#define __ONERT_EXEC_IO_DESCRIPTION_H__
+#ifndef __ONERT_EXEC_EXECUTION_CONTEXT_H__
+#define __ONERT_EXEC_EXECUTION_CONTEXT_H__
 
 #include <vector>
-#include <unordered_map>
-#include <semaphore.h>
+#include <memory>
 
 #include "ir/OperandInfo.h"
 #include "ir/Index.h"
@@ -61,10 +60,25 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
-  bool updated; // Require shape inference and buffer size calculation
+};
+
+struct ExecutionOptions
+{
+  bool dump_minmax = false;
+  bool trace = false;
+  bool profile = false;
+
+  static std::unique_ptr<ExecutionOptions> fromGlobalConfig();
+};
+
+struct ExecutionContext
+{
+  IODescription desc;
+  bool shape_updated = false; // Require shape inference and buffer size calculation
+  ExecutionOptions options;
 };
 
 } // namespace exec
 } // namespace onert
 
-#endif // __ONERT_EXEC_IO_DESCRIPTION_H__
+#endif // __ONERT_EXEC_EXECUTION_CONTEXT_H__

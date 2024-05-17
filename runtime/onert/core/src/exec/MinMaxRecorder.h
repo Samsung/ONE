@@ -20,11 +20,6 @@
 #include "ExecutionObservers.h"
 #include "ir/Index.h"
 #include "exec/MinMaxMap.h"
-#if MINMAX_H5DUMPER
-#include "../dumper/h5/MinMaxDumper.h"
-#else
-#include "MinMaxData.h"
-#endif
 
 #include <memory>
 
@@ -47,15 +42,12 @@ public:
                     const backend::Backend *) override;
   void handleSubgraphBegin(ir::SubgraphIndex) override;
   void handleSubgraphEnd(ir::SubgraphIndex) override;
+  ObserverType type() const override { return ObserverType::MINMAX_DUMP; }
 
 private:
   const ir::Graph &_graph;
   const backend::BackendContexts &_backend_contexts;
-#if MINMAX_H5DUMPER
-  dumper::h5::MinMaxDumper _h5dumper;
-#else
-  RawMinMaxDumper _raw_dumper;
-#endif
+  std::string _workspace_dir;
   OpMinMaxMap _op_minmax;
   IOMinMaxMap _input_minmax;
 };

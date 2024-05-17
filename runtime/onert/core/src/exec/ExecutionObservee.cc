@@ -21,12 +21,40 @@ namespace onert
 namespace exec
 {
 
-void ExecutionObservee::add(std::unique_ptr<IExecutionObserver> observer)
+ExecutionObservee::ExecutionObservee(const ExecObservers &observers,
+                                     const ExecutionOptions &options)
 {
-  _observers.emplace_back(std::move(observer));
+  // TODO Use execution option
+  if (options.dump_minmax)
+  {
+    auto observer = observers.get(ObserverType::MINMAX_DUMP);
+    if (!observer)
+      throw std::runtime_error{"MinMaxRecorder is only supported on LinearExecutor, single model"};
+
+    _observers.emplace_back(observer);
+  }
+
+  if (options.trace)
+  {
+    auto observer = observers.get(ObserverType::TRACING);
+    if (!observer)
+      throw std::runtime_error{"Cannot find TracingObserver"};
+
+    _observers.emplace_back(observer);
+  }
+
+  if (options.profile)
+  {
+    auto observer = observers.get(ObserverType::PROFILE);
+    if (!observer)
+      throw std::runtime_error{
+        "Profiling is only supported on DataflowExecutor with heterogenous scheduler"};
+
+    _observers.emplace_back(observer);
+  }
 }
 
-void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind)
+void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind) const
 {
   for (auto &&o : _observers)
   {
@@ -34,7 +62,7 @@ void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind)
   }
 }
 
-void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
+void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind) const
 {
   for (auto &&o : _observers)
   {
@@ -43,7 +71,8 @@ void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind)
 }
 
 void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex subg_ind,
-                                       ir::OperationIndex op_ind, const backend::Backend *backend)
+                                       ir::OperationIndex op_ind,
+                                       const backend::Backend *backend) const
 {
   for (auto &&o : _observers)
   {
@@ -52,7 +81,8 @@ void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex su
 }
 
 void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg_ind,
-                                     ir::OperationIndex op_ind, const backend::Backend *backend)
+                                     ir::OperationIndex op_ind,
+                                     const backend::Backend *backend) const
 {
   for (auto &&o : _observers)
   {

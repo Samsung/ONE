@@ -59,9 +59,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
     if (_options->he_profiling_mode)
       throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
-    if (_options->minmax_dump)
-      throw std::runtime_error("Recording minmax is not supported for multiple models");
-
     _options->forceInternalOptions();
     _options->verboseOptions();
   }

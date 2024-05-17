@@ -32,6 +32,19 @@ namespace onert
 {
 namespace exec
 {
+
+/**
+ * @brief Execution observer type
+ *
+ * @note  Each observer class should have its own observer type
+ */
+enum class ObserverType
+{
+  PROFILE,
+  TRACING,
+  MINMAX_DUMP,
+};
+
 class IExecutionObserver
 {
 public:
@@ -46,7 +59,29 @@ public:
   /// @brief Invoked just after model (not individual operation) execution ends
   virtual void handleSubgraphEnd(ir::SubgraphIndex) { return; }
 
+  virtual ObserverType type() const = 0;
+
   virtual ~IExecutionObserver() = default;
+};
+
+class ExecObservers
+{
+public:
+  void add(std::unique_ptr<IExecutionObserver> &&observer)
+  {
+    _observers.emplace(observer->type(), std::move(observer));
+  }
+
+  IExecutionObserver *get(ObserverType type) const
+  {
+    if (_observers.find(type) != _observers.end())
+      return _observers.at(type).get();
+
+    return nullptr;
+  }
+
+private:
+  std::unordered_map<ObserverType, std::unique_ptr<IExecutionObserver>> _observers;
 };
 
 class ProfileObserver : public IExecutionObserver
@@ -62,6 +97,7 @@ public:
                     const backend::Backend *) override;
 
   void handleSubgraphEnd(ir::SubgraphIndex) override { _et->storeOperationsExecTime(); }
+  ObserverType type() const override { return ObserverType::PROFILE; }
 
 private:
   std::unique_ptr<util::ITimer> _timer;
@@ -81,13 +117,15 @@ public:
   void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                     const backend::Backend *) override;
   void handleSubgraphEnd(ir::SubgraphIndex) override;
+  ObserverType type() const override { return ObserverType::TRACING; }
 
 private:
   std::unique_ptr<EventRecorder> _recorder;
   EventCollector _collector;
   const ir::Graph &_graph;
-  EventWriter *_event_writer;
+  std::string _workspace_dir;
   const util::TracingCtx *_tracing_ctx;
+  bool _triggered;
 };
 
 } // namespace exec

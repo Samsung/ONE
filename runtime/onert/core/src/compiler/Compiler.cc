@@ -70,12 +70,6 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
   }
 
-  if (_options->minmax_dump)
-  {
-    if (_options->executor != "Linear")
-      throw std::runtime_error("Recording minmax works only with Linear executor");
-  }
-
   if (!_model->hasOnly<ir::Graph>())
   {
     throw std::runtime_error("Compiler can only compile models for inference.");

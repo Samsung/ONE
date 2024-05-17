@@ -247,7 +247,8 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
-    _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
+    _compiler_artifact{nullptr}, _execution{nullptr},
+    _exec_options{onert::exec::ExecutionOptions::fromGlobalConfig()}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""}
 {
   // DO NOTHING
@@ -528,7 +529,7 @@ NNFW_STATUS nnfw_session::run()
 
   try
   {
-    _execution->execute();
+    _execution->execute(*_exec_options.get());
   }
   catch (const onert::InsufficientBufferSizeException &e)
   {
@@ -555,7 +556,7 @@ NNFW_STATUS nnfw_session::run_async()
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  _execution->startExecute();
+  _execution->startExecute(*_exec_options.get());
 
   _state = State::RUNNING;
   return NNFW_STATUS_NO_ERROR;
@@ -974,9 +975,13 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   if (!dir)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
+  // Not allowed to change workspace after prepare
+  if (isStatePrepared())
+    return NNFW_STATUS_ERROR;
+
   _coptions->workspace_dir = std::string(dir);
 
-  // TODO Set workspace dir to workspace user (ex. compiler, quantization manager, etc)
+  // TODO Set workspace dir to workspace user (ex. quantization manager, etc)
   //      if model is already loaded
 
   return NNFW_STATUS_NO_ERROR;
@@ -996,7 +1001,11 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
   if (skey == config::TRACING_MODE)
   {
-    _coptions->tracing_mode = toBool(value);
+    _exec_options->trace = toBool(value);
+  }
+  else if (skey == config::MINMAX_DUMP)
+  {
+    _exec_options->dump_minmax = toBool(value);
   }
   else if (skey == config::GRAPH_DOT_DUMP)
   {
@@ -1017,6 +1026,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   else if (skey == config::PROFILING_MODE)
   {
     _coptions->he_profiling_mode = toBool(value);
+    _exec_options->profile = toBool(value);
   }
   else
   {
@@ -1599,10 +1609,10 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
     if (update_weights)
     {
       auto &training_step = _train_info->trainingStep();
-      _execution->train(training_step++);
+      _execution->train(*_exec_options.get(), training_step++);
     }
     else
-      _execution->execute();
+      _execution->execute(*_exec_options.get());
   }
   catch (const onert::InsufficientBufferSizeException &e)
   {
@@ -2001,6 +2011,60 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     std::cerr << "Error during nnfw_session::compile : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *)
+{
+  switch (key)
+  {
+    case NNFW_PREPARE_CONFIG_PROFILE:
+      _coptions->he_profiling_mode = true;
+      break;
+    default:
+      return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::reset_prepare_config()
+{
+  _coptions->he_profiling_mode = false;
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const char *)
+{
+  switch (key)
+  {
+    case NNFW_RUN_CONFIG_DUMP_MINMAX:
+      if (_coptions->workspace_dir.empty())
+        return NNFW_STATUS_ERROR;
+      _exec_options->dump_minmax = true;
+      break;
+    case NNFW_RUN_CONFIG_TRACE:
+      if (_coptions->workspace_dir.empty())
+        return NNFW_STATUS_ERROR;
+      _exec_options->trace = true;
+      break;
+    case NNFW_RUN_CONFIG_PROFILE:
+      _exec_options->profile = true;
+      break;
+    default:
+      return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::reset_execute_config()
+{
+  _exec_options->dump_minmax = false;
+  _exec_options->trace = false;
+  _exec_options->profile = false;
 
   return NNFW_STATUS_NO_ERROR;
 }

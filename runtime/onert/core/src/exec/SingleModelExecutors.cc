@@ -55,7 +55,7 @@ const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index
   return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
 }
 
-void SingleModelExecutors::execute(const IODescription &desc) { entryExecutor()->execute(desc); }
+void SingleModelExecutors::execute(const ExecutionContext &ctx) { entryExecutor()->execute(ctx); }
 
 } // namespace exec
 } // namespace onert

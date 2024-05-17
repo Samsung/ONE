@@ -24,7 +24,7 @@
 #include "backend/train/ITrainableTensor.h"
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
-#include "IODescription.h"
+#include "ExecutionContext.h"
 
 #include <thread>
 #include <deque>
@@ -122,17 +122,19 @@ public:
    */
   void setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo);
   /**
-   * @brief  Execution
-   * @note   It should be called after setting input and output buffer
+   * @brief     Execution
+   * @param[in] options  Execution options
+   * @note      It should be called after setting input and output buffer
    */
-  void execute();
+  void execute(const ExecutionOptions &options);
 
   /**
-   * @brief Start asynchronous execution
-   * @note  It returns after execution thread is started
-   *        It should be called after setting input and output buffer
+   * @brief     Start asynchronous execution
+   * @param[in] options  Execution options
+   * @note      It returns after execution thread is started
+   *            It should be called after setting input and output buffer
    */
-  void startExecute(void);
+  void startExecute(const ExecutionOptions &options);
 
   /**
    * @brief Return when execution is finished
@@ -147,12 +149,13 @@ public:
   bool isFinished(void) const;
 
   /**
-   * @brief  Train
-   * @note   It should be called after setting input and output buffer
-   * @param training_step The number of iterations of the training process.
-   *                      In other words, the number of gradient update.
+   * @brief     Train
+   * @note      It should be called after setting input and output buffer
+   * @param[in] options       Execution options
+   * @param[in] training_step The number of iterations of the training process.
+   *                          In other words, the number of gradient update.
    */
-  void train(uint32_t training_step);
+  void train(const ExecutionOptions &options, uint32_t training_step);
 
   /**
    * @brief     Get loss
@@ -182,7 +185,7 @@ private:
 
 private:
   const std::shared_ptr<IExecutors> _executors;
-  IODescription _io_desc;
+  ExecutionContext _context;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
 };

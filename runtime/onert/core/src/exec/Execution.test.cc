@@ -265,7 +265,7 @@ TEST(ExecInstance, simple)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.execute();
+  execution.execute(onert::exec::ExecutionOptions{});
 
   for (auto i = 0; i < 4; i++)
   {
@@ -310,8 +310,9 @@ TEST(ExecInstance, twoCompile)
   execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
   execution2.setOutput(output, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1.execute();
-  execution2.execute();
+  onert::exec::ExecutionOptions exec_options;
+  execution1.execute(exec_options);
+  execution2.execute(exec_options);
 
   for (auto i = 0; i < 4; i++)
   {
@@ -350,8 +351,9 @@ TEST(ExecInstance, twoExecution)
   execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
   execution2.setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1.execute();
-  execution2.execute();
+  onert::exec::ExecutionOptions exec_options;
+  execution1.execute(exec_options);
+  execution2.execute(exec_options);
 
   for (auto i = 0; i < 4; i++)
   {
@@ -381,7 +383,7 @@ public:
     execution.setInput(input2, reinterpret_cast<const void *>(_input2), 16);
     execution.setOutput(output1, reinterpret_cast<void *>(_output), 16);
 
-    execution.execute();
+    execution.execute(onert::exec::ExecutionOptions{});
   }
 
 private:
@@ -445,7 +447,7 @@ TEST(ExecInstance, async)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.startExecute();
+  execution.startExecute(onert::exec::ExecutionOptions{});
   execution.waitFinish();
 
   for (auto i = 0; i < 4; i++)
@@ -473,7 +475,7 @@ TEST(ExecInstance, multi_model_simple)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.execute();
+  execution.execute(onert::exec::ExecutionOptions{});
 
   for (auto i = 0; i < 4; i++)
   {
@@ -513,8 +515,9 @@ TEST(ExecInstance, multi_model_twoCompile)
   execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
   execution2.setOutput(output, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1.execute();
-  execution2.execute();
+  onert::exec::ExecutionOptions exec_options;
+  execution1.execute(exec_options);
+  execution2.execute(exec_options);
 
   for (auto i = 0; i < 4; i++)
   {
@@ -553,10 +556,11 @@ TEST(ExecInstance, multi_model_twoExecution)
   execution2.setInput(input2, reinterpret_cast<const void *>(exe2_input2_buffer), 16);
   execution2.setOutput(output1, reinterpret_cast<void *>(exe2_output_buffer), 16);
 
-  execution1.execute();
-  execution1.execute();
-  execution2.execute();
-  execution2.execute();
+  onert::exec::ExecutionOptions exec_options;
+  execution1.execute(exec_options);
+  execution1.execute(exec_options);
+  execution2.execute(exec_options);
+  execution2.execute(exec_options);
 
   for (auto i = 0; i < 4; i++)
   {
@@ -587,7 +591,7 @@ TEST(ExecInstance, multi_model_async)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.startExecute();
+  execution.startExecute(onert::exec::ExecutionOptions{});
   execution.waitFinish();
 
   for (auto i = 0; i < 4; i++)
@@ -624,7 +628,7 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   execution.setOutputType(output, type_info);
   execution.setOutput(output, execution.getOutputShape(output),
                       reinterpret_cast<void *>(output_buffer), 4);
-  execution.execute();
+  execution.execute(onert::exec::ExecutionOptions{});
 
   for (auto i = 0; i < 4; i++)
   {
