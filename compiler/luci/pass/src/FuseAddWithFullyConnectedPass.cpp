@@ -260,6 +260,7 @@ bool fuse_add_with_s16_fc(luci::CircleFullyConnected *fc)
   fused_bias->rank(1);
   fused_bias->dim(0) = last_dim;
 
+  std::vector<float> new_bias_scale;
   for (uint32_t i = 0; i < last_dim; i++)
   {
     const auto input_scale = input_qparam->scale.at(0);
@@ -270,7 +271,18 @@ bool fuse_add_with_s16_fc(luci::CircleFullyConnected *fc)
 
     fused_bias->at<loco::DataType::S64>(i) =
       static_cast<int64_t>(std::round(fp32_bias.at(i) * scale_inv));
+
+    new_bias_scale.push_back(scale);
   }
+  std::vector<int64_t> new_bias_zerop(new_bias_scale.size(), 0);
+
+  auto bias_qparam = std::make_unique<luci::CircleQuantParam>();
+  {
+    bias_qparam->scale = new_bias_scale;
+    bias_qparam->zerop = new_bias_zerop;
+  }
+
+  fused_bias->quantparam(std::move(bias_qparam));
 
   // In-place update. This works because fc is guaranteed to have a single successor
   fc->bias(fused_bias);
