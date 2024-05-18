@@ -25,6 +25,8 @@
 
 #include "Session.h"
 
+#include <tensorflow/lite/c/c_api.h>
+
 namespace nnfw
 {
 namespace tflite
