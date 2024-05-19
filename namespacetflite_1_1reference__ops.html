@@ -545,7 +545,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno"> 1407</span>      {</div>
 <div class="line"><span class="lineno"> 1408</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(3); ++c)</div>
 <div class="line"><span class="lineno"> 1409</span>        {</div>
-<div class="line"><span class="lineno"> 1410</span>          <span class="keyword">auto</span> out_idx = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, b, y, x, c);</div>
+<div class="line"><span class="lineno"> 1410</span>          <span class="keyword">auto</span> out_idx = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, b, y, x, c);</div>
 <div class="line"><span class="lineno"> 1411</span>          <span class="keyword">auto</span> in1_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>, b, y, x, c);</div>
 <div class="line"><span class="lineno"> 1412</span>          <span class="keyword">auto</span> in2_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>, b, y, x, c);</div>
 <div class="line"><span class="lineno"> 1413</span>          <span class="keyword">auto</span> in1_val = input1_data[in1_idx];</div>
@@ -560,10 +560,10 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="a_n_d_array_8h_html_a635d76912989ba020d1eeada22742b0d"><div class="ttname"><a href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a></div><div class="ttdeci">int SubscriptToIndex(const NdArrayDesc&lt; 4 &gt; &amp;desc, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00054">NDArray.h:54</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a2ed85231fb21100351c9f68895eaba4b"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc1</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_comparisons_8h_source.html#l00033">PALComparisons.h:33</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Dims.h:64</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Dims.h:64</a></div></div>
 <div class="ttc" id="astruct_nd_array_desc_html"><div class="ttname"><a href="struct_nd_array_desc.html">NdArrayDesc</a></div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00037">NDArray.h:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="_n_d_array_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="_n_d_array_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -668,7 +668,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1285</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> condition_index = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(desc_condition, b, y, x, c);</div>
 <div class="line"><span class="lineno"> 1286</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> x_index = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(desc_x, b, y, x, c);</div>
 <div class="line"><span class="lineno"> 1287</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> y_index = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(desc_y, b, y, x, c);</div>
-<div class="line"><span class="lineno"> 1288</span>          output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(extended_output_shape, b, y, x, c)] =</div>
+<div class="line"><span class="lineno"> 1288</span>          output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(extended_output_shape, b, y, x, c)] =</div>
 <div class="line"><span class="lineno"> 1289</span>            input_condition_data[condition_index] ? input_x_data[x_index] : input_y_data[y_index];</div>
 <div class="line"><span class="lineno"> 1290</span>        }</div>
 <div class="line"><span class="lineno"> 1291</span>      }</div>
@@ -676,7 +676,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1293</span>  }</div>
 <div class="line"><span class="lineno"> 1294</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_n_d_array_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="_n_d_array_8h_source.html#l00089">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Offset()</a>, <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_n_d_array_8h_source.html#l00054">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -787,15 +787,15 @@ template&lt;typename Scalar &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00913">913</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  915</span>{</div>
-<div class="line"><span class="lineno">  916</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  916</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  917</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
 <div class="line"><span class="lineno">  918</span>  {</div>
 <div class="line"><span class="lineno">  919</span>    output_data[i] = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(input_data[i]);</div>
 <div class="line"><span class="lineno">  920</span>  }</div>
 <div class="line"><span class="lineno">  921</span>}</div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">Dims.h:108</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a93604338a7a3801ed30692282ff124ce"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a></div><div class="ttdeci">int MatchingFlatSize(const Dims&lt; N &gt; &amp;dims, const Dims&lt; N &gt; &amp;check_dims_0)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">Dims.h:108</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -868,11 +868,11 @@ template&lt;typename Scalar &gt; </div>
 <div class="line"><span class="lineno">  938</span>  <span class="keywordtype">int</span> quant_max = (1 &lt;&lt; num_bits) - 1;</div>
 <div class="line"><span class="lineno">  939</span>  <span class="keywordtype">float</span> nudged_min, nudged_max, nudged_scale;</div>
 <div class="line"><span class="lineno">  940</span>  NudgeQuantizationRange(rmin, rmax, quant_min, quant_max, &amp;nudged_min, &amp;nudged_max, &amp;nudged_scale);</div>
-<div class="line"><span class="lineno">  941</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  941</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  942</span>  FakeQuantizeArray(nudged_scale, nudged_min, nudged_max, input_data, output_data, flat_size);</div>
 <div class="line"><span class="lineno">  943</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -1406,22 +1406,22 @@ template&lt;typename IndicesT  = int32&gt; </div>
 <div class="line"><span class="lineno">  552</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> input_gate =</div>
 <div class="line"><span class="lineno">  553</span>            1.f /</div>
 <div class="line"><span class="lineno">  554</span>            (1.f +</div>
-<div class="line"><span class="lineno">  555</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 0 * output_depth + c)]));</div>
+<div class="line"><span class="lineno">  555</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 0 * output_depth + c)]));</div>
 <div class="line"><span class="lineno">  556</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> new_input =</div>
-<div class="line"><span class="lineno">  557</span>            std::tanh(activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 1 * output_depth + c)]);</div>
+<div class="line"><span class="lineno">  557</span>            std::tanh(activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 1 * output_depth + c)]);</div>
 <div class="line"><span class="lineno">  558</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> forget_gate =</div>
 <div class="line"><span class="lineno">  559</span>            1.f /</div>
 <div class="line"><span class="lineno">  560</span>            (1.f +</div>
-<div class="line"><span class="lineno">  561</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 2 * output_depth + c)]));</div>
+<div class="line"><span class="lineno">  561</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 2 * output_depth + c)]));</div>
 <div class="line"><span class="lineno">  562</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> output_gate =</div>
 <div class="line"><span class="lineno">  563</span>            1.f /</div>
 <div class="line"><span class="lineno">  564</span>            (1.f +</div>
-<div class="line"><span class="lineno">  565</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 3 * output_depth + c)]));</div>
+<div class="line"><span class="lineno">  565</span>             std::exp(-activ_temp_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(activ_temp_shape, b, h, w, 3 * output_depth + c)]));</div>
 <div class="line"><span class="lineno">  566</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> new_state =</div>
 <div class="line"><span class="lineno">  567</span>            input_gate * new_input +</div>
-<div class="line"><span class="lineno">  568</span>            forget_gate * prev_state_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(prev_state_shape, b, h, w, c)];</div>
-<div class="line"><span class="lineno">  569</span>          output_state_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(output_state_shape, b, h, w, c)] = new_state;</div>
-<div class="line"><span class="lineno">  570</span>          output_activ_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(output_activ_shape, b, h, w, c)] =</div>
+<div class="line"><span class="lineno">  568</span>            forget_gate * prev_state_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(prev_state_shape, b, h, w, c)];</div>
+<div class="line"><span class="lineno">  569</span>          output_state_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(output_state_shape, b, h, w, c)] = new_state;</div>
+<div class="line"><span class="lineno">  570</span>          output_activ_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(output_activ_shape, b, h, w, c)] =</div>
 <div class="line"><span class="lineno">  571</span>            output_gate * std::tanh(new_state);</div>
 <div class="line"><span class="lineno">  572</span>        }</div>
 <div class="line"><span class="lineno">  573</span>      }</div>
@@ -1430,7 +1430,7 @@ template&lt;typename IndicesT  = int32&gt; </div>
 <div class="line"><span class="lineno">  576</span>}</div>
 <div class="ttc" id="a_fully_connected_8float_8cpp_html_a4fa8df12e6b9a0dea1e7b7e2fb060de1"><div class="ttname"><a href="_fully_connected_8float_8cpp.html#a4fa8df12e6b9a0dea1e7b7e2fb060de1">FullyConnected</a></div><div class="ttdeci">void FullyConnected(const float *input_data, const Dims&lt; 4 &gt; &amp;input_dims, const float *weights_data, const Dims&lt; 4 &gt; &amp;weights_dims, const float *bias_data, const Dims&lt; 4 &gt; &amp;bias_dims, float *output_data, const Dims&lt; 4 &gt; &amp;output_dims)</div><div class="ttdef"><b>Definition</b> <a href="_fully_connected_8float_8cpp_source.html#l00029">FullyConnected.float.cpp:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_concatenation_8float_8cpp_source.html#l00027">Concatenation()</a>, <a class="el" href="_fully_connected_8float_8cpp_source.html#l00029">FullyConnected()</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Offset()</a>.</p>
+<p class="reference">References <a class="el" href="_concatenation_8float_8cpp_source.html#l00027">Concatenation()</a>, <a class="el" href="_fully_connected_8float_8cpp_source.html#l00029">FullyConnected()</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Offset()</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1865,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01156">1156</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1158</span>{</div>
-<div class="line"><span class="lineno"> 1159</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1159</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno"> 1160</span> </div>
 <div class="line"><span class="lineno"> 1161</span>  <span class="keyword">auto</span> max_value = input2_data[0];</div>
 <div class="line"><span class="lineno"> 1162</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
@@ -1874,7 +1874,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno"> 1165</span>  }</div>
 <div class="line"><span class="lineno"> 1166</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01171">Maximum()</a>.</p>
 
@@ -1999,7 +1999,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01133">1133</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1135</span>{</div>
-<div class="line"><span class="lineno"> 1136</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1136</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno"> 1137</span> </div>
 <div class="line"><span class="lineno"> 1138</span>  <span class="keyword">auto</span> min_value = input2_data[0];</div>
 <div class="line"><span class="lineno"> 1139</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
@@ -2008,7 +2008,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno"> 1142</span>  }</div>
 <div class="line"><span class="lineno"> 1143</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01148">Minimum()</a>.</p>
 
@@ -2494,14 +2494,14 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01376">1376</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1379</span>{</div>
-<div class="line"><span class="lineno"> 1380</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, input2_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1380</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input1_shape, input2_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno"> 1381</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno"> 1382</span>  {</div>
 <div class="line"><span class="lineno"> 1383</span>    output_data[i] = std::pow(input1_data[i], input2_data[i]);</div>
 <div class="line"><span class="lineno"> 1384</span>  }</div>
 <div class="line"><span class="lineno"> 1385</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2575,7 +2575,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1227</span>  int64_t inner_size;</div>
 <div class="line"><span class="lineno"> 1228</span>  <span class="keywordflow">if</span> (input_condition_shape.DimensionsCount() == 0)</div>
 <div class="line"><span class="lineno"> 1229</span>  {</div>
-<div class="line"><span class="lineno"> 1230</span>    inner_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_x_shape, input_y_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1230</span>    inner_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_x_shape, input_y_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno"> 1231</span>  }</div>
 <div class="line"><span class="lineno"> 1232</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 1233</span>  {</div>
@@ -2593,7 +2593,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1245</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2647,7 +2647,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00109">109</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  113</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno">  114</span>  {</div>
 <div class="line"><span class="lineno">  115</span>    <span class="keyword">const</span> T val = input_data[i];</div>
@@ -2657,7 +2657,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  119</span>  }</div>
 <div class="line"><span class="lineno">  120</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2712,7 +2712,7 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00123">123</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  125</span>{</div>
 <div class="line"><span class="lineno">  126</span>  ruy::profiler::ScopeLabel label(<span class="stringliteral">&quot;Relu1 (not fused)&quot;</span>);</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  128</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno">  129</span>  {</div>
 <div class="line"><span class="lineno">  130</span>    <span class="keyword">const</span> T val = input_data[i];</div>
@@ -2723,7 +2723,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  135</span>  }</div>
 <div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2776,7 +2776,7 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00138">138</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
 <div class="line"><span class="lineno">  141</span>  ruy::profiler::ScopeLabel label(<span class="stringliteral">&quot;Relu6 (not fused)&quot;</span>);</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  143</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno">  144</span>  {</div>
 <div class="line"><span class="lineno">  145</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> val = input_data[i];</div>
@@ -2787,7 +2787,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  150</span>  }</div>
 <div class="line"><span class="lineno">  151</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2848,7 +2848,7 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00172">172</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
 <div class="line"><span class="lineno">  175</span>  ruy::profiler::ScopeLabel label(<span class="stringliteral">&quot;Quantized ReluX (not fused)&quot;</span>);</div>
-<div class="line"><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  177</span>  <span class="keyword">const</span> T max_value = params.quantized_activation_max;</div>
 <div class="line"><span class="lineno">  178</span>  <span class="keyword">const</span> T min_value = params.quantized_activation_min;</div>
 <div class="line"><span class="lineno">  179</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
@@ -2859,7 +2859,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  184</span>  }</div>
 <div class="line"><span class="lineno">  185</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -2920,7 +2920,7 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00154">154</a> of file <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html">PALreference_ops.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
 <div class="line"><span class="lineno">  157</span>  ruy::profiler::ScopeLabel label(<span class="stringliteral">&quot;Quantized ReluX (not fused)&quot;</span>);</div>
-<div class="line"><span class="lineno">  158</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">  159</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno">  160</span>  {</div>
 <div class="line"><span class="lineno">  161</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="topk__v2_8h.html#ab7903878916593daecbeb95b98115ab0">int32</a> val = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input_data[i]);</div>
@@ -2933,7 +2933,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  168</span>  }</div>
 <div class="line"><span class="lineno">  169</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -3429,7 +3429,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1209</span>  }</div>
 <div class="line"><span class="lineno"> 1210</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 1211</span>  {</div>
-<div class="line"><span class="lineno"> 1212</span>    flatsize = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_condition_shape, input_x_shape, input_y_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno"> 1212</span>    flatsize = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_condition_shape, input_x_shape, input_y_shape, <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno"> 1213</span>  }</div>
 <div class="line"><span class="lineno"> 1214</span>  <span class="keywordflow">for</span> (int64_t i = 0; i &lt; flatsize; ++i)</div>
 <div class="line"><span class="lineno"> 1215</span>  {</div>
@@ -3437,7 +3437,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno"> 1217</span>  }</div>
 <div class="line"><span class="lineno"> 1218</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -3593,7 +3593,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno"> 1105</span>        {</div>
 <div class="line"><span class="lineno"> 1106</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i4 = start[4]; i4 &lt; stop[4]; ++i4)</div>
 <div class="line"><span class="lineno"> 1107</span>          {</div>
-<div class="line"><span class="lineno"> 1108</span>            writer-&gt;Write(<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(ext_shape, i0, i1, i2, i3, i4));</div>
+<div class="line"><span class="lineno"> 1108</span>            writer-&gt;Write(<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(ext_shape, i0, i1, i2, i3, i4));</div>
 <div class="line"><span class="lineno"> 1109</span>          }</div>
 <div class="line"><span class="lineno"> 1110</span>        }</div>
 <div class="line"><span class="lineno"> 1111</span>      }</div>
@@ -3603,7 +3603,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a3ce8586aaa3e877d453e2ec54d5bf477"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a3ce8586aaa3e877d453e2ec54d5bf477">size_count</a></div><div class="ttdeci">int8_t size_count</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">Slice.cpp:34</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a44f852c599d9194e67818ccd1a20ea61"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a44f852c599d9194e67818ccd1a20ea61">begin_count</a></div><div class="ttdeci">int8_t begin_count</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">Slice.cpp:32</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">begin_count</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Offset()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">size_count</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">begin_count</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Offset()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">size_count</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01117">Slice()</a>, and <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01125">Slice()</a>.</p>
 
@@ -3819,7 +3819,7 @@ template&lt;typename T , typename TI &gt; </div>
 <div class="line"><span class="lineno"> 1357</span>      <span class="keyword">const</span> std::vector&lt;TI&gt; &amp;index = indices[i];</div>
 <div class="line"><span class="lineno"> 1358</span>      TFLITE_DCHECK_EQ(index.size(), 4);</div>
 <div class="line"><span class="lineno"> 1359</span>      <span class="keyword">const</span> T value = *values; <span class="comment">// just use the first value.</span></div>
-<div class="line"><span class="lineno"> 1360</span>      output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, index[0], index[1], index[2], index[3])] = value;</div>
+<div class="line"><span class="lineno"> 1360</span>      output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, index[0], index[1], index[2], index[3])] = value;</div>
 <div class="line"><span class="lineno"> 1361</span>    }</div>
 <div class="line"><span class="lineno"> 1362</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno"> 1363</span>  }</div>
@@ -3830,12 +3830,12 @@ template&lt;typename T , typename TI &gt; </div>
 <div class="line"><span class="lineno"> 1368</span>    <span class="keyword">const</span> std::vector&lt;TI&gt; &amp;<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = indices[i];</div>
 <div class="line"><span class="lineno"> 1369</span>    TFLITE_DCHECK_EQ(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.size(), 4);</div>
 <div class="line"><span class="lineno"> 1370</span>    <span class="keyword">const</span> T value = values[i];</div>
-<div class="line"><span class="lineno"> 1371</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, index[0], index[1], index[2], index[3])] = value;</div>
+<div class="line"><span class="lineno"> 1371</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, index[0], index[1], index[2], index[3])] = value;</div>
 <div class="line"><span class="lineno"> 1372</span>  }</div>
 <div class="line"><span class="lineno"> 1373</span>}</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Offset()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Offset()</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>

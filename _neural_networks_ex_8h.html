@@ -618,9 +618,6 @@ output.dimension = {5, 4, 3, 2}
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int ANeuralNetworksModel_addOperationEx </td>
@@ -664,11 +661,6 @@ output.dimension = {5, 4, 3, 2}
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Add an extended operation to a model. </p>
@@ -688,18 +680,53 @@ output.dimension = {5, 4, 3, 2}
  See <code><a class="el" href="struct_a_neural_networks_model.html">ANeuralNetworksModel</a></code> for information on multithreaded usage.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>ANEURALNETWORKS_NO_ERROR if successful. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_neural_networks_ex_shim_8h_source.html#l00056">56</a> of file <a class="el" href="_neural_networks_ex_shim_8h_source.html">NeuralNetworksExShim.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_define" href="_neural_networks_load_helpers_8h.html#ad374ce5409961cb3e6cf8c28df6c9b42">LOAD_FUNCTION</a>(<a class="code hl_function" href="_neural_networks_ex_shim_8h.html#a8b46cfe26ead4e2597ad786262c5b144">ANeuralNetworksModel_addOperationEx</a>);</div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_define" href="_neural_networks_load_helpers_8h.html#a75b64071716c9232a608f3cd76309bad">EXECUTE_FUNCTION_RETURN</a>(model, type, inputCount, inputs, outputCount, outputs);</div>
-<div class="line"><span class="lineno">   63</span>}</div>
-<div class="ttc" id="a_neural_networks_ex_shim_8h_html_a8b46cfe26ead4e2597ad786262c5b144"><div class="ttname"><a href="_neural_networks_ex_shim_8h.html#a8b46cfe26ead4e2597ad786262c5b144">ANeuralNetworksModel_addOperationEx</a></div><div class="ttdeci">int ANeuralNetworksModel_addOperationEx(ANeuralNetworksModel *model, ANeuralNetworksOperationTypeEx type, uint32_t inputCount, const uint32_t *inputs, uint32_t outputCount, const uint32_t *outputs)</div><div class="ttdoc">Add an extended operation to a model.</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_ex_shim_8h_source.html#l00056">NeuralNetworksExShim.h:56</a></div></div>
-<div class="ttc" id="a_neural_networks_load_helpers_8h_html_a75b64071716c9232a608f3cd76309bad"><div class="ttname"><a href="_neural_networks_load_helpers_8h.html#a75b64071716c9232a608f3cd76309bad">EXECUTE_FUNCTION_RETURN</a></div><div class="ttdeci">#define EXECUTE_FUNCTION_RETURN(...)</div><div class="ttdoc">Run fn function. fn is created by LOAD_FUNCTION.</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_load_helpers_8h_source.html#l00065">NeuralNetworksLoadHelpers.h:65</a></div></div>
-<div class="ttc" id="a_neural_networks_load_helpers_8h_html_ad374ce5409961cb3e6cf8c28df6c9b42"><div class="ttname"><a href="_neural_networks_load_helpers_8h.html#ad374ce5409961cb3e6cf8c28df6c9b42">LOAD_FUNCTION</a></div><div class="ttdeci">#define LOAD_FUNCTION(name)</div><div class="ttdoc">Create a function pointer named fn after loading NN API library.</div><div class="ttdef"><b>Definition</b> <a href="_neural_networks_load_helpers_8h_source.html#l00048">NeuralNetworksLoadHelpers.h:48</a></div></div>
+<p class="definition">Definition at line <a class="el" href="model_8cc_source.html#l00279">279</a> of file <a class="el" href="model_8cc_source.html">model.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  283</span>{</div>
+<div class="line"><span class="lineno">  284</span>  <span class="keywordflow">if</span> ((model == <span class="keyword">nullptr</span>) || (inputs == <span class="keyword">nullptr</span>) || (outputs == <span class="keyword">nullptr</span>))</div>
+<div class="line"><span class="lineno">  285</span>  {</div>
+<div class="line"><span class="lineno">  286</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNAPI::Model) &lt;&lt; <span class="stringliteral">&quot;addOperation: Incorrect null pointer parameter(s)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a>;</div>
+<div class="line"><span class="lineno">  288</span>  }</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;isFinished())</div>
+<div class="line"><span class="lineno">  291</span>  {</div>
+<div class="line"><span class="lineno">  292</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNAPI::Model) &lt;&lt; <span class="stringliteral">&quot;addOperation: Already finished&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  293</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835">ANEURALNETWORKS_BAD_STATE</a>;</div>
+<div class="line"><span class="lineno">  294</span>  }</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238">ANeuralNetworksOperationTypeEx</a> FIRST_OPERATION = <a class="code hl_enumvalue" href="_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238af5394816d2b4f469aa34c958b52e8a3a">ANEURALNETWORKS_CAST_EX</a>;</div>
+<div class="line"><span class="lineno">  297</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238">ANeuralNetworksOperationTypeEx</a> LAST_OPERATION = <a class="code hl_enumvalue" href="_neural_networks_ex_8h.html#a0c0e9b1f607d53cb83eea4bc99512238af9c9769d736dbc2de841d20d74d57b32">ANEURALNETWORKS_SPLIT_V_EX</a>;</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">if</span> ((type &lt; FIRST_OPERATION) || (type &gt; LAST_OPERATION))</div>
+<div class="line"><span class="lineno">  299</span>  {</div>
+<div class="line"><span class="lineno">  300</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNAPI::Model) &lt;&lt; <span class="stringliteral">&quot;addOperation: Invalid operation type&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
+<div class="line"><span class="lineno">  302</span>  }</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; outputCount; i++)</div>
+<div class="line"><span class="lineno">  305</span>  {</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;isUsageSet(outputs[i]))</div>
+<div class="line"><span class="lineno">  307</span>    {</div>
+<div class="line"><span class="lineno">  308</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNAPI::Model) &lt;&lt; <span class="stringliteral">&quot;addOperation: Already set output operand&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  309</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
+<div class="line"><span class="lineno">  310</span>    }</div>
+<div class="line"><span class="lineno">  311</span>  }</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;addOperationEx(type, inputCount, inputs, outputCount, outputs))</div>
+<div class="line"><span class="lineno">  314</span>  {</div>
+<div class="line"><span class="lineno">  315</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNAPI::Model) &lt;&lt; <span class="stringliteral">&quot;addOperation: Fail to add operation&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a>;</div>
+<div class="line"><span class="lineno">  317</span>  }</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">  320</span>}</div>
+<div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a16c507550e6c79ed74a18277f243b6e8">ANEURALNETWORKS_UNEXPECTED_NULL</a></div><div class="ttdeci">@ ANEURALNETWORKS_UNEXPECTED_NULL</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01388">NeuralNetworks.h:1388</a></div></div>
+<div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a27e8dff6d655275b20c35d80d26d202a">ANEURALNETWORKS_BAD_DATA</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_DATA</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01389">NeuralNetworks.h:1389</a></div></div>
+<div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365">ANEURALNETWORKS_NO_ERROR</a></div><div class="ttdeci">@ ANEURALNETWORKS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01385">NeuralNetworks.h:1385</a></div></div>
+<div class="ttc" id="agroup___neural_networks_html_ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835"><div class="ttname"><a href="group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a8c8e618c0184e486c226c99a6946d835">ANEURALNETWORKS_BAD_STATE</a></div><div class="ttdeci">@ ANEURALNETWORKS_BAD_STATE</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01392">NeuralNetworks.h:1392</a></div></div>
+<div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
+<div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01389">ANEURALNETWORKS_BAD_DATA</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_ex_8h_source.html#l00045">ANEURALNETWORKS_CAST_EX</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, <a class="el" href="_neural_networks_ex_8h_source.html#l00581">ANEURALNETWORKS_SPLIT_V_EX</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01388">ANEURALNETWORKS_UNEXPECTED_NULL</a>, <a class="el" href="_neural_networks_ex_shim_8h_source.html#l00056">ANeuralNetworksModel_addOperationEx()</a>, <a class="el" href="_neural_networks_load_helpers_8h_source.html#l00065">EXECUTE_FUNCTION_RETURN</a>, <a class="el" href="_neural_networks_load_helpers_8h_source.html#l00048">LOAD_FUNCTION</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_neural_networks_ex_shim_8h_source.html#l00056">ANeuralNetworksModel_addOperationEx()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01389">ANEURALNETWORKS_BAD_DATA</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01392">ANEURALNETWORKS_BAD_STATE</a>, <a class="el" href="_neural_networks_ex_8h_source.html#l00045">ANEURALNETWORKS_CAST_EX</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01385">ANEURALNETWORKS_NO_ERROR</a>, <a class="el" href="_neural_networks_ex_8h_source.html#l00581">ANEURALNETWORKS_SPLIT_V_EX</a>, <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01388">ANEURALNETWORKS_UNEXPECTED_NULL</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 </div>
 </div>

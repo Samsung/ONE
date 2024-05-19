@@ -1,7 +1,7 @@
 var dir_82b48833ad26f95ae5233d833401aa28 =
 [
     [ "Comparator.h", "_comparator_8h.html", "_comparator_8h" ],
-    [ "Diff.h", "misc_2include_2misc_2tensor_2_diff_8h.html", "misc_2include_2misc_2tensor_2_diff_8h" ],
+    [ "Diff.h", "_diff_8h.html", "_diff_8h" ],
     [ "Index.h", "runtime_2libs_2misc_2include_2misc_2tensor_2_index_8h.html", "runtime_2libs_2misc_2include_2misc_2tensor_2_index_8h" ],
     [ "IndexEnumerator.h", "runtime_2libs_2misc_2include_2misc_2tensor_2_index_enumerator_8h.html", "runtime_2libs_2misc_2include_2misc_2tensor_2_index_enumerator_8h" ],
     [ "IndexFormatter.h", "_index_formatter_8h.html", "_index_formatter_8h" ],

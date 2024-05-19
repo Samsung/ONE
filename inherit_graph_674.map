@@ -1,19 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="5,153,92,179"/>
 <area shape="rect" id="Node000001" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="140,153,222,179"/>
-<area shape="poly" id="edge2103_Node000000_Node000001" title=" " alt="" coords="108,164,139,164,139,169,108,169"/>
+<area shape="poly" id="edge2105_Node000000_Node000001" title=" " alt="" coords="108,164,139,164,139,169,108,169"/>
 <area shape="rect" id="Node000002" href="$classmir2loco_1_1_transformer.html" title=" " alt="" coords="294,5,440,31"/>
-<area shape="poly" id="edge2104_Node000001_Node000002" title=" " alt="" coords="192,138,222,88,243,62,269,40,292,28,294,33,271,44,247,66,226,91,196,141"/>
+<area shape="poly" id="edge2106_Node000001_Node000002" title=" " alt="" coords="192,138,222,88,243,62,269,40,292,28,294,33,271,44,247,66,226,91,196,141"/>
 <area shape="rect" id="Node000003" href="$classmir_1_1_dot_node_builder.html" title=" " alt="" coords="299,55,435,80"/>
-<area shape="poly" id="edge2105_Node000001_Node000003" title=" " alt="" coords="203,140,233,113,269,89,297,78,299,83,271,94,236,117,206,144"/>
+<area shape="poly" id="edge2107_Node000001_Node000003" title=" " alt="" coords="203,140,233,113,269,89,297,78,299,83,271,94,236,117,206,144"/>
 <area shape="rect" id="Node000004" href="$classmir__interpreter_1_1_m_i_r_interpreter.html" title=" " alt="" coords="270,104,463,130"/>
-<area shape="poly" id="edge2106_Node000001_Node000004" title=" " alt="" coords="236,148,269,138,310,128,311,133,271,143,238,153"/>
+<area shape="poly" id="edge2108_Node000001_Node000004" title=" " alt="" coords="236,148,269,138,310,128,311,133,271,143,238,153"/>
 <area shape="rect" id="Node000005" href="$classnnc_1_1_acl_cpp_op_generator.html" title="Implements the visitor for the model IR which generates the DOM description translated to C++ source/..." alt="" coords="285,153,449,179"/>
-<area shape="poly" id="edge2107_Node000001_Node000005" title=" " alt="" coords="238,164,284,164,284,169,238,169"/>
+<area shape="poly" id="edge2109_Node000001_Node000005" title=" " alt="" coords="238,164,284,164,284,169,238,169"/>
 <area shape="rect" id="Node000006" href="$classnnc_1_1_dump_visitor.html" title=" " alt="" coords="307,203,426,228"/>
-<area shape="poly" id="edge2108_Node000001_Node000006" title=" " alt="" coords="238,180,271,189,311,200,310,205,269,194,236,185"/>
+<area shape="poly" id="edge2110_Node000001_Node000006" title=" " alt="" coords="238,180,271,189,311,200,310,205,269,194,236,185"/>
 <area shape="rect" id="Node000007" href="$classnnc_1_1_model_analyzer.html" title="Constructs inference sequence for given computational graph, gathers list of variables used in artifa..." alt="" coords="301,252,433,278"/>
-<area shape="poly" id="edge2109_Node000001_Node000007" title=" " alt="" coords="206,188,236,215,271,238,301,250,299,255,269,243,233,219,203,192"/>
+<area shape="poly" id="edge2111_Node000001_Node000007" title=" " alt="" coords="206,188,236,215,271,238,301,250,299,255,269,243,233,219,203,192"/>
 <area shape="rect" id="Node000008" href="$classnnc_1_1_serializer.html" title="Serializer of network parameters for soft backend." alt="" coords="316,301,417,327"/>
-<area shape="poly" id="edge2110_Node000001_Node000008" title=" " alt="" coords="196,192,226,242,247,267,271,288,293,299,316,306,315,311,291,304,269,292,243,271,222,245,192,194"/>
+<area shape="poly" id="edge2112_Node000001_Node000008" title=" " alt="" coords="196,192,226,242,247,267,271,288,293,299,316,306,315,311,291,304,269,292,243,271,222,245,192,194"/>
 </map>

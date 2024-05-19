@@ -942,6 +942,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fold_gather_pass.html">FoldGatherPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fold Gather to a constant tensor.  <a href="structluci_1_1_fold_gather_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fold_reshape_pass.html">FoldReshapePass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fold Reshape to a constant tensor.  <a href="structluci_1_1_fold_reshape_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fold_shape_pass.html">FoldShapePass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fold Shape to a constant tensor.  <a href="structluci_1_1_fold_shape_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1006,6 +1009,9 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_p_relu_pass.html">FusePReluPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse certain pattern of subgraph into CirclePRelu with auxiliary nodes.  <a href="structluci_1_1_fuse_p_relu_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_rsqrt_pass.html">FuseRsqrtPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse certain pattern of subgraph into CircleRsqrt.  <a href="structluci_1_1_fuse_rsqrt_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_slice_with_t_conv_pass.html">FuseSliceWithTConvPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse Slice operation with a preceding TConv.  <a href="structluci_1_1_fuse_slice_with_t_conv_pass.html#details">More...</a><br /></td></tr>
@@ -7532,7 +7538,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_change_outputs_8cpp_source.html#l00048">change_outputs()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00115">luci_interpreter::Interpreter::readOutputTensor()</a>, and <a class="el" href="_fuse_b_c_q_pass_8cpp_source.html#l00613">luci::FuseBCQPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_change_outputs_8cpp_source.html#l00048">change_outputs()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00128">luci_interpreter::Interpreter::getOutputTensorSize()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00115">luci_interpreter::Interpreter::readOutputTensor()</a>, and <a class="el" href="_fuse_b_c_q_pass_8cpp_source.html#l00613">luci::FuseBCQPass::run()</a>.</p>
 
 </div>
 </div>
@@ -8925,7 +8931,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00551">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00561">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>
@@ -9790,7 +9796,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_partition_8h_source.html#l00047">luci::PartitionTable::byopcodes</a>, <a class="el" href="_partition_8h_source.html#l00050">luci::PartitionTable::byopnames</a>, <a class="el" href="_partition_8h_source.html#l00043">luci::PartitionTable::default_group</a>, and <a class="el" href="_partition_8h_source.html#l00042">luci::PartitionTable::groups</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_embedder_8cpp_source.html#l00077">minmax_embedder::Embedder::embed()</a>, <a class="el" href="_circle_partitioner_8cpp_source.html#l00077">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00034">onert::odc::Quantizer::quantize()</a>, <a class="el" href="_quantizer_8cpp_source.html#l00058">mpqsolver::core::Quantizer::quantize()</a>, and <a class="el" href="_read_module_8cpp_source.html#l00029">ReadModule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_embedder_8cpp_source.html#l00077">minmax_embedder::Embedder::embed()</a>, <a class="el" href="_circle_partitioner_8cpp_source.html#l00077">entry()</a>, <a class="el" href="_quantizer_8cc_source.html#l00078">onert::odc::Quantizer::quantize()</a>, <a class="el" href="_quantizer_8cpp_source.html#l00058">mpqsolver::core::Quantizer::quantize()</a>, and <a class="el" href="_read_module_8cpp_source.html#l00029">ReadModule()</a>.</p>
 
 </div>
 </div>

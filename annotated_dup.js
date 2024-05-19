@@ -1233,6 +1233,7 @@ var annotated_dup =
       [ "FoldDequantizePass", "structluci_1_1_fold_dequantize_pass.html", "structluci_1_1_fold_dequantize_pass" ],
       [ "FoldFullyConnectedPass", "structluci_1_1_fold_fully_connected_pass.html", "structluci_1_1_fold_fully_connected_pass" ],
       [ "FoldGatherPass", "structluci_1_1_fold_gather_pass.html", "structluci_1_1_fold_gather_pass" ],
+      [ "FoldReshapePass", "structluci_1_1_fold_reshape_pass.html", "structluci_1_1_fold_reshape_pass" ],
       [ "FoldShapePass", "structluci_1_1_fold_shape_pass.html", "structluci_1_1_fold_shape_pass" ],
       [ "FoldSparseToDensePass", "structluci_1_1_fold_sparse_to_dense_pass.html", "structluci_1_1_fold_sparse_to_dense_pass" ],
       [ "FoldSqueezePass", "structluci_1_1_fold_squeeze_pass.html", "structluci_1_1_fold_squeeze_pass" ],
@@ -1255,6 +1256,7 @@ var annotated_dup =
       [ "FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", "structluci_1_1_fuse_mul_with_div_pass" ],
       [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
       [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
+      [ "FuseRsqrtPass", "structluci_1_1_fuse_rsqrt_pass.html", "structluci_1_1_fuse_rsqrt_pass" ],
       [ "FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", "structluci_1_1_fuse_slice_with_t_conv_pass" ],
       [ "FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", "structluci_1_1_fuse_transpose_with_mean_pass" ],
       [ "GraphBuilder", "classluci_1_1_graph_builder.html", "classluci_1_1_graph_builder" ],
@@ -2658,13 +2660,6 @@ var annotated_dup =
         [ "PaddingValues", "structnnfw_1_1ruy_1_1_padding_values.html", "structnnfw_1_1ruy_1_1_padding_values" ],
         [ "Shape", "classnnfw_1_1ruy_1_1_shape.html", "classnnfw_1_1ruy_1_1_shape" ],
         [ "UNUSED_ALL", "structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html", "structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l" ]
-      ] ],
-      [ "tflite", "namespacennfw_1_1tflite.html", [
-        [ "InputIndex", "classnnfw_1_1tflite_1_1_input_index.html", "classnnfw_1_1tflite_1_1_input_index" ],
-        [ "InterpreterSession", "classnnfw_1_1tflite_1_1_interpreter_session.html", "classnnfw_1_1tflite_1_1_interpreter_session" ],
-        [ "RandomInputInitializer", "classnnfw_1_1tflite_1_1_random_input_initializer.html", "classnnfw_1_1tflite_1_1_random_input_initializer" ],
-        [ "Session", "structnnfw_1_1tflite_1_1_session.html", "structnnfw_1_1tflite_1_1_session" ],
-        [ "TensorView", "classnnfw_1_1tflite_1_1_tensor_view.html", "classnnfw_1_1tflite_1_1_tensor_view" ]
       ] ]
     ] ],
     [ "nnkit", "namespacennkit.html", [
@@ -3548,16 +3543,6 @@ var annotated_dup =
     [ "Reshape_000", "namespace_reshape__000.html", [
       [ "Reshape_000_Q8", "class_reshape__000_1_1_reshape__000___q8.html", "class_reshape__000_1_1_reshape__000___q8" ]
     ] ],
-    [ "rua", "namespacerua.html", [
-      [ "Anchor", "structrua_1_1_anchor.html", null ],
-      [ "CompilationService", "structrua_1_1_compilation_service.html", "structrua_1_1_compilation_service" ],
-      [ "DynamicBinder", "structrua_1_1_dynamic_binder.html", null ],
-      [ "EventService", "structrua_1_1_event_service.html", "structrua_1_1_event_service" ],
-      [ "ExecutionService", "structrua_1_1_execution_service.html", "structrua_1_1_execution_service" ],
-      [ "MemoryService", "structrua_1_1_memory_service.html", "structrua_1_1_memory_service" ],
-      [ "ModelService", "structrua_1_1_model_service.html", "structrua_1_1_model_service" ],
-      [ "RuntimeService", "structrua_1_1_runtime_service.html", "structrua_1_1_runtime_service" ]
-    ] ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", [
       [ "SingleOperatorTest", "class_single_operator_test_1_1_single_operator_test.html", "class_single_operator_test_1_1_single_operator_test" ]
     ] ],
@@ -3951,7 +3936,6 @@ var annotated_dup =
     [ "DepthwiseFilterEncodeLayer", "struct_depthwise_filter_encode_layer.html", "struct_depthwise_filter_encode_layer" ],
     [ "DequantizeChef", "class_dequantize_chef.html", "class_dequantize_chef" ],
     [ "DequantizeChefFactory", "struct_dequantize_chef_factory.html", "struct_dequantize_chef_factory" ],
-    [ "DiffSummary", "class_diff_summary.html", "class_diff_summary" ],
     [ "Dims", "struct_dims.html", "struct_dims" ],
     [ "DivChef", "class_div_chef.html", "class_div_chef" ],
     [ "DivChefFactory", "struct_div_chef_factory.html", "struct_div_chef_factory" ],
@@ -4233,7 +4217,6 @@ var annotated_dup =
     [ "Tensor4D", "struct_tensor4_d.html", "struct_tensor4_d" ],
     [ "TensorBroadcastLayer", "struct_tensor_broadcast_layer.html", "struct_tensor_broadcast_layer" ],
     [ "tensorinfo", "structtensorinfo.html", "structtensorinfo" ],
-    [ "TfLiteInterpMatchApp", "class_tf_lite_interp_match_app.html", "class_tf_lite_interp_match_app" ],
     [ "TileChef", "class_tile_chef.html", "class_tile_chef" ],
     [ "TileChefFactory", "struct_tile_chef_factory.html", "struct_tile_chef_factory" ],
     [ "TopKV2Chef", "class_top_k_v2_chef.html", "class_top_k_v2_chef" ],

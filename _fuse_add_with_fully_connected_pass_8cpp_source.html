@@ -119,118 +119,309 @@ $(document).ready(function(){initNavTree('_fuse_add_with_fully_connected_pass_8c
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="service_2include_2luci_2_service_2_nodes_2_circle_const_8h.html">luci/Service/Nodes/CircleConst.h</a>&gt;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="_circle_node_origin_8h.html">luci/Profile/CircleNodeOrigin.h</a>&gt;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">bool</span> fuse_add_with_fc(<a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *fc)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">if</span> (not fc)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">if</span> (fc-&gt;dtype() != loco::DataType::FLOAT32)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (fc-&gt;fusedActivationFunction() != <a class="code hl_enumvalue" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a>)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">auto</span> weights = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;weights());</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">if</span> (not weights)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// Get add node</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">auto</span> fc_output = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(fc);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">if</span> (fc_output.size() != 1)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *<span class="keyword">&gt;</span>(*fc_output.begin());</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">if</span> (not add)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;dtype() != loco::DataType::FLOAT32)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordtype">bool</span> fuse_add_with_fc(<a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *fc)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">if</span> (not fc)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">if</span> (fc-&gt;dtype() != loco::DataType::FLOAT32)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">if</span> (fc-&gt;fusedActivationFunction() != <a class="code hl_enumvalue" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a>)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">auto</span> weights = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;weights());</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (not weights)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// Get add node</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">auto</span> fc_output = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(fc);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">if</span> (fc_output.size() != 1)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *<span class="keyword">&gt;</span>(*fc_output.begin());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">if</span> (not add)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="comment">// Get addition</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">auto</span> addition = <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x() == fc ? <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;y())</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                                 : dynamic_cast&lt;<a class="code hl_namespace" href="namespaceluci.html">luci</a>::CircleConst *&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x());</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// Non-const addition</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">if</span> (not addition)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">auto</span> rank = addition-&gt;rank();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// TODO Support scalar addition</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">if</span> (rank == 0)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; rank - 1; i++)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (addition-&gt;dim(i).value() != 1)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// Check the last dimesion of addition is the same with the number of neurons of FC</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">if</span> (not(addition-&gt;dim(rank - 1) == weights-&gt;dim(0)))</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = loco::must_cast&lt;luci::CircleNode *&gt;(fc-&gt;bias());</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;dtype() != loco::DataType::FLOAT32)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="comment">// Get addition</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">auto</span> addition = <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x() == fc ? <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;y())</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                 : dynamic_cast&lt;<a class="code hl_namespace" href="namespaceluci.html">luci</a>::CircleConst *&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x());</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// Non-const addition</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">if</span> (not addition)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">auto</span> rank = addition-&gt;rank();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// TODO Support scalar addition</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> (rank == 0)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; rank - 1; i++)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">if</span> (addition-&gt;dim(i).value() != 1)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Check the last dimesion of addition is the same with the number of neurons of FC</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">if</span> (not(addition-&gt;dim(rank - 1) == weights-&gt;dim(0)))</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="comment">// We only support (1) constant bias (2) no bias</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="comment">// If bias is neither (1) nor (2), it would be a feature map</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLECONST and</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keyword">auto</span> fused_bias = <a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a>(addition);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = loco::must_cast&lt;luci::CircleNode *&gt;(fc-&gt;bias());</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// We only support (1) constant bias (2) no bias</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// If bias is neither (1) nor (2), it would be a feature map</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLECONST and</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">// Add existing bias values</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> const_bias = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;bias()))</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    assert(const_bias-&gt;dtype() == loco::DataType::FLOAT32);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">auto</span> bias_size = fused_bias-&gt;size&lt;loco::DataType::FLOAT32&gt;();</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    assert(bias_size == const_bias-&gt;size&lt;loco::DataType::FLOAT32&gt;());</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; bias_size; i++)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      fused_bias-&gt;at&lt;loco::DataType::FLOAT32&gt;(i) += const_bias-&gt;at&lt;loco::DataType::FLOAT32&gt;(i);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="comment">// At this point, it is guarateed that fused_bias&#39;s shape is [1, 1, ..., N] or [N]</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="comment">// where N is weights-&gt;dim(0).</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">// The shape is normalized to [N] to become the bias of FC</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  fused_bias-&gt;rank(1);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  fused_bias-&gt;dim(0) = weights-&gt;dim(0);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  fc-&gt;bias(fused_bias);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  fc-&gt;fusedActivationFunction(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;fusedActivationFunction());</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// set origin</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  luci::add_origin(fc, luci::get_origin(add));</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(add).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(fc);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keyword">auto</span> fused_bias = <a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a>(addition);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// Add existing bias values</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> const_bias = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;bias()))</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    assert(const_bias-&gt;dtype() == loco::DataType::FLOAT32);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">auto</span> bias_size = fused_bias-&gt;size&lt;loco::DataType::FLOAT32&gt;();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    assert(bias_size == const_bias-&gt;size&lt;loco::DataType::FLOAT32&gt;());</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; bias_size; i++)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      fused_bias-&gt;at&lt;loco::DataType::FLOAT32&gt;(i) += const_bias-&gt;at&lt;loco::DataType::FLOAT32&gt;(i);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="comment">// At this point, it is guarateed that fused_bias&#39;s shape is [1, 1, ..., N] or [N]</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// where N is weights-&gt;dim(0).</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="comment">// The shape is normalized to [N] to become the bias of FC</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  fused_bias-&gt;rank(1);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  fused_bias-&gt;dim(0) = weights-&gt;dim(0);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  fc-&gt;bias(fused_bias);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  fc-&gt;fusedActivationFunction(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;fusedActivationFunction());</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// set origin</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  luci::add_origin(fc, luci::get_origin(add));</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(add).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(fc);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>{</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="foldopen" id="foldopen00132" data-start="{" data-end="}">
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">  132</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">FuseAddWithFullyConnectedPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>{</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  {</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">if</span> (not fc)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordflow">if</span> (fuse_add_with_fc(fc))</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">// Return qparam if it exists and its scale/zp&#39;s size is the same with len</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">// Return nullptr otherwise</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><a class="code hl_struct" href="structluci_1_1_circle_quant_param.html">luci::CircleQuantParam</a> *get_qparam(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, uint32_t len)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>{</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>()-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#a0970fcef17662446da4aab2f3622669a">scale</a>.size() != len)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>()-&gt;<a class="code hl_variable" href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">zerop</a>.size() != len)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="keywordflow">return</span> node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>();</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>}</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>}</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keywordtype">bool</span> fuse_add_with_s16_fc(<a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *fc)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>{</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  assert(fc);                                 <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  assert(fc-&gt;dtype() == loco::DataType::S16); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keywordflow">if</span> (fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html#a842a56cf289bfac90a02aa12579c19bd">fusedActivationFunction</a>() != <a class="code hl_enumvalue" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a>)</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keyword">auto</span> weights = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_fully_connected.html#a0230c5d8c34cdd49d2a0b68a35912aa8">weights</a>());</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">if</span> (not weights)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">auto</span> fc_output = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(fc);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="comment">// Fuse only when FC has a single successor (to avoid weight increase)</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordflow">if</span> (fc_output.size() != 1)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *<span class="keyword">&gt;</span>(*fc_output.begin());</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keywordflow">if</span> (not add)</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// Only support the same dtype with fc</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;dtype() != loco::DataType::S16)</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="comment">// Get addition</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="keyword">auto</span> addition = <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x() == fc ? <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;y())</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                                 : dynamic_cast&lt;<a class="code hl_namespace" href="namespaceluci.html">luci</a>::CircleConst *&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;x());</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <span class="comment">// Non-const addition</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <span class="keywordflow">if</span> (not addition)</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="comment">// Check addition dtype</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordflow">if</span> (addition-&gt;dtype() != loco::DataType::S16)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keyword">auto</span> rank = addition-&gt;rank();</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="comment">// TODO Support scalar addition</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  <span class="keywordflow">if</span> (rank == 0)</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; rank - 1; i++)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> (addition-&gt;dim(i).value() != 1)</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="comment">// Check the last dim of addition is the same with the output dim of weight</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keyword">const</span> <span class="keyword">auto</span> last_dim = addition-&gt;dim(rank - 1).value();</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">if</span> (last_dim != weights-&gt;dim(0).value())</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = loco::must_cast&lt;luci::CircleNode *&gt;(fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_fully_connected.html#a73fecb95e9df193973ad6c95d89b5374">bias</a>());</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="comment">// Only support (1) constant bias, or (2) no bias</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLECONST and</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="comment">// If bias is const, its dtype must be s64</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;opcode() == luci::CircleOpcode::CIRCLECONST and <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;dtype() != loco::DataType::S64)</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keyword">const</span> <span class="keyword">auto</span> addition_qparam = get_qparam(addition, last_dim);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="keywordflow">if</span> (addition_qparam == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  std::vector&lt;float&gt; fp32_bias(last_dim);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; last_dim; i++)</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = addition_qparam-&gt;scale.at(i);</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordflow">if</span> (addition_qparam-&gt;zerop.at(i) != 0)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">auto</span> val = addition-&gt;at&lt;loco::DataType::S16&gt;(i);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    fp32_bias[i] = val * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  }</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <span class="comment">// Add existing bias values</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> const_bias = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(bias))</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keyword">const</span> <span class="keyword">auto</span> bias_qparam = get_qparam(const_bias, last_dim);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keywordflow">if</span> (bias_qparam == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; last_dim; i++)</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    {</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = bias_qparam-&gt;scale.at(i);</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      <span class="keywordflow">if</span> (bias_qparam-&gt;zerop.at(i) != 0)</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <span class="keyword">auto</span> val = const_bias-&gt;at&lt;loco::DataType::S64&gt;(i);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      fp32_bias[i] += val * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  }</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keyword">const</span> <span class="keyword">auto</span> add_qparam = get_qparam(add, 1);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordflow">if</span> (add_qparam == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = loco::must_cast&lt;luci::CircleNode *&gt;(fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_fully_connected.html#ab62242a8bf8b6d58990b366d9f2653d7">input</a>());</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_qparam = get_qparam(input, 1);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keywordflow">if</span> (input_qparam == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="keyword">const</span> <span class="keyword">auto</span> weights_qparam = get_qparam(weights, last_dim);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keywordflow">if</span> (weights_qparam == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keyword">auto</span> fused_bias = <a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a>(addition);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  fused_bias-&gt;dtype(loco::DataType::S64);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  fused_bias-&gt;size&lt;loco::DataType::S64&gt;(last_dim);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="comment">// The shape is normalized to [N] to become the bias of FC</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  fused_bias-&gt;rank(1);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  fused_bias-&gt;dim(0) = last_dim;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  std::vector&lt;float&gt; new_bias_scale;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; last_dim; i++)</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  {</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_scale = input_qparam-&gt;scale.at(0);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keyword">const</span> <span class="keyword">auto</span> weight_scale = weights_qparam-&gt;scale.at(i);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = input_scale * weight_scale;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> scale_inv = (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> == 0) ? 0 : 1.0 / <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    fused_bias-&gt;at&lt;loco::DataType::S64&gt;(i) =</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>      <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(std::round(fp32_bias.at(i) * scale_inv));</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    new_bias_scale.push_back(scale);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  }</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  std::vector&lt;int64_t&gt; new_bias_zerop(new_bias_scale.size(), 0);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keyword">auto</span> bias_qparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    bias_qparam-&gt;scale = new_bias_scale;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    bias_qparam-&gt;zerop = new_bias_zerop;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  }</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  fused_bias-&gt;quantparam(std::move(bias_qparam));</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  <span class="comment">// In-place update. This works because fc is guaranteed to have a single successor</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_fully_connected.html#a73fecb95e9df193973ad6c95d89b5374">bias</a>(fused_bias);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  fc-&gt;<a class="code hl_function" href="classluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html#a842a56cf289bfac90a02aa12579c19bd">fusedActivationFunction</a>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;fusedActivationFunction());</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  <span class="keyword">auto</span> qparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>  {</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    qparam-&gt;scale.push_back(add_qparam-&gt;scale.at(0));</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    qparam-&gt;zerop.push_back(add_qparam-&gt;scale.at(0));</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  }</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  fc-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(qparam));</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="comment">// set origin</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  luci::add_origin(fc, luci::get_origin(add));</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(add).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(fc);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>{</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="foldopen" id="foldopen00312" data-start="{" data-end="}">
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno"><a class="line" href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">  312</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">FuseAddWithFullyConnectedPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>{</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  {</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <span class="keyword">auto</span> fc = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keywordflow">if</span> (not fc)</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordflow">switch</span> (fc-&gt;dtype())</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>      <span class="keywordflow">case</span> loco::DataType::FLOAT32:</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        <span class="keywordflow">if</span> (fuse_add_with_fc(fc))</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>          changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>      <span class="keywordflow">case</span> loco::DataType::S16:</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>        <span class="keywordflow">if</span> (fuse_add_with_s16_fc(fc))</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>          changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    }</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  }</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>}</div>
 </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_node_origin_8h_html"><div class="ttname"><a href="_circle_node_origin_8h.html">CircleNodeOrigin.h</a></div></div>
 <div class="ttc" id="a_fuse_add_with_fully_connected_pass_8h_html"><div class="ttname"><a href="_fuse_add_with_fully_connected_pass_8h.html">FuseAddWithFullyConnectedPass.h</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
@@ -238,6 +429,10 @@ $(document).ready(function(){initNavTree('_fuse_add_with_fully_connected_pass_8c
 <div class="ttc" id="aclassluci_1_1_circle_add_html"><div class="ttname"><a href="classluci_1_1_circle_add.html">luci::CircleAdd</a></div><div class="ttdoc">ADD in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_add_8h_source.html#l00032">CircleAdd.h:34</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html"><div class="ttname"><a href="classluci_1_1_circle_const.html">luci::CircleConst</a></div><div class="ttdoc">Class to build tensor data.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">CircleConst.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_fully_connected_html"><div class="ttname"><a href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a></div><div class="ttdoc">FULLY_CONNECTED in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h_source.html#l00032">CircleFullyConnected.h:36</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_fully_connected_html_a0230c5d8c34cdd49d2a0b68a35912aa8"><div class="ttname"><a href="classluci_1_1_circle_fully_connected.html#a0230c5d8c34cdd49d2a0b68a35912aa8">luci::CircleFullyConnected::weights</a></div><div class="ttdeci">loco::Node * weights(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h_source.html#l00051">CircleFullyConnected.h:51</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_fully_connected_html_a73fecb95e9df193973ad6c95d89b5374"><div class="ttname"><a href="classluci_1_1_circle_fully_connected.html#a73fecb95e9df193973ad6c95d89b5374">luci::CircleFullyConnected::bias</a></div><div class="ttdeci">loco::Node * bias(void) const override</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h_source.html#l00054">CircleFullyConnected.h:54</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_fully_connected_html_ab62242a8bf8b6d58990b366d9f2653d7"><div class="ttname"><a href="classluci_1_1_circle_fully_connected.html#ab62242a8bf8b6d58990b366d9f2653d7">luci::CircleFullyConnected::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h_source.html#l00048">CircleFullyConnected.h:48</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4_html_a842a56cf289bfac90a02aa12579c19bd"><div class="ttname"><a href="classluci_1_1_circle_node_mixin_3_01_circle_node_trait_1_1_fused_act_func_01_4.html#a842a56cf289bfac90a02aa12579c19bd">luci::CircleNodeMixin&lt; CircleNodeTrait::FusedActFunc &gt;::fusedActivationFunction</a></div><div class="ttdeci">FusedActFunc fusedActivationFunction() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_node_mixins_8h_source.html#l00045">CircleNodeMixins.h:45</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">CircleNodes.h</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
@@ -247,9 +442,16 @@ $(document).ready(function(){initNavTree('_fuse_add_with_fully_connected_pass_8c
 <div class="ttc" id="anamespaceluci_html_a8984ba83d6f0e6d0dc99b25ee3b5d04b"><div class="ttname"><a href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a></div><div class="ttdeci">luci::CircleConst * clone(luci::CircleConst *node)</div><div class="ttdoc">Return cloned object of CircleConst node.</div><div class="ttdef"><b>Definition</b> <a href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00107">CircleConst.cpp:107</a></div></div>
 <div class="ttc" id="anamespaceluci_html_aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945ab50339a10e1de285ac99d4c3990b8693">luci::FusedActFunc::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">mir_caffe2::SupportedCaffe2OpType::add</a></div><div class="ttdeci">@ add</div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="aservice_2include_2luci_2_service_2_nodes_2_circle_const_8h_html"><div class="ttname"><a href="service_2include_2luci_2_service_2_nodes_2_circle_const_8h.html">CircleConst.h</a></div></div>
-<div class="ttc" id="astructluci_1_1_fuse_add_with_fully_connected_pass_html_a973f0eba3dad82616d18fb17689a331a"><div class="ttname"><a href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">luci::FuseAddWithFullyConnectedPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="_fuse_add_with_fully_connected_pass_8cpp_source.html#l00132">FuseAddWithFullyConnectedPass.cpp:132</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_node_html_a0a3c6486c3eb1a728d5dc2b1b57f3b8b"><div class="ttname"><a href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">luci::CircleNode::quantparam</a></div><div class="ttdeci">CircleQuantParam * quantparam(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00052">CircleNodeDecl.h:52</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_quant_param_html"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html">luci::CircleQuantParam</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_quant_param_8h_source.html#l00026">CircleQuantParam.h:27</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_quant_param_html_a0970fcef17662446da4aab2f3622669a"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#a0970fcef17662446da4aab2f3622669a">luci::CircleQuantParam::scale</a></div><div class="ttdeci">std::vector&lt; float &gt; scale</div><div class="ttdef"><b>Definition</b> <a href="_circle_quant_param_8h_source.html#l00030">CircleQuantParam.h:30</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_quant_param_html_adfd73367574e4ad12da0b59a7915ec09"><div class="ttname"><a href="structluci_1_1_circle_quant_param.html#adfd73367574e4ad12da0b59a7915ec09">luci::CircleQuantParam::zerop</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; zerop</div><div class="ttdef"><b>Definition</b> <a href="_circle_quant_param_8h_source.html#l00031">CircleQuantParam.h:31</a></div></div>
+<div class="ttc" id="astructluci_1_1_fuse_add_with_fully_connected_pass_html_a973f0eba3dad82616d18fb17689a331a"><div class="ttname"><a href="structluci_1_1_fuse_add_with_fully_connected_pass.html#a973f0eba3dad82616d18fb17689a331a">luci::FuseAddWithFullyConnectedPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="_fuse_add_with_fully_connected_pass_8cpp_source.html#l00312">FuseAddWithFullyConnectedPass.cpp:312</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

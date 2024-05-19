@@ -604,7 +604,6 @@ var namespaces_dup =
       [ "cl_files", "namespaceresolve__includes.html#ac0718ed4c36d2c8b5d61017256cdaf8d", null ],
       [ "embed_files", "namespaceresolve__includes.html#a3380eed9d3c2bd1cbadb1ca6c74dcbf0", null ]
     ] ],
-    [ "rua", "namespacerua.html", "namespacerua" ],
     [ "ShapeTransform", "namespace_shape_transform.html", null ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", "namespace_single_operator_test" ],
     [ "Softmax_000", "namespace_softmax__000.html", "namespace_softmax__000" ],

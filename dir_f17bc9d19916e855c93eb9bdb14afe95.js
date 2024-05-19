@@ -12,7 +12,7 @@ var dir_f17bc9d19916e855c93eb9bdb14afe95 =
     [ "CodeIndex.h", "_code_index_8h.html", "_code_index_8h" ],
     [ "CppCode.cpp", "_cpp_code_8cpp.html", null ],
     [ "CppCode.h", "_cpp_code_8h.html", "_cpp_code_8h" ],
-    [ "Dims.h", "enco_2core_2src_2dims_8h.html", null ],
+    [ "Dims.h", "enco_2core_2src_2_dims_8h.html", null ],
     [ "IRUtils.cpp", "_i_r_utils_8cpp.html", "_i_r_utils_8cpp" ],
     [ "IRUtils.h", "_i_r_utils_8h.html", "_i_r_utils_8h" ],
     [ "IRValidator.cpp", "_i_r_validator_8cpp.html", "_i_r_validator_8cpp" ],
@@ -20,7 +20,7 @@ var dir_f17bc9d19916e855c93eb9bdb14afe95 =
     [ "Pass.h", "compiler_2enco_2core_2src_2_pass_8h.html", "compiler_2enco_2core_2src_2_pass_8h" ],
     [ "Pipeline.h", "_pipeline_8h.html", "_pipeline_8h" ],
     [ "Session.cpp", "enco_2core_2src_2_session_8cpp.html", "enco_2core_2src_2_session_8cpp" ],
-    [ "Session.h", "compiler_2enco_2core_2src_2_session_8h.html", "compiler_2enco_2core_2src_2_session_8h" ],
+    [ "Session.h", "enco_2core_2src_2_session_8h.html", "enco_2core_2src_2_session_8h" ],
     [ "String.h", "_string_8h.html", "_string_8h" ],
     [ "Usage.cpp", "_usage_8cpp.html", "_usage_8cpp" ],
     [ "Usage.h", "_usage_8h.html", "_usage_8h" ]

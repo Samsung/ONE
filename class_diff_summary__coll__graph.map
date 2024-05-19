@@ -1,7 +1,0 @@
-<map id="DiffSummary" name="DiffSummary">
-<area shape="rect" id="Node000001" title=" " alt="" coords="116,124,211,150"/>
-<area shape="rect" id="Node000002" href="$structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html" title="Struct to observe comparison results." alt="" coords="5,5,159,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,57,157,122,152,125,103,60"/>
-<area shape="rect" id="Node000003" href="$structnnfw_1_1misc_1_1tensor_1_1_index.html" title="Struct to represent index of each dimension of a tensor." alt="" coords="183,5,309,46"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,60,174,125,170,122,220,57"/>
-</map>

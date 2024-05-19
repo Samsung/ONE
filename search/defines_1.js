@@ -80,7 +80,7 @@ var searchData=
   ['android_5fnn_5fnormal_5fsub_77',['ANDROID_NN_NORMAL_SUB',['../_sub_8float_8cpp.html#a727d1e91bf01e93fb0e69109c2d0c92b',1,'Sub.float.cpp']]],
   ['android_5fnn_5fpooling_5fparameters_78',['android_nn_pooling_parameters',['../_avg_pool2_d_8float_8cpp.html#a5e29d564846dd0bc3b10f662cfda024f',1,'ANDROID_NN_POOLING_PARAMETERS:&#160;AvgPool2D.float.cpp'],['../_max_pool2_d_8float_8cpp.html#a5e29d564846dd0bc3b10f662cfda024f',1,'ANDROID_NN_POOLING_PARAMETERS:&#160;MaxPool2D.float.cpp']]],
   ['ann_5foperation_79',['ann_operation',['../compiler_2enco_2core_2src_2_a_n_n_2_i_r_2_operation_8h.html#aaa3ad4e59c004beac64e6aa68954c642',1,'ANN_OPERATION:&#160;Operation.h'],['../_subnet_8cpp.html#a5585e6d2ddc0a811225075a8076f7436',1,'ANN_OPERATION:&#160;Subnet.cpp']]],
-  ['assert_80',['ASSERT',['../compiler_2ann-ref_2src_2assert_8h.html#a21487c386581c0c8aa19f587b8c97c0f',1,'Assert.h']]],
+  ['assert_80',['ASSERT',['../ann-ref_2src_2assert_8h.html#a21487c386581c0c8aa19f587b8c97c0f',1,'Assert.h']]],
   ['asymm_5fexp_5fon_5finterval_5fbetween_5fnegative_5fone_5fquarter_5fand_5f0_5fexcl_81',['ASYMM_EXP_ON_INTERVAL_BETWEEN_NEGATIVE_ONE_QUARTER_AND_0_EXCL',['../helpers__asymm_8h.html#aeebdcd88f4320931cd4a599ad1527e83',1,'helpers_asymm.h']]],
   ['asymm_5fexp_5fon_5finterval_5fbetween_5fnegative_5fone_5fquarter_5fand_5f0_5fexcl_5fimpl_82',['ASYMM_EXP_ON_INTERVAL_BETWEEN_NEGATIVE_ONE_QUARTER_AND_0_EXCL_IMPL',['../helpers__asymm_8h.html#a3d8a3968a069eb8abbc28d31c20f6b8c',1,'helpers_asymm.h']]],
   ['asymm_5fexp_5fon_5fnegative_5fvalues_83',['ASYMM_EXP_ON_NEGATIVE_VALUES',['../helpers__asymm_8h.html#a3a4f1b5d8f1cd67ac31bc62c9a6f4aa8',1,'helpers_asymm.h']]],

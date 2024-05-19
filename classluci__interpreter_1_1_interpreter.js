@@ -10,6 +10,7 @@ var classluci__interpreter_1_1_interpreter =
     [ "attachObserver", "classluci__interpreter_1_1_interpreter.html#a427f7dd4fe2ff762acb16aace182766f", null ],
     [ "getInputDataSizeByIndex", "classluci__interpreter_1_1_interpreter.html#a4c364cfa24a5b6a72da81d52fd825497", null ],
     [ "getOutputDataSizeByIndex", "classluci__interpreter_1_1_interpreter.html#ae29f32c321923b3e86b128904b8a4fb3", null ],
+    [ "getOutputTensorSize", "classluci__interpreter_1_1_interpreter.html#a7e2d0eed5b4123a29088688e2f0bbed5", null ],
     [ "getTensor", "classluci__interpreter_1_1_interpreter.html#a1939b6473e2d26660a72a6ae5bc7d652", null ],
     [ "interpret", "classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d", null ],
     [ "interpret", "classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d", null ],

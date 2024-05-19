@@ -69,7 +69,6 @@ var hierarchy =
       [ "flatbuffers::grpc::SliceAllocator", "classflatbuffers_1_1grpc_1_1_slice_allocator.html", null ]
     ] ],
     [ "onert::backend::basic::Allocator", "classonert_1_1backend_1_1basic_1_1_allocator.html", null ],
-    [ "rua::Anchor", "structrua_1_1_anchor.html", null ],
     [ "ANeuralNetworksCompilation", "struct_a_neural_networks_compilation.html", null ],
     [ "ANeuralNetworksEvent", "struct_a_neural_networks_event.html", null ],
     [ "ANeuralNetworksExecution", "struct_a_neural_networks_execution.html", null ],
@@ -1552,7 +1551,6 @@ var hierarchy =
     [ "luci_interpreter_pal::ComparisonParams", "structluci__interpreter__pal_1_1_comparison_params.html", null ],
     [ "nnfw::cker::ComparisonParams", "structnnfw_1_1cker_1_1_comparison_params.html", null ],
     [ "CompilationBuilder", "class_compilation_builder.html", null ],
-    [ "rua::CompilationService", "structrua_1_1_compilation_service.html", null ],
     [ "onert::compiler::CompilerArtifact", "structonert_1_1compiler_1_1_compiler_artifact.html", null ],
     [ "onert::compiler::CompilerFactory", "classonert_1_1compiler_1_1_compiler_factory.html", null ],
     [ "onert::compiler::CompilerOptions", "classonert_1_1compiler_1_1_compiler_options.html", null ],
@@ -1812,7 +1810,6 @@ var hierarchy =
     ] ],
     [ "cirops::DumpOperators", "classcirops_1_1_dump_operators.html", null ],
     [ "cirops::DumpOption", "structcirops_1_1_dump_option.html", null ],
-    [ "rua::DynamicBinder", "structrua_1_1_dynamic_binder.html", null ],
     [ "npud::core::DynamicLoader", "classnpud_1_1core_1_1_dynamic_loader.html", null ],
     [ "onert::backend::basic::DynamicMemoryManager", "classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html", null ],
     [ "onert::exec::FunctionSequence::DynamicTensorCtx", "structonert_1_1exec_1_1_function_sequence_1_1_dynamic_tensor_ctx.html", null ],
@@ -1897,7 +1894,6 @@ var hierarchy =
     ] ],
     [ "luci_interpreter::EventNotifier", "classluci__interpreter_1_1_event_notifier.html", null ],
     [ "EventRecorder", "class_event_recorder.html", null ],
-    [ "rua::EventService", "structrua_1_1_event_service.html", null ],
     [ "EventCollector::EventVisitor", "class_event_collector_1_1_event_visitor.html", null ],
     [ "EventWriter", "class_event_writer.html", null ],
     [ "exo::test::ExampleGraph< T >", "classexo_1_1test_1_1_example_graph.html", null ],
@@ -1921,7 +1917,6 @@ var hierarchy =
       [ "record_minmax::MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", null ]
     ] ],
     [ "circle_planner::ExecutionPlanner", "classcircle__planner_1_1_execution_planner.html", null ],
-    [ "rua::ExecutionService", "structrua_1_1_execution_service.html", null ],
     [ "Executor", "class_executor.html", null ],
     [ "onert::compiler::ExecutorFactory", "classonert_1_1compiler_1_1_executor_factory.html", null ],
     [ "onert::compiler::ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", null ],
@@ -2585,7 +2580,6 @@ var hierarchy =
     ] ],
     [ "onert::exec::InputDesc", "structonert_1_1exec_1_1_input_desc.html", null ],
     [ "exo::InputHandler< CanonicalT, TFLT >", "classexo_1_1_input_handler.html", null ],
-    [ "nnfw::tflite::InputIndex", "classnnfw_1_1tflite_1_1_input_index.html", null ],
     [ "InputLayer", "struct_input_layer.html", null ],
     [ "nnfw::cker::InputTensor< T >", "structnnfw_1_1cker_1_1_input_tensor.html", null ],
     [ "luci_interpreter::InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", null ],
@@ -3184,7 +3178,6 @@ var hierarchy =
     [ "onert::backend::gpu_cl::MemoryManager", "classonert_1_1backend_1_1gpu__cl_1_1_memory_manager.html", null ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
     [ "onert::backend::train::MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
-    [ "rua::MemoryService", "structrua_1_1_memory_service.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
     [ "flatbuffers::grpc::Message< T >", "classflatbuffers_1_1grpc_1_1_message.html", null ],
     [ "hermes::Message", "classhermes_1_1_message.html", null ],
@@ -3289,7 +3282,6 @@ var hierarchy =
     [ "onert::ir::ModelEdgeEqual", "structonert_1_1ir_1_1_model_edge_equal.html", null ],
     [ "onert::ir::ModelEdgeHash", "structonert_1_1ir_1_1_model_edge_hash.html", null ],
     [ "onert::ir::ModelEdges", "structonert_1_1ir_1_1_model_edges.html", null ],
-    [ "rua::ModelService", "structrua_1_1_model_service.html", null ],
     [ "moco::ModelSignature", "structmoco_1_1_model_signature.html", null ],
     [ "minmax_embedder_test::ModelSpec", "structminmax__embedder__test_1_1_model_spec.html", null ],
     [ "ann::Module", "classann_1_1_module.html", null ],
@@ -3602,9 +3594,7 @@ var hierarchy =
     [ "loco::ObjectPool< Node >", "classloco_1_1_object_pool.html", [
       [ "loco::NodePool", "classloco_1_1_node_pool.html", null ]
     ] ],
-    [ "nnfw::misc::tensor::Comparator::Observer", "structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html", [
-      [ "DiffSummary", "class_diff_summary.html", null ]
-    ] ],
+    [ "nnfw::misc::tensor::Comparator::Observer", "structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html", null ],
     [ "flatbuffers::Offset< T >", "structflatbuffers_1_1_offset.html", null ],
     [ "tflite2circle::Offset< T >", "classtflite2circle_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
@@ -4411,6 +4401,7 @@ var hierarchy =
       [ "luci::FoldDequantizePass", "structluci_1_1_fold_dequantize_pass.html", null ],
       [ "luci::FoldFullyConnectedPass", "structluci_1_1_fold_fully_connected_pass.html", null ],
       [ "luci::FoldGatherPass", "structluci_1_1_fold_gather_pass.html", null ],
+      [ "luci::FoldReshapePass", "structluci_1_1_fold_reshape_pass.html", null ],
       [ "luci::FoldShapePass", "structluci_1_1_fold_shape_pass.html", null ],
       [ "luci::FoldSparseToDensePass", "structluci_1_1_fold_sparse_to_dense_pass.html", null ],
       [ "luci::FoldSqueezePass", "structluci_1_1_fold_squeeze_pass.html", null ],
@@ -4432,6 +4423,7 @@ var hierarchy =
       [ "luci::FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
+      [ "luci::FuseRsqrtPass", "structluci_1_1_fuse_rsqrt_pass.html", null ],
       [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],
       [ "luci::FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", null ],
       [ "luci::MakeBatchNormGammaPositivePass", "structluci_1_1_make_batch_norm_gamma_positive_pass.html", null ],
@@ -4620,7 +4612,6 @@ var hierarchy =
     [ "onert::odc::QuantizerLoader", "classonert_1_1odc_1_1_quantizer_loader.html", null ],
     [ "RandomDataGenerator.RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", null ],
     [ "nnfw::misc::RandomGenerator", "classnnfw_1_1misc_1_1_random_generator.html", null ],
-    [ "nnfw::tflite::RandomInputInitializer", "classnnfw_1_1tflite_1_1_random_input_initializer.html", null ],
     [ "RawModel", "struct_raw_model.html", null ],
     [ "RawPaddingBuilder", "class_raw_padding_builder.html", null ],
     [ "coco::Read", "classcoco_1_1_read.html", null ],
@@ -4642,8 +4633,7 @@ var hierarchy =
     [ "nnfw::misc::kernel::Reader< T >", "structnnfw_1_1misc_1_1kernel_1_1_reader.html", null ],
     [ "nnfw::misc::matrix::Reader< T >", "structnnfw_1_1misc_1_1matrix_1_1_reader.html", null ],
     [ "nnfw::misc::tensor::Reader< T >", "structnnfw_1_1misc_1_1tensor_1_1_reader.html", [
-      [ "nnfw::misc::tensor::Object< T >", "classnnfw_1_1misc_1_1tensor_1_1_object.html", null ],
-      [ "nnfw::tflite::TensorView< T >", "classnnfw_1_1tflite_1_1_tensor_view.html", null ]
+      [ "nnfw::misc::tensor::Object< T >", "classnnfw_1_1misc_1_1tensor_1_1_object.html", null ]
     ] ],
     [ "nnfw::misc::vector::Reader< T >", "structnnfw_1_1misc_1_1vector_1_1_reader.html", [
       [ "nnfw::misc::vector::Object< T >", "classnnfw_1_1misc_1_1vector_1_1_object.html", null ]
@@ -4719,7 +4709,6 @@ var hierarchy =
     [ "luci_interpreter::RuntimeModule", "classluci__interpreter_1_1_runtime_module.html", null ],
     [ "RunTimeOperandInfo", "struct_run_time_operand_info.html", null ],
     [ "RunTimePoolInfo", "struct_run_time_pool_info.html", null ],
-    [ "rua::RuntimeService", "structrua_1_1_runtime_service.html", null ],
     [ "luci_interpreter::RuntimeShape", "classluci__interpreter_1_1_runtime_shape.html", null ],
     [ "luci_interpreter::RuntimeToIR", "structluci__interpreter_1_1_runtime_to_i_r.html", null ],
     [ "nnfw::cker::scalar_logistic_op< T >", "structnnfw_1_1cker_1_1scalar__logistic__op.html", null ],
@@ -4730,9 +4719,6 @@ var hierarchy =
     [ "luci::SerializedModelData", "structluci_1_1_serialized_model_data.html", null ],
     [ "npud::core::Server", "classnpud_1_1core_1_1_server.html", null ],
     [ "locomotiv::Session", "classlocomotiv_1_1_session.html", null ],
-    [ "nnfw::tflite::Session", "structnnfw_1_1tflite_1_1_session.html", [
-      [ "nnfw::tflite::InterpreterSession", "classnnfw_1_1tflite_1_1_interpreter_session.html", null ]
-    ] ],
     [ "onert::util::Set< Element >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< onert::util::Index >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< PermuteFactor >", "classonert_1_1util_1_1_set.html", null ],
@@ -5470,7 +5456,6 @@ var hierarchy =
     [ "exo::TFLExporter", "classexo_1_1_t_f_l_exporter.html", null ],
     [ "sparsity::TfLiteDimensionMetadata", "structsparsity_1_1_tf_lite_dimension_metadata.html", null ],
     [ "sparsity::TfLiteIntArray", "structsparsity_1_1_tf_lite_int_array.html", null ],
-    [ "TfLiteInterpMatchApp", "class_tf_lite_interp_match_app.html", null ],
     [ "tflchef::TFliteOpChef", "classtflchef_1_1_t_flite_op_chef.html", [
       [ "tflchef::TFliteOpAbs", "classtflchef_1_1_t_flite_op_abs.html", null ],
       [ "tflchef::TFliteOpAdd", "classtflchef_1_1_t_flite_op_add.html", null ],

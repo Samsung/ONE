@@ -288,90 +288,90 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01880">1880</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1881</span>{</div>
-<div class="line"><span class="lineno"> 1882</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1883</span>  {</div>
-<div class="line"><span class="lineno"> 1884</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1885</span>    {</div>
-<div class="line"><span class="lineno"> 1886</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1887</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1888</span>    }</div>
-<div class="line"><span class="lineno"> 1889</span> </div>
-<div class="line"><span class="lineno"> 1890</span>    std::string target_str{<a class="code hl_variable" href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">target</a>};</div>
-<div class="line"><span class="lineno"> 1891</span>    <span class="keywordflow">if</span> (target_str.empty() || target_str.substr(target_str.size() - 4) != <span class="stringliteral">&quot;-gen&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1892</span>    {</div>
-<div class="line"><span class="lineno"> 1893</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid target&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1894</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1895</span>    }</div>
-<div class="line"><span class="lineno"> 1896</span> </div>
-<div class="line"><span class="lineno"> 1897</span>    <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1">onert::odc::CodegenPreference</a> codegen_pref;</div>
-<div class="line"><span class="lineno"> 1898</span>    <span class="keywordflow">switch</span> (pref)</div>
-<div class="line"><span class="lineno"> 1899</span>    {</div>
-<div class="line"><span class="lineno"> 1900</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>:</div>
-<div class="line"><span class="lineno"> 1901</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1af4cefa13a62c5121bcf2d1748b38dc28">onert::odc::CodegenPreference::CODEGEN_PREF_DEFAULT</a>;</div>
-<div class="line"><span class="lineno"> 1902</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1903</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>:</div>
-<div class="line"><span class="lineno"> 1904</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a81dd4ab5cd7a0d08974dac7c51a8fc7d">onert::odc::CodegenPreference::CODEGEN_PREF_PERFORMANCE_FIRST</a>;</div>
-<div class="line"><span class="lineno"> 1905</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1906</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>:</div>
-<div class="line"><span class="lineno"> 1907</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a94e29a122785ad6353fe24d23e56b9ff">onert::odc::CodegenPreference::CODEGEN_PREF_MEMORY_FIRST</a>;</div>
-<div class="line"><span class="lineno"> 1908</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1909</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>:</div>
-<div class="line"><span class="lineno"> 1910</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1ad3db6c20ac6ca4846599f27d8f1a85f6">onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST</a>;</div>
-<div class="line"><span class="lineno"> 1911</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1912</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno"> 1913</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid preference&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1914</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1915</span>    }</div>
-<div class="line"><span class="lineno"> 1916</span> </div>
-<div class="line"><span class="lineno"> 1917</span>    assert(_codegen_manager != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno"> 1918</span>    <span class="keyword">auto</span> export_model_path = _codegen_manager-&gt;exportModelPath();</div>
-<div class="line"><span class="lineno"> 1919</span>    <span class="comment">// If the export_model_path is not set, it generates a compiled model path</span></div>
-<div class="line"><span class="lineno"> 1920</span>    <span class="comment">// automatically.</span></div>
-<div class="line"><span class="lineno"> 1921</span>    <span class="keywordflow">if</span> (export_model_path.empty())</div>
-<div class="line"><span class="lineno"> 1922</span>    {</div>
-<div class="line"><span class="lineno"> 1923</span>      <span class="comment">// model path always has a dot. (valid extension)</span></div>
-<div class="line"><span class="lineno"> 1924</span>      <span class="keyword">auto</span> dotidx = _model_path.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><span class="lineno"> 1925</span>      assert(dotidx != std::string::npos);</div>
-<div class="line"><span class="lineno"> 1926</span>      <span class="keyword">auto</span> genidx = target_str.rfind(<span class="stringliteral">&quot;-gen&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1927</span>      assert(genidx != std::string::npos);</div>
-<div class="line"><span class="lineno"> 1928</span>      <span class="comment">// The compiled model path is the same directory of the original model/package with</span></div>
-<div class="line"><span class="lineno"> 1929</span>      <span class="comment">// target backend extension.</span></div>
-<div class="line"><span class="lineno"> 1930</span>      export_model_path = _model_path.substr(0, dotidx + 1) + target_str.substr(0, genidx);</div>
-<div class="line"><span class="lineno"> 1931</span>      _codegen_manager-&gt;exportModelPath(export_model_path);</div>
-<div class="line"><span class="lineno"> 1932</span>    }</div>
-<div class="line"><span class="lineno"> 1933</span> </div>
-<div class="line"><span class="lineno"> 1934</span>    _codegen_manager-&gt;codegen(target, codegen_pref);</div>
-<div class="line"><span class="lineno"> 1935</span> </div>
-<div class="line"><span class="lineno"> 1936</span>    <span class="comment">// Replace model</span></div>
-<div class="line"><span class="lineno"> 1937</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
-<div class="line"><span class="lineno"> 1938</span>    <span class="comment">// TODO: Use std::filesystem::path when we can use c++17.</span></div>
-<div class="line"><span class="lineno"> 1939</span>    <span class="keyword">auto</span> dotidx = export_model_path.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><span class="lineno"> 1940</span>    <span class="keywordflow">if</span> (dotidx == std::string::npos)</div>
-<div class="line"><span class="lineno"> 1941</span>    {</div>
-<div class="line"><span class="lineno"> 1942</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid compiled model path. Please use a &quot;</span></div>
-<div class="line"><span class="lineno"> 1943</span>                   <span class="stringliteral">&quot;path that includes the extension.&quot;</span></div>
-<div class="line"><span class="lineno"> 1944</span>                &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1945</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1946</span>    }</div>
-<div class="line"><span class="lineno"> 1947</span> </div>
-<div class="line"><span class="lineno"> 1948</span>    std::string model_type = export_model_path.substr(dotidx + 1); <span class="comment">// + 1 to exclude dot</span></div>
-<div class="line"><span class="lineno"> 1949</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(export_model_path, model_type);</div>
-<div class="line"><span class="lineno"> 1950</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno"> 1951</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1952</span> </div>
-<div class="line"><span class="lineno"> 1953</span>    <span class="comment">// TODO: Update _model_path if necessary</span></div>
-<div class="line"><span class="lineno"> 1954</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
-<div class="line"><span class="lineno"> 1955</span>  }</div>
-<div class="line"><span class="lineno"> 1956</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1957</span>  {</div>
-<div class="line"><span class="lineno"> 1958</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::compile : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1959</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1960</span>  }</div>
-<div class="line"><span class="lineno"> 1961</span> </div>
-<div class="line"><span class="lineno"> 1962</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1963</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01884">1884</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1885</span>{</div>
+<div class="line"><span class="lineno"> 1886</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1887</span>  {</div>
+<div class="line"><span class="lineno"> 1888</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1889</span>    {</div>
+<div class="line"><span class="lineno"> 1890</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1891</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1892</span>    }</div>
+<div class="line"><span class="lineno"> 1893</span> </div>
+<div class="line"><span class="lineno"> 1894</span>    std::string target_str{<a class="code hl_variable" href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">target</a>};</div>
+<div class="line"><span class="lineno"> 1895</span>    <span class="keywordflow">if</span> (target_str.empty() || target_str.substr(target_str.size() - 4) != <span class="stringliteral">&quot;-gen&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1896</span>    {</div>
+<div class="line"><span class="lineno"> 1897</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid target&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1898</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1899</span>    }</div>
+<div class="line"><span class="lineno"> 1900</span> </div>
+<div class="line"><span class="lineno"> 1901</span>    <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1">onert::odc::CodegenPreference</a> codegen_pref;</div>
+<div class="line"><span class="lineno"> 1902</span>    <span class="keywordflow">switch</span> (pref)</div>
+<div class="line"><span class="lineno"> 1903</span>    {</div>
+<div class="line"><span class="lineno"> 1904</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>:</div>
+<div class="line"><span class="lineno"> 1905</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1af4cefa13a62c5121bcf2d1748b38dc28">onert::odc::CodegenPreference::CODEGEN_PREF_DEFAULT</a>;</div>
+<div class="line"><span class="lineno"> 1906</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1907</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>:</div>
+<div class="line"><span class="lineno"> 1908</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a81dd4ab5cd7a0d08974dac7c51a8fc7d">onert::odc::CodegenPreference::CODEGEN_PREF_PERFORMANCE_FIRST</a>;</div>
+<div class="line"><span class="lineno"> 1909</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1910</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>:</div>
+<div class="line"><span class="lineno"> 1911</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a94e29a122785ad6353fe24d23e56b9ff">onert::odc::CodegenPreference::CODEGEN_PREF_MEMORY_FIRST</a>;</div>
+<div class="line"><span class="lineno"> 1912</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1913</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>:</div>
+<div class="line"><span class="lineno"> 1914</span>        codegen_pref = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1ad3db6c20ac6ca4846599f27d8f1a85f6">onert::odc::CodegenPreference::CODEGEN_PREF_COMPILE_TIME_FIRST</a>;</div>
+<div class="line"><span class="lineno"> 1915</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1916</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno"> 1917</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid preference&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1918</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1919</span>    }</div>
+<div class="line"><span class="lineno"> 1920</span> </div>
+<div class="line"><span class="lineno"> 1921</span>    assert(_codegen_manager != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1922</span>    <span class="keyword">auto</span> export_model_path = _codegen_manager-&gt;exportModelPath();</div>
+<div class="line"><span class="lineno"> 1923</span>    <span class="comment">// If the export_model_path is not set, it generates a compiled model path</span></div>
+<div class="line"><span class="lineno"> 1924</span>    <span class="comment">// automatically.</span></div>
+<div class="line"><span class="lineno"> 1925</span>    <span class="keywordflow">if</span> (export_model_path.empty())</div>
+<div class="line"><span class="lineno"> 1926</span>    {</div>
+<div class="line"><span class="lineno"> 1927</span>      <span class="comment">// model path always has a dot. (valid extension)</span></div>
+<div class="line"><span class="lineno"> 1928</span>      <span class="keyword">auto</span> dotidx = _model_path.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><span class="lineno"> 1929</span>      assert(dotidx != std::string::npos);</div>
+<div class="line"><span class="lineno"> 1930</span>      <span class="keyword">auto</span> genidx = target_str.rfind(<span class="stringliteral">&quot;-gen&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1931</span>      assert(genidx != std::string::npos);</div>
+<div class="line"><span class="lineno"> 1932</span>      <span class="comment">// The compiled model path is the same directory of the original model/package with</span></div>
+<div class="line"><span class="lineno"> 1933</span>      <span class="comment">// target backend extension.</span></div>
+<div class="line"><span class="lineno"> 1934</span>      export_model_path = _model_path.substr(0, dotidx + 1) + target_str.substr(0, genidx);</div>
+<div class="line"><span class="lineno"> 1935</span>      _codegen_manager-&gt;exportModelPath(export_model_path);</div>
+<div class="line"><span class="lineno"> 1936</span>    }</div>
+<div class="line"><span class="lineno"> 1937</span> </div>
+<div class="line"><span class="lineno"> 1938</span>    _codegen_manager-&gt;codegen(target, codegen_pref);</div>
+<div class="line"><span class="lineno"> 1939</span> </div>
+<div class="line"><span class="lineno"> 1940</span>    <span class="comment">// Replace model</span></div>
+<div class="line"><span class="lineno"> 1941</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
+<div class="line"><span class="lineno"> 1942</span>    <span class="comment">// TODO: Use std::filesystem::path when we can use c++17.</span></div>
+<div class="line"><span class="lineno"> 1943</span>    <span class="keyword">auto</span> dotidx = export_model_path.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><span class="lineno"> 1944</span>    <span class="keywordflow">if</span> (dotidx == std::string::npos)</div>
+<div class="line"><span class="lineno"> 1945</span>    {</div>
+<div class="line"><span class="lineno"> 1946</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::codegen : Invalid compiled model path. Please use a &quot;</span></div>
+<div class="line"><span class="lineno"> 1947</span>                   <span class="stringliteral">&quot;path that includes the extension.&quot;</span></div>
+<div class="line"><span class="lineno"> 1948</span>                &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1949</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1950</span>    }</div>
+<div class="line"><span class="lineno"> 1951</span> </div>
+<div class="line"><span class="lineno"> 1952</span>    std::string model_type = export_model_path.substr(dotidx + 1); <span class="comment">// + 1 to exclude dot</span></div>
+<div class="line"><span class="lineno"> 1953</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(export_model_path, model_type);</div>
+<div class="line"><span class="lineno"> 1954</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno"> 1955</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1956</span> </div>
+<div class="line"><span class="lineno"> 1957</span>    <span class="comment">// TODO: Update _model_path if necessary</span></div>
+<div class="line"><span class="lineno"> 1958</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
+<div class="line"><span class="lineno"> 1959</span>  }</div>
+<div class="line"><span class="lineno"> 1960</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1961</span>  {</div>
+<div class="line"><span class="lineno"> 1962</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::compile : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1963</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1964</span>  }</div>
+<div class="line"><span class="lineno"> 1965</span> </div>
+<div class="line"><span class="lineno"> 1966</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1967</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
 <div class="ttc" id="anamespacemir__caffe2_html_a4ba1e0bdb8eea0a14e9746f4cc3c79d8"><div class="ttname"><a href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">mir_caffe2::loadModel</a></div><div class="ttdeci">std::unique_ptr&lt; mir::Graph &gt; loadModel(std::string predict_net, std::string init_net, const std::vector&lt; std::vector&lt; int &gt; &gt; &amp;input_shapes)</div><div class="ttdef"><b>Definition</b> <a href="caffe2__importer_8cpp_source.html#l00336">caffe2_importer.cpp:336</a></div></div>
 <div class="ttc" id="anamespacennc_1_1cli_html_afac06e8b64babc482ad2c033ba9b1e0c"><div class="ttname"><a href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">nnc::cli::target</a></div><div class="ttdeci">Option&lt; std::string &gt; target(optname(&quot;--target&quot;), overview(&quot;select target language to emit for given architecture.&quot; &quot;Valid values are '&quot; NNC_TARGET_ARM_CPP &quot;', '&quot; NNC_TARGET_X86_CPP &quot;', '&quot; NNC_TARGET_ARM_GPU_CPP &quot;', '&quot; NNC_TARGET_INTERPRETER &quot;'&quot;), std::string(), optional(false), optvalues(NNC_TARGET_ARM_CPP &quot;,&quot; NNC_TARGET_X86_CPP &quot;,&quot; NNC_TARGET_ARM_GPU_CPP &quot;,&quot; NNC_TARGET_INTERPRETER), nullptr, separators(&quot;=&quot;))</div><div class="ttdef"><b>Definition</b> <a href="_options_8h_source.html#l00047">Options.h:47</a></div></div>
@@ -1274,36 +1274,36 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01827">1827</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1828</span>{</div>
-<div class="line"><span class="lineno"> 1829</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1830</span>  {</div>
-<div class="line"><span class="lineno"> 1831</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1832</span>    {</div>
-<div class="line"><span class="lineno"> 1833</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1834</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1835</span>    }</div>
-<div class="line"><span class="lineno"> 1836</span> </div>
-<div class="line"><span class="lineno"> 1837</span>    <span class="keyword">auto</span> result = _quant_manager-&gt;quantize();</div>
-<div class="line"><span class="lineno"> 1838</span>    <span class="keywordflow">if</span> (!result)</div>
-<div class="line"><span class="lineno"> 1839</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01831">1831</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1832</span>{</div>
+<div class="line"><span class="lineno"> 1833</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1834</span>  {</div>
+<div class="line"><span class="lineno"> 1835</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1836</span>    {</div>
+<div class="line"><span class="lineno"> 1837</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1838</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1839</span>    }</div>
 <div class="line"><span class="lineno"> 1840</span> </div>
-<div class="line"><span class="lineno"> 1841</span>    <span class="comment">// Replace model</span></div>
-<div class="line"><span class="lineno"> 1842</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
-<div class="line"><span class="lineno"> 1843</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(_quant_manager-&gt;exportModelPath(), <span class="stringliteral">&quot;circle&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1844</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno"> 1845</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1846</span>    <span class="comment">// TODO: Update _model_path if necessary</span></div>
-<div class="line"><span class="lineno"> 1847</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
-<div class="line"><span class="lineno"> 1848</span>  }</div>
-<div class="line"><span class="lineno"> 1849</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1850</span>  {</div>
-<div class="line"><span class="lineno"> 1851</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::quantize : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1852</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1853</span>  }</div>
-<div class="line"><span class="lineno"> 1854</span> </div>
-<div class="line"><span class="lineno"> 1855</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1856</span>}</div>
+<div class="line"><span class="lineno"> 1841</span>    <span class="keyword">auto</span> result = _quant_manager-&gt;quantize();</div>
+<div class="line"><span class="lineno"> 1842</span>    <span class="keywordflow">if</span> (!result)</div>
+<div class="line"><span class="lineno"> 1843</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1844</span> </div>
+<div class="line"><span class="lineno"> 1845</span>    <span class="comment">// Replace model</span></div>
+<div class="line"><span class="lineno"> 1846</span>    <span class="comment">// TODO Support buffer replace, not file reload</span></div>
+<div class="line"><span class="lineno"> 1847</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = <a class="code hl_function" href="namespacemir__caffe2.html#a4ba1e0bdb8eea0a14e9746f4cc3c79d8">loadModel</a>(_quant_manager-&gt;exportModelPath(), <span class="stringliteral">&quot;circle&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1848</span>    <span class="keywordflow">if</span> (model == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno"> 1849</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1850</span>    <span class="comment">// TODO: Update _model_path if necessary</span></div>
+<div class="line"><span class="lineno"> 1851</span>    _nnpkg-&gt;replaceModel(std::move(model));</div>
+<div class="line"><span class="lineno"> 1852</span>  }</div>
+<div class="line"><span class="lineno"> 1853</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1854</span>  {</div>
+<div class="line"><span class="lineno"> 1855</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::quantize : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1856</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1857</span>  }</div>
+<div class="line"><span class="lineno"> 1858</span> </div>
+<div class="line"><span class="lineno"> 1859</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1860</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -1534,27 +1534,27 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01858">1858</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1859</span>{</div>
-<div class="line"><span class="lineno"> 1860</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1861</span>  {</div>
-<div class="line"><span class="lineno"> 1862</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1863</span>    {</div>
-<div class="line"><span class="lineno"> 1864</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1865</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1866</span>    }</div>
-<div class="line"><span class="lineno"> 1867</span> </div>
-<div class="line"><span class="lineno"> 1868</span>    assert(_codegen_manager != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno"> 1869</span>    _codegen_manager-&gt;exportModelPath(std::string(path));</div>
-<div class="line"><span class="lineno"> 1870</span>  }</div>
-<div class="line"><span class="lineno"> 1871</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1872</span>  {</div>
-<div class="line"><span class="lineno"> 1873</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_codegen_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1874</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1875</span>  }</div>
-<div class="line"><span class="lineno"> 1876</span> </div>
-<div class="line"><span class="lineno"> 1877</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1878</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01862">1862</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1863</span>{</div>
+<div class="line"><span class="lineno"> 1864</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1865</span>  {</div>
+<div class="line"><span class="lineno"> 1866</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1867</span>    {</div>
+<div class="line"><span class="lineno"> 1868</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1869</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1870</span>    }</div>
+<div class="line"><span class="lineno"> 1871</span> </div>
+<div class="line"><span class="lineno"> 1872</span>    assert(_codegen_manager != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno"> 1873</span>    _codegen_manager-&gt;exportModelPath(std::string(path));</div>
+<div class="line"><span class="lineno"> 1874</span>  }</div>
+<div class="line"><span class="lineno"> 1875</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1876</span>  {</div>
+<div class="line"><span class="lineno"> 1877</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_codegen_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1878</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1879</span>  }</div>
+<div class="line"><span class="lineno"> 1880</span> </div>
+<div class="line"><span class="lineno"> 1881</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1882</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -2064,56 +2064,57 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01766">1766</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1767</span>{</div>
-<div class="line"><span class="lineno"> 1768</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">onert::odc::QuantizeType</a>;</div>
-<div class="line"><span class="lineno"> 1769</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1770</span>  {</div>
-<div class="line"><span class="lineno"> 1771</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1772</span>    {</div>
-<div class="line"><span class="lineno"> 1773</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1774</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1775</span>    }</div>
-<div class="line"><span class="lineno"> 1776</span> </div>
-<div class="line"><span class="lineno"> 1777</span>    <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">QuantizeType</a> odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1">onert::odc::ODC_QTYPE_NOT_SET</a>;</div>
-<div class="line"><span class="lineno"> 1778</span>    <span class="keywordflow">switch</span> (qtype)</div>
-<div class="line"><span class="lineno"> 1779</span>    {</div>
-<div class="line"><span class="lineno"> 1780</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>:</div>
-<div class="line"><span class="lineno"> 1781</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b">onert::odc::ODC_QTYPE_WO_I8_SYM</a>;</div>
-<div class="line"><span class="lineno"> 1782</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1783</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>:</div>
-<div class="line"><span class="lineno"> 1784</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407">onert::odc::ODC_QTYPE_I16_SYM</a>;</div>
-<div class="line"><span class="lineno"> 1785</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1786</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>:</div>
-<div class="line"><span class="lineno"> 1787</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b">onert::odc::ODC_QTYPE_WO_I8_SYM</a>;</div>
-<div class="line"><span class="lineno"> 1788</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1789</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>:</div>
-<div class="line"><span class="lineno"> 1790</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb">onert::odc::ODC_QTYPE_WO_I16_SYM</a>;</div>
-<div class="line"><span class="lineno"> 1791</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1792</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno"> 1793</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1794</span>    }</div>
-<div class="line"><span class="lineno"> 1795</span>    _quant_manager-&gt;quantizeType(odc_qtype);</div>
-<div class="line"><span class="lineno"> 1796</span>  }</div>
-<div class="line"><span class="lineno"> 1797</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1798</span>  {</div>
-<div class="line"><span class="lineno"> 1799</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantization_type : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1800</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1801</span>  }</div>
-<div class="line"><span class="lineno"> 1802</span> </div>
-<div class="line"><span class="lineno"> 1803</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1804</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01770">1770</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1771</span>{</div>
+<div class="line"><span class="lineno"> 1772</span>  <span class="keyword">using </span><a class="code hl_enumeration" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">onert::odc::QuantizeType</a>;</div>
+<div class="line"><span class="lineno"> 1773</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1774</span>  {</div>
+<div class="line"><span class="lineno"> 1775</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1776</span>    {</div>
+<div class="line"><span class="lineno"> 1777</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1778</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1779</span>    }</div>
+<div class="line"><span class="lineno"> 1780</span> </div>
+<div class="line"><span class="lineno"> 1781</span>    <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">QuantizeType</a> odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1">onert::odc::ODC_QTYPE_NOT_SET</a>;</div>
+<div class="line"><span class="lineno"> 1782</span>    <span class="keywordflow">switch</span> (qtype)</div>
+<div class="line"><span class="lineno"> 1783</span>    {</div>
+<div class="line"><span class="lineno"> 1784</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>:</div>
+<div class="line"><span class="lineno"> 1785</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a9f0b7ad8a78f69948560ec00225edcf0">onert::odc::ODC_QTYPE_U8_ASYM</a>;</div>
+<div class="line"><span class="lineno"> 1786</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1787</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>:</div>
+<div class="line"><span class="lineno"> 1788</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407">onert::odc::ODC_QTYPE_I16_SYM</a>;</div>
+<div class="line"><span class="lineno"> 1789</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1790</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>:</div>
+<div class="line"><span class="lineno"> 1791</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b">onert::odc::ODC_QTYPE_WO_I8_SYM</a>;</div>
+<div class="line"><span class="lineno"> 1792</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1793</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>:</div>
+<div class="line"><span class="lineno"> 1794</span>        odc_qtype = <a class="code hl_enumvalue" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb">onert::odc::ODC_QTYPE_WO_I16_SYM</a>;</div>
+<div class="line"><span class="lineno"> 1795</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1796</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno"> 1797</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1798</span>    }</div>
+<div class="line"><span class="lineno"> 1799</span>    _quant_manager-&gt;quantizeType(odc_qtype);</div>
+<div class="line"><span class="lineno"> 1800</span>  }</div>
+<div class="line"><span class="lineno"> 1801</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1802</span>  {</div>
+<div class="line"><span class="lineno"> 1803</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantization_type : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1804</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1805</span>  }</div>
+<div class="line"><span class="lineno"> 1806</span> </div>
+<div class="line"><span class="lineno"> 1807</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1808</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">onert::odc::QuantizeType</a></div><div class="ttdeci">QuantizeType</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00025">QuantizeType.h:26</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b">onert::odc::ODC_QTYPE_WO_I8_SYM</a></div><div class="ttdeci">@ ODC_QTYPE_WO_I8_SYM</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00034">QuantizeType.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1">onert::odc::ODC_QTYPE_NOT_SET</a></div><div class="ttdeci">@ ODC_QTYPE_NOT_SET</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00028">QuantizeType.h:28</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407">onert::odc::ODC_QTYPE_I16_SYM</a></div><div class="ttdeci">@ ODC_QTYPE_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00032">QuantizeType.h:32</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb">onert::odc::ODC_QTYPE_WO_I16_SYM</a></div><div class="ttdeci">@ ODC_QTYPE_WO_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00036">QuantizeType.h:36</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1odc_html_a10a7ed2455615b22aa27f8186bae1c55a9f0b7ad8a78f69948560ec00225edcf0"><div class="ttname"><a href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55a9f0b7ad8a78f69948560ec00225edcf0">onert::odc::ODC_QTYPE_U8_ASYM</a></div><div class="ttdeci">@ ODC_QTYPE_U8_ASYM</div><div class="ttdef"><b>Definition</b> <a href="_quantize_type_8h_source.html#l00030">QuantizeType.h:30</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00418">nnfw_experimental.h:418</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00412">nnfw_experimental.h:412</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00414">nnfw_experimental.h:414</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I8_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00416">nnfw_experimental.h:416</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__experimental_8h_source.html#l00414">NNFW_QUANTIZE_TYPE_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00412">NNFW_QUANTIZE_TYPE_U8_ASYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00418">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00416">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>, <a class="el" href="_quantize_type_8h_source.html#l00032">onert::odc::ODC_QTYPE_I16_SYM</a>, <a class="el" href="_quantize_type_8h_source.html#l00028">onert::odc::ODC_QTYPE_NOT_SET</a>, <a class="el" href="_quantize_type_8h_source.html#l00036">onert::odc::ODC_QTYPE_WO_I16_SYM</a>, and <a class="el" href="_quantize_type_8h_source.html#l00034">onert::odc::ODC_QTYPE_WO_I8_SYM</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__experimental_8h_source.html#l00414">NNFW_QUANTIZE_TYPE_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00412">NNFW_QUANTIZE_TYPE_U8_ASYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00418">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00416">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>, <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>, <a class="el" href="_quantize_type_8h_source.html#l00032">onert::odc::ODC_QTYPE_I16_SYM</a>, <a class="el" href="_quantize_type_8h_source.html#l00028">onert::odc::ODC_QTYPE_NOT_SET</a>, <a class="el" href="_quantize_type_8h_source.html#l00030">onert::odc::ODC_QTYPE_U8_ASYM</a>, <a class="el" href="_quantize_type_8h_source.html#l00036">onert::odc::ODC_QTYPE_WO_I16_SYM</a>, and <a class="el" href="_quantize_type_8h_source.html#l00034">onert::odc::ODC_QTYPE_WO_I8_SYM</a>.</p>
 
 </div>
 </div>
@@ -2133,26 +2134,26 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01806">1806</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1807</span>{</div>
-<div class="line"><span class="lineno"> 1808</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1809</span>  {</div>
-<div class="line"><span class="lineno"> 1810</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
-<div class="line"><span class="lineno"> 1811</span>    {</div>
-<div class="line"><span class="lineno"> 1812</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1813</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno"> 1814</span>    }</div>
-<div class="line"><span class="lineno"> 1815</span> </div>
-<div class="line"><span class="lineno"> 1816</span>    _quant_manager-&gt;exportModelPath(std::string(path));</div>
-<div class="line"><span class="lineno"> 1817</span>  }</div>
-<div class="line"><span class="lineno"> 1818</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1819</span>  {</div>
-<div class="line"><span class="lineno"> 1820</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantized_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1821</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1822</span>  }</div>
-<div class="line"><span class="lineno"> 1823</span> </div>
-<div class="line"><span class="lineno"> 1824</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1825</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__internal_8cc_source.html#l01810">1810</a> of file <a class="el" href="nnfw__api__internal_8cc_source.html">nnfw_api_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1811</span>{</div>
+<div class="line"><span class="lineno"> 1812</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1813</span>  {</div>
+<div class="line"><span class="lineno"> 1814</span>    <span class="keywordflow">if</span> (!isStateModelLoaded())</div>
+<div class="line"><span class="lineno"> 1815</span>    {</div>
+<div class="line"><span class="lineno"> 1816</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;invalid state&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1817</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno"> 1818</span>    }</div>
+<div class="line"><span class="lineno"> 1819</span> </div>
+<div class="line"><span class="lineno"> 1820</span>    _quant_manager-&gt;exportModelPath(std::string(path));</div>
+<div class="line"><span class="lineno"> 1821</span>  }</div>
+<div class="line"><span class="lineno"> 1822</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1823</span>  {</div>
+<div class="line"><span class="lineno"> 1824</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::set_quantized_model_path : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1825</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1826</span>  }</div>
+<div class="line"><span class="lineno"> 1827</span> </div>
+<div class="line"><span class="lineno"> 1828</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1829</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw_8h_source.html#l00117">NNFW_STATUS_ERROR</a>, <a class="el" href="nnfw_8h_source.html#l00121">NNFW_STATUS_INVALID_STATE</a>, and <a class="el" href="nnfw_8h_source.html#l00112">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -2282,63 +2283,67 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1674</span>    <span class="keywordtype">size_t</span> _buf_sz = 0;</div>
 <div class="line"><span class="lineno"> 1675</span>  };</div>
 <div class="line"><span class="lineno"> 1676</span> </div>
-<div class="line"><span class="lineno"> 1677</span>  MMappedFile mmapfile(path);</div>
-<div class="line"><span class="lineno"> 1678</span>  <span class="keywordflow">if</span> (!mmapfile.ensure_mmap())</div>
-<div class="line"><span class="lineno"> 1679</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1677</span>  std::ifstream src(_model_path, std::ios::binary);</div>
+<div class="line"><span class="lineno"> 1678</span>  std::ofstream dst(path, std::ios::binary);</div>
+<div class="line"><span class="lineno"> 1679</span>  dst &lt;&lt; src.rdbuf();</div>
 <div class="line"><span class="lineno"> 1680</span> </div>
-<div class="line"><span class="lineno"> 1681</span>  <span class="comment">// make sure the architecture is little endian before direct access to flatbuffers</span></div>
-<div class="line"><span class="lineno"> 1682</span>  assert(FLATBUFFERS_LITTLEENDIAN);</div>
-<div class="line"><span class="lineno"> 1683</span> </div>
-<div class="line"><span class="lineno"> 1684</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno"> 1685</span>  {</div>
-<div class="line"><span class="lineno"> 1686</span>    _execution-&gt;iterateTrainableTensors([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::OperandIndex</a> &amp;idx,</div>
-<div class="line"><span class="lineno"> 1687</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html">onert::backend::train::ITrainableTensor</a> *tensor) {</div>
-<div class="line"><span class="lineno"> 1688</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = ::circle::GetModel(mmapfile.buf());</div>
-<div class="line"><span class="lineno"> 1689</span>      <span class="keywordflow">if</span> (!model)</div>
-<div class="line"><span class="lineno"> 1690</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to get model from circle&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1691</span> </div>
-<div class="line"><span class="lineno"> 1692</span>      <span class="keyword">auto</span> subgs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;subgraphs();</div>
-<div class="line"><span class="lineno"> 1693</span>      <span class="keywordflow">if</span> (!subgs || subgs-&gt;size() != 1)</div>
-<div class="line"><span class="lineno"> 1694</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Circle does not has valid subgraph or has multiple subgraphs&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1681</span>  MMappedFile mmapfile(path);</div>
+<div class="line"><span class="lineno"> 1682</span>  <span class="keywordflow">if</span> (!mmapfile.ensure_mmap())</div>
+<div class="line"><span class="lineno"> 1683</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1684</span> </div>
+<div class="line"><span class="lineno"> 1685</span>  <span class="comment">// make sure the architecture is little endian before direct access to flatbuffers</span></div>
+<div class="line"><span class="lineno"> 1686</span>  assert(FLATBUFFERS_LITTLEENDIAN);</div>
+<div class="line"><span class="lineno"> 1687</span> </div>
+<div class="line"><span class="lineno"> 1688</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno"> 1689</span>  {</div>
+<div class="line"><span class="lineno"> 1690</span>    _execution-&gt;iterateTrainableTensors([&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">onert::ir::OperandIndex</a> &amp;idx,</div>
+<div class="line"><span class="lineno"> 1691</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html">onert::backend::train::ITrainableTensor</a> *tensor) {</div>
+<div class="line"><span class="lineno"> 1692</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = ::circle::GetModel(mmapfile.buf());</div>
+<div class="line"><span class="lineno"> 1693</span>      <span class="keywordflow">if</span> (!model)</div>
+<div class="line"><span class="lineno"> 1694</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to get model from circle&quot;</span>);</div>
 <div class="line"><span class="lineno"> 1695</span> </div>
-<div class="line"><span class="lineno"> 1696</span>      <span class="keyword">auto</span> subg = subgs-&gt;Get(0); <span class="comment">// Get 1st subgraph</span></div>
-<div class="line"><span class="lineno"> 1697</span>      <span class="keywordflow">if</span> (!idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>() || idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &gt;= subg-&gt;tensors()-&gt;size())</div>
-<div class="line"><span class="lineno"> 1698</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Trainable tensor index is out of range&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1696</span>      <span class="keyword">auto</span> subgs = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;subgraphs();</div>
+<div class="line"><span class="lineno"> 1697</span>      <span class="keywordflow">if</span> (!subgs || subgs-&gt;size() != 1)</div>
+<div class="line"><span class="lineno"> 1698</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Circle does not has valid subgraph or has multiple subgraphs&quot;</span>);</div>
 <div class="line"><span class="lineno"> 1699</span> </div>
-<div class="line"><span class="lineno"> 1700</span>      <span class="keyword">auto</span> buf_idx = subg-&gt;tensors()-&gt;Get(idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>())-&gt;buffer();</div>
-<div class="line"><span class="lineno"> 1701</span>      const ::circle::Buffer *buffer = (*<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;buffers())[buf_idx];</div>
-<div class="line"><span class="lineno"> 1702</span>      <span class="keywordflow">if</span> (!buffer || !buffer-&gt;data())</div>
-<div class="line"><span class="lineno"> 1703</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Buffer for trainable tensors is invalid&quot;</span>);</div>
-<div class="line"><span class="lineno"> 1704</span> </div>
-<div class="line"><span class="lineno"> 1705</span>      <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;uint8_t&gt;</a> *array = buffer-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8b1291de40ed961611b89d5f39fe571a">data</a>();</div>
-<div class="line"><span class="lineno"> 1706</span>      <span class="keywordflow">if</span> (!array)</div>
-<div class="line"><span class="lineno"> 1707</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Data for trainable tensor&#39;s buffer is invalid&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1700</span>      <span class="keyword">auto</span> subg = subgs-&gt;Get(0); <span class="comment">// Get 1st subgraph</span></div>
+<div class="line"><span class="lineno"> 1701</span>      <span class="keywordflow">if</span> (!idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>() || idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>() &gt;= subg-&gt;tensors()-&gt;size())</div>
+<div class="line"><span class="lineno"> 1702</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Trainable tensor index is out of range&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1703</span> </div>
+<div class="line"><span class="lineno"> 1704</span>      <span class="keyword">auto</span> buf_idx = subg-&gt;tensors()-&gt;Get(idx.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a94c365fc1cb51e44ff8be2a384d4177d">value</a>())-&gt;buffer();</div>
+<div class="line"><span class="lineno"> 1705</span>      const ::circle::Buffer *buffer = (*<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>-&gt;buffers())[buf_idx];</div>
+<div class="line"><span class="lineno"> 1706</span>      <span class="keywordflow">if</span> (!buffer || !buffer-&gt;data())</div>
+<div class="line"><span class="lineno"> 1707</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Buffer for trainable tensors is invalid&quot;</span>);</div>
 <div class="line"><span class="lineno"> 1708</span> </div>
-<div class="line"><span class="lineno"> 1709</span>      <span class="keyword">auto</span> org_buf_sz = array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
-<div class="line"><span class="lineno"> 1710</span>      <span class="keywordflow">if</span> (org_buf_sz != <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size())</div>
-<div class="line"><span class="lineno"> 1711</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Trained tensor buffer size does not match original tensor&#39;s one&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1709</span>      <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector&lt;uint8_t&gt;</a> *array = buffer-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8b1291de40ed961611b89d5f39fe571a">data</a>();</div>
+<div class="line"><span class="lineno"> 1710</span>      <span class="keywordflow">if</span> (!array)</div>
+<div class="line"><span class="lineno"> 1711</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Data for trainable tensor&#39;s buffer is invalid&quot;</span>);</div>
 <div class="line"><span class="lineno"> 1712</span> </div>
-<div class="line"><span class="lineno"> 1713</span>      uint8_t *org_buf = <span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a80906c488dcafbe00a35d2692200501a">Data</a>());</div>
-<div class="line"><span class="lineno"> 1714</span>      <span class="keywordflow">if</span> (!org_buf)</div>
-<div class="line"><span class="lineno"> 1715</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Data for trainable tensor&#39;s buffer is invalid&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1713</span>      <span class="keyword">auto</span> org_buf_sz = array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno"> 1714</span>      <span class="keywordflow">if</span> (org_buf_sz != <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size())</div>
+<div class="line"><span class="lineno"> 1715</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Trained tensor buffer size does not match original tensor&#39;s one&quot;</span>);</div>
 <div class="line"><span class="lineno"> 1716</span> </div>
-<div class="line"><span class="lineno"> 1717</span>      memcpy(<span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(org_buf), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer(), org_buf_sz);</div>
-<div class="line"><span class="lineno"> 1718</span>    });</div>
-<div class="line"><span class="lineno"> 1719</span>  }</div>
-<div class="line"><span class="lineno"> 1720</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
-<div class="line"><span class="lineno"> 1721</span>  {</div>
-<div class="line"><span class="lineno"> 1722</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1723</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1724</span>  }</div>
-<div class="line"><span class="lineno"> 1725</span> </div>
-<div class="line"><span class="lineno"> 1726</span>  <span class="keywordflow">if</span> (mmapfile.sync() == <span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno"> 1717</span>      uint8_t *org_buf = <span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a80906c488dcafbe00a35d2692200501a">Data</a>());</div>
+<div class="line"><span class="lineno"> 1718</span>      <span class="keywordflow">if</span> (!org_buf)</div>
+<div class="line"><span class="lineno"> 1719</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Data for trainable tensor&#39;s buffer is invalid&quot;</span>);</div>
+<div class="line"><span class="lineno"> 1720</span> </div>
+<div class="line"><span class="lineno"> 1721</span>      memcpy(<span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(org_buf), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer(), org_buf_sz);</div>
+<div class="line"><span class="lineno"> 1722</span>    });</div>
+<div class="line"><span class="lineno"> 1723</span>  }</div>
+<div class="line"><span class="lineno"> 1724</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><span class="lineno"> 1725</span>  {</div>
+<div class="line"><span class="lineno"> 1726</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Error during nnfw_session::train_export_circle : &quot;</span> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno"> 1727</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1728</span> </div>
-<div class="line"><span class="lineno"> 1729</span>  <span class="keywordflow">if</span> (mmapfile.close() == <span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno"> 1730</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1731</span> </div>
-<div class="line"><span class="lineno"> 1732</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno"> 1733</span>}</div>
+<div class="line"><span class="lineno"> 1728</span>  }</div>
+<div class="line"><span class="lineno"> 1729</span> </div>
+<div class="line"><span class="lineno"> 1730</span>  <span class="keywordflow">if</span> (mmapfile.sync() == <span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno"> 1731</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1732</span> </div>
+<div class="line"><span class="lineno"> 1733</span>  <span class="keywordflow">if</span> (mmapfile.close() == <span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno"> 1734</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1735</span> </div>
+<div class="line"><span class="lineno"> 1736</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno"> 1737</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a80906c488dcafbe00a35d2692200501a"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a80906c488dcafbe00a35d2692200501a">flatbuffers::Vector::Data</a></div><div class="ttdeci">const uint8_t * Data() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00361">flatbuffers.h:361</a></div></div>

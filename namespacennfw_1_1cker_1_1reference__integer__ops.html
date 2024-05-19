@@ -255,9 +255,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>                <span class="keywordflow">if</span> (is_point_inside_image)</div>
 <div class="line"><span class="lineno">   94</span>                {</div>
 <div class="line"><span class="lineno">   95</span>                  int32_t input_val =</div>
-<div class="line"><span class="lineno">   96</span>                    input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, in_channel)];</div>
+<div class="line"><span class="lineno">   96</span>                    input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, in_channel)];</div>
 <div class="line"><span class="lineno">   97</span>                  int32_t filter_val =</div>
-<div class="line"><span class="lineno">   98</span>                    filter_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(filter_shape, 0, filter_y, filter_x, output_channel)];</div>
+<div class="line"><span class="lineno">   98</span>                    filter_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(filter_shape, 0, filter_y, filter_x, output_channel)];</div>
 <div class="line"><span class="lineno">   99</span>                  acc += filter_val * (input_val - input_offset[batch]);</div>
 <div class="line"><span class="lineno">  100</span>                }</div>
 <div class="line"><span class="lineno">  101</span>              }</div>
@@ -268,7 +268,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  106</span>            {</div>
 <div class="line"><span class="lineno">  107</span>              acc_float += bias_data[output_channel];</div>
 <div class="line"><span class="lineno">  108</span>            }</div>
-<div class="line"><span class="lineno">  109</span>            <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, out_y, out_x, output_channel)] =</div>
+<div class="line"><span class="lineno">  109</span>            <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, out_y, out_x, output_channel)] =</div>
 <div class="line"><span class="lineno">  110</span>              <a class="code hl_function" href="namespacennfw_1_1cker.html#a86b83772dd83256abffc3a8f1426819b">ActivationFunctionWithMinMax</a>(acc_float, output_activation_min, output_activation_max);</div>
 <div class="line"><span class="lineno">  111</span>          }</div>
 <div class="line"><span class="lineno">  112</span>        }</div>
@@ -278,7 +278,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  116</span>}</div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="aann-ref_2src_2ops_2internal_2dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2dims_8h_source.html#l00064">Dims.h:64</a></div></div>
+<div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Dims.h:64</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
@@ -397,7 +397,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html#l00031">31</a> of file <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html">DepthwiseConvUInt8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="reference_2integer__ops_2_depthwise_conv_uint8_8h_source.html#l00031">31</a> of file <a class="el" href="reference_2integer__ops_2_depthwise_conv_uint8_8h_source.html">DepthwiseConvUInt8.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
 <div class="line"><span class="lineno">   39</span>  <span class="comment">// Get parameters.</span></div>
 <div class="line"><span class="lineno">   40</span>  <span class="comment">// TODO(b/141565753): Re-introduce ScopedProfilingLabel on Micro.</span></div>
@@ -459,9 +459,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>                <span class="keywordflow">if</span> (is_point_inside_image)</div>
 <div class="line"><span class="lineno">   97</span>                {</div>
 <div class="line"><span class="lineno">   98</span>                  uint8_t input_val =</div>
-<div class="line"><span class="lineno">   99</span>                    input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, in_channel)];</div>
+<div class="line"><span class="lineno">   99</span>                    input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, in_y, in_x, in_channel)];</div>
 <div class="line"><span class="lineno">  100</span>                  uint8_t filter_val =</div>
-<div class="line"><span class="lineno">  101</span>                    filter_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(filter_shape, 0, filter_y, filter_x, output_channel)];</div>
+<div class="line"><span class="lineno">  101</span>                    filter_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(filter_shape, 0, filter_y, filter_x, output_channel)];</div>
 <div class="line"><span class="lineno">  102</span> </div>
 <div class="line"><span class="lineno">  103</span>                  <span class="comment">// { for per-channel</span></div>
 <div class="line"><span class="lineno">  104</span>                  <span class="comment">// NOTE: The following comment is copied from tflite int8 implementation</span></div>
@@ -499,7 +499,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  136</span>            acc = std::max(acc, output_activation_min);</div>
 <div class="line"><span class="lineno">  137</span>            acc = std::min(acc, output_activation_max);</div>
 <div class="line"><span class="lineno">  138</span>            <span class="comment">// For q8u per-channel, int8_t -&gt; uint8_t</span></div>
-<div class="line"><span class="lineno">  139</span>            <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, out_y, out_x, output_channel)] =</div>
+<div class="line"><span class="lineno">  139</span>            <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, out_y, out_x, output_channel)] =</div>
 <div class="line"><span class="lineno">  140</span>              <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(acc);</div>
 <div class="line"><span class="lineno">  141</span>          }</div>
 <div class="line"><span class="lineno">  142</span>        }</div>

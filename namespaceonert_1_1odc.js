@@ -7,6 +7,8 @@ var namespaceonert_1_1odc =
     [ "QuantizeManager", "classonert_1_1odc_1_1_quantize_manager.html", "classonert_1_1odc_1_1_quantize_manager" ],
     [ "Quantizer", "classonert_1_1odc_1_1_quantizer.html", "classonert_1_1odc_1_1_quantizer" ],
     [ "QuantizerLoader", "classonert_1_1odc_1_1_quantizer_loader.html", "classonert_1_1odc_1_1_quantizer_loader" ],
+    [ "QuantizerOptions", "namespaceonert_1_1odc.html#a3b2ab3338437eb543c06402ae89e854f", null ],
+    [ "QuantizeType", "namespaceonert_1_1odc.html#ac6c3da42f87e39f69d379397a2421638", null ],
     [ "CodegenPreference", "namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1", [
       [ "CODEGEN_PREF_DEFAULT", "namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1af4cefa13a62c5121bcf2d1748b38dc28", null ],
       [ "CODEGEN_PREF_PERFORMANCE_FIRST", "namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1a81dd4ab5cd7a0d08974dac7c51a8fc7d", null ],
