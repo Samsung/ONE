@@ -17,7 +17,7 @@
 #ifndef __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
 #define __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
 
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 #include "ir/OperationVisitor.h"
 #include "ir/train/TrainableOperationVisitor.h"
@@ -37,7 +37,7 @@ namespace operation
 // This class can be removed if all operations are supported for training.
 template <typename OperationType,
           typename = std::enable_if_t<std::is_base_of<Operation, OperationType>::value>>
-class UntrainableOperation : public OperationType, public ITrainableOperation
+class UntrainableOperation : public OperationType, public TrainableOperation
 {
 public:
   UntrainableOperation(const OperationType &operation) : OperationType{operation} {}

@@ -18,7 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATION_RESHAPE_H__
 
 #include "ir/operation/Reshape.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 namespace onert
 {
@@ -29,7 +29,7 @@ namespace train
 namespace operation
 {
 
-class Reshape : public ir::operation::Reshape, public ITrainableOperation
+class Reshape : public ir::operation::Reshape, public TrainableOperation
 {
 private:
   using OperationType = ir::operation::Reshape;

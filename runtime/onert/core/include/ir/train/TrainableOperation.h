@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
-#define __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
+#ifndef __ONERT_IR_TRAIN_TRAINABLE_OPERATION_H__
+#define __ONERT_IR_TRAIN_TRAINABLE_OPERATION_H__
 
-#include "ir/operation/BinaryArithmetic.h"
-#include "ir/train/TrainableOperation.h"
+#include "ITrainableOperation.h"
 
 namespace onert
 {
@@ -26,27 +25,29 @@ namespace ir
 {
 namespace train
 {
-namespace operation
-{
 
-class BinaryArithmetic : public ir::operation::BinaryArithmetic, public TrainableOperation
+class TrainableOperation : public ITrainableOperation
 {
+public:
+  virtual ~TrainableOperation() = default;
+
+public:
+  void disableWeightsUpdate() final { _trainable = false; }
+
+  void enableWeightsUpdate() final { _trainable = true; }
+
+  virtual bool isWeightsUpdateEnabled() const final { return _trainable; }
+
+  void enableBackward() final { _required_for_backward = true; }
+  virtual bool isRequiredForBackward() const final { return _required_for_backward; }
+
 private:
-  using OperationType = ir::operation::BinaryArithmetic;
-
-public:
-  BinaryArithmetic(const OperationType &operation);
-
-public:
-  std::unique_ptr<ITrainableOperation> clone() const override;
-  void accept(OperationVisitor &v) const override;
-  void accept(TrainableOperationVisitor &v) const override;
-  bool hasTrainableParameter() const override { return false; }
+  bool _trainable = false;
+  bool _required_for_backward = false;
 };
 
-} // namespace operation
 } // namespace train
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_OPERATION_BINARY_ARITHMETIC_H__
+#endif // __ONERT_IR_TRAIN_TRAINABLE_OPERATION_H__

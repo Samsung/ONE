@@ -18,7 +18,7 @@
 #define __ONERT_IR_TRAIN_OPERATION_FULLYCONNECTED_H__
 
 #include "ir/operation/FullyConnected.h"
-#include "ir/train/ITrainableOperation.h"
+#include "ir/train/TrainableOperation.h"
 
 namespace onert
 {
@@ -29,7 +29,7 @@ namespace train
 namespace operation
 {
 
-class FullyConnected : public ir::operation::FullyConnected, public ITrainableOperation
+class FullyConnected : public ir::operation::FullyConnected, public TrainableOperation
 {
 private:
   using OperationType = ir::operation::FullyConnected;
