@@ -16,15 +16,10 @@
 
 #include "exporter/CircleExporter.h"
 
-#include "circle_schema_generated.h"
 #include "exec/Execution.h"
 #include "ir/train/TrainingInfo.h"
-
-#include <fcntl.h>    // O_RDONLY
-#include <sys/mman.h> // mmap, munmap
-#include <sys/stat.h> // fstat
-#include <unistd.h>   // close
-#include <stdint.h>   // SIZE_MAX
+#include "MMappedFile.h"
+#include "TrainInfoBuilder.h"
 
 #include <fstream>
 #include <iostream>
@@ -33,51 +28,6 @@ namespace onert
 {
 namespace exporter
 {
-
-class MMappedFile
-{
-public:
-  MMappedFile(const char *filename) { _fd = open(filename, O_RDWR); }
-  ~MMappedFile() { close(); }
-
-  bool ensure_mmap()
-  {
-    struct stat file_stat;
-    if (fstat(_fd, &file_stat) != 0 || file_stat.st_size < 0 ||
-        static_cast<uint64_t>(file_stat.st_size) > SIZE_MAX)
-      return false;
-
-    _buf_sz = static_cast<size_t>(file_stat.st_size);
-    _buf = mmap(NULL, _buf_sz, PROT_READ | PROT_WRITE, MAP_SHARED, _fd, 0);
-    return _buf != MAP_FAILED;
-  }
-
-  bool sync() { return msync(_buf, _buf_sz, MS_SYNC) == 0; }
-
-  bool close()
-  {
-    bool ret = false;
-    if (_buf != MAP_FAILED)
-    {
-      ret = munmap(_buf, _buf_sz) == 0;
-      _buf = MAP_FAILED; // mark as cleaned up
-    }
-    if (_fd != -1)
-    {
-      ::close(_fd);
-      _fd = -1; // mark as cleaned up
-    }
-    return ret;
-  }
-
-  uint8_t *buf() const { return static_cast<uint8_t *>(_buf); }
-  size_t buf_size() const { return _buf_sz; }
-
-private:
-  int _fd;
-  void *_buf = MAP_FAILED;
-  size_t _buf_sz = 0;
-};
 
 CircleExporter::CircleExporter(const std::string &source, const std::string &path) : _path{path}
 {
@@ -95,10 +45,10 @@ CircleExporter::CircleExporter(const std::string &source, const std::string &pat
 
 CircleExporter::~CircleExporter() { finish(); }
 
-void CircleExporter::updateWeight(const std::unique_ptr<onert::exec::Execution> &exec)
+void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
 {
   exec->iterateTrainableTensors(
-    [&](const onert::ir::OperandIndex &idx, const onert::backend::train::ITrainableTensor *tensor) {
+    [&](const ir::OperandIndex &idx, const backend::train::ITrainableTensor *tensor) {
       auto model = ::circle::GetModel(_mmapfile->buf());
       if (!model)
         throw std::runtime_error("Failed to get model from circle");
@@ -132,10 +82,45 @@ void CircleExporter::updateWeight(const std::unique_ptr<onert::exec::Execution> 
     });
 }
 
-void CircleExporter::updateMetadata(
-  const std::unique_ptr<onert::ir::train::TrainingInfo> &training_info)
+void CircleExporter::updateMetadata(const std::unique_ptr<ir::train::TrainingInfo> &training_info)
 {
-  UNUSED_RELEASE(training_info);
+  const auto model = ::circle::GetModel(_mmapfile->buf());
+  const auto metadata = model->metadata();
+  const auto metabuffers = model->buffers();
+  const flatbuffers::Vector<uint8_t> *train_data = nullptr;
+  for (uint32_t i = 0; i < metadata->size(); ++i)
+  {
+    const auto meta = metadata->Get(i);
+    const auto meta_name = meta->name();
+    if (meta_name->str() == std::string{"CIRCLE_TRAINING"})
+    {
+      const uint32_t buf_idx = meta->buffer();
+      const ::circle::Buffer *meta_buf = metabuffers->Get(buf_idx);
+      train_data = meta_buf->data();
+      break;
+    }
+  }
+
+  TrainInfoBuilder builder(training_info);
+  // if (builder.size() != train_data->size())
+  // {
+  //   std::ostringstream errMsg;
+  //   errMsg << "TrainInfo buffer size(";
+  //   errMsg << builder.size();
+  //   errMsg << ") does not match original TrainInfo's one(";
+  //   errMsg << train_data->size();
+  //   errMsg << ").";
+  //   // auto errMsg = std::string{"TrainInfo buffer size("} + std::string{builder.size()} +
+  //   std::string{") does not match original TrainInfo's one("}, std::string{train_data->size()},
+  //   std::string{")."}; throw std::runtime_error(errMsg.str());
+  // }
+
+  if (train_data)
+  {
+    const ::circle::ModelTraining *meta_traininfo = ::circle::GetModelTraining(train_data->Data());
+    VERBOSE(CircleExporter) << "TrainInfo: " << meta_traininfo->version() << std::endl;
+    memcpy(const_cast<uint8_t *>(train_data->Data()), builder.get(), train_data->size());
+  }
 }
 
 void CircleExporter::finish()

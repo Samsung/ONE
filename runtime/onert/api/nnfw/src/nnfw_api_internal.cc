@@ -33,7 +33,6 @@
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 #include "odc/CodegenManager.h"
-#include "circle_schema_generated.h"
 
 #include <fstream>
 #include <iostream>

@@ -35,8 +35,7 @@ namespace train
 class TrainingInfo final
 {
 public:
-  TrainingInfo()
-    : _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0}, _trainable_ops{}
+  TrainingInfo() : _version{0}, _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0}
   {
   }
   TrainingInfo(const TrainingInfo &) = default;
@@ -46,6 +45,7 @@ public:
   ~TrainingInfo() = default;
 
   // getter
+  uint32_t version() const { return _version; }
   const LossInfo &lossInfo() const { return _loss_info; }
   const OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   uint32_t batchSize() const { return _batch_size; }
@@ -53,6 +53,7 @@ public:
   const std::set<OperationIndex> &getTrainableOps() const { return _trainable_ops; }
 
   // setter
+  void setVersion(const uint32_t version) { _version = version; }
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
@@ -65,6 +66,7 @@ public:
   bool isValid() const;
 
 private:
+  uint32_t _version;
   LossInfo _loss_info;
   OptimizerInfo _optimizer_info;
   uint32_t _batch_size;
