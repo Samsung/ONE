@@ -16,7 +16,7 @@
 
 #include "View.h"
 
-#include "../MockTensor.h"
+#include "../MockTensor.test.h"
 
 #include <gtest/gtest.h>
 
