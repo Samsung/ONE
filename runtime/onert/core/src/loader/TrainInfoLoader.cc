@@ -92,11 +92,11 @@ ir::train::LossInfo loadLossInfo(const circle::ModelTraining *circle_model)
   return ir_loss;
 }
 
-std::unordered_set<ir::OperationIndex> loadTrainableOps(const circle::ModelTraining *circle_model)
+std::set<ir::OperationIndex> loadTrainableOps(const circle::ModelTraining *circle_model)
 {
   assert(circle_model != nullptr);
 
-  std::unordered_set<ir::OperationIndex> ir_trainable_ops;
+  std::set<ir::OperationIndex> ir_trainable_ops;
   const auto lists = circle_model->trainable_ops();
   if (lists != nullptr)
   {
