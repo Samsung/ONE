@@ -79,23 +79,26 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
 
     // The function added lastest is executed first in a sequence during backwarding.
     std::vector<BackPropTensor *> back_props;
-    const auto &op = tgraph.operations().at(op_index);
+    const auto &op = tgraph.operation(op_index);
     for (const auto &back_prop_index :
          op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
     {
-      if (unvisited.contains(back_prop_index))
+      if (op.isRequiredForBackward())
       {
-        auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
-        assert(back_prop_tensor != nullptr);
-        back_props.emplace_back(back_prop_tensor);
-        unvisited.remove(back_prop_index);
+        if (unvisited.contains(back_prop_index))
+        {
+          auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
+          assert(back_prop_tensor != nullptr);
+          back_props.emplace_back(back_prop_tensor);
+          unvisited.remove(back_prop_index);
+        }
       }
-    }
 
-    if (back_props.size() != 0)
-    {
-      auto initializer = std::make_unique<ops::BackPropInitializer>(back_props);
-      tn_seq->append(std::move(initializer));
+      if (back_props.size() != 0)
+      {
+        auto initializer = std::make_unique<ops::BackPropInitializer>(back_props);
+        tn_seq->append(std::move(initializer));
+      }
     }
   }
 }
@@ -127,9 +130,9 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
       assert(tgraph.layout() != ir::Layout::NCHW);
 
-    const auto &operand = tgraph.operands().at(ind);
-    tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand),
-                                               ir::Layout::NHWC);
+      const auto &operand = tgraph.operands().at(ind);
+      tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand),
+                                                 ir::Layout::NHWC);
     }
   });
 

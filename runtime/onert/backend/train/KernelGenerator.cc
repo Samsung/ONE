@@ -86,12 +86,15 @@ void appendBackPropAccumulator(const ir::train::ITrainableOperation &op,
 {
   for (const auto &input_index : (op.getInputs() | ir::Remove::UNDEFINED))
   {
-    const auto disposable =
-      tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
-    if (disposable != nullptr)
+    if (op.isRequiredForBackward())
     {
-      auto back_prop = tensor_reg->getBackPropTensor(input_index);
-      seq->append(generateBackPropAccumulator(disposable, back_prop));
+      const auto disposable =
+        tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
+      if (disposable != nullptr)
+      {
+        auto back_prop = tensor_reg->getBackPropTensor(input_index);
+        seq->append(generateBackPropAccumulator(disposable, back_prop));
+      }
     }
   }
 }

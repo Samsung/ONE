@@ -140,8 +140,8 @@ public:
   std::vector<ir::OperationIndex>
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
   // Mark the ops which are required for backward propagation part of the training.
-  // The paricular node contributes in backward propagation if there is any trainable node before (in topological sense).
-  // PRE: The training graph should be topologically sorted.
+  // The paricular node contributes in backward propagation if there is any trainable node before
+  // (in topological sense). PRE: The training graph should be topologically sorted.
   void markOpsRequiredForBackward();
 
 private:
