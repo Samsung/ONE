@@ -22,9 +22,57 @@ This tool tested on python3.8.
     python3 -m pip install -r requirements.txt
     ```
 
-## Inject training hpyerparameters using json file
+## Add training hyperparameters using json file
 
-<!--to be updated -->
+You can add a training hyperparameters to a circle file.
+To begin with, you need to write the hyperparameters in a json file. Here's [an example](./example/train_tparam.json) of a json file.
+
+```bash 
+cat example/train_tparam.json
+
+# {
+#   "optimizer": {
+#       "type": "adam",
+#       "args": {
+#           "learningRate": 0.01,
+#           "beta1": 0.9,
+#           "beta2": 0.999,
+#           "epsilon": 1e-07
+#       }
+#   },
+#   "loss": {
+#       "type": "categorical crossentropy",
+#       "args": {
+#           "fromLogits": true,
+#           "reduction": "sum over batch size"
+#       }
+#   },
+#   "batchSize": 32
+# }
+```
+
+Next, execute the `main.py` script to add the hyperparameters to the `*.circle` file.
+
+```bash
+python3 main.py example/sample.circle example/train_tparam.json out.circle
+
+# expected output
+# 
+# load training hyperparameters
+# {
+#     "optimizer": {
+#         "type": "adam",
+#         "args": {
+#          ... 
+#     },
+#     "batchSize": 32
+# }
+# succesfully add hyperparameters to the circle file
+# saved in out.circle
+```
+
+If you don't give `out.circle` as an argument, the input circle file(here, `example/sample.circle`) will be overwritten. 
+
 
 ## Print training hyperparameters in circle file
 
