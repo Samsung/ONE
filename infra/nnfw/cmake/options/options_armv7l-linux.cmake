@@ -12,3 +12,6 @@ option(BUILD_GPU_CL "Build gpu_cl backend" ON)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" ON)
 option(BUILD_PYTHON_BINDING "Build python binding" ON)
+
+# Under linux gcc 10.0, required header for xnnpack arm build is not supported
+cmake_dependent_option(BUILD_XNNPACK "Build xnnpack library from the downloaded source" OFF "CXX_COMPILER_VERSION VERSION_LESS 10.0" ON)
