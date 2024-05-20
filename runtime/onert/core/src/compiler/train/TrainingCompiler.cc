@@ -114,6 +114,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 
       // Convert operations to trainable operations
       auto converter = TrainableOperationConverter{*trainable_subg, &_training_info};
+      ir::OperationIndex min_trainable_op_idx;
       subg.operations().iterate(
         [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &op) {
           auto trainable_op = converter(op);
@@ -121,11 +122,21 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
               std::end(_training_info.getTrainableOps()))
           {
             trainable_op->enableWeightsUpdate();
+            if (op_index.value() < min_trainable_op_idx.value())
+            {
+              min_trainable_op_idx = op_index;
+            }
           }
           auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           UNUSED_RELEASE(gen_index);
           assert(gen_index == op_index);
         });
+
+      for (ir::OperationIndex idx{min_trainable_op_idx};
+           idx.value() < trainable_subg->operations().size(); idx++)
+      {
+        trainable_subg->enableBackward(idx);
+      }
 
       trainable_subgraphs[subg_index] = std::move(trainable_subg);
     });

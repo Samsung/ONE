@@ -127,6 +127,13 @@ const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
   return dynamic_cast<const ITrainableOperation &>(_graph.operations().at(index));
 }
 
+void TrainableGraph::enableBackward(const OperationIndex &index)
+{
+  auto op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(index));
+  assert(op);
+  op->enableBackward();
+}
+
 void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> order,
                                               bool is_forward) const
 {
@@ -263,27 +270,6 @@ TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_o
     backward_order.end());
 
   return backward_order;
-}
-
-void TrainableGraph::markOpsRequiredForBackward()
-{
-  ir::OperationIndex min_trainable_op_idx;
-  operations().iterate([&](const ir::OperationIndex &op_idx, const ir::IOperation &op) {
-    const auto &train_op = dynamic_cast<const ir::train::ITrainableOperation *>(&op);
-    if (train_op->isWeightsUpdateEnabled() && op_idx.value() < min_trainable_op_idx.value())
-    {
-      min_trainable_op_idx = op_idx;
-    }
-  });
-  if (min_trainable_op_idx.valid())
-  {
-    for (ir::OperationIndex idx{min_trainable_op_idx}; idx.value() < operations().size(); idx++)
-    {
-      auto train_op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(idx));
-      assert(train_op);
-      train_op->enableBackward();
-    }
-  }
 }
 
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)

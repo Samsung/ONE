@@ -752,7 +752,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // get rid of all nodes not reachable from a node with trainable parameters
   backward_order = lowered_graph->trainable_graph().truncateBackwardOrder(backward_order);
   VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
-  lowered_graph->trainable_graph().markOpsRequiredForBackward();
   Linear::dump(*lowered_graph, backward_order);
 
   for (auto &&pair : tbackend_contexts)
