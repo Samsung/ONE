@@ -47,7 +47,7 @@ def inject_hparams(in_file, hparams_file, out_file=None) -> None:
         out_file = in_file
 
     tparams: TrainParam = TrainParam.from_json(hparams_file)
-    print("load traing hyperparameters")
+    print("load training hyperparameters")
     print(tparams.dump_as_json())
 
     # TODO: Enable these lines after implementing the methods
