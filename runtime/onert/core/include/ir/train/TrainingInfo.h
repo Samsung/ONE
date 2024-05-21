@@ -23,7 +23,7 @@
 #include "ir/train/OptimizerInfo.h"
 #include "ir/train/LossInfo.h"
 
-#include <unordered_set>
+#include <set>
 
 namespace onert
 {
@@ -35,7 +35,10 @@ namespace train
 class TrainingInfo final
 {
 public:
-  TrainingInfo() : _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0} {}
+  TrainingInfo()
+    : _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0}, _trainable_ops{}
+  {
+  }
   TrainingInfo(const TrainingInfo &) = default;
   TrainingInfo(TrainingInfo &&) = default;
   TrainingInfo &operator=(const TrainingInfo &) = default;
@@ -47,13 +50,17 @@ public:
   const OptimizerInfo &optimizerInfo() const { return _optimizer_info; }
   uint32_t batchSize() const { return _batch_size; }
   const uint32_t &trainingStep() const { return _training_step; }
-  const std::unordered_set<OperationIndex> &getTrainableOps() const { return _trainable_ops; }
+  const std::set<OperationIndex> &getTrainableOps() const { return _trainable_ops; }
 
   // setter
   void setBatchSize(const uint32_t batch_size) { _batch_size = batch_size; }
   void setLossInfo(const LossInfo &loss_info) { _loss_info = loss_info; }
   void setOptimizerInfo(const OptimizerInfo &optimizer_info) { _optimizer_info = optimizer_info; }
   uint32_t &trainingStep() { return _training_step; }
+  void setTrainableOps(const std::set<OperationIndex> &trainable_ops)
+  {
+    _trainable_ops = trainable_ops;
+  }
 
   void enableTrainNodeUpdate(const OperationIndex &op_idx) { _trainable_ops.emplace(op_idx); }
 
@@ -72,7 +79,7 @@ private:
   OptimizerInfo _optimizer_info;
   uint32_t _batch_size;
   uint32_t _training_step;
-  std::unordered_set<OperationIndex> _trainable_ops;
+  std::set<OperationIndex> _trainable_ops;
 };
 
 } // namespace train
