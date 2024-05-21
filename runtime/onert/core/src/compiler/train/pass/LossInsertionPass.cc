@@ -66,6 +66,7 @@ void LossInsertionPass::run()
 
   auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs);
   auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op, loss_info);
+  trainable_loss_op->enableBackward();
 
   _trainable_graph.addOperation(std::move(trainable_loss_op));
 

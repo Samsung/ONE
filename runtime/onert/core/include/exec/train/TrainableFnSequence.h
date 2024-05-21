@@ -34,7 +34,7 @@ class TrainableFnSequence
 {
 public:
   void forward(bool training);
-  void backward(uint32_t training_step, bool apply_gradient = true);
+  void backward(uint32_t training_step, bool weight_update_enabled);
 
   void append(std::unique_ptr<ITrainableFunction> &&fn);
   void append(std::unique_ptr<IGradientApplier> &&applier);

@@ -119,7 +119,7 @@ void TrainableExecutor::forwardImpl(bool training)
       _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
       auto &tn_seq = code.tn_seq;
-      tn_seq->forward(training);
+      tn_seq->forward(training && code.op->isRequiredForBackward());
 
       _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
@@ -189,7 +189,7 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
       auto &tn_seq = code.tn_seq;
-      tn_seq->backward(training_step);
+      tn_seq->backward(training_step, code.op->isWeightsUpdateEnabled());
     }
   }
 }
