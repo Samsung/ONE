@@ -39,14 +39,17 @@ void ReshapeLayer::reshapeGeneric(const IPortableTensor *input, IPortableTensor 
 }
 
 void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
-                             IPortableTensor *output, IPortableTensor *back_prop_input,
-                             const IPortableTensor *back_prop_output)
+                             IPortableTensor *output)
 {
   _input = input;
   /* note : shape is optional. If not provided from model, _shape is nullptr. */
   _shape = shape;
   _output = output;
+}
 
+void ReshapeLayer::configureBackward(IPortableTensor *back_prop_input,
+                                     const IPortableTensor *back_prop_output)
+{
   _back_prop_input = back_prop_input;
   _back_prop_output = back_prop_output;
 }

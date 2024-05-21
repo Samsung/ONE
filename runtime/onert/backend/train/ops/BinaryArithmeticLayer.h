@@ -47,10 +47,9 @@ public:
   BinaryArithmeticLayer();
 
 public:
-  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, IPortableTensor *output,
-                 IPortableTensor *back_prop_lhs, IPortableTensor *back_prop_rhs,
-                 const IPortableTensor *back_prop_output, const ir::Activation activation,
-                 const ArithmeticType arithmetic_type);
+  void configureBackward(IPortableTensor *back_prop_lhs, IPortableTensor *back_prop_rhs,
+                         const IPortableTensor *back_prop_output, const ir::Activation activation,
+                         const ArithmeticType arithmetic_type);
   void forward(bool training) override;
   void backward() override;
 

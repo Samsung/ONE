@@ -41,16 +41,12 @@ BinaryArithmeticLayer::BinaryArithmeticLayer()
   // DO NOTHING
 }
 
-void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
-                                      IPortableTensor *output, IPortableTensor *back_prop_lhs,
-                                      IPortableTensor *back_prop_rhs,
-                                      const IPortableTensor *back_prop_output,
-                                      const ir::Activation activation,
-                                      const ArithmeticType arithmetic_type)
+void BinaryArithmeticLayer::configureBackward(IPortableTensor *back_prop_lhs,
+                                              IPortableTensor *back_prop_rhs,
+                                              const IPortableTensor *back_prop_output,
+                                              const ir::Activation activation,
+                                              const ArithmeticType arithmetic_type)
 {
-  cpu::ops::BinaryArithmeticLayer::configure(
-    lhs, rhs, output, activation, static_cast<cpu::ops::ArithmeticType>(arithmetic_type));
-
   _back_prop_lhs = back_prop_lhs;
   _back_prop_rhs = back_prop_rhs;
   _back_prop_output = back_prop_output;
