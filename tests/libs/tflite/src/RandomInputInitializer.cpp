@@ -26,8 +26,7 @@ namespace tflite
 namespace
 {
 
-template <typename T>
-void setValue(nnfw::misc::RandomGenerator &randgen, const TfLiteTensor *tensor)
+template <typename T> void setValue(benchmark::RandomGenerator &randgen, const TfLiteTensor *tensor)
 {
   auto tensor_view = TensorView<T>::make(tensor);
 

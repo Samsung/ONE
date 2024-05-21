@@ -12,7 +12,7 @@ add_library(nnfw_lib_tflite STATIC ${SOURCES})
 set_target_properties(nnfw_lib_tflite PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(nnfw_lib_tflite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(nnfw_lib_tflite PUBLIC tensorflow-lite-2.8.0)
-target_link_libraries(nnfw_lib_tflite PUBLIC nnfw_lib_misc)
+target_link_libraries(nnfw_lib_tflite PUBLIC nnfw_lib_misc nnfw_lib_benchmark)
 target_link_libraries(nnfw_lib_tflite PRIVATE ${LIB_PTHREAD} dl)
 target_link_libraries(nnfw_lib_tflite PRIVATE nnfw_common)
 

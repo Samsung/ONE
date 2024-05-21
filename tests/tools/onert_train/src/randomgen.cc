@@ -17,14 +17,14 @@
 #include "randomgen.h"
 #include "nnfw.h"
 #include "nnfw_util.h"
-#include "misc/RandomGenerator.h"
+#include "benchmark/RandomGenerator.h"
 
 #include <iostream>
 
 namespace onert_train
 {
 
-template <class T> void randomData(nnfw::misc::RandomGenerator &randgen, void *data, uint64_t size)
+template <class T> void randomData(benchmark::RandomGenerator &randgen, void *data, uint64_t size)
 {
   for (uint64_t i = 0; i < size; i++)
     reinterpret_cast<T *>(data)[i] = randgen.generate<T>();
@@ -34,7 +34,7 @@ void RandomGenerator::generate(std::vector<Allocation> &inputs)
 {
   // generate random data
   const int seed = 1;
-  nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
+  benchmark::RandomGenerator randgen{seed, 0.0f, 2.0f};
   for (uint32_t i = 0; i < inputs.size(); ++i)
   {
     nnfw_tensorinfo ti;

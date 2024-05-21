@@ -21,7 +21,7 @@
 
 #include <misc/EnvVar.h>
 #include <misc/fp32.h>
-#include <misc/RandomGenerator.h>
+#include <benchmark/RandomGenerator.h>
 
 #include <tflite/Assert.h>
 #include <tflite/InterpreterSession.h>
@@ -62,7 +62,7 @@ void readData(const std::string &path, std::vector<uint8_t> &dest)
 }
 
 template <typename T>
-void randomData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
+void randomData(benchmark::RandomGenerator &randgen, std::vector<uint8_t> &dest)
 {
   size_t elements = dest.size() / sizeof(T);
   assert(dest.size() % sizeof(T) == 0);
@@ -75,7 +75,7 @@ void randomData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest
   memcpy(dest.data(), vec.data(), elements * sizeof(T));
 }
 
-void randomBoolData(nnfw::misc::RandomGenerator &randgen, std::vector<uint8_t> &dest)
+void randomBoolData(benchmark::RandomGenerator &randgen, std::vector<uint8_t> &dest)
 {
   size_t elements = dest.size();
   std::vector<uint8_t> vec(elements);
@@ -242,7 +242,7 @@ int main(const int argc, char **argv)
   }
 
   const int seed = 1; /* TODO Add an option for seed value */
-  nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
+  benchmark::RandomGenerator randgen{seed, 0.0f, 2.0f};
 
   for (uint32_t i = 0; i < num_inputs; i++)
   {

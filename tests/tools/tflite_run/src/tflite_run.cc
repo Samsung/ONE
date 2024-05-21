@@ -141,7 +141,7 @@ int main(const int argc, char **argv)
   else
   {
     const int seed = 1; /* TODO Add an option for seed value */
-    nnfw::misc::RandomGenerator randgen{seed, 0.0f, 2.0f};
+    benchmark::RandomGenerator randgen{seed, 0.0f, 2.0f};
 
     RandomInputInitializer initializer{randgen};
     initializer.run(*interpreter);

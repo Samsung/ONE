@@ -17,7 +17,7 @@
 #ifndef __NNFW_TFLITE_RANDOM_INPUT_INITIALIZER_H__
 #define __NNFW_TFLITE_RANDOM_INPUT_INITIALIZER_H__
 
-#include <misc/RandomGenerator.h>
+#include <benchmark/RandomGenerator.h>
 
 #include <tensorflow/lite/c/c_api.h>
 
@@ -29,7 +29,7 @@ namespace tflite
 class RandomInputInitializer
 {
 public:
-  RandomInputInitializer(misc::RandomGenerator &randgen) : _randgen{randgen}
+  RandomInputInitializer(benchmark::RandomGenerator &randgen) : _randgen{randgen}
   {
     // DO NOTHING
   }
@@ -37,7 +37,7 @@ public:
   void run(TfLiteInterpreter &interp);
 
 private:
-  nnfw::misc::RandomGenerator &_randgen;
+  benchmark::RandomGenerator &_randgen;
 };
 
 } // namespace tflite
