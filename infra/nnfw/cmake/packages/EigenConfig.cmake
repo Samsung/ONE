@@ -1,5 +1,5 @@
 function(_Eigen_import)
-  nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
+  nnas_find_package(TensorFlowEigenSource EXACT 2.16.1 QUIET)
 
   if(NOT TensorFlowEigenSource_FOUND)
     set(Eigen_FOUND FALSE PARENT_SCOPE)
@@ -11,6 +11,8 @@ function(_Eigen_import)
     target_include_directories(eigen SYSTEM INTERFACE "${TensorFlowEigenSource_DIR}")
     # Add EIGEN_MPL2_ONLY to remove license issue posibility
     target_compile_definitions(eigen INTERFACE EIGEN_MPL2_ONLY)
+    # Some used Eigen functions makes deprecated declarations warning
+    target_compile_options(eigen INTERFACE -Wno-deprecated-declarations)
   endif(NOT TARGET eigen)
 
   set(Eigen_FOUND TRUE PARENT_SCOPE)

@@ -5,7 +5,7 @@ function(_Ruy_Build)
     return()
   endif(TARGET ruy)
 
-  nnas_find_package(TensorFlowRuySource EXACT 2.8 QUIET)
+  nnas_find_package(TensorFlowRuySource EXACT 2.16.1 QUIET)
   nnfw_find_package(CpuInfo QUIET)
 
   if(NOT TensorFlowRuySource_FOUND)
