@@ -66,6 +66,8 @@ BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  gtest-devel
 %endif
 
+BuildRequires:  jsoncpp-devel
+
 %if %{npud_build} == 1
 BuildRequires:  pkgconfig(glib-2.0)
 %endif
