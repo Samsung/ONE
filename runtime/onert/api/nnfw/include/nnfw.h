@@ -505,6 +505,18 @@ NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const cha
  */
 NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t *val);
 
+/**
+ * @brief     Set runtime's workspace directory
+ *
+ * <p>This function sets the directory to be used as a workspace.
+ * System should should allow read and write access to the directory for the runtime.</p>
+ *
+ * @param[in] session session to be queried on.
+ * @param[in] dir     workspace directory path
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir);
+
 #ifdef __cplusplus
 }
 #endif
