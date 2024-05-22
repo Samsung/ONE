@@ -52,12 +52,6 @@ bool isQuant(const ir::Graph &graph, const ir::IOperation &node)
   return false;
 }
 
-bool isWorkaroundSkip(const ir::Graph &, const backend::Backend *, const ir::IOperation &, bool)
-{
-  // Now, there is no workaround
-  return false;
-}
-
 // if a node can be merged into op_seq
 bool isMergeable(const ir::Graph &graph, const ir::IOperation &node)
 {
@@ -113,11 +107,6 @@ void HEScheduler::scheduleShufflingBackends()
       if (backend_ind == _all_backends.size())
       {
         backend_ind = 0;
-      }
-      if (isWorkaroundSkip(*_graph, _all_backends[backend_ind], node, quant))
-      {
-        ++backend_ind;
-        continue;
       }
       const auto exec_time =
         _exec_time->getOperationExecTime(_all_backends[backend_ind], node.name(), quant, size);
@@ -492,10 +481,6 @@ HEScheduler::ESTAndExecTime(const backend::Backend *backend, const ir::Operation
   if (isMergeable(*_graph, node))
   {
     permute_fine *= 2;
-  }
-  if (isWorkaroundSkip(*_graph, backend, node, quant))
-  {
-    return {_exec_time->getMax(), _exec_time->getMax()};
   }
   // get average exec time of the op on this backend
   auto exec_time = getOpTime(backend, node.name(), quant, size);
