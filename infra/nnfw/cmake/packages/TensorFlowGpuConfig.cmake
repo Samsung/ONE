@@ -23,8 +23,8 @@ function(_Build_TfliteGpuDelagate_)
   nnas_find_package(Farmhash REQUIRED)
   return_unless(Farmhash_FOUND)
 
-  nnas_find_package(Fp16Source REQUIRED)
-  return_unless(Fp16Source_FOUND)
+  nnfw_find_package(Fp16 REQUIRED)
+  return_unless(Fp16_FOUND)
 
   nnas_find_package(VulkanSource QUIET)
   return_unless(VulkanSource_FOUND)

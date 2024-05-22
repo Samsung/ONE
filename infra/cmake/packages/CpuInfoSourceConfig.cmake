@@ -8,8 +8,8 @@ function(_CpuInfoSource_import)
   nnas_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  # CPUINFO commit from tflite v2.8
-  envoption(CPUINFO_URL ${EXTERNAL_DOWNLOAD_SERVER}/pytorch/cpuinfo/archive/5916273f79a21551890fd3d56fc5375a78d1598d.tar.gz)
+  # CPUINFO commit from tflite v2.16.1
+  envoption(CPUINFO_URL ${EXTERNAL_DOWNLOAD_SERVER}/pytorch/cpuinfo/archive/ef634603954d88d2643d5809011288b890ac126e.tar.gz)
   ExternalSource_Download(CPUINFO
     DIRNAME CPUINFO
     URL ${CPUINFO_URL})
