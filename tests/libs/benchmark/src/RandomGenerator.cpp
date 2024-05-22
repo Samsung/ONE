@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-#include "misc/RandomGenerator.h"
+#include "benchmark/RandomGenerator.h"
 
-namespace nnfw
-{
-namespace misc
+namespace benchmark
 {
 
 template <> int8_t RandomGenerator::generate<int8_t>(void)
@@ -107,5 +105,4 @@ template <> int64_t RandomGenerator::generate<int64_t>(void)
   return dist(_rand);
 }
 
-} // namespace misc
-} // namespace nnfw
+} // namespace benchmark

@@ -19,17 +19,15 @@
  * @brief This file contains classes for random value generation
  */
 
-#ifndef __NNFW_MISC_RANDOM_GENERATOR_H__
-#define __NNFW_MISC_RANDOM_GENERATOR_H__
+#ifndef __NNFW_BENCHMARK_RANDOM_GENERATOR_H__
+#define __NNFW_BENCHMARK_RANDOM_GENERATOR_H__
 
 #include "misc/tensor/Shape.h"
 #include "misc/tensor/Index.h"
 
 #include <random>
 
-namespace nnfw
-{
-namespace misc
+namespace benchmark
 {
 
 /**
@@ -82,7 +80,6 @@ template <> bool RandomGenerator::generate<bool>(void);
 template <> int32_t RandomGenerator::generate<int32_t>(void);
 template <> int64_t RandomGenerator::generate<int64_t>(void);
 
-} // namespace misc
-} // namespace nnfw
+} // namespace benchmark
 
-#endif // __NNFW_MISC_RANDOM_GENERATOR_H__
+#endif // __NNFW_BENCHMARK_RANDOM_GENERATOR_H__
