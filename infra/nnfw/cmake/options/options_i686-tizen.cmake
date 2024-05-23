@@ -11,7 +11,6 @@ option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" OFF)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OFF)
 
 option(BUILD_XNNPACK "Build XNNPACK" OFF)
-option(DOWNLOAD_OPENCL_HEADERS "Download opencl headers" OFF)
 
 option(BUILD_NPUD "Build NPU daemon" OFF)
 # Do not allow to use CONFIG option on Tizen
