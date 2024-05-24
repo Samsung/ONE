@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "circle_schema_generated.h"
+
 #include <memory>
 #include <string>
 
@@ -52,7 +54,8 @@ public:
 
 private:
   std::string _path;
-  std::unique_ptr<MMappedFile> _mmapfile;
+  std::string _data;
+  ::circle::ModelT *_model;
 };
 } // namespace exporter
 } // namespace onert

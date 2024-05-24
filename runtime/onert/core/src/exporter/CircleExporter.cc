@@ -23,24 +23,33 @@
 
 #include <fstream>
 #include <iostream>
+#include <mutex>
 
 namespace onert
 {
 namespace exporter
 {
 
-CircleExporter::CircleExporter(const std::string &source, const std::string &path) : _path{path}
+CircleExporter::CircleExporter(const std::string &source, const std::string &path)
+  : _path{path}, _data{}, _model{nullptr}
 {
-  std::ifstream src(source.c_str(), std::ios::binary);
-  std::ofstream dst(path.c_str(), std::ios::binary);
-  dst << src.rdbuf();
-
-  _mmapfile = std::make_unique<MMappedFile>(path.c_str());
-  if (!_mmapfile->ensure_mmap())
-    throw std::runtime_error("Failed to ensure mmap file");
-
   // make sure the architecture is little endian before direct access to flatbuffers
   assert(FLATBUFFERS_LITTLEENDIAN);
+
+  std::ifstream src(source.c_str(), std::ios::binary);
+  if (src.is_open())
+  {
+    src.seekg(0, std::ios::end);
+    _data.resize(src.tellg());
+    src.seekg(0, std::ios::beg);
+    src.read(&_data[0], _data.size());
+    src.close();
+  }
+
+  const auto model = ::circle::GetModel(_data.data());
+  if (!model)
+    throw std::runtime_error("Failed to load original circle file");
+  _model = model->UnPack();
 }
 
 CircleExporter::~CircleExporter() { finish(); }
@@ -49,87 +58,75 @@ void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
 {
   exec->iterateTrainableTensors(
     [&](const ir::OperandIndex &idx, const backend::train::ITrainableTensor *tensor) {
-      auto model = ::circle::GetModel(_mmapfile->buf());
-      if (!model)
-        throw std::runtime_error("Failed to get model from circle");
-
-      auto subgs = model->subgraphs();
-      if (!subgs || subgs->size() != 1)
+      const auto &subgs = _model->subgraphs;
+      if (subgs.size() != 1)
         throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
 
-      auto subg = subgs->Get(0); // Get 1st subgraph
-      if (!idx.valid() || idx.value() >= subg->tensors()->size())
+      const auto &subg = subgs.at(0); // Get 1st subgraph
+      if (!idx.valid() || idx.value() >= subg->tensors.size())
         throw std::runtime_error("Trainable tensor index is out of range");
 
-      auto buf_idx = subg->tensors()->Get(idx.value())->buffer();
-      const ::circle::Buffer *buffer = (*model->buffers())[buf_idx];
-      if (!buffer || !buffer->data())
+      const auto buf_idx = subg->tensors.at(idx.value())->buffer;
+      if (buf_idx >= _model->buffers.size())
         throw std::runtime_error("Buffer for trainable tensors is invalid");
 
-      const flatbuffers::Vector<uint8_t> *array = buffer->data();
-      if (!array)
-        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
+      const auto &buffer = _model->buffers.at(buf_idx);
 
-      auto org_buf_sz = array->size();
+      auto org_buf_sz = buffer->data.size();
       if (org_buf_sz != tensor->total_size())
         throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
 
-      uint8_t *org_buf = const_cast<uint8_t *>(array->Data());
-      if (!org_buf)
-        throw std::runtime_error("Data for trainable tensor's buffer is invalid");
-
-      memcpy(const_cast<uint8_t *>(org_buf), tensor->buffer(), org_buf_sz);
+      memcpy(&buffer->data[0], tensor->buffer(), org_buf_sz);
     });
 }
 
 void CircleExporter::updateMetadata(const std::unique_ptr<ir::train::TrainingInfo> &training_info)
 {
-  const auto model = ::circle::GetModel(_mmapfile->buf());
-  const auto metadata = model->metadata();
-  const auto metabuffers = model->buffers();
-  const flatbuffers::Vector<uint8_t> *train_data = nullptr;
-  for (uint32_t i = 0; i < metadata->size(); ++i)
+  const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+
+  TrainInfoBuilder tbuilder(training_info);
+  std::mutex mutex;
+
+  bool found = false;
+  for (const auto &meta : _model->metadata)
   {
-    const auto meta = metadata->Get(i);
-    const auto meta_name = meta->name();
-    if (meta_name->str() == std::string{"CIRCLE_TRAINING"})
+    if (meta->name == std::string{TRAININFO_METADATA_NAME})
     {
-      const uint32_t buf_idx = meta->buffer();
-      const ::circle::Buffer *meta_buf = metabuffers->Get(buf_idx);
-      train_data = meta_buf->data();
+      const uint32_t buf_idx = meta->buffer;
+      auto &buffer = _model->buffers.at(buf_idx);
+
+      memcpy(&buffer->data[0], tbuilder.get(), tbuilder.size());
+      found = true;
       break;
     }
   }
 
-  TrainInfoBuilder builder(training_info);
-  // if (builder.size() != train_data->size())
-  // {
-  //   std::ostringstream errMsg;
-  //   errMsg << "TrainInfo buffer size(";
-  //   errMsg << builder.size();
-  //   errMsg << ") does not match original TrainInfo's one(";
-  //   errMsg << train_data->size();
-  //   errMsg << ").";
-  //   // auto errMsg = std::string{"TrainInfo buffer size("} + std::string{builder.size()} +
-  //   std::string{") does not match original TrainInfo's one("}, std::string{train_data->size()},
-  //   std::string{")."}; throw std::runtime_error(errMsg.str());
-  // }
-
-  if (train_data)
+  if (!found)
   {
-    const ::circle::ModelTraining *meta_traininfo = ::circle::GetModelTraining(train_data->Data());
-    VERBOSE(CircleExporter) << "TrainInfo: " << meta_traininfo->version() << std::endl;
-    memcpy(const_cast<uint8_t *>(train_data->Data()), builder.get(), train_data->size());
+    std::lock_guard<std::mutex> guard(mutex);
+    auto buffer = std::make_unique<::circle::BufferT>();
+    buffer->size = tbuilder.size();
+    buffer->data.resize(buffer->size);
+    memcpy(&buffer->data[0], tbuilder.get(), buffer->size);
+
+    auto meta = std::make_unique<::circle::MetadataT>();
+    meta->name = std::string{TRAININFO_METADATA_NAME};
+    meta->buffer = _model->buffers.size();
+
+    _model->buffers.push_back(std::move(buffer));
+    _model->metadata.push_back(std::move(meta));
   }
 }
 
 void CircleExporter::finish()
 {
-  if (_mmapfile->sync() == false)
-    throw std::runtime_error("Failed to sync Circle file");
+  flatbuffers::FlatBufferBuilder builder(1024);
+  const char *const id = "CIR0";
+  builder.Finish(::circle::Model::Pack(builder, _model), id);
 
-  if (_mmapfile->close() == false)
-    throw std::runtime_error("Failed to close Circle file");
+  std::ofstream dst(_path.c_str(), std::ios::binary);
+  dst.write((const char *)builder.GetBufferPointer(), builder.GetSize());
+  dst.close();
 }
 } // namespace exporter
 } // namespace onert
