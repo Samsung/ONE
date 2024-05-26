@@ -1,33 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,446,85,472"/>
-<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex.html" title=" " alt="" coords="165,5,353,46"/>
-<area shape="poly" id="edge260_Node000000_Node000001" title=" " alt="" coords="46,430,55,345,71,234,96,128,112,86,131,57,146,45,163,36,166,40,149,49,135,61,117,88,101,129,77,235,60,346,51,431"/>
-<area shape="rect" id="Node000002" href="$classarm__compute_1_1_c_l_binary_logical_op_kernel.html" title=" " alt="" coords="158,71,360,111"/>
-<area shape="poly" id="edge261_Node000000_Node000002" title=" " alt="" coords="47,430,58,358,76,266,100,180,115,146,131,122,156,105,160,109,135,126,119,148,105,181,81,267,64,359,53,431"/>
-<area shape="rect" id="Node000003" href="$classarm__compute_1_1_c_l_embedding_lookup_kernel.html" title="Class to perform EmbeddingLookup operation with opencl kernel." alt="" coords="165,136,353,177"/>
-<area shape="poly" id="edge262_Node000000_Node000003" title=" " alt="" coords="44,431,49,379,62,314,73,279,88,246,107,215,131,188,163,167,166,172,134,192,111,218,93,249,78,281,68,315,54,380,50,431"/>
-<area shape="rect" id="Node000004" href="$classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html" title=" " alt="" coords="160,201,358,242"/>
-<area shape="poly" id="edge263_Node000000_Node000004" title=" " alt="" coords="48,430,56,390,72,342,96,293,112,271,131,252,158,235,160,240,134,256,116,275,100,296,76,344,61,392,53,431"/>
-<area shape="rect" id="Node000005" href="$classarm__compute_1_1_c_l_gather_ex_kernel.html" title="Class to define an interface for the gather kernel." alt="" coords="152,266,366,292"/>
-<area shape="poly" id="edge264_Node000000_Node000005" title=" " alt="" coords="52,430,63,400,79,365,102,331,131,302,153,290,156,295,134,306,106,334,84,368,67,402,57,432"/>
-<area shape="rect" id="Node000006" href="$classarm__compute_1_1_c_l_hashtable_lookup_kernel.html" title="Class to perform HashtableLookup operation with opencl kernel." alt="" coords="168,316,350,357"/>
-<area shape="poly" id="edge265_Node000000_Node000006" title=" " alt="" coords="62,432,92,398,131,367,166,352,168,357,134,372,96,402,66,436"/>
-<area shape="rect" id="Node000007" href="$classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex.html" title=" " alt="" coords="133,381,385,422"/>
-<area shape="poly" id="edge266_Node000000_Node000007" title=" " alt="" coords="99,441,132,431,173,420,175,425,133,436,100,446"/>
-<area shape="rect" id="Node000008" href="$classarm__compute_1_1_c_l_memset_kernel.html" title=" " alt="" coords="155,446,363,472"/>
-<area shape="poly" id="edge267_Node000000_Node000008" title=" " alt="" coords="100,456,155,456,155,462,100,462"/>
-<area shape="rect" id="Node000009" href="$classarm__compute_1_1_c_l_multiply_scale_factor_kernel.html" title=" " alt="" coords="159,496,359,537"/>
-<area shape="poly" id="edge268_Node000000_Node000009" title=" " alt="" coords="100,472,133,482,175,493,173,498,132,487,99,477"/>
-<area shape="rect" id="Node000010" href="$classarm__compute_1_1_c_l_neg_kernel.html" title=" " alt="" coords="167,561,351,587"/>
-<area shape="poly" id="edge269_Node000000_Node000010" title=" " alt="" coords="66,483,95,516,134,546,168,559,166,564,131,551,92,520,62,486"/>
-<area shape="rect" id="Node000011" href="$classarm__compute_1_1_c_l_one_hot_kernel.html" title=" " alt="" coords="156,610,362,636"/>
-<area shape="poly" id="edge270_Node000000_Node000011" title=" " alt="" coords="58,486,86,543,108,573,134,597,157,609,155,613,131,601,104,576,82,546,53,488"/>
-<area shape="rect" id="Node000012" href="$classarm__compute_1_1_c_l_pad_layer_kernel_ex.html" title=" " alt="" coords="144,660,374,685"/>
-<area shape="poly" id="edge271_Node000000_Node000012" title=" " alt="" coords="53,487,62,524,78,567,101,610,134,646,152,657,149,661,131,650,97,613,73,569,57,525,48,488"/>
-<area shape="rect" id="Node000013" href="$classarm__compute_1_1_c_l_quantization_symmetric_kernel.html" title=" " alt="" coords="161,709,357,750"/>
-<area shape="poly" id="edge272_Node000000_Node000013" title=" " alt="" coords="51,486,57,532,71,589,96,647,114,673,134,696,162,713,159,717,131,700,109,676,92,649,66,591,52,533,46,487"/>
-<area shape="rect" id="Node000014" href="$classarm__compute_1_1_c_l_reduce_operation_kernel.html" title="Class to define interface for the reduce operation kernel." alt="" coords="147,775,371,815"/>
-<area shape="poly" id="edge273_Node000000_Node000014" title=" " alt="" coords="48,487,51,544,63,618,74,656,89,694,109,729,135,760,151,772,148,776,131,764,105,732,84,696,69,658,58,619,46,545,43,487"/>
-<area shape="rect" id="Node000015" href="$classarm__compute_1_1_c_l_scale_factor_symm8_kernel.html" title=" " alt="" coords="162,840,356,881"/>
-<area shape="poly" id="edge274_Node000000_Node000015" title=" " alt="" coords="52,487,62,566,79,667,103,763,118,800,135,825,164,845,161,849,131,829,113,803,98,765,74,669,57,567,47,488"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,141,31"/>
+<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_cast_bool_kernel.html" title="Class for the kernel converting boolean type." alt="" coords="189,5,402,31"/>
+<area shape="poly" id="edge274_Node000000_Node000001" title=" " alt="" coords="156,16,188,16,188,21,156,21"/>
 </map>

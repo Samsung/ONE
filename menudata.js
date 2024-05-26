@@ -164,7 +164,6 @@ var menudata={children:[
 {text:"p",url:"namespacemembers_eval.html#index_p"},
 {text:"r",url:"namespacemembers_eval.html#index_r"},
 {text:"s",url:"namespacemembers_eval.html#index_s"},
-{text:"t",url:"namespacemembers_eval.html#index_t"},
 {text:"u",url:"namespacemembers_eval.html#index_u"},
 {text:"v",url:"namespacemembers_eval.html#index_v"},
 {text:"w",url:"namespacemembers_eval.html#index_w"},

@@ -1,3 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_value.html" title=" " alt="" coords="5,5,185,46"/>
+<area shape="rect" id="Node000000" href="$classflexbuffers_1_1_object.html" title=" " alt="" coords="5,56,129,82"/>
+<area shape="rect" id="Node000001" href="$classflexbuffers_1_1_fixed_typed_vector.html" title=" " alt="" coords="177,31,366,56"/>
+<area shape="poly" id="edge237_Node000000_Node000001" title=" " alt="" coords="144,57,176,53,177,58,144,62"/>
+<area shape="rect" id="Node000002" href="$classflexbuffers_1_1_sized.html" title=" " alt="" coords="213,80,330,106"/>
+<area shape="poly" id="edge238_Node000000_Node000002" title=" " alt="" coords="144,75,213,83,212,89,143,80"/>
+<area shape="rect" id="Node000003" href="$classflexbuffers_1_1_blob.html" title=" " alt="" coords="438,5,549,31"/>
+<area shape="poly" id="edge239_Node000002_Node000003" title=" " alt="" coords="344,74,365,66,389,53,413,40,442,29,444,34,415,45,391,58,367,71,346,79"/>
+<area shape="rect" id="Node000004" href="$classflexbuffers_1_1_string.html" title=" " alt="" coords="434,55,553,80"/>
+<area shape="poly" id="edge240_Node000002_Node000004" title=" " alt="" coords="345,82,433,72,433,77,346,87"/>
+<area shape="rect" id="Node000005" href="$classflexbuffers_1_1_typed_vector.html" title=" " alt="" coords="414,104,572,130"/>
+<area shape="poly" id="edge241_Node000002_Node000005" title=" " alt="" coords="345,98,414,106,413,111,345,103"/>
+<area shape="rect" id="Node000006" href="$classflexbuffers_1_1_vector.html" title=" " alt="" coords="432,153,555,179"/>
+<area shape="poly" id="edge242_Node000002_Node000006" title=" " alt="" coords="325,109,415,140,448,150,446,155,413,145,323,114"/>
+<area shape="rect" id="Node000007" href="$classflexbuffers_1_1_map.html" title=" " alt="" coords="620,153,731,179"/>
+<area shape="poly" id="edge243_Node000006_Node000007" title=" " alt="" coords="570,164,620,164,620,169,570,169"/>
 </map>

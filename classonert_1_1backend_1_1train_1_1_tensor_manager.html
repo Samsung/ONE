@@ -170,7 +170,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00058">58</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00058">58</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>  : _nonconst_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>(planner_id)}, _trainable_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>(planner_id)},</div>
 <div class="line"><span class="lineno">   61</span>    _back_prop_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>(planner_id)}, _gradient_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>(planner_id)},</div>
 <div class="line"><span class="lineno">   62</span>    <span class="comment">// TODO Find a suitable planner of disposable tensors to reduce peak memory usage</span></div>
@@ -223,7 +223,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00080">80</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00080">80</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
 <div class="line"><span class="lineno">   82</span>  allocateMemory(_back_prop_mgr.get(), _tensors-&gt;back_prop_tensors(),</div>
 <div class="line"><span class="lineno">   83</span>                 std::string{<span class="stringliteral">&quot;     BACK_PROP TENSOR &quot;</span>});</div>
@@ -246,7 +246,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00092">92</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00092">92</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
 <div class="line"><span class="lineno">   94</span>  allocateMemory(_disposable_back_prop_mgr.get(), _tensors-&gt;disposable_back_prop_tensors(),</div>
 <div class="line"><span class="lineno">   95</span>                 std::string{<span class="stringliteral">&quot;DISPOSABLE BACK_PROP TENSOR &quot;</span>});</div>
@@ -269,7 +269,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00086">86</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00086">86</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
 <div class="line"><span class="lineno">   88</span>  allocateMemory(_gradient_mgr.get(), _tensors-&gt;gradient_tensors(),</div>
 <div class="line"><span class="lineno">   89</span>                 std::string{<span class="stringliteral">&quot;     GRADIENT TENSOR &quot;</span>});</div>
@@ -292,7 +292,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00068">68</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00068">68</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
 <div class="line"><span class="lineno">   70</span>  allocateMemory(_nonconst_mgr.get(), _tensors-&gt;nonconst_tensors(),</div>
 <div class="line"><span class="lineno">   71</span>                 std::string{<span class="stringliteral">&quot;               TENSOR &quot;</span>});</div>
@@ -315,7 +315,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00074">74</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00074">74</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
 <div class="line"><span class="lineno">   76</span>  allocateMemory(_trainable_mgr.get(), _tensors-&gt;trainable_tensors(),</div>
 <div class="line"><span class="lineno">   77</span>                 std::string{<span class="stringliteral">&quot;     TRAINABLE TENSOR &quot;</span>});</div>
@@ -339,7 +339,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00130">130</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00130">130</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
 <div class="line"><span class="lineno">  132</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getBackPropTensor(index);</div>
 <div class="line"><span class="lineno">  133</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
@@ -371,7 +371,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00162">162</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00162">162</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  163</span>{</div>
 <div class="line"><span class="lineno">  164</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getDisposableBackPropTensor(index);</div>
 <div class="line"><span class="lineno">  165</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
@@ -400,7 +400,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00146">146</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00146">146</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  147</span>{</div>
 <div class="line"><span class="lineno">  148</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getGradientTensor(index);</div>
 <div class="line"><span class="lineno">  149</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
@@ -429,7 +429,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00098">98</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00098">98</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
 <div class="line"><span class="lineno">  100</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getNonConstTensor(index);</div>
 <div class="line"><span class="lineno">  101</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
@@ -458,7 +458,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00114">114</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00114">114</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
 <div class="line"><span class="lineno">  116</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getTrainableTensor(index);</div>
 <div class="line"><span class="lineno">  117</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
@@ -487,7 +487,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00139">139</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00139">139</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
 <div class="line"><span class="lineno">  141</span>  assert(_tensors-&gt;getBackPropTensor(index) &amp;&amp; !_tensors-&gt;getBackPropTensor(index)-&gt;is_dynamic());</div>
 <div class="line"><span class="lineno">  142</span> </div>
@@ -512,7 +512,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00171">171</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00171">171</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
 <div class="line"><span class="lineno">  173</span>  assert(_tensors-&gt;getDisposableBackPropTensor(index) &amp;&amp;</div>
 <div class="line"><span class="lineno">  174</span>         !_tensors-&gt;getDisposableBackPropTensor(index)-&gt;is_dynamic());</div>
@@ -538,7 +538,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00155">155</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00155">155</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
 <div class="line"><span class="lineno">  157</span>  assert(_tensors-&gt;getGradientTensor(index) &amp;&amp; !_tensors-&gt;getGradientTensor(index)-&gt;is_dynamic());</div>
 <div class="line"><span class="lineno">  158</span> </div>
@@ -563,7 +563,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00107">107</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00107">107</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  108</span>{</div>
 <div class="line"><span class="lineno">  109</span>  assert(_tensors-&gt;getNonConstTensor(index) &amp;&amp; !_tensors-&gt;getNonConstTensor(index)-&gt;is_dynamic());</div>
 <div class="line"><span class="lineno">  110</span> </div>
@@ -588,7 +588,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8cc_source.html#l00123">123</a> of file <a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00123">123</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
 <div class="line"><span class="lineno">  125</span>  assert(_tensors-&gt;getTrainableTensor(index) &amp;&amp; !_tensors-&gt;getTrainableTensor(index)-&gt;is_dynamic());</div>
 <div class="line"><span class="lineno">  126</span> </div>
@@ -620,13 +620,13 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">41</a> of file <a class="el" href="train_2_tensor_manager_8h_source.html">TensorManager.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2_tensor_manager_8cc_source.html#l00130">claimBackPropPlan()</a>, <a class="el" href="train_2_tensor_manager_8cc_source.html#l00162">claimDisposableBackPropPlan()</a>, <a class="el" href="train_2_tensor_manager_8cc_source.html#l00146">claimGradientPlan()</a>, <a class="el" href="train_2_tensor_manager_8cc_source.html#l00098">claimNonConstPlan()</a>, and <a class="el" href="train_2_tensor_manager_8cc_source.html#l00114">claimTrainablePlan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_manager_8cc_source.html#l00130">claimBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00162">claimDisposableBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00146">claimGradientPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00098">claimNonConstPlan()</a>, and <a class="el" href="_tensor_manager_8cc_source.html#l00114">claimTrainablePlan()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>runtime/onert/backend/train/<a class="el" href="train_2_tensor_manager_8h_source.html">TensorManager.h</a></li>
-<li>runtime/onert/backend/train/<a class="el" href="train_2_tensor_manager_8cc_source.html">TensorManager.cc</a></li>
+<li>runtime/onert/backend/train/<a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

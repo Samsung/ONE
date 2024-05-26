@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structkuma_1_1details_1_1_interval_mask.html" title=" " alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,167,54"/>
+<area shape="rect" id="Node000001" href="$classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html" title=" " alt="" coords="215,5,363,61"/>
+<area shape="poly" id="edge304_Node000000_Node000001" title=" " alt="" coords="182,31,215,31,215,36,182,36"/>
 </map>

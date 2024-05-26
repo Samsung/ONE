@@ -39,9 +39,6 @@ var namespacearm__compute =
     [ "CLSplitVEx", "classarm__compute_1_1_c_l_split_v_ex.html", "classarm__compute_1_1_c_l_split_v_ex" ],
     [ "CLTopKV2", "classarm__compute_1_1_c_l_top_k_v2.html", "classarm__compute_1_1_c_l_top_k_v2" ],
     [ "CLTransposeConvLayer", "classarm__compute_1_1_c_l_transpose_conv_layer.html", "classarm__compute_1_1_c_l_transpose_conv_layer" ],
-    [ "NEBinaryLogicalOperation", "classarm__compute_1_1_n_e_binary_logical_operation.html", "classarm__compute_1_1_n_e_binary_logical_operation" ],
-    [ "NEBinaryLogicalOperationKernel", "classarm__compute_1_1_n_e_binary_logical_operation_kernel.html", "classarm__compute_1_1_n_e_binary_logical_operation_kernel" ],
-    [ "NEBinaryLogicalOperationStatic", "classarm__compute_1_1_n_e_binary_logical_operation_static.html", "classarm__compute_1_1_n_e_binary_logical_operation_static" ],
     [ "NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", "classarm__compute_1_1_n_e_cast_bool" ],
     [ "NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", "classarm__compute_1_1_n_e_cast_bool_kernel" ],
     [ "NEEmbeddingLookup", "classarm__compute_1_1_n_e_embedding_lookup.html", "classarm__compute_1_1_n_e_embedding_lookup" ],
@@ -64,8 +61,6 @@ var namespacearm__compute =
     [ "NEReduceOperation", "classarm__compute_1_1_n_e_reduce_operation.html", "classarm__compute_1_1_n_e_reduce_operation" ],
     [ "NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", "classarm__compute_1_1_n_e_reduce_sum" ],
     [ "NETransposeConvLayer", "classarm__compute_1_1_n_e_transpose_conv_layer.html", "classarm__compute_1_1_n_e_transpose_conv_layer" ],
-    [ "NELogicalAnd", "namespacearm__compute.html#a3c1d37a2b138520f5c1f138bbcd26488", null ],
-    [ "NELogicalOr", "namespacearm__compute.html#a50bb7b981f1fa17145d6b11759307a5b", null ],
     [ "ArgOperation", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99", [
       [ "MAX", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99a26a4b44a837bf97b972628509912b4a5", null ],
       [ "MIN", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99ace31e2a082d17e038fcc6e3006166653", null ]
@@ -85,16 +80,5 @@ var namespacearm__compute =
       [ "NONE", "namespacearm__compute.html#aab54f1a8a8f027a9fbe26873be292eecab50339a10e1de285ac99d4c3990b8693", null ],
       [ "BOOL", "namespacearm__compute.html#aab54f1a8a8f027a9fbe26873be292eecaa97b2c144243b2b9d2c593ec268b62f5", null ]
     ] ],
-    [ "configure_func", "namespacearm__compute.html#aae42968895315eff699fde4aad00d71d", null ],
-    [ "configure_logic_func", "namespacearm__compute.html#a5854916ef3b19a08b50fc1265f7bf3d0", null ],
-    [ "elementwise_logic_op", "namespacearm__compute.html#a2c70f605ab933bd2e61cac978fac4925", null ],
-    [ "elementwise_logic_op", "namespacearm__compute.html#ae1a4d9334f986f2a8a269850e31e327d", null ],
-    [ "elementwise_logic_op", "namespacearm__compute.html#a026ec0b95882133c3daabaf2b7bee600", null ],
-    [ "elementwise_logic_op_broadcast", "namespacearm__compute.html#a2b6803d55b858faf47ed1372c6301e76", null ],
-    [ "elementwise_logic_op_broadcast_loop", "namespacearm__compute.html#aee9a058eb42f5f20e97f4832cf2e5d08", null ],
-    [ "elementwise_logic_op_loop", "namespacearm__compute.html#a2710156b3181775e2e18624bb9f421c5", null ],
-    [ "elementwise_logic_op_scalar", "namespacearm__compute.html#a8c9867d98ccdc3e77b15904cf62cf0ce", null ],
-    [ "elementwise_op", "namespacearm__compute.html#a4c26cde94486dfea155ac5ba45e628e9", null ],
-    [ "elementwise_op", "namespacearm__compute.html#a3cfe06ba40310d230cef7d46eca74f7f", null ],
     [ "transposeconv_output_dimensions", "namespacearm__compute.html#a386704431e8e28600e5b069d1275d0ea", null ]
 ];

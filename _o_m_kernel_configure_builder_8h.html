@@ -196,10 +196,10 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>    assert(builder_id_opcode &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
 <div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize))</div>
 <div class="line"><span class="lineno">   66</span>    {</div>
-<div class="line"><span class="lineno">   67</span>      *<a class="code hl_function" href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">configure_func</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   67</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">   69</span>    }</div>
-<div class="line"><span class="lineno">   70</span>    *<a class="code hl_function" href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">configure_func</a> = _operator_configure[builder_id_opcode];</div>
+<div class="line"><span class="lineno">   70</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
 <div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   72</span>  }</div>
 <div class="line"><span class="lineno">   73</span> </div>
@@ -234,17 +234,17 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  102</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
 <div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::Size))</div>
 <div class="line"><span class="lineno">  104</span>    {</div>
-<div class="line"><span class="lineno">  105</span>      *<a class="code hl_function" href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">configure_func</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  105</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  106</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">  107</span>    }</div>
 <div class="line"><span class="lineno">  108</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
 <div class="line"><span class="lineno">  109</span>    builder_id_opcode -= builder_id_offset - 1;</div>
 <div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (builder_id_opcode &lt; 0)</div>
 <div class="line"><span class="lineno">  111</span>    {</div>
-<div class="line"><span class="lineno">  112</span>      *<a class="code hl_function" href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">configure_func</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  112</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  113</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">  114</span>    }</div>
-<div class="line"><span class="lineno">  115</span>    *<a class="code hl_function" href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">configure_func</a> = _operator_configure[builder_id_opcode];</div>
+<div class="line"><span class="lineno">  115</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
 <div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  117</span>  }</div>
 <div class="line"><span class="lineno">  118</span> </div>
@@ -270,7 +270,6 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  138</span>} <span class="comment">// namespace onert_micro</span></div>
 <div class="line"><span class="lineno">  139</span> </div>
 <div class="line"><span class="lineno">  140</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_IMPORT_KERNEL_CONFIGURE_BUILDER_H</span></div>
-<div class="ttc" id="anamespacearm__compute_html_aae42968895315eff699fde4aad00d71d"><div class="ttname"><a href="namespacearm__compute.html#aae42968895315eff699fde4aad00d71d">arm_compute::configure_func</a></div><div class="ttdeci">std::function&lt; void(const ITensor *, const ITensor *, ITensor *, const Window &amp;)&gt; configure_func(const ITensor *input1, const ITensor *input2, ITensor *output, std::map&lt; std::string, cpu::kernels::CpuElementwiseKernel::ElementwiseFunction * &gt; map_function)</div><div class="ttdef"><b>Definition</b> <a href="_n_e_binary_logical_operation_kernel_8cpp_source.html#l00164">NEBinaryLogicalOperationKernel.cpp:164</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1import_html_a03571a359df65e4bf7120d48edb3c3d4"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4">onert_micro::import::kernel_builtin_configure</a></div><div class="ttdeci">constexpr KernelBuiltinConfigureRegistry kernel_builtin_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00134">OMKernelConfigureBuilder.h:134</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1import_html_aba9d0b9e9b1e1e32627ab4e8d7639703"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">onert_micro::import::KernelConfigureFunc</a></div><div class="ttdeci">OMStatus(const OMConfigureArgs &amp;) KernelConfigureFunc</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00033">OMKernelConfigureBuilder.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1import_html_ad1c9480dab4ad185fa8f2954466ee160"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160">onert_micro::import::kernel_custom_configure</a></div><div class="ttdeci">constexpr KernelCustomConfigureRegistry kernel_custom_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00135">OMKernelConfigureBuilder.h:135</a></div></div>

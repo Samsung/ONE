@@ -1,7 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classmpqsolver_1_1test_1_1models_1_1_softmax_graphlet.html" title=" " alt="" coords="5,5,163,46"/>
-<area shape="rect" id="Node000001" href="$classmpqsolver_1_1test_1_1models_1_1_softmax_test_graph.html" title=" " alt="" coords="211,35,368,75"/>
-<area shape="poly" id="edge2203_Node000000_Node000001" title=" " alt="" coords="178,36,210,41,210,46,178,42"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="9,70,159,96"/>
-<area shape="poly" id="edge2204_Node000002_Node000001" title=" " alt="" coords="174,68,210,63,211,68,175,73"/>
+<area shape="rect" id="Node000000" href="$classndarray_1_1_contiguous_span.html" title=" " alt="" coords="5,5,170,46"/>
 </map>

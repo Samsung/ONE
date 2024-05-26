@@ -1,12 +1,14 @@
 <map id="onert::ir::train::operation::FullyConnected" name="onert::ir::train::operation::FullyConnected">
-<area shape="rect" id="Node000001" title=" " alt="" coords="71,241,225,282"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1operation_1_1_fully_connected.html" title=" " alt="" coords="5,153,128,193"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,203,131,239,128,243,93,207"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="36,79,161,105"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,120,77,153,72,151,86,118"/>
-<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="83,5,213,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,45,109,80,105,77,129,42"/>
-<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="152,153,309,193"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="164,44,222,151,218,154,159,46"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="203,207,168,243,165,239,199,203"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="73,256,226,297"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1operation_1_1_fully_connected.html" title=" " alt="" coords="8,168,131,208"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,218,133,254,129,258,96,222"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="5,87,131,112"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="71,128,72,167,66,168,66,128"/>
+<area shape="rect" id="Node000004" href="$structonert_1_1ir_1_1_i_operation.html" title=" " alt="" coords="86,5,215,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="129,44,83,88,79,84,125,40"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1ir_1_1train_1_1_i_trainable_operation.html" title=" " alt="" coords="155,79,312,120"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="176,40,215,77,211,81,172,44"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1ir_1_1train_1_1_trainable_operation.html" title=" " alt="" coords="155,168,309,208"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="205,222,170,258,166,254,201,218"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="235,135,235,167,230,167,230,135"/>
 </map>

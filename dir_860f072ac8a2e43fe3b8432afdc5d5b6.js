@@ -20,7 +20,7 @@ var dir_860f072ac8a2e43fe3b8432afdc5d5b6 =
     [ "Tensor.h", "runtime_2onert_2backend_2train_2_tensor_8h.html", "runtime_2onert_2backend_2train_2_tensor_8h" ],
     [ "TensorBuilder.cc", "backend_2train_2_tensor_builder_8cc.html", null ],
     [ "TensorBuilder.h", "backend_2train_2_tensor_builder_8h.html", "backend_2train_2_tensor_builder_8h" ],
-    [ "TensorManager.cc", "train_2_tensor_manager_8cc.html", null ],
+    [ "TensorManager.cc", "_tensor_manager_8cc.html", null ],
     [ "TensorManager.h", "train_2_tensor_manager_8h.html", "train_2_tensor_manager_8h" ],
     [ "TensorRegistry.h", "backend_2train_2_tensor_registry_8h.html", "backend_2train_2_tensor_registry_8h" ],
     [ "train.cc", "train_8cc.html", "train_8cc" ]

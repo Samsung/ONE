@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_view_impl.html" title=" " alt="" coords="5,5,159,46"/>
+<area shape="rect" id="Node000000" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_accessor.html" title=" " alt="" coords="5,5,160,46"/>
+<area shape="rect" id="Node000001" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_view.html" title=" " alt="" coords="208,39,362,79"/>
+<area shape="poly" id="edge2265_Node000000_Node000001" title=" " alt="" coords="175,38,208,44,207,49,174,43"/>
+<area shape="rect" id="Node000002" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_buffer.html" title=" " alt="" coords="410,5,564,46"/>
+<area shape="poly" id="edge2266_Node000001_Node000002" title=" " alt="" coords="377,41,410,36,410,41,378,46"/>
+<area shape="rect" id="Node000003" href="$classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_overlay.html" title=" " alt="" coords="410,71,564,111"/>
+<area shape="poly" id="edge2267_Node000001_Node000003" title=" " alt="" coords="378,71,410,76,410,81,377,76"/>
+<area shape="rect" id="Node000004" href="$structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_reader.html" title=" " alt="" coords="5,71,160,111"/>
+<area shape="poly" id="edge2268_Node000004_Node000001" title=" " alt="" coords="174,74,207,69,208,74,175,79"/>
 </map>

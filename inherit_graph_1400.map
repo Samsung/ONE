@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,103,31"/>
-<area shape="rect" id="Node000001" href="$structflatbuffers_1_1is__scalar.html" title=" " alt="" coords="151,5,316,31"/>
-<area shape="poly" id="edge3043_Node000000_Node000001" title=" " alt="" coords="118,16,150,16,150,21,118,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,46,111,72"/>
+<area shape="rect" id="Node000001" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="159,5,280,46"/>
+<area shape="poly" id="edge3037_Node000000_Node000001" title=" " alt="" coords="126,42,158,36,159,41,127,48"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="159,71,280,111"/>
+<area shape="poly" id="edge3038_Node000000_Node000002" title=" " alt="" coords="127,70,159,76,158,82,126,75"/>
 </map>

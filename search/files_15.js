@@ -49,10 +49,10 @@ var searchData=
   ['usertensor_2ecc_46',['UserTensor.cc',['../_user_tensor_8cc.html',1,'']]],
   ['usertensor_2eh_47',['UserTensor.h',['../_user_tensor_8h.html',1,'']]],
   ['useset_2eh_48',['UseSet.h',['../_use_set_8h.html',1,'']]],
-  ['util_2eh_49',['util.h',['../compiler_2nnc_2unittests_2optimizations_2_util_8h.html',1,'(Global Namespace)'],['../onert-micro_2externals_2flatbuffers_2_util_8h.html',1,'(Global Namespace)']]],
+  ['util_2eh_49',['util.h',['../onert-micro_2externals_2flatbuffers_2_util_8h.html',1,'(Global Namespace)'],['../compiler_2nnc_2unittests_2optimizations_2_util_8h.html',1,'(Global Namespace)']]],
   ['util_2epy_50',['Util.py',['../_util_8py.html',1,'']]],
-  ['utils_2ecpp_51',['utils.cpp',['../compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html',1,'(Global Namespace)'],['../compiler_2dalgona_2src_2_utils_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html',1,'(Global Namespace)']]],
-  ['utils_2eh_52',['utils.h',['../runtime_2onert_2backend_2gpu__cl_2_utils_8h.html',1,'(Global Namespace)'],['../runtime_2onert_2core_2include_2util_2_utils_8h.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2ruy_2include_2ruy_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2eigen_2_utils_8h.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html',1,'(Global Namespace)'],['../compiler_2dalgona_2src_2_utils_8h.html',1,'(Global Namespace)']]],
+  ['utils_2ecpp_51',['utils.cpp',['../compiler_2dalgona_2src_2_utils_8cpp.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_utils_8cpp.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_utils_8cpp.html',1,'(Global Namespace)']]],
+  ['utils_2eh_52',['utils.h',['../runtime_2onert_2core_2include_2util_2_utils_8h.html',1,'(Global Namespace)'],['../onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2ruy_2include_2ruy_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2_utils_8h.html',1,'(Global Namespace)'],['../compute_2cker_2include_2cker_2eigen_2_utils_8h.html',1,'(Global Namespace)'],['../compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html',1,'(Global Namespace)'],['../compiler_2dalgona_2src_2_utils_8h.html',1,'(Global Namespace)']]],
   ['utils_2epy_53',['utils.py',['../utils_8py.html',1,'']]],
   ['utilsex_2ecpp_54',['UtilsEx.cpp',['../_utils_ex_8cpp.html',1,'']]],
   ['utilsex_2eh_55',['UtilsEx.h',['../_utils_ex_8h.html',1,'']]]

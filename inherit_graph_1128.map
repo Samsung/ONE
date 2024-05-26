@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structonert_1_1compiler_1_1_compiler_artifact.html" title=" " alt="" coords="5,5,168,46"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1compiler_1_1_i_lowered_graph.html" title=" " alt="" coords="5,39,171,79"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1compiler_1_1_lowered_graph.html" title="Class that contains lowering information on graph. In addition, after lowering, operands in graph wil..." alt="" coords="221,5,382,46"/>
+<area shape="poly" id="edge2370_Node000000_Node000001" title=" " alt="" coords="185,41,220,36,221,41,186,46"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html" title="Class that contains lowering information on graph. In addition, after lowering, operands in graph wil..." alt="" coords="219,71,384,111"/>
+<area shape="poly" id="edge2371_Node000000_Node000002" title=" " alt="" coords="186,71,218,76,218,81,185,76"/>
 </map>

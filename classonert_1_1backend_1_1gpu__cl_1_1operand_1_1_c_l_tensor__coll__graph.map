@@ -1,9 +1,0 @@
-<map id="onert::backend::gpu_cl::operand::CLTensor" name="onert::backend::gpu_cl::operand::CLTensor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="97,199,250,240"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="95,109,252,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,165,176,199,171,199,171,165"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,13,161,39"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,48,158,107,154,110,102,52"/>
-<area shape="rect" id="Node000004" href="$structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info.html" title=" " alt="" coords="185,5,344,46"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="239,60,193,110,189,107,235,56"/>
-</map>

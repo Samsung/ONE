@@ -1,10 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"_dimension_8cpp.html":[36,0,0,45,1,1,9],
-"_dimension_8cpp.html#a19d413c5b452617314c930a68f26456e":[36,0,0,45,1,1,9,2],
-"_dimension_8cpp.html#a7b77e68dad3ea7f5583cd4836ea8aa7c":[36,0,0,45,1,1,9,3],
-"_dimension_8cpp.html#a89a962bda4cdb8d3b7bf92b36828814e":[36,0,0,45,1,1,9,1],
-"_dimension_8cpp.html#ab87061ba18475606a6d09db0a2e092e9":[36,0,0,45,1,1,9,0],
 "_dimension_8cpp_source.html":[36,0,0,45,1,1,9],
 "_dimension_8h.html":[36,0,0,45,0,0,1,18],
 "_dimension_8h.html#a19d413c5b452617314c930a68f26456e":[36,0,0,45,0,0,1,18,3],
@@ -12,10 +7,10 @@ var NAVTREEINDEX8 =
 "_dimension_8h.html#a89a962bda4cdb8d3b7bf92b36828814e":[36,0,0,45,0,0,1,18,2],
 "_dimension_8h.html#ab87061ba18475606a6d09db0a2e092e9":[36,0,0,45,0,0,1,18,1],
 "_dimension_8h_source.html":[36,0,0,45,0,0,1,18],
-"_disposable_tensor_index_8h.html":[36,0,4,2,1,7,7],
-"_disposable_tensor_index_8h.html#a3941bee692651dbecf8a48dd142c8ad4":[36,0,4,2,1,7,7,1],
-"_disposable_tensor_index_8h.html#ad643bd209405eb6d4500363a4687ccc4":[36,0,4,2,1,7,7,2],
-"_disposable_tensor_index_8h_source.html":[36,0,4,2,1,7,7],
+"_disposable_tensor_index_8h.html":[36,0,4,2,1,6,7],
+"_disposable_tensor_index_8h.html#a3941bee692651dbecf8a48dd142c8ad4":[36,0,4,2,1,6,7,1],
+"_disposable_tensor_index_8h.html#ad643bd209405eb6d4500363a4687ccc4":[36,0,4,2,1,6,7,2],
+"_disposable_tensor_index_8h_source.html":[36,0,4,2,1,6,7],
 "_div_8float_8cpp.html":[36,0,0,3,0,0,22],
 "_div_8float_8cpp.html#a28f06365699de64e7ca0da2f35078cb3":[36,0,0,3,0,0,22,2],
 "_div_8float_8cpp.html#a7268028a5d2923b9419f8392b64b39fe":[36,0,0,3,0,0,22,3],
@@ -249,5 +244,10 @@ var NAVTREEINDEX8 =
 "_elu_op_8h.html":[36,0,0,73,0,0,0,13],
 "_elu_op_8h_source.html":[36,0,0,73,0,0,0,13],
 "_embedder_8cpp.html":[36,0,0,61,2,1],
-"_embedder_8cpp_source.html":[36,0,0,61,2,1]
+"_embedder_8cpp_source.html":[36,0,0,61,2,1],
+"_embedder_8h.html":[36,0,0,61,1,0,0],
+"_embedder_8h_source.html":[36,0,0,61,1,0,0],
+"_embedding_lookup_8cc.html":[36,0,4,2,2,1,4,0,22],
+"_embedding_lookup_8cc_source.html":[36,0,4,2,2,1,4,0,22],
+"_embedding_lookup_8h.html":[36,0,4,2,2,0,3,0,22]
 };

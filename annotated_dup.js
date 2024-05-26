@@ -67,9 +67,6 @@ var annotated_dup =
       [ "CLSplitVEx", "classarm__compute_1_1_c_l_split_v_ex.html", "classarm__compute_1_1_c_l_split_v_ex" ],
       [ "CLTopKV2", "classarm__compute_1_1_c_l_top_k_v2.html", "classarm__compute_1_1_c_l_top_k_v2" ],
       [ "CLTransposeConvLayer", "classarm__compute_1_1_c_l_transpose_conv_layer.html", "classarm__compute_1_1_c_l_transpose_conv_layer" ],
-      [ "NEBinaryLogicalOperation", "classarm__compute_1_1_n_e_binary_logical_operation.html", "classarm__compute_1_1_n_e_binary_logical_operation" ],
-      [ "NEBinaryLogicalOperationKernel", "classarm__compute_1_1_n_e_binary_logical_operation_kernel.html", "classarm__compute_1_1_n_e_binary_logical_operation_kernel" ],
-      [ "NEBinaryLogicalOperationStatic", "classarm__compute_1_1_n_e_binary_logical_operation_static.html", "classarm__compute_1_1_n_e_binary_logical_operation_static" ],
       [ "NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", "classarm__compute_1_1_n_e_cast_bool" ],
       [ "NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", "classarm__compute_1_1_n_e_cast_bool_kernel" ],
       [ "NEEmbeddingLookup", "classarm__compute_1_1_n_e_embedding_lookup.html", "classarm__compute_1_1_n_e_embedding_lookup" ],
@@ -2602,9 +2599,6 @@ var annotated_dup =
         [ "UNUSED_ALL", "structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html", "structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l" ]
       ] ],
       [ "misc", "namespacennfw_1_1misc.html", [
-        [ "benchmark", "namespacennfw_1_1misc_1_1benchmark.html", [
-          [ "Accumulator", "classnnfw_1_1misc_1_1benchmark_1_1_accumulator.html", "classnnfw_1_1misc_1_1benchmark_1_1_accumulator" ]
-        ] ],
         [ "feature", "namespacennfw_1_1misc_1_1feature.html", [
           [ "Index", "classnnfw_1_1misc_1_1feature_1_1_index.html", "classnnfw_1_1misc_1_1feature_1_1_index" ],
           [ "IndexIterator", "classnnfw_1_1misc_1_1feature_1_1_index_iterator.html", "classnnfw_1_1misc_1_1feature_1_1_index_iterator" ],
@@ -2643,8 +2637,7 @@ var annotated_dup =
         [ "EnvConfigSource", "classnnfw_1_1misc_1_1_env_config_source.html", "classnnfw_1_1misc_1_1_env_config_source" ],
         [ "EnvVar", "classnnfw_1_1misc_1_1_env_var.html", "classnnfw_1_1misc_1_1_env_var" ],
         [ "GeneralConfigSource", "classnnfw_1_1misc_1_1_general_config_source.html", "classnnfw_1_1misc_1_1_general_config_source" ],
-        [ "IConfigSource", "structnnfw_1_1misc_1_1_i_config_source.html", "structnnfw_1_1misc_1_1_i_config_source" ],
-        [ "RandomGenerator", "classnnfw_1_1misc_1_1_random_generator.html", "classnnfw_1_1misc_1_1_random_generator" ]
+        [ "IConfigSource", "structnnfw_1_1misc_1_1_i_config_source.html", "structnnfw_1_1misc_1_1_i_config_source" ]
       ] ],
       [ "rt", "namespacennfw_1_1rt.html", [
         [ "optimized_ops", "namespacennfw_1_1rt_1_1optimized__ops.html", [
@@ -2917,24 +2910,6 @@ var annotated_dup =
           [ "CustomKernelConfigParams", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params.html", "structonert_1_1backend_1_1custom_1_1_custom_kernel_config_params" ],
           [ "IKernelBuilder", "classonert_1_1backend_1_1custom_1_1_i_kernel_builder.html", "classonert_1_1backend_1_1custom_1_1_i_kernel_builder" ],
           [ "TypeInfo", "structonert_1_1backend_1_1custom_1_1_type_info.html", "structonert_1_1backend_1_1custom_1_1_type_info" ]
-        ] ],
-        [ "gpu_cl", "namespaceonert_1_1backend_1_1gpu__cl.html", [
-          [ "operand", "namespaceonert_1_1backend_1_1gpu__cl_1_1operand.html", [
-            [ "CLTensor", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_c_l_tensor.html", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_c_l_tensor" ],
-            [ "ICLTensor", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor.html", "classonert_1_1backend_1_1gpu__cl_1_1operand_1_1_i_c_l_tensor" ],
-            [ "TensorInfo", "structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info.html", "structonert_1_1backend_1_1gpu__cl_1_1operand_1_1_tensor_info" ]
-          ] ],
-          [ "Backend", "classonert_1_1backend_1_1gpu__cl_1_1_backend.html", "classonert_1_1backend_1_1gpu__cl_1_1_backend" ],
-          [ "BackendContext", "classonert_1_1backend_1_1gpu__cl_1_1_backend_context.html", "classonert_1_1backend_1_1gpu__cl_1_1_backend_context" ],
-          [ "ClConstantInitializer", "classonert_1_1backend_1_1gpu__cl_1_1_cl_constant_initializer.html", "classonert_1_1backend_1_1gpu__cl_1_1_cl_constant_initializer" ],
-          [ "ClFunction", "classonert_1_1backend_1_1gpu__cl_1_1_cl_function.html", "classonert_1_1backend_1_1gpu__cl_1_1_cl_function" ],
-          [ "Config", "classonert_1_1backend_1_1gpu__cl_1_1_config.html", "classonert_1_1backend_1_1gpu__cl_1_1_config" ],
-          [ "ConstantInitializer", "classonert_1_1backend_1_1gpu__cl_1_1_constant_initializer.html", "classonert_1_1backend_1_1gpu__cl_1_1_constant_initializer" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator.html", "classonert_1_1backend_1_1gpu__cl_1_1_kernel_generator" ],
-          [ "MemoryManager", "classonert_1_1backend_1_1gpu__cl_1_1_memory_manager.html", "classonert_1_1backend_1_1gpu__cl_1_1_memory_manager" ],
-          [ "TensorBuilder", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_builder.html", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_builder" ],
-          [ "TensorManager", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_manager.html", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_manager" ],
-          [ "TensorRegistry", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry.html", "classonert_1_1backend_1_1gpu__cl_1_1_tensor_registry" ]
         ] ],
         [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", [
           [ "ops", "namespaceonert_1_1backend_1_1ruy_1_1ops.html", [
@@ -3248,6 +3223,7 @@ var annotated_dup =
           [ "LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", "structonert_1_1ir_1_1train_1_1_loss_info" ],
           [ "OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", "structonert_1_1ir_1_1train_1_1_optimizer_info" ],
           [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
+          [ "TrainableOperation", "classonert_1_1ir_1_1train_1_1_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_trainable_operation" ],
           [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ],
           [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ]
         ] ],
@@ -4067,7 +4043,6 @@ var annotated_dup =
     [ "MinimumChefFactory", "struct_minimum_chef_factory.html", "struct_minimum_chef_factory" ],
     [ "MirrorPadChef", "class_mirror_pad_chef.html", "class_mirror_pad_chef" ],
     [ "MirrorPadChefFactory", "struct_mirror_pad_chef_factory.html", "struct_mirror_pad_chef_factory" ],
-    [ "MockTensor", "class_mock_tensor.html", "class_mock_tensor" ],
     [ "Model", "struct_model.html", "struct_model" ],
     [ "ModelArgumentInfo", "struct_model_argument_info.html", "struct_model_argument_info" ],
     [ "ModelBuilder", "class_model_builder.html", "class_model_builder" ],

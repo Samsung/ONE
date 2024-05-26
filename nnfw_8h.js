@@ -50,5 +50,6 @@ var nnfw_8h =
     [ "nnfw_set_input_tensorinfo", "nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89", null ],
     [ "nnfw_set_op_backend", "nnfw_8h.html#acbd3dd5d408087754e4dbd4f361008f6", null ],
     [ "nnfw_set_output", "nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba", null ],
-    [ "nnfw_set_output_layout", "nnfw_8h.html#af30451ddf67828b5ea377c13e904c29e", null ]
+    [ "nnfw_set_output_layout", "nnfw_8h.html#af30451ddf67828b5ea377c13e904c29e", null ],
+    [ "nnfw_set_workspace", "nnfw_8h.html#a614f8ef052a7f9cdd4cb8e569f3af2af", null ]
 ];

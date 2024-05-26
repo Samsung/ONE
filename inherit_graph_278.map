@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classhermes_1_1_message_buffer.html" title="A buffer for a message under construction." alt="" coords="5,5,163,31"/>
+<area shape="rect" id="Node000000" href="$structhermes_1_1_message_bus.html" title="A bridge between Source and Sink." alt="" coords="14,5,161,31"/>
+<area shape="rect" id="Node000001" href="$classhermes_1_1_context.html" title="Logging controller." alt="" coords="218,55,332,80"/>
+<area shape="poly" id="edge250_Node000000_Node000001" title=" " alt="" coords="155,33,224,51,222,57,153,38"/>
+<area shape="rect" id="Node000002" href="$structhermes_1_1_sink_1_1_registry.html" title=" " alt="" coords="13,55,162,80"/>
+<area shape="poly" id="edge251_Node000002_Node000001" title=" " alt="" coords="178,65,217,65,217,70,178,70"/>
+<area shape="rect" id="Node000003" href="$structhermes_1_1_source_1_1_registry.html" title=" " alt="" coords="5,104,170,130"/>
+<area shape="poly" id="edge252_Node000003_Node000001" title=" " alt="" coords="153,97,222,78,224,84,155,102"/>
 </map>

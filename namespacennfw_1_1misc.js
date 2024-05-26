@@ -1,6 +1,5 @@
 var namespacennfw_1_1misc =
 [
-    [ "benchmark", "namespacennfw_1_1misc_1_1benchmark.html", "namespacennfw_1_1misc_1_1benchmark" ],
     [ "feature", "namespacennfw_1_1misc_1_1feature.html", "namespacennfw_1_1misc_1_1feature" ],
     [ "fp32", "namespacennfw_1_1misc_1_1fp32.html", [
       [ "absolute_epsilon_equal", "namespacennfw_1_1misc_1_1fp32.html#acb4dd61c65baf6a2cfbc2b15ad88e7b3", null ],
@@ -15,7 +14,6 @@ var namespacennfw_1_1misc =
     [ "EnvVar", "classnnfw_1_1misc_1_1_env_var.html", "classnnfw_1_1misc_1_1_env_var" ],
     [ "GeneralConfigSource", "classnnfw_1_1misc_1_1_general_config_source.html", "classnnfw_1_1misc_1_1_general_config_source" ],
     [ "IConfigSource", "structnnfw_1_1misc_1_1_i_config_source.html", "structnnfw_1_1misc_1_1_i_config_source" ],
-    [ "RandomGenerator", "classnnfw_1_1misc_1_1_random_generator.html", "classnnfw_1_1misc_1_1_random_generator" ],
     [ "join", "namespacennfw_1_1misc.html#a61c7e738bcc4d89ec864577736cc0e8f", null ],
     [ "polymorphic_downcast", "namespacennfw_1_1misc.html#a3572e8b9e57b748be27be48d6369eeda", null ],
     [ "polymorphic_downcast", "namespacennfw_1_1misc.html#a8ffef193435e022dd007a0f7e2e286f4", null ],

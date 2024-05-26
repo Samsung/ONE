@@ -393,28 +393,29 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_info_loader_8cc_source.html#l00096">96</a> of file <a class="el" href="_train_info_loader_8cc_source.html">TrainInfoLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  assert(buffer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  flatbuffers::Verifier v(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordtype">bool</span> verified = circle::VerifyModelTrainingBuffer(v);</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">if</span> (not verified)</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TrainingInfo buffer is not accessible&quot;</span>};</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">const</span> circle::ModelTraining *circle_model =</div>
-<div class="line"><span class="lineno">  106</span>    circle::GetModelTraining(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer));</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  assert(circle_model != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">auto</span> tinfo = std::make_unique&lt;ir::train::TrainingInfo&gt;();</div>
-<div class="line"><span class="lineno">  111</span>  {</div>
-<div class="line"><span class="lineno">  112</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
-<div class="line"><span class="lineno">  113</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
-<div class="line"><span class="lineno">  114</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
-<div class="line"><span class="lineno">  115</span>  }</div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">return</span> tinfo;</div>
-<div class="line"><span class="lineno">  117</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_train_info_loader_8cc_source.html#l00113">113</a> of file <a class="el" href="_train_info_loader_8cc_source.html">TrainInfoLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{</div>
+<div class="line"><span class="lineno">  115</span>  assert(buffer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>  flatbuffers::Verifier v(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keywordtype">bool</span> verified = circle::VerifyModelTrainingBuffer(v);</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (not verified)</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TrainingInfo buffer is not accessible&quot;</span>};</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">const</span> circle::ModelTraining *circle_model =</div>
+<div class="line"><span class="lineno">  123</span>    circle::GetModelTraining(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer));</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>  assert(circle_model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">auto</span> tinfo = std::make_unique&lt;ir::train::TrainingInfo&gt;();</div>
+<div class="line"><span class="lineno">  128</span>  {</div>
+<div class="line"><span class="lineno">  129</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
+<div class="line"><span class="lineno">  130</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
+<div class="line"><span class="lineno">  131</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
+<div class="line"><span class="lineno">  132</span>    tinfo-&gt;setTrainableOps(loadTrainableOps(circle_model));</div>
+<div class="line"><span class="lineno">  133</span>  }</div>
+<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">return</span> tinfo;</div>
+<div class="line"><span class="lineno">  135</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 

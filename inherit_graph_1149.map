@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert_1_1dumper_1_1dot_1_1_dot_builder.html" title=" " alt="" coords="5,5,129,46"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1exec_1_1feature_1_1_reader.html" title="Class reads values of feature The interface class." alt="" coords="5,39,135,79"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html" title=" " alt="" coords="183,5,318,46"/>
+<area shape="poly" id="edge2413_Node000000_Node000001" title=" " alt="" coords="149,42,182,36,183,41,150,47"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1feature_1_1nhwc_1_1_reader.html" title=" " alt="" coords="183,71,318,111"/>
+<area shape="poly" id="edge2415_Node000000_Node000003" title=" " alt="" coords="150,71,183,76,182,82,150,76"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1feature_1_1nchw_1_1_view.html" title=" " alt="" coords="366,5,495,46"/>
+<area shape="poly" id="edge2414_Node000001_Node000002" title=" " alt="" coords="334,23,366,23,366,28,334,28"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1exec_1_1feature_1_1nhwc_1_1_view.html" title=" " alt="" coords="366,71,495,111"/>
+<area shape="poly" id="edge2416_Node000003_Node000004" title=" " alt="" coords="334,88,366,88,366,94,334,94"/>
 </map>

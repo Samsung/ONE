@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classenco_1_1_subnet_struct_builder.html" title=" " alt="" coords="5,5,177,31"/>
+<area shape="rect" id="Node000000" href="$struct_event.html" title=" " alt="" coords="5,31,60,56"/>
+<area shape="rect" id="Node000001" href="$struct_counter_event.html" title=" " alt="" coords="109,5,209,31"/>
+<area shape="poly" id="edge208_Node000000_Node000001" title=" " alt="" coords="75,32,108,26,109,31,76,38"/>
+<area shape="rect" id="Node000002" href="$struct_duration_event.html" title=" " alt="" coords="108,55,210,80"/>
+<area shape="poly" id="edge209_Node000000_Node000002" title=" " alt="" coords="75,49,108,55,107,60,74,54"/>
+<area shape="rect" id="Node000003" href="$struct_op_seq_duration_event.html" title=" " alt="" coords="258,29,400,55"/>
+<area shape="poly" id="edge210_Node000002_Node000003" title=" " alt="" coords="225,55,257,50,258,55,226,60"/>
+<area shape="rect" id="Node000004" href="$struct_subg_duration_event.html" title=" " alt="" coords="263,79,395,104"/>
+<area shape="poly" id="edge211_Node000002_Node000004" title=" " alt="" coords="226,74,263,80,262,85,225,79"/>
 </map>

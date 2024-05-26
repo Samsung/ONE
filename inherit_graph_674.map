@@ -1,19 +1,85 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classmir_1_1_i_visitor.html" title="Interface for visitors Use in MIR component if you want to enforce to implement visits for all operat..." alt="" coords="5,153,92,179"/>
-<area shape="rect" id="Node000001" href="$classmir_1_1_visitor.html" title="Base visitor with empty fallback function." alt="" coords="140,153,222,179"/>
-<area shape="poly" id="edge2105_Node000000_Node000001" title=" " alt="" coords="108,164,139,164,139,169,108,169"/>
-<area shape="rect" id="Node000002" href="$classmir2loco_1_1_transformer.html" title=" " alt="" coords="294,5,440,31"/>
-<area shape="poly" id="edge2106_Node000001_Node000002" title=" " alt="" coords="192,138,222,88,243,62,269,40,292,28,294,33,271,44,247,66,226,91,196,141"/>
-<area shape="rect" id="Node000003" href="$classmir_1_1_dot_node_builder.html" title=" " alt="" coords="299,55,435,80"/>
-<area shape="poly" id="edge2107_Node000001_Node000003" title=" " alt="" coords="203,140,233,113,269,89,297,78,299,83,271,94,236,117,206,144"/>
-<area shape="rect" id="Node000004" href="$classmir__interpreter_1_1_m_i_r_interpreter.html" title=" " alt="" coords="270,104,463,130"/>
-<area shape="poly" id="edge2108_Node000001_Node000004" title=" " alt="" coords="236,148,269,138,310,128,311,133,271,143,238,153"/>
-<area shape="rect" id="Node000005" href="$classnnc_1_1_acl_cpp_op_generator.html" title="Implements the visitor for the model IR which generates the DOM description translated to C++ source/..." alt="" coords="285,153,449,179"/>
-<area shape="poly" id="edge2109_Node000001_Node000005" title=" " alt="" coords="238,164,284,164,284,169,238,169"/>
-<area shape="rect" id="Node000006" href="$classnnc_1_1_dump_visitor.html" title=" " alt="" coords="307,203,426,228"/>
-<area shape="poly" id="edge2110_Node000001_Node000006" title=" " alt="" coords="238,180,271,189,311,200,310,205,269,194,236,185"/>
-<area shape="rect" id="Node000007" href="$classnnc_1_1_model_analyzer.html" title="Constructs inference sequence for given computational graph, gathers list of variables used in artifa..." alt="" coords="301,252,433,278"/>
-<area shape="poly" id="edge2111_Node000001_Node000007" title=" " alt="" coords="206,188,236,215,271,238,301,250,299,255,269,243,233,219,203,192"/>
-<area shape="rect" id="Node000008" href="$classnnc_1_1_serializer.html" title="Serializer of network parameters for soft backend." alt="" coords="316,301,417,327"/>
-<area shape="poly" id="edge2112_Node000001_Node000008" title=" " alt="" coords="196,192,226,242,247,267,271,288,293,299,316,306,315,311,291,304,269,292,243,271,222,245,192,194"/>
+<area shape="rect" id="Node000000" href="$classmir_1_1_operation.html" title=" " alt="" coords="5,844,107,870"/>
+<area shape="rect" id="Node000001" href="$classmir_1_1ops_1_1_abs_op.html" title=" " alt="" coords="198,79,311,104"/>
+<area shape="poly" id="edge2110_Node000000_Node000001" title=" " alt="" coords="54,829,56,681,66,467,78,356,96,255,120,171,135,139,153,114,173,99,197,91,199,96,176,103,157,117,140,141,125,173,101,256,84,357,72,467,61,681,60,829"/>
+<area shape="rect" id="Node000002" href="$classmir_1_1ops_1_1_avg_pool2_d_op.html" title=" " alt="" coords="177,128,332,154"/>
+<area shape="poly" id="edge2111_Node000000_Node000002" title=" " alt="" coords="55,828,57,689,70,490,82,387,99,293,122,216,136,186,153,163,175,147,178,152,157,167,141,189,127,218,104,295,87,388,75,490,63,689,60,829"/>
+<area shape="rect" id="Node000003" href="$classmir_1_1ops_1_1_binary_elementwise_op.html" title=" " alt="" coords="155,177,354,203"/>
+<area shape="poly" id="edge2112_Node000000_Node000003" title=" " alt="" coords="55,828,59,698,73,513,85,419,102,332,124,261,137,234,153,212,166,202,169,206,157,216,142,236,129,263,107,334,90,420,78,514,64,698,60,828"/>
+<area shape="rect" id="Node000012" href="$classmir_1_1ops_1_1_broadcast_op.html" title=" " alt="" coords="180,227,329,252"/>
+<area shape="poly" id="edge2121_Node000000_Node000012" title=" " alt="" coords="55,828,61,707,76,537,88,450,105,371,126,306,139,281,153,262,178,245,181,249,157,265,143,284,131,308,110,373,93,451,81,538,66,707,61,828"/>
+<area shape="rect" id="Node000013" href="$classmir_1_1ops_1_1_capped_relu_op.html" title=" " alt="" coords="175,276,334,302"/>
+<area shape="poly" id="edge2122_Node000000_Node000013" title=" " alt="" coords="56,829,63,716,79,561,91,482,108,411,128,352,153,311,173,297,176,301,157,315,133,354,113,412,97,483,84,562,68,717,61,829"/>
+<area shape="rect" id="Node000014" href="$classmir_1_1ops_1_1_concat_op.html" title="Description of tensor concatenation operation." alt="" coords="189,325,320,351"/>
+<area shape="poly" id="edge2123_Node000000_Node000014" title=" " alt="" coords="56,828,65,725,82,585,95,514,111,450,130,397,153,360,169,348,188,340,190,345,172,353,157,364,135,399,116,451,100,515,87,585,70,725,62,828"/>
+<area shape="rect" id="Node000015" href="$classmir_1_1ops_1_1_constant_op.html" title=" " alt="" coords="184,375,325,400"/>
+<area shape="poly" id="edge2124_Node000000_Node000015" title=" " alt="" coords="57,828,67,734,85,609,98,546,114,489,132,442,153,410,167,399,182,392,184,397,169,404,157,413,136,444,119,490,103,547,91,610,72,735,62,829"/>
+<area shape="rect" id="Node000016" href="$classmir_1_1ops_1_1_conv2_d_op.html" title=" " alt="" coords="187,424,322,450"/>
+<area shape="poly" id="edge2125_Node000000_Node000016" title=" " alt="" coords="58,828,69,744,89,633,117,528,134,487,153,459,168,448,185,440,188,445,171,452,157,463,138,490,122,530,94,635,74,745,63,829"/>
+<area shape="rect" id="Node000017" href="$classmir_1_1ops_1_1_de_conv2_d_op.html" title=" " alt="" coords="179,473,330,499"/>
+<area shape="poly" id="edge2126_Node000000_Node000017" title=" " alt="" coords="54,828,56,763,69,677,81,631,99,586,122,545,153,508,177,493,180,498,156,512,127,548,103,589,86,633,74,678,61,763,59,828"/>
+<area shape="rect" id="Node000018" href="$classmir_1_1ops_1_1_depthwise_conv2_d_op.html" title=" " alt="" coords="156,523,353,548"/>
+<area shape="poly" id="edge2127_Node000000_Node000018" title=" " alt="" coords="55,829,61,772,75,699,88,660,104,623,126,588,153,558,168,547,171,551,156,561,130,591,109,625,93,662,80,700,66,772,61,829"/>
+<area shape="rect" id="Node000019" href="$classmir_1_1ops_1_1_dequantize_op.html" title=" " alt="" coords="178,572,331,598"/>
+<area shape="poly" id="edge2128_Node000000_Node000019" title=" " alt="" coords="57,828,66,780,82,720,110,659,130,631,153,607,176,593,179,597,156,611,134,635,115,662,87,722,71,781,63,829"/>
+<area shape="rect" id="Node000020" href="$classmir_1_1ops_1_1_elu_op.html" title=" " alt="" coords="201,621,308,647"/>
+<area shape="poly" id="edge2129_Node000000_Node000020" title=" " alt="" coords="60,829,71,790,90,743,116,696,153,656,175,643,199,636,201,641,177,648,156,660,121,699,94,745,76,791,66,830"/>
+<area shape="rect" id="Node000021" href="$classmir_1_1ops_1_1_fully_connected_op.html" title=" " alt="" coords="165,671,344,696"/>
+<area shape="poly" id="edge2130_Node000000_Node000021" title=" " alt="" coords="65,828,98,766,123,733,153,705,173,694,176,699,156,710,127,737,102,769,70,831"/>
+<area shape="rect" id="Node000022" href="$classmir_1_1ops_1_1_gather_op.html" title="Gather operation as defined by ONNX spec. https://github.com/onnx/onnx/blob/master/docs/Operators...." alt="" coords="190,720,319,746"/>
+<area shape="poly" id="edge2131_Node000000_Node000022" title=" " alt="" coords="73,830,108,791,129,771,153,754,189,740,191,745,156,759,133,775,111,794,77,833"/>
+<area shape="rect" id="Node000023" href="$classmir_1_1ops_1_1_hard_swish_op.html" title=" " alt="" coords="178,769,331,795"/>
+<area shape="poly" id="edge2132_Node000000_Node000023" title=" " alt="" coords="91,834,154,804,188,793,189,798,156,809,93,838"/>
+<area shape="rect" id="Node000024" href="$classmir_1_1ops_1_1_input_op.html" title=" " alt="" coords="195,819,314,844"/>
+<area shape="poly" id="edge2133_Node000000_Node000024" title=" " alt="" coords="122,846,194,836,195,842,123,851"/>
+<area shape="rect" id="Node000025" href="$classmir_1_1ops_1_1_leaky_relu_op.html" title=" " alt="" coords="179,868,330,894"/>
+<area shape="poly" id="edge2134_Node000000_Node000025" title=" " alt="" coords="122,862,179,869,178,874,122,867"/>
+<area shape="rect" id="Node000026" href="$classmir_1_1ops_1_1_max_pool2_d_op.html" title=" " alt="" coords="177,917,332,943"/>
+<area shape="poly" id="edge2135_Node000000_Node000026" title=" " alt="" coords="94,875,156,904,190,914,188,919,154,909,92,880"/>
+<area shape="rect" id="Node000027" href="$classmir_1_1ops_1_1_output_op.html" title=" " alt="" coords="190,967,319,992"/>
+<area shape="poly" id="edge2136_Node000000_Node000027" title=" " alt="" coords="78,881,112,919,133,937,156,953,191,967,189,972,153,958,130,942,108,922,74,884"/>
+<area shape="rect" id="Node000028" href="$classmir_1_1ops_1_1_pad_op.html" title=" " alt="" coords="198,1016,311,1042"/>
+<area shape="poly" id="edge2137_Node000000_Node000028" title=" " alt="" coords="70,883,103,944,127,976,156,1003,176,1013,199,1020,197,1025,174,1018,153,1007,123,980,98,947,66,886"/>
+<area shape="rect" id="Node000029" href="$classmir_1_1ops_1_1_quantize_op.html" title=" " alt="" coords="184,1065,325,1091"/>
+<area shape="poly" id="edge2138_Node000000_Node000029" title=" " alt="" coords="66,884,77,922,95,968,121,1014,156,1052,185,1067,183,1072,153,1056,117,1017,90,970,72,924,61,885"/>
+<area shape="rect" id="Node000030" href="$classmir_1_1ops_1_1_reduce_op.html" title=" " alt="" coords="188,1115,321,1140"/>
+<area shape="poly" id="edge2139_Node000000_Node000030" title=" " alt="" coords="63,885,71,932,87,991,115,1051,134,1078,156,1101,171,1111,188,1118,186,1123,169,1116,153,1106,130,1081,110,1053,82,993,66,933,57,885"/>
+<area shape="rect" id="Node000032" href="$classmir_1_1ops_1_1_relu_op.html" title=" " alt="" coords="197,1164,312,1190"/>
+<area shape="poly" id="edge2141_Node000000_Node000032" title=" " alt="" coords="61,885,66,941,81,1013,93,1051,109,1087,130,1121,156,1151,175,1163,197,1170,195,1175,173,1168,153,1155,126,1124,105,1090,88,1053,75,1014,61,942,55,885"/>
+<area shape="rect" id="Node000033" href="$classmir_1_1ops_1_1_reshape_op.html" title=" " alt="" coords="184,1213,325,1239"/>
+<area shape="poly" id="edge2142_Node000000_Node000033" title=" " alt="" coords="59,885,62,950,74,1035,86,1080,104,1124,127,1165,156,1200,170,1210,185,1217,183,1222,167,1214,153,1204,122,1168,99,1126,81,1082,69,1036,56,951,54,885"/>
+<area shape="rect" id="Node000034" href="$classmir_1_1ops_1_1_resize_op.html" title="Resize operation scales are such that output = input * scale for each dimension and the number of dim..." alt="" coords="190,1263,319,1288"/>
+<area shape="poly" id="edge2143_Node000000_Node000034" title=" " alt="" coords="63,885,75,969,94,1079,122,1183,138,1223,157,1250,172,1261,191,1268,189,1273,170,1266,153,1253,134,1225,117,1185,89,1080,69,970,58,886"/>
+<area shape="rect" id="Node000035" href="$classmir_1_1ops_1_1_sigmoid_op.html" title=" " alt="" coords="186,1312,323,1338"/>
+<area shape="poly" id="edge2144_Node000000_Node000035" title=" " alt="" coords="62,885,72,979,91,1103,104,1166,119,1222,136,1268,157,1299,170,1309,187,1317,185,1321,168,1314,153,1303,132,1271,114,1224,98,1167,86,1104,67,979,57,886"/>
+<area shape="rect" id="Node000036" href="$classmir_1_1ops_1_1_slice_op.html" title=" " alt="" coords="195,1361,314,1387"/>
+<area shape="poly" id="edge2145_Node000000_Node000036" title=" " alt="" coords="62,885,70,988,87,1127,100,1198,116,1261,135,1313,157,1348,174,1361,196,1369,194,1374,172,1366,153,1352,130,1316,111,1263,95,1199,82,1128,65,989,56,886"/>
+<area shape="rect" id="Node000037" href="$classmir_1_1ops_1_1_softmax_op.html" title="description of softmax operation." alt="" coords="186,1411,323,1436"/>
+<area shape="poly" id="edge2146_Node000000_Node000037" title=" " alt="" coords="61,885,68,997,84,1151,97,1229,113,1300,133,1359,157,1398,170,1408,186,1415,184,1420,167,1413,153,1401,128,1361,108,1302,91,1230,79,1152,63,997,56,885"/>
+<area shape="rect" id="Node000038" href="$classmir_1_1ops_1_1_sqrt_op.html" title=" " alt="" coords="198,1460,311,1486"/>
+<area shape="poly" id="edge2147_Node000000_Node000038" title=" " alt="" coords="61,885,66,1006,81,1175,93,1261,110,1340,131,1404,143,1429,157,1447,175,1460,198,1468,196,1473,173,1465,153,1451,139,1431,126,1406,105,1341,88,1262,76,1176,61,1007,55,886"/>
+<area shape="rect" id="Node000039" href="$classmir_1_1ops_1_1_squeeze_op.html" title=" " alt="" coords="185,1509,324,1535"/>
+<area shape="poly" id="edge2148_Node000000_Node000039" title=" " alt="" coords="60,885,64,1015,78,1199,90,1293,107,1379,129,1449,142,1476,157,1496,170,1507,185,1514,183,1519,167,1511,153,1500,137,1479,124,1451,102,1380,85,1294,73,1200,59,1015,55,885"/>
+<area shape="rect" id="Node000040" href="$classmir_1_1ops_1_1_tanh_op.html" title=" " alt="" coords="195,1559,314,1584"/>
+<area shape="poly" id="edge2149_Node000000_Node000040" title=" " alt="" coords="60,885,63,1024,75,1223,87,1325,104,1418,127,1494,141,1524,157,1546,174,1559,196,1566,194,1571,172,1564,153,1549,136,1526,122,1496,99,1419,82,1325,70,1223,57,1024,55,885"/>
+<area shape="rect" id="Node000041" href="$classmir_1_1ops_1_1_transpose_op.html" title="Tensor transpose operation." alt="" coords="179,1608,330,1634"/>
+<area shape="poly" id="edge2150_Node000000_Node000041" title=" " alt="" coords="60,885,61,1032,72,1246,84,1356,101,1457,125,1539,140,1571,157,1595,180,1611,177,1615,153,1599,135,1574,120,1541,96,1458,78,1357,67,1246,56,1032,54,885"/>
+<area shape="rect" id="Node000004" href="$classmir_1_1ops_1_1_add_op.html" title=" " alt="" coords="429,5,541,31"/>
+<area shape="poly" id="edge2113_Node000003_Node000004" title=" " alt="" coords="349,167,352,164,365,150,372,135,376,104,380,72,387,56,400,40,427,25,429,29,404,44,392,59,385,74,381,105,377,137,369,153,356,168,352,171"/>
+<area shape="rect" id="Node000005" href="$classmir_1_1ops_1_1_div_op.html" title=" " alt="" coords="431,55,539,80"/>
+<area shape="poly" id="edge2114_Node000003_Node000005" title=" " alt="" coords="347,168,352,164,368,147,376,128,383,109,400,89,429,75,431,80,404,94,388,111,381,130,373,150,356,168,350,172"/>
+<area shape="rect" id="Node000006" href="$classmir_1_1ops_1_1_equal_op.html" title=" " alt="" coords="424,104,545,130"/>
+<area shape="poly" id="edge2115_Node000003_Node000006" title=" " alt="" coords="334,170,353,164,377,151,401,138,431,128,433,133,403,143,379,156,355,169,336,175"/>
+<area shape="rect" id="Node000007" href="$classmir_1_1ops_1_1_greater_op.html" title=" " alt="" coords="419,153,551,179"/>
+<area shape="poly" id="edge2116_Node000003_Node000007" title=" " alt="" coords="369,176,418,170,418,176,369,181"/>
+<area shape="rect" id="Node000008" href="$classmir_1_1ops_1_1_less_op.html" title=" " alt="" coords="426,203,544,228"/>
+<area shape="poly" id="edge2117_Node000003_Node000008" title=" " alt="" coords="369,200,426,206,425,212,369,205"/>
+<area shape="rect" id="Node000009" href="$classmir_1_1ops_1_1_max_op.html" title=" " alt="" coords="428,252,541,278"/>
+<area shape="poly" id="edge2118_Node000003_Node000009" title=" " alt="" coords="337,205,355,212,379,225,403,238,432,249,431,254,401,243,377,230,353,217,335,210"/>
+<area shape="rect" id="Node000010" href="$classmir_1_1ops_1_1_mul_op.html" title=" " alt="" coords="430,301,540,327"/>
+<area shape="poly" id="edge2119_Node000003_Node000010" title=" " alt="" coords="350,208,356,212,373,231,381,251,388,270,404,288,430,302,428,306,400,292,383,273,376,253,368,234,352,216,347,213"/>
+<area shape="rect" id="Node000011" href="$classmir_1_1ops_1_1_sub_op.html" title=" " alt="" coords="429,351,541,376"/>
+<area shape="poly" id="edge2120_Node000003_Node000011" title=" " alt="" coords="352,209,356,212,369,228,377,244,381,276,385,308,391,323,404,337,429,352,427,357,400,342,387,326,380,309,376,277,372,245,365,231,352,216,349,214"/>
+<area shape="rect" id="Node000031" href="$classmir_1_1ops_1_1_reduce_mean_op.html" title=" " alt="" coords="402,1115,567,1140"/>
+<area shape="poly" id="edge2140_Node000030_Node000031" title=" " alt="" coords="337,1125,401,1125,401,1130,337,1130"/>
 </map>
