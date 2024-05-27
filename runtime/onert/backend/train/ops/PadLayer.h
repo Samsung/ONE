@@ -42,9 +42,7 @@ public:
 public:
   template <typename T> void depad();
 
-  void configure(const IPortableTensor *input, const IPortableTensor *pad,
-                 const IPortableTensor *value, IPortableTensor *output,
-                 IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
+  void configureBackward(IPortableTensor *back_prop_input, const IPortableTensor *back_prop_output);
   void forward(bool training) override;
   void backward() override;
 

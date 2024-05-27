@@ -43,7 +43,8 @@ public:
 
 private:
   bool _trainable = false;
-  bool _required_for_backward = false;
+  // TODO: Change to false after merge other parts of fine-tuning feature
+  bool _required_for_backward = true;
 };
 
 } // namespace train

@@ -63,18 +63,12 @@ FullyConnectedLayer::FullyConnectedLayer()
 
 FullyConnectedLayer::~FullyConnectedLayer() = default;
 
-void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
-                                    const IPortableTensor *bias, IPortableTensor *output,
-                                    IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
-                                    IPortableTensor *grad_bias,
-                                    const IPortableTensor *back_prop_output,
-                                    ir::Activation activation,
-                                    ir::FullyConnectedWeightsFormat weights_format,
-                                    const std::shared_ptr<train::ExternalContext> &external_context)
+void FullyConnectedLayer::configureBackward(
+  const IPortableTensor *input, const IPortableTensor *weights, IPortableTensor *output,
+  IPortableTensor *back_prop_input, IPortableTensor *grad_weights, IPortableTensor *grad_bias,
+  const IPortableTensor *back_prop_output, ir::Activation activation,
+  ir::FullyConnectedWeightsFormat weights_format)
 {
-  cpu::ops::FullyConnectedLayer::configure(input, weights, bias, activation, weights_format, output,
-                                           external_context);
-
   _back_prop_input = back_prop_input;
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;

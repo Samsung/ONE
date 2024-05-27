@@ -35,13 +35,13 @@ ElementwiseActivationLayer::ElementwiseActivationLayer() : cpu::ops::Elementwise
   // DO NOTHING
 }
 
-void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                                           IPortableTensor *back_prop_input,
-                                           const IPortableTensor *back_prop_output, float alpha,
-                                           float beta, ElementwiseActivationType op_type)
+void ElementwiseActivationLayer::configureBackward(const IPortableTensor *input,
+                                                   IPortableTensor *back_prop_input,
+                                                   const IPortableTensor *back_prop_output,
+                                                   float alpha, float beta,
+                                                   ElementwiseActivationType op_type)
 {
   assert(input != nullptr);
-  assert(output != nullptr);
   assert(back_prop_input != nullptr);
   assert(back_prop_output != nullptr);
 
@@ -57,9 +57,6 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       {
         if ((alpha == std::numeric_limits<float>::infinity() || alpha == 6.0f) && beta == 0.f)
         {
-          cpu::ops::ElementwiseActivationLayer::configure(
-            input, output, alpha, beta, cpu::ops::ElementwiseActivationType::kReLU);
-
           auto relu_cker = [&alpha]() {
             if (alpha == std::numeric_limits<float>::infinity())
               return nnfw::cker::train::ReLUGrad;
