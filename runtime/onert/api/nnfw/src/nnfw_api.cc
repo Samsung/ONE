@@ -384,6 +384,12 @@ NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
   return session->pop_pipeline_output((std::vector<void *> *)outputs);
 }
 
+NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_workspace(dir);
+}
+
 // Training
 
 NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info)

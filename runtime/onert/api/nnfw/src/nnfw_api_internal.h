@@ -146,6 +146,8 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
   NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
+  NNFW_STATUS set_workspace(const char *dir);
+
   //
   // Internal-only API
   //
@@ -227,6 +229,7 @@ private:
   //     const uint8 *buf;
   //   }
   std::string _model_path;
+  std::string _workspace_dir;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
