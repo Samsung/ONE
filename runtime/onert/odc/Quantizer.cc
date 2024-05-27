@@ -16,6 +16,9 @@
 
 #include "Quantizer.h"
 
+#include "Embedder.h"
+
+#include <util/ConfigSource.h>
 #include <luci/ImporterEx.h>
 #include <luci/CircleQuantizer.h>
 #include <luci/CircleExporter.h>
@@ -111,8 +114,10 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
       quantizer.quantize(graph);
     }
 
-    // TODO Record minmax by minmax-embedder
-    throw std::runtime_error{"Not implemented yet"};
+    // Record minmax by minmax-embedder
+    // TODO use workspace to find minmax file
+    auto minmax_path = util::getConfigString(util::config::MINMAX_FILEPATH);
+    Embedder().embed(module.get(), minmax_path, {1.f, 99.f});
   }
 
   if (full_quantize)

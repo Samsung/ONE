@@ -169,8 +169,10 @@ ifeq (,$(findstring android,$(TARGET_OS)))
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
 	@mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@mkdir -p ${OVERLAY_FOLDER}/include/oops
+	@mkdir -p ${OVERLAY_FOLDER}/include/luci/IR
 	@cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
+	@cp compiler/luci/lang/include/luci/IR/CircleNodes.lst ${OVERLAY_FOLDER}/include/luci/IR
 	@echo "Done prepare-nncc"
 endif
 

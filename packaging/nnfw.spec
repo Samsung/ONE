@@ -225,8 +225,10 @@ cmake --install %{nncc_workspace} %{strip_options}
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
 mkdir -p %{overlay_path}/include/nncc/core/ADT/tensor
 mkdir -p %{overlay_path}/include/oops
+mkdir -p %{overlay_path}/include/luci/IR
 cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h %{overlay_path}/include/nncc/core/ADT/tensor
 cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
+cp compiler/luci/lang/include/luci/IR/CircleNodes.lst %{overlay_path}/include/luci/IR
 
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
