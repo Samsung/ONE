@@ -28,7 +28,11 @@ namespace exec
 
 MinMaxRecorder::MinMaxRecorder(const std::string &minmax_filepath, const ir::Graph &graph,
                                const backend::BackendContexts &backend_contexts)
+#if MINMAX_H5DUMPER
   : _graph{graph}, _backend_contexts{backend_contexts}, _h5dumper(minmax_filepath)
+#else
+  : _graph{graph}, _backend_contexts{backend_contexts}, _raw_dumper(minmax_filepath)
+#endif
 {
 }
 
@@ -143,7 +147,11 @@ void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
 {
   // It would be better to dump at the end of model execution, not subgraph
   // But it requires more changes than subgraph.
+#if MINMAX_H5DUMPER
   _h5dumper.dump(_input_minmax, _op_minmax);
+#else
+  _raw_dumper.dump(_input_minmax, _op_minmax);
+#endif
 }
 
 } // namespace exec
