@@ -31,16 +31,18 @@ void TrainableFnSequence::forward(bool training)
   }
 }
 
-void TrainableFnSequence::backward(uint32_t training_step)
+void TrainableFnSequence::backward(uint32_t training_step, bool weight_update_enabled)
 {
   for (auto it = _functions.rbegin(); it != _functions.rend(); ++it)
   {
     (*it)->backward();
   }
-
-  for (const auto &applier : _appliers)
+  if (weight_update_enabled)
   {
-    applier->applyGradient(training_step);
+    for (const auto &applier : _appliers)
+    {
+      applier->applyGradient(training_step);
+    }
   }
 }
 

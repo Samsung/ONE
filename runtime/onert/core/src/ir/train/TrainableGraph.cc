@@ -127,6 +127,13 @@ const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
   return dynamic_cast<const ITrainableOperation &>(_graph.operations().at(index));
 }
 
+void TrainableGraph::enableBackward(const OperationIndex &index)
+{
+  auto op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(index));
+  assert(op);
+  op->enableBackward();
+}
+
 void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> order,
                                               bool is_forward) const
 {
