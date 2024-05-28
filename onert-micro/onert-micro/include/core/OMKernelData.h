@@ -124,6 +124,20 @@ struct FullyConnectedParams
   int32_t quantized_activation_max;
 };
 
+struct ComparisonParams
+{
+  // uint8_t inference params.
+  int left_shift;
+  int32_t input1_offset;
+  int32_t input1_multiplier;
+  int input1_shift;
+  int32_t input2_offset;
+  int32_t input2_multiplier;
+  int input2_shift;
+  // Shape dependent / common to inference types.
+  bool is_broadcast;
+};
+
 } // namespace core
 } // namespace onert_micro
 

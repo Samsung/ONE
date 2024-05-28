@@ -19,6 +19,7 @@
 
 #include "OMStatus.h"
 #include "core/reader/OMCircleReader.h"
+#include "core/OMRuntimeShape.h"
 
 #include <cassert>
 #include <cstdint>
