@@ -112,6 +112,11 @@ std::string to_str(const luci::Stride *stride)
   return std::to_string(stride->h()) + "," + std::to_string(stride->w());
 }
 
+std::string to_str(const luci::Dilation *dilation)
+{
+  return std::to_string(dilation->h()) + "," + std::to_string(dilation->w());
+}
+
 std::string to_str(const luci::Filter *filter)
 {
   return std::to_string(filter->h()) + "," + std::to_string(filter->w());
