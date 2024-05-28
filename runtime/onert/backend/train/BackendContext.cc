@@ -120,8 +120,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     {
       return;
     }
-    for (auto &&ind :
-         (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (auto &&ind : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       if (tensor_builder->isRegisteredBackward(ind))
         continue;
