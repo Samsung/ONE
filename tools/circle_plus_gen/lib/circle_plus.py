@@ -8,7 +8,7 @@ from lib.train_param import TrainParam
 class CirclePlus():
     ''' Wrapper class of circle_schema_generated.ModelT'''
     TINFO_META_TAG = "CIRCLE_TRAINING"
-    CIRCLE_IDENTIFIER = b"CTR0"
+    CIRCLE_IDENTIFIER = b"CIR0"
 
     def __init__(self):
         self.model: cir_gen.ModelT = cir_gen.ModelT()
