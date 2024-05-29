@@ -46,8 +46,7 @@ public:
    * @param[in] copts         compiler options
    * @param[in] training_info training information
    */
-  explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                            std::vector<std::unique_ptr<CompilerOptions>> &copts,
+  explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
                             const ir::train::TrainingInfo &training_info);
 
   /**

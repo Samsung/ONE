@@ -39,11 +39,10 @@ class MultiModelCompiler final : public ICompiler
 public:
   /**
    * @brief     Construct a new Compiler object for NN package
-   * @param[in] nnpkg    NN package to compile
-   * @param[in] coptions Compiler option vector for each model in package
+   * @param[in] nnpkg NN package to compile
+   * @param[in] copts Compiler option for package
    */
-  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                     std::vector<std::unique_ptr<CompilerOptions>> &copts);
+  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts);
 
   /**
    * @brief Destroy the MultiModelCompiler object
@@ -60,7 +59,7 @@ public:
 
 private:
   std::shared_ptr<ir::NNPkg> _nnpkg;
-  std::vector<CompilerOptions *> _voptions;
+  CompilerOptions *_options;
 };
 
 } // namespace compiler

@@ -39,15 +39,10 @@ namespace compiler
 {
 
 MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                                       std::vector<std::unique_ptr<CompilerOptions>> &copts)
-  : _nnpkg{nnpkg}, _voptions{}
+                                       CompilerOptions *copts)
+  : _nnpkg{nnpkg}, _options{copts}
 {
-  assert(nnpkg->model_count() != 1);
-
-  for (uint32_t i = 0; i < copts.size(); i++)
-  {
-    _voptions.push_back(copts[i].get());
-  }
+  // DO NOTHING
 }
 
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
@@ -55,28 +50,24 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   /***************************************************
    * Prepare compilation phase
    ***************************************************/
-  for (auto &&options : _voptions)
   {
-    if (!options)
+    if (!_options)
       throw std::runtime_error{"Empty compile option"};
 
     // Mode check
     // TODO handle option for each model
-    if (options->he_profiling_mode)
+    if (_options->he_profiling_mode)
       throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
 
-    if (!options->minmax_filepath.empty())
+    if (!_options->minmax_filepath.empty())
       throw std::runtime_error("Recording minmax is not supported for multiple models");
 
-    options->forceInternalOptions();
-    options->verboseOptions();
+    _options->forceInternalOptions();
+    _options->verboseOptions();
   }
 
   // NYI: allow one model compilation
   auto const model_count = _nnpkg->model_count();
-  if (model_count != _voptions.size())
-    throw std::runtime_error{"Model count and option vector size mismatch"};
-
   for (uint16_t i = 0; i < model_count; i++)
   {
     if (!_nnpkg->model(ir::ModelIndex{i})->hasOnly<ir::Graph>())
@@ -103,7 +94,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
    * Backend independent analysis & optimization phase
    ***************************************************/
   // TODO Handle dump level for each model
-  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_voptions[0]->graph_dump_level);
+  auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
@@ -139,7 +130,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, *_voptions[i]);
+        std::make_unique<compiler::LoweredGraph>(subg, *_options);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
@@ -222,7 +213,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
       ExecutorFactoryArgs args;
       args.tracing_ctx = tracing_ctx.get();
-      args.options = _voptions[model_index.value()];
+      args.options = _options;
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
       auto executor = std::unique_ptr<exec::IExecutor>{

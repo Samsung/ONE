@@ -45,10 +45,9 @@ namespace compiler
 namespace train
 {
 
-TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                                   std::vector<std::unique_ptr<CompilerOptions>> &copts,
+TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
                                    const ir::train::TrainingInfo &training_info)
-  : _model{nnpkg->primary_model()}, _options{copts[0].get()}, _training_info{training_info}
+  : _model{nnpkg->primary_model()}, _options{copts}, _training_info{training_info}
 {
   if (nnpkg->model_count() > 1)
     throw std::runtime_error("TrainingCompiler does not support multiple models yet");
