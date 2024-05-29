@@ -13,22 +13,19 @@ Source2002: nnfw-plugin.pc.in
 Source3001: ABSEIL.tar.gz
 Source3002: CPUINFO.tar.gz
 Source3003: FARMHASH.tar.gz
-Source3004: FP16.tar.gz
-Source3005: FXDIV.tar.gz
-Source3006: OOURAFFT.tar.gz
-Source3007: PSIMD.tar.gz
-Source3008: PTHREADPOOL.tar.gz
-Source3009: TENSORFLOW-2.16.1-EIGEN.tar.gz
-Source3010: TENSORFLOW-2.16.1-GEMMLOWP.tar.gz
-Source3011: TENSORFLOW-2.8.0-GEMMLOWP.tar.gz
-Source3012: TENSORFLOW-2.8.0-RUY.tar.gz
-Source3013: TENSORFLOW-2.8.0.tar.gz
-Source3014: XNNPACK.tar.gz
-Source3015: FLATBUFFERS-23.5.26.tar.gz
-Source3016: NEON2SSE.tar.gz
-Source3017: TENSORFLOW-2.16.1-RUY.tar.gz
-Source3018: TENSORFLOW-2.16.1.tar.gz
-Source3019: MLDTYPES.tar.gz
+Source3004: FLATBUFFERS-23.5.26.tar.gz
+Source3005: FP16.tar.gz
+Source3006: FXDIV.tar.gz
+Source3007: MLDTYPES.tar.gz
+Source3008: NEON2SSE.tar.gz
+Source3009: OOURAFFT.tar.gz
+Source3010: PSIMD.tar.gz
+Source3011: PTHREADPOOL.tar.gz
+Source3012: TENSORFLOW-2.16.1-EIGEN.tar.gz
+Source3013: TENSORFLOW-2.16.1-GEMMLOWP.tar.gz
+Source3014: TENSORFLOW-2.16.1-RUY.tar.gz
+Source3015: TENSORFLOW-2.16.1.tar.gz
+Source3016: XNNPACK.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?npud_build:     %define npud_build      0}
@@ -213,9 +210,6 @@ tar -xf %{SOURCE3013} -C ./externals
 tar -xf %{SOURCE3014} -C ./externals
 tar -xf %{SOURCE3015} -C ./externals
 tar -xf %{SOURCE3016} -C ./externals
-tar -xf %{SOURCE3017} -C ./externals
-tar -xf %{SOURCE3018} -C ./externals
-tar -xf %{SOURCE3019} -C ./externals
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
