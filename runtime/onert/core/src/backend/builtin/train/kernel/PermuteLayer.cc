@@ -33,12 +33,10 @@ PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
                            const std::vector<ITensor *> &input_back_prop_tensors,
                            const std::vector<ITensor *> &output_back_prop_tensors,
-                           bool ignore_forward_in_training,
                            const std::shared_ptr<ExternalContext> &external_context)
   : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, external_context},
     _input_back_prop_tensors{input_back_prop_tensors},
-    _output_back_prop_tensors{output_back_prop_tensors},
-    _ignore_forward_in_training{ignore_forward_in_training}
+    _output_back_prop_tensors{output_back_prop_tensors}
 {
   assert(input_back_prop_tensors.size() == output_back_prop_tensors.size());
   assert(src_tensors.size() == dst_tensors.size());
@@ -51,13 +49,7 @@ void PermuteLayer::optimize()
   // TODO Calculate offsets of back propagation tensors if necessary
 }
 
-void PermuteLayer::forward(bool training)
-{
-  if (training && _ignore_forward_in_training)
-    return;
-
-  builtin::kernel::PermuteLayer::run();
-}
+void PermuteLayer::forward(bool) { builtin::kernel::PermuteLayer::run(); }
 
 void PermuteLayer::backward()
 {
