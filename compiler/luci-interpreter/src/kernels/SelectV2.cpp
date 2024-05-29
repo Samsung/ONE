@@ -59,6 +59,9 @@ void SelectV2::execute() const
     case DataType::S32:
       evaluate<int32_t>();
       break;
+    case DataType::S64:
+      evaluate<int64_t>();
+      break;
     default:
       throw std::runtime_error("luci-intp SelectV2 unsupported type.");
   }
