@@ -35,25 +35,24 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   {
     // If file is not exist, create new file
     file = std::fopen(_filename.c_str(), "wb+");
-
-    // Write run count
-    std::fwrite(&runs, sizeof(uint32_t), 1, file);
+    if (!file)
+      throw std::runtime_error{"Failed to open minmax file: " + _filename};
   }
-  else
-  {
-    // Read run count
-    auto read_size = std::fread(&runs, sizeof(uint32_t), 1, file);
-    if (read_size != 1)
-      throw std::runtime_error{"Failed to read run count"};
+
+  // Read run count
+  std::fseek(file, 0, SEEK_SET);
+  auto read_size = std::fread(&runs, sizeof(uint32_t), 1, file);
+  if (read_size == 1)
     runs++;
 
-    // Overwrite run count
-    std::fseek(file, 0, SEEK_SET);
-    std::fwrite(&runs, sizeof(uint32_t), 1, file);
+  // TODO Verify file size
 
-    // Go to end of file to append new data
-    std::fseek(file, 0, SEEK_END);
-  }
+  // Overwrite run count
+  std::fseek(file, 0, SEEK_SET);
+  std::fwrite(&runs, sizeof(uint32_t), 1, file);
+
+  // Go to end of file to append new data
+  std::fseek(file, 0, SEEK_END);
 
   uint32_t input_count = input_minmax.size();
   uint32_t op_count = op_minmax.size();
@@ -94,7 +93,7 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
     std::fwrite(elem.second.data, sizeof(float), 2, file);
   }
 
-  fclose(file);
+  std::fclose(file);
 }
 
 } // namespace exec
