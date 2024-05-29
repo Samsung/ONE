@@ -36,6 +36,7 @@ public:
   void append(N node, float min, float max) { _minmax_map[node] = {min, max}; }
   auto begin() const { return _minmax_map.begin(); }
   auto end() const { return _minmax_map.end(); }
+  auto size() const { return _minmax_map.size(); }
 
 private:
   std::unordered_map<N, MinMaxPair, Hash> _minmax_map;

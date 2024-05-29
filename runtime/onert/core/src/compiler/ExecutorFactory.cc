@@ -26,9 +26,7 @@
 #include "../exec/ExecTime.h"
 #include "../exec/ExecutionObservers.h"
 #include "../exec/LinearExecutor.h"
-#ifdef MINMAX_H5DUMPER
 #include "../exec/MinMaxRecorder.h"
-#endif
 #include "../exec/ParallelExecutor.h"
 #include "../exec/train/TrainableExecutor.h"
 #include "../ir/OperationCloner.h"
@@ -509,11 +507,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
       std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
-#ifdef MINMAX_H5DUMPER
   if (!options->minmax_filepath.empty())
     exec->addObserver(std::make_unique<exec::MinMaxRecorder>(
       options->minmax_filepath, exec->graph(), exec->getBackendContexts()));
-#endif
 
   return exec;
 }
