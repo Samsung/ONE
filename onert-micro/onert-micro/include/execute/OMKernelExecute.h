@@ -30,7 +30,7 @@ namespace execute
 
 struct OMKernelExecute
 {
-  static OMStatus executeKernel(OMExecuteArgs &, core::memory::OMRuntimeAllocator &allocator);
+  static OMStatus runForward(OMExecuteArgs &, core::memory::OMRuntimeAllocator &allocator);
 };
 
 } // namespace execute
