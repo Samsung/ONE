@@ -1,7 +1,3 @@
-# Use C++17 for kbenchmark
-# TODO Remove this when we use C++17 for all runtime directories
-set(CMAKE_CXX_STANDARD 17)
-
 if(NOT BUILD_KBENCHMARK)
   return()
 endif(NOT BUILD_KBENCHMARK)
