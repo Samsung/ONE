@@ -22,11 +22,10 @@
 
 namespace onert_train
 {
-template <typename T>
-class Results
+template <typename T> class Results
 {
 public:
-  Results(const int num): _losses(num), _metrics(num) {}
+  Results(const int num) : _losses(num), _metrics(num) {}
 
   void reset()
   {
@@ -34,22 +33,16 @@ public:
     std::fill(_metrics.begin(), _metrics.end(), 0);
   }
 
-  void setLoss(const int32_t idx, const T var)
-  {
-    _losses[idx] += var;
-  }
+  void setLoss(const int32_t idx, const T var) { _losses[idx] += var; }
 
-  void setMetrics(const int32_t idx, const T var)
-  {
-    _metrics[idx] += var;
-  }
+  void setMetrics(const int32_t idx, const T var) { _metrics[idx] += var; }
 
   void printLoss(const int step, const std::string &prefix = std::string{})
   {
     std::streamsize sz = std::cout.precision();
     {
       std::cout << std::setprecision(4) << std::fixed;
-      std::cout << " - "<< prefix << "loss: ";
+      std::cout << " - " << prefix << "loss: ";
       for (uint32_t i = 0; i < _losses.size(); ++i)
       {
         std::cout << "[" << i << "] " << _losses[i] / step;
