@@ -26,7 +26,7 @@ template <typename T>
 class Results
 {
 public:
-  Results(const int num): _losses{num}, _metrics{num} {}
+  Results(const int num): _losses(num), _metrics(num) {}
 
   void reset()
   {
@@ -41,25 +41,35 @@ public:
 
   void setMetrics(const int32_t idx, const T var)
   {
-    _losses[idx] += var;
+    _metrics[idx] += var;
   }
 
   void printLoss(const int step, const std::string &prefix = std::string{})
   {
-    std::cout << " - loss: ";
-    for (uint32_t i = 0; i < _losses.size(); ++i)
+    std::streamsize sz = std::cout.precision();
     {
-      std::cout << "[" << i << "] " << _losses[i] / step;
+      std::cout << std::setprecision(4) << std::fixed;
+      std::cout << " - "<< prefix << "loss: ";
+      for (uint32_t i = 0; i < _losses.size(); ++i)
+      {
+        std::cout << "[" << i << "] " << _losses[i] / step;
+      }
     }
+    std::cout.precision(sz);
   }
 
   void printMetrics(const int step, const std::string &prefix = std::string{})
   {
-    std::cout << prefix << ": ";
-    for (uint32_t i = 0; i < _metrics.size(); ++i)
+    std::streamsize sz = std::cout.precision();
     {
-      std::cout << "[" << i << "] " << _metrics[i] / step;
+      std::cout << std::setprecision(4) << std::fixed;
+      std::cout << " - " << prefix << ": ";
+      for (uint32_t i = 0; i < _metrics.size(); ++i)
+      {
+        std::cout << "[" << i << "] " << _metrics[i] / step;
+      }
     }
+    std::cout.precision(sz);
   }
 
 private:
