@@ -50,13 +50,12 @@ def inject_hparams(in_file, hparams_file, out_file=None) -> None:
     print("load training hyperparameters")
     print(tparams.dump_as_json())
 
-    # TODO: Enable these lines after implementing the methods
-    # circle_model: CirclePlus = CirclePlus.from_file(in_file)
-    # circle_model.set_train_param(tparams)
-    # print("succesfully add hyperparameters to the circle file")
-    #
-    # circle_model.export(out_file)
-    # print(f"saved in {out_file}")
+    circle_model: CirclePlus = CirclePlus.from_file(in_file)
+    circle_model.set_train_param(tparams)
+    print("succesfully add hyperparameters to the circle file")
+
+    circle_model.export(out_file)
+    print(f"saved in {out_file}")
 
 
 if __name__ == "__main__":

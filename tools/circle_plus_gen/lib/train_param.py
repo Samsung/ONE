@@ -1,3 +1,4 @@
+import flatbuffers
 import json
 
 from lib.utils import *
@@ -7,6 +8,7 @@ from schema import circle_traininfo_generated as ctr_gen
 
 class TrainParam():
     '''Wrapper class of circle_traninfo_generated.ModelTrainingT'''
+    TRAINING_PARAM_IDENTIFIER = b"CTR0"
 
     def __init__(self):
         self.train_param = ctr_gen.ModelTrainingT()
@@ -17,6 +19,12 @@ class TrainParam():
         new_tparam = cls()
         new_tparam.train_param = ctr_gen.ModelTrainingT.InitFromPackedBuf(bytearray(buff))
         return new_tparam
+
+    def to_buff(self):
+        '''Serialize train_param and return its buffer'''
+        builder = flatbuffers.Builder(0)
+        builder.Finish(self.train_param.Pack(builder), self.TRAINING_PARAM_IDENTIFIER)
+        return builder.Output()
 
     @classmethod
     def from_json(cls, json_file: str):
