@@ -30,6 +30,8 @@ namespace exec
 // we need to dump model, subgraph id for each minmax
 
 // File structure
+// uint32_t magic code
+// uint32_t version
 // uint32_t num of runs
 
 // For each run

@@ -27,6 +27,8 @@ namespace odc
 {
 
 // File structure
+// uint32_t magic code
+// uint32_t version
 // uint32_t num of runs
 
 // For each run
