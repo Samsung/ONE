@@ -53,9 +53,11 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
 }
 
 template <typename T>
-void Check_bool(std::initializer_list<int32_t> input_shape, std::initializer_list<int32_t> shape_shape,
-           std::initializer_list<int32_t> output_shape, std::initializer_list<uint8_t> input_data,
-           std::initializer_list<T> shape_data, std::initializer_list<uint8_t> output_data)
+void Check_bool(std::initializer_list<int32_t> input_shape,
+                std::initializer_list<int32_t> shape_shape,
+                std::initializer_list<int32_t> output_shape,
+                std::initializer_list<uint8_t> input_data, std::initializer_list<T> shape_data,
+                std::initializer_list<uint8_t> output_data)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
   constexpr DataType element_type = DataType::BOOL;
@@ -113,15 +115,15 @@ TEST_F(BroadcastToTest, SimpleS64)
 TEST_F(BroadcastToTest, SimpleBool)
 {
   Check_bool<int32_t>(/*input_shape*/ {1, 3}, /*shape_shape*/ {2}, /*output_shape*/ {2, 3},
-                 /*input_data*/
-                 {true, false, true},
-                 /*shape_data*/
-                 {2, 3},
-                 /*output_data*/
-                 {
-                   true, false, true, // Row 1
-                   true, false, true, // Row 2
-                 });
+                      /*input_data*/
+                      {true, false, true},
+                      /*shape_data*/
+                      {2, 3},
+                      /*output_data*/
+                      {
+                        true, false, true, // Row 1
+                        true, false, true, // Row 2
+                      });
   SUCCEED();
 }
 
