@@ -51,10 +51,10 @@ void PermuteLayer::optimize()
   // TODO Calculate offsets of back propagation tensors if necessary
 }
 
-void PermuteLayer::forward(bool training)
+void PermuteLayer::forward(bool)
 {
-  if (training && _ignore_forward_in_training)
-    return;
+  // if (training && _ignore_forward_in_training)
+  //   return;
 
   builtin::kernel::PermuteLayer::run();
 }

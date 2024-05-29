@@ -82,8 +82,8 @@ void TrainableExecutor::forward(const IODescription &desc, bool training)
                           desc.inputs[i]->size);
   }
 
-  if (!training)
-  {
+  // if (!training)
+  // {
     // Set output(s)
     assert(_output_tensors.size() == desc.outputs.size());
     for (uint32_t i = 0; i < _output_tensors.size(); ++i)
@@ -94,7 +94,6 @@ void TrainableExecutor::forward(const IODescription &desc, bool training)
         throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
       tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
     }
-  }
 
   forwardImpl(training);
 
