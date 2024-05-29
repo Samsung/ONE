@@ -107,6 +107,9 @@ void BroadcastTo::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::BOOL:
+      evalBool();
+      break;
     default:
       throw std::runtime_error("luci-intp BroadcastTo Unsupported type.");
   }
@@ -117,6 +120,13 @@ void BroadcastTo::evalFloat() const
   luci_interpreter_pal::BroadcastTo(getTensorShape(input()), getTensorData<char>(input()),
                                     getTensorShape(output()), getTensorData<char>(output()),
                                     TfLiteType::kTfLiteFloat32);
+}
+
+void BroadcastTo::evalBool() const
+{
+  luci_interpreter_pal::BroadcastTo(getTensorShape(input()), getTensorData<char>(input()),
+                                    getTensorShape(output()), getTensorData<char>(output()),
+                                    TfLiteType::kTfLiteBool);
 }
 
 } // namespace kernels

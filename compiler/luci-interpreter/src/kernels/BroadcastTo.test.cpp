@@ -52,6 +52,32 @@ void Check(std::initializer_list<int32_t> input_shape, std::initializer_list<int
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(output_data));
 }
 
+template <typename T>
+void Check_bool(std::initializer_list<int32_t> input_shape,
+                std::initializer_list<int32_t> shape_shape,
+                std::initializer_list<int32_t> output_shape,
+                std::initializer_list<uint8_t> input_data, std::initializer_list<T> shape_data,
+                std::initializer_list<uint8_t> output_data)
+{
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+  constexpr DataType element_type = DataType::BOOL;
+  constexpr DataType shape_type = getElementType<T>();
+
+  Tensor input_tensor =
+    makeInputTensor<element_type>(input_shape, input_data, memory_manager.get());
+  Tensor shape_tensor = makeInputTensor<shape_type>(shape_shape, shape_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(element_type);
+
+  BroadcastTo kernel(&input_tensor, &shape_tensor, &output_tensor);
+
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<uint8_t>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), output_shape);
+}
+
 class BroadcastToTest : public ::testing::Test
 {
 };
@@ -83,6 +109,21 @@ TEST_F(BroadcastToTest, SimpleS64)
                    1, 2, 3, // Row 1
                    1, 2, 3, // Row 2
                  });
+  SUCCEED();
+}
+
+TEST_F(BroadcastToTest, SimpleBool)
+{
+  Check_bool<int32_t>(/*input_shape*/ {1, 3}, /*shape_shape*/ {2}, /*output_shape*/ {2, 3},
+                      /*input_data*/
+                      {true, false, true},
+                      /*shape_data*/
+                      {2, 3},
+                      /*output_data*/
+                      {
+                        true, false, true, // Row 1
+                        true, false, true, // Row 2
+                      });
   SUCCEED();
 }
 
