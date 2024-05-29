@@ -22,6 +22,9 @@ target_include_directories(nnfw_lib_cker INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/i
 # TODO Resolve warning
 target_compile_options(nnfw_lib_cker INTERFACE -Wno-attributes)
 
+# Set EIGEN_NEON_GEBP_NR for arm 64bit
+target_compile_definitions(eigen INTERFACE EIGEN_NEON_GEBP_NR=4)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)

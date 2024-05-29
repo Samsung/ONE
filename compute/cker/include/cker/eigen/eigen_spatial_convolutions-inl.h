@@ -400,7 +400,7 @@ private:
       // span[1]+1 : packetSize-1 - Zeross will be loaded for these indices
       const Index packetSize = internal::unpacket_traits<Packet>::size;
       EIGEN_ALIGN_MAX
-      typename internal::remove_const<Scalar>::type values[packetSize];
+      std::remove_const_t<Scalar> values[packetSize];
       for (int i = 0; i < span[0]; ++i)
         values[i] = Scalar(0);
       for (int i = span[0]; i < span[1] + 1; ++i)
@@ -610,7 +610,7 @@ private:
   {
     const int packetSize = internal::unpacket_traits<Packet>::size;
     EIGEN_ALIGN_MAX
-    typename internal::remove_const<Scalar>::type values[packetSize];
+    std::remove_const_t<Scalar> values[packetSize];
     for (int i = 0; i < packetSize; ++i)
     {
       values[i] = loadCoeff(patchId + i, rowIndex, colIndex, otherIndex);
@@ -1567,7 +1567,7 @@ struct gemm_pack_rhs<
  *
  */
 template <typename Input, typename Kernel, typename OutputKernel = const NoOpOutputKernel>
-EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE static const typename internal::conditional<
+EIGEN_ALWAYS_INLINE static const std::conditional_t<
   internal::traits<Input>::Layout == ColMajor,
   TensorReshapingOp<
     const DSizes<typename internal::traits<Input>::Index, internal::traits<Input>::NumDimensions>,
@@ -1586,7 +1586,7 @@ EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE static const typename internal::conditiona
                               const TensorImagePatchOp<Dynamic, Dynamic, const Input>>,
       const TensorReshapingOp<const DSizes<typename internal::traits<Input>::Index, 2>,
                               const Kernel>,
-      const OutputKernel>>>::type
+      const OutputKernel>>>
 SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_stride = 1,
                    const Index col_stride = 1, const PaddingType padding_type = PADDING_SAME,
                    const Index row_in_stride = 1, const Index col_in_stride = 1,
@@ -1594,7 +1594,8 @@ SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_str
                    Index padding_bottom = 0, Index padding_left = 0, Index padding_right = 0)
 {
   typedef typename internal::traits<Input>::Index TensorIndex;
-  TensorRef<Tensor<typename internal::traits<Input>::Scalar, internal::traits<Input>::NumDimensions,
+  typedef typename internal::traits<Input>::Scalar InputScalar;
+  TensorRef<Tensor<InputScalar, internal::traits<Input>::NumDimensions,
                    internal::traits<Input>::Layout, TensorIndex>>
     in(input);
   TensorRef<
@@ -1719,28 +1720,28 @@ SpatialConvolution(const Input &input, const Kernel &kernel, const Index row_str
   }
   if (padding_explicit)
   {
-    return choose(Cond<internal::traits<Input>::Layout == ColMajor>(),
-                  kernel.reshape(kernel_dims)
-                    .contract(input
-                                .extract_image_patches(kernelRows, kernelCols, row_stride,
-                                                       col_stride, row_in_stride, col_in_stride,
-                                                       /*row_inflate_stride=*/1,
-                                                       /*col_inflate_stride=*/1, padding_top,
-                                                       padding_bottom, padding_left, padding_right,
-                                                       /*padding_value=*/0)
-                                .reshape(pre_contract_dims),
-                              contract_dims, output_kernel)
-                    .reshape(post_contract_dims),
-                  input
+    return choose(
+      Cond<internal::traits<Input>::Layout == ColMajor>(),
+      kernel.reshape(kernel_dims)
+        .contract(input
                     .extract_image_patches(kernelRows, kernelCols, row_stride, col_stride,
                                            row_in_stride, col_in_stride,
                                            /*row_inflate_stride=*/1,
                                            /*col_inflate_stride=*/1, padding_top, padding_bottom,
                                            padding_left, padding_right,
-                                           /*padding_value=*/0)
-                    .reshape(pre_contract_dims)
-                    .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
-                    .reshape(post_contract_dims));
+                                           /*padding_value=*/static_cast<InputScalar>(0))
+                    .reshape(pre_contract_dims),
+                  contract_dims, output_kernel)
+        .reshape(post_contract_dims),
+      input
+        .extract_image_patches(
+          kernelRows, kernelCols, row_stride, col_stride, row_in_stride, col_in_stride,
+          /*row_inflate_stride=*/1,
+          /*col_inflate_stride=*/1, padding_top, padding_bottom, padding_left, padding_right,
+          /*padding_value=*/static_cast<InputScalar>(0))
+        .reshape(pre_contract_dims)
+        .contract(kernel.reshape(kernel_dims), contract_dims, output_kernel)
+        .reshape(post_contract_dims));
   }
   else
   {

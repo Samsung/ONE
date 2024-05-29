@@ -7,13 +7,12 @@ function(_AbseilSource_import)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  # NOTE GCC 13 requires abseil 20230125.3
+  # NOTE TensorFlow 2.16.1 downloads abseil from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/20230125.3.tar.gz)
+  envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/fb3621f4f897824c0dbe0615fa94543df6192f30.tar.gz)
   ExternalSource_Download(ABSEIL
     DIRNAME ABSEIL
-    URL ${ABSEIL_URL}
-    CHECKSUM MD5=9b6dae642c4bd92f007ab2c148bc0498)
+    URL ${ABSEIL_URL})
 
   set(AbseilSource_DIR ${ABSEIL_SOURCE_DIR} PARENT_SCOPE)
   set(AbseilSource_FOUND TRUE PARENT_SCOPE)
