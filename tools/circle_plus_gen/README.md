@@ -93,7 +93,7 @@ python3 main.py example/sample_tparam.circle
 
 # expected output 
 #
-# check hyperparameters in example/sample_tpram.circle
+# check hyperparameters in example/sample_tparam.circle
 # {
 #     "optimizer": {
 #         "type": "sgd",
@@ -115,8 +115,8 @@ python3 main.py example/sample_tparam.circle
 If it doesn't work well with example files, please check their md5sum to make sure they're not broken. 
 
 ```bash
-$ md5sum example/sample.circle example/sample_tpram.circle
+$ md5sum example/sample.circle example/sample_tparam.circle
 
 df287dea52cf5bf16bc9dc720e8bca04  example/sample.circle
-6e736e0544acc7ccb727cbc8f77add94  example/sample_tpram.circle
+6e736e0544acc7ccb727cbc8f77add94  example/sample_tparam.circle
 ```
