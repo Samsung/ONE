@@ -2,4 +2,4 @@
 #
 # * flatc version 23.5.26 is used
 # ./flatc --python --gen-onefile --gen-object-api ../../../nnpackage/schema/circle_schema.fbs
-# ./flatc --python --gen-onefile --one-object-api ../../../runtime/libs/circle-schema/include/circle_traininfo.fbs
+# ./flatc --python --gen-onefile --gen-object-api ../../../runtime/libs/circle-schema/include/circle_traininfo.fbs
