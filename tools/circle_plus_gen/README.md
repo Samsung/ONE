@@ -25,7 +25,9 @@ This tool tested on python3.8.
 ## Add training hyperparameters using json file
 
 You can add a training hyperparameters to a circle file.
-To begin with, you need to write the hyperparameters in a json file. Here's [an example](./example/train_tparam.json) of a json file.
+To begin with, you need to write the hyperparameters in a json file. Here's [an example](./example/train_tparam.json) of a json file. <br/>
+To write own json file, please refer detailed documenet [here](./how-to-write-tparam-json.md).
+
 
 ```bash 
 cat example/train_tparam.json

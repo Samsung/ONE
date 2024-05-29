@@ -1,0 +1,16 @@
+{  
+    "optimizer": {  
+        "type": "sgd",  
+        "args": {  
+            "learningRate": 0.001
+        }  
+    },  
+    "loss": {  
+        "type": "sparse categorical crossentropy",  
+        "args": {  
+            "fromLogits": true,  
+            "reduction": "sum over batch size"  
+        }  
+    },  
+    "batchSize": 64  
+}  
