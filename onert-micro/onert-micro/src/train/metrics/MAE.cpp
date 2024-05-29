@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
-#define ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
+#include "train/metrics/MAE.h"
 
-#include "OMStatus.h"
-#include "core/OMRuntimeContext.h"
-#include "core/OMRuntimeStorage.h"
-#include "execute/OMExecuteArgs.h"
-#include "core/memory/OMRuntimeAllocator.h"
+#include <cmath>
 
-namespace onert_micro
+using namespace onert_micro;
+using namespace onert_micro::train;
+using namespace onert_micro::train::metrics;
+
+/*
+ * E(Y, Y_t) = SUM(|Y_i - Y_t_i|) / N
+ * SUM - sum among i = (0 ... N - 1)
+ */
+float MAE::calculateValue(const uint32_t flat_size, float *calculated_data, float *target_data)
 {
-namespace execute
-{
+  float result_value = 0.f;
 
-struct OMKernelExecute
-{
-  static OMStatus runForward(OMExecuteArgs &, core::memory::OMRuntimeAllocator &allocator);
-};
+  for (uint32_t i = 0; i < flat_size; ++i)
+  {
+    result_value += std::abs(calculated_data[i] - target_data[i]);
+  }
 
-} // namespace execute
-} // namespace onert_micro
-
-#endif // ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
+  return result_value / flat_size;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_IMPORTER_EX_H__
-#define __LUCI_IMPORTER_EX_H__
+#ifndef ONERT_MICRO_TRAIN_METRICS_MSE_H
+#define ONERT_MICRO_TRAIN_METRICS_MSE_H
 
-#include "luci/IR/Module.h"
-#include "luci/Importer.h"
+#include "OMStatus.h"
 
-#include <memory>
-#include <string>
+#include <cstdint>
 
-namespace luci
+namespace onert_micro
+{
+namespace train
+{
+namespace metrics
 {
 
-class ImporterEx final
+struct MSE
 {
-public:
-  ImporterEx() = default;
-
-public:
-  std::unique_ptr<Module> importVerifyModule(const std::string &input_path) const;
-  std::vector<char> importVerifyModelData(const std::string &input_path) const;
+  // Calculate mse metric between calculated and target data
+  static float calculateValue(const uint32_t flat_size, float *calculated_data, float *target_data);
 };
 
-} // namespace luci
+} // namespace metrics
+} // namespace train
+} // namespace onert_micro
 
-#endif // __LUCI_IMPORTER_EX_H__
+#endif // ONERT_MICRO_TRAIN_METRICS_MSE_H

@@ -15,6 +15,7 @@
  */
 
 #include "core/OMRuntimeGraph.h"
+#include "core/OMDataType.h"
 #include "OMStatus.h"
 
 using namespace onert_micro::core;
@@ -67,6 +68,24 @@ uint32_t OMRuntimeGraph::getOutputSizeAt(uint32_t position)
 
   OMRuntimeShape shape(output_tensor);
   return shape.flatSize();
+}
+
+size_t OMRuntimeGraph::getInputDataTypeSize(uint32_t position)
+{
+  const auto input_index = _context.getGraphInputTensorIndex(position);
+  const circle::Tensor *input_tensor = _context.getTensorByIndex(input_index);
+
+  auto type = input_tensor->type();
+  return sizeof(OMDataType(type));
+}
+
+size_t OMRuntimeGraph::getOutputDataTypeSize(uint32_t position)
+{
+  const auto output_index = _context.getGraphOutputTensorIndex(position);
+  const circle::Tensor *output_tensor = _context.getTensorByIndex(output_index);
+
+  auto type = output_tensor->type();
+  return sizeof(type);
 }
 
 uint32_t OMRuntimeGraph::getInputSizeAt(uint32_t position)

@@ -246,6 +246,12 @@ optimize::OMGraphStatus optimize::onert_micro_FindInplaceOpPass(core::OMRuntimeS
   bool changed = false;
 
   OMGraphStatus graph_status = {Unchanged, Ok};
+
+  // If it is train mode, skip inplace optimization
+  // We need all tensors
+  if (configs.train_mode)
+    return graph_status;
+
   do
   {
     changed = false;

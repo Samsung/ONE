@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
-#define ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
+#ifndef ONERT_MICRO_TRAIN_METRICS_CROSS_ENTROPY_H
+#define ONERT_MICRO_TRAIN_METRICS_CROSS_ENTROPY_H
 
 #include "OMStatus.h"
-#include "core/OMRuntimeContext.h"
-#include "core/OMRuntimeStorage.h"
-#include "execute/OMExecuteArgs.h"
-#include "core/memory/OMRuntimeAllocator.h"
+
+#include <cstdint>
 
 namespace onert_micro
 {
-namespace execute
+namespace train
+{
+namespace metrics
 {
 
-struct OMKernelExecute
+struct CrossEntropy
 {
-  static OMStatus runForward(OMExecuteArgs &, core::memory::OMRuntimeAllocator &allocator);
+  // Calculate cross entropy metric between calculated and target data
+  static float calculateValue(const uint32_t flat_size, float *calculated_data, float *target_data);
 };
 
-} // namespace execute
+} // namespace metrics
+} // namespace train
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_EXECUTE_KERNEL_EXECUTE_H
+#endif // ONERT_MICRO_TRAIN_METRICS_CROSS_ENTROPY_H

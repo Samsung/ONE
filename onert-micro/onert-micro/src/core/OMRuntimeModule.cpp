@@ -54,9 +54,9 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
   if (model_ptr == nullptr)
     return UnknownError;
 
-  // First - parse reader
-  // Second - load default graph
-  // Third - optimize it until can
+  // 1 - parse reader
+  // 2 - load default graph
+  // 3 - optimize it until can
   // 4 - AllocDeallocPlan creation
   // 5 - KernelConfigure
   // 6 - Allocate inputs
@@ -88,6 +88,11 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
     memory::OMRuntimeAllocator &runtime_allocator = graph.getRuntimeAllocator();
 
     runtime_context.setModel(model_ptr, i);
+
+    // Parse and validate WOF file if it is exist
+    // WARNING: setWofFile method of RuntimeContext should follow after setModel.
+    if (config.wof_ptr != nullptr)
+      runtime_context.setWofFile(config.wof_ptr);
 
     // Third - optimize it until can
     status = optimize::OMOptimizer::optimize(runtime_storage, runtime_context, config);
@@ -133,7 +138,7 @@ OMStatus OMRuntimeModule::run()
   execute::OMExecuteArgs execute_args = {main_graph.getRuntimeStorage(),
                                          main_graph.getRuntimeContext(), 0, *this};
 
-  status = execute::OMKernelExecute::executeKernel(execute_args, main_graph.getRuntimeAllocator());
+  status = execute::OMKernelExecute::runForward(execute_args, main_graph.getRuntimeAllocator());
   if (status != Ok)
     return status;
 

@@ -14,27 +14,45 @@
  * limitations under the License.
  */
 
-#include <luci_interpreter/Interpreter.h>
-#include <luci_interpreter/TrainingOnertMicro.h>
-#include <luci_interpreter/TrainingSettings.h>
-
+#include "OMTrainingInterpreter.h"
 #include <stdexcept>
 #include <cstdlib>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <iostream>
+#include <numeric>
+
+#define MODEL_TYPE float
 
 namespace
 {
 
 using DataBuffer = std::vector<char>;
 
-void readDataFromFile(const std::string &filename, char *data, size_t data_size)
+void readDataFromFile(const std::string &filename, char *data, size_t data_size,
+                      size_t start_position = 0)
 {
+  std::streampos start = start_position;
+
   std::ifstream fs(filename, std::ifstream::binary);
   if (fs.fail())
     throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+
+  fs.seekg(start);
+
+  if (fs.read(data, data_size).fail())
+    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+  fs.close();
+}
+
+void readDataFromFile(std::ifstream &fs, const std::string &filename, char *data, size_t data_size,
+                      size_t start_position = 0)
+{
+  std::streampos start = start_position;
+
+  fs.seekg(start);
+
   if (fs.read(data, data_size).fail())
     throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
 }
@@ -50,35 +68,9 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
   }
 }
 
-} // namespace
-
-/*
- * @brief EvalDriver main
- *
- *        Driver for testing luci-inerpreter
- *
- */
-int entry(int argc, char **argv)
+DataBuffer readFile(const char *path)
 {
-  if (argc != 8)
-  {
-    std::cerr
-      << "Usage: " << argv[0]
-      << " <path/to/circle/model> <path/to/input/train_data> <path/to/input/label_train_data> "
-         "<path/to/input/test_data> <path/to/input/label_test_data> num_of_train_smpl "
-         "num_of_test_smpl\n";
-    return EXIT_FAILURE;
-  }
-
-  const char *filename = argv[1];
-  const char *input_train_data_path = argv[2];
-  const char *input_label_train_data_path = argv[3];
-  const char *input_test_data_path = argv[4];
-  const char *input_label_test_data_path = argv[5];
-  const int32_t num_train_data_samples = atoi(argv[6]);
-  const int32_t num_test_data_samples = atoi(argv[7]);
-
-  std::ifstream file(filename, std::ios::binary | std::ios::in);
+  std::ifstream file(path, std::ios::binary | std::ios::in);
   if (!file.good())
   {
     std::string errmsg = "Failed to open file";
@@ -100,118 +92,180 @@ int entry(int argc, char **argv)
     throw std::runtime_error(errmsg.c_str());
   }
 
-  // Create interpreter.
-  luci_interpreter::Interpreter interpreter(model_data.data(), true);
+  return model_data;
+}
 
-  luci_interpreter::training::TrainingSettings settings;
-  settings.learning_rate = 0.0001;
-  settings.number_of_epochs = 100;
-  settings.batch_size = 1;
+} // namespace
 
-  const auto input_size = interpreter.getInputDataSizeByIndex(0);
-  const auto output_size = interpreter.getOutputDataSizeByIndex(0);
-
-  char *train_data = new char[input_size * num_train_data_samples];
-  char *label_train_data = new char[output_size * num_train_data_samples];
-
-  char *test_data = new char[input_size * num_test_data_samples];
-  char *label_test_data = new char[output_size * num_test_data_samples];
-
-  readDataFromFile(input_train_data_path, train_data, input_size * num_train_data_samples);
-  readDataFromFile(input_test_data_path, test_data, input_size * num_test_data_samples);
-
-  readDataFromFile(input_label_train_data_path, label_train_data,
-                   output_size * num_train_data_samples);
-  readDataFromFile(input_label_test_data_path, label_test_data,
-                   output_size * num_test_data_samples);
-
-  luci_interpreter::training::TrainingOnertMicro onert_micro_training(&interpreter, settings);
-  onert_micro_training.enableTrainingMode();
-  onert_micro_training.train(num_train_data_samples, reinterpret_cast<uint8_t *>(train_data),
-                             reinterpret_cast<uint8_t *>(label_train_data));
-  onert_micro_training.disableTrainingMode();
-
-  auto size = interpreter.getInputDataSizeByIndex(0);
-  auto train_data_u8 = reinterpret_cast<char *>(train_data);
-
-  printf("Run train dataset:\n");
-  for (int i = 0; i < num_train_data_samples; ++i)
+/*
+ * @brief EvalDriver main
+ *
+ *  Driver for testing training onert micro
+ *  Current example for testing classification task
+ *
+ */
+int entry(int argc, char **argv)
+{
+  if (argc != 10)
   {
-    auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(0));
-
-    std::memcpy(input_data, train_data_u8, size);
-
-    interpreter.interpret();
-    auto data = reinterpret_cast<float *>(interpreter.readOutputTensor(0));
-
-    printf("Sample № = %d\n", i);
-    for (int j = 0; j < output_size / sizeof(float); ++j)
-    {
-      printf("j = %d: predicted_result = %f, correct_result = %f\n", j, data[j],
-             reinterpret_cast<float *>(label_train_data)[j + i * output_size / sizeof(float)]);
-    }
-    printf("\n");
-    train_data_u8 += size;
+    std::cerr << "Usage: " << argv[0]
+              << " <path/to/circle/model/without/weights> "
+                 " <path/to/wof/file> <path/to/save/wof/file> <path/to/input/train_data> "
+                 "<path/to/input/target_train_data> "
+                 "<path/to/input/test_data> <path/to/input/target_test_data> num_of_train_smpl "
+                 "num_of_test_smpl\n";
+    return EXIT_FAILURE;
   }
 
-  auto test_data_u8 = reinterpret_cast<char *>(test_data);
+  const char *circle_model_path = argv[1];
+  const char *wof_file_path = argv[2];
+  const char *output_wof_file_path = argv[3];
+  const char *input_input_train_data_path = argv[4];
+  const char *input_target_train_data_path = argv[5];
+  const char *input_input_test_data_path = argv[6];
+  const char *input_target_test_data_path = argv[7];
+  const int32_t num_train_data_samples = atoi(argv[8]);
+  const int32_t num_test_data_samples = atoi(argv[9]);
 
-  printf("Run test dataset:\n");
-  for (int i = 0; i < num_test_data_samples; ++i)
+  DataBuffer circle_model = readFile(circle_model_path);
+  DataBuffer wof_data = readFile(wof_file_path);
+
+  // Configure training mode
+  onert_micro::OMConfig config;
+  config.wof_ptr = wof_data.data();
+
+  // Set user defined training settings
+  const uint32_t training_epochs = 10;
+  const float lambda = 0.001f;
+  const uint32_t BATCH_SIZE = 64;
+  const uint32_t INPUT_SIZE = 180;
+  const uint32_t OUTPUT_SIZE = 4;
+  const uint32_t num_train_layers = 0;
+  const onert_micro::OMLoss loss = onert_micro::CROSS_ENTROPY;
+  const onert_micro::OMTrainOptimizer train_optim = onert_micro::ADAM;
+  const float beta = 0.9;
+  const float beta_squares = 0.999;
+  const float epsilon = 1e-07;
+
+  config.train_mode = true;
   {
-    auto input_data = reinterpret_cast<char *>(interpreter.allocateInputTensor(0));
+    onert_micro::OMTrainingContext train_context;
+    train_context.batch_size = BATCH_SIZE;
+    train_context.num_of_train_layers = num_train_layers;
+    train_context.lambda = lambda;
+    train_context.loss = loss;
+    train_context.optimizer = train_optim;
+    train_context.beta = beta;
+    train_context.beta_squares = beta_squares;
+    train_context.epsilon = epsilon;
 
-    std::memcpy(input_data, test_data_u8, size);
-
-    interpreter.interpret();
-    auto data = reinterpret_cast<float *>(interpreter.readOutputTensor(0));
-
-    printf("Sample № = %d\n", i);
-    for (int j = 0; j < output_size / sizeof(float); ++j)
-    {
-      printf("j = %d: predicted_result = %f, correct_result = %f\n", j, data[j],
-             reinterpret_cast<float *>(label_test_data)[j + i * output_size / sizeof(float)]);
-    }
-    printf("\n");
-    test_data_u8 += size;
+    config.training_context = train_context;
   }
 
-  float mse_result = 0.0f;
+  // Create training interpreter and import models
+  onert_micro::OMTrainingInterpreter train_interpreter;
+  train_interpreter.importTrainModel(circle_model.data(), config);
 
-  settings.metric = luci_interpreter::training::MSE;
-  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
-                            reinterpret_cast<const uint8_t *>(label_train_data),
-                            reinterpret_cast<void *>(&mse_result));
+  // Temporary buffer to read input data from file using BATCH_SIZE
+  float training_input[BATCH_SIZE * INPUT_SIZE];
+  float training_target[BATCH_SIZE * OUTPUT_SIZE];
+  // Note: here test size used with BATCH_SIZE = 1
+  float test_input[INPUT_SIZE];
+  float test_target[OUTPUT_SIZE];
 
-  float mae_result = 0.0f;
+  for (uint32_t e = 0; e < training_epochs; ++e)
+  {
+    std::vector<float> accuracy_v;
+    std::vector<float> cross_entropy_v;
+    // Run train for current epoch
+    std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    uint32_t num_steps = num_train_data_samples / BATCH_SIZE;
+    for (int i = 0; i < num_steps; ++i)
+    {
+      uint32_t cur_batch_size = std::min(BATCH_SIZE, num_train_data_samples - BATCH_SIZE * i - 1);
+      cur_batch_size = std::max(1u, cur_batch_size);
 
-  settings.metric = luci_interpreter::training::MAE;
-  onert_micro_training.test(num_train_data_samples, reinterpret_cast<const uint8_t *>(train_data),
-                            reinterpret_cast<const uint8_t *>(label_train_data),
-                            reinterpret_cast<void *>(&mae_result));
+      config.training_context.batch_size = cur_batch_size;
+      config.training_context.num_step = i + 1;
 
-  printf("MSE_ERROR TRAIN = %f\n", mse_result);
+      // Read current input and target data
+      readDataFromFile(input_input_train_data_path, reinterpret_cast<char *>(training_input),
+                       sizeof(float) * INPUT_SIZE * cur_batch_size,
+                       i * sizeof(MODEL_TYPE) * INPUT_SIZE * BATCH_SIZE);
 
-  printf("MAE_ERROR TRAIN = %f\n", mae_result);
+      readDataFromFile(input_target_train_data_path, reinterpret_cast<char *>(training_target),
+                       sizeof(float) * OUTPUT_SIZE * cur_batch_size,
+                       i * sizeof(MODEL_TYPE) * OUTPUT_SIZE * BATCH_SIZE);
 
-  mse_result = 0.0f;
+      // Set input and target
+      train_interpreter.setInput(reinterpret_cast<uint8_t *>(training_input), 0);
+      train_interpreter.setTarget(reinterpret_cast<uint8_t *>(training_target), 0);
 
-  settings.metric = luci_interpreter::training::MSE;
-  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
-                            reinterpret_cast<const uint8_t *>(label_test_data),
-                            reinterpret_cast<void *>(&mse_result));
+      // Train with current batch size
+      train_interpreter.trainSingleStep(config);
 
-  mae_result = 0.0f;
+      float mse = 0.f;
+      float mae = 0.f;
+      float cross_entropy_metric = 0.f;
+      float accuracy = 0.f;
 
-  settings.metric = luci_interpreter::training::MAE;
-  onert_micro_training.test(num_test_data_samples, reinterpret_cast<const uint8_t *>(test_data),
-                            reinterpret_cast<const uint8_t *>(label_test_data),
-                            reinterpret_cast<void *>(&mae_result));
+      // Evaluate cross_entropy and accuracy metrics
+      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                       reinterpret_cast<void *>(&cross_entropy_metric),
+                                       cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                       cur_batch_size);
 
-  printf("MSE_ERROR TEST = %f\n", mse_result);
+      // Save them into vectors
+      accuracy_v.push_back(accuracy);
+      cross_entropy_v.push_back(cross_entropy_metric);
+    }
+    // Calculate and print average values
+    float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
+    float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
+    std::cout << "Train Average Accuracy = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Train Average Cross entropy = " << sum_ent / cross_entropy_v.size() << "\n";
 
-  printf("MAE_ERROR TEST = %f\n", mae_result);
+    // Run test for current epoch
+    std::cout << "Run test for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    num_steps = num_test_data_samples;
 
+    accuracy_v.clear();
+    cross_entropy_v.clear();
+
+    for (int i = 0; i < num_steps; ++i)
+    {
+      uint32_t cur_batch_size = 1;
+      readDataFromFile(input_input_test_data_path, reinterpret_cast<char *>(test_input),
+                       sizeof(float) * INPUT_SIZE * cur_batch_size,
+                       i * sizeof(MODEL_TYPE) * INPUT_SIZE);
+
+      readDataFromFile(input_target_test_data_path, reinterpret_cast<char *>(test_target),
+                       sizeof(float) * OUTPUT_SIZE * cur_batch_size,
+                       i * sizeof(MODEL_TYPE) * OUTPUT_SIZE);
+
+      train_interpreter.setInput(reinterpret_cast<uint8_t *>(test_input), 0);
+      train_interpreter.setTarget(reinterpret_cast<uint8_t *>(test_target), 0);
+
+      float mse = 0.f;
+      float mae = 0.f;
+      float cross_entropy_metric = 0.f;
+      float accuracy = 0.f;
+
+      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                       reinterpret_cast<void *>(&cross_entropy_metric),
+                                       cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                       cur_batch_size);
+
+      accuracy_v.push_back(accuracy);
+      cross_entropy_v.push_back(cross_entropy_metric);
+    }
+    sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
+    sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
+    std::cout << "Test Average Accuracy = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Test Average Cross entropy = " << sum_ent / cross_entropy_v.size() << "\n";
+  }
   return EXIT_SUCCESS;
 }
 
