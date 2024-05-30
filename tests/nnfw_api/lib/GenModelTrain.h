@@ -282,7 +282,7 @@ protected:
 
         const int num_step = ref_inputs.size() / tri.batch_size;
         ASSERT_GE(num_step, 1);
-        // Train input must be dividable by batch size
+        // Train input must be divisiable by batch size
         ASSERT_EQ(ref_inputs.size() % tri.batch_size, 0);
 
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
