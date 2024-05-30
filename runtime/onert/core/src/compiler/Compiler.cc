@@ -119,8 +119,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       // Lower: Assign backend
       lowered_subgs[subg_index] = std::make_unique<compiler::LoweredGraph>(subg, *_options);
       // Set tracing_ctx for copied graph
-      if (tracing_ctx != nullptr)
-        tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
+      tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
     });
   }
 
