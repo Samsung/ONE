@@ -81,9 +81,10 @@ public:
   int graph_dump_level;       //< Graph dump level, values between 0 and 2 are valid
   std::string executor;       //< Executor name to use
   ManualSchedulerOptions manual_scheduler_options; //< Options for ManualScheduler
-  bool he_scheduler;      //< HEScheduler if true, ManualScheduler otherwise
-  bool he_profiling_mode; //< Whether HEScheduler profiling mode ON/OFF
-  bool fp16_enable;       //< Whether fp16 mode ON/OFF
+  bool he_scheduler;         //< HEScheduler if true, ManualScheduler otherwise
+  bool he_profiling_mode;    //< Whether HEScheduler profiling mode ON/OFF
+  bool fp16_enable;          //< Whether fp16 mode ON/OFF
+  std::string workspace_dir; //< Workspace directory path
 };
 
 } // namespace compiler

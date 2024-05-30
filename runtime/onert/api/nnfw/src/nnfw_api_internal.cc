@@ -248,8 +248,7 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
-    _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""},
-    _workspace_dir{""}
+    _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""}
 {
   // DO NOTHING
 }
@@ -975,7 +974,7 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   if (!dir)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  _workspace_dir = std::string(dir);
+  _coptions->workspace_dir = std::string(dir);
 
   // TODO Set workspace dir to workspace user (ex. compiler, quantization manager, etc)
   //      if model is already loaded

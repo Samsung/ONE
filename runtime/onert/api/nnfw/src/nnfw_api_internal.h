@@ -229,7 +229,6 @@ private:
   //     const uint8 *buf;
   //   }
   std::string _model_path;
-  std::string _workspace_dir;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
