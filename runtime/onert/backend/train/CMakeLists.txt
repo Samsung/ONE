@@ -10,6 +10,8 @@ target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE nnfw_lib_cker nnfw_lib_
 target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE nnfw_coverage)
 
-set_target_properties(${LIB_ONERT_BACKEND_TRAIN} PROPERTIES OUTPUT_NAME backend_train)
+set_target_properties(${LIB_ONERT_BACKEND_TRAIN} PROPERTIES
+  OUTPUT_NAME backend_train
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/../..")
 
-install(TARGETS ${LIB_ONERT_BACKEND_TRAIN} DESTINATION lib)
+install(TARGETS ${LIB_ONERT_BACKEND_TRAIN} DESTINATION lib/nnfw/backend)

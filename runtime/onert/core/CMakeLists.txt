@@ -56,7 +56,8 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
         FILES_MATCHING PATTERN "*.h" PATTERN "*.lst"
         )
 # Set install rpath to find plugins - odc, codegen, etc
-set_target_properties(onert_core PROPERTIES INSTALL_RPATH "$ORIGIN/nnfw/odc/:$ORIGIN/nnfw/codegen/:$ORIGIN/")
+set_target_properties(onert_core PROPERTIES
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/nnfw/odc:$ORIGIN/nnfw/codegen:$ORIGIN/nnfw/backend:$ORIGIN/nnfw/loader")
 
 if(NOT ENABLE_TEST)
   return()

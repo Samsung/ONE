@@ -14,6 +14,8 @@ target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE ${LIB_ONERT_BACKEND_
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE nnfw_coverage)
 
-set_target_properties(${LIB_ONERT_BACKEND_ACL_NEON} PROPERTIES OUTPUT_NAME backend_acl_neon)
+set_target_properties(${LIB_ONERT_BACKEND_ACL_NEON} PROPERTIES
+  OUTPUT_NAME backend_acl_neon
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/../..")
 
-install(TARGETS ${LIB_ONERT_BACKEND_ACL_NEON} DESTINATION lib)
+install(TARGETS ${LIB_ONERT_BACKEND_ACL_NEON} DESTINATION lib/nnfw/backend)
