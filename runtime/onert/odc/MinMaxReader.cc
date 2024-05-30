@@ -17,15 +17,18 @@
 #include "MinMaxReader.h"
 
 #include <stdexcept>
-#include <iostream>
+#include <cstdio>
 
 namespace
 {
 
 void inline readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std::string &err_msg)
 {
-  if (fread(ptr, size, count, fp) != count)
+  if (std::fread(ptr, size, count, fp) < count)
+  {
+    std::fclose(fp);
     throw std::runtime_error(err_msg);
+  }
 }
 
 } // namespace
@@ -97,7 +100,7 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
     std::fseek(file, data_size * num_input, SEEK_CUR);
   }
 
-  fclose(file);
+  std::fclose(file);
   return mmv;
 }
 
@@ -159,7 +162,7 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
     }
   }
 
-  fclose(file);
+  std::fclose(file);
   return mmv;
 }
 
