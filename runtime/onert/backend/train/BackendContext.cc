@@ -65,8 +65,6 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
 {
   util::Set<ir::OperandIndex> unvisited;
   tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &operand) {
-    // TODO Consider not adding BackPropInitializer if the coresponding BackPropTensors don't
-    //      require initilization (i.g. BackPropTensors that are not back-propagated)
     if (!tgraph.getInputs().contains(index) && !operand.isConstant())
       unvisited.add(index);
   });
@@ -93,12 +91,11 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
           unvisited.remove(back_prop_index);
         }
       }
-
-      if (back_props.size() != 0)
-      {
-        auto initializer = std::make_unique<ops::BackPropInitializer>(back_props);
-        tn_seq->append(std::move(initializer));
-      }
+    }
+    if (back_props.size() != 0)
+    {
+      auto initializer = std::make_unique<ops::BackPropInitializer>(back_props);
+      tn_seq->append(std::move(initializer));
     }
   }
 }
@@ -120,7 +117,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     {
       return;
     }
-    for (auto &&ind : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       if (tensor_builder->isRegisteredBackward(ind))
         continue;
