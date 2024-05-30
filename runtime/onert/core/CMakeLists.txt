@@ -40,11 +40,6 @@ if(BUILD_MINMAX_H5DUMPER)
   target_link_libraries(onert_core PRIVATE ${HDF5_CXX_LIBRARIES})
 endif(BUILD_MINMAX_H5DUMPER)
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
-  add_custom_command(TARGET onert_core POST_BUILD
-                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:onert_core>)
-endif()
-
 # NOTE Below line is added to remove warning for android build
 #      It will be removed after android build uses gold linker
 if (ANDROID)

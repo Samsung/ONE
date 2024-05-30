@@ -31,11 +31,6 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl)
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
-  add_custom_command(TARGET ${LIB_ONERT_BACKEND_GPU_CL} POST_BUILD
-                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${LIB_ONERT_BACKEND_GPU_CL}>)
-endif()
-
 add_library(tflite_ignore_warnings INTERFACE)
 target_compile_options(tflite_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10)

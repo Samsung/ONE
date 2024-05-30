@@ -24,11 +24,6 @@ endif (ANDROID)
 target_include_directories(${ONERT_DEV} PUBLIC include)
 set_target_properties(${ONERT_DEV} PROPERTIES PUBLIC_HEADER "${NNFW_API_HEADERS}")
 
-if(CMAKE_BUILD_TYPE_LC STREQUAL "release")
-  add_custom_command(TARGET ${ONERT_DEV} POST_BUILD
-                     COMMAND ${CMAKE_STRIP} "--strip-unneeded" $<TARGET_FILE_NAME:${ONERT_DEV}>)
-endif()
-
 install(TARGETS ${ONERT_DEV}
         LIBRARY DESTINATION lib
         PUBLIC_HEADER DESTINATION include/nnfw)
