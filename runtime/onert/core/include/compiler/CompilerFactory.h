@@ -34,8 +34,7 @@ public:
   static CompilerFactory &get();
 
 public:
-  std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                                    std::vector<std::unique_ptr<CompilerOptions>> &copts,
+  std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
                                     const ir::train::TrainingInfo *training_info = nullptr);
 
 private:

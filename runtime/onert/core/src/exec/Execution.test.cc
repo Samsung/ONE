@@ -81,7 +81,7 @@ public:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    onert::compiler::Compiler compiler{model, *coptions};
+    onert::compiler::Compiler compiler{model, coptions.get()};
     artifact = compiler.compile();
   }
 
@@ -212,11 +212,10 @@ public:
   void compile()
   {
     auto nnpkg = std::make_shared<onert::ir::NNPkg>();
-    coptions.clear();
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+
     for (uint16_t i = 0; i < graphs.size(); ++i)
     {
-      coptions.emplace_back(onert::compiler::CompilerOptions::fromGlobalConfig());
-
       auto model = std::make_shared<onert::ir::Model>();
       model->push(SubgraphIndex{0}, graphs[i]);
 
@@ -234,14 +233,14 @@ public:
     {
       nnpkg->addEdge(edge.from, edge.to);
     }
-    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions);
+    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
     nnpkg.reset();
     artifact = compiler->compile();
   }
 
 public:
   std::vector<std::shared_ptr<Graph>> graphs;
-  std::vector<std::unique_ptr<onert::compiler::CompilerOptions>> coptions;
+  std::unique_ptr<onert::compiler::CompilerOptions> coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
   ModelEdges edges;
 };
@@ -298,7 +297,7 @@ TEST(ExecInstance, twoCompile)
   auto model = std::make_shared<onert::ir::Model>();
   model->push(onert::ir::SubgraphIndex{0}, graph);
   auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  onert::compiler::Compiler compiler{model, *coptions};
+  onert::compiler::Compiler compiler{model, coptions.get()};
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
   onert::exec::Execution execution2{artifact->_executors};
 

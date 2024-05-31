@@ -23,7 +23,7 @@ using namespace onert;
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept
   : _model{model->getModel()}, _coptions{compiler::CompilerOptions::fromGlobalConfig()},
-    _compiler{std::make_shared<compiler::Compiler>(_model, *_coptions)}
+    _compiler{std::make_shared<compiler::Compiler>(_model, _coptions.get())}
 {
   if (model->allowedToFp16())
     _coptions->enableToFp16();

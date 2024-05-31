@@ -38,15 +38,14 @@ namespace onert
 namespace compiler
 {
 
-Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt)
-  : _model{model}, _options{&copt}
+Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
+  : _model{model}, _options{copts}
 {
   // DO NOTHING
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                   std::vector<std::unique_ptr<CompilerOptions>> &copts)
-  : _model{nnpkg->primary_model()}, _options{copts[0].get()}
+Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts)
+  : _model{nnpkg->primary_model()}, _options{copts}
 {
   // Use for single model only
   assert(nnpkg->model_count() == 1);

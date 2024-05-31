@@ -246,9 +246,10 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 } // namespace
 
 nnfw_session::nnfw_session()
-  : _nnpkg{nullptr}, _coptions{}, _compiler_artifact{nullptr}, _execution{nullptr},
-    _kernel_registry{nullptr}, _train_info{nullptr}, _quant_manager{nullptr},
-    _codegen_manager{nullptr}, _model_path{""}, _workspace_dir{""}
+  : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
+    _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
+    _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""},
+    _workspace_dir{""}
 {
   // DO NOTHING
 }
@@ -296,7 +297,6 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
     auto model = onert::loader::loadCircleModel(buffer, size);
     // TODO: Update _model_path if necessary
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
-    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _train_info = loadTrainingInfo(_nnpkg->primary_model());
     _state = State::MODEL_LOADED;
   }
@@ -340,7 +340,6 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
       return NNFW_STATUS_ERROR;
     _model_path = std::string(model_file_path);
     _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
-    _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     _train_info = loadTrainingInfo(_nnpkg->primary_model());
     _state = State::MODEL_LOADED;
   }
@@ -410,6 +409,14 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
 
+    // Not support backend mapping to operator index for multiple models yet
+    // TODO Support this
+    if (num_models > 1 && _coptions->manual_scheduler_options.index_to_backend.size() != 0)
+    {
+      std::cerr << "Cannot set backend to operator index for multiple models" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     // Create quantize manager
     // TODO Support multiple models
     auto const model_filename = package_path + std::string("/") + models[0].asString();
@@ -427,8 +434,8 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       _model_path = std::string(model_file_path);
       model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
-      _coptions.push_back(onert::compiler::CompilerOptions::fromGlobalConfig());
     }
+
     _train_info = loadTrainingInfo(_nnpkg->primary_model());
 
     auto toIODesc = [](std::string str) {
@@ -490,7 +497,7 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions);
+    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
@@ -918,11 +925,9 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
     if (null_terminating(backends, MAX_BACKEND_NAME_LENGTH) == false)
       return NNFW_STATUS_ERROR;
 
-    auto &options = *_coptions[0];
-
     using namespace onert::util;
 
-    options.backend_list = nnfw::misc::split(std::string{backends}, ';');
+    _coptions->backend_list = nnfw::misc::split(std::string{backends}, ';');
   }
   catch (const std::exception &e)
   {
@@ -952,7 +957,7 @@ NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
       return NNFW_STATUS_ERROR;
     }
 
-    auto &opcode_to_backend = _coptions[0]->manual_scheduler_options.opcode_to_backend;
+    auto &opcode_to_backend = _coptions->manual_scheduler_options.opcode_to_backend;
     opcode_to_backend.emplace(onert::ir::toOpCode(key), backend);
   }
   catch (const std::exception &e)
@@ -986,35 +991,33 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = *_coptions[0];
-
   using namespace onert::util;
 
   const std::string skey = key;
 
   if (skey == config::TRACE_FILEPATH)
   {
-    options.trace_filepath = value;
+    _coptions->trace_filepath = value;
   }
   else if (skey == config::GRAPH_DOT_DUMP)
   {
-    options.graph_dump_level = toInt(value);
+    _coptions->graph_dump_level = toInt(value);
   }
   else if (skey == config::EXECUTOR)
   {
-    options.executor = value;
+    _coptions->executor = value;
   }
   else if (skey == config::OP_BACKEND_ALLOPS)
   {
-    options.manual_scheduler_options.backend_for_all = value;
+    _coptions->manual_scheduler_options.backend_for_all = value;
   }
   else if (skey == config::USE_SCHEDULER)
   {
-    options.he_scheduler = toBool(value);
+    _coptions->he_scheduler = toBool(value);
   }
   else if (skey == config::PROFILING_MODE)
   {
-    options.he_profiling_mode = toBool(value);
+    _coptions->he_profiling_mode = toBool(value);
   }
   else
   {
@@ -1070,8 +1073,6 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
   if (!key || !value)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  auto &options = *_coptions[0];
-
   auto check_boundary = [](size_t dest_size, std::string &src) {
     if (dest_size < src.length() + 1 /* for '\0' */)
     {
@@ -1085,10 +1086,11 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
 
   if (skey == onert::util::config::BACKENDS)
   {
-    if (options.backend_list.size() == 0)
+    if (_coptions->backend_list.size() == 0)
       return NNFW_STATUS_NO_ERROR; // no setting backend is not an error of get_config_str()
 
-    auto str = nnfw::misc::join(options.backend_list.begin(), options.backend_list.end(), ";");
+    auto str =
+      nnfw::misc::join(_coptions->backend_list.begin(), _coptions->backend_list.end(), ";");
 
     if (!check_boundary(value_size, str))
       return NNFW_STATUS_ERROR;
@@ -1097,10 +1099,10 @@ NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_
   }
   else if (skey == onert::util::config::EXECUTOR)
   {
-    if (!check_boundary(value_size, options.executor))
+    if (!check_boundary(value_size, _coptions->executor))
       return NNFW_STATUS_ERROR;
 
-    strncpy(value, options.executor.c_str(), options.executor.length());
+    strncpy(value, _coptions->executor.c_str(), _coptions->executor.length());
   }
   else
   {
@@ -1115,7 +1117,6 @@ bool nnfw_session::isStateInitialized()
   if (_state == State::INITIALIZED)
   {
     assert(_nnpkg == nullptr);
-    assert(_coptions.empty());
     assert(_execution == nullptr);
     return true;
   }
@@ -1130,7 +1131,6 @@ bool nnfw_session::isStateModelLoaded()
   if (_state == State::MODEL_LOADED)
   {
     assert(_nnpkg != nullptr);
-    assert(!_coptions.empty());
     assert(_execution == nullptr);
     return true;
   }
@@ -1145,7 +1145,6 @@ bool nnfw_session::isStatePrepared()
   if (_state == State::PREPARED)
   {
     assert(_nnpkg == nullptr);
-    assert(!_coptions.empty());
     assert(_execution != nullptr);
     return true;
   }
@@ -1160,7 +1159,6 @@ bool nnfw_session::isStateRunning()
   if (_state == State::RUNNING)
   {
     assert(_nnpkg == nullptr);
-    assert(!_coptions.empty());
     assert(_execution != nullptr);
     return true;
   }
@@ -1172,7 +1170,6 @@ bool nnfw_session::isStateFinishedRun()
   if (_state == State::FINISHED_RUN)
   {
     assert(_nnpkg == nullptr);
-    assert(!_coptions.empty());
     assert(_execution != nullptr);
     return true;
   }
@@ -1205,8 +1202,16 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
   if (!isStateModelLoaded())
     return NNFW_STATUS_INVALID_STATE;
 
+  // Not supported multiple model
+  // TODO Support this
+  if (_nnpkg->model_count() > 1)
+  {
+    std::cerr << "Not supported multiple model" << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   // Backend for all
-  auto &ms_options = _coptions[0]->manual_scheduler_options;
+  auto &ms_options = _coptions->manual_scheduler_options;
   ms_options.setBackendMap(std::string{backend_settings});
 
   return NNFW_STATUS_NO_ERROR;
@@ -1388,7 +1393,7 @@ NNFW_STATUS nnfw_session::train_prepare()
     _train_info->trainingStep() = 0;
 
     auto compiler =
-      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions, _train_info.get());
+      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions.get(), _train_info.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
@@ -1756,7 +1761,6 @@ bool nnfw_session::isStatePreparedTraining()
   if (_state == State::PREPARED_TRAINING)
   {
     assert(_nnpkg == nullptr);
-    assert(!_coptions.empty());
     assert(_execution != nullptr);
     return true;
   }
@@ -1769,7 +1773,6 @@ bool nnfw_session::isStateFinishedTraining()
   if (_state == State::FINISHED_TRAINING)
   {
     assert(_nnpkg == nullptr);
-    assert(!_coptions.empty());
     assert(_execution != nullptr);
     return true;
   }

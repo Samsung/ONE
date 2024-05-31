@@ -39,18 +39,17 @@ class Compiler : public ICompiler
 public:
   /**
    * @brief     Construct a new Compiler object for single model
-   * @param[in] model     model to compile
-   * @param[in] coptions  Compiler Options
+   * @param[in] model model to compile
+   * @param[in] copts Compiler Options
    */
-  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions &copt);
+  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts);
 
   /**
    * @brief     Construct a new Compiler object for NN package
-   * @param[in] nnpkg    NN package to compile
-   * @param[in] coptions Compiler option vector for each model in package
+   * @param[in] nnpkg NN package to compile
+   * @param[in] copts Compiler option for package
    */
-  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-           std::vector<std::unique_ptr<CompilerOptions>> &copts);
+  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts);
 
   /**
    * @brief Destroy the Compiler object
