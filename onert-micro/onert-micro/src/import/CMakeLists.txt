@@ -4,6 +4,7 @@ set(SOURCES
         OMExecutionPlanCreator.cpp
         OMKernelConfiguration.cpp
         OMKernelConfigureBuilder.cpp
+        helpers/OMConfigureSISOKernel.cpp
         )
 
 # Add configure kernels
