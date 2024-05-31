@@ -57,6 +57,18 @@ void onert_micro::execute::quantizeMultiplier(double double_multiplier,
   *quantized_multiplier = static_cast<int32_t>(q_fixed);
 }
 
+void onert_micro::execute::quantizeMultiplierSmallerThanOneExp(double double_multiplier,
+                                                               int32_t *quantized_multiplier,
+                                                               int *left_shift)
+{
+  assert(double_multiplier < 1.0);
+  assert(double_multiplier > 0.0);
+  int shift;
+  onert_micro::execute::quantizeMultiplier(double_multiplier, quantized_multiplier, &shift);
+  assert(shift <= 0);
+  *left_shift = shift;
+}
+
 namespace
 {
 static void calculateActivationRangeQuantizedImpl(circle::ActivationFunctionType activation,

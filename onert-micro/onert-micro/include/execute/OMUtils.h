@@ -68,7 +68,22 @@ inline double getQuantizedConvolutionMultipler(float input_scale, float filter_s
   return input_product_scale / static_cast<double>(output_scale);
 }
 
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of its exponent.
+//
+// Handles an arbitrary positive multiplier. The 'shift' output-value is
+// basically the 'floating-point exponent' of the multiplier:
+// Negative for a right-shift (when the multiplier is <1), positive for a
+// left-shift (when the multiplier is >1)
 void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift);
+
+// Decompose a double multiplier into a Q0.31 int32 representation of its
+// significand, and shift representation of NEGATIVE its exponent ---
+// this is intended as a RIGHT-shift.
+//
+// Restricted to the case where the multiplier < 1 (and non-negative).
+void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
+                                         int *left_shift);
 
 void calculateActivationRangeQuantized(circle::ActivationFunctionType activation,
                                        int32_t output_zero_point, float output_scale,
