@@ -109,6 +109,7 @@ public:
                  std::unordered_map<std::string, IOIndex> name_to_input);
   void setOutputs(OperandIndexSequence outputs,
                   std::unordered_map<std::string, IOIndex> name_to_output);
+  void enableBackward(const OperationIndex &index);
 
   // Accessors
 public:
