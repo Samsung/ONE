@@ -1,3 +1,6 @@
 # {FILES_TO_INSTALL} {DEST_DIR}
 # lib
 usr/lib/*.so usr/lib/
+usr/lib/nnfw/backend/*.so usr/lib/nnfw/backend/
+# tvn loader debian build is not supported yet
+#usr/lib/nnfw/loader/*.so usr/lib/nnfw/loader/

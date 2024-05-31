@@ -16,6 +16,8 @@ target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE nnfw_coverage)
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE pthreadpool)
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE XNNPACK)
 
-set_target_properties(${LIB_ONERT_BACKEND_XNNPACK} PROPERTIES OUTPUT_NAME backend_xnnpack)
+set_target_properties(${LIB_ONERT_BACKEND_XNNPACK} PROPERTIES
+  OUTPUT_NAME backend_xnnpack
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/../..")
 
-install(TARGETS ${LIB_ONERT_BACKEND_XNNPACK} DESTINATION lib)
+install(TARGETS ${LIB_ONERT_BACKEND_XNNPACK} DESTINATION lib/nnfw/backend)

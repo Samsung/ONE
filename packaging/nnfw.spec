@@ -248,10 +248,13 @@ tar -zcf test-suite.tar.gz infra/scripts
 %install
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
-mkdir -p %{buildroot}%{_libdir}
+mkdir -p %{buildroot}%{_libdir}/nnfw/backend
+mkdir -p %{buildroot}%{_libdir}/nnfw/loader
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
+install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
+install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
 install -m 755 build/out/bin/onert-minimal-app %{buildroot}%{_bindir}
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
@@ -322,6 +325,8 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
+%{_libdir}/nnfw/backend/*.so
+%{_libdir}/nnfw/loader/*.so
 %exclude %{_includedir}/CL/*
 %endif
 
