@@ -111,8 +111,10 @@ Collaboration diagram for onert::backend::train::ops::ReshapeLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abf480975e701ce32c7d770620602ffeb" id="r_abf480975e701ce32c7d770620602ffeb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#abf480975e701ce32c7d770620602ffeb">ReshapeLayer</a> ()</td></tr>
 <tr class="separator:abf480975e701ce32c7d770620602ffeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc1d09a1e4fa0b80f424d22fd42c255c" id="r_adc1d09a1e4fa0b80f424d22fd42c255c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#adc1d09a1e4fa0b80f424d22fd42c255c">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *shape, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
-<tr class="separator:adc1d09a1e4fa0b80f424d22fd42c255c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c9171858401a42e218dae6ca2aa3981" id="r_a2c9171858401a42e218dae6ca2aa3981"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#a2c9171858401a42e218dae6ca2aa3981">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *shape, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output)</td></tr>
+<tr class="separator:a2c9171858401a42e218dae6ca2aa3981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0f7e2b02ed4276a96cca0bc420f6f47" id="r_aa0f7e2b02ed4276a96cca0bc420f6f47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#aa0f7e2b02ed4276a96cca0bc420f6f47">configureBackward</a> (<a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
+<tr class="separator:aa0f7e2b02ed4276a96cca0bc420f6f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefde44be2f1b6bf6b51dc0c0c76b144f" id="r_aefde44be2f1b6bf6b51dc0c0c76b144f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#aefde44be2f1b6bf6b51dc0c0c76b144f">forward</a> (bool training) override</td></tr>
 <tr class="separator:aefde44be2f1b6bf6b51dc0c0c76b144f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b120682c68368f4749c1ac10463588c" id="r_a9b120682c68368f4749c1ac10463588c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#a9b120682c68368f4749c1ac10463588c">backward</a> () override</td></tr>
@@ -175,13 +177,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00056">56</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ reshapeGeneric(_back_prop_output, _back_prop_input); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00059">59</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ reshapeGeneric(_back_prop_output, _back_prop_input); }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="adc1d09a1e4fa0b80f424d22fd42c255c" name="adc1d09a1e4fa0b80f424d22fd42c255c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc1d09a1e4fa0b80f424d22fd42c255c">&#9670;&#160;</a></span>configure()</h2>
+<a id="a2c9171858401a42e218dae6ca2aa3981" name="a2c9171858401a42e218dae6ca2aa3981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c9171858401a42e218dae6ca2aa3981">&#9670;&#160;</a></span>configure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,11 +204,37 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
+          <td class="paramname"><em>output</em>&#160;</td>
         </tr>
         <tr>
-          <td class="paramkey"></td>
           <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
+<div class="line"><span class="lineno">   44</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">   45</span>  <span class="comment">/* note : shape is optional. If not provided from model, _shape is nullptr. */</span></div>
+<div class="line"><span class="lineno">   46</span>  _shape = shape;</div>
+<div class="line"><span class="lineno">   47</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   48</span>}</div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa0f7e2b02ed4276a96cca0bc420f6f47" name="aa0f7e2b02ed4276a96cca0bc420f6f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0f7e2b02ed4276a96cca0bc420f6f47">&#9670;&#160;</a></span>configureBackward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::ops::ReshapeLayer::configureBackward </td>
+          <td>(</td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
           <td class="paramname"><em>back_prop_input</em>, </td>
         </tr>
@@ -224,18 +252,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00041">41</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   46</span>  <span class="comment">/* note : shape is optional. If not provided from model, _shape is nullptr. */</span></div>
-<div class="line"><span class="lineno">   47</span>  _shape = shape;</div>
-<div class="line"><span class="lineno">   48</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  _back_prop_input = back_prop_input;</div>
-<div class="line"><span class="lineno">   51</span>  _back_prop_output = back_prop_output;</div>
-<div class="line"><span class="lineno">   52</span>}</div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
-<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00050">50</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
+<div class="line"><span class="lineno">   53</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   54</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -265,8 +286,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00054">54</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ reshapeGeneric(_input, _output); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html#l00057">57</a> of file <a class="el" href="train_2ops_2_reshape_layer_8cc_source.html">ReshapeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ reshapeGeneric(_input, _output); }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -15,6 +15,7 @@ var classonert_1_1ir_1_1train_1_1_trainable_graph =
     [ "btopolSortOperations", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a62f1a965853158ed420a2251dd6f9844", null ],
     [ "changeBackwardShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#aa3b0d4badc6b4f36e2deb98c24a51618", null ],
     [ "changeShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a32e1f89b53054766afc09a9775aa879b", null ],
+    [ "enableBackward", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a972e055b0772b202a13852ea34513ba6", null ],
     [ "getInputIndex", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a1d4c2bb31889ad1c905fddf4716aca7f", null ],
     [ "getInputs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc", null ],
     [ "getLossIndex", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9", null ],

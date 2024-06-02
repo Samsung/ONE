@@ -128,8 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aafa8ebd9864bfdb7c5083651f0a30d4d" id="r_aafa8ebd9864bfdb7c5083651f0a30d4d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aafa8ebd9864bfdb7c5083651f0a30d4d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#aafa8ebd9864bfdb7c5083651f0a30d4d">depad</a> ()</td></tr>
 <tr class="separator:aafa8ebd9864bfdb7c5083651f0a30d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdb39af12b45bf4430ed8819b0b7edb3" id="r_acdb39af12b45bf4430ed8819b0b7edb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#acdb39af12b45bf4430ed8819b0b7edb3">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *pad, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *value, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
-<tr class="separator:acdb39af12b45bf4430ed8819b0b7edb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d40210155df26165088ae2096d3f91" id="r_ac9d40210155df26165088ae2096d3f91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#ac9d40210155df26165088ae2096d3f91">configureBackward</a> (<a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
+<tr class="separator:ac9d40210155df26165088ae2096d3f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab88c087b5d27a1fe1d78116ed11d360d" id="r_ab88c087b5d27a1fe1d78116ed11d360d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#ab88c087b5d27a1fe1d78116ed11d360d">forward</a> (bool training) override</td></tr>
 <tr class="separator:ab88c087b5d27a1fe1d78116ed11d360d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c95ba2162a0023d8984a82189aa209f" id="r_a8c95ba2162a0023d8984a82189aa209f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#a8c95ba2162a0023d8984a82189aa209f">backward</a> () override</td></tr>
@@ -220,62 +220,38 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00057">57</a> of file <a class="el" href="train_2ops_2_pad_layer_8cc_source.html">PadLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">switch</span> (_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>())</div>
-<div class="line"><span class="lineno">   60</span>  {</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">   62</span>      depad&lt;float&gt;();</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">   65</span>      depad&lt;uint8_t&gt;();</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">   68</span>      depad&lt;int8_t&gt;();</div>
-<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pad: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
-<div class="line"><span class="lineno">   73</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="train_2ops_2_pad_layer_8cc_source.html">PadLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">switch</span> (_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>())</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">   60</span>      depad&lt;float&gt;();</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">   63</span>      depad&lt;uint8_t&gt;();</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">   66</span>      depad&lt;int8_t&gt;();</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Pad: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>.</p>
 
 </div>
 </div>
-<a id="acdb39af12b45bf4430ed8819b0b7edb3" name="acdb39af12b45bf4430ed8819b0b7edb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdb39af12b45bf4430ed8819b0b7edb3">&#9670;&#160;</a></span>configure()</h2>
+<a id="ac9d40210155df26165088ae2096d3f91" name="ac9d40210155df26165088ae2096d3f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9d40210155df26165088ae2096d3f91">&#9670;&#160;</a></span>configureBackward()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onert::backend::train::ops::PadLayer::configure </td>
+          <td class="memname">void onert::backend::train::ops::PadLayer::configureBackward </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>pad</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
           <td class="paramname"><em>back_prop_input</em>, </td>
         </tr>
@@ -294,15 +270,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00046">46</a> of file <a class="el" href="train_2ops_2_pad_layer_8cc_source.html">PadLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html#acef5151dff74b571857de938a0eb65b9">cpu::ops::PadLayer::configure</a>(input, pad, value, output);</div>
-<div class="line"><span class="lineno">   51</span>  _back_prop_input = back_prop_input;</div>
-<div class="line"><span class="lineno">   52</span>  _back_prop_output = back_prop_output;</div>
-<div class="line"><span class="lineno">   53</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer_html_acef5151dff74b571857de938a0eb65b9"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html#acef5151dff74b571857de938a0eb65b9">onert::backend::cpu::ops::PadLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, const IPortableTensor *pad, const IPortableTensor *value, IPortableTensor *output)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pad_layer_8cc_source.html#l00046">PadLayer.cc:46</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
+<div class="line"><span class="lineno">   49</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   50</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00046">onert::backend::cpu::ops::PadLayer::configure()</a>.</p>
-
 </div>
 </div>
 <a id="aafa8ebd9864bfdb7c5083651f0a30d4d" name="aafa8ebd9864bfdb7c5083651f0a30d4d"></a>
@@ -367,8 +339,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="train_2ops_2_pad_layer_8cc_source.html">PadLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html#a3ee08a29420eaea06982b06ad7e708a8">cpu::ops::PadLayer::run</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="train_2ops_2_pad_layer_8cc_source.html">PadLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html#a3ee08a29420eaea06982b06ad7e708a8">cpu::ops::PadLayer::run</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer_html_a3ee08a29420eaea06982b06ad7e708a8"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pad_layer.html#a3ee08a29420eaea06982b06ad7e708a8">onert::backend::cpu::ops::PadLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pad_layer_8cc_source.html#l00055">PadLayer.cc:55</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00055">onert::backend::cpu::ops::PadLayer::run()</a>.</p>

@@ -142,16 +142,18 @@ $(document).ready(function(){initNavTree('_trainable_operation_8h_source.html','
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classonert_1_1ir_1_1train_1_1_trainable_operation.html#a1744cbc316f1982f9a40e8d251d761b3">   42</a></span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_operation.html#a1744cbc316f1982f9a40e8d251d761b3">isRequiredForBackward</a>() const final { <span class="keywordflow">return</span> _required_for_backward; }</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">bool</span> _trainable = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">bool</span> _required_for_backward = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// TODO: Change _trainable and _required_for_backward to false after merge other parts of</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// fine-tuning feature</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">bool</span> _trainable = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">bool</span> _required_for_backward = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace ir</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_TRAIN_TRAINABLE_OPERATION_H__</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace ir</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_TRAIN_TRAINABLE_OPERATION_H__</span></div>
 <div class="ttc" id="a_i_trainable_operation_8h_html"><div class="ttname"><a href="_i_trainable_operation_8h.html">ITrainableOperation.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_i_trainable_operation_html"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html">onert::ir::train::ITrainableOperation</a></div><div class="ttdef"><b>Definition</b> <a href="_i_trainable_operation_8h_source.html#l00033">ITrainableOperation.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_operation_html"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_operation.html">onert::ir::train::TrainableOperation</a></div><div class="ttdef"><b>Definition</b> <a href="_trainable_operation_8h_source.html#l00029">TrainableOperation.h:30</a></div></div>

@@ -126,6 +126,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aaeb8636803a5020701dd2565e98a4728" id="r_aaeb8636803a5020701dd2565e98a4728"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aaeb8636803a5020701dd2565e98a4728"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#aaeb8636803a5020701dd2565e98a4728">evalComparisonGeneric</a> (<a class="el" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">OMRuntimeKernel</a> *runtime_kernel, bool F(T, T))</td></tr>
+<tr class="separator:aaeb8636803a5020701dd2565e98a4728"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acef69ab956e54b4b2e15c7372baca2ef" id="r_acef69ab956e54b4b2e15c7372baca2ef"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acef69ab956e54b4b2e15c7372baca2ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#acef69ab956e54b4b2e15c7372baca2ef">calculateActivationRange</a> (circle::ActivationFunctionType activation, T *activation_min, T *activation_max)</td></tr>
 <tr class="separator:acef69ab956e54b4b2e15c7372baca2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -556,6 +559,103 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="a_spatial_8h_html_aec052078398dad3113102a22da1bb8ec"><div class="ttname"><a href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a></div><div class="ttdeci">uint32_t computeOutSize(uint32_t imageSize, uint32_t filterSize, uint32_t stride, uint32_t paddingHead, uint32_t paddingTail)</div><div class="ttdef"><b>Definition</b> <a href="_spatial_8h_source.html#l00023">Spatial.h:23</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="execute_2_o_m_utils_8h_source.html#l00078">computeOutSize()</a>, and <a class="el" href="execute_2_o_m_utils_8h_source.html#l00097">computePadding()</a>.</p>
+
+</div>
+</div>
+<a id="aaeb8636803a5020701dd2565e98a4728" name="aaeb8636803a5020701dd2565e98a4728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeb8636803a5020701dd2565e98a4728">&#9670;&#160;</a></span>evalComparisonGeneric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert_micro::execute::evalComparisonGeneric </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">OMRuntimeKernel</a> *&#160;</td>
+          <td class="paramname"><em>runtime_kernel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &#160;</td>
+          <td class="paramname"><em>F</em>T, T&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00042">42</a> of file <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html">ComparisonCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> circle::Tensor *input1 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> circle::Tensor *input2 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> circle::Tensor *output = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  uint8_t *input_data1 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   49</span>  uint8_t *input_data2 = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   50</span>  uint8_t *output_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  input1 = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input1TensorIdx];</div>
+<div class="line"><span class="lineno">   53</span>  input2 = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input2TensorIdx];</div>
+<div class="line"><span class="lineno">   54</span>  output = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">outputs</a>[outputTensorIdx];</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  assert(input1 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   57</span>  assert(input2 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   58</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>  input_data1 = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input1TensorIdx];</div>
+<div class="line"><span class="lineno">   61</span>  input_data2 = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input2TensorIdx];</div>
+<div class="line"><span class="lineno">   62</span>  output_data = runtime_kernel-&gt;<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a262335e7698df2b2547e8af28e2995ab">outputs_data</a>[outputTensorIdx];</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>  assert(input_data1 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   65</span>  assert(input_data2 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   66</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input1_shape(input1);</div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input2_shape(input2);</div>
+<div class="line"><span class="lineno">   70</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(output);</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> cast_input_data1 = core::utils::castInputData&lt;T&gt;(input_data1);</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>  assert(cast_input_data1 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>  <span class="keyword">auto</span> cast_input_data2 = core::utils::castInputData&lt;T&gt;(input_data2);</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>  assert(cast_input_data2 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <span class="keyword">auto</span> cast_output_data = core::utils::castOutputData&lt;bool&gt;(output_data);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  <a class="code hl_struct" href="structonert__micro_1_1core_1_1_comparison_params.html">onert_micro::core::ComparisonParams</a> op_params;</div>
+<div class="line"><span class="lineno">   83</span>  op_params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_comparison_params.html#a43dce645b4f05a8d1f2b1428baff96be">is_broadcast</a> = input1_shape.flatSize() != input2_shape.flatSize();</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">if</span> (op_params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_comparison_params.html#a43dce645b4f05a8d1f2b1428baff96be">is_broadcast</a>)</div>
+<div class="line"><span class="lineno">   86</span>  {</div>
+<div class="line"><span class="lineno">   87</span>    onert_micro::execute::pal::BroadcastComparison4DSlowNoScaling&lt;T&gt;(</div>
+<div class="line"><span class="lineno">   88</span>      op_params, input1_shape, cast_input_data1, input2_shape, cast_input_data2, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">   89</span>      cast_output_data, F);</div>
+<div class="line"><span class="lineno">   90</span>  }</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> int64_t flat_size = input1_shape.flatSize();</div>
+<div class="line"><span class="lineno">   94</span>    onert_micro::execute::pal::ComparisonNoScaling&lt;T&gt;(flat_size, cast_input_data1, cast_input_data2,</div>
+<div class="line"><span class="lineno">   95</span>                                                      cast_output_data, F);</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="line"><span class="lineno">   97</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_a262335e7698df2b2547e8af28e2995ab"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a262335e7698df2b2547e8af28e2995ab">onert_micro::execute::OMRuntimeKernel::outputs_data</a></div><div class="ttdeci">uint8_t * outputs_data[maxOutputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00055">OMRuntimeKernel.h:55</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_a9bdb1e6ec84a197bcc2e0af4701f3503"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">onert_micro::execute::OMRuntimeKernel::inputs_data</a></div><div class="ttdeci">uint8_t * inputs_data[maxInputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00054">OMRuntimeKernel.h:54</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_abd40fce4708b3659c02bdc3989973740"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">onert_micro::execute::OMRuntimeKernel::outputs</a></div><div class="ttdeci">const circle::Tensor * outputs[maxOutputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00052">OMRuntimeKernel.h:52</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_af34c85abb206d91e55e3e28b975692c5"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">onert_micro::execute::OMRuntimeKernel::inputs</a></div><div class="ttdeci">const circle::Tensor * inputs[maxInputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00051">OMRuntimeKernel.h:51</a></div></div>
+<div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_comparison_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_comparison_params.html">onert_micro::core::ComparisonParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00127">OMKernelData.h:128</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_comparison_params_html_a43dce645b4f05a8d1f2b1428baff96be"><div class="ttname"><a href="structonert__micro_1_1core_1_1_comparison_params.html#a43dce645b4f05a8d1f2b1428baff96be">onert_micro::core::ComparisonParams::is_broadcast</a></div><div class="ttdeci">bool is_broadcast</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00138">OMKernelData.h:138</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00138">onert_micro::core::ComparisonParams::is_broadcast</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, and <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>.</p>
 
 </div>
 </div>

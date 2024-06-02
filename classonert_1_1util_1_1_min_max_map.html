@@ -106,6 +106,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3edc50ee566dec23bc980c5163a8d1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c87f7b5daaf5a32eb153b53410f97dc" id="r_a3c87f7b5daaf5a32eb153b53410f97dc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1util_1_1_min_max_map.html#a3c87f7b5daaf5a32eb153b53410f97dc">end</a> () const</td></tr>
 <tr class="separator:a3c87f7b5daaf5a32eb153b53410f97dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d4c8e417afa23ac59c6dac46992f688" id="r_a4d4c8e417afa23ac59c6dac46992f688"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1util_1_1_min_max_map.html#a4d4c8e417afa23ac59c6dac46992f688">size</a> () const</td></tr>
+<tr class="separator:a4d4c8e417afa23ac59c6dac46992f688"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename N, typename Hash = std::hash&lt;N&gt;&gt;<br />
@@ -157,7 +159,7 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 <p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00036">36</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{ _minmax_map[node] = {min, max}; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00068">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00110">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00072">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00114">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
 
 </div>
 </div>
@@ -219,6 +221,38 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 <p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00038">38</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> _minmax_map.end(); }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4d4c8e417afa23ac59c6dac46992f688" name="a4d4c8e417afa23ac59c6dac46992f688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d4c8e417afa23ac59c6dac46992f688">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classonert_1_1util_1_1_min_max_map.html">onert::util::MinMaxMap</a>&lt; N, Hash &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00039">39</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> _minmax_map.size(); }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_min_max_data_8cc_source.html#l00028">onert::exec::RawMinMaxDumper::dump()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

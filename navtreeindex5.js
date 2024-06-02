@@ -32,9 +32,6 @@ var NAVTREEINDEX5 =
 "_compare_layer_8h_source.html":[36,0,4,2,1,4,0,13],
 "_comparison_8cc.html":[36,0,4,2,2,1,4,0,9],
 "_comparison_8cc_source.html":[36,0,4,2,2,1,4,0,9],
-"_comparison_common_8h.html":[36,0,3,4,2,1,14],
-"_comparison_common_8h.html#a1933565a8dd0221f72f2e17fc851b6b8":[36,0,3,4,2,1,14,0],
-"_comparison_common_8h_source.html":[36,0,3,4,2,1,14],
 "_compat_8h.html":[36,0,0,119,1,0],
 "_compat_8h.html#a1002f80a13f2473c55e05682186a31ef":[36,0,0,119,1,0,0],
 "_compat_8h.html#a2b162b1005edce03f212034c0f285e2b":[36,0,0,119,1,0,1],
@@ -249,5 +246,8 @@ var NAVTREEINDEX5 =
 "_conv_8cpp.html#a3b7e06d00137e59e6ff3f363a78b4d6d":[36,0,0,73,1,2,0,12,0],
 "_conv_8cpp_source.html":[36,0,0,73,1,2,0,12],
 "_conv_pool_helpers_8cpp.html":[36,0,0,73,1,2,2],
-"_conv_pool_helpers_8cpp.html#a0b7c4f194977e0f23816782df46f5583":[36,0,0,73,1,2,2,0]
+"_conv_pool_helpers_8cpp.html#a0b7c4f194977e0f23816782df46f5583":[36,0,0,73,1,2,2,0],
+"_conv_pool_helpers_8cpp.html#af455db43a37e0022340267d04309eb7e":[36,0,0,73,1,2,2,1],
+"_conv_pool_helpers_8cpp_source.html":[36,0,0,73,1,2,2],
+"_conv_pool_helpers_8h.html":[36,0,0,73,1,2,3]
 };

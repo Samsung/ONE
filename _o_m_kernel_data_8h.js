@@ -7,6 +7,7 @@ var _o_m_kernel_data_8h =
     [ "onert_micro::core::BinaryArithmeticBroadcastParams", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params" ],
     [ "onert_micro::core::FloatConv2D", "structonert__micro_1_1core_1_1_float_conv2_d.html", "structonert__micro_1_1core_1_1_float_conv2_d" ],
     [ "onert_micro::core::FullyConnectedParams", "structonert__micro_1_1core_1_1_fully_connected_params.html", "structonert__micro_1_1core_1_1_fully_connected_params" ],
+    [ "onert_micro::core::ComparisonParams", "structonert__micro_1_1core_1_1_comparison_params.html", "structonert__micro_1_1core_1_1_comparison_params" ],
     [ "BroadcastableOpCategory", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46", [
       [ "kNone", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46a35c3ace1970663a16e5c65baa5941b13", null ],
       [ "kNonBroadcast", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46a474311140849eefcabdcbb172ad82866", null ],

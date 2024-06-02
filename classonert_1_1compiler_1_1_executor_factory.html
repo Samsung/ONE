@@ -146,14 +146,14 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00315">315</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  318</span>{</div>
-<div class="line"><span class="lineno">  319</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor)(std::move(lowered_graph), executors, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>);</div>
-<div class="line"><span class="lineno">  321</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00313">313</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  316</span>{</div>
+<div class="line"><span class="lineno">  317</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">return</span> _map.at(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor)(std::move(lowered_graph), executors, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>);</div>
+<div class="line"><span class="lineno">  319</span>}</div>
 <div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00060">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00054">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00048">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00059">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 
 </div>
 </div>
@@ -195,15 +195,15 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00611">611</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  615</span>{</div>
-<div class="line"><span class="lineno">  616</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  617</span> </div>
-<div class="line"><span class="lineno">  618</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
-<div class="line"><span class="lineno">  619</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
-<div class="line"><span class="lineno">  620</span> </div>
-<div class="line"><span class="lineno">  621</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
-<div class="line"><span class="lineno">  622</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00607">607</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  611</span>{</div>
+<div class="line"><span class="lineno">  612</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  613</span> </div>
+<div class="line"><span class="lineno">  614</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
+<div class="line"><span class="lineno">  615</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
+<div class="line"><span class="lineno">  616</span> </div>
+<div class="line"><span class="lineno">  617</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
+<div class="line"><span class="lineno">  618</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -230,13 +230,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00300">300</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  301</span>{</div>
-<div class="line"><span class="lineno">  302</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
-<div class="line"><span class="lineno">  303</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">  304</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00298">298</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span>{</div>
+<div class="line"><span class="lineno">  300</span>  <span class="keyword">static</span> ExecutorFactory singleton;</div>
+<div class="line"><span class="lineno">  301</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">  302</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00055">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00053">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00060">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_8cc_source.html#l00054">onert::compiler::Compiler::compile()</a>, <a class="el" href="_multi_model_compiler_8cc_source.html#l00048">onert::compiler::MultiModelCompiler::compile()</a>, and <a class="el" href="_training_compiler_8cc_source.html#l00059">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 
 </div>
 </div>

@@ -100,8 +100,8 @@ $(document).ready(function(){initNavTree('classonert_1_1compiler_1_1_compiler_fa
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab5d27d722177d309a254327a50e6ce7f" id="r_ab5d27d722177d309a254327a50e6ce7f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_factory.html#ab5d27d722177d309a254327a50e6ce7f">create</a> (const std::shared_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt; &amp;nnpkg, std::vector&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> &gt; &gt; &amp;copts, const <a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">ir::train::TrainingInfo</a> *training_info=nullptr)</td></tr>
-<tr class="separator:ab5d27d722177d309a254327a50e6ce7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7218aa142a04bac2c92d0c15832633e9" id="r_a7218aa142a04bac2c92d0c15832633e9"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_factory.html#a7218aa142a04bac2c92d0c15832633e9">create</a> (const std::shared_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt; &amp;nnpkg, <a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *copts, const <a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">ir::train::TrainingInfo</a> *training_info=nullptr)</td></tr>
+<tr class="separator:a7218aa142a04bac2c92d0c15832633e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -112,8 +112,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_compiler_factory_8h_source.html#l00031">31</a> of file <a class="el" href="_compiler_factory_8h_source.html">CompilerFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab5d27d722177d309a254327a50e6ce7f" name="ab5d27d722177d309a254327a50e6ce7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5d27d722177d309a254327a50e6ce7f">&#9670;&#160;</a></span>create()</h2>
+<a id="a7218aa142a04bac2c92d0c15832633e9" name="a7218aa142a04bac2c92d0c15832633e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7218aa142a04bac2c92d0c15832633e9">&#9670;&#160;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,7 +127,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *&#160;</td>
           <td class="paramname"><em>copts</em>, </td>
         </tr>
         <tr>
@@ -144,20 +144,20 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00035">35</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="comment">// Returing compiler for training</span></div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (training_info)</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// Returing compiler for inference</span></div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (nnpkg-&gt;model_count() == 1)</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(nnpkg, copts);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(nnpkg, copts);</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00034">34</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// Returing compiler for training</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (training_info)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  <span class="comment">// Returing compiler for inference</span></div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (nnpkg-&gt;model_count() == 1)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   47</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00473">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01350">nnfw_session::train_prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00480">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01370">nnfw_session::train_prepare()</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> singleton;</div>
 <div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00473">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01350">nnfw_session::train_prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00480">nnfw_session::prepare()</a>, and <a class="el" href="nnfw__api__internal_8cc_source.html#l01370">nnfw_session::train_prepare()</a>.</p>
 
 </div>
 </div>

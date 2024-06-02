@@ -17,6 +17,7 @@ var namespaceonert__micro_1_1execute =
     [ "computeOutSize", "namespaceonert__micro_1_1execute.html#a179e123f603902f20e7f4f78573bcdfd", null ],
     [ "computePadding", "namespaceonert__micro_1_1execute.html#afa7ceac3620b2b1f2610dbbe5367edff", null ],
     [ "computePaddingHeightWidth", "namespaceonert__micro_1_1execute.html#afcd2a79dd4fb5a079bbe41b8aa834ca3", null ],
+    [ "evalComparisonGeneric", "namespaceonert__micro_1_1execute.html#aaeb8636803a5020701dd2565e98a4728", null ],
     [ "getQuantizedConvolutionMultipler", "namespaceonert__micro_1_1execute.html#a0c2fd479509da8a95b7cd84652f01e38", null ],
     [ "quantizeMultiplier", "namespaceonert__micro_1_1execute.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ],
     [ "kernel_builtin_execute", "namespaceonert__micro_1_1execute.html#a628d7ac02011d8c04aff4375f9803240", null ],

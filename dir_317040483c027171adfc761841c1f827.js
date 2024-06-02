@@ -14,7 +14,7 @@ var dir_317040483c027171adfc761841c1f827 =
     [ "Builders.h", "onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h.html", "onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h" ],
     [ "Cast.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_cast_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_cast_8cpp" ],
     [ "Ceil.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_ceil_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_ceil_8cpp" ],
-    [ "ComparisonCommon.h", "_comparison_common_8h.html", "_comparison_common_8h" ],
+    [ "ComparisonCommon.h", "luci-interpreter_2src_2kernels_2_comparison_common_8h.html", "luci-interpreter_2src_2kernels_2_comparison_common_8h" ],
     [ "Concatenation.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_concatenation_8cpp" ],
     [ "Conv2D.cpp", "onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp.html", "onert-micro_2luci-interpreter_2src_2kernels_2_conv2_d_8cpp" ],
     [ "ConvolutionCommon.cpp", "_convolution_common_8cpp.html", "_convolution_common_8cpp" ],

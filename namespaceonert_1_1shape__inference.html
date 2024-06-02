@@ -625,7 +625,7 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">  238</span>{</div>
 <div class="line"><span class="lineno">  239</span>  <span class="keywordtype">bool</span> adj_x = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html#af7eaa65b6cd7672215bcf30ed77bc6ab">adj_x</a>;</div>
 <div class="line"><span class="lineno">  240</span>  <span class="keywordtype">bool</span> adj_y = param.<a class="code hl_variable" href="structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html#aadef6215cfbd6cde14d20a0105f918c8">adj_y</a>;</div>
-<div class="line"><span class="lineno">  241</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
+<div class="line"><span class="lineno">  241</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  242</span> </div>
 <div class="line"><span class="lineno">  243</span>  <span class="keywordtype">int</span> output_rank = std::max(lhs_shape.rank(), rhs_shape.rank());</div>
 <div class="line"><span class="lineno">  244</span> </div>
@@ -652,23 +652,23 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  265</span>      }</div>
 <div class="line"><span class="lineno">  266</span>    }</div>
 <div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>    <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(broadcast_dim);</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(broadcast_dim);</div>
 <div class="line"><span class="lineno">  269</span>  }</div>
 <div class="line"><span class="lineno">  270</span> </div>
 <div class="line"><span class="lineno">  271</span>  <span class="comment">// Fill in the matmul dimensions.</span></div>
 <div class="line"><span class="lineno">  272</span>  <span class="keywordtype">int</span> lhs_rows_index = adj_x ? output_rank - 1 : output_rank - 2;</div>
 <div class="line"><span class="lineno">  273</span>  <span class="keywordtype">int</span> rhs_cols_index = adj_y ? output_rank - 2 : output_rank - 1;</div>
 <div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(extended_lhs_shape.dim(lhs_rows_index));</div>
-<div class="line"><span class="lineno">  276</span>  <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(extended_rhs_shape.dim(rhs_cols_index));</div>
+<div class="line"><span class="lineno">  275</span>  <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(extended_lhs_shape.dim(lhs_rows_index));</div>
+<div class="line"><span class="lineno">  276</span>  <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.append(extended_rhs_shape.dim(rhs_cols_index));</div>
 <div class="line"><span class="lineno">  277</span> </div>
-<div class="line"><span class="lineno">  278</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
+<div class="line"><span class="lineno">  278</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>;</div>
 <div class="line"><span class="lineno">  279</span>}</div>
-<div class="ttc" id="a_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
+<div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param_html_aadef6215cfbd6cde14d20a0105f918c8"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html#aadef6215cfbd6cde14d20a0105f918c8">onert::ir::operation::BatchMatMul::Param::adj_y</a></div><div class="ttdeci">bool adj_y</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00041">BatchMatMul.h:41</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param_html_af7eaa65b6cd7672215bcf30ed77bc6ab"><div class="ttname"><a href="structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html#af7eaa65b6cd7672215bcf30ed77bc6ab">onert::ir::operation::BatchMatMul::Param::adj_x</a></div><div class="ttdeci">bool adj_x</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00040">BatchMatMul.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00040">onert::ir::operation::BatchMatMul::Param::adj_x</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00041">onert::ir::operation::BatchMatMul::Param::adj_y</a>, and <a class="el" href="_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00040">onert::ir::operation::BatchMatMul::Param::adj_x</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00041">onert::ir::operation::BatchMatMul::Param::adj_y</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00120">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 

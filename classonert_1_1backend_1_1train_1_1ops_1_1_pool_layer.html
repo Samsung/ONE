@@ -121,8 +121,8 @@ Collaboration diagram for onert::backend::train::ops::PoolLayer:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a60a4bfe9bb73d3fe6cb8727d3b9b96bc" id="r_a60a4bfe9bb73d3fe6cb8727d3b9b96bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#a60a4bfe9bb73d3fe6cb8727d3b9b96bc">PoolLayer</a> ()</td></tr>
 <tr class="separator:a60a4bfe9bb73d3fe6cb8727d3b9b96bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86a5add700a666c0b17a75a409f87ce7" id="r_a86a5add700a666c0b17a75a409f87ce7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#a86a5add700a666c0b17a75a409f87ce7">configure</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input, const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth, const uint32_t kernelHeight, const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> activation, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, const <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab">PoolType</a> op_type, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
-<tr class="separator:a86a5add700a666c0b17a75a409f87ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549c427e6e6116dc24feacb53c5807c6" id="r_a549c427e6e6116dc24feacb53c5807c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#a549c427e6e6116dc24feacb53c5807c6">configureBackward</a> (const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth, const uint32_t kernelHeight, const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> activation, const <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab">PoolType</a> op_type, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *output, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_input, const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *back_prop_output)</td></tr>
+<tr class="separator:a549c427e6e6116dc24feacb53c5807c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41e4483ddb805e8b79af595130d3769" id="r_aa41e4483ddb805e8b79af595130d3769"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#aa41e4483ddb805e8b79af595130d3769">forward</a> (bool training) override</td></tr>
 <tr class="separator:aa41e4483ddb805e8b79af595130d3769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a756229a59b7b8a1ea890b4c94d551b43" id="r_a756229a59b7b8a1ea890b4c94d551b43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#a756229a59b7b8a1ea890b4c94d551b43">backward</a> () override</td></tr>
@@ -170,11 +170,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00128">128</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>  : cpu::ops::PoolLayer(), _back_prop_input(<span class="keyword">nullptr</span>), _back_prop_output(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  130</span>{</div>
-<div class="line"><span class="lineno">  131</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  132</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00117">117</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>  : cpu::ops::PoolLayer(), _back_prop_input(<span class="keyword">nullptr</span>), _back_prop_output(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  119</span>{</div>
+<div class="line"><span class="lineno">  120</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -204,26 +204,20 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00183">183</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{ _kernel-&gt;backward(_back_prop_output, _back_prop_input); }</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00164">164</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  164</span>{ _kernel-&gt;backward(_back_prop_output, _back_prop_input); }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a86a5add700a666c0b17a75a409f87ce7" name="a86a5add700a666c0b17a75a409f87ce7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86a5add700a666c0b17a75a409f87ce7">&#9670;&#160;</a></span>configure()</h2>
+<a id="a549c427e6e6116dc24feacb53c5807c6" name="a549c427e6e6116dc24feacb53c5807c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a549c427e6e6116dc24feacb53c5807c6">&#9670;&#160;</a></span>configureBackward()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onert::backend::train::ops::PoolLayer::configure </td>
+          <td class="memname">void onert::backend::train::ops::PoolLayer::configureBackward </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const uint32_t&#160;</td>
           <td class="paramname"><em>paddingLeft</em>, </td>
         </tr>
@@ -278,14 +272,14 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
-          <td class="paramname"><em>output</em>, </td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab">PoolType</a>&#160;</td>
+          <td class="paramname"><em>op_type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aab">PoolType</a>&#160;</td>
-          <td class="paramname"><em>op_type</em>, </td>
+          <td class="paramtype"><a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -307,44 +301,32 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00134">134</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>  _back_prop_output = back_prop_output;</div>
-<div class="line"><span class="lineno">  146</span>  _back_prop_input = back_prop_input;</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>  <span class="comment">// ready inference kernel</span></div>
-<div class="line"><span class="lineno">  149</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a6c3da2f1736214278d405dd571d209a8">cpu::ops::PoolLayer::configure</a>(input, paddingLeft, paddingRight, paddingTop, paddingBottom,</div>
-<div class="line"><span class="lineno">  150</span>                                 strideWidth, strideHeight, kernelWidth, kernelHeight, activation,</div>
-<div class="line"><span class="lineno">  151</span>                                 output, convertToInfer(op_type));</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() != OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">  154</span>  {</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;PoolLayer : Unsupported data type for training&quot;</span>);</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  <span class="comment">// ready training kernel</span></div>
-<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">  160</span>  {</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">PoolType::kMax</a>:</div>
-<div class="line"><span class="lineno">  162</span>      _kernel = std::make_unique&lt;MaxPool2D&gt;(paddingLeft, paddingRight, paddingTop, paddingBottom,</div>
-<div class="line"><span class="lineno">  163</span>                                            strideWidth, strideHeight, kernelWidth, kernelHeight,</div>
-<div class="line"><span class="lineno">  164</span>                                            activation, output);</div>
-<div class="line"><span class="lineno">  165</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;PoolLayer: Unsupported pool type&quot;</span>);</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
-<div class="line"><span class="lineno">  169</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_a48eb69faf21b4ddf81a1840f71dca7bb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">onert::backend::cpu::ops::PoolLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00057">PoolLayer.h:57</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_a6c3da2f1736214278d405dd571d209a8"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a6c3da2f1736214278d405dd571d209a8">onert::backend::cpu::ops::PoolLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, const uint32_t paddingLeft, const uint32_t paddingRight, const uint32_t paddingTop, const uint32_t paddingBottom, const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth, const uint32_t kernelHeight, const ir::Activation activation, IPortableTensor *output, const PoolType op_type)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8cc_source.html#l00088">PoolLayer.cc:88</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_aa09219fd6e3f5b13ba468792a309405d"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">onert::backend::cpu::ops::PoolLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00058">PoolLayer.h:58</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00123">123</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>{</div>
+<div class="line"><span class="lineno">  131</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">  132</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;data_type() != OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  135</span>  {</div>
+<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;PoolLayer : Unsupported data type for training&quot;</span>);</div>
+<div class="line"><span class="lineno">  137</span>  }</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>  <span class="comment">// ready training kernel</span></div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">switch</span> (op_type)</div>
+<div class="line"><span class="lineno">  141</span>  {</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">PoolType::kMax</a>:</div>
+<div class="line"><span class="lineno">  143</span>      _kernel = std::make_unique&lt;MaxPool2D&gt;(paddingLeft, paddingRight, paddingTop, paddingBottom,</div>
+<div class="line"><span class="lineno">  144</span>                                            strideWidth, strideHeight, kernelWidth, kernelHeight,</div>
+<div class="line"><span class="lineno">  145</span>                                            activation, output);</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;PoolLayer: Unsupported pool type&quot;</span>);</div>
+<div class="line"><span class="lineno">  149</span>  }</div>
+<div class="line"><span class="lineno">  150</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
-<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::train::ops::PoolType::kMax</a></div><div class="ttdeci">@ kMax</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00057">onert::backend::cpu::ops::PoolLayer::_input</a>, <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00058">onert::backend::cpu::ops::PoolLayer::_output</a>, <a class="el" href="cpu_2ops_2_pool_layer_8cc_source.html#l00088">onert::backend::cpu::ops::PoolLayer::configure()</a>, and <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::train::ops::kMax</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a4fe5d3f27e098a4d993f591af7fc3aabaa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::train::ops::kMax</a>.</p>
 
 </div>
 </div>
@@ -374,17 +356,19 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00171">171</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  172</span>{</div>
-<div class="line"><span class="lineno">  173</span>  <span class="keywordflow">if</span> (training)</div>
-<div class="line"><span class="lineno">  174</span>  {</div>
-<div class="line"><span class="lineno">  175</span>    _kernel-&gt;forward(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">_input</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">_output</a>);</div>
-<div class="line"><span class="lineno">  176</span>  }</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  178</span>  {</div>
-<div class="line"><span class="lineno">  179</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">cpu::ops::PoolLayer::run</a>();</div>
-<div class="line"><span class="lineno">  180</span>  }</div>
-<div class="line"><span class="lineno">  181</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00152">152</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
+<div class="line"><span class="lineno">  154</span>  <span class="keywordflow">if</span> (training)</div>
+<div class="line"><span class="lineno">  155</span>  {</div>
+<div class="line"><span class="lineno">  156</span>    _kernel-&gt;forward(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">_input</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">_output</a>);</div>
+<div class="line"><span class="lineno">  157</span>  }</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  159</span>  {</div>
+<div class="line"><span class="lineno">  160</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">cpu::ops::PoolLayer::run</a>();</div>
+<div class="line"><span class="lineno">  161</span>  }</div>
+<div class="line"><span class="lineno">  162</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_a48eb69faf21b4ddf81a1840f71dca7bb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">onert::backend::cpu::ops::PoolLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00057">PoolLayer.h:57</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_aa09219fd6e3f5b13ba468792a309405d"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">onert::backend::cpu::ops::PoolLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00058">PoolLayer.h:58</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_ab54d3f9c4780d28738969235b79bed8a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">onert::backend::cpu::ops::PoolLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8cc_source.html#l00142">PoolLayer.cc:142</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00057">onert::backend::cpu::ops::PoolLayer::_input</a>, <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00058">onert::backend::cpu::ops::PoolLayer::_output</a>, and <a class="el" href="cpu_2ops_2_pool_layer_8cc_source.html#l00142">onert::backend::cpu::ops::PoolLayer::run()</a>.</p>

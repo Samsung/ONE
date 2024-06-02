@@ -33,6 +33,7 @@ var structnnfw__session =
     [ "set_output_layout", "structnnfw__session.html#a994e85d77cc20605dbb9e836c6735bcb", null ],
     [ "set_quantization_type", "structnnfw__session.html#a653464551f483ade508f1eb783e6af38", null ],
     [ "set_quantized_model_path", "structnnfw__session.html#ab66351764e0f6efda0f707dd78c1794a", null ],
+    [ "set_workspace", "structnnfw__session.html#a395437c1432ae31cc6e990aa583b4357", null ],
     [ "train_expected_tensorinfo", "structnnfw__session.html#a3d390ec838d62cf0cb0d99844ca526c7", null ],
     [ "train_export_circle", "structnnfw__session.html#aad26c5b39608a362239f365a8e7aee75", null ],
     [ "train_get_loss", "structnnfw__session.html#a632aef1a86a999a711ec5a9c6808d4f5", null ],

@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classtflite_1_1profiling_1_1_profiler.html" title=" " alt="" coords="5,5,107,46"/>
+<area shape="rect" id="Node000000" href="$classtflinspect_1_1_dump_interface.html" title=" " alt="" coords="5,63,170,88"/>
+<area shape="rect" id="Node000001" href="$classtflinspect_1_1_dump_conv2_d_weight.html" title=" " alt="" coords="218,5,417,31"/>
+<area shape="poly" id="edge3256_Node000000_Node000001" title=" " alt="" coords="156,56,262,29,263,34,157,61"/>
+<area shape="rect" id="Node000002" href="$classtflinspect_1_1_dump_operator_version.html" title=" " alt="" coords="236,55,399,96"/>
+<area shape="poly" id="edge3257_Node000000_Node000002" title=" " alt="" coords="185,73,235,73,235,78,185,78"/>
+<area shape="rect" id="Node000003" href="$classtflinspect_1_1_dump_operators.html" title=" " alt="" coords="232,120,403,146"/>
+<area shape="poly" id="edge3258_Node000000_Node000003" title=" " alt="" coords="157,90,263,117,262,122,156,95"/>
 </map>

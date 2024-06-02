@@ -1,6 +1,6 @@
 var dir_410b5509a292eb0efec4b2a471506547 =
 [
-    [ "PALArgMax.h", "mcu_2_p_a_l_arg_max_8h.html", null ],
+    [ "PALArgMax.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_arg_max_8h.html", null ],
     [ "PALAveragePool2d.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h.html", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_average_pool2d_8h" ],
     [ "PALBatchToSpaceND.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_batch_to_space_n_d_8h.html", null ],
     [ "PALConv2d.h", "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_conv2d_8h.html", null ],

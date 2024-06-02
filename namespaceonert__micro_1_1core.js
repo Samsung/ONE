@@ -8,6 +8,7 @@ var namespaceonert__micro_1_1core =
       [ "checkCondition", "namespaceonert__micro_1_1core_1_1utils.html#ac6a603d9f6087345f25e682cbd2ce12f", null ]
     ] ],
     [ "BinaryArithmeticBroadcastParams", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params" ],
+    [ "ComparisonParams", "structonert__micro_1_1core_1_1_comparison_params.html", "structonert__micro_1_1core_1_1_comparison_params" ],
     [ "ConcatenationParams", "structonert__micro_1_1core_1_1_concatenation_params.html", "structonert__micro_1_1core_1_1_concatenation_params" ],
     [ "FloatConv2D", "structonert__micro_1_1core_1_1_float_conv2_d.html", "structonert__micro_1_1core_1_1_float_conv2_d" ],
     [ "FullyConnectedParams", "structonert__micro_1_1core_1_1_fully_connected_params.html", "structonert__micro_1_1core_1_1_fully_connected_params" ],

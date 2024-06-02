@@ -118,44 +118,46 @@ $(document).ready(function(){initNavTree('core_2_o_m_utils_8h_source.html',''); 
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_status_8h.html">OMStatus.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_circle_reader_8h.html">core/reader/OMCircleReader.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span>core</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html">   30</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceutils.html">utils</a></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#ac6a603d9f6087345f25e682cbd2ce12f">checkCondition</a>(<span class="keywordtype">bool</span> cond);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">   35</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">const</span> T *<a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">castInputData</a>(uint8_t *tensor_data)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_runtime_shape_8h.html">core/OMRuntimeShape.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>core</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html">   31</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceutils.html">utils</a></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#ac6a603d9f6087345f25e682cbd2ce12f">checkCondition</a>(<span class="keywordtype">bool</span> cond);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">   36</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">const</span> T *<a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">castInputData</a>(uint8_t *tensor_data)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">   40</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T *<a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">castOutputData</a>(uint8_t *tensor_data)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">   41</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T *<a class="code hl_function" href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">castOutputData</a>(uint8_t *tensor_data)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">return</span> tensor_data != <span class="keyword">nullptr</span> ? <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor_data) : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace utils</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace utils</span></div>
 </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace core</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_CORE_UTILS_H</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace core</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_CORE_UTILS_H</span></div>
 <div class="ttc" id="a_o_m_circle_reader_8h_html"><div class="ttname"><a href="_o_m_circle_reader_8h.html">OMCircleReader.h</a></div></div>
+<div class="ttc" id="a_o_m_runtime_shape_8h_html"><div class="ttname"><a href="_o_m_runtime_shape_8h.html">OMRuntimeShape.h</a></div></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1core_1_1utils_html_a08b2cd03b5ad70048889b8de4ee90a19"><div class="ttname"><a href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">onert_micro::core::utils::castOutputData</a></div><div class="ttdeci">T * castOutputData(uint8_t *tensor_data)</div><div class="ttdef"><b>Definition</b> <a href="core_2_o_m_utils_8h_source.html#l00040">OMUtils.h:40</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1core_1_1utils_html_ac152b979ced7463692f71e4043083054"><div class="ttname"><a href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">onert_micro::core::utils::castInputData</a></div><div class="ttdeci">const T * castInputData(uint8_t *tensor_data)</div><div class="ttdef"><b>Definition</b> <a href="core_2_o_m_utils_8h_source.html#l00035">OMUtils.h:35</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_1_1utils_html_a08b2cd03b5ad70048889b8de4ee90a19"><div class="ttname"><a href="namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19">onert_micro::core::utils::castOutputData</a></div><div class="ttdeci">T * castOutputData(uint8_t *tensor_data)</div><div class="ttdef"><b>Definition</b> <a href="core_2_o_m_utils_8h_source.html#l00041">OMUtils.h:41</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_1_1utils_html_ac152b979ced7463692f71e4043083054"><div class="ttname"><a href="namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054">onert_micro::core::utils::castInputData</a></div><div class="ttdeci">const T * castInputData(uint8_t *tensor_data)</div><div class="ttdef"><b>Definition</b> <a href="core_2_o_m_utils_8h_source.html#l00036">OMUtils.h:36</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_1_1utils_html_ac6a603d9f6087345f25e682cbd2ce12f"><div class="ttname"><a href="namespaceonert__micro_1_1core_1_1utils.html#ac6a603d9f6087345f25e682cbd2ce12f">onert_micro::core::utils::checkCondition</a></div><div class="ttdeci">OMStatus checkCondition(bool cond)</div><div class="ttdef"><b>Definition</b> <a href="core_2_o_m_utils_8cpp_source.html#l00022">OMUtils.cpp:22</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00024">OMMemoryManager.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>

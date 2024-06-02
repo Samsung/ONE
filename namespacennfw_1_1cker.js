@@ -81,7 +81,6 @@ var namespacennfw_1_1cker =
     [ "Reduce", "classnnfw_1_1cker_1_1_reduce.html", "classnnfw_1_1cker_1_1_reduce" ],
     [ "ReduceMean", "classnnfw_1_1cker_1_1_reduce_mean.html", "classnnfw_1_1cker_1_1_reduce_mean" ],
     [ "ResizeBilinearParams", "structnnfw_1_1cker_1_1_resize_bilinear_params.html", "structnnfw_1_1cker_1_1_resize_bilinear_params" ],
-    [ "scalar_logistic_op", "structnnfw_1_1cker_1_1scalar__logistic__op.html", "structnnfw_1_1cker_1_1scalar__logistic__op" ],
     [ "SequentialTensorWriter", "classnnfw_1_1cker_1_1_sequential_tensor_writer.html", "classnnfw_1_1cker_1_1_sequential_tensor_writer" ],
     [ "Shape", "classnnfw_1_1cker_1_1_shape.html", "classnnfw_1_1cker_1_1_shape" ],
     [ "SliceParams", "structnnfw_1_1cker_1_1_slice_params.html", "structnnfw_1_1cker_1_1_slice_params" ],
