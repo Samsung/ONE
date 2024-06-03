@@ -29,7 +29,7 @@ struct SessionObjectTraining : public SessionObjectGeneric
 struct TrainCaseData : public TestCaseData
 {
   /**
-   * @brief A vector of extect buffers
+   * @brief A vector of expects buffers
    */
   std::vector<std::vector<uint8_t>> expects;
 
