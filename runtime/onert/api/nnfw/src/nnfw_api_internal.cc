@@ -994,9 +994,9 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
   const std::string skey = key;
 
-  if (skey == config::TRACE_FILEPATH)
+  if (skey == config::TRACING_MODE)
   {
-    _coptions->trace_filepath = value;
+    _coptions->tracing_mode = value;
   }
   else if (skey == config::GRAPH_DOT_DUMP)
   {

@@ -36,7 +36,7 @@ namespace exec
 class MinMaxRecorder : public IExecutionObserver
 {
 public:
-  MinMaxRecorder(const std::string &minmax_filepath, const ir::Graph &graph,
+  MinMaxRecorder(const std::string &workspace_dir, const ir::Graph &graph,
                  const backend::BackendContexts &backend_contexts);
   void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
                       const backend::Backend *) override

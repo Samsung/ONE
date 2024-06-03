@@ -501,15 +501,15 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                        order,
                                        tracing_ctx};
 
-  if (!options->trace_filepath.empty())
+  if (options->tracing_mode)
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
-  if (!options->minmax_filepath.empty())
-    exec->addObserver(std::make_unique<exec::MinMaxRecorder>(
-      options->minmax_filepath, exec->graph(), exec->getBackendContexts()));
+  if (options->minmax_dump)
+    exec->addObserver(std::make_unique<exec::MinMaxRecorder>(options->workspace_dir, exec->graph(),
+                                                             exec->getBackendContexts()));
 
   return exec;
 }
@@ -593,10 +593,10 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
     exec = dataflow_exec;
   }
 
-  if (!options->trace_filepath.empty())
+  if (options->tracing_mode)
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
 
@@ -886,10 +886,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tracing_ctx,
                                                  training_info.lossInfo()};
 
-  if (!options->trace_filepath.empty())
+  if (options->tracing_mode)
   {
     std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->trace_filepath, exec->graph(), tracing_ctx);
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
     exec->addObserver(std::move(ctp));
   }
   // TODO Support MINMAX_H5DUMPER
