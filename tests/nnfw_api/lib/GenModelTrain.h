@@ -23,7 +23,6 @@
 struct SessionObjectTraining : public SessionObjectGeneric
 {
   std::vector<std::vector<uint8_t>> expects;
-  std::vector<std::vector<uint8_t>> losses;
 };
 
 struct TrainCaseData : public TestCaseData
@@ -264,9 +263,6 @@ protected:
         expected_infos.emplace_back(std::move(ti));
       }
 
-      // Prepare expected loss
-      _so.losses.resize(num_expecteds);
-
       const int num_epoch = _context->epoch();
       ASSERT_GE(num_epoch, 2);
       const int num_step = num_expecteds / tri.batch_size;
@@ -295,15 +291,6 @@ protected:
           memcpy(_so.expects[i].data(), ref_expects[i].data(), ref_expects[i].size());
         }
 
-        // Expected losses
-        const auto &ref_losses = train_case.losses;
-        ASSERT_EQ(_so.losses.size(), ref_losses.size());
-        for (uint32_t i = 0; i < _so.losses.size(); i++)
-        {
-          // Fill the values
-          _so.losses[i] = ref_losses[i];
-        }
-
         if (train_case.expected_fail_run())
         {
           ASSERT_NE(nnfw_train(_so.session, true), NNFW_STATUS_NO_ERROR);
@@ -311,6 +298,7 @@ protected:
         }
 
         // Train
+        const auto &ref_losses = train_case.losses;
         std::vector<float> actual_losses(num_expecteds, 0.f);
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
         {
@@ -331,13 +319,11 @@ protected:
           actual_losses[i] /= num_step;
         }
 
-        ASSERT_EQ(actual_losses.size(), _so.losses.size());
-
         // TODO better way for handling FP error?
         for (uint32_t i = 0; i < actual_losses.size(); i++)
         {
           float actual = actual_losses[i];
-          const auto &expected_loss = _so.losses[i];
+          const auto &expected_loss = ref_losses[i];
           ASSERT_EQ(expected_loss.size(), sizeof(float));
           float expected = *(reinterpret_cast<const float *>(expected_loss.data()));
           EXPECT_NEAR(expected, actual, 0.001) << "Loss #" << i;
