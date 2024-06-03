@@ -27,6 +27,7 @@
 #include "dataloader.h"
 #include "rawdataloader.h"
 #include "metrics.h"
+#include "circleexporter.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -360,8 +361,10 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, args.getExportCircleFilename().c_str()));
 
     if (args.getExportCirclePlusFilename() != "")
-      NNPR_ENSURE_STATUS(
-        nnfw_train_export_circleplus(session, args.getExportCirclePlusFilename().c_str()));
+    {
+      CircleExporter exporter(args.getModelFilename(), args.getExportCirclePlusFilename());
+      exporter.updateMetadata(tri);
+    }
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 

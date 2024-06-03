@@ -31,6 +31,7 @@ else()
   message(WARNING "HDF5 NOT found. Install libhdf5-dev or set EXT_HDF5_DIR to support load/dump in onert_train.")
 endif(HDF5_FOUND)
 
+target_include_directories(onert_train PRIVATE schema)
 target_include_directories(onert_train PRIVATE src)
 target_include_directories(onert_train PRIVATE ${Boost_INCLUDE_DIRS})
 
