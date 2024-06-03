@@ -5,6 +5,11 @@ from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
 
 
+def to_camel_case(snake_str):
+    captialized_str: str = "".join(x.capitalize() for x in snake_str.lower().split("_"))
+    return snake_str[0].lower() + captialized_str[1:]
+
+
 def _generate_optimizer(
         opt_type: utils.OPTIM_OPTIONS_T, args: dict
 ) -> Tuple[ctr_gen.Optimizer, ctr_gen.OptimizerOptions, utils.OPTIM_OPTIONS_T]:
@@ -22,6 +27,7 @@ def _generate_optimizer(
     # e.g. SGDOptionsT.learningRate = 0.001
     optimizer_opt = opt_type()
     for (key, value) in args.items():
+        key = to_camel_case(key)
         setattr(optimizer_opt, key, value)
 
     return optimizer, optimizer_opt_type, optimizer_opt
@@ -76,6 +82,7 @@ def _generate_lossfn(
     # e.g. CategoricalCrossentropyOptionsT.fromLogits = True
     lossfn_opt = lossfn_type()
     for (key, value) in args.items():
+        key = to_camel_case(key)
         setattr(lossfn_opt, key, value)
 
     return lossfn, lossfn_opt_type, lossfn_opt
