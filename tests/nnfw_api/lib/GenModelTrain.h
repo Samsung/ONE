@@ -20,6 +20,8 @@
 #include "GenModelTest.h"
 #include "CirclePlusGen.h"
 
+#include <set>
+
 struct SessionObjectTraining : public SessionObjectGeneric
 {
   std::vector<std::vector<uint8_t>> losses;
@@ -116,10 +118,23 @@ public:
     _epoch = epoch;
   }
 
+  void enableTrainNodeUpdate(const int op_idx) { _trainable_ops_idx.emplace(op_idx); }
+
+  void disableTrainNodeUpdate(const int op_idx)
+  {
+    if (_trainable_ops_idx.find(op_idx) != std::end(_trainable_ops_idx))
+    {
+      _trainable_ops_idx.erase(op_idx);
+    }
+  }
+
+  const std::set<int> &getTrainableOpsIdx() const { return _trainable_ops_idx; }
+
 private:
   CircleBuffer _cpbuf;
   std::vector<TrainCaseData> _train_cases;
   int32_t _epoch;
+  std::set<int> _trainable_ops_idx;
 };
 
 /**
@@ -164,6 +179,11 @@ protected:
       }
       NNFW_ENSURE_SUCCESS(model_load_result);
       NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(_so.session, backend.data()));
+
+      for (const auto &frozen_op_idx : _context->getTrainableOpsIdx())
+      {
+        nnfw_train_enable_node_update(_so.session, frozen_op_idx);
+      }
 
       if (_context->expected_fail_compile())
       {

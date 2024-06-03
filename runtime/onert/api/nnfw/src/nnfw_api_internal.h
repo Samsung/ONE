@@ -182,6 +182,8 @@ public:
   NNFW_STATUS train_set_expected(uint32_t index, const void *expected,
                                  const nnfw_tensorinfo *expected_tensorinfo);
   NNFW_STATUS train_set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
+  NNFW_STATUS nnfw_train_disable_node_update(uint32_t op_index);
+  NNFW_STATUS nnfw_train_enable_node_update(uint32_t op_index);
   NNFW_STATUS train_run(bool update_weights);
   NNFW_STATUS train_get_loss(uint32_t index, float *loss);
   NNFW_STATUS train_export_circle(const char *path);

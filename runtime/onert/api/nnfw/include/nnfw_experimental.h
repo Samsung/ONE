@@ -374,6 +374,28 @@ NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
 NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
                                            nnfw_tensorinfo *info);
 
+/**
+ * @brief Disable update of the node indicated by op_index during training
+ * @note  This function should be called after {@link nnfw_train_prepare}.
+ *        The update of all the nodes is enabled by default.
+ *
+ * @param[in]   session    The session with loaded model whose node update should be disabled
+ * @param[in]   op_index   The index of training model node
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_disable_node_update(nnfw_session *session, uint32_t op_index);
+
+/**
+ * @brief Enable update of the node indicated by op_index during training
+ * @note  This function should be called after {@link nnfw_train_prepare}.
+ *        The update of all the nodes is enabled by default.
+ *
+ * @param[in]   session    The session with loaded model whose node update should be disabled
+ * @param[in]   op_index   The index of training model node
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_enable_node_update(nnfw_session *session, uint32_t op_index);
+
 //////////////////////////////////////////////
 // Not planned to be implemented
 //////////////////////////////////////////////

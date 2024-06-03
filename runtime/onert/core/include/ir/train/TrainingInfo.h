@@ -62,6 +62,16 @@ public:
     _trainable_ops = trainable_ops;
   }
 
+  void enableTrainNodeUpdate(const OperationIndex &op_idx) { _trainable_ops.emplace(op_idx); }
+
+  void disableTrainNodeUpdate(const OperationIndex &op_idx)
+  {
+    if (_trainable_ops.find(op_idx) != std::end(_trainable_ops))
+    {
+      _trainable_ops.erase(op_idx);
+    }
+  }
+
   bool isValid() const;
 
 private:
