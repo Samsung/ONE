@@ -5,9 +5,13 @@ from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
 
 
-def to_camel_case(snake_str):
-    captialized_str: str = "".join(x.capitalize() for x in snake_str.lower().split("_"))
-    return snake_str[0].lower() + captialized_str[1:]
+def to_camel_case(string: str):
+    if not '_' in string:
+        # string is already camel case
+        return string
+
+    captialized_str: str = "".join(x.capitalize() for x in string.lower().split("_"))
+    return string[0].lower() + captialized_str[1:]
 
 
 def _generate_optimizer(
