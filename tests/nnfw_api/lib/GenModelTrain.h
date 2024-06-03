@@ -244,19 +244,23 @@ protected:
         input_infos.emplace_back(std::move(ti));
       }
 
-      // Prepare expected output
+      // Prepare output and expected output
+      _so.outputs.resize(num_expecteds);
       _so.expects.resize(num_expecteds);
       std::vector<nnfw_tensorinfo> expected_infos(num_expecteds);
       for (uint32_t ind = 0; ind < num_expecteds; ind++)
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
-        uint64_t output_elements = num_elems(&ti);
-        _so.expects[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
+        uint64_t size = num_elems(&ti) * sizeOfNnfwType(ti.dtype);
+        _so.outputs[ind].resize(size);
+        _so.expects[ind].resize(size);
 
         // Setting the output buffer size of specified output tensor is not supported yet
         ASSERT_EQ(_context->hasOutputSizes(ind), false);
 
+        NNFW_ENSURE_SUCCESS(
+          nnfw_train_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(), size));
         NNFW_ENSURE_SUCCESS(
           nnfw_train_set_expected(_so.session, ind, _so.expects[ind].data(), &ti));
 
