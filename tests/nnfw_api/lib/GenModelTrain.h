@@ -22,15 +22,32 @@
 
 struct SessionObjectTraining : public SessionObjectGeneric
 {
-  std::vector<std::vector<uint8_t>> losses;
+  std::vector<std::vector<uint8_t>> expects;
 };
 
 struct TrainCaseData : public TestCaseData
 {
   /**
+   * @brief A vector of expect buffers
+   */
+  std::vector<std::vector<uint8_t>> expects;
+
+  /**
    * @brief A vector of losses buffers
    */
   std::vector<std::vector<uint8_t>> losses;
+
+  /**
+   * @brief Append vector data to expects
+   *
+   * @tparam T Data type
+   * @param data vector data array
+   */
+  template <typename T> TrainCaseData &addExpects(const std::vector<T> &data)
+  {
+    addData(expects, data);
+    return *this;
+  }
 
   /**
    * @brief Append vector data to losses
@@ -53,7 +70,7 @@ struct TrainCaseData : public TestCaseData
  *
  * @tparam T Uniform tensor type
  * @param inputs Inputs tensor buffers
- * @param expects Outputs tensor buffers
+ * @param expects Expects tensor buffers
  * @param losses Losses tensor buffers
  * @return TrainCaseData Generated train case data
  */
@@ -66,7 +83,7 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<T>> &inputs,
   for (const auto &data : inputs)
     ret.addInput(data);
   for (const auto &data : expects)
-    ret.addOutput(data);
+    ret.addExpects(data);
   for (const auto &data : losses)
     ret.addLosses(data);
   return ret;
@@ -109,9 +126,9 @@ public:
 
   void setEpoch(int32_t epoch)
   {
-    if (epoch < 2)
+    if (epoch < 1)
     {
-      throw std::runtime_error{"epoch should be equal or greater than 2"};
+      throw std::runtime_error{"epoch should be equal or greater than 1"};
     }
     _epoch = epoch;
   }
@@ -211,7 +228,6 @@ protected:
 
       // Prepare input
       _so.inputs.resize(num_inputs);
-      std::vector<nnfw_tensorinfo> input_infos(num_inputs);
       for (uint32_t ind = 0; ind < num_inputs; ind++)
       {
         nnfw_tensorinfo ti;
@@ -223,106 +239,102 @@ protected:
         ASSERT_NE(_so.inputs[ind].size(), 0);
 
         NNFW_ENSURE_SUCCESS(nnfw_train_set_input(_so.session, ind, _so.inputs[ind].data(), &ti));
-
-        input_infos.emplace_back(std::move(ti));
       }
 
-      // Prepare expected output
+      // Prepare expects and output
       _so.outputs.resize(num_expecteds);
-      std::vector<nnfw_tensorinfo> expected_infos(num_expecteds);
+      _so.expects.resize(num_expecteds);
       for (uint32_t ind = 0; ind < num_expecteds; ind++)
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
-        uint64_t output_elements = num_elems(&ti);
-        _so.outputs[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
+        uint64_t size = num_elems(&ti) * sizeOfNnfwType(ti.dtype);
+        _so.outputs[ind].resize(size);
+        _so.expects[ind].resize(size);
 
         // Setting the output buffer size of specified output tensor is not supported yet
         ASSERT_EQ(_context->hasOutputSizes(ind), false);
 
         NNFW_ENSURE_SUCCESS(
-          nnfw_train_set_expected(_so.session, ind, _so.outputs[ind].data(), &ti));
-
-        expected_infos.emplace_back(std::move(ti));
+          nnfw_train_set_output(_so.session, ind, ti.dtype, _so.outputs[ind].data(), size));
+        NNFW_ENSURE_SUCCESS(
+          nnfw_train_set_expected(_so.session, ind, _so.expects[ind].data(), &ti));
       }
 
-      // Prepare expected loss
-      _so.losses.resize(num_expecteds);
-
       const int num_epoch = _context->epoch();
-      ASSERT_GE(num_epoch, 2);
-      const int num_step = num_expecteds / tri.batch_size;
-      ASSERT_GE(num_step, 1);
+      ASSERT_GE(num_epoch, 1);
 
       // Set input values & expected output values, train, and check loss
       for (const auto &train_case : _context->train_cases())
       {
-        // Inputs
-        const auto &ref_inputs = train_case.inputs;
-        ASSERT_EQ(_so.inputs.size(), ref_inputs.size());
-        for (uint32_t i = 0; i < _so.inputs.size(); i++)
-        {
-          // Fill the values
-          ASSERT_EQ(_so.inputs[i].size(), ref_inputs[i].size());
-          memcpy(_so.inputs[i].data(), ref_inputs[i].data(), ref_inputs[i].size());
-        }
-
-        // Expected outputs
-        const auto &ref_outputs = train_case.outputs;
-        ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
-        for (uint32_t i = 0; i < _so.outputs.size(); i++)
-        {
-          // Fill the values
-          ASSERT_EQ(_so.outputs[i].size(), ref_outputs[i].size());
-          memcpy(_so.outputs[i].data(), ref_outputs[i].data(), ref_outputs[i].size());
-        }
-
-        // Expected losses
-        const auto &ref_losses = train_case.losses;
-        ASSERT_EQ(_so.losses.size(), ref_losses.size());
-        for (uint32_t i = 0; i < _so.losses.size(); i++)
-        {
-          // Fill the values
-          _so.losses[i] = ref_losses[i];
-        }
-
         if (train_case.expected_fail_run())
         {
           ASSERT_NE(nnfw_train(_so.session, true), NNFW_STATUS_NO_ERROR);
           continue;
         }
 
-        // Train
-        std::vector<float> actual_losses(num_expecteds, 0.f);
+        const auto &ref_inputs = train_case.inputs;
+        const auto &ref_expects = train_case.expects;
+        const auto &ref_outputs = train_case.outputs;
+        const auto &ref_losses = train_case.losses;
+
+        ASSERT_EQ(ref_losses.size(), num_epoch);
+
+        const int num_step = ref_inputs.size() / tri.batch_size;
+        ASSERT_GE(num_step, 1);
+        // Train input must be divisiable by batch size
+        ASSERT_EQ(ref_inputs.size() % tri.batch_size, 0);
+
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
         {
-          NNFW_ENSURE_SUCCESS(nnfw_train(_so.session, true));
-
-          // Store loss
-          for (int32_t i = 0; i < num_expecteds; ++i)
+          std::vector<float> actual_losses(num_expecteds, 0.f);
+          for (uint32_t step = 0; step < num_step; ++step)
           {
-            float temp = 0.f;
-            NNFW_ENSURE_SUCCESS(nnfw_train_get_loss(_so.session, i, &temp));
-            actual_losses[i] += temp;
+            const int batch_start = step * tri.batch_size;
+
+            // Inputs
+            for (uint32_t i = 0; i < _so.inputs.size(); i++)
+            {
+              // Fill the values
+              memcpy(_so.inputs[i].data(), ref_inputs[i].data() + batch_start,
+                     _so.inputs[i].size());
+            }
+
+            // Expects
+            for (uint32_t i = 0; i < _so.expects.size(); i++)
+            {
+              // Fill the values
+              memcpy(_so.expects[i].data(), ref_expects[i].data() + batch_start,
+                     _so.expects[i].size());
+            }
+
+            NNFW_ENSURE_SUCCESS(nnfw_train(_so.session, true));
+
+            // Store loss
+            for (int32_t i = 0; i < num_expecteds; ++i)
+            {
+              float temp = 0.f;
+              NNFW_ENSURE_SUCCESS(nnfw_train_get_loss(_so.session, i, &temp));
+              actual_losses[i] += temp;
+            }
           }
-        }
 
-        // Recalculate loss
-        for (uint32_t i = 0; i < num_expecteds; ++i)
-        {
-          actual_losses[i] /= num_step;
-        }
+          // Recalculate loss
+          for (uint32_t i = 0; i < num_expecteds; ++i)
+          {
+            actual_losses[i] /= num_step;
+          }
 
-        ASSERT_EQ(actual_losses.size(), _so.losses.size());
-
-        // TODO better way for handling FP error?
-        for (uint32_t i = 0; i < actual_losses.size(); i++)
-        {
-          float actual = actual_losses[i];
-          const auto &expected_loss = _so.losses[i];
-          ASSERT_EQ(expected_loss.size(), sizeof(float));
-          float expected = *(reinterpret_cast<const float *>(expected_loss.data()));
-          EXPECT_NEAR(expected, actual, 0.001) << "Loss #" << i;
+          // TODO better way for handling FP error?
+          const auto epoch_begin = epoch * num_expecteds;
+          for (uint32_t i = 0; i < num_expecteds; i++)
+          {
+            float actual = actual_losses[i];
+            const auto &expected_loss = ref_losses[epoch];
+            float expected =
+              *(reinterpret_cast<const float *>(expected_loss.data() + i * sizeof(float)));
+            EXPECT_NEAR(expected, actual, 0.001) << "Loss #" << i;
+          }
         }
       }
 

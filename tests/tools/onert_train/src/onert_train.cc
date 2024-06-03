@@ -27,6 +27,7 @@
 #include "dataloader.h"
 #include "rawdataloader.h"
 #include "metrics.h"
+#include "results.h"
 
 #include <boost/program_options.hpp>
 #include <cassert>
@@ -130,7 +131,7 @@ int main(const int argc, char **argv)
       auto it = std::find(acc.begin(), acc.end(), type);
       if (it == acc.end())
         return "metric";
-      return "accuracy";
+      return "categorical_accuracy";
     };
 
     // get training information
@@ -232,8 +233,7 @@ int main(const int argc, char **argv)
       exit(-1);
     }
 
-    std::vector<float> losses(num_expecteds);
-    std::vector<float> metrics(num_expecteds);
+    Results<float> results(num_expecteds);
     measure.run(PhaseType::EXECUTE, [&]() {
       const int num_step = tdata_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
@@ -244,7 +244,7 @@ int main(const int argc, char **argv)
         // TRAINING
         //
         {
-          std::fill(losses.begin(), losses.end(), 0);
+          results.reset();
           for (uint32_t n = 0; n < num_step; ++n)
           {
             // get batchsize data
@@ -269,11 +269,14 @@ int main(const int argc, char **argv)
             measure.run(epoch, n, [&]() { NNPR_ENSURE_STATUS(nnfw_train(session, true)); });
 
             // store loss
+            Metrics metric(output_data, expected_data, expected_infos);
             for (int32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
-              losses[i] += temp;
+              results.setLoss(i, temp);
+              if (args.getMetricType() == 0)
+                results.setMetrics(i, metric.categoricalAccuracy(i));
             }
           }
 
@@ -281,11 +284,12 @@ int main(const int argc, char **argv)
           std::cout << std::fixed;
           std::cout << "Epoch " << epoch + 1 << "/" << num_epoch;
           measure.printTimeMs(epoch, AggregateType::AVERAGE);
-          std::cout.precision(4);
-          std::cout << " - loss: ";
-          for (uint32_t i = 0; i < num_expecteds; ++i)
+          results.printLoss(num_step);
+          // TODO use init-statement in selection statements (c++17)
+          std::string str;
+          if ((str = getMetricTypeStr(args.getMetricType())) != "")
           {
-            std::cout << "[" << i << "] " << losses[i] / num_step;
+            results.printMetrics(num_step, str);
           }
         }
 
@@ -294,8 +298,7 @@ int main(const int argc, char **argv)
         //
         if (vdata_length > 0)
         {
-          std::fill(losses.begin(), losses.end(), 0);
-          std::fill(metrics.begin(), metrics.end(), 0);
+          results.reset();
           const int num_valid_step = vdata_length / tri.batch_size;
           for (uint32_t n = 0; n < num_valid_step; ++n)
           {
@@ -326,29 +329,25 @@ int main(const int argc, char **argv)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
-              losses[i] += temp;
+              results.setLoss(i, temp);
               if (args.getMetricType() == 0)
-                metrics[i] += metric.categoricalAccuracy(i);
+                results.setMetrics(i, metric.categoricalAccuracy(i));
             }
           }
 
           // print validation loss and accuracy
           std::cout << std::fixed;
-          std::cout.precision(4);
-          std::cout << " - val_loss: ";
-          for (uint32_t i = 0; i < num_expecteds; ++i)
-          {
-            std::cout << "[" << i << "] " << losses[i] / num_valid_step;
-          }
+          results.printLoss(num_valid_step, "val_");
           // TODO use init-statement in selection statements (c++17)
           std::string str;
           if ((str = getMetricTypeStr(args.getMetricType())) != "")
           {
-            std::cout << " - val_" << str << ": ";
-            for (uint32_t i = 0; i < num_expecteds; ++i)
-            {
-              std::cout << "[" << i << "] " << metrics[i] / num_valid_step;
-            }
+            results.printMetrics(num_valid_step, "val_" + str);
+            // std::cout << " - val_" << str << ": ";
+            // for (uint32_t i = 0; i < num_expecteds; ++i)
+            // {
+            //   std::cout << "[" << i << "] " << metrics[i] / num_valid_step;
+            // }
           }
         }
 

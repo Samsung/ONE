@@ -28,6 +28,8 @@ Metrics::Metrics(const std::vector<Allocation> &output, const std::vector<Alloca
   : _output{output}, _expected{expected}, _infos{infos}
 {
   // DO NOTHING
+  if (_output.size() != _expected.size())
+    throw std::runtime_error("Output and Expected data do not matched.");
 }
 
 template <typename T>
