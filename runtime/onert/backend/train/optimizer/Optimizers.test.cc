@@ -205,6 +205,9 @@ public:
   {
     for (uint32_t step = 0; step < _nums_step; ++step)
     {
+      auto actual_lr = _sgd.getLearningRate(step);
+      EXPECT_EQ(actual_lr, _learning_rate);
+
       calculateExpected();
 
       train::optimizer::Adam::UpdateFactors factors{_gradient, _trainable, step};
@@ -293,6 +296,13 @@ public:
       const auto vars = _trainable.optVars();
       const auto &m = *vars[0];
       const auto &v = *vars[1];
+
+      auto actual_lr = _adam.getLearningRate(step);
+      auto expected_lr = [&]() {
+        auto biasCorrection = [&](double f) { return 1.0f - std::pow(f, step + 1); };
+        return _learning_rate * (std::sqrt(biasCorrection(_beta2)) / biasCorrection(_beta1));
+      }();
+      EXPECT_EQ(actual_lr, expected_lr);
 
       for (size_t i = 0; i < _expected_trainable.size(); ++i)
       {
@@ -394,6 +404,13 @@ TEST(Optimizer, SGDValueValidation)
 
     SGDOptimizerVerifier<float>{trainable, gradient, lr, training_steps}.verify();
   }
+}
+
+TEST(Optimizer, SGDVarCount)
+{
+  train::optimizer::SGD sgd{};
+
+  EXPECT_EQ(sgd.getVarCount(), 0);
 }
 
 TEST(Optimizer, neg_SGDUnmatchedGradientShape)
@@ -516,6 +533,14 @@ TEST(Optimizer, AdamValueValidation)
   // TODO Add tests with use_nesterov = true
 }
 
+TEST(Optimizer, AdamVarCount)
+{
+  float lr = 0.001;
+  train::optimizer::Adam adam(lr);
+
+  EXPECT_EQ(adam.getVarCount(), 2);
+}
+
 TEST(Optimizer, neg_AdamUnmatchedGradientShape)
 {
   // Unmatched shape
@@ -540,12 +565,7 @@ TEST(Optimizer, neg_AdamUnmatchedGradientShape)
     trainable.appendOptVar(&m);
     trainable.appendOptVar(&v);
 
-    float lr = 0.001;
-    float beta1 = 0.9;
-    float beta2 = 0.999;
-    float epsilon = 1e-07;
-
-    train::optimizer::Adam adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}, lr};
+    train::optimizer::Adam adam{};
     train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
@@ -576,12 +596,7 @@ TEST(Optimizer, neg_AdamUnmatchedEMAShape)
     trainable.appendOptVar(&m);
     trainable.appendOptVar(&v);
 
-    float lr = 0.001;
-    float beta1 = 0.9;
-    float beta2 = 0.999;
-    float epsilon = 1e-07;
-
-    train::optimizer::Adam adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}, lr};
+    train::optimizer::Adam adam{};
     train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
@@ -612,12 +627,11 @@ TEST(Optimizer, neg_AdamUnsupportedType)
     trainable.appendOptVar(&m);
     trainable.appendOptVar(&v);
 
-    float lr = 0.001;
     float beta1 = 0.9;
     float beta2 = 0.999;
     float epsilon = 1e-07;
 
-    train::optimizer::Adam adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}, lr};
+    train::optimizer::Adam adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}};
     train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
