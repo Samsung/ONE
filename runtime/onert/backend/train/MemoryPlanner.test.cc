@@ -36,9 +36,21 @@ TEST(BumpPlanner, claim_test)
     ASSERT_EQ(mem_blk.size, size);
   };
 
+  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
+    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
+    planner.release(mem_idx);
+  };
+
+  auto capacity = [&planner](uint32_t expected_capacity) {
+    auto actual_capacity = planner.capacity();
+    ASSERT_EQ(actual_capacity, expected_capacity);
+  };
+
   claim(0, 0, 10, 0);
   claim(1, 0, 20, 10);
   claim(2, 2, 30, 30);
+  release(0, 0);
+  capacity(60);
 }
 
 TEST(FirstFitPlanner, claim_release_test)
@@ -57,6 +69,11 @@ TEST(FirstFitPlanner, claim_release_test)
   auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
     DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
     planner.release(mem_idx);
+  };
+
+  auto capacity = [&planner](uint32_t expected_capacity) {
+    auto actual_capacity = planner.capacity();
+    ASSERT_EQ(actual_capacity, expected_capacity);
   };
 
   // 0 CLAIM - 10
@@ -124,6 +141,9 @@ TEST(FirstFitPlanner, claim_release_test)
 
   // 7 RELEASE
   release(7, 1);
+
+  // CAPACITY - 125
+  capacity(125);
 }
 
 TEST(FirstFitPlanner, neg_release_non_existing_index)
