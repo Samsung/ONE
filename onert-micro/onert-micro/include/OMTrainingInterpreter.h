@@ -39,7 +39,8 @@ public:
   ~OMTrainingInterpreter() = default;
 
   // Import train model with current config settings
-  OMStatus importTrainModel(const char *model_ptr, const OMConfig &config);
+  // Note: model ptr should be non-const to save result
+  OMStatus importTrainModel(char *model_ptr, const OMConfig &config);
 
   // Set input data for input with input_index
   // Note: number of the samples in data should be equal to the batch_size in config structure

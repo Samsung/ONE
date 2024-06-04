@@ -24,7 +24,7 @@ using namespace onert_micro;
 /*
  * Import train model, validate it, prepare necessary structures and data for future calculations
  */
-OMStatus OMTrainingRuntimeModule::importTrainModel(const char *model_ptr, const OMConfig &config)
+OMStatus OMTrainingRuntimeModule::importTrainModel(char *model_ptr, const OMConfig &config)
 {
   // 1 - Import main model
   // 2 - Import and create training entities

@@ -18,7 +18,7 @@
 
 using namespace onert_micro;
 
-OMStatus OMTrainingInterpreter::importTrainModel(const char *model_ptr, const OMConfig &config)
+OMStatus OMTrainingInterpreter::importTrainModel(char *model_ptr, const OMConfig &config)
 {
   assert(model_ptr != nullptr && "Model ptr shouldn't be nullptr");
   if (model_ptr == nullptr)

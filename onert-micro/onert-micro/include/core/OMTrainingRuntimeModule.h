@@ -48,7 +48,8 @@ public:
   ~OMTrainingRuntimeModule() = default;
 
   // Import train model with current config settings
-  OMStatus importTrainModel(const char *model_ptr, const OMConfig &config);
+  // Note: model ptr should be non-const to save result
+  OMStatus importTrainModel(char *model_ptr, const OMConfig &config);
 
   // Train single step: run forward graph (with data which was set in SetInput) ->
   // -> calculate error (with target data which was set in SetTarget) ->
