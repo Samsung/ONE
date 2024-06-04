@@ -95,6 +95,27 @@ DataBuffer readFile(const char *path)
   return model_data;
 }
 
+bool saveModel(const char *path, const DataBuffer &data_buffer)
+{
+  if (path == nullptr or data_buffer.size() == 0)
+    return false;
+
+  // Open or create file
+  // Note: if the file existed, it will be overwritten
+  std::ofstream out_file(path, std::ios::binary | std::ios::trunc);
+  if (not out_file.is_open())
+    return false;
+
+  // Write data
+  out_file.write(data_buffer.data(), data_buffer.size());
+
+  // Close file
+  out_file.close();
+
+  // Saving done
+  return true;
+}
+
 } // namespace
 
 /*
@@ -106,42 +127,74 @@ DataBuffer readFile(const char *path)
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 10)
+  if (argc != 10 and argc != 9)
   {
-    std::cerr << "Usage: " << argv[0]
-              << " <path/to/circle/model/without/weights> "
-                 " <path/to/wof/file> <path/to/save/wof/file> <path/to/input/train_data> "
-                 "<path/to/input/target_train_data> "
-                 "<path/to/input/test_data> <path/to/input/target_test_data> num_of_train_smpl "
-                 "num_of_test_smpl\n";
+    std::cerr
+      << "Two variant of usage with and without wof file: " << argv[0]
+      << " <path/to/circle/model> "
+         " optional(<path/to/wof/file>) <path/to/save/trained/result> <path/to/input/train_data> "
+         "<path/to/input/target_train_data> "
+         "<path/to/input/test_data> <path/to/input/target_test_data> num_of_train_smpl "
+         "num_of_test_smpl\n";
     return EXIT_FAILURE;
   }
 
-  const char *circle_model_path = argv[1];
-  const char *wof_file_path = argv[2];
-  const char *output_wof_file_path = argv[3];
-  const char *input_input_train_data_path = argv[4];
-  const char *input_target_train_data_path = argv[5];
-  const char *input_input_test_data_path = argv[6];
-  const char *input_target_test_data_path = argv[7];
-  const int32_t num_train_data_samples = atoi(argv[8]);
-  const int32_t num_test_data_samples = atoi(argv[9]);
+  const char *circle_model_path = nullptr;
+  const char *wof_file_path = nullptr;
+  const char *output_trained_file_path = nullptr;
+  const char *input_input_train_data_path = nullptr;
+  const char *input_target_train_data_path = nullptr;
+  const char *input_input_test_data_path = nullptr;
+  const char *input_target_test_data_path = nullptr;
+  int32_t num_train_data_samples = 0;
+  int32_t num_test_data_samples = 0;
+
+  if (argc == 10)
+  {
+    circle_model_path = argv[1];
+    wof_file_path = argv[2];
+    output_trained_file_path = argv[3];
+    input_input_train_data_path = argv[4];
+    input_target_train_data_path = argv[5];
+    input_input_test_data_path = argv[6];
+    input_target_test_data_path = argv[7];
+    num_train_data_samples = atoi(argv[8]);
+    num_test_data_samples = atoi(argv[9]);
+  } else if (argc == 9)
+  {
+    circle_model_path = argv[1];
+    output_trained_file_path = argv[2];
+    input_input_train_data_path = argv[3];
+    input_target_train_data_path = argv[4];
+    input_input_test_data_path = argv[5];
+    input_target_test_data_path = argv[6];
+    num_train_data_samples = atoi(argv[7]);
+    num_test_data_samples = atoi(argv[8]);
+  } else
+  {
+    throw std::runtime_error("Unknown commands number\n");
+  }
 
   DataBuffer circle_model = readFile(circle_model_path);
-  DataBuffer wof_data = readFile(wof_file_path);
+  DataBuffer wof_data;
+  // If defined wof file
+  if (wof_file_path != nullptr)
+    wof_data = readFile(wof_file_path);
 
   // Configure training mode
   onert_micro::OMConfig config;
-  config.wof_ptr = wof_data.data();
+  // If defined wof file
+  if (wof_file_path != nullptr)
+    config.wof_ptr = nullptr;
 
   // Set user defined training settings
-  const uint32_t training_epochs = 10;
-  const float lambda = 0.001f;
+  const uint32_t training_epochs = 50;
+  const float lambda = 0.01f;
   const uint32_t BATCH_SIZE = 64;
-  const uint32_t INPUT_SIZE = 180;
-  const uint32_t OUTPUT_SIZE = 4;
+  const uint32_t INPUT_SIZE = 13;
+  const uint32_t OUTPUT_SIZE = 1;
   const uint32_t num_train_layers = 0;
-  const onert_micro::OMLoss loss = onert_micro::CROSS_ENTROPY;
+  const onert_micro::OMLoss loss = onert_micro::MSE;
   const onert_micro::OMTrainOptimizer train_optim = onert_micro::ADAM;
   const float beta = 0.9;
   const float beta_squares = 0.999;
@@ -210,10 +263,10 @@ int entry(int argc, char **argv)
       float accuracy = 0.f;
 
       // Evaluate cross_entropy and accuracy metrics
-      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS,
                                        reinterpret_cast<void *>(&cross_entropy_metric),
                                        cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&accuracy),
                                        cur_batch_size);
 
       // Save them into vectors
@@ -223,8 +276,8 @@ int entry(int argc, char **argv)
     // Calculate and print average values
     float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
     float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Train Average Accuracy = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Train Average Cross entropy = " << sum_ent / cross_entropy_v.size() << "\n";
+    std::cout << "Train Average MAE = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Train Average MSE = " << sum_ent / cross_entropy_v.size() << "\n";
 
     // Run test for current epoch
     std::cout << "Run test for epoch: " << e + 1 << "/" << training_epochs << "\n";
@@ -252,10 +305,10 @@ int entry(int argc, char **argv)
       float cross_entropy_metric = 0.f;
       float accuracy = 0.f;
 
-      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS,
                                        reinterpret_cast<void *>(&cross_entropy_metric),
                                        cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&accuracy),
                                        cur_batch_size);
 
       accuracy_v.push_back(accuracy);
@@ -263,9 +316,13 @@ int entry(int argc, char **argv)
     }
     sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
     sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Test Average Accuracy = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Test Average Cross entropy = " << sum_ent / cross_entropy_v.size() << "\n";
+    std::cout << "Test Average MSE = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Test Average MAE = " << sum_ent / cross_entropy_v.size() << "\n";
   }
+
+  // Save training result
+  saveModel(output_trained_file_path, circle_model);
+
   return EXIT_SUCCESS;
 }
 
