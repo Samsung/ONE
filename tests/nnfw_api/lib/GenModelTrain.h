@@ -22,15 +22,33 @@
 
 struct SessionObjectTraining : public SessionObjectGeneric
 {
+  std::vector<std::vector<uint8_t>> expects;
   std::vector<std::vector<uint8_t>> losses;
 };
 
 struct TrainCaseData : public TestCaseData
 {
   /**
+   * @brief A vector of expects buffers
+   */
+  std::vector<std::vector<uint8_t>> expects;
+
+  /**
    * @brief A vector of losses buffers
    */
   std::vector<std::vector<uint8_t>> losses;
+
+  /**
+   * @brief Append vector data to expects
+   *
+   * @tparam T Data type
+   * @param data vector data array
+   */
+  template <typename T> TrainCaseData &addExpects(const std::vector<T> &data)
+  {
+    addData(expects, data);
+    return *this;
+  }
 
   /**
    * @brief Append vector data to losses
@@ -53,7 +71,7 @@ struct TrainCaseData : public TestCaseData
  *
  * @tparam T Uniform tensor type
  * @param inputs Inputs tensor buffers
- * @param expects Outputs tensor buffers
+ * @param expects Expects tensor buffers
  * @param losses Losses tensor buffers
  * @return TrainCaseData Generated train case data
  */
@@ -66,7 +84,7 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<T>> &inputs,
   for (const auto &data : inputs)
     ret.addInput(data);
   for (const auto &data : expects)
-    ret.addOutput(data);
+    ret.addExpects(data);
   for (const auto &data : losses)
     ret.addLosses(data);
   return ret;
@@ -228,20 +246,20 @@ protected:
       }
 
       // Prepare expected output
-      _so.outputs.resize(num_expecteds);
+      _so.expects.resize(num_expecteds);
       std::vector<nnfw_tensorinfo> expected_infos(num_expecteds);
       for (uint32_t ind = 0; ind < num_expecteds; ind++)
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
         uint64_t output_elements = num_elems(&ti);
-        _so.outputs[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
+        _so.expects[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
 
         // Setting the output buffer size of specified output tensor is not supported yet
         ASSERT_EQ(_context->hasOutputSizes(ind), false);
 
         NNFW_ENSURE_SUCCESS(
-          nnfw_train_set_expected(_so.session, ind, _so.outputs[ind].data(), &ti));
+          nnfw_train_set_expected(_so.session, ind, _so.expects[ind].data(), &ti));
 
         expected_infos.emplace_back(std::move(ti));
       }
@@ -268,13 +286,13 @@ protected:
         }
 
         // Expected outputs
-        const auto &ref_outputs = train_case.outputs;
-        ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
-        for (uint32_t i = 0; i < _so.outputs.size(); i++)
+        const auto &ref_expects = train_case.expects;
+        ASSERT_EQ(_so.expects.size(), ref_expects.size());
+        for (uint32_t i = 0; i < _so.expects.size(); i++)
         {
           // Fill the values
-          ASSERT_EQ(_so.outputs[i].size(), ref_outputs[i].size());
-          memcpy(_so.outputs[i].data(), ref_outputs[i].data(), ref_outputs[i].size());
+          ASSERT_EQ(_so.expects[i].size(), ref_expects[i].size());
+          memcpy(_so.expects[i].data(), ref_expects[i].data(), ref_expects[i].size());
         }
 
         // Expected losses
