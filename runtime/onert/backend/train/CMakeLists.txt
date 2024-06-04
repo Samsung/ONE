@@ -19,7 +19,11 @@ set_target_properties(${LIB_ONERT_BACKEND_TRAIN} PROPERTIES
 install(TARGETS ${LIB_ONERT_BACKEND_TRAIN} DESTINATION lib/nnfw/backend)
 
 # For test
-set(TEST_ONERT_TRAIN_BACKEND test_onert_backend_train)
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
+set(TEST_ONERT_TRAIN_BACKEND test_onert_train_backend)
 
 add_executable(${TEST_ONERT_TRAIN_BACKEND} ${TESTS})
 
