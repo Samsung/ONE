@@ -36,7 +36,7 @@ onert_run::TensorShape getShape(H5::DataSet &data_set)
 
   onert_run::TensorShape shape;
   for (auto dim : h5_shape)
-    shape.emplace_back(static_cast<int>(dim));
+    shape.emplace_back(static_cast<int32_t>(dim));
 
   return shape;
 }
@@ -46,10 +46,9 @@ namespace onert_run
 {
 static const char *h5_value_grpname = "value";
 
-std::vector<TensorShape> H5Formatter::readTensorShapes(const std::string &filename)
+std::vector<TensorShape> H5Formatter::readTensorShapes(const std::string &filename,
+                                                       uint32_t num_inputs)
 {
-  uint32_t num_inputs;
-  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
   std::vector<TensorShape> tensor_shapes;
 
   try
@@ -86,8 +85,7 @@ std::vector<TensorShape> H5Formatter::readTensorShapes(const std::string &filena
 
 void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
 {
-  uint32_t num_inputs;
-  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
+  uint32_t num_inputs = inputs.size();
   try
   {
     // Turn off the automatic error printing.
@@ -97,18 +95,11 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
     H5::Group value_group = file.openGroup(h5_value_grpname);
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
-      nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
-
       // TODO Add Assert(nnfw shape, h5 file shape size)
-
-      // allocate memory for data
-      auto bufsz = bufsize_for(&ti);
-      inputs[i].alloc(bufsz);
-
+      auto bufsz = inputs[i].size();
       H5::DataSet data_set = value_group.openDataSet(std::to_string(i));
       H5::DataType type = data_set.getDataType();
-      switch (ti.dtype)
+      switch (inputs[i].type())
       {
         case NNFW_TYPE_TENSOR_FLOAT32:
           if (type == H5::PredType::IEEE_F32BE || type == H5::PredType::IEEE_F32LE)
@@ -148,8 +139,6 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
         default:
           throw std::runtime_error("onert_run can load f32, i32, qasymm8, bool and uint8.");
       }
-      NNPR_ENSURE_STATUS(nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), bufsz));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   }
   catch (const H5::Exception &e)
@@ -164,10 +153,13 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
   }
 };
 
-void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs)
+void H5Formatter::dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs,
+                              const std::vector<TensorShape> &shape_map)
 {
-  uint32_t num_outputs;
-  NNPR_ENSURE_STATUS(nnfw_output_size(session_, &num_outputs));
+  uint32_t num_outputs = outputs.size();
+  if (num_outputs != shape_map.size())
+    throw std::runtime_error("Number of outputs and shape map are not matched");
+
   try
   {
     // Turn off the automatic error printing.
@@ -177,21 +169,20 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
     H5::Group value_group = file.createGroup(h5_value_grpname);
     for (uint32_t i = 0; i < num_outputs; i++)
     {
-      nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session_, i, &ti));
-      std::vector<hsize_t> dims(ti.rank);
-      for (uint32_t j = 0; j < ti.rank; ++j)
+      auto shape = shape_map[i];
+      std::vector<hsize_t> dims(shape.size());
+      for (uint32_t j = 0; j < shape.size(); ++j)
       {
-        if (ti.dims[j] >= 0)
-          dims[j] = static_cast<hsize_t>(ti.dims[j]);
+        if (shape[j] >= 0)
+          dims[j] = static_cast<hsize_t>(shape[j]);
         else
         {
           std::cerr << "Negative dimension in output tensor" << std::endl;
           exit(-1);
         }
       }
-      H5::DataSpace data_space(ti.rank, dims.data());
-      switch (ti.dtype)
+      H5::DataSpace data_space(shape.size(), dims.data());
+      switch (outputs[i].type())
       {
         case NNFW_TYPE_TENSOR_FLOAT32:
         {
