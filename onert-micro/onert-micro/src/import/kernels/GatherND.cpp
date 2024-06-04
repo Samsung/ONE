@@ -90,6 +90,6 @@ OMStatus onert_micro::import::configure_kernel_CircleGatherND(const OMConfigureA
 
   status =
     utils::checkCondition(positions_num_dims_nd <= onert_micro::execute::pal::MAX_INDICES_ND);
-  if (status != Ok)
-    return status;
+
+  return status;
 }
