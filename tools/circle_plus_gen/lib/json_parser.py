@@ -21,7 +21,7 @@ def _generate_optimizer(
     options_t_str: str = opt_type.__name__  # e.g. SGDOptionsT
     options_str: str = options_t_str[:-1]  # e.g. SGDOptions
     optimizer_camel: str = options_str.replace("Options", "")  # e.g. SGD
-    optimizer_str: str = re.sub(r'(?<!^)(?=[A-Z])', '_',
+    optimizer_str: str = re.sub(r'(?<=[a-z])(?=[A-Z])', '_',
                                 optimizer_camel).upper()  # e.g. SGD
 
     optimizer = getattr(ctr_gen.Optimizer, optimizer_str)
@@ -76,7 +76,7 @@ def _generate_lossfn(
     options_t_str: str = lossfn_type.__name__  # e.g. CategoricalCrossentropyOptionsT
     options_str: str = options_t_str[:-1]  # e.g. CategoricalCrossentropyOptions
     lossfn_camel: str = options_str.replace("Options", "")  # e.g. CategoricalCrossentropy
-    lossfn_str: str = re.sub(r'(?<!^)(?=[A-Z])', '_',
+    lossfn_str: str = re.sub(r'(?<=[a-z])(?=[A-Z])', '_',
                              lossfn_camel).upper()  # e.g. CATEGORICAL_CROSSENTROPY
 
     lossfn = getattr(ctr_gen.LossFn, lossfn_str)
