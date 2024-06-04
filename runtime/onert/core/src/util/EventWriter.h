@@ -90,11 +90,11 @@ public:
   /**
    * @brief Retuens a singleton object
    */
-  static EventWriter *get(const std::string &filename)
+  static EventWriter *get(const std::string &workspace_dir)
   {
     std::unique_lock<std::mutex> lock{_mutex};
 
-    static EventWriter singleton(filename);
+    static EventWriter singleton(workspace_dir);
     return &singleton;
   }
 
@@ -115,11 +115,11 @@ public:
   void readyToFlush(std::unique_ptr<EventRecorder> &&recorder);
 
 private:
-  EventWriter(const std::string &filepath) : _ref_count(0)
+  EventWriter(const std::string &workspace_dir) : _ref_count(0)
   {
-    std::string snpe_log_name(filepath);
-    std::string chrome_tracing_log_name(filepath + ".chrome.json");
-    std::string md_table_log_name(filepath + ".table.md");
+    std::string snpe_log_name(workspace_dir + "/trace.json");
+    std::string chrome_tracing_log_name(workspace_dir + "/trace.chrome.json");
+    std::string md_table_log_name(workspace_dir + "/trace.table.md");
 
     _actual_writers[WriteFormat::SNPE_BENCHMARK] = std::make_unique<SNPEWriter>(snpe_log_name);
     _actual_writers[WriteFormat::CHROME_TRACING] =

@@ -113,12 +113,12 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex,
   }
 };
 
-TracingObserver::TracingObserver(const std::string &filepath, const ir::Graph &graph,
+TracingObserver::TracingObserver(const std::string &workspace_dir, const ir::Graph &graph,
                                  const util::TracingCtx *tracing_ctx)
   : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
     _tracing_ctx{tracing_ctx}
 {
-  _event_writer = EventWriter::get(filepath);
+  _event_writer = EventWriter::get(workspace_dir);
   _event_writer->startToUse();
 }
 

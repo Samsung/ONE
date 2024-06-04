@@ -92,7 +92,7 @@ $BRIDGE shell tar -zxf $TEST_ROOT/nnpkg.tar.gz -C $TEST_ROOT/nnpkg
 $BRIDGE shell rm $TEST_ROOT/nnpkg.tar.gz
 
 # 1. Run
-$BRIDGE shell LD_LIBRARY_PATH=$TEST_ROOT/Product/out/lib TRACE_FILEPATH=$TEST_ROOT/trace.json BACKENDS=$BACKENDS $TEST_ROOT/Product/out/bin/onert_run --nnpackage $NNPKG_PATH_TARGET -r $NUM_RUNS
+$BRIDGE shell LD_LIBRARY_PATH=$TEST_ROOT/Product/out/lib TRACING_MODE=1 WORKSPACE_DIR=$TEST_ROOT BACKENDS=$BACKENDS $TEST_ROOT/Product/out/bin/onert_run --nnpackage $NNPKG_PATH_TARGET -r $NUM_RUNS
 
 # 2. Pull result file
 echo "Pulling data from target to trace.json"

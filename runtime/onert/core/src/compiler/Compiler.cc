@@ -70,7 +70,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
   }
 
-  if (!_options->minmax_filepath.empty())
+  if (_options->minmax_dump)
   {
     if (_options->executor != "Linear")
       throw std::runtime_error("Recording minmax works only with Linear executor");

@@ -26,12 +26,12 @@ namespace onert
 namespace exec
 {
 
-MinMaxRecorder::MinMaxRecorder(const std::string &minmax_filepath, const ir::Graph &graph,
+MinMaxRecorder::MinMaxRecorder(const std::string &workspace_dir, const ir::Graph &graph,
                                const backend::BackendContexts &backend_contexts)
 #if MINMAX_H5DUMPER
-  : _graph{graph}, _backend_contexts{backend_contexts}, _h5dumper(minmax_filepath)
+  : _graph{graph}, _backend_contexts{backend_contexts}, _h5dumper(workspace_dir + "/minmax.h5")
 #else
-  : _graph{graph}, _backend_contexts{backend_contexts}, _raw_dumper(minmax_filepath)
+  : _graph{graph}, _backend_contexts{backend_contexts}, _raw_dumper(workspace_dir + "/minmax.bin")
 #endif
 {
 }
