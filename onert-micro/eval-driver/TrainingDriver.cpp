@@ -160,7 +160,8 @@ int entry(int argc, char **argv)
     input_target_test_data_path = argv[7];
     num_train_data_samples = atoi(argv[8]);
     num_test_data_samples = atoi(argv[9]);
-  } else if (argc == 9)
+  }
+  else if (argc == 9)
   {
     circle_model_path = argv[1];
     output_trained_file_path = argv[2];
@@ -170,7 +171,8 @@ int entry(int argc, char **argv)
     input_target_test_data_path = argv[6];
     num_train_data_samples = atoi(argv[7]);
     num_test_data_samples = atoi(argv[8]);
-  } else
+  }
+  else
   {
     throw std::runtime_error("Unknown commands number\n");
   }
@@ -263,11 +265,10 @@ int entry(int argc, char **argv)
       float accuracy = 0.f;
 
       // Evaluate cross_entropy and accuracy metrics
-      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS,
-                                       reinterpret_cast<void *>(&cross_entropy_metric),
-                                       cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&accuracy),
-                                       cur_batch_size);
+      train_interpreter.evaluateMetric(
+        onert_micro::MSE_METRICS, reinterpret_cast<void *>(&cross_entropy_metric), cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS,
+                                       reinterpret_cast<void *>(&accuracy), cur_batch_size);
 
       // Save them into vectors
       accuracy_v.push_back(accuracy);
@@ -305,11 +306,10 @@ int entry(int argc, char **argv)
       float cross_entropy_metric = 0.f;
       float accuracy = 0.f;
 
-      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS,
-                                       reinterpret_cast<void *>(&cross_entropy_metric),
-                                       cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&accuracy),
-                                       cur_batch_size);
+      train_interpreter.evaluateMetric(
+        onert_micro::MAE_METRICS, reinterpret_cast<void *>(&cross_entropy_metric), cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS,
+                                       reinterpret_cast<void *>(&accuracy), cur_batch_size);
 
       accuracy_v.push_back(accuracy);
       cross_entropy_v.push_back(cross_entropy_metric);

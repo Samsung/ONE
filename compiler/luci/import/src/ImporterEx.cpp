@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "luci/Importer.h"
 #include "luci/ImporterEx.h"
 
 #include <foder/FileLoader.h>
@@ -24,7 +25,7 @@
 namespace luci
 {
 
-std::vector<char> ImporterEx::importVerifyModelData(const std::string &input_path) const
+std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
 {
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
@@ -36,22 +37,15 @@ std::vector<char> ImporterEx::importVerifyModelData(const std::string &input_pat
   catch (const std::runtime_error &err)
   {
     std::cerr << err.what() << std::endl;
-    return {};
+    return nullptr;
   }
 
   flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
   if (!circle::VerifyModelBuffer(verifier))
   {
     std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return {};
+    return nullptr;
   }
-
-  return model_data;
-}
-
-std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
-{
-  auto model_data = importVerifyModelData(input_path);
 
   const circle::Model *circle_model = circle::GetModel(model_data.data());
   if (circle_model == nullptr)

@@ -18,7 +18,6 @@
 #define __LUCI_IMPORTER_EX_H__
 
 #include "luci/IR/Module.h"
-#include "luci/Importer.h"
 
 #include <memory>
 #include <string>
@@ -33,7 +32,6 @@ public:
 
 public:
   std::unique_ptr<Module> importVerifyModule(const std::string &input_path) const;
-  std::vector<char> importVerifyModelData(const std::string &input_path) const;
 };
 
 } // namespace luci
