@@ -52,6 +52,12 @@ struct SoftmaxParams
   int row_size;
 };
 
+struct LogSoftmaxParams
+{
+  int num_rows;
+  int row_size;
+};
+
 struct Pool2DParams
 {
   int32_t stride_w;
