@@ -205,6 +205,11 @@ typedef struct nnfw_loss_info
 } nnfw_loss_info;
 
 /**
+ * @brief Maximum numer of trainable operations
+ */
+#define NNFW_TRAINABLE_OPS_MAX_SIZE (256)
+
+/**
  * @brief Training information to prepare training
  * @todo  Add more training information
  *        (e.g. optimizer, loss function, ...)
@@ -220,6 +225,10 @@ typedef struct nnfw_train_info
                            .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE};
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
+
+  /** indexes of trainable operations */
+  uint32_t trainble_ops_size = 0;
+  uint32_t trainble_ops_idx[NNFW_TRAINABLE_OPS_MAX_SIZE];
 } nnfw_train_info;
 
 /**
@@ -373,28 +382,6 @@ NNFW_STATUS nnfw_train_input_tensorinfo(nnfw_session *session, uint32_t index,
  */
 NNFW_STATUS nnfw_train_expected_tensorinfo(nnfw_session *session, uint32_t index,
                                            nnfw_tensorinfo *info);
-
-/**
- * @brief Disable update of the node indicated by op_index during training
- * @note  This function should be called after {@link nnfw_train_prepare}.
- *        The update of all the nodes is enabled by default.
- *
- * @param[in]   session    The session with loaded model whose node update should be disabled
- * @param[in]   op_index   The index of training model node
- * @return @c NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_train_disable_node_update(nnfw_session *session, uint32_t op_index);
-
-/**
- * @brief Enable update of the node indicated by op_index during training
- * @note  This function should be called after {@link nnfw_train_prepare}.
- *        The update of all the nodes is enabled by default.
- *
- * @param[in]   session    The session with loaded model whose node update should be disabled
- * @param[in]   op_index   The index of training model node
- * @return @c NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_train_enable_node_update(nnfw_session *session, uint32_t op_index);
 
 //////////////////////////////////////////////
 // Not planned to be implemented

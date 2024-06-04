@@ -1289,6 +1289,15 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     info->loss_info.loss = convertLossCode(loss.loss_code);
     info->loss_info.reduction_type = convertLossReduction(loss.reduction_type);
     info->opt = convertOptimizerCode(optim.optim_code);
+    {
+      assert(_train_info->getTrainableOps().size() < NNFW_TRAINABLE_OPS_MAX_SIZE);
+      size_t pos = 0;
+      for (auto const &train_op_idx : _train_info->getTrainableOps())
+      {
+        info->trainble_ops_idx[pos++] = train_op_idx.value();
+      }
+      info->trainble_ops_size = _train_info->getTrainableOps().size();
+    }
   }
   catch (const std::exception &e)
   {
@@ -1356,6 +1365,17 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     _train_info->setBatchSize(info->batch_size);
     _train_info->setLossInfo(loss_info);
     _train_info->setOptimizerInfo(opt_info);
+
+    for (uint32_t idx = 0; idx < info->trainble_ops_size; ++idx)
+    {
+      if (idx >= primary_subgraph()->operations().size())
+      {
+        std::cerr << "Error during nnfw_session::train_set_traininfo: provided op_index=" << idx
+                  << " is out of operators range" << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+      _train_info->enableTrainNodeUpdate(onert::ir::OperationIndex{idx});
+    }
   }
   catch (const std::exception &e)
   {
@@ -1561,48 +1581,6 @@ NNFW_STATUS nnfw_session::train_set_output(uint32_t index, NNFW_TYPE /*type*/, v
     std::cerr << "Error during nnfw_session::train_set_output : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::nnfw_train_disable_node_update(uint32_t op_index)
-{
-  if (!isStateModelLoaded() || isStatePreparedTraining())
-  {
-    std::cerr << "Error during nnfw_session::nnfw_train_disable_node_update: invalid session state"
-              << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  if (op_index >= primary_subgraph()->operations().size())
-  {
-    std::cerr << "Error during nnfw_session::nnfw_train_disable_node_update: provided op_index="
-              << op_index << " is out of operators range" << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  const auto ir_op_index = onert::ir::OperationIndex{op_index};
-  _train_info->disableTrainNodeUpdate(ir_op_index);
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::nnfw_train_enable_node_update(uint32_t op_index)
-{
-  if (!isStateModelLoaded() || isStatePreparedTraining())
-  {
-    std::cerr << "Error during nnfw_session::nnfw_train_enable_node_update: invalid session state"
-              << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  if (op_index >= primary_subgraph()->operations().size())
-  {
-    std::cerr << "Error during nnfw_session::nnfw_train_enable_node_update: provided op_index="
-              << op_index << " is out of operators range" << std::endl;
-    return NNFW_STATUS_INVALID_STATE;
-  }
-
-  const auto ir_op_index = onert::ir::OperationIndex{op_index};
-  _train_info->enableTrainNodeUpdate(ir_op_index);
   return NNFW_STATUS_NO_ERROR;
 }
 
