@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include "SGD.h"
-#include "Adam.h"
+#include "Optimizers.h"
 
 #include <backend/train/ITrainableTensor.h>
 
@@ -98,7 +97,7 @@ private:
   std::vector<uint8_t> _data;
 };
 
-class MockUpTrainableTensor : public train::ITrainableTensor
+class MockUpTrainableTensor : public backend::train::ITrainableTensor
 {
 public:
   MockUpTrainableTensor(const Shape &shape, const TypeInfo &type_info)
@@ -183,7 +182,7 @@ template <typename T> class SGDOptimizerVerifier
 public:
   SGDOptimizerVerifier(MockUpTrainableTensor &trainable, const MockUpTensor &gradient,
                        float learning_rate, uint32_t nums_step)
-    : _sgd{train::optimizer::SGD::Property{}, learning_rate}, _trainable{trainable},
+    : _sgd{backend::train::optimizer::SGD::Property{}, learning_rate}, _trainable{trainable},
       _gradient{gradient}, _learning_rate{learning_rate}, _nums_step{nums_step}
   {
     EXPECT_TRUE(trainable.total_size() == gradient.total_size());
@@ -210,7 +209,7 @@ public:
 
       calculateExpected();
 
-      train::optimizer::Adam::UpdateFactors factors{_gradient, _trainable, step};
+      backend::train::optimizer::Adam::UpdateFactors factors{_gradient, _trainable, step};
       _sgd.applyGradient(factors);
 
       for (size_t i = 0; i < _expected_trainable.size(); ++i)
@@ -236,7 +235,7 @@ private:
   }
 
 private:
-  train::optimizer::SGD _sgd;
+  backend::train::optimizer::SGD _sgd;
   MockUpTrainableTensor &_trainable;
   const MockUpTensor &_gradient;
   float _learning_rate;
@@ -252,7 +251,7 @@ public:
   AdamOptimizerVerifier(MockUpTrainableTensor &trainable, const MockUpTensor &gradient,
                         float learning_rate, float beta1, float beta2, float epsilon,
                         bool use_nesterov, uint32_t nums_step)
-    : _adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}, learning_rate},
+    : _adam{backend::train::optimizer::Adam::Property{beta1, beta2, epsilon}, learning_rate},
       _trainable{trainable}, _gradient{gradient}, _learning_rate{learning_rate}, _beta1{beta1},
       _beta2{beta2}, _epsilon{epsilon}, _use_nesterov{use_nesterov}, _nums_step{nums_step}
   {
@@ -290,7 +289,7 @@ public:
 
       calculateExpected(beta1_power, beta2_power);
 
-      train::optimizer::Adam::UpdateFactors factors{_gradient, _trainable, step};
+      backend::train::optimizer::Adam::UpdateFactors factors{_gradient, _trainable, step};
       _adam.applyGradient(factors);
 
       const auto vars = _trainable.optVars();
@@ -347,7 +346,7 @@ private:
   }
 
 private:
-  train::optimizer::Adam _adam;
+  backend::train::optimizer::Adam _adam;
   MockUpTrainableTensor &_trainable;
   const MockUpTensor &_gradient;
   float _learning_rate;
@@ -408,7 +407,7 @@ TEST(Optimizer, SGDValueValidation)
 
 TEST(Optimizer, SGDVarCount)
 {
-  train::optimizer::SGD sgd{};
+  backend::train::optimizer::SGD sgd{};
 
   EXPECT_EQ(sgd.getVarCount(), 0);
 }
@@ -429,8 +428,8 @@ TEST(Optimizer, neg_SGDUnmatchedGradientShape)
 
     float lr = 0.001;
 
-    train::optimizer::SGD sgd{lr};
-    train::optimizer::SGD::UpdateFactors factors{gradient, trainable, 0};
+    backend::train::optimizer::SGD sgd{lr};
+    backend::train::optimizer::SGD::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(sgd.applyGradient(factors));
   }
@@ -453,8 +452,8 @@ TEST(Optimizer, neg_SGDUnsupportedType)
 
     float lr = 0.001;
 
-    train::optimizer::SGD sgd{lr};
-    train::optimizer::SGD::UpdateFactors factors{gradient, trainable, 0};
+    backend::train::optimizer::SGD sgd{lr};
+    backend::train::optimizer::SGD::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(sgd.applyGradient(factors));
   }
@@ -536,7 +535,7 @@ TEST(Optimizer, AdamValueValidation)
 TEST(Optimizer, AdamVarCount)
 {
   float lr = 0.001;
-  train::optimizer::Adam adam(lr);
+  backend::train::optimizer::Adam adam(lr);
 
   EXPECT_EQ(adam.getVarCount(), 2);
 }
@@ -565,8 +564,8 @@ TEST(Optimizer, neg_AdamUnmatchedGradientShape)
     trainable.appendOptVar(&m);
     trainable.appendOptVar(&v);
 
-    train::optimizer::Adam adam{};
-    train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
+    backend::train::optimizer::Adam adam{};
+    backend::train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
   }
@@ -596,8 +595,8 @@ TEST(Optimizer, neg_AdamUnmatchedEMAShape)
     trainable.appendOptVar(&m);
     trainable.appendOptVar(&v);
 
-    train::optimizer::Adam adam{};
-    train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
+    backend::train::optimizer::Adam adam{};
+    backend::train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
   }
@@ -631,9 +630,43 @@ TEST(Optimizer, neg_AdamUnsupportedType)
     float beta2 = 0.999;
     float epsilon = 1e-07;
 
-    train::optimizer::Adam adam{train::optimizer::Adam::Property{beta1, beta2, epsilon}};
-    train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
+    backend::train::optimizer::Adam adam{
+      backend::train::optimizer::Adam::Property{beta1, beta2, epsilon}};
+    backend::train::optimizer::Adam::UpdateFactors factors{gradient, trainable, 0};
 
     EXPECT_ANY_THROW(adam.applyGradient(factors));
+  }
+}
+
+TEST(Optimizer, CreateOptimizer)
+{
+  // SGD
+  {
+    ir::train::OptimizerInfo optim_info;
+    optim_info.optim_code = ir::train::OptimizerCode::SGD;
+    optim_info.learning_rate = 0.001f;
+    auto sgd = backend::train::createOptimizer(optim_info);
+    EXPECT_EQ(sgd->getVarCount(), 0);
+    EXPECT_EQ(sgd->name(), std::string{"SGD"});
+  }
+
+  // Adam
+  {
+    ir::train::OptimizerInfo optim_info;
+    optim_info.optim_code = ir::train::OptimizerCode::Adam;
+    optim_info.learning_rate = 0.001f;
+    auto adam = backend::train::createOptimizer(optim_info);
+    EXPECT_EQ(adam->getVarCount(), 2);
+    EXPECT_EQ(adam->name(), std::string{"Adam"});
+  }
+}
+
+TEST(Optimizer, neg_UndefinedOptimizerCode)
+{
+  // Undefined optimizer code
+  {
+    ir::train::OptimizerInfo optim_info;
+    optim_info.optim_code = ir::train::OptimizerCode::Undefined;
+    EXPECT_ANY_THROW(backend::train::createOptimizer(optim_info));
   }
 }
