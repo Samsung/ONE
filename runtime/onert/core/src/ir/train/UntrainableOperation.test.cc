@@ -568,18 +568,24 @@ template <typename OperationType> auto generateUntrainableOperation(const Operat
 
 template <typename OperationType> void verifyOp(const OperationType &op)
 {
-  // auto untrainable = std::make_unique<train::operation::UntrainableOperation<OperationType>>(op);
   auto untrainable = generateUntrainableOperation(op);
+  EXPECT_EQ(untrainable->opcode(), op.opcode());
+  EXPECT_EQ(untrainable->getInputs(), op.getInputs());
+  EXPECT_EQ(untrainable->getOutputs(), op.getOutputs());
 
   // Check clone
   auto clone = untrainable->clone();
   EXPECT_TRUE(clone != nullptr);
   EXPECT_EQ(clone->hasTrainableParameter(), untrainable->hasTrainableParameter());
+  EXPECT_EQ(clone->opcode(), untrainable->opcode());
+  EXPECT_EQ(clone->getInputs(), untrainable->getInputs());
+  EXPECT_EQ(clone->getOutputs(), untrainable->getOutputs());
 
   // Check downcast
   const auto derived =
     dynamic_cast<train::operation::UntrainableOperation<OperationType> *>(clone.get());
   EXPECT_TRUE(derived != nullptr);
+  EXPECT_EQ(clone->hasTrainableParameter(), untrainable->hasTrainableParameter());
   EXPECT_EQ(derived->opcode(), op.opcode());
   EXPECT_EQ(derived->getInputs(), op.getInputs());
   EXPECT_EQ(derived->getOutputs(), op.getOutputs());
@@ -588,7 +594,7 @@ template <typename OperationType> void verifyOp(const OperationType &op)
   MockOperationVisitor visitor;
 
   visitor.visit_flag = false;
-  visitor.invoke(const_cast<OperationType &>(op));
+  visitor.invoke(*untrainable);
   EXPECT_TRUE(visitor.visit_flag);
 }
 
