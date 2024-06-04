@@ -1738,7 +1738,7 @@ NNFW_STATUS nnfw_session::train_export_circle(const char *path)
 
       auto subg = subgs->Get(0); // Get 1st subgraph
       if (!idx.valid() || idx.value() >= subg->tensors()->size())
-        return;
+        throw std::runtime_error("Trainable tensor index is out of range");
 
       auto buf_idx = subg->tensors()->Get(idx.value())->buffer();
       const ::circle::Buffer *buffer = (*model->buffers())[buf_idx];

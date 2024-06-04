@@ -20,8 +20,6 @@
 #include "GenModelTest.h"
 #include "CirclePlusGen.h"
 
-#include <set>
-
 struct SessionObjectTraining : public SessionObjectGeneric
 {
   std::vector<std::vector<uint8_t>> losses;
