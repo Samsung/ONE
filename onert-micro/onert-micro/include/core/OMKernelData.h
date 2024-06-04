@@ -97,6 +97,12 @@ struct StridedSliceParams
   int16_t shrink_axis_mask;
 };
 
+struct TransposeParams
+{
+  int32_t perm_count;
+  int32_t perm[5];
+};
+
 struct BinaryArithmeticBroadcastParams
 {
   // float activation params.
