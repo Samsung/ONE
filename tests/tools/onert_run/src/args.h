@@ -58,6 +58,7 @@ public:
   const std::string &getDumpRawInputFilename(void) const { return _dump_raw_input_filename; }
   const std::string &getLoadRawFilename(void) const { return _load_raw_filename; }
   const int getNumRuns(void) const { return _num_runs; }
+  const bool getFixedInput(void) const { return _fixed_input; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
   const int getRunDelay(void) const { return _run_delay; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
@@ -96,6 +97,7 @@ private:
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;
   int _num_runs;
+  bool _fixed_input = false;
   int _warmup_runs;
   int _run_delay;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;

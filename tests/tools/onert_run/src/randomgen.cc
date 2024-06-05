@@ -36,33 +36,31 @@ template <class T> void randomData(benchmark::RandomGenerator &randgen, void *da
 void RandomGenerator::generate(std::vector<Allocation> &inputs)
 {
   // generate random data
-  const int seed = 1;
-  benchmark::RandomGenerator randgen{seed, 0.0f, 2.0f};
   for (uint32_t i = 0; i < inputs.size(); ++i)
   {
     auto input_size_in_bytes = inputs[i].size();
     switch (inputs[i].type())
     {
       case NNFW_TYPE_TENSOR_FLOAT32:
-        randomData<float>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<float>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-        randomData<uint8_t>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<uint8_t>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_BOOL:
-        randomData<bool>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<bool>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_UINT8:
-        randomData<uint8_t>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<uint8_t>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_INT32:
-        randomData<int32_t>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<int32_t>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_INT64:
-        randomData<int64_t>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<int64_t>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
-        randomData<int16_t>(randgen, inputs[i].data(), input_size_in_bytes);
+        randomData<int16_t>(generator_, inputs[i].data(), input_size_in_bytes);
         break;
       default:
         std::cerr << "Not supported input type" << std::endl;

@@ -296,19 +296,22 @@ int main(const int argc, char **argv)
     setInputTensorInfo(args.getShapeMapForRun(), true);
 
     // Prepare input data
-#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
-    if (!args.getLoadFilename().empty())
-      H5Formatter().loadInputs(args.getLoadFilename(), inputs);
-    else if (!args.getLoadRawFilename().empty())
-      RawFormatter().loadInputs(args.getLoadRawFilename(), inputs);
-    else
-      RandomGenerator().generate(inputs);
-#else
+    auto random_generator = RandomGenerator();
+    bool regenerate_input = false;
     if (!args.getLoadRawFilename().empty())
       RawFormatter().loadInputs(args.getLoadRawFilename(), inputs);
-    else
-      RandomGenerator().generate(inputs);
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+    else if (!args.getLoadFilename().empty())
+      H5Formatter().loadInputs(args.getLoadFilename(), inputs);
 #endif
+    else
+    {
+      random_generator.generate(inputs);
+      // Set regenerate_input to true if input is random data and num_runs > 1
+      // Ignore random generator is not used
+      if (args.getNumRuns() > 1 && !args.getFixedInput())
+        regenerate_input = true;
+    }
 
     // Prepare output buffer
     auto output_sizes = args.getOutputSizes();
@@ -341,6 +344,10 @@ int main(const int argc, char **argv)
       phases.run(
         "EXECUTE",
         [&](const benchmark::Phase &, uint32_t) { NNPR_ENSURE_STATUS(nnfw_run(session)); },
+        [&](const benchmark::Phase &, uint32_t) {
+          if (regenerate_input)
+            random_generator.generate(inputs);
+        },
         args.getNumRuns(), true);
     }
     else
@@ -361,8 +368,25 @@ int main(const int argc, char **argv)
           std::cout << "... "
                     << "run " << nth + 1 << " takes " << phase.time[nth] / 1e3 << " ms"
                     << std::endl;
+          if (regenerate_input)
+            random_generator.generate(inputs);
         },
         args.getNumRuns(), true);
+    }
+
+    // Check dump conditions
+    // Do not dump if not fixed random input
+    if (regenerate_input)
+    {
+      bool cannot_dump = false;
+#if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
+      if (!args.getDumpFilename().empty())
+        cannot_dump = true;
+#endif
+      if (!args.getDumpRawInputFilename().empty() || !args.getDumpRawFilename().empty())
+        cannot_dump = true;
+      if (cannot_dump)
+        throw std::runtime_error("Cannot dump input/output with inputs regeneration");
     }
 
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
