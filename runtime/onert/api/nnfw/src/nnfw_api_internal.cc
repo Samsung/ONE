@@ -1366,6 +1366,7 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     _train_info->setLossInfo(loss_info);
     _train_info->setOptimizerInfo(opt_info);
 
+    std::set<onert::ir::OperationIndex> trainable_ops;
     for (uint32_t idx = 0; idx < info->trainble_ops_size; ++idx)
     {
       if (idx >= primary_subgraph()->operations().size())
@@ -1374,8 +1375,9 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
                   << " is out of operators range" << std::endl;
         return NNFW_STATUS_ERROR;
       }
-      _train_info->enableTrainNodeUpdate(onert::ir::OperationIndex{idx});
+      trainable_ops.emplace(onert::ir::OperationIndex{idx});
     }
+    _train_info->setTrainableOps(trainable_ops);
   }
   catch (const std::exception &e)
   {
