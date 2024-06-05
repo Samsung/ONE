@@ -501,6 +501,92 @@ NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
  */
 NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref);
 
+//////////////////////////////////////////////
+// APIs for configuration
+//////////////////////////////////////////////
+
+/**
+ * @brief Configuration key for prepare (compile and schedule)
+ */
+typedef enum
+{
+  /**
+   * Prepare to dump execution time profile file (not require value setting)
+   * TODO: Use workspace
+   */
+  NNFW_PREPARE_CONFIG_PROFILE,
+} NNFW_PREPARE_CONFIG;
+
+/**
+ * @brief      Set prepare configuration
+ *
+ * This function set prepare configuration to decide additional compiling and scheduing feature.
+ * If you enable configuration to prepare dumping execution data into workspace,
+ * refer {@link nnfw_set_workspace} to use workspace directory.
+ *
+ * @param[in] session nnfw_session to set prepare configuration
+ * @param[in] key     prepare configuration key
+ * @param[in] value   prepare configuration value
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_prepare_config(nnfw_session *session, NNFW_PREPARE_CONFIG key,
+                                    const char *value);
+
+/**
+ * @brief     Reset prepare configurations
+ *
+ * This function reset all prepare configuration.
+ *
+ * @param[in] session nnfw_session to reset all prepare configurations
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_reset_prepare_config(nnfw_session *session);
+
+/**
+ * @brief Configuration key for execution
+ */
+typedef enum
+{
+  /** Dump minmax data for each layers to workspace (not require value setting) */
+  NNFW_RUN_CONFIG_DUMP_MINMAX,
+  /** Dump execution event file to workspace (not require value setting) */
+  NNFW_RUN_CONFIG_TRACE,
+  /**
+   * Dump execution time profile file (not require value setting)
+   *
+   * You should set prepare configuration {@link NNFW_PREPARE_CONFIG_PROFILE} before prepare.
+   * Otherwise, this configuration will be ignored.
+   *
+   * TODO: Use workspace
+   */
+  NNFW_RUN_CONFIG_PROFILE,
+} NNFW_RUN_CONFIG;
+
+/**
+ * @brief     Set execution (run or train) configuration
+ *
+ * This function set execution configuration to dump execution data to workspace.
+ * If you enable configuration to dump execution data into workspace and want to change workspace,
+ * refer {@link nnfw_set_workspace} to use workspace directory.
+ *
+ * @param[in] session nnfw_session to set execution configuration
+ * @param[in] key     execution configuration key
+ * @param[in] value   execution configuration value if needed, otherwise set NULL
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_execute_config(nnfw_session *session, const NNFW_RUN_CONFIG key,
+                                    const char *value);
+
+/**
+ * @brief     Reset execution (run or train) configurations
+ *
+ * This function reset all execution configuration.
+ *
+ * @param[in] session nnfw_session to reset all execution configurations
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_reset_execte_config(nnfw_session *session);
+
 #ifdef __cplusplus
 }
 #endif
