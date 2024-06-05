@@ -108,6 +108,7 @@ struct FloatConv2D
   int32_t stride_h;
   int32_t dilation_width_factor;
   int32_t dilation_height_factor;
+  int32_t depth_multiplier;
   int32_t pad_h;
   int32_t pad_w;
   float activation_min;
