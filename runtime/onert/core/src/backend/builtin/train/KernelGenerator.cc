@@ -67,9 +67,15 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   output_back_prop_tensors.emplace_back(output_back_prop_tensor);
   input_back_prop_tensors.emplace_back(input_back_prop_tensor);
 
-  // NOTE IOTensors of graph outputs for passing data to users must be ignored in training
-  //      because the buffers of those IOTensors are unnecessary and nullptr
-  bool ignore_forward_in_training = _whole_graph_outputs.contains(output_index);
+  // NOTE The output buffers of IOTensors are not essential for training. If there
+  //      is no output buffer provided by the user, permute is not performed.
+  bool ignore_forward_in_training = false;
+  for (const auto dst_tensor : output_tensors)
+  {
+    if (dst_tensor->buffer() == nullptr || dst_tensor->total_size() == 0)
+      ignore_forward_in_training = true;
+  }
+
   auto fn = std::make_unique<kernel::PermuteLayer>(
     input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,
     ignore_forward_in_training, _external_context);
