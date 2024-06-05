@@ -292,11 +292,14 @@ NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, const
 
 /**
  * @brief Set training output buffer
+ * @note This function must be called after {@link nnfw_train_prepare}, \p buffer
+ *       given to this function can be reused for training. \p length must be
+ *       greater or equal than the operand requires. An output operand can have
+ *       unspecified shape and deduced dynamically during the execution. You
+ *       must provide \p buffer large enough.
  *
- * This function must be called after {@link nnfw_train_prepare}, \p buffer given to this function
- * can be reused for training. \p length must be greater or equal than the operand requires.
- * An output operand can have unspecified shape and deduced dynamically during the execution. You
- * must provide \p buffer large enough.
+ *       This function is not a necessary function for training. However, if you
+ *       need to get the output data from the model, you must set the output buffer.
  *
  * @param[in]   session Session from inference output is to be extracted
  * @param[in]   index   Index of output to be set (0-indexed)

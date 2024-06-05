@@ -38,7 +38,7 @@ public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
                const std::vector<ITensor *> &input_back_prop_tensors,
                const std::vector<ITensor *> &output_back_prop_tensors,
-               //  bool ignore_forward_in_training,
+               bool ignore_forward_in_training,
                const std::shared_ptr<ExternalContext> &external_context);
 
   void optimize() override;
@@ -49,7 +49,7 @@ public:
 private:
   std::vector<ITensor *> _input_back_prop_tensors;
   std::vector<ITensor *> _output_back_prop_tensors;
-  // bool _ignore_forward_in_training;
+  bool _ignore_forward_in_training;
 };
 
 } // namespace kernel
