@@ -396,13 +396,13 @@ protected:
             }
 
             // Expected outputs
-            const auto &ref_outputs = outputs_dataset[step];
-            ASSERT_EQ(_so.outputs.size(), ref_outputs.size());
-            for (uint32_t i = 0; i < _so.outputs.size(); i++)
+            const auto &ref_expects = outputs_dataset[step];
+            ASSERT_EQ(_so.expects.size(), ref_expects.size());
+            for (uint32_t i = 0; i < _so.expects.size(); i++)
             {
               // Fill the values
-              ASSERT_EQ(_so.outputs[i].size(), ref_outputs[i].size());
-              memcpy(_so.outputs[i].data(), ref_outputs[i].data(), ref_outputs[i].size());
+              ASSERT_EQ(_so.expects[i].size(), ref_expects[i].size());
+              memcpy(_so.expects[i].data(), ref_expects[i].data(), ref_expects[i].size());
             }
 
             if (train_case.expected_fail_run())
