@@ -42,6 +42,8 @@ private:
   std::unordered_map<uint16_t, uint8_t *> _tensor_to_exponent_avg_squares;
   // Save mapping between tensor index and internal state data with calculated exponent average
   std::unordered_map<uint16_t, uint8_t *> _tensor_to_exponent_avg;
+  // Save mapping between tensor index and internal state data with calculated gradients
+  std::unordered_map<uint16_t, uint8_t *> _tensor_index_to_gradient;
 
 public:
   Adam() = default;
@@ -55,8 +57,7 @@ public:
   void reset();
 
   // Update internal states according to Adam theory
-  OMStatus handle(const OMTrainingContext &training_config,
-                  core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context);
+  OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context);
 
   // Update weights according to Adam theory
   OMStatus updateWeights(const OMTrainingContext &training_config, core::OMRuntimeContext &context);

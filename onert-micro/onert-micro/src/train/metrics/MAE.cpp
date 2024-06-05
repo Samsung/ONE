@@ -32,7 +32,7 @@ float MAE::calculateValue(const uint32_t flat_size, float *calculated_data, floa
 
   for (uint32_t i = 0; i < flat_size; ++i)
   {
-    result_value += std::abs(calculated_data[i] - target_data[i]);
+    result_value += std::fabs(calculated_data[i] - target_data[i]);
   }
 
   return result_value / flat_size;

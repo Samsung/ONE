@@ -32,7 +32,8 @@ float MSE::calculateValue(const uint32_t flat_size, float *calculated_data, floa
 
   for (uint32_t i = 0; i < flat_size; ++i)
   {
-    result_value += std::pow((calculated_data[i] - target_data[i]), 2);
+    const auto cur_val = calculated_data[i] - target_data[i];
+    result_value += cur_val * cur_val;
   }
 
   return result_value / flat_size;
