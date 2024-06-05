@@ -88,9 +88,9 @@ void TrainableExecutor::forward(const IODescription &desc, bool training)
   {
     auto tensor = _output_tensors[i];
 
-    if (desc.outputs[i] == nullptr)
-      throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
-    tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    assert(desc.outputs[i] != nullptr);
+    if (desc.outputs[i]->buffer != nullptr && desc.outputs[i]->size != 0)
+      tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
   forwardImpl(training);
