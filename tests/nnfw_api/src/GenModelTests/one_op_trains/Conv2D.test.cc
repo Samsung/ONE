@@ -30,7 +30,7 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
                          circle::ActivationFunctionType_NONE, 1, 1);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -41,8 +41,8 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                          1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
                       {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
-                         4}}},      // expected dataset
-                      {798.110534f} // last losses
+                         4}}},    // expected dataset
+                      {324.0978f} // last losses
                       ));
 
   _context->setBackends({"train"});
