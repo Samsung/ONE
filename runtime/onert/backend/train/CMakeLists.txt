@@ -18,11 +18,11 @@ set_target_properties(${LIB_ONERT_BACKEND_TRAIN} PROPERTIES
 
 install(TARGETS ${LIB_ONERT_BACKEND_TRAIN} DESTINATION lib/nnfw/backend)
 
-# For test
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+# Unit Tests
 set(TEST_ONERT_TRAIN_BACKEND test_onert_train_backend)
 
 add_executable(${TEST_ONERT_TRAIN_BACKEND} ${TESTS})
@@ -32,6 +32,9 @@ target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} ${LIB_ONERT_BACKEND_TRAIN})
 target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} nnfw_coverage)
 target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} onert_core)
 target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} gtest gtest_main dl ${LIB_PTHREAD})
+
+set_target_properties(${TEST_ONERT_TRAIN_BACKEND} PROPERTIES
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib:$ORIGIN/../lib/nnfw/backend")
 
 add_test(${TEST_ONERT_TRAIN_BACKEND} ${TEST_ONERT_TRAIN_BACKEND})
 install(TARGETS ${TEST_ONERT_TRAIN_BACKEND} DESTINATION unittest)
