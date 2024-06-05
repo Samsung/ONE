@@ -15,10 +15,10 @@ Or you can use `tools/cross/install_android_sdk.sh` script to prepare Android SD
 ### Host Environment Requirements
 
 CMake 3.6.0 or later is required for Android NDK r20 CMake support.
-So if you want to use Docker, please use `infra/docker/focal/Dockerfile` which is based on Ubuntu 20.04. It has CMake 3.16.3.
+So if you want to use Docker, please use `infra/docker/android-sdk/Dockerfile`.
 
 ```
-$ ./nnas build-docker-image -t nnfw/one-devtools:focal
+$ ./nnas build-docker-image --codename android-sdk -t nnfw/one-devtools:android-sdk
 ```
 
 
