@@ -29,11 +29,8 @@ namespace onert_run
 class RandomGenerator
 {
 public:
-  RandomGenerator(nnfw_session *sess) : session_(sess) {}
+  RandomGenerator() = default;
   void generate(std::vector<Allocation> &inputs);
-
-private:
-  nnfw_session *session_;
 };
 } // namespace onert_run
 

@@ -17,10 +17,13 @@
 #ifndef __ONERT_RUN_TYPES_H__
 #define __ONERT_RUN_TYPES_H__
 
+#include <cstdint>
+#include <vector>
+
 namespace onert_run
 {
 
-using TensorShape = std::vector<int>;
+using TensorShape = std::vector<int32_t>;
 
 } // end of namespace onert_run
 

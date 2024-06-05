@@ -17,8 +17,11 @@
 #ifndef __ONERT_RUN_ALLOCATION_H__
 #define __ONERT_RUN_ALLOCATION_H__
 
+#include <cassert>
 #include <cstdlib>
 #include <cstdint>
+
+#include "nnfw.h"
 
 namespace onert_run
 {
@@ -28,10 +31,21 @@ public:
   Allocation() : data_(nullptr) {}
   ~Allocation() { free(data_); }
   void *data() const { return data_; }
-  void *alloc(uint64_t sz) { return data_ = malloc(sz); }
+  void *alloc(uint64_t size, NNFW_TYPE dtype)
+  {
+    size_ = size;
+    type_ = dtype;
+
+    assert(data_ == nullptr);
+    return data_ = malloc(size);
+  }
+  uint64_t size() const { return size_; }
+  NNFW_TYPE type() const { return type_; }
 
 private:
-  void *data_;
+  void *data_ = nullptr;
+  uint64_t size_ = 0;
+  NNFW_TYPE type_ = NNFW_TYPE_TENSOR_FLOAT32;
 };
 } // namespace onert_run
 
