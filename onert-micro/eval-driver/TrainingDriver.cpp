@@ -95,27 +95,6 @@ DataBuffer readFile(const char *path)
   return model_data;
 }
 
-bool saveModel(const char *path, const DataBuffer &data_buffer)
-{
-  if (path == nullptr or data_buffer.size() == 0)
-    return false;
-
-  // Open or create file
-  // Note: if the file existed, it will be overwritten
-  std::ofstream out_file(path, std::ios::binary | std::ios::trunc);
-  if (not out_file.is_open())
-    return false;
-
-  // Write data
-  out_file.write(data_buffer.data(), data_buffer.size());
-
-  // Close file
-  out_file.close();
-
-  // Saving done
-  return true;
-}
-
 } // namespace
 
 /*
@@ -185,6 +164,11 @@ int entry(int argc, char **argv)
 
   // Configure training mode
   onert_micro::OMConfig config;
+
+  // Save model size and model ptr in config
+  config.model_size = circle_model.size();
+  config.model_ptr = circle_model.data();
+
   // If defined wof file
   if (wof_file_path != nullptr)
     config.wof_ptr = nullptr;
@@ -321,7 +305,7 @@ int entry(int argc, char **argv)
   }
 
   // Save training result
-  saveModel(output_trained_file_path, circle_model);
+  train_interpreter.saveModel(config, output_trained_file_path);
 
   return EXIT_SUCCESS;
 }
