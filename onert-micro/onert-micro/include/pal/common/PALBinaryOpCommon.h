@@ -59,18 +59,19 @@ template <typename T> struct MinimumFn
 
 // TODO: check if there real activation value
 template <typename T, typename Fn>
-inline void BinaryOp(const int flat_size, const T *input1_data, const T *input2_data,
-                     T *output_data)
+inline OMStatus BinaryOp(const int flat_size, const T *input1_data, const T *input2_data,
+                         T *output_data)
 {
   Fn func;
   for (int i = 0; i < flat_size; ++i)
   {
     output_data[i] = func(input1_data[i], input2_data[i]);
   }
+  return Ok;
 }
 
 template <typename T, typename Fn>
-inline void
+inline OMStatus
 BroadcastBinaryOp4DSlow(const core::OMRuntimeShape &input1_shape, const float *input1_data,
                         const core::OMRuntimeShape &input2_shape, const float *input2_data,
                         const core::OMRuntimeShape &output_shape, float *output_data)
@@ -114,6 +115,7 @@ BroadcastBinaryOp4DSlow(const core::OMRuntimeShape &input1_shape, const float *i
       }
     }
   }
+  return Ok;
 }
 
 } // namespace pal
