@@ -58,6 +58,13 @@ struct LogSoftmaxParams
   int row_size;
 };
 
+struct L2NormalizationParams
+{
+  int num_rows;
+  int row_size;
+  float epsilon = 1e-6;
+};
+
 struct Pool2DParams
 {
   int32_t stride_w;
